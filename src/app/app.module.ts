@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +12,8 @@ import { HomeViewComponent } from './home/home-view/home-view.component';
 import { ResumeViewComponent } from './resume/resume-view/resume-view.component';
 import { GalleryViewComponent } from './gallery/gallery-view/gallery-view.component';
 import { NotesViewComponent } from './notes/notes-view/notes-view.component';
+
+import { ResumeService } from './services/resume.service';
 
 import { Routes } from '@angular/router';
 
@@ -36,10 +39,13 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     FontAwesomeModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [
+    ResumeService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

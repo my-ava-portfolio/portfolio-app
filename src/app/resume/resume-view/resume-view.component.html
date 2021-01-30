@@ -1,1 +1,151 @@
-<p>resume-view works!</p>
+<div id="content" class="container bg-dark">
+
+  <div class="row justify-content-around">
+
+    <div id="topbar_bar" class="topbar col-lg-12">
+        <div class="row">
+
+          <div class="name-container col-lg-3 text-center my-3 text-white">
+              <h2 class="font-weight-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h2>
+              <h5 class="font-weight-light">{{ profilData.job }}</h5>
+              <h5 class="font-weight-light">{{ profilData.experience_duration }}</h5>
+          </div>
+
+          <div class="col-lg-6 text-center align-self-center my-3">
+            <a class="btn btn-secondary mr-2" role="button">Navigation</a>
+            <a class="btn btn-secondary mr-2" target="_blank" role="button">
+              <fa-icon class="text-white" [icon]="faPrint"></fa-icon>
+            </a>
+            <a class="btn btn-secondary mr-2" role="button">Expériences</a>
+            <a class="btn btn-secondary mr-2" role="button">Projets</a>
+            <a class="btn btn-secondary mr-2" role="button">Publications</a>
+          </div>
+
+          <div id="general_contact" class="contact-container col-lg-3 align-self-center">
+            <div class="shortcut col-lg-12">
+                <ul class="list-unstyled">
+                  <li class="contact-linkedin">
+                    <fa-icon class="mr-2 text-white" [icon]="faLinkedinIn"></fa-icon>
+                    <a class="text-white" href="{{ contactData.linkedin }}" target="_blank">LinkedIn</a>
+                  </li>
+                  <li class="contact-github">
+                    <fa-icon class="mr-2 text-white" [icon]="faGithub"></fa-icon>
+                    <a class="text-white" href="{{ contactData.github }}" target="_blank">Github</a>
+                  </li>
+                </ul>
+            </div>
+          </div>
+
+        </div>
+    </div>
+
+    <div id="left-bar" class="col-lg-3 mb-5">
+
+      <div class="row bg-very-dark">
+          <div class="col-lg-12 align-self-center my-4">
+              <h4 class="text-center font-weight-bold text-white">Formations</h4>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 align-self-center mt-3">
+          <h5 class="text-center font-weight-bold text-white">
+            <fa-icon class="mr-2 text-white" [icon]="faUserGraduate"></fa-icon>Diplômes
+          </h5>
+        </div>
+        <div class="col-lg-12">
+          <div [id]="degree.identifier" class="item card bg-less-dark m-3" *ngFor="let degree of degreesData">
+            <div class="card-body">
+              <div class="col-lg-12">
+
+                <div class="row school-card justify-content-around text-center">
+
+                  <div *ngIf="degree.img_school;then schoolImgContent"></div>
+                  <ng-template #schoolImgContent>
+                    <div class="col-lg-6">
+                      <img class="img-fluid rounded mx-auto d-block mb-2" [src]="apiImgUrl + degree.img_school"/>
+                    </div>
+                  </ng-template>
+
+                  <div class="col-lg-12">
+                    <div class="text-white font-weight-bold mb-2">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }} - {{ degree.degree }}</div>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="text-white mb-3">{{ degree.school }}</div>
+                    <div class="text-white">
+                      <a [id]="'location_' + degree.identifier" role="button">
+                        <fa-icon class="mr-2 text-danger" [icon]="faMapMarkerAlt"></fa-icon>
+                      </a>{{degree.location}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 align-self-center mt-3">
+          <h5 class="text-center font-weight-bold text-white">
+            <fa-icon class="mr-2 text-white" [icon]="faUserGraduate"></fa-icon>Formations
+          </h5>
+        </div>
+        <div class="col-lg-12">
+          <div [id]="training.identifier" class="item card bg-less-dark m-3" *ngFor="let training of trainingsData">
+            <div class="card-body">
+              <div class="col-lg-12">
+
+                <div class="row school-card justify-content-around text-center">
+
+                  <div *ngIf="training.img_tool;then schoolImgContent"></div>
+                  <ng-template #schoolImgContent>
+                    <div class="col-lg-6">
+                      <img class="img-fluid rounded mx-auto d-block mb-2 bg-white p-2" [src]="training.img_tool"/>
+                    </div>
+                  </ng-template>
+
+                  <div class="col-sm-12">
+                    <div class="text-white font-weight-bold mb-2">{{ training.year }} - {{ training.name }}</div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="text-white">par {{ training.trainer }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="trainings" class="row">
+        <div class="col-lg-12 align-self-center mt-3">
+          <h5 class="text-center font-weight-bold text-white">
+            <fa-icon class="mr-2 text-white" [icon]="faLanguage"></fa-icon>Langues
+          </h5>
+        </div>
+        <div class="col-lg-12">
+          <div class="item card bg-less-dark m-2">
+            <div class="card-body">
+              <div class="col-lg-12">
+                <ul class="list-unstyled justify-content-around text-center">
+                  <li *ngFor="let language of languagesData">
+                    <span class="font-weight-bold  text-white">{{language.language}} </span>
+                    <span class="text-white">({{language.level}})</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="center-bar" class="col-lg-6">AAAAAAAA</div>
+
+    <div id="right-bar" class="col-lg-3">AAAAAAA</div>
+
+  </div>
+
+</div>
