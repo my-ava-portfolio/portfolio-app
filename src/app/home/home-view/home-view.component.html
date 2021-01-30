@@ -23,7 +23,7 @@
       <li class="empty quarter disabled"></li>
 
       <li id="github" [ngClass]="quartersStatus.github.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('github')" (mouseout)="updateQuarterStatus('github')">
-          <a class="quarter-text text-theme text-dark" routerLink="resume">
+          <a class="quarter-text text-theme text-dark" href="/notes">
             <fa-icon [icon]="faGithub" size="3x" [rotate]="90"></fa-icon>
           </a>
       </li>
@@ -31,9 +31,10 @@
       <li class="empty quarter disabled"></li>
 
       <li id="resume" [ngClass]="quartersStatus.resume.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('resume')" (mouseout)="updateQuarterStatus('resume')">
-          <a class="quarter-text text-theme text-dark" routerLink="resume">
+          <a class="quarter-text text-theme text-dark" [routerLink]="['/resume']">
             <fa-icon [icon]="faAddressCard" size="3x"></fa-icon>
           </a>
+
       </li>
 
       <div id="rose" class="center">

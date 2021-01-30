@@ -14,6 +14,7 @@ import { Routes } from '@angular/router';
 
 
 const appRoutes: Routes = [
+  { path:'', redirectTo:'home', pathMatch: 'full' },
   { path: 'home', component: HomeViewComponent },
   { path: 'resume', component: ResumeViewComponent },
 ];

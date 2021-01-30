@@ -40,9 +40,13 @@ export class AppComponent implements OnInit {
   }
 
   changeHomeBarsStatus(router: any): void {
-    if (router.url.includes("home")) {
+    console.log(router.url)
+    if (router.url === '/home' ) {
       this.navBarEnabled = false
       this.footerBarEnabled = false
+    } else {
+      this.navBarEnabled = !this.navBarEnabled
+      this.footerBarEnabled = !this.footerBarEnabled
     }
   }
 

@@ -60,7 +60,4 @@ export class HomeViewComponent implements OnInit {
     this.topicMessage = this.quartersStatus[topic].title
   }
 
-
-
-
 }
