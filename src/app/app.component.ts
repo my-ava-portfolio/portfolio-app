@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 
 import * as L from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
@@ -26,8 +27,23 @@ export class AppComponent implements OnInit {
   footerBarEnabled = true
   map: any;
 
+  constructor(private router: Router) {
+
+    router.events.subscribe( (event) => {
+      this.changeHomeBarsStatus(router)
+    });
+
+  }
+
   ngOnInit(): void {
     this.initMap()
+  }
+
+  changeHomeBarsStatus(router: any): void {
+    if (router.url.includes("home")) {
+      this.navBarEnabled = false
+      this.footerBarEnabled = false
+    }
   }
 
   initMap(): void {
