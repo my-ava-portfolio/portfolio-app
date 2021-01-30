@@ -9,14 +9,19 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { HomeViewComponent } from './home/home-view/home-view.component';
 import { ResumeViewComponent } from './resume/resume-view/resume-view.component';
+import { GalleryViewComponent } from './gallery/gallery-view/gallery-view.component';
+import { NotesViewComponent } from './notes/notes-view/notes-view.component';
 
 import { Routes } from '@angular/router';
 
 
+
 const appRoutes: Routes = [
-  { path:'', redirectTo:'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeViewComponent },
   { path: 'resume', component: ResumeViewComponent },
+  { path: 'gallery', component: GalleryViewComponent },
+  { path: 'notes', component: NotesViewComponent },
 ];
 
 
@@ -24,7 +29,9 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     HomeViewComponent,
-    ResumeViewComponent
+    ResumeViewComponent,
+    GalleryViewComponent,
+    NotesViewComponent
   ],
   imports: [
     BrowserModule,

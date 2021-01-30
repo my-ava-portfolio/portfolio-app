@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
+
 import { faAddressCard, faImages, faBookOpen } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
+
+import { pagesObject } from '../../core/inputs';
+
 
 @Component({
   selector: 'app-home-view',
@@ -9,26 +14,7 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons'
 })
 export class HomeViewComponent implements OnInit {
 
-  defaultQuartersStatus: any = {
-    resume: {
-      title: 'Profil',
-      status: false
-    },
-    maps_library: {
-      title: 'Cartes',
-      status: false
-    },
-    notes: {
-      title: 'Notes',
-      status: false
-    },
-    github: {
-      title: 'Github',
-      status: false
-    }
-  };
   quartersStatus!: any;
-
 
   faAddressCard = faAddressCard;
   faImages = faImages;
@@ -41,23 +27,49 @@ export class HomeViewComponent implements OnInit {
   defaultWelcomeMessage = "Portfolio";
 
   quarterNotSelected = false;
+  currentQuarterSelected!: string ;
   welcomeMessage!: string;
   topicMessage!: string;
 
-  constructor() {
+  constructor(private router: Router) {
+
+    // to call function when root changes occur
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationStart) {
+        this.resetQuartersStatus()
+
+          // Show loading indicator
+      }
+      if (event instanceof NavigationEnd) {
+          // Hide loading indicator
+      }
+      if (event instanceof NavigationError) {
+          // Hide loading indicator
+          // Present error to user
+          console.log(event.error);
+      }
+    });
+
   }
 
   ngOnInit(): void {
-    this.quartersStatus = this.defaultQuartersStatus
-    this.welcomeMessage = this.defaultWelcomeMessage
+    this.quartersStatus = pagesObject;
+    this.welcomeMessage = this.defaultWelcomeMessage;
   }
 
   updateQuarterStatus(topic: string): void {
-    const currentQuarterStatus: boolean = this.quartersStatus[topic].status
-    this.quartersStatus = this.defaultQuartersStatus
-    this.quartersStatus[topic].status = !currentQuarterStatus
-    this.quarterNotSelected = this.quartersStatus[topic].status
-    this.topicMessage = this.quartersStatus[topic].title
+    const currentQuarterStatus: boolean = this.quartersStatus[topic].status;
+    this.quartersStatus[topic].status = !currentQuarterStatus;
+    this.quarterNotSelected = this.quartersStatus[topic].status;
+    this.topicMessage = this.quartersStatus[topic].title;
+  }
+
+  resetQuartersStatus(): void {
+    for (const property in this.quartersStatus) {
+      if (this.quartersStatus.hasOwnProperty(property)) {
+        this.quartersStatus[property].status = false;
+      }
+    }
   }
 
 }
