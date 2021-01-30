@@ -1,4 +1,5 @@
 #backgroundMap {
+  position: absolute;
   z-index: -1;
 }
 
@@ -23,7 +24,7 @@
   height: 2%;
 }
 
-a {
+.navbar a {
   color: #2e4049;
 }
 

@@ -1,1 +1,67 @@
-<p>home-view works!</p>
+<div class="container-fluid">
+
+<div class="bubble">
+  <div class="bubble-text">
+  <h1>Bubble info</h1>
+  <hr>
+  <p>this is a simple bubble effect   <br/>width CSS pseudo element </p>
+</div>
+
+
+
+  <div class="row justify-content-around">
+
+    <ul class="main-circle">
+
+      <li class="empty quarter disabled"></li>
+
+      <li id="maps_library" [ngClass]="quarter1Selected ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="quarter1Selected=true" (mouseout)="quarter1Selected=false">
+          <a class="quarter-text text-theme" href="/maps_library">
+          </a>
+      </li>
+
+      <li class="empty quarter disabled"></li>
+
+      <li id="notes" [ngClass]="quarter2Selected ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="quarter2Selected=true" (mouseout)="quarter2Selected=false">
+          <a class="quarter-text text-theme" href="/notes">
+          </a>
+      </li>
+
+      <li class="empty quarter disabled"></li>
+
+      <li id="github" [ngClass]="quarter3Selected ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="quarter3Selected=true" (mouseout)="quarter3Selected=false">
+      </li>
+
+      <li class="empty quarter disabled"></li>
+
+      <li id="resume" [ngClass]="quarter4Selected ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="quarter4Selected=true" (mouseout)="quarter4Selected=false">
+          <a class="quarter-text text-theme" routerLink="resume">Profil</a>
+      </li>
+
+      <div id="rose" class="center">
+        <div id="rose-content" class="">
+
+          <div class="col-sm-12">
+            <span class="portfolio-title">Amaury Valorge Portfolio</span>
+          </div>
+          <div class="row portfolio-sections">
+            <div class="col-sm-12" id="section-resume">
+              <a href="/resume"><span class="text text-hidden">Profil</span></a>
+            </div>
+            <div class="col-sm-12" id="section-maps_library">
+              <a href="/maps_library"><span class="text text-hidden">Cartes</span></a>
+            </div>
+            <div class="col-sm-12" id="section-notes">
+              <a href="/notes"><span class="text text-hidden">Notes</span></a>
+            </div>
+            <div class="col-sm-12" id="section-github">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </ul>
+
+  </div>
+
+</div>

@@ -21,6 +21,9 @@ export class AppComponent implements OnInit {
     minZoom: 8
   });
 
+
+  navBarEnabled = true
+  footerBarEnabled = true
   map: any;
 
   ngOnInit(): void {

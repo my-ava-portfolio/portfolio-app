@@ -7,7 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeViewComponent implements OnInit {
 
-  constructor() { }
+  quarter1Selected = false;
+  quarter2Selected = false;
+  quarter3Selected = false;
+  quarter4Selected = false;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
