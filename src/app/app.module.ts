@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import { HomeViewComponent } from './home/home-view/home-view.component';
 import { ResumeViewComponent } from './resume/resume-view/resume-view.component';
 
@@ -26,6 +28,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FontAwesomeModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [],

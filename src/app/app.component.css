@@ -24,9 +24,6 @@
   height: 2%;
 }
 
-.navbar a {
-  color: #2e4049;
-}
 
 .navbar .active {
   font-weight: 600;
