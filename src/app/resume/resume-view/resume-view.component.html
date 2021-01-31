@@ -155,29 +155,10 @@
                 <p class="text-justify">{{ summaryData }}</p>
             </div>
 
-            <div class="col-lg-12 carrier_summary_chart">
-            </div>
+            <app-activities-graph
+              [graphInputData]="generalData"
+            ></app-activities-graph>
 
-            <div id="graph_legend" class="col-lg-12">
-
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="carrier_summary_legend"></div>
-                </div>
-              </div>
-
-              <div class="row carrier_summary_slider">
-                <div class="col-lg-12 justify-content-around text-center">
-
-                  <span class="legend_graph_title">Barre temporelle</span>
-                    <form class="graph-slider-date range-field">
-                      <input class="border-0" type="range" steps="1" min="{{ generalData.start_date_graph_slider }}" max="{{ generalData.end_date_graph_slider }}" value="{{ generalData.end_date_graph_slider }}" />
-                    </form>
-                  <span id="reset-graph" class="btn btn-primary"><span class="reset-graph-icon icon-holder"></span>Reset</span>
-                </div>
-              </div>
-
-            </div>
           </div>
       </div>
 

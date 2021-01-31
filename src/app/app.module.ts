@@ -16,6 +16,7 @@ import { NotesViewComponent } from './notes/notes-view/notes-view.component';
 import { ResumeService } from './services/resume.service';
 
 import { Routes } from '@angular/router';
+import { ActivitiesGraphComponent } from './resume/activities-graph/activities-graph.component';
 
 
 
@@ -34,7 +35,8 @@ const appRoutes: Routes = [
     HomeViewComponent,
     ResumeViewComponent,
     GalleryViewComponent,
-    NotesViewComponent
+    NotesViewComponent,
+    ActivitiesGraphComponent
   ],
   imports: [
     BrowserModule,
