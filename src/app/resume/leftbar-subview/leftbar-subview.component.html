@@ -1,0 +1,98 @@
+<div class="row">
+          <div class="col-lg-12 align-self-center my-4">
+              <h4 class="text-center font-weight-bold text-white">Formations</h4>
+          </div>
+      </div>
+
+      <div class="row bg-dark">
+        <div class="col-lg-12 align-self-center mt-3">
+          <h5 class="text-center font-weight-bold text-white">
+            <fa-icon class="mr-2 text-white" [icon]="faUserGraduate"></fa-icon>Diplômes
+          </h5>
+        </div>
+        <div class="col-lg-12">
+          <div [id]="degree.identifier" class="item card bg-less-dark m-3" *ngFor="let degree of inputDegreesData">
+            <div class="card-body">
+              <div class="col-lg-12">
+
+                <div class="row school-card justify-content-around text-center">
+
+                  <div *ngIf="degree.img_school;then schoolImgContent"></div>
+                  <ng-template #schoolImgContent>
+                    <div class="col-lg-6">
+                      <img class="img-fluid rounded mx-auto d-block mb-2" [src]="apiImgUrl + degree.img_school"/>
+                    </div>
+                  </ng-template>
+
+                  <div class="col-lg-12">
+                    <div class="text-white font-weight-bold mb-2">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }} - {{ degree.degree }}</div>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="text-white mb-3">{{ degree.school }}</div>
+                    <div class="text-white">
+                      <a [id]="'location_' + degree.identifier" role="button">
+                        <fa-icon class="mr-2 text-danger" [icon]="faMapMarkerAlt"></fa-icon>
+                      </a>{{degree.location}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row bg-dark">
+        <div class="col-lg-12 align-self-center mt-3">
+          <h5 class="text-center font-weight-bold text-white">
+            <fa-icon class="mr-2 text-white" [icon]="faUserGraduate"></fa-icon>Formations
+          </h5>
+        </div>
+        <div class="col-lg-12">
+          <div [id]="training.identifier" class="item card bg-less-dark m-3" *ngFor="let training of inputTrainingsData">
+            <div class="card-body">
+              <div class="col-lg-12">
+
+                <div class="row school-card justify-content-around text-center">
+
+                  <div *ngIf="training.img_tool;then schoolImgContent"></div>
+                  <ng-template #schoolImgContent>
+                    <div class="col-lg-6">
+                      <img class="img-fluid rounded mx-auto d-block mb-2 bg-white p-2" [src]="training.img_tool"/>
+                    </div>
+                  </ng-template>
+
+                  <div class="col-sm-12">
+                    <div class="text-white font-weight-bold mb-2">{{ training.year }} - {{ training.name }}</div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="text-white">par {{ training.trainer }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row bg-dark pb-5">
+        <div class="col-lg-12 align-self-center mt-3">
+          <h5 class="text-center font-weight-bold text-white">
+            <fa-icon class="mr-2 text-white" [icon]="faLanguage"></fa-icon>Langues
+          </h5>
+        </div>
+        <div class="col-lg-12">
+          <div class="item card bg-less-dark m-2">
+            <div class="card-body">
+              <div class="col-lg-12">
+                <ul class="list-unstyled justify-content-around text-center">
+                  <li *ngFor="let language of inputLanguagesData">
+                    <span class="font-weight-bold  text-white">{{language.language}} </span>
+                    <span class="text-white">({{language.level}})</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

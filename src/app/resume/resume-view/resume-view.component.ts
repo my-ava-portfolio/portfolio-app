@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation  } from '@angular/core';
 
-import { faUserGraduate, faMapMarkerAlt, faLanguage, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
+import { faGlobeEurope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { ResumeService } from '../../services/resume.service';
-import { apiBaseUrl } from '../../core/inputs';
+import { apiBaseUrl, apiImgUrl } from '../../core/inputs';
 
 
 @Component({
   selector: 'app-resume-view',
   templateUrl: './resume-view.component.html',
-  styleUrls: ['./resume-view.component.css']
+  styleUrls: ['./resume-view.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ResumeViewComponent implements OnInit {
 
-  apiImgUrl = `${apiBaseUrl}/images/logo/`;
+  apiImgUrl = apiImgUrl;
 
   // icons
-  faUserGraduate = faUserGraduate;
   faMapMarkerAlt = faMapMarkerAlt;
-  faLanguage = faLanguage;
   faGlobeEurope = faGlobeEurope;
 
   // resume top bar
