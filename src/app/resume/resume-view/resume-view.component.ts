@@ -38,7 +38,8 @@ export class ResumeViewComponent implements OnInit {
   summaryData: any;
 
   // resume center bar
-  activitiesData: any;
+  jobsData: any = [];
+  personalProjectsData: any = [];
   skillsData: any;
   generalData: any;
 
@@ -78,8 +79,9 @@ export class ResumeViewComponent implements OnInit {
 
     this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
-        this.activitiesData = data;
-        console.log(this.activitiesData)
+        this.jobsData = data.jobs;
+        this.personalProjectsData = data.personnal_projects
+        console.log(data)
 
       },
       (error) => {
