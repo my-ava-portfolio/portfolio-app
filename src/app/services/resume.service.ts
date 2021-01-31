@@ -10,9 +10,13 @@ import { apiBaseUrl } from '../core/inputs';
 })
 export class ResumeService {
 
-  private apiUrl = apiBaseUrl + 'general_resume_data';
-  ErrorApiFound: Subject<string> = new Subject<string>();
+  private apiUrlResumeData = apiBaseUrl + 'general_resume_data';
+  ErrorResumeDataApiFound: Subject<string> = new Subject<string>();
   resumeData: Subject<any> = new Subject<any>();
+
+  private apiUrlGraphData = apiBaseUrl + 'activities_graph?';
+  errorActivitiesChartApiFound: Subject<string> = new Subject<string>();
+  ActivitiesChartData: Subject<any> = new Subject<any>();
 
 
   constructor(
@@ -21,13 +25,35 @@ export class ResumeService {
 
   pullResumeGeneralData(): void {
 
-    this.http.get<any>(this.apiUrl).subscribe(
+    this.http.get<any>(this.apiUrlResumeData).subscribe(
       (response) => {
         this.resumeData.next(response);
       },
       (response) => {
         // TODO improve error message, but API need improvments
-        this.ErrorApiFound.next(response.error.message);
+        this.ErrorResumeDataApiFound.next(response.error.message);
+      }
+    );
+  }
+
+  pullActivitiesGraphData(
+    isTechnics: boolean | string,
+    isThemes: boolean | string,
+    isTools: boolean | string,
+    currentDateValue: number,
+    grouperProjects: boolean | string,
+    grouperJobs: boolean | string
+  ): void {
+
+    this.http.get<any>(
+      `${this.apiUrlGraphData}activities_graph?technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&start_date=${currentDateValue}&group_projects=${grouperProjects}&group_jobs=${grouperJobs}`
+    ).subscribe(
+      (response) => {
+        this.ActivitiesChartData.next(response);
+      },
+      (response) => {
+        // TODO improve error message, but API need improvments
+        this.errorActivitiesChartApiFound.next(response.error.message);
       }
     );
   }
