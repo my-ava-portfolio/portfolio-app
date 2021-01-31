@@ -18,29 +18,16 @@
         [languagesData]="languagesData"
         [trainingsData]="trainingsData"
       ></app-leftbar-subview>
-      
+
     </div>
 
     <div id="center-bar" class="col-lg-6 bg-light border">
-      <section id="summary" class="col-lg-12 section mt-3 mb-3">
-        <h5 class="font-weight-bold">
-          <fa-icon class="mr-2" [icon]="faGlobeEurope"></fa-icon>
-          Navigation
-        </h5>
-        <div class="item card">
-          <div class="card-body">
 
-            <div class="col-lg-12 carrier_summary">
-                <p class="text-justify">{{ summaryData }}</p>
-            </div>
+      <app-centerbar-navigation
+        [summaryData]="summaryData"
+        [graphInputData]="generalData"
+      ></app-centerbar-navigation>
 
-            <app-activities-graph
-              [graphInputData]="generalData"
-            ></app-activities-graph>
-
-          </div>
-        </div>
-      </section>
 
       <section id="research" class="col-lg-12 section mb-5">
         <h5 class="font-weight-bold">

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActivitiesGraphComponent } from './activities-graph.component';
+import { CenterBarNavigationComponent } from './centerbar-navigation.component';
 
 describe('ActivitiesGraphComponent', () => {
-  let component: ActivitiesGraphComponent;
-  let fixture: ComponentFixture<ActivitiesGraphComponent>;
+  let component: CenterBarNavigationComponent;
+  let fixture: ComponentFixture<CenterBarNavigationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ActivitiesGraphComponent ]
+      declarations: [ CenterBarNavigationComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ActivitiesGraphComponent);
+    fixture = TestBed.createComponent(CenterBarNavigationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -16,7 +16,7 @@ import { NotesViewComponent } from './notes/notes-view/notes-view.component';
 import { ResumeService } from './services/resume.service';
 
 import { Routes } from '@angular/router';
-import { ActivitiesGraphComponent } from './resume/activities-graph/activities-graph.component';
+import { CenterBarNavigationComponent } from './resume/centerbar-navigation/centerbar-navigation.component';
 import { TopbarSubviewComponent } from './resume/topbar-subview/topbar-subview.component';
 import { LeftbarSubviewComponent } from './resume/leftbar-subview/leftbar-subview.component';
 
@@ -38,7 +38,7 @@ const appRoutes: Routes = [
     ResumeViewComponent,
     GalleryViewComponent,
     NotesViewComponent,
-    ActivitiesGraphComponent,
+    CenterBarNavigationComponent,
     TopbarSubviewComponent,
     LeftbarSubviewComponent
   ],

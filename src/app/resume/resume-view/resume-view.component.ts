@@ -30,7 +30,7 @@ export class ResumeViewComponent implements OnInit {
   trainingsData: any;
 
   // resume center bar
-  summaryData: any;
+  summaryData!: any;
 
   // resume center bar
   jobsData: any = [];

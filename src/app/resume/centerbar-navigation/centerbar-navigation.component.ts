@@ -3,20 +3,26 @@ import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
 
 import { ResumeService } from '../../services/resume.service';
+import { faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
-  selector: 'app-activities-graph',
-  templateUrl: './activities-graph.component.html',
-  styleUrls: ['./activities-graph.component.css'],
+  selector: 'app-centerbar-navigation',
+  templateUrl: './centerbar-navigation.component.html',
+  styleUrls: ['./centerbar-navigation.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ActivitiesGraphComponent implements OnInit {
+export class CenterBarNavigationComponent implements OnInit {
   @Input() graphInputData!: any;
+  @Input() summaryData!: any;
 
   private defaultActivityCategoryId = '';
   private defaultNodeIdSelected = '';
 
+  // icons
+  faGlobeEurope = faGlobeEurope;
+
+  inputSummaryData!: any;
   currentDate!: number;
   currentActivityCategoryId!: string;
   currentNodeIdSelected!: string;
@@ -67,6 +73,7 @@ export class ActivitiesGraphComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.inputSummaryData = this.summaryData;
     this.currentActivityCategoryId = this.defaultActivityCategoryId
     this.currentNodeIdSelected = this.defaultNodeIdSelected
     this.currentDate = this.graphInputData.end_date_graph_slider;
