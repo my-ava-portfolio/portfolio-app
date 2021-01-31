@@ -46,7 +46,7 @@ export class ResumeService {
   ): void {
 
     this.http.get<any>(
-      `${this.apiUrlGraphData}activities_graph?technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&start_date=${currentDateValue}&group_projects=${grouperProjects}&group_jobs=${grouperJobs}`
+      `${this.apiUrlGraphData}technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&start_date=${currentDateValue}&group_projects=${grouperProjects}&group_jobs=${grouperJobs}`
     ).subscribe(
       (response) => {
         this.ActivitiesChartData.next(response);

@@ -50,7 +50,7 @@ export class ActivitiesGraphComponent implements OnInit {
     this.resumeService.ActivitiesChartData.subscribe(
       (data) => {
         this.graphData = data
-        this.generateGraph('id_to_preselect')
+        this.generateGraph('')
       },
       (error) => {
         console.log('error');
@@ -59,9 +59,21 @@ export class ActivitiesGraphComponent implements OnInit {
 
    }
 
-  ngOnInit(): void {
+   ngOnInit(): void {
     this.currentDate = this.graphInputData.end_date_graph_slider;
+    this.initSvgGraph();
     this.buildActivitiesGraph();
+
+    this.buildGraphElements('');
+  }
+
+
+  initSvgGraph(): void {
+    const svgGraph = d3.select('.carrier_summary_chart')
+    .append('svg').attr('id', 'svgSkillsChart')
+    .attr('width', '100%')
+    .attr('height', this.chartHeight)
+    .append('g').lower().attr('id', 'skillsGraphElements');
   }
 
   updateDate(event: any): void {
@@ -127,7 +139,7 @@ export class ActivitiesGraphComponent implements OnInit {
         .attr('y', (d: any) => d.cy)
         .on('click', (d: any, i: any, n: any) => {
             d3.select(n[i]).classed('group_disabled', !d3.select(n[i]).classed('group_disabled'));
-            // this.buildGraphElements('');
+            this.buildGraphElements('');
         });
 
     svgContainer.selectAll()
@@ -159,6 +171,7 @@ export class ActivitiesGraphComponent implements OnInit {
         .attr('y', (d: any) => d.cy)
         .text((d: any) => d.label);
 
+    // TODO seems regenerate graph twice
     // this.buildGraphElements('');
 
   }
@@ -190,7 +203,7 @@ export class ActivitiesGraphComponent implements OnInit {
 
 
     let isTechnics: boolean | string = true;
-    const technicsNodeDisabled = d3.select('.skillsLegend .group_technics.node_disabled').classed('node_disabled');
+    const technicsNodeDisabled = d3.select('.skillsLegend .group_technics').classed('node_disabled');
     if (technicsNodeDisabled) {
       isTechnics = '';
     }
@@ -214,7 +227,7 @@ export class ActivitiesGraphComponent implements OnInit {
     }
 
     let grouperJobs: boolean | string = true;  // group jobs is disabled (display)
-    let grouperJobsDisabled = d3.select('.skillsLegend .grouper_jobs').classed('group_disabled');
+    const grouperJobsDisabled = d3.select('.skillsLegend .grouper_jobs').classed('group_disabled');
     if (grouperJobsDisabled) {
       grouperJobs = '';
     }
@@ -262,7 +275,7 @@ export class ActivitiesGraphComponent implements OnInit {
 
     // TODO improve width... (define it)
     // const chartWidth: any = d3.select('#svgSkillsChart').node().getBBox().width()
-    const chartWidth = 300;
+    const chartWidth = 560;
     const graphLayout = d3.forceSimulation(this.graphData.nodes)
       .force('charge', d3.forceManyBody().strength(-400))
       .force('x', d3.forceX(chartWidth / 2))
@@ -321,6 +334,9 @@ export class ActivitiesGraphComponent implements OnInit {
       .text( (d: any, i: number) => {
           return i % 2 === 0 ? '' : d.node.properties.name;
       })
+      .attr('id', (d: any) => {
+        return 'label-' + d.node.properties.id;
+      })
       .attr('class', (d: any) => {
           return d.node.properties.type;
       });
@@ -369,10 +385,11 @@ export class ActivitiesGraphComponent implements OnInit {
           d.y = d.node.y;
         } else {
           // TODO maybe not working
-          d3.select(d3.event.target).attr('transform', 'translate(' + d.x + ',' + d.y + ')');
+          d3.select('#label-' + d.id).attr('transform', 'translate(' + d.x + ',' + d.y + ')');
         }
       });
-      labelNode.call(updateNode);
+      // REFACTOR
+      labelNode.call(updateLabelNode);
     }
 
     function fixna(x: number): number {
@@ -385,7 +402,6 @@ export class ActivitiesGraphComponent implements OnInit {
       const elementSelected = d3.select(element)
       elementSelected.classed('unselected', !elementSelected.classed('unselected'));
       elementSelected.attr('class', 'selected');
-
 
       const nodes_displayed = focus_on_graph(element);
 
@@ -465,7 +481,7 @@ export class ActivitiesGraphComponent implements OnInit {
 
       // TODO improve width... (define it)
       // const chartWidth: any = d3.select('#svgSkillsChart').node().getBBox().width()
-      const chartWidth = 300;
+      const chartWidth = 560;
       const chartHeight = 300;
 
       node
@@ -473,6 +489,27 @@ export class ActivitiesGraphComponent implements OnInit {
           return (d.x = Math.max(radius, Math.min(chartWidth - radius, d.x)));
         })
         .attr('cy', (d: any) => {
+          return (d.y = Math.max(radius, Math.min(chartHeight - radius, d.y)));
+        });
+    }
+
+    function updateLabelNode(labelNode: any) {
+      // to not fit drag on the bound
+      // node.attr("transform", function(d) {
+      //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
+      // });
+      const radius = 10;
+
+      // TODO improve width... (define it)
+      // const chartWidth: any = d3.select('#svgSkillsChart').node().getBBox().width()
+      const chartWidth = 560;
+      const chartHeight = 300;
+
+      labelNode
+        .attr('x', (d: any) => {
+          return (d.x = Math.max(radius, Math.min(chartWidth - radius, d.x)));
+        })
+        .attr('y', (d: any) => {
           return (d.y = Math.max(radius, Math.min(chartHeight - radius, d.y)));
         });
     }
