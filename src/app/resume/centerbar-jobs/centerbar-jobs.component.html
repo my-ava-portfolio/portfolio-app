@@ -1,4 +1,4 @@
-<section class="col-lg-12 section mb-5">
+<section id="jobs" class="col-lg-12 section mb-5">
   <h5 class="font-weight-bold mb-3">
     <fa-icon class="mr-2" [icon]="faGlobeEurope"></fa-icon>
     Expériences
@@ -17,8 +17,9 @@
           <div class="col-lg-3">
             <div *ngIf="job.pictures; then jobsShorcutGallery"></div>
               <ng-template #jobsShorcutGallery>
-                <a class="btn btn-warning" href="/gallery#map_{{ job.identifier }}" target="_blank" title="Accès à la cartothèque"><span class="icon-holder map-details">Gallery</span></a>
+                <a class="btn btn-warning mr-2" [routerLink]="['/gallery']" [fragment]="job.identifier" target="_blank" title="Accès à la cartothèque"><fa-icon [icon]="faImages"></fa-icon></a>
               </ng-template>
+            <a class="btn btn-dark mr-2" [routerLink]="['/resume']" fragment="top" title="Haut de page"><fa-icon [icon]="faArrowAltCircleUp"></fa-icon></a>
           </div>
         </div>
 

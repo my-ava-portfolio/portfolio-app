@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { faGlobeEurope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faGlobeEurope, faMapMarkerAlt, faImages, faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { apiImgUrl } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
@@ -21,7 +21,9 @@ export class CenterbarJobsComponent implements OnInit {
   // icons
   faMapMarkerAlt = faMapMarkerAlt;
   faGlobeEurope = faGlobeEurope;
-
+  faImages = faImages;
+  faArrowAltCircleUp = faArrowAltCircleUp;
+  
   constructor(
     private resumeService: ResumeService
   ) {

@@ -49,7 +49,9 @@ const appRoutes: Routes = [
     AppRoutingModule,
     HttpClientModule,
     FontAwesomeModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes, {
+      anchorScrolling: 'enabled'
+    })
   ],
   providers: [
     ResumeService,

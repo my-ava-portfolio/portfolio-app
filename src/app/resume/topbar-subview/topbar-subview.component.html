@@ -7,12 +7,11 @@
   </div>
 
   <div class="col-lg-6 text-center align-self-center my-3">
-    <a class="btn btn-secondary mr-2" role="button">Navigation</a>
     <a class="btn btn-secondary mr-2" target="_blank" role="button">
       <fa-icon class="text-white" [icon]="faPrint"></fa-icon>
     </a>
-    <a class="btn btn-secondary mr-2" role="button">Expériences</a>
-    <a class="btn btn-secondary mr-2" role="button">Projets</a>
+    <a class="btn btn-secondary mr-2" role="button" [routerLink]="['/resume']" fragment="jobs">Expériences</a>
+    <a class="btn btn-secondary mr-2" role="button">Projets personnels</a>
     <a class="btn btn-secondary mr-2" role="button">Publications</a>
   </div>
 
