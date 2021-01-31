@@ -1,4 +1,4 @@
-<div id="content" class="container bg-very-dark">
+<div id="content" class="container bg-very-dark" *ngIf="isDataAvailable">
 
   <div class="row justify-content-around">
 
@@ -143,8 +143,19 @@
     </div>
 
     <div id="center-bar" class="col-lg-6 bg-light border">
-      <div>AAA</div>
+      <section id="summary" class="col-lg-12 section">
+          <h5 class="text-center font-weight-bold text-white">
+            <fa-icon class="mr-2 text-white" [icon]="faGlobeEurope"></fa-icon>
+            Navigation
+          </h5>
+      </section>
 
+      <section id="research" class="col-lg-12 section">
+          <h5 class="text-center font-weight-bold text-white">
+            <fa-icon class="mr-2 text-white" [icon]="faGlobeEurope"></fa-icon>
+            Publications
+          </h5>
+      </section>
 
     </div>
 

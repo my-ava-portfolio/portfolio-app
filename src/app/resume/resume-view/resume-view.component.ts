@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { faPrint, faUserGraduate, faMapMarkerAlt, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faPrint, faUserGraduate, faMapMarkerAlt, faLanguage, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 import { ResumeService } from '../../services/resume.service';
@@ -23,6 +23,7 @@ export class ResumeViewComponent implements OnInit {
   faUserGraduate = faUserGraduate;
   faMapMarkerAlt = faMapMarkerAlt;
   faLanguage = faLanguage;
+  faGlobeEurope = faGlobeEurope;
 
   // resume top bar
   profilData: any;
@@ -34,6 +35,10 @@ export class ResumeViewComponent implements OnInit {
   trainingsData: any;
 
   generalData: any;
+
+
+  isDataAvailable = false
+
 
   constructor(
     private resumeService: ResumeService
@@ -47,7 +52,7 @@ export class ResumeViewComponent implements OnInit {
         this.languagesData = data.languages;
         this.profilData = data.profil;
         this.trainingsData = data.trainings;
-
+        this.isDataAvailable = true
       },
       (error) => {
         console.log('error');
