@@ -1,0 +1,100 @@
+<section class="col-lg-12 section mb-5">
+  <h5 class="font-weight-bold mb-3">
+    <fa-icon class="mr-2" [icon]="faGlobeEurope"></fa-icon>
+    Expériences
+  </h5>
+
+  <div [id]="job.identifier" class="item card mb-3" *ngFor="let job of jobsData">
+    <div class="card-body">
+      <div class="col-lg-12 job-card">
+
+        <div class="row">
+
+          <div class="col-lg-9 mb-3">
+            <h5 class="font-weight-bold">{{job.title}}</h5>
+          </div>
+
+          <div class="col-lg-3">
+            <div *ngIf="job.pictures; then jobsShorcutGallery"></div>
+              <ng-template #jobsShorcutGallery>
+                <a class="btn btn-warning" href="/gallery#map_{{ job.identifier }}" target="_blank" title="Accès à la cartothèque"><span class="icon-holder map-details">Gallery</span></a>
+              </ng-template>
+          </div>
+        </div>
+
+        <div class="row mb-2">
+
+          <div class="col-lg-3 justify-content-around text-center" data-toggle="collapse" [attr.data-target]="'#collapse-' + job.identifier">
+            <img class="img-fluid rounded mx-auto d-block mb-2" [src]="apiImgUrl + job.img_company"/>
+          </div>
+
+          <div class="col-lg-9 align-self-center">
+              <h6 class="font-weight-bold">{{job.company}}</h6>
+              <div>
+                <a [id]="'location_' + job.identifier" role="button">
+                  <fa-icon class="mr-2 text-danger" [icon]="faMapMarkerAlt"></fa-icon>
+                </a>{{job.location}}
+              </div>
+              <div *ngIf="job.current; then currentJob else pastJob"></div>
+                <ng-template #pastJob>
+                  <div>{{job.contract}} - du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.duration}})</div>
+                </ng-template>
+                <ng-template #currentJob>
+                  <div>{{job.contract}} - du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.duration}})</div>
+                </ng-template>
+          </div>
+        </div>
+
+        <div class="row collapse-item collapse show" [id]="'collapse-' + job.identifier">
+
+          <div *ngIf="job.themes_keywords || job.technics_keywords ; then jobThemes"></div>
+            <ng-template #jobThemes>
+              <div class="col-lg-12 mb-3">
+                <h5>Thèmes</h5>
+                  <div *ngIf="job.technics_keywords; then jobTechnics"></div>
+                  <ng-template #jobTechnics>
+                    <span class="badge badge-primary mr-2" [style]="'background-color:' + item.value"
+                      *ngFor="let item of job.technics_keywords | keyvalue"
+                    >{{ item.key }}</span>
+                  </ng-template>
+                  <div *ngIf="job.themes_keywords; then jobThemes"></div>
+                  <ng-template #jobThemes>
+                    <span class="badge badge-primary mr-2" [style]="'background-color:' + item.value"
+                      *ngFor="let item of job.themes_keywords | keyvalue"
+                    >{{ item.key }}</span>
+                  </ng-template>
+              </div>
+            </ng-template>
+
+
+          <div class="col-lg-12 mb-2">
+            <h5>Contexte</h5>
+            <p class="text-justify">{{ job.presentation }}</p>
+          </div>
+
+          <div class="col-lg-12 mb-2">
+              <h5>Missions</h5>
+              <ul class="text-justified">
+                <li class="text-justify" *ngFor="let task of job.tasks">{{ task }}</li>
+              </ul>
+          </div>
+
+          <!--{% with feature=feature %}
+              {% include 'resume/tools_template.html' %}
+          {% endwith %}-->
+
+          <div *ngIf="job.trainings ; then jobTrainings"></div>
+            <ng-template #jobTrainings>
+              <div class="col-lg-12 mb-2">
+                <h5>Formations</h5>
+                <ul class="text-justified">
+                  <li *ngFor="let training of job.trainings"><span class="font-weight-bold">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span></li>
+                </ul>
+              </div>
+            </ng-template>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

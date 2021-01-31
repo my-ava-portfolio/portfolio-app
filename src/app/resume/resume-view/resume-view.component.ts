@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewEncapsulation  } from '@angular/core';
 
-import { faGlobeEurope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 
 import { ResumeService } from '../../services/resume.service';
-import { apiBaseUrl, apiImgUrl } from '../../core/inputs';
+import { apiImgUrl } from '../../core/inputs';
 
 
 @Component({
@@ -17,7 +17,6 @@ export class ResumeViewComponent implements OnInit {
   apiImgUrl = apiImgUrl;
 
   // icons
-  faMapMarkerAlt = faMapMarkerAlt;
   faGlobeEurope = faGlobeEurope;
 
   // resume top bar
@@ -33,8 +32,6 @@ export class ResumeViewComponent implements OnInit {
   summaryData!: any;
 
   // resume center bar
-  jobsData: any = [];
-  personalProjectsData: any = [];
   skillsData: any;
   generalData: any;
 
@@ -71,19 +68,6 @@ export class ResumeViewComponent implements OnInit {
         console.log('error');
       }
     );
-
-    this.resumeService.activitiesFilteredData.subscribe(
-      (data) => {
-        this.jobsData = data.jobs;
-        this.personalProjectsData = data.personnal_projects
-        console.log(data)
-
-      },
-      (error) => {
-        console.log('error');
-      }
-    );
-
 
    }
 

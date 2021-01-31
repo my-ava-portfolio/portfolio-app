@@ -19,6 +19,7 @@ import { Routes } from '@angular/router';
 import { CenterBarNavigationComponent } from './resume/centerbar-navigation/centerbar-navigation.component';
 import { TopbarSubviewComponent } from './resume/topbar-subview/topbar-subview.component';
 import { LeftbarSubviewComponent } from './resume/leftbar-subview/leftbar-subview.component';
+import { CenterbarJobsComponent } from './resume/centerbar-jobs/centerbar-jobs.component';
 
 
 
@@ -40,7 +41,8 @@ const appRoutes: Routes = [
     NotesViewComponent,
     CenterBarNavigationComponent,
     TopbarSubviewComponent,
-    LeftbarSubviewComponent
+    LeftbarSubviewComponent,
+    CenterbarJobsComponent
   ],
   imports: [
     BrowserModule,

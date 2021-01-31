@@ -9,6 +9,7 @@ import { apiImgUrl } from '../../core/inputs';
   styleUrls: ['./leftbar-subview.component.css']
 })
 export class LeftbarSubviewComponent implements OnInit {
+  
   @Input() degreesData: any;
   @Input() languagesData: any;
   @Input() trainingsData: any;
