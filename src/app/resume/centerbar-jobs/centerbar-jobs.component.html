@@ -6,7 +6,7 @@
 
   <div [id]="job.identifier" class="item card mb-3" *ngFor="let job of jobsData">
     <div class="card-body">
-      <div class="col-lg-12 job-card">
+      <div class="col-lg-12">
 
         <div class="row">
 
@@ -15,11 +15,11 @@
           </div>
 
           <div class="col-lg-3">
+            <a class="btn btn-dark mr-2 float-right" [routerLink]="['/resume']" fragment="top" title="Haut de page"><fa-icon [icon]="faArrowAltCircleUp"></fa-icon></a>
             <div *ngIf="job.pictures; then jobsShorcutGallery"></div>
               <ng-template #jobsShorcutGallery>
-                <a class="btn btn-warning mr-2" [routerLink]="['/gallery']" [fragment]="job.identifier" target="_blank" title="Accès à la cartothèque"><fa-icon [icon]="faImages"></fa-icon></a>
+                <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="job.identifier" target="_blank" title="Accès à la galerie"><fa-icon [icon]="faImages"></fa-icon></a>
               </ng-template>
-            <a class="btn btn-dark mr-2" [routerLink]="['/resume']" fragment="top" title="Haut de page"><fa-icon [icon]="faArrowAltCircleUp"></fa-icon></a>
           </div>
         </div>
 
@@ -52,6 +52,7 @@
             <ng-template #jobThemes>
               <div class="col-lg-12 mb-3">
                 <h5>Thèmes</h5>
+                <div class="col-lg-12 pl-3">
                   <div *ngIf="job.technics_keywords; then jobTechnics"></div>
                   <ng-template #jobTechnics>
                     <span class="badge badge-primary mr-2" [style]="'background-color:' + item.value"
@@ -64,33 +65,54 @@
                       *ngFor="let item of job.themes_keywords | keyvalue"
                     >{{ item.key }}</span>
                   </ng-template>
+                </div>
               </div>
             </ng-template>
 
 
           <div class="col-lg-12 mb-2">
             <h5>Contexte</h5>
-            <p class="text-justify">{{ job.presentation }}</p>
+            <div class="col-lg-12 pl-3">
+              <p class="text-justify">{{ job.presentation }}</p>
+            </div>
           </div>
 
           <div class="col-lg-12 mb-2">
               <h5>Missions</h5>
-              <ul class="text-justified">
-                <li class="text-justify" *ngFor="let task of job.tasks">{{ task }}</li>
-              </ul>
+              <div class="col-lg-12 pl-3">
+                <ul>
+                  <li class="text-justify" *ngFor="let task of job.tasks">{{ task }}</li>
+                </ul>
+              </div>
           </div>
 
-          <!--{% with feature=feature %}
-              {% include 'resume/tools_template.html' %}
-          {% endwith %}-->
+          <div class="col-sm-12">
+            <h5>Environnement</h5>
+            <div class="col-lg-12 pl-3">
+              <ul class="row">
+                  <li class="col-sm-4" *ngFor="let tool of job.tools | keyvalue">{{ tool.key }}</li>
+              </ul>
+            </div>
+            <div *ngIf="job.subelements_tools; then jobSubTools"></div>
+            <ng-template #jobSubTools>
+              <div class="col-lg-12 pl-3">
+                  <span class="u">Détails</span>
+                  <ul class="">
+                    <li *ngFor="let feat of job.subelements_tools">{{ feat.name }}: <em>{{ feat.details }}</em></li>
+                  </ul>
+              </div>
+            </ng-template>
+          </div>
 
           <div *ngIf="job.trainings ; then jobTrainings"></div>
             <ng-template #jobTrainings>
               <div class="col-lg-12 mb-2">
                 <h5>Formations</h5>
-                <ul class="text-justified">
-                  <li *ngFor="let training of job.trainings"><span class="font-weight-bold">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span></li>
-                </ul>
+                <div class="col-lg-12 pl-3">
+                  <ul class="text-justified">
+                    <li *ngFor="let training of job.trainings"><span class="font-weight-bold">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span></li>
+                  </ul>
+                </div>
               </div>
             </ng-template>
         </div>

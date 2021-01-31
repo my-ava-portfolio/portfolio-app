@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { faGlobeEurope, faMapMarkerAlt, faImages, faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { apiImgUrl } from '../../core/inputs';
@@ -16,14 +16,12 @@ export class CenterbarJobsComponent implements OnInit {
 
   apiImgUrl = apiImgUrl;
 
-  inputJobsData!: any;
-
   // icons
   faMapMarkerAlt = faMapMarkerAlt;
   faGlobeEurope = faGlobeEurope;
   faImages = faImages;
   faArrowAltCircleUp = faArrowAltCircleUp;
-  
+
   constructor(
     private resumeService: ResumeService
   ) {
@@ -32,7 +30,7 @@ export class CenterbarJobsComponent implements OnInit {
       (data) => {
         this.jobsData = data.jobs;
         // this.personalProjectsData = data.personnal_projects
-        console.log(data)
+        console.log(this.jobsData)
 
       },
       (error) => {
@@ -43,7 +41,6 @@ export class CenterbarJobsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.inputJobsData = this.jobsData;
   }
 
 }
