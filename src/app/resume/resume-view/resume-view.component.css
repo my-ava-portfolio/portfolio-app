@@ -9,3 +9,7 @@
 .bg-less-dark {
   background-color: #495057;
 }
+
+#center-bar {
+  border-radius: 25px
+}
