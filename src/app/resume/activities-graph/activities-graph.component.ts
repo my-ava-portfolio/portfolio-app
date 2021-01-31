@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -8,7 +8,8 @@ import { ResumeService } from '../../services/resume.service';
 @Component({
   selector: 'app-activities-graph',
   templateUrl: './activities-graph.component.html',
-  styleUrls: ['./activities-graph.component.css']
+  styleUrls: ['./activities-graph.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ActivitiesGraphComponent implements OnInit {
   @Input() graphInputData!: any;
