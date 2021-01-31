@@ -14,7 +14,13 @@ import { ResumeService } from '../../services/resume.service';
 export class ActivitiesGraphComponent implements OnInit {
   @Input() graphInputData!: any;
 
+  private defaultActivityCategoryId = '';
+  private defaultNodeIdSelected = '';
+
   currentDate!: number;
+  currentActivityCategoryId!: string;
+  currentNodeIdSelected!: string;
+
   graphData!: any;
 
   chartHeight = 300;
@@ -39,8 +45,8 @@ export class ActivitiesGraphComponent implements OnInit {
   ];
 
   legend_group_input = [
-    { id: 'grouper_jobs group_disabled', label: 'grouper jobs', cy: 32, text_cx: 35 },  // jobs grouped is disabled (style)
-    { id: 'grouper_projects', label: 'grouper projets', cy: 57, text_cx: 35 }
+    { id: 'grouper_jobs group_disabled', label: 'grouper jobs', cy: 28, cx: 35, text: '❉' },  // jobs grouped is disabled (style)
+    { id: 'grouper_projects', label: 'grouper projets', cy: 54, cx: 35, text: '❉' }
   ];
 
   constructor(
@@ -49,8 +55,9 @@ export class ActivitiesGraphComponent implements OnInit {
 
     this.resumeService.ActivitiesChartData.subscribe(
       (data) => {
+        console.log(this.currentActivityCategoryId, this.currentNodeIdSelected, this.currentDate)
         this.graphData = data
-        this.generateGraph('')
+        this.generateGraph(this.currentNodeIdSelected)
       },
       (error) => {
         console.log('error');
@@ -59,14 +66,19 @@ export class ActivitiesGraphComponent implements OnInit {
 
    }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
+    this.currentActivityCategoryId = this.defaultActivityCategoryId
+    this.currentNodeIdSelected = this.defaultNodeIdSelected
     this.currentDate = this.graphInputData.end_date_graph_slider;
     this.initSvgGraph();
     this.buildActivitiesGraph();
-
-    this.buildGraphElements('');
+    this.buildGraphElements(this.currentActivityCategoryId);
   }
 
+  updateDate(event: any): void {
+    this.currentDate = event.target.value;
+    this.buildGraphElements(this.currentActivityCategoryId)
+  }
 
   initSvgGraph(): void {
     const svgGraph = d3.select('.carrier_summary_chart')
@@ -76,9 +88,7 @@ export class ActivitiesGraphComponent implements OnInit {
     .append('g').lower().attr('id', 'skillsGraphElements');
   }
 
-  updateDate(event: any): void {
-    this.currentDate = event.target.value;
-  }
+
 
   buildActivitiesGraph(): void {
 
@@ -105,7 +115,7 @@ export class ActivitiesGraphComponent implements OnInit {
         if (nodeSelectedOnGraph.size() === 0) {
           // if none node is selected
           console.log('a');
-          this.buildGraphElements('');
+          this.buildGraphElements(this.currentActivityCategoryId);
 
         } else if (nodeSelectedOnGraph.size() === 1) {
           // if a node is selected
@@ -118,11 +128,13 @@ export class ActivitiesGraphComponent implements OnInit {
           ) {
               // it's a skill node
               // unselect (so it's like a reset but on the current date)
-              this.buildGraphElements('');
+              this.currentActivityCategoryId = this.defaultActivityCategoryId
+              this.buildGraphElements(this.currentActivityCategoryId);
           } else {
               // it's a job/project node
               // click on the expected node
-              this.buildGraphElements(nodeSelectedOnGraph.attr('id'));
+              this.currentActivityCategoryId = nodeSelectedOnGraph.attr('id')
+              this.buildGraphElements(this.currentActivityCategoryId);
           }
         }
       });
@@ -130,17 +142,18 @@ export class ActivitiesGraphComponent implements OnInit {
     svgContainer.selectAll()
       .data(this.legend_group_input)
       .enter()
-        .append('svg:foreignObject')
-        .attr('width', 18)
-        .attr('height', 18)
-        .attr('class', (d: any) => d.id)
-        .html('<i class="fas fa-object-group"></i>')
-        .attr('x', (d: any) => d.text_cx)
-        .attr('y', (d: any) => d.cy)
-        .on('click', (d: any, i: any, n: any) => {
-            d3.select(n[i]).classed('group_disabled', !d3.select(n[i]).classed('group_disabled'));
-            this.buildGraphElements('');
-        });
+      .append('svg:foreignObject')
+      .attr('width', 18)
+      .attr('height', 18)
+      .attr('class', (d: any) => d.id + ' font-weight-bold')
+      .text(function (d: any) { return d.text })
+      .attr('x', (d: any) => d.cx)
+      .attr('y', (d: any) => d.cy)
+      .on('click', (d: any, i: any, n: any) => {
+        d3.select(n[i]).classed('group_disabled', !d3.select(n[i]).classed('group_disabled'));
+        this.currentActivityCategoryId = ''
+        this.buildGraphElements('');
+      });
 
     svgContainer.selectAll()
       .data(this.legend_input_titles)
@@ -177,7 +190,7 @@ export class ActivitiesGraphComponent implements OnInit {
   }
 
 
-  buildGraphElements(activityCategoryId = 'null'): void {
+  buildGraphElements(activityCategoryId: string): void {
     // $("#svgSkillsChart").remove()
 
     const currentDateValue = this.currentDate;
@@ -242,7 +255,7 @@ export class ActivitiesGraphComponent implements OnInit {
     )
   }
 
-  generateGraph(idToPreselect: string): void {
+  generateGraph(nodeIdToSelect: string): void {
 
     const nodes: any[] = [];
     const links: any[] = [];
@@ -344,13 +357,18 @@ export class ActivitiesGraphComponent implements OnInit {
     node.on('click', (d: any, i: any, n: any) => {
       const nodeIsPreselected = d3.select('#skillsGraphElements .nodes .selected');
 
-      if ( nodeIsPreselected.size() === 0 ) {
-          // nothing is selected, so we want to select the new selected node
-          SelectedDisplaying(this.currentDate, n[i]);
+      if (nodeIsPreselected.size() === 0) {
+        // click nothing is selected, so we want to select the new selected node
+        this.currentNodeIdSelected = d3.select(n[i]).attr("id");
+        console.log(this.currentNodeIdSelected)
+        SelectedDisplaying(this.currentDate, n[i]);
 
-      } else if ( nodeIsPreselected.size() === 1 && d3.select(n[i]).classed('selected') ) {
-          // we want to unselect the node, only on the original node !
-          defaultDisplayingByDate(this.currentDate);
+      } else if (nodeIsPreselected.size() === 1) {
+        // unclick we want to unselect the node, only on the original node !
+        this.currentNodeIdSelected = this.defaultNodeIdSelected
+
+        defaultDisplayingByDate(this.currentDate);
+
       } else {
           // nothing here : to avoid unfocused action on an other node than the origin node, else it will disable the graph interactivity
       }
@@ -364,8 +382,8 @@ export class ActivitiesGraphComponent implements OnInit {
     );
 
     // to preselect a node
-    if ( idToPreselect.length > 0 ) {
-        SelectedDisplaying(this.currentDate, '#skillsGraphElements #' + idToPreselect);
+    if ( nodeIdToSelect.length > 0 ) {
+      SelectedDisplaying(this.currentDate, '#skillsGraphElements #' + nodeIdToSelect);
     } else {
       defaultDisplayingByDate(this.currentDate);
     }
@@ -401,7 +419,7 @@ export class ActivitiesGraphComponent implements OnInit {
 
       const elementSelected = d3.select(element)
       elementSelected.classed('unselected', !elementSelected.classed('unselected'));
-      elementSelected.attr('class', 'selected');
+      elementSelected.attr('class', elementSelected.attr('class') + ' selected');
 
       const nodes_displayed = focus_on_graph(element);
 
@@ -415,9 +433,11 @@ export class ActivitiesGraphComponent implements OnInit {
     function defaultDisplayingByDate(currentDate: number) {
 
         const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
-        if ( elementSelected.size() === 1 ) {
+      if (elementSelected.size() === 1) {
+        console.log(elementSelected.attr('class'))
+
           elementSelected.classed('selected', !elementSelected.classed('selected'));
-          elementSelected.attr('class', 'unselected');
+          elementSelected.attr('class',  elementSelected.attr('class') + ' unselected');
           unfocus_on_graph();
         }
         // callApiProfil(currentDate, null);

@@ -44,7 +44,6 @@ export class ResumeService {
     grouperProjects: boolean | string,
     grouperJobs: boolean | string
   ): void {
-
     this.http.get<any>(
       `${this.apiUrlGraphData}technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&start_date=${currentDateValue}&group_projects=${grouperProjects}&group_jobs=${grouperJobs}`
     ).subscribe(
