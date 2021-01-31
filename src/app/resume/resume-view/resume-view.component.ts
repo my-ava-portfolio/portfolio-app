@@ -52,7 +52,7 @@ export class ResumeViewComponent implements OnInit {
         this.languagesData = data.languages;
         this.profilData = data.profil;
         this.trainingsData = data.trainings;
-        this.isDataAvailable = true
+        this.isDataAvailable = true;
       },
       (error) => {
         console.log('error');
