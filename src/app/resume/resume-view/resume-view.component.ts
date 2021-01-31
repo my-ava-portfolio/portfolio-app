@@ -34,8 +34,11 @@ export class ResumeViewComponent implements OnInit {
   languagesData: any;
   trainingsData: any;
 
-  generalData: any;
+  // resume center bar
+  summaryData: any;
 
+
+  generalData: any;
 
   isDataAvailable = false
 
@@ -52,6 +55,8 @@ export class ResumeViewComponent implements OnInit {
         this.languagesData = data.languages;
         this.profilData = data.profil;
         this.trainingsData = data.trainings;
+        this.summaryData = data.carrier_summary;
+
         this.isDataAvailable = true;
       },
       (error) => {

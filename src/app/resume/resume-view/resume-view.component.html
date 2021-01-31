@@ -143,16 +143,51 @@
     </div>
 
     <div id="center-bar" class="col-lg-6 bg-light border">
-      <section id="summary" class="col-lg-12 section">
-          <h5 class="text-center font-weight-bold text-white">
-            <fa-icon class="mr-2 text-white" [icon]="faGlobeEurope"></fa-icon>
-            Navigation
-          </h5>
+      <section id="summary" class="col-lg-12 section mt-3 mb-3">
+        <h5 class="font-weight-bold">
+          <fa-icon class="mr-2" [icon]="faGlobeEurope"></fa-icon>
+          Navigation
+        </h5>
+        <div class="item card">
+          <div class="card-body">
+
+            <div class="col-lg-12 carrier_summary">
+                <p class="text-justify">{{ summaryData }}</p>
+            </div>
+
+            <div class="col-lg-12 carrier_summary_chart">
+            </div>
+
+            <div id="graph_legend" class="col-lg-12">
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="carrier_summary_legend"></div>
+                </div>
+              </div>
+
+              <div class="row carrier_summary_slider">
+                <div class="col-lg-12 justify-content-around text-center">
+
+                  <span class="legend_graph_title">Barre temporelle</span>
+                    <form class="graph-slider-date range-field">
+                      <input class="border-0" type="range" steps="1" min="{{ generalData.start_date_graph_slider }}" max="{{ generalData.end_date_graph_slider }}" value="{{ generalData.end_date_graph_slider }}" />
+                    </form>
+                  <span id="reset-graph" class="btn btn-primary"><span class="reset-graph-icon icon-holder"></span>Reset</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+      </div>
+
+
+
       </section>
 
-      <section id="research" class="col-lg-12 section">
-          <h5 class="text-center font-weight-bold text-white">
-            <fa-icon class="mr-2 text-white" [icon]="faGlobeEurope"></fa-icon>
+      <section id="research" class="col-lg-12 section mb-5">
+          <h5 class="font-weight-bold">
+            <fa-icon class="mr-2" [icon]="faGlobeEurope"></fa-icon>
             Publications
           </h5>
       </section>
