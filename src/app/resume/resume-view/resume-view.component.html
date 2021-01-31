@@ -3,40 +3,12 @@
   <div class="row justify-content-around">
 
     <div id="topbar_bar" class="topbar col-lg-12 bg-dark">
-        <div class="row">
 
-          <div class="name-container col-lg-3 text-center my-3 text-white">
-              <h2 class="font-weight-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h2>
-              <h5 class="font-weight-light">{{ profilData.job }}</h5>
-              <h5 class="font-weight-light">{{ profilData.experience_duration }}</h5>
-          </div>
+      <app-topbar-subview
+        [profilData]="profilData"
+        [contactData]="contactData"
+      ></app-topbar-subview>
 
-          <div class="col-lg-6 text-center align-self-center my-3">
-            <a class="btn btn-secondary mr-2" role="button">Navigation</a>
-            <a class="btn btn-secondary mr-2" target="_blank" role="button">
-              <fa-icon class="text-white" [icon]="faPrint"></fa-icon>
-            </a>
-            <a class="btn btn-secondary mr-2" role="button">Expériences</a>
-            <a class="btn btn-secondary mr-2" role="button">Projets</a>
-            <a class="btn btn-secondary mr-2" role="button">Publications</a>
-          </div>
-
-          <div id="general_contact" class="contact-container col-lg-3 align-self-center">
-            <div class="shortcut col-lg-12">
-                <ul class="list-unstyled">
-                  <li class="contact-linkedin">
-                    <fa-icon class="mr-2 text-white" [icon]="faLinkedinIn"></fa-icon>
-                    <a class="text-white" href="{{ contactData.linkedin }}" target="_blank">LinkedIn</a>
-                  </li>
-                  <li class="contact-github">
-                    <fa-icon class="mr-2 text-white" [icon]="faGithub"></fa-icon>
-                    <a class="text-white" href="{{ contactData.github }}" target="_blank">Github</a>
-                  </li>
-                </ul>
-            </div>
-          </div>
-
-        </div>
     </div>
 
     <div id="left-bar" class="col-lg-3">

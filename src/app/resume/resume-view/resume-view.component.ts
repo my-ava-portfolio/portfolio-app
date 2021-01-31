@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { faPrint, faUserGraduate, faMapMarkerAlt, faLanguage, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
-import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { faUserGraduate, faMapMarkerAlt, faLanguage, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 
 import { ResumeService } from '../../services/resume.service';
 import { apiBaseUrl } from '../../core/inputs';
@@ -17,9 +16,6 @@ export class ResumeViewComponent implements OnInit {
   apiImgUrl = `${apiBaseUrl}/images/logo/`;
 
   // icons
-  faPrint = faPrint;
-  faGithub = faGithub;
-  faLinkedinIn = faLinkedinIn;
   faUserGraduate = faUserGraduate;
   faMapMarkerAlt = faMapMarkerAlt;
   faLanguage = faLanguage;

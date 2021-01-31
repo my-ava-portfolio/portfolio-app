@@ -17,6 +17,7 @@ import { ResumeService } from './services/resume.service';
 
 import { Routes } from '@angular/router';
 import { ActivitiesGraphComponent } from './resume/activities-graph/activities-graph.component';
+import { TopbarSubviewComponent } from './resume/topbar-subview/topbar-subview.component';
 
 
 
@@ -36,7 +37,8 @@ const appRoutes: Routes = [
     ResumeViewComponent,
     GalleryViewComponent,
     NotesViewComponent,
-    ActivitiesGraphComponent
+    ActivitiesGraphComponent,
+    TopbarSubviewComponent
   ],
   imports: [
     BrowserModule,
