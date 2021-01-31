@@ -151,8 +151,8 @@ export class ActivitiesGraphComponent implements OnInit {
       .attr('y', (d: any) => d.cy)
       .on('click', (d: any, i: any, n: any) => {
         d3.select(n[i]).classed('group_disabled', !d3.select(n[i]).classed('group_disabled'));
-        this.currentActivityCategoryId = ''
-        this.buildGraphElements('');
+        this.currentActivityCategoryId = this.defaultActivityCategoryId
+        this.buildGraphElements(this.currentActivityCategoryId);
       });
 
     svgContainer.selectAll()
@@ -361,13 +361,13 @@ export class ActivitiesGraphComponent implements OnInit {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(n[i]).attr("id");
         console.log(this.currentNodeIdSelected)
-        SelectedDisplaying(this.currentDate, n[i]);
+        SelectedDisplaying(this, n[i]);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
         this.currentNodeIdSelected = this.defaultNodeIdSelected
 
-        defaultDisplayingByDate(this.currentDate);
+        defaultDisplayingByDate(this);
 
       } else {
           // nothing here : to avoid unfocused action on an other node than the origin node, else it will disable the graph interactivity
@@ -383,9 +383,9 @@ export class ActivitiesGraphComponent implements OnInit {
 
     // to preselect a node
     if ( nodeIdToSelect.length > 0 ) {
-      SelectedDisplaying(this.currentDate, '#skillsGraphElements #' + nodeIdToSelect);
+      SelectedDisplaying(this, '#skillsGraphElements #' + nodeIdToSelect);
     } else {
-      defaultDisplayingByDate(this.currentDate);
+      defaultDisplayingByDate(this);
     }
     // TODO place div on the right place
     // $('#technis').prependTo('.skills_bar');
@@ -415,7 +415,7 @@ export class ActivitiesGraphComponent implements OnInit {
         return 0;
     }
 
-    function SelectedDisplaying(currentDate: number, element: string): void {
+    function SelectedDisplaying(self: any, element: string): void {
 
       const elementSelected = d3.select(element)
       elementSelected.classed('unselected', !elementSelected.classed('unselected'));
@@ -423,16 +423,19 @@ export class ActivitiesGraphComponent implements OnInit {
 
       const nodes_displayed = focus_on_graph(element);
 
-      const element_data = d3.select(element).data()[0];
+      const element_data: any = d3.select(element).data()[0];
       // check origin node type
 
       // callApiProfil(currentDate, element_data.properties.id);
+      self.resumeService.pullSkillsResumeFromGraph(self.currentDate, element_data.properties.id);
+      self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, element_data.properties.id);
+
 
     }
 
-    function defaultDisplayingByDate(currentDate: number) {
+    function defaultDisplayingByDate(self: any) {
 
-        const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
+      const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
       if (elementSelected.size() === 1) {
         console.log(elementSelected.attr('class'))
 
@@ -440,7 +443,8 @@ export class ActivitiesGraphComponent implements OnInit {
           elementSelected.attr('class',  elementSelected.attr('class') + ' unselected');
           unfocus_on_graph();
         }
-        // callApiProfil(currentDate, null);
+      self.resumeService.pullSkillsResumeFromGraph(self.currentDate, null);
+      self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, null);
     }
 
     function focus_on_graph(element: any): void {

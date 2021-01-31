@@ -19,6 +19,14 @@ export class ResumeService {
   ActivitiesChartData: Subject<any> = new Subject<any>();
 
 
+  private apiUrlSkillsFilteredData = apiBaseUrl + 'skills_filtered?';
+  errorUrlSkillsFilteredApiFound: Subject<string> = new Subject<string>();
+  skillsFilteredData: Subject<any> = new Subject<any>();
+
+  private apiUrlActivitiesFilteredData = apiBaseUrl + 'activities_filtered?';
+  errorUrlActivitiesFilteredApiFound: Subject<string> = new Subject<string>();
+  activitiesFilteredData: Subject<any> = new Subject<any>();
+  
   constructor(
       private http: HttpClient
   ) {}
@@ -53,6 +61,40 @@ export class ResumeService {
       (response) => {
         // TODO improve error message, but API need improvments
         this.errorActivitiesChartApiFound.next(response.error.message);
+      }
+    );
+  }
+
+  pullSkillsResumeFromGraph(
+    currentDate: number,
+    fromSkill: string | null,
+  ): void {
+    this.http.get<any>(
+      `${this.apiUrlSkillsFilteredData}start_date=${currentDate}&from_feature=${fromSkill}`
+    ).subscribe(
+      (response) => {
+        this.skillsFilteredData.next(response);
+      },
+      (response) => {
+        // TODO improve error message, but API need improvments
+        this.errorUrlSkillsFilteredApiFound.next(response.error.message);
+      }
+    );
+  }
+
+  pullActivitiesResumeFromGraph(
+    currentDate: number,
+    fromSkill: string | null,
+  ): void {
+    this.http.get<any>(
+      `${this.apiUrlActivitiesFilteredData}start_date=${currentDate}&from_feature=${fromSkill}`
+    ).subscribe(
+      (response) => {
+        this.activitiesFilteredData.next(response);
+      },
+      (response) => {
+        // TODO improve error message, but API need improvments
+        this.errorUrlActivitiesFilteredApiFound.next(response.error.message);
       }
     );
   }

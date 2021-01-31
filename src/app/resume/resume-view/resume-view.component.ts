@@ -37,7 +37,9 @@ export class ResumeViewComponent implements OnInit {
   // resume center bar
   summaryData: any;
 
-
+  // resume center bar
+  activitiesData: any;
+  skillsData: any;
   generalData: any;
 
   isDataAvailable = false
@@ -63,6 +65,28 @@ export class ResumeViewComponent implements OnInit {
         console.log('error');
       }
     );
+
+    this.resumeService.skillsFilteredData.subscribe(
+      (data) => {
+        this.skillsData = data;
+        console.log(this.skillsData)
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
+    this.resumeService.activitiesFilteredData.subscribe(
+      (data) => {
+        this.activitiesData = data;
+        console.log(this.activitiesData)
+
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
 
    }
 
