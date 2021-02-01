@@ -13,3 +13,7 @@
 #center-bar {
   border-radius: 25px
 }
+
+.thumbnail-width {
+  width: 30vw;
+}

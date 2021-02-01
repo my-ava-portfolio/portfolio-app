@@ -131,7 +131,7 @@
   fill: #000000;
   opacity: 0.2;
   -webkit-user-select: none;
- -moz-user-select: none;
+  -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }

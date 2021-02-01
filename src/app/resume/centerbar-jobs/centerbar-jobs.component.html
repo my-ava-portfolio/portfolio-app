@@ -1,4 +1,4 @@
-<section id="jobs" class="col-lg-12 section mb-5">
+<section id="jobs" class="col-lg-12 section mt-4">
   <h5 class="font-weight-bold mb-3">
     <fa-icon class="mr-2" [icon]="faGlobeEurope"></fa-icon>
     Expériences
@@ -23,13 +23,13 @@
           </div>
         </div>
 
-        <div class="row mb-2">
+        <div class="row mb-3 justify-content-around">
 
           <div class="col-lg-3 justify-content-around text-center" data-toggle="collapse" [attr.data-target]="'#collapse-' + job.identifier">
-            <img class="img-fluid rounded mx-auto d-block mb-2 shadow" [src]="apiImgUrl + job.img_company"/>
+            <img class="img-fluid rounded mx-auto d-block shadow thumbnail-width" [src]="apiImgUrl + job.img_company"/>
           </div>
 
-          <div class="col-lg-9 align-self-center">
+          <div class="col-lg-7 align-self-center">
               <h6 class="font-weight-bold">{{job.company}}</h6>
               <div>
                 <a [id]="'location_' + job.identifier" role="button">
@@ -48,23 +48,14 @@
 
         <div class="row collapse-item collapse show" [id]="'collapse-' + job.identifier">
 
-          <div *ngIf="job.themes_keywords || job.technics_keywords ; then jobThemes"></div>
+          <div *ngIf="job.keywords; then jobThemes"></div>
             <ng-template #jobThemes>
               <div class="col-lg-12 mb-3">
                 <h5>Thèmes</h5>
                 <div class="col-lg-12 pl-3">
-                  <div *ngIf="job.technics_keywords; then jobTechnics"></div>
-                  <ng-template #jobTechnics>
-                    <span class="badge badge-primary mr-2" [style]="'background-color:' + item.value"
-                      *ngFor="let item of job.technics_keywords | keyvalue"
-                    >{{ item.key }}</span>
-                  </ng-template>
-                  <div *ngIf="job.themes_keywords; then jobThemes"></div>
-                  <ng-template #jobThemes>
-                    <span class="badge badge-primary mr-2" [style]="'background-color:' + item.value"
-                      *ngFor="let item of job.themes_keywords | keyvalue"
-                    >{{ item.key }}</span>
-                  </ng-template>
+                  <span class="badge badge-primary mr-2" [style]="'background-color:' + item.value"
+                    *ngFor="let item of job.keywords | keyvalue"
+                  >{{ item.key }}</span>
                 </div>
               </div>
             </ng-template>
@@ -96,7 +87,7 @@
             <div *ngIf="job.subelements_tools; then jobSubTools"></div>
             <ng-template #jobSubTools>
               <div class="col-lg-12 pl-3">
-                  <span class="u">Détails</span>
+                  <span><u>Détails</u></span>
                   <ul class="">
                     <li *ngFor="let feat of job.subelements_tools">{{ feat.name }}: <em>{{ feat.details }}</em></li>
                   </ul>

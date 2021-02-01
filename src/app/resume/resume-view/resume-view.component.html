@@ -32,25 +32,18 @@
 
       <app-centerbar-projects></app-centerbar-projects>
 
+      <app-centerbar-publications
+        [publicationsData]="publicationsData"
+      ></app-centerbar-publications>
 
 
-
-      <section class="col-lg-12 mb-5">
-          <h5 class="mb-3">
-            <fa-icon class="mr-2" [icon]="faGlobeEurope"></fa-icon>
-            Publications
-          </h5>
-      </section>
 
     </div>
 
-    <div id="right-bar" class="col-lg-3 mb-5">
+    <div id="right-bar" class="col-lg-3">
 
-      <div class="row bg-very-dark">
-          <div class="col-lg-12 align-self-center my-4">
-              <h4 class="text-center font-weight-bold text-white">Compétence</h4>
-          </div>
-      </div>
+      <app-rightbar-skills></app-rightbar-skills>
+
 
     </div>
 

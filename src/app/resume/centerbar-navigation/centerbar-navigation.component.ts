@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Input, ViewEncapsulation, ElementRef, ViewChild } from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -12,9 +12,12 @@ import { faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./centerbar-navigation.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class CenterBarNavigationComponent implements OnInit {
+export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
   @Input() graphInputData!: any;
   @Input() summaryData!: any;
+
+  @ViewChild('svgGraphChart')
+  svgGraphChart!: ElementRef;
 
   private defaultActivityCategoryId = '';
   private defaultNodeIdSelected = '';
@@ -30,6 +33,7 @@ export class CenterBarNavigationComponent implements OnInit {
   graphData!: any;
 
   chartHeight = 300;
+  chartWidth!: number;
 
   themes_title = '1themes';
   technis_title = '2technics';
@@ -74,12 +78,14 @@ export class CenterBarNavigationComponent implements OnInit {
 
   ngOnInit(): void {
     this.inputSummaryData = this.summaryData;
-    this.currentActivityCategoryId = this.defaultActivityCategoryId
-    this.currentNodeIdSelected = this.defaultNodeIdSelected
-    this.currentDate = this.graphInputData.end_date_graph_slider;
     this.initSvgGraph();
-    this.buildActivitiesGraph();
-    this.buildGraphElements(this.currentActivityCategoryId);
+    this.buildLegendGraphActivities();
+    this.resetChart()
+  }
+
+  ngAfterViewInit() {
+    this.chartWidth = this.svgGraphChart.nativeElement.offsetWidth;
+
   }
 
   updateDate(event: any): void {
@@ -95,10 +101,15 @@ export class CenterBarNavigationComponent implements OnInit {
     .append('g').lower().attr('id', 'skillsGraphElements');
   }
 
+  // TODO add reset method (and use it on refresh)
+  resetChart(): void {
+    this.currentActivityCategoryId = this.defaultActivityCategoryId
+    this.currentNodeIdSelected = this.defaultNodeIdSelected
+    this.currentDate = this.graphInputData.end_date_graph_slider;
+    this.buildGraphElements(this.currentActivityCategoryId);
+  }
 
-
-  buildActivitiesGraph(): void {
-
+  buildLegendGraphActivities(): void {
     const svg = d3.select('.carrier_summary_legend')
       .append('svg').attr('id', 'svgSkillsLegend')
       .attr('width', 270)
@@ -158,7 +169,7 @@ export class CenterBarNavigationComponent implements OnInit {
       .attr('y', (d: any) => d.cy)
       .on('click', (d: any, i: any, n: any) => {
         d3.select(n[i]).classed('group_disabled', !d3.select(n[i]).classed('group_disabled'));
-        this.currentActivityCategoryId = this.defaultActivityCategoryId
+        this.currentActivityCategoryId = this.defaultActivityCategoryId;
         this.buildGraphElements(this.currentActivityCategoryId);
       });
 
@@ -198,7 +209,6 @@ export class CenterBarNavigationComponent implements OnInit {
 
 
   buildGraphElements(activityCategoryId: string): void {
-    // $("#svgSkillsChart").remove()
 
     const currentDateValue = this.currentDate;
 
@@ -293,14 +303,14 @@ export class CenterBarNavigationComponent implements OnInit {
       .force('charge', d3.forceManyBody().strength(-50))
       .force('link', d3.forceLink(label.links).distance(0).strength(2));
 
-    // TODO improve width... (define it)
-    // const chartWidth: any = d3.select('#svgSkillsChart').node().getBBox().width()
-    const chartWidth = 560;
+    const chartWidth: number = this.chartWidth;
+    const chartHeight = this.chartHeight;
+
     const graphLayout = d3.forceSimulation(this.graphData.nodes)
       .force('charge', d3.forceManyBody().strength(-400))
       .force('x', d3.forceX(chartWidth / 2))
-      .force('y', d3.forceY(this.chartHeight / 2))
-      .force('center', d3.forceCenter(chartWidth / 2, this.chartHeight / 2))
+      .force('y', d3.forceY(chartHeight / 2))
+      .force('center', d3.forceCenter(chartWidth / 2, chartHeight / 2))
       .force('link', d3.forceLink(this.graphData.links).id( (d: any) => {
           return d.properties.name;
       }).distance(60).strength(1))
@@ -366,13 +376,13 @@ export class CenterBarNavigationComponent implements OnInit {
 
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
-        this.currentNodeIdSelected = d3.select(n[i]).attr("id");
-        console.log(this.currentNodeIdSelected)
+        this.currentNodeIdSelected = d3.select(n[i]).attr('id');
+        console.log(this.currentNodeIdSelected);
         SelectedDisplaying(this, n[i]);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
-        this.currentNodeIdSelected = this.defaultNodeIdSelected
+        this.currentNodeIdSelected = this.defaultNodeIdSelected;
 
         defaultDisplayingByDate(this);
 
@@ -425,18 +435,20 @@ export class CenterBarNavigationComponent implements OnInit {
     function SelectedDisplaying(self: any, element: string): void {
 
       const elementSelected = d3.select(element)
-      elementSelected.classed('unselected', !elementSelected.classed('unselected'));
-      elementSelected.attr('class', elementSelected.attr('class') + ' selected');
+      if (elementSelected.size() > 0) {
+        elementSelected.classed('unselected', !elementSelected.classed('unselected'));
+        elementSelected.attr('class', elementSelected.attr('class') + ' selected');
 
-      const nodes_displayed = focus_on_graph(element);
+        focus_on_graph(element);
 
-      const element_data: any = d3.select(element).data()[0];
-      // check origin node type
+        const element_data: any = d3.select(element).data()[0];
+        // check origin node type
+        self.resumeService.pullSkillsResumeFromGraph(self.currentDate, element_data.properties.id);
+        self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, element_data.properties.id);
+      }
 
-      // callApiProfil(currentDate, element_data.properties.id);
-      self.resumeService.pullSkillsResumeFromGraph(self.currentDate, element_data.properties.id);
-      self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, element_data.properties.id);
-
+      self.resumeService.pullSkillsResumeFromGraph(self.currentDate, null);
+      self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, null);
 
     }
 
@@ -488,8 +500,8 @@ export class CenterBarNavigationComponent implements OnInit {
         link.style('opacity', 1);
     }
 
-    function updateLink(link: any): any {
-      link.attr('x1', (d: any) => {
+    function updateLink(linkElement: any): any {
+      linkElement.attr('x1', (d: any) => {
         return fixna(d.source.x);
       })
       .attr('y1', (d: any) => {
@@ -503,19 +515,14 @@ export class CenterBarNavigationComponent implements OnInit {
       });
     }
 
-    function updateNode(node: any) {
+    function updateNode(nodeElement: any) {
       // to not fit drag on the bound
       // node.attr("transform", function(d) {
       //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
       // });
       const radius = 10;
 
-      // TODO improve width... (define it)
-      // const chartWidth: any = d3.select('#svgSkillsChart').node().getBBox().width()
-      const chartWidth = 560;
-      const chartHeight = 300;
-
-      node
+      nodeElement
         .attr('cx', (d: any) => {
           return (d.x = Math.max(radius, Math.min(chartWidth - radius, d.x)));
         })
@@ -524,19 +531,14 @@ export class CenterBarNavigationComponent implements OnInit {
         });
     }
 
-    function updateLabelNode(labelNode: any) {
+    function updateLabelNode(labelNodeElement: any) {
       // to not fit drag on the bound
       // node.attr("transform", function(d) {
       //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
       // });
       const radius = 10;
 
-      // TODO improve width... (define it)
-      // const chartWidth: any = d3.select('#svgSkillsChart').node().getBBox().width()
-      const chartWidth = 560;
-      const chartHeight = 300;
-
-      labelNode
+      labelNodeElement
         .attr('x', (d: any) => {
           return (d.x = Math.max(radius, Math.min(chartWidth - radius, d.x)));
         })
