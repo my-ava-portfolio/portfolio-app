@@ -12,7 +12,10 @@
       Thématiques
     </h5>
     <div class="skills col-lg-12" *ngFor="let skill of themesData; let idx = index">
-      <h6 [ngClass]="{ 'collapsed':!skill.active }" class="pointer text-white" data-toggle="collapse" [attr.data-target]="'#collapseThemes' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseThemes' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
+      <h6 [ngClass]="{ 'collapsed':!skill.active, 'pointer':skill.active }" class="text-white" data-toggle="collapse" [attr.data-target]="'#collapseThemes' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseThemes' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
+
+      <div *ngIf="skill.active; then skillThemesDetails"></div>
+      <ng-template #skillThemesDetails>
       <div [ngClass]="{ 'show':skill.active }" class="col-lg-12 themes-multi-collapse collapse" [attr.id]="'collapseThemes' + idx">
         <ul class="list-unstyled">
           <li class="small border border-dark text-white bg-less-dark my-1 px-1 py-1" *ngFor="let skill_detail of skill.details">
@@ -20,6 +23,7 @@
           </li>
         </ul>
       </div>
+      </ng-template>
     </div>
   </div>
 
@@ -29,7 +33,10 @@
       Techniques
     </h5>
     <div class="skills col-lg-12" *ngFor="let skill of technicsData; let idx = index">
-      <h6 [ngClass]="{ 'collapsed':!skill.active }" class="pointer text-white" data-toggle="collapse" [attr.data-target]="'#collapseTechnics' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseTechnics' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
+      <h6 [ngClass]="{ 'collapsed':!skill.active, 'pointer':skill.active }" class="pointer text-white" data-toggle="collapse" [attr.data-target]="'#collapseTechnics' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseTechnics' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
+
+      <div *ngIf="skill.active; then skillTechnicsDetails"></div>
+      <ng-template #skillTechnicsDetails>
       <div [ngClass]="{ 'show':skill.active }" class="col-lg-12 technics-multi-collapse collapse" [attr.id]="'collapseTechnics' + idx">
         <ul class="list-unstyled">
           <li class="small border border-dark text-white bg-less-dark my-1 px-1 py-1" *ngFor="let skill_detail of skill.details">
@@ -37,6 +44,7 @@
           </li>
         </ul>
       </div>
+      </ng-template>
     </div>
   </div>
 
@@ -46,7 +54,10 @@
       Outils
     </h5>
     <div class="skills col-lg-12" *ngFor="let skill of toolsData; let idx = index">
-      <h6 [ngClass]="{ 'collapsed':!skill.active }" class="pointer text-white" data-toggle="collapse" [attr.data-target]="'#collapseTools' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseTools' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
+      <h6 [ngClass]="{ 'collapsed':!skill.active, 'pointer':skill.active }" class="pointer text-white" data-toggle="collapse" [attr.data-target]="'#collapseTools' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseTools' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
+
+      <div *ngIf="skill.active; then skillToolsDetails"></div>
+      <ng-template #skillToolsDetails>
       <div [ngClass]="{ 'show':skill.active }" class="col-lg-12 tools-multi-collapse collapse" [attr.id]="'collapseTools' + idx">
         <ul class="list-unstyled">
           <li class="small border border-dark text-white bg-less-dark my-1 px-1 py-1" *ngFor="let skill_detail of skill.details">
@@ -54,6 +65,8 @@
           </li>
         </ul>
       </div>
+      </ng-template>
+
     </div>
   </div>
 

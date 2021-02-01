@@ -103,8 +103,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
   // TODO add reset method (and use it on refresh)
   resetChart(): void {
-    this.currentActivityCategoryId = this.defaultActivityCategoryId
-    this.currentNodeIdSelected = this.defaultNodeIdSelected
+    this.currentActivityCategoryId = this.defaultActivityCategoryId;
+    this.currentNodeIdSelected = this.defaultNodeIdSelected;
     this.currentDate = this.graphInputData.end_date_graph_slider;
     this.buildGraphElements(this.currentActivityCategoryId);
   }
@@ -460,9 +460,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
       if (elementSelected.size() === 1) {
         console.log(elementSelected.attr('class'))
 
-          elementSelected.classed('selected', !elementSelected.classed('selected'));
-          elementSelected.attr('class',  elementSelected.attr('class') + ' unselected');
-          unfocus_on_graph();
+        elementSelected.classed('selected', !elementSelected.classed('selected'));
+        elementSelected.attr('class',  elementSelected.attr('class') + ' unselected');
+        unfocus_on_graph();
       }
 
       // then we want to regenerate activities and skill components

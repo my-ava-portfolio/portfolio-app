@@ -25,9 +25,9 @@ export class RightbarSkillsComponent implements OnInit {
 
     this.resumeService.skillsFilteredData.subscribe(
       (data) => {
-        this.themesData = data['1themes'];
-        this.technicsData = data['2technics'];
-        this.toolsData = data['3tools'];
+        this.themesData = data.themes;
+        this.technicsData = data.technics;
+        this.toolsData = data.tools;
 
         console.log(data);
       },
