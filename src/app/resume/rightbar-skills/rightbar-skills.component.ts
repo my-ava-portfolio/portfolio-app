@@ -11,7 +11,9 @@ import { ResumeService } from '../../services/resume.service';
   styleUrls: ['./rightbar-skills.component.css']
 })
 export class RightbarSkillsComponent implements OnInit {
-  skillsData!: any;
+  selectedNode!: string;
+  selectedNodeFound!: string;
+  displayAllSkillTopics = true;
 
   themesData!: any;
   themesTopicOpened = true;
@@ -32,7 +34,8 @@ export class RightbarSkillsComponent implements OnInit {
         this.themesData = data['1themes'];
         this.technicsData = data['2technics'];
         this.toolsData = data['3tools'];
-
+        // this.selectedNodeFound = data.selected;
+        // this.checkSelectedNode(data.selected)
         console.log(data);
       },
       (error) => {
@@ -56,5 +59,15 @@ export class RightbarSkillsComponent implements OnInit {
       this.toolsTopicOpened = !this.toolsTopicOpened;
     }
   }
+
+  // checkSelectedNode(selectedNode: string | null): void {
+  //   if (selectedNode === null) {
+  //     this.displayAllSkillTopics = true;
+  //     this.selectedNode = '';
+  //   } else {
+  //     this.displayAllSkillTopics = false;
+  //     this.selectedNode = selectedNode;
+  //   }
+  // }
 
 }

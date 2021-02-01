@@ -445,10 +445,12 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
         // check origin node type
         self.resumeService.pullSkillsResumeFromGraph(self.currentDate, element_data.properties.id);
         self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, element_data.properties.id);
+      } else {
+
+        self.resumeService.pullSkillsResumeFromGraph(self.currentDate, null);
+        self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, null);
       }
 
-      self.resumeService.pullSkillsResumeFromGraph(self.currentDate, null);
-      self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, null);
 
     }
 
@@ -461,9 +463,12 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
           elementSelected.classed('selected', !elementSelected.classed('selected'));
           elementSelected.attr('class',  elementSelected.attr('class') + ' unselected');
           unfocus_on_graph();
-        }
+      }
+
+      // then we want to regenerate activities and skill components
       self.resumeService.pullSkillsResumeFromGraph(self.currentDate, null);
       self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, null);
+
     }
 
     function focus_on_graph(element: any): void {

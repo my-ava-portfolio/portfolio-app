@@ -13,8 +13,8 @@
     </h5>
 
     <div class="skills col-lg-12" *ngFor="let skill of themesData; let idx = index">
-      <h6 [ngClass]="{'text-white':themesTopicOpened, 'text-grey':!themesTopicOpened}" class="pointer" data-toggle="collapse" [attr.data-target]="'#collapseThemes' + idx" aria-expanded="true" [attr.aria-controls]="'#collapse' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
-      <div class="col-lg-12 themes-multi-collapse collapse show" [attr.id]="'collapseThemes' + idx">
+      <h6 [ngClass]="{ 'collapsed':!skill.active }" class="pointer text-white" data-toggle="collapse" [attr.data-target]="'#collapseThemes' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapse' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
+      <div [ngClass]="{ 'show':skill.active }" class="col-lg-12 themes-multi-collapse collapse" [attr.id]="'collapseThemes' + idx">
         <ul class="list-unstyled">
           <li class="small border border-dark text-white bg-less-dark my-1 px-1 py-1" *ngFor="let skill_detail of skill.details">
             <span>{{ skill_detail }}</span>
