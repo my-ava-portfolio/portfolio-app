@@ -1,0 +1,12 @@
+.active {
+  color: grey
+}
+
+.text-grey,
+.collapsed {
+  color: grey!important
+}
+
+.pointer {
+  cursor: pointer
+}

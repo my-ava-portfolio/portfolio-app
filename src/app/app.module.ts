@@ -21,6 +21,8 @@ import { TopbarSubviewComponent } from './resume/topbar-subview/topbar-subview.c
 import { LeftbarSubviewComponent } from './resume/leftbar-subview/leftbar-subview.component';
 import { CenterbarJobsComponent } from './resume/centerbar-jobs/centerbar-jobs.component';
 import { CenterbarProjectsComponent } from './resume/centerbar-projects/centerbar-projects.component';
+import { CenterbarPublicationsComponent } from './resume/centerbar-publications/centerbar-publications.component';
+import { RightbarSkillsComponent } from './resume/rightbar-skills/rightbar-skills.component';
 
 
 
@@ -44,7 +46,9 @@ const appRoutes: Routes = [
     TopbarSubviewComponent,
     LeftbarSubviewComponent,
     CenterbarJobsComponent,
-    CenterbarProjectsComponent
+    CenterbarProjectsComponent,
+    CenterbarPublicationsComponent,
+    RightbarSkillsComponent
   ],
   imports: [
     BrowserModule,
