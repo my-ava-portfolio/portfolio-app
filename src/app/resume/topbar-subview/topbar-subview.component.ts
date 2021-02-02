@@ -16,7 +16,9 @@ export class TopbarSubviewComponent implements OnInit {
 
   inputProfilData!: any;
   inputContactData!: any;
-  
+
+  linkBuilt!: string;
+
   // icons
   faPrint = faPrint;
   faGithub = faGithub;
@@ -27,6 +29,15 @@ export class TopbarSubviewComponent implements OnInit {
   ngOnInit(): void {
     this.inputProfilData = this.profilData;
     this.inputContactData = this.contactData;
+
+  }
+
+  reverse(value: string): void {
+    let output = '';
+    for (let i = value.length - 1; i >= 0; i--) {
+      output += value[i];
+    }
+    this.linkBuilt = output;
   }
 
 }

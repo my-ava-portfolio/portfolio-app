@@ -36,7 +36,7 @@ export class ResumeViewComponent implements OnInit {
   skillsData: any;
   generalData: any;
 
-  isDataAvailable = false
+  isDataAvailable = false;
 
 
   constructor(
@@ -45,7 +45,7 @@ export class ResumeViewComponent implements OnInit {
 
     this.resumeService.resumeData.subscribe(
       (data) => {
-        console.log(data)
+        console.log(data);
         this.contactData = data.contact;
         this.degreesData = data.education;
         this.generalData = data.general;

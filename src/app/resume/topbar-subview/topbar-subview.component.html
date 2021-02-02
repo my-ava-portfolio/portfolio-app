@@ -21,11 +21,11 @@
         <ul class="list-unstyled">
           <li>
             <fa-icon class="mr-2 text-white" [icon]="faLinkedinIn"></fa-icon>
-            <a class="text-white" href="{{ inputContactData.linkedin }}" target="_blank">LinkedIn</a>
+            <a class="text-white" [href]="linkBuilt" (mouseover)="reverse(inputContactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank">LinkedIn</a>
           </li>
           <li>
             <fa-icon class="mr-2 text-white" [icon]="faGithub"></fa-icon>
-            <a class="text-white" href="{{ inputContactData.github }}" target="_blank">Github</a>
+            <a class="text-white" [href]="linkBuilt" (mouseover)="reverse(inputContactData.github)" (mouseout)="linkBuilt=''" target="_blank">Github</a>
           </li>
         </ul>
     </div>

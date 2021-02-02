@@ -1,8 +1,11 @@
+import { navBarTitle } from './../../core/inputs';
 import { Component, OnInit } from '@angular/core';
 
 import { faStar, faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons';
 
 import { ResumeService } from '../../services/resume.service';
+
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -11,10 +14,17 @@ import { ResumeService } from '../../services/resume.service';
   styleUrls: ['./rightbar-skills.component.css']
 })
 export class RightbarSkillsComponent implements OnInit {
+  isDataAvailable = false;
+  skillsCategories = {
+    technics: 'Techniques',
+    themes: 'Thématiques',
+    tools: 'Outils'
+  };
 
-  themesData!: any;
-  technicsData!: any;
-  toolsData!: any;
+  technicsCategoryEnabled!: boolean;
+  themesCategoryEnabled!: boolean;
+  toolsCategoryEnabled!: boolean;
+  skillsData!: any;
 
   faStar = faStar;
   faArrowAltCircleDown = faArrowAltCircleDown;
@@ -25,20 +35,25 @@ export class RightbarSkillsComponent implements OnInit {
 
     this.resumeService.skillsFilteredData.subscribe(
       (data) => {
-        this.themesData = data.themes;
-        this.technicsData = data.technics;
-        this.toolsData = data.tools;
+        this.skillsData = data;
 
+        // this.themesCategoryEnabled = this.skillsData.themes.enabled
+
+        this.isDataAvailable = true;
         console.log(data);
       },
       (error) => {
         console.log('error');
+        this.isDataAvailable = false;
+
       }
     );
 
   }
 
   ngOnInit(): void {
+    this.themesCategoryEnabled = true;
   }
+
 
 }

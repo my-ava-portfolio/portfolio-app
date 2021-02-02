@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 
 import { faAddressCard, faImages, faBookOpen } from '@fortawesome/free-solid-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 import { pagesObject } from '../../core/inputs';
 
@@ -21,10 +21,10 @@ export class HomeViewComponent implements OnInit {
   faBookOpen = faBookOpen;
   faGithub = faGithub;
 
-  title = "Portfolio";
-  author = "Amaury Valorge";
-  starterMessage = "Géomaticien | Développeur";
-  defaultWelcomeMessage = "Portfolio";
+  title = 'Portfolio';
+  author = 'Amaury Valorge';
+  starterMessage = 'Géomaticien | Développeur';
+  defaultWelcomeMessage = 'Portfolio';
 
   quarterNotSelected = false;
   currentQuarterSelected!: string ;
@@ -36,7 +36,7 @@ export class HomeViewComponent implements OnInit {
     // to call function when root changes occur
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
-        this.resetQuartersStatus()
+        this.resetQuartersStatus();
 
           // Show loading indicator
       }

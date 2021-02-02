@@ -89,41 +89,27 @@
 }
 
 
-/*#svgSkills #skillsGraphElements circle:hover{*/
-/*    r: 15;*/
-/*}*/
-
-/*.link {*/
-/*    stroke: #999;*/
-/*    stroke-opacity: .6;*/
-/*}*/
-
-/*#skills_map_container {*/
-/*    text-align: center;*/
-/*    background-color: #343a40;*/
-/*}*/
-
-.node_disabled circle {
+.disabled-node circle {
   fill: #b7b6b6 !important;
   stroke-width: 0px;
 }
 
 
-.group_disabled {
+.disabled-group {
   color: #aeaeae!important;
 }
 
-.silent-topic {
+.unabled-topic {
   pointer-events: none;
 }
 
-.active-topic {
+.enabled-topic {
   pointer-events: auto;
   cursor: pointer;
 }
 
 
-.GraphDate {
+.bg-date {
   text-anchor: middle;
   font-size: 14vw;
   dominant-baseline: middle;

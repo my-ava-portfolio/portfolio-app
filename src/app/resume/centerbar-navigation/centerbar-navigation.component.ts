@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, OnInit, Input, ViewEncapsulation, ElementRef, ViewChild } from '@angular/core';
 
 import * as d3 from 'd3';
+import { faGlobeEurope, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { ResumeService } from '../../services/resume.service';
-import { faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -18,20 +18,21 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
   @ViewChild('svgGraphChart')
   svgGraphChart!: ElementRef;
-
-  private defaultActivityCategoryId = '';
+  helpPopup = 'aaaa'
   private defaultNodeIdSelected = '';
 
-  isTechnicsEnabled!: boolean | string;
-  isThemesEnabled!: boolean | string;
-  isToolsEnabled!: boolean | string;
+  isJobsGrouped: boolean | string = false;
+  isProjectsGrouped: boolean | string = true;
+  isThemesEnabled: boolean | string = true;
+  isTechnicsEnabled: boolean | string = true;
+  isToolsEnabled: boolean | string = false;
 
   // icons
   faGlobeEurope = faGlobeEurope;
+  faQuestionCircle = faQuestionCircle;
 
   inputSummaryData!: any;
   currentDate!: number;
-  currentActivityCategoryId!: string;
   currentNodeIdSelected!: string;
 
   graphData!: any;
@@ -39,28 +40,22 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
   chartHeight = 300;
   chartWidth!: number;
 
-  themes_title = '1themes';
-  technis_title = '2technics';
-  tools_title = '3tools';
-
-  skill_categories_ids = [this.themes_title, this.technis_title, this.tools_title];
-
-  legend_input_titles = [
+  legendInputTitles = [
     { id: 'legend_graph_title', label: 'Activités', cx: 5, cy: 15 },
     { id: 'legend_graph_title', label: 'Compétences', cx: 160, cy: 15 },
   ];
 
   // here to control topic graph... TODO improve it !
-  legend_input = [
-    { id: 'jobs', status: 'silent-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10 },
-    { id: 'personal_projects', status: 'silent-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10 },
-    { id: 'themes', status: 'active-topic', label: 'Thématiques', cx: 175, cy: 35, text_cx: 190, r: 6 },
-    { id: 'technics', status: 'active-topic', label: 'Techniques', cx: 175, cy: 55, text_cx: 190, r: 6 },
-    { id: 'tools', status: 'active-topic node_disabled', label: 'Outils', cx: 175, cy: 75, text_cx: 190, r: 6 }
+  legendInput = [
+    { id: 'jobs', status: 'unabled-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10 },
+    { id: 'personal_projects', status: 'unabled-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10 },
+    { id: 'themes', status: 'enabled-topic', label: 'Thématiques', cx: 175, cy: 35, text_cx: 190, r: 6 },
+    { id: 'technics', status: 'enabled-topic', label: 'Techniques', cx: 175, cy: 55, text_cx: 190, r: 6 },
+    { id: 'tools', status: 'enabled-topic', label: 'Outils', cx: 175, cy: 75, text_cx: 190, r: 6 }
   ];
 
-  legend_group_input = [
-    { id: 'grouper_jobs group_disabled', label: 'grouper jobs', cy: 28, cx: 35, text: '❉' },  // jobs grouped is disabled (style)
+  legendGroupInput = [
+    { id: 'grouper_jobs', label: 'grouper jobs', cy: 28, cx: 35, text: '❉' },  // jobs grouped is disabled (style)
     { id: 'grouper_projects', label: 'grouper projets', cy: 54, cx: 35, text: '❉' }
   ];
 
@@ -70,7 +65,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
     this.resumeService.ActivitiesChartData.subscribe(
       (data) => {
-        console.log(this.currentActivityCategoryId, this.currentNodeIdSelected, this.currentDate);
         this.graphData = data;
         this.generateGraph(this.currentNodeIdSelected);
       },
@@ -84,7 +78,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.inputSummaryData = this.summaryData;
     this.initSvgGraph();
-    this.buildLegendGraphActivities();
+    this._buildLegendGraphActivities();
     this.resetChart();
   }
 
@@ -95,11 +89,11 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
   updateDate(event: any): void {
     this.currentDate = event.target.value;
-    this.buildGraphElements(this.currentActivityCategoryId);
+    this.buildGraphElements();
   }
 
   initSvgGraph(): void {
-    const svgGraph = d3.select('.carrier_summary_chart')
+    const svgGraph = d3.select('.navigation-chart')
     .append('svg').attr('id', 'svgSkillsChart')
     .attr('width', '100%')
     .attr('height', this.chartHeight)
@@ -108,13 +102,12 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
   // TODO add reset method (and use it on refresh)
   resetChart(): void {
-    this.currentActivityCategoryId = this.defaultActivityCategoryId;
     this.currentNodeIdSelected = this.defaultNodeIdSelected;
     this.currentDate = this.graphInputData.end_date_graph_slider;
-    this.buildGraphElements(this.currentActivityCategoryId);
+    this.buildGraphElements();
   }
 
-  buildLegendGraphActivities(): void {
+  _buildLegendGraphActivities(): void {
     const svg = d3.select('.carrier_summary_legend')
       .append('svg').attr('id', 'svgSkillsLegend')
       .attr('width', 270)
@@ -124,62 +117,91 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
       .attr('class', 'skillsLegend');
 
     const LegendElements = svgContainer.selectAll(null)
-      .data(this.legend_input)
+      .data(this.legendInput)
       .enter()
       .append('g')
       .attr('class', (d) => {
-            return 'group_' + d.id + ' ' + d.status;
+        // in order to control the display or node, check header variables
+        let classesValue = d.id + ' ' + d.status;
+        if (d.id === 'themes' && !this.isThemesEnabled) {
+          classesValue = classesValue + ' disabled-node';
+        } else if (d.id === 'technics' && !this.isTechnicsEnabled) {
+          classesValue = classesValue + ' disabled-node';
+        } else if (d.id === 'tools' && !this.isToolsEnabled) {
+          classesValue = classesValue + ' disabled-node';
+        }
+        return classesValue;
       })
       .on('click', (d: any, i: any, n: any) => {
-        d3.select(n[i]).classed('node_disabled', !d3.select(n[i]).classed('node_disabled'));
+
+        if (d.id === 'themes') {
+          this.isThemesEnabled = !this.isThemesEnabled;
+        } else if (d.id === 'technics') {
+          this.isTechnicsEnabled = !this.isTechnicsEnabled;
+        } else if (d.id === 'tools') {
+          this.isToolsEnabled = !this.isToolsEnabled;
+        }
+
+        d3.select(n[i]).classed('disabled-node', !d3.select(n[i]).classed('disabled-node'));
 
         const nodeSelectedOnGraph = d3.select('#skillsGraphElements .nodes .selected');
 
         if (nodeSelectedOnGraph.size() === 0) {
           // if none node is selected
           console.log('a');
-          this.buildGraphElements(this.currentActivityCategoryId);
+          this.buildGraphElements();
 
         } else if (nodeSelectedOnGraph.size() === 1) {
           // if a node is selected
-          const element_selected_in_graph = nodeSelectedOnGraph.attr('class').split(/\s+/);
+          const elementSelectedInGraph = nodeSelectedOnGraph.attr('class').split(/\s+/);
 
           if (
-            element_selected_in_graph.includes('themes')
-            || element_selected_in_graph.includes('technics')
-            || element_selected_in_graph.includes('tools')
+            elementSelectedInGraph.includes('themes')
+            || elementSelectedInGraph.includes('technics')
+            || elementSelectedInGraph.includes('tools')
           ) {
               // it's a skill node
               // unselect (so it's like a reset but on the current date)
-              this.currentActivityCategoryId = this.defaultActivityCategoryId;
-              this.buildGraphElements(this.currentActivityCategoryId);
+              this.buildGraphElements();
           } else {
               // it's a job/project node
               // click on the expected node
-              this.currentActivityCategoryId = nodeSelectedOnGraph.attr('id');
-              this.buildGraphElements(this.currentActivityCategoryId);
+              this.buildGraphElements();
           }
         }
       });
 
     svgContainer.selectAll()
-      .data(this.legend_group_input)
+      .data(this.legendGroupInput)
       .enter()
       .append('svg:foreignObject')
       .attr('width', 18)
       .attr('height', 18)
-      .attr('class', (d: any) => d.id + ' font-weight-bold')
+      .attr('class', (d: any) => {
+        // in order to control the display or node, check header variables
+        let classesValue = d.id + ' ' + ' font-weight-bold';
+        if (d.id === 'grouper_jobs' && !this.isJobsGrouped) {
+          classesValue = classesValue + ' disabled-group';
+        } else if (d.id === 'grouper_projects' && !this.isProjectsGrouped) {
+          classesValue = classesValue + ' disabled-group';
+        }
+        return classesValue;
+      })
       .text(function(d: any) { return d.text; })
       .attr('x', (d: any) => d.cx)
       .attr('y', (d: any) => d.cy)
       .on('click', (d: any, i: any, n: any) => {
-        d3.select(n[i]).classed('group_disabled', !d3.select(n[i]).classed('group_disabled'));
-        this.currentActivityCategoryId = this.defaultActivityCategoryId;
-        this.buildGraphElements(this.currentActivityCategoryId);
+        if (d.id === 'grouper_jobs') {
+          this.isJobsGrouped = !this.isJobsGrouped;
+        } else if (d.id === 'grouper_projects') {
+          this.isProjectsGrouped = !this.isProjectsGrouped;
+        }
+        d3.select(n[i]).classed('disabled-group', !d3.select(n[i]).classed('disabled-group'));
+        this.buildGraphElements();
       });
 
     svgContainer.selectAll()
-      .data(this.legend_input_titles)
+      .data(this.legendInputTitles)
       .enter()
       .append('text')
       .style('text-anchor', 'left')
@@ -213,67 +235,36 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
   }
 
 
-  buildGraphElements(activityCategoryId: string): void {
+  buildGraphElements(): void {
 
-    const currentDateValue = this.currentDate;
+    if (!this.isJobsGrouped) {
+      this.isJobsGrouped = '';
+    }
 
-    // ungroup if necessary
-    const grouperJobsElement = d3.select('#svgSkillsLegend .grouper_jobs');
-    const grouperProjectsElement = d3.select('#svgSkillsLegend .grouper_projects');
-
-    if (activityCategoryId === 'jobs' && !grouperJobsElement.classed('group_disabled')) {
-      grouperJobsElement.classed('group_disabled', !grouperJobsElement.classed('group_disabled'));
-
-    } else if (activityCategoryId === 'personal_projects' && !grouperProjectsElement.classed('group_disabled')) {
-      grouperProjectsElement.classed('group_disabled', !grouperProjectsElement.classed('group_disabled'));
-
-    } else if (activityCategoryId === 'jobs_and_personal_projects') {
-      if (!grouperJobsElement.classed('group_disabled')) {
-        grouperJobsElement.classed('group_disabled', !grouperJobsElement.classed('group_disabled'));
-      }
-      if (!grouperProjectsElement.classed('group_disabled')) {
-        grouperProjectsElement.classed('group_disabled', !grouperProjectsElement.classed('group_disabled'));
-      }
+    if (!this.isProjectsGrouped) {
+      this.isProjectsGrouped = '';
     }
 
 
-    this.isTechnicsEnabled = true;
-    const technicsNodeDisabled = d3.select('.skillsLegend .group_technics').classed('node_disabled');
-    if (technicsNodeDisabled) {
+    if (!this.isTechnicsEnabled) {
       this.isTechnicsEnabled = '';
     }
 
-    this.isThemesEnabled = true;
-    const themesNodeDisabled = d3.select('.skillsLegend .group_themes').classed('node_disabled');
-    if (themesNodeDisabled) {
+    if (!this.isThemesEnabled) {
       this.isThemesEnabled = '';
     }
 
-    this.isToolsEnabled = true;
-    const toolsNodeDisabled = d3.select('.skillsLegend .group_tools').classed('node_disabled');
-    if (toolsNodeDisabled) {
+    if (!this.isToolsEnabled) {
       this.isToolsEnabled = '';
-    }
-
-    let grouperProjects: boolean | string = true;
-    const grouperProjectsDisabled = d3.select('.skillsLegend .grouper_projects').classed('group_disabled');
-    if (grouperProjectsDisabled) {
-      grouperProjects = '';
-    }
-
-    let grouperJobs: boolean | string = true;  // group jobs is disabled (display)
-    const grouperJobsDisabled = d3.select('.skillsLegend .grouper_jobs').classed('group_disabled');
-    if (grouperJobsDisabled) {
-      grouperJobs = '';
     }
 
     this.resumeService.pullActivitiesGraphData(
       this.isTechnicsEnabled,
       this.isThemesEnabled,
       this.isToolsEnabled,
-      currentDateValue,
-      grouperProjects,
-      grouperJobs
+      this.currentDate,
+      this.isProjectsGrouped,
+      this.isJobsGrouped,
     );
   }
 
@@ -297,8 +288,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     });
 
     const svgElements: any = d3.select('#skillsGraphElements');
-    d3.select('#svgSkillsChart .GraphDate').remove();
-    svgElements.append('g').attr('class', 'GraphDate')
+    d3.select('#svgSkillsChart .bg-date').remove();
+    svgElements.append('g').attr('class', 'bg-date')
       .append('text')
       .attr('x', '50%')
       .attr('y', '50%')
@@ -356,7 +347,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
           return 'node-' + d.properties.id;
       })
       .attr('r', (d: any) => {
-          const element = this.legend_input.filter(e => e.id === d.properties.type);
+          const element = this.legendInput.filter(e => e.id === d.properties.type);
           return element[0].r;
       });
 
@@ -382,13 +373,11 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(n[i]).attr('id');
-        console.log(this.currentNodeIdSelected);
         SelectedDisplaying(this, n[i]);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
         this.currentNodeIdSelected = this.defaultNodeIdSelected;
-
         defaultDisplayingByDate(this);
 
       } else {
@@ -446,7 +435,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
         focus_on_graph(element);
 
-        const element_data: any = d3.select(element).data()[0];
+        const elementData: any = d3.select(element).data()[0];
         // check origin node type
 
 
@@ -455,9 +444,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
           self.isThemesEnabled,
           self.isTechnicsEnabled,
           self.isToolsEnabled,
-          element_data.properties.id
+          elementData.properties.id
         );
-        self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, element_data.properties.id);
+        self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, elementData.properties.id);
 
       } else {
 

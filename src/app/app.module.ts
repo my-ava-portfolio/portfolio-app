@@ -23,6 +23,7 @@ import { CenterbarJobsComponent } from './resume/centerbar-jobs/centerbar-jobs.c
 import { CenterbarProjectsComponent } from './resume/centerbar-projects/centerbar-projects.component';
 import { CenterbarPublicationsComponent } from './resume/centerbar-publications/centerbar-publications.component';
 import { RightbarSkillsComponent } from './resume/rightbar-skills/rightbar-skills.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -57,7 +58,8 @@ const appRoutes: Routes = [
     FontAwesomeModule,
     RouterModule.forRoot(appRoutes, {
       anchorScrolling: 'enabled'
-    })
+    }),
+    NgbModule
   ],
   providers: [
     ResumeService,

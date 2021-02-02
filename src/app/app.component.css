@@ -39,3 +39,8 @@ body::-webkit-scrollbar {
 .navbar .active {
   font-weight: 600;
 }
+
+ngb-popover-window {
+  width: 100vh;
+  height:auto;
+}
