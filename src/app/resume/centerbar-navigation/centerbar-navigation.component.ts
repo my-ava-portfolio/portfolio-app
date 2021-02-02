@@ -17,8 +17,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
   @Input() summaryData!: any;
 
   @ViewChild('svgGraphChart')
+
   svgGraphChart!: ElementRef;
-  helpPopup = 'aaaa'
   private defaultNodeIdSelected = '';
 
   isJobsGrouped: boolean | string = false;
@@ -36,6 +36,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
   currentNodeIdSelected!: string;
 
   graphData!: any;
+  adjlist!: any;
+  labelLayout!: any;
+  label!: any;
 
   chartHeight = 300;
   chartWidth!: number;
@@ -66,7 +69,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     this.resumeService.ActivitiesChartData.subscribe(
       (data) => {
         this.graphData = data;
-        this.generateGraph(this.currentNodeIdSelected);
+        this._generateGraph(this.currentNodeIdSelected);
       },
       (error) => {
         console.log('error');
@@ -92,23 +95,35 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     this.buildGraphElements();
   }
 
-  initSvgGraph(): void {
-    const svgGraph = d3.select('.navigation-chart')
-    .append('svg').attr('id', 'svgSkillsChart')
-    .attr('width', '100%')
-    .attr('height', this.chartHeight)
-    .append('g').lower().attr('id', 'skillsGraphElements');
+  private initSvgGraph(): void {
+    d3.select('.graph-content')
+      .append('svg').attr('id', 'svgSkillsChart')
+      .attr('width', '100%')
+      .attr('height', this.chartHeight)
+      .append('g').lower()
+      .attr('id', 'skillsGraphElements');
   }
 
   // TODO add reset method (and use it on refresh)
   resetChart(): void {
     this.currentNodeIdSelected = this.defaultNodeIdSelected;
     this.currentDate = this.graphInputData.end_date_graph_slider;
+    this.isThemesEnabled = true;
+    this.isTechnicsEnabled = true;
+    this.isToolsEnabled = false;
+    this.isJobsGrouped = false;
+    this.isProjectsGrouped = true;
+    this.resetLegend()
     this.buildGraphElements();
   }
 
-  _buildLegendGraphActivities(): void {
-    const svg = d3.select('.carrier_summary_legend')
+  resetLegend(): void {
+    d3.select('#svgSkillsLegend').remove()
+    this._buildLegendGraphActivities()
+  }
+
+  private _buildLegendGraphActivities(): void {
+    const svg = d3.select('.graph-legend')
       .append('svg').attr('id', 'svgSkillsLegend')
       .attr('width', 270)
       .attr('height', 100);
@@ -234,8 +249,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
   }
 
-
-  buildGraphElements(): void {
+  private buildGraphElements(): void {
 
     if (!this.isJobsGrouped) {
       this.isJobsGrouped = '';
@@ -268,23 +282,27 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     );
   }
 
-  generateGraph(nodeIdToSelect: string): void {
-
+  private _initLabel(): void {
     const nodes: any[] = [];
     const links: any[] = [];
 
-    const label = {
+    this.label = {
         nodes,
         links
     };
+  }
+
+  private _generateGraph(nodeIdToSelect: string): void {
+
+    this._initLabel()
 
     this.graphData.nodes.forEach( (d: any, i: number) => {
-        label.nodes.push({node: d});
-        label.nodes.push({node: d});
-        label.links.push({
-            source: i * 2,
-            target: i * 2 + 1
-        });
+      this.label.nodes.push({node: d});
+      this.label.nodes.push({node: d});
+      this.label.links.push({
+        source: i * 2,
+        target: i * 2 + 1
+      });
     });
 
     const svgElements: any = d3.select('#skillsGraphElements');
@@ -295,33 +313,31 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
       .attr('y', '50%')
       .text(this.currentDate);
 
-    const labelLayout = d3.forceSimulation(label.nodes)
-      .force('charge', d3.forceManyBody().strength(-50))
-      .force('link', d3.forceLink(label.links).distance(0).strength(2));
+    this._buildLabelLayout();
+    // const labelLayout = d3.forceSimulation(label.nodes)
+    //   .force('charge', d3.forceManyBody().strength(-50))
+    //   .force('link', d3.forceLink(label.links).distance(0).strength(2));
 
     const chartWidth: number = this.chartWidth;
     const chartHeight = this.chartHeight;
 
     const graphLayout = d3.forceSimulation(this.graphData.nodes)
       .force('charge', d3.forceManyBody().strength(-400))
-      .force('x', d3.forceX(chartWidth / 2))
-      .force('y', d3.forceY(chartHeight / 2))
-      .force('center', d3.forceCenter(chartWidth / 2, chartHeight / 2))
+      .force('x', d3.forceX(this.chartWidth / 2))
+      .force('y', d3.forceY(this.chartHeight / 2))
+      .force('center', d3.forceCenter(this.chartWidth / 2, this.chartHeight / 2))
       .force('link', d3.forceLink(this.graphData.links).id( (d: any) => {
           return d.properties.name;
       }).distance(60).strength(1))
       .nodes(this.graphData.nodes)
-      .on('tick', ticked);
+      .on('tick', this._ticked.bind(this));
 
-    const adjlist: any = {};
+    this.adjlist = {};
     this.graphData.links.forEach( (d: any): any => {
-        adjlist[d.source.index + '-' + d.target.index] = true;
-        adjlist[d.target.index + '-' + d.source.index] = true;
+      this.adjlist[d.source.index + '-' + d.target.index] = true;
+      this.adjlist[d.target.index + '-' + d.source.index] = true;
     });
 
-    function neigh(a: any, b: any): boolean {
-        return a === b || adjlist[a + '-' + b];
-    }
 
     d3.select('#svgSkillsChart .links').remove();
     d3.select('#svgSkillsChart .nodes').remove();
@@ -354,7 +370,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
     const labelNode = svgElements.append('g').attr('class', 'nodeLabels')
       .selectAll('text')
-      .data(label.nodes)
+      .data(this.label.nodes)
       .enter()
       .append('text')
       .text( (d: any, i: number) => {
@@ -373,12 +389,12 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(n[i]).attr('id');
-        SelectedDisplaying(this, n[i]);
+        this._selectedDisplaying(n[i]);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
         this.currentNodeIdSelected = this.defaultNodeIdSelected;
-        defaultDisplayingByDate(this);
+        this._defaultDisplayingByDate();
 
       } else {
           // nothing here : to avoid unfocused action on an other node than the origin node, else it will disable the graph interactivity
@@ -387,213 +403,227 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
     node.call(
       d3.drag()
-        .on('start', dragstarted)
-        .on('drag', dragged)
-        .on('end', dragended)
+        .on('start', (d: any) => {
+          d3.event.sourceEvent.stopPropagation();
+          if (!d3.event.active) {
+            graphLayout.alphaTarget(0.3).restart();
+          }
+          d.fx = d.x;
+          d.fy = d.y;
+        })
+        .on('drag', (d: any) => {
+          d.fx = d3.event.x;
+          d.fy = d3.event.y;
+        })
+        .on('end', (d: any) => {
+          if (!d3.event.active) {
+            graphLayout.alphaTarget(0);
+          }
+          d.fx = null;
+          d.fy = null;
+        })
     );
 
     // to preselect a node
     if ( nodeIdToSelect.length > 0 ) {
-      SelectedDisplaying(this, '#skillsGraphElements #' + nodeIdToSelect);
+      this._selectedDisplaying('#skillsGraphElements #' + nodeIdToSelect);
     } else {
-      defaultDisplayingByDate(this);
-    }
-    // TODO place div on the right place
-    // $('#technis').prependTo('.skills_bar');
-    // $('#themes').prependTo('.skills_bar');
-
-    function ticked(): void {
-
-      node.call(updateNode);
-      link.call(updateLink);
-
-      labelLayout.alphaTarget(0.1).restart();
-      labelNode.each( (d: any, i: number) => {
-        if (i % 2 === 0) {
-          d.x = d.node.x;
-          d.y = d.node.y;
-        } else {
-          // TODO maybe not working
-          d3.select('#label-' + d.id).attr('transform', 'translate(' + d.x + ',' + d.y + ')');
-        }
-      });
-      // REFACTOR
-      labelNode.call(updateLabelNode);
-    }
-
-    function fixna(x: number): number {
-        if ( isFinite(x) ) { return x; }
-        return 0;
-    }
-
-    function SelectedDisplaying(self: any, element: string): void {
-
-      const elementSelected = d3.select(element);
-      if (elementSelected.size() > 0) {
-        elementSelected.classed('unselected', !elementSelected.classed('unselected'));
-        elementSelected.attr('class', elementSelected.attr('class') + ' selected');
-
-        focus_on_graph(element);
-
-        const elementData: any = d3.select(element).data()[0];
-        // check origin node type
-
-
-        self.resumeService.pullSkillsResumeFromGraph(
-          self.currentDate,
-          self.isThemesEnabled,
-          self.isTechnicsEnabled,
-          self.isToolsEnabled,
-          elementData.properties.id
-        );
-        self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, elementData.properties.id);
-
-      } else {
-
-        self.resumeService.pullSkillsResumeFromGraph(
-          self.currentDate,
-          self.currentDate,
-          self.isThemesEnabled,
-          self.isTechnicsEnabled,
-          self.isToolsEnabled,
-          null
-        );
-        self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, null);
-      }
-
-
-    }
-
-    function defaultDisplayingByDate(self: any): void {
-
-      const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
-      if (elementSelected.size() === 1) {
-        console.log(elementSelected.attr('class'));
-
-        elementSelected.classed('selected', !elementSelected.classed('selected'));
-        elementSelected.attr('class',  elementSelected.attr('class') + ' unselected');
-        unfocus_on_graph();
-      }
-
-      // then we want to regenerate activities and skill components
-      self.resumeService.pullSkillsResumeFromGraph(
-        self.currentDate,
-        self.isThemesEnabled,
-        self.isTechnicsEnabled,
-        self.isToolsEnabled,
-        null
-      );
-      self.resumeService.pullActivitiesResumeFromGraph(
-        self.currentDate,
-        null
-      );
-
-    }
-
-    function focus_on_graph(element: any): void {
-        let value: unknown | any;
-        value = d3.select(element).datum();
-        const index = value.index;
-        const nodeDisplayed = node.filter( (e: any) => {
-            return neigh(index, e.index);
-        });
-        node.style('opacity', (o: any) => {
-            return neigh(index, o.index) ? 1 : 0.1;
-        });
-        node.style('pointer-events', (o: any) => {
-            return neigh(index, o.index) ? 'auto' : 'none';
-        });
-        node.style('cursor', (o: any) => {
-            return neigh(index, o.index) ? 'pointer' : 'unset';
-        });
-        labelNode.attr('display', (o: any) => {
-            return neigh(index, o.node.index) ? 'block' : 'none';
-        });
-        link.style('opacity', (o: any) => {
-            return o.source.index === index || o.target.index === index ? 1 : 0.1;
-        });
-
-        return nodeDisplayed;
-    }
-
-    function unfocus_on_graph() {
-        labelNode.attr('display', 'block');
-        node.style('opacity', 1);
-        node.style('pointer-events', 'auto');
-        node.style('cursor', 'pointer');
-        link.style('opacity', 1);
-    }
-
-    function updateLink(linkElement: any): any {
-      linkElement.attr('x1', (d: any) => {
-        return fixna(d.source.x);
-      })
-      .attr('y1', (d: any) => {
-        return fixna(d.source.y);
-      })
-      .attr('x2', (d: any) => {
-        return fixna(d.target.x);
-      })
-      .attr('y2', (d: any) => {
-        return fixna(d.target.y);
-      });
-    }
-
-    function updateNode(nodeElement: any) {
-      // to not fit drag on the bound
-      // node.attr("transform", function(d) {
-      //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
-      // });
-      const radius = 10;
-
-      nodeElement
-        .attr('cx', (d: any) => {
-          return (d.x = Math.max(radius, Math.min(chartWidth - radius, d.x)));
-        })
-        .attr('cy', (d: any) => {
-          return (d.y = Math.max(radius, Math.min(chartHeight - radius, d.y)));
-        });
-    }
-
-    function updateLabelNode(labelNodeElement: any) {
-      // to not fit drag on the bound
-      // node.attr("transform", function(d) {
-      //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
-      // });
-      const radius = 10;
-
-      labelNodeElement
-        .attr('x', (d: any) => {
-          return (d.x = Math.max(radius, Math.min(chartWidth - radius, d.x)));
-        })
-        .attr('y', (d: any) => {
-          return (d.y = Math.max(radius, Math.min(chartHeight - radius, d.y)));
-        });
-    }
-
-    function dragstarted(d: any): void {
-      d3.event.sourceEvent.stopPropagation();
-      if (!d3.event.active) {
-        graphLayout.alphaTarget(0.3).restart();
-      }
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-
-    function dragged(d: any): void {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-    }
-
-    function dragended(d: any): void {
-      if (!d3.event.active) {
-        graphLayout.alphaTarget(0);
-      }
-      d.fx = null;
-      d.fy = null;
+      this._defaultDisplayingByDate();
     }
 
   }
+
+  private _neigh(a: any, b: any): boolean {
+    return a === b || this.adjlist[a + '-' + b];
+  }
+
+  private _unfocusOnGraph(): void {
+    d3.selectAll('#svgSkillsChart .links line').style('opacity', 1);
+
+    d3.selectAll('#svgSkillsChart .nodes circle')
+      .style('opacity', 1)
+      .style('pointer-events', 'auto')
+      .style('cursor', 'pointer');
+
+    d3.selectAll('#svgSkillsChart .nodeLabels text')
+      .attr('display', 'block');
+  }
+
+  private _focusOnGraph(element: any): any {
+
+    let value: unknown | any;
+    value = element.datum();
+    const index = value.index;
+    const otherNodes = d3.selectAll('#svgSkillsChart .nodes circle');
+
+    const nodeDisplayed = otherNodes.filter( (e: any) => {
+        return this._neigh(index, e.index);
+    });
+
+    otherNodes.style('opacity', (o: any) => {
+        return this._neigh(index, o.index) ? 1 : 0.1;
+    });
+    otherNodes.style('pointer-events', (o: any) => {
+        return this._neigh(index, o.index) ? 'auto' : 'none';
+    });
+    otherNodes.style('cursor', (o: any) => {
+        return this._neigh(index, o.index) ? 'pointer' : 'unset';
+    });
+
+    const labelNodes = d3.selectAll('#svgSkillsChart .nodeLabels text');
+    labelNodes.attr('display', (o: any) => {
+        return this._neigh(index, o.node.index) ? 'block' : 'none';
+    });
+    const links = d3.selectAll('#svgSkillsChart .links line')
+    links.style('opacity', (o: any) => {
+        return o.source.index === index || o.target.index === index ? 1 : 0.1;
+    });
+
+    return nodeDisplayed;
+  }
+
+
+  private _defaultDisplayingByDate(): void {
+
+    const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
+    if (elementSelected.size() === 1) {
+      console.log(elementSelected.attr('class'));
+
+      elementSelected.classed('selected', !elementSelected.classed('selected'));
+      elementSelected.attr('class', elementSelected.attr('class') + ' unselected');
+      this._unfocusOnGraph();
+    }
+
+    // then we want to regenerate activities and skill components
+    this.resumeService.pullSkillsResumeFromGraph(
+      this.currentDate,
+      this.isThemesEnabled,
+      this.isTechnicsEnabled,
+      this.isToolsEnabled,
+      null
+    );
+    this.resumeService.pullActivitiesResumeFromGraph(
+      this.currentDate,
+      null
+    );
+  }
+
+
+  private _selectedDisplaying(element: string): void {
+
+    const elementSelected: any = d3.select(element);
+    if (elementSelected.size() > 0) {
+      elementSelected.classed('unselected', !elementSelected.classed('unselected'));
+      elementSelected.attr('class', elementSelected.attr('class') + ' selected');
+
+      this._focusOnGraph(elementSelected);
+
+      const elementData: any = d3.select(element).data()[0];
+      // check origin node type
+
+      this.resumeService.pullSkillsResumeFromGraph(
+        this.currentDate,
+        this.isThemesEnabled,
+        this.isTechnicsEnabled,
+        this.isToolsEnabled,
+        elementData.properties.id
+      );
+      this.resumeService.pullActivitiesResumeFromGraph(this.currentDate, elementData.properties.id);
+
+    } else {
+
+      this.resumeService.pullSkillsResumeFromGraph(
+        this.currentDate,
+        this.isThemesEnabled,
+        this.isTechnicsEnabled,
+        this.isToolsEnabled,
+        null
+      );
+      this.resumeService.pullActivitiesResumeFromGraph(this.currentDate, null);
+    }
+  }
+
+  private _buildLabelLayout(): void {
+    this.labelLayout = d3.forceSimulation(this.label.nodes)
+      .force('charge', d3.forceManyBody().strength(-50))
+      .force('link', d3.forceLink(this.label.links).distance(0).strength(2));
+  }
+
+  private _fixna(x: number): number {
+    if ( isFinite(x) ) { return x; }
+    return 0;
+  }
+
+  private _ticked(): void {
+    const links: any = d3.selectAll('#svgSkillsChart .links line');
+    const nodes: any = d3.selectAll('#svgSkillsChart .nodes circle');
+    const labelNodes: any = d3.selectAll('#svgSkillsChart .nodeLabels text');
+
+    nodes.call(this._updateNode.bind(this));
+    links.call(this._updateLink.bind(this));
+
+    this.labelLayout.alphaTarget(0.1).restart();
+    labelNodes.each( (d: any, i: number) => {
+      if (i % 2 === 0) {
+        d.x = d.node.x;
+        d.y = d.node.y;
+      } else {
+        // TODO maybe not working
+        d3.select('#label-' + d.id).attr('transform', 'translate(' + d.x + ',' + d.y + ')');
+      }
+    });
+    // REFACTOR
+    labelNodes.call(this._updateLabelNode.bind(this));
+  }
+
+  private _updateLink(linkElement: any): void {
+    linkElement.attr('x1', (d: any) => {
+      return this._fixna(d.source.x);
+    })
+    .attr('y1', (d: any) => {
+      return this._fixna(d.source.y);
+    })
+    .attr('x2', (d: any) => {
+      return this._fixna(d.target.x);
+    })
+    .attr('y2', (d: any) => {
+      return this._fixna(d.target.y);
+    });
+  }
+
+  private _updateNode(nodeElement: any): void {
+    // to not fit drag on the bound
+    // node.attr("transform", function(d) {
+    //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
+    // });
+    const radius = 10;
+
+    nodeElement
+      .attr('cx', (d: any) => {
+        return (d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)));
+      })
+      .attr('cy', (d: any) => {
+        return (d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)));
+      });
+  }
+
+  private _updateLabelNode(labelNodeElement: any): void {
+    // to not fit drag on the bound
+    // node.attr("transform", function(d) {
+    //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
+    // });
+    const radius = 10;
+
+    labelNodeElement
+      .attr('x', (d: any) => {
+        return (d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)));
+      })
+      .attr('y', (d: any) => {
+        return (d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)));
+      });
+  }
+
+
 
 }
 
