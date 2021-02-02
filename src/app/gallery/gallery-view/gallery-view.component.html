@@ -1,1 +1,86 @@
-<p>gallery-view works!</p>
+<div id="content" class="container">
+
+  <div class="row justify-content-around mt-3">
+    <div class="col-lg-8 projects-bar border rounded shadow align-self-center">
+
+      <button type="button" class="btn btn-primary my-2 mx-2">Primary</button>
+      <button type="button" class="btn btn-secondary my-2 mx-2">Secondary</button>
+      <button type="button" class="btn btn-success my-2 mx-2">Success</button>
+      <button type="button" class="btn btn-danger my-2 mx-2">Danger</button>
+      <button type="button" class="btn btn-warning my-2 mx-2">Warning</button>
+      <button type="button" class="btn btn-info my-2 mx-2">Info</button>
+      <button type="button" class="btn btn-light my-2 mx-2">Light</button>
+      <button type="button" class="btn btn-dark my-2 mx-2">Dark</button>
+
+    </div>
+  </div>
+
+
+  <div id="projectName" class="my-4">
+    <div class="row justify-content-around">
+
+      <ng-container *ngTemplateOutlet="imgProject; context:{projectKey:'p1'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgModal; context:{imgkey:'p1'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgProject; context:{projectKey:'p2'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgModal; context:{imgkey:'p2'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgProject; context:{projectKey:'p3'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgModal; context:{imgkey:'p3'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgProject; context:{projectKey:'p4'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgModal; context:{imgkey:'p4'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgProject; context:{projectKey:'p5'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgModal; context:{imgkey:'p5'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgProject; context:{projectKey:'p6'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgModal; context:{imgkey:'p6'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgProject; context:{projectKey:'p7'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgModal; context:{imgkey:'p7'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgProject; context:{projectKey:'p8'}"></ng-container>
+      <ng-container *ngTemplateOutlet="imgModal; context:{imgkey:'p8'}"></ng-container>
+
+
+    </div>
+  </div>
+
+</div>
+
+
+
+<ng-template #imgProject let-projectKey='projectKey'>
+<div class="col-sm-3 mb-5 project-item" style="">
+    <div class="project-thumb">
+        <img src="https://fakeimg.pl/350x200/" [alt]="projectKey">
+        <div class="overlay-b">
+            <div class="overlay-inner" data-toggle="modal" [attr.data-target]="'#' + projectKey">
+            </div>
+        </div>
+    </div>
+    <div class="bg-white py-3 px-3 overflow-hidden">
+      <h5>A title.</h5>
+      <p>Nullam a vehicula tellus. Integer sodales ante eu feugiat. Sed fermentum diam dui at.</p>
+    </div>
+
+</div>
+</ng-template>
+
+
+
+
+<ng-template #imgModal let-imgkey='imgkey'>
+<div class="modal fade" [id]="imgkey" tabindex="-1" role="dialog" aria-labelledby="imgkeyLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imgkeyLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Coucou
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</ng-template>
