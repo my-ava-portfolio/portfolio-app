@@ -113,13 +113,13 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     this.isToolsEnabled = false;
     this.isJobsGrouped = false;
     this.isProjectsGrouped = true;
-    this.resetLegend()
+    this.resetLegend();
     this.buildGraphElements();
   }
 
   resetLegend(): void {
-    d3.select('#svgSkillsLegend').remove()
-    this._buildLegendGraphActivities()
+    d3.select('#svgSkillsLegend').remove();
+    this._buildLegendGraphActivities();
   }
 
   private _buildLegendGraphActivities(): void {
@@ -294,7 +294,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
   private _generateGraph(nodeIdToSelect: string): void {
 
-    this._initLabel()
+    this._initLabel();
 
     this.graphData.nodes.forEach( (d: any, i: number) => {
       this.label.nodes.push({node: d});
@@ -474,7 +474,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     labelNodes.attr('display', (o: any) => {
         return this._neigh(index, o.node.index) ? 'block' : 'none';
     });
-    const links = d3.selectAll('#svgSkillsChart .links line')
+    const links = d3.selectAll('#svgSkillsChart .links line');
     links.style('opacity', (o: any) => {
         return o.source.index === index || o.target.index === index ? 1 : 0.1;
     });
