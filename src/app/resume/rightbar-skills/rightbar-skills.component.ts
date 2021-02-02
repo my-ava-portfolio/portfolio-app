@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { faStar, faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons';
 
 import { ResumeService } from '../../services/resume.service';
 
@@ -17,7 +17,7 @@ export class RightbarSkillsComponent implements OnInit {
   toolsData!: any;
 
   faStar = faStar;
-  faArrowAltCircleRight = faArrowAltCircleRight;
+  faArrowAltCircleDown = faArrowAltCircleDown;
 
   constructor(
     private resumeService: ResumeService

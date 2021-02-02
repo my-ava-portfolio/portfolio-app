@@ -12,9 +12,9 @@
       Thématiques
     </h5>
     <div class="skills col-lg-12" *ngFor="let skill of themesData; let idx = index">
-      <h6 [ngClass]="{ 'collapsed':!skill.active, 'pointer':skill.active }" class="text-white" data-toggle="collapse" [attr.data-target]="'#collapseThemes' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseThemes' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
+      <h6 [ngClass]="{ 'collapsed':!skill.active || !skill.enabled, 'pointer':skill.active }" class="text-white" data-toggle="collapse" [attr.data-target]="'#collapseThemes' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseThemes' + idx"><a><fa-icon class="mr-2 rotation" [icon]="faArrowAltCircleDown"></fa-icon>{{ skill.name }}</a></h6>
 
-      <div *ngIf="skill.active; then skillThemesDetails"></div>
+      <div *ngIf="skill.enabled; then skillThemesDetails"></div>
       <ng-template #skillThemesDetails>
       <div [ngClass]="{ 'show':skill.active }" class="col-lg-12 themes-multi-collapse collapse" [attr.id]="'collapseThemes' + idx">
         <ul class="list-unstyled">
@@ -33,9 +33,9 @@
       Techniques
     </h5>
     <div class="skills col-lg-12" *ngFor="let skill of technicsData; let idx = index">
-      <h6 [ngClass]="{ 'collapsed':!skill.active, 'pointer':skill.active }" class="pointer text-white" data-toggle="collapse" [attr.data-target]="'#collapseTechnics' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseTechnics' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
+      <h6 [ngClass]="{ 'collapsed':!skill.active || !skill.enabled, 'pointer':skill.active }" class="pointer text-white" data-toggle="collapse" [attr.data-target]="'#collapseTechnics' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseTechnics' + idx"><a><fa-icon class="mr-2 rotation" [icon]="faArrowAltCircleDown"></fa-icon>{{ skill.name }}</a></h6>
 
-      <div *ngIf="skill.active; then skillTechnicsDetails"></div>
+      <div *ngIf="skill.enabled; then skillTechnicsDetails"></div>
       <ng-template #skillTechnicsDetails>
       <div [ngClass]="{ 'show':skill.active }" class="col-lg-12 technics-multi-collapse collapse" [attr.id]="'collapseTechnics' + idx">
         <ul class="list-unstyled">
@@ -54,9 +54,9 @@
       Outils
     </h5>
     <div class="skills col-lg-12" *ngFor="let skill of toolsData; let idx = index">
-      <h6 [ngClass]="{ 'collapsed':!skill.active, 'pointer':skill.active }" class="pointer text-white" data-toggle="collapse" [attr.data-target]="'#collapseTools' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseTools' + idx"><a><fa-icon class="mr-2" [icon]="faArrowAltCircleRight"></fa-icon>{{ skill.name }}</a></h6>
+      <h6 [ngClass]="{ 'collapsed':!skill.active || !skill.enabled, 'pointer':skill.active }" class="text-white" data-toggle="collapse" [attr.data-target]="'#collapseTools' + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapseTools' + idx"><a><fa-icon class="mr-2 rotation" [icon]="faArrowAltCircleDown"></fa-icon>{{ skill.name }}</a></h6>
 
-      <div *ngIf="skill.active; then skillToolsDetails"></div>
+      <div *ngIf="skill.enabled; then skillToolsDetails"></div>
       <ng-template #skillToolsDetails>
       <div [ngClass]="{ 'show':skill.active }" class="col-lg-12 tools-multi-collapse collapse" [attr.id]="'collapseTools' + idx">
         <ul class="list-unstyled">

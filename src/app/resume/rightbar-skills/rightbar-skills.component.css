@@ -4,9 +4,15 @@
 
 .text-grey,
 .skills .collapsed {
-  color: grey!important
+  color: grey!important;
 }
+
 
 .pointer {
   cursor: pointer
+}
+
+.collapsed .rotation {
+  display: inline-block;
+  transform: rotate(-90deg);
 }

@@ -22,6 +22,10 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
   private defaultActivityCategoryId = '';
   private defaultNodeIdSelected = '';
 
+  isTechnicsEnabled!: boolean | string;
+  isThemesEnabled!: boolean | string;
+  isToolsEnabled!: boolean | string;
+
   // icons
   faGlobeEurope = faGlobeEurope;
 
@@ -46,6 +50,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     { id: 'legend_graph_title', label: 'Compétences', cx: 160, cy: 15 },
   ];
 
+  // here to control topic graph... TODO improve it !
   legend_input = [
     { id: 'jobs', status: 'silent-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10 },
     { id: 'personal_projects', status: 'silent-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10 },
@@ -65,9 +70,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
     this.resumeService.ActivitiesChartData.subscribe(
       (data) => {
-        console.log(this.currentActivityCategoryId, this.currentNodeIdSelected, this.currentDate)
-        this.graphData = data
-        this.generateGraph(this.currentNodeIdSelected)
+        console.log(this.currentActivityCategoryId, this.currentNodeIdSelected, this.currentDate);
+        this.graphData = data;
+        this.generateGraph(this.currentNodeIdSelected);
       },
       (error) => {
         console.log('error');
@@ -80,17 +85,17 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     this.inputSummaryData = this.summaryData;
     this.initSvgGraph();
     this.buildLegendGraphActivities();
-    this.resetChart()
+    this.resetChart();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.chartWidth = this.svgGraphChart.nativeElement.offsetWidth;
 
   }
 
   updateDate(event: any): void {
     this.currentDate = event.target.value;
-    this.buildGraphElements(this.currentActivityCategoryId)
+    this.buildGraphElements(this.currentActivityCategoryId);
   }
 
   initSvgGraph(): void {
@@ -146,12 +151,12 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
           ) {
               // it's a skill node
               // unselect (so it's like a reset but on the current date)
-              this.currentActivityCategoryId = this.defaultActivityCategoryId
+              this.currentActivityCategoryId = this.defaultActivityCategoryId;
               this.buildGraphElements(this.currentActivityCategoryId);
           } else {
               // it's a job/project node
               // click on the expected node
-              this.currentActivityCategoryId = nodeSelectedOnGraph.attr('id')
+              this.currentActivityCategoryId = nodeSelectedOnGraph.attr('id');
               this.buildGraphElements(this.currentActivityCategoryId);
           }
         }
@@ -164,7 +169,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
       .attr('width', 18)
       .attr('height', 18)
       .attr('class', (d: any) => d.id + ' font-weight-bold')
-      .text(function (d: any) { return d.text })
+      .text(function(d: any) { return d.text; })
       .attr('x', (d: any) => d.cx)
       .attr('y', (d: any) => d.cy)
       .on('click', (d: any, i: any, n: any) => {
@@ -232,22 +237,22 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     }
 
 
-    let isTechnics: boolean | string = true;
+    this.isTechnicsEnabled = true;
     const technicsNodeDisabled = d3.select('.skillsLegend .group_technics').classed('node_disabled');
     if (technicsNodeDisabled) {
-      isTechnics = '';
+      this.isTechnicsEnabled = '';
     }
 
-    let isThemes: boolean | string = true;
+    this.isThemesEnabled = true;
     const themesNodeDisabled = d3.select('.skillsLegend .group_themes').classed('node_disabled');
     if (themesNodeDisabled) {
-      isThemes = '';
+      this.isThemesEnabled = '';
     }
 
-    let isTools: boolean | string = true;
+    this.isToolsEnabled = true;
     const toolsNodeDisabled = d3.select('.skillsLegend .group_tools').classed('node_disabled');
     if (toolsNodeDisabled) {
-      isTools = '';
+      this.isToolsEnabled = '';
     }
 
     let grouperProjects: boolean | string = true;
@@ -263,13 +268,13 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     }
 
     this.resumeService.pullActivitiesGraphData(
-      isTechnics,
-      isThemes,
-      isTools,
+      this.isTechnicsEnabled,
+      this.isThemesEnabled,
+      this.isToolsEnabled,
       currentDateValue,
       grouperProjects,
       grouperJobs
-    )
+    );
   }
 
   generateGraph(nodeIdToSelect: string): void {
@@ -291,7 +296,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
         });
     });
 
-    const svgElements: any = d3.select('#skillsGraphElements')
+    const svgElements: any = d3.select('#skillsGraphElements');
     d3.select('#svgSkillsChart .GraphDate').remove();
     svgElements.append('g').attr('class', 'GraphDate')
       .append('text')
@@ -434,7 +439,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
     function SelectedDisplaying(self: any, element: string): void {
 
-      const elementSelected = d3.select(element)
+      const elementSelected = d3.select(element);
       if (elementSelected.size() > 0) {
         elementSelected.classed('unselected', !elementSelected.classed('unselected'));
         elementSelected.attr('class', elementSelected.attr('class') + ' selected');
@@ -443,22 +448,38 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
         const element_data: any = d3.select(element).data()[0];
         // check origin node type
-        self.resumeService.pullSkillsResumeFromGraph(self.currentDate, element_data.properties.id);
+
+
+        self.resumeService.pullSkillsResumeFromGraph(
+          self.currentDate,
+          self.isThemesEnabled,
+          self.isTechnicsEnabled,
+          self.isToolsEnabled,
+          element_data.properties.id
+        );
         self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, element_data.properties.id);
+
       } else {
 
-        self.resumeService.pullSkillsResumeFromGraph(self.currentDate, null);
+        self.resumeService.pullSkillsResumeFromGraph(
+          self.currentDate,
+          self.currentDate,
+          self.isThemesEnabled,
+          self.isTechnicsEnabled,
+          self.isToolsEnabled,
+          null
+        );
         self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, null);
       }
 
 
     }
 
-    function defaultDisplayingByDate(self: any) {
+    function defaultDisplayingByDate(self: any): void {
 
       const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
       if (elementSelected.size() === 1) {
-        console.log(elementSelected.attr('class'))
+        console.log(elementSelected.attr('class'));
 
         elementSelected.classed('selected', !elementSelected.classed('selected'));
         elementSelected.attr('class',  elementSelected.attr('class') + ' unselected');
@@ -466,13 +487,22 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
       }
 
       // then we want to regenerate activities and skill components
-      self.resumeService.pullSkillsResumeFromGraph(self.currentDate, null);
-      self.resumeService.pullActivitiesResumeFromGraph(self.currentDate, null);
+      self.resumeService.pullSkillsResumeFromGraph(
+        self.currentDate,
+        self.isThemesEnabled,
+        self.isTechnicsEnabled,
+        self.isToolsEnabled,
+        null
+      );
+      self.resumeService.pullActivitiesResumeFromGraph(
+        self.currentDate,
+        null
+      );
 
     }
 
     function focus_on_graph(element: any): void {
-        let value: unknown | any
+        let value: unknown | any;
         value = d3.select(element).datum();
         const index = value.index;
         const nodeDisplayed = node.filter( (e: any) => {
@@ -555,8 +585,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     function dragstarted(d: any): void {
       d3.event.sourceEvent.stopPropagation();
       if (!d3.event.active) {
-        graphLayout.alphaTarget(0.3).restart()
-      };
+        graphLayout.alphaTarget(0.3).restart();
+      }
       d.fx = d.x;
       d.fy = d.y;
     }
@@ -568,8 +598,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
     function dragended(d: any): void {
       if (!d3.event.active) {
-        graphLayout.alphaTarget(0)
-      };
+        graphLayout.alphaTarget(0);
+      }
       d.fx = null;
       d.fy = null;
     }

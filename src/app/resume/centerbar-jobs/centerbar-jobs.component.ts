@@ -30,7 +30,7 @@ export class CenterbarJobsComponent implements OnInit {
       (data) => {
         this.jobsData = data.jobs;
         // this.personalProjectsData = data.personnal_projects
-        console.log(this.jobsData)
+        console.log(this.jobsData);
 
       },
       (error) => {

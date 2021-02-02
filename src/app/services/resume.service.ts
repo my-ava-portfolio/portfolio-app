@@ -26,7 +26,7 @@ export class ResumeService {
   private apiUrlActivitiesFilteredData = apiBaseUrl + 'activities_filtered?';
   errorUrlActivitiesFilteredApiFound: Subject<string> = new Subject<string>();
   activitiesFilteredData: Subject<any> = new Subject<any>();
-  
+
   constructor(
       private http: HttpClient
   ) {}
@@ -67,10 +67,13 @@ export class ResumeService {
 
   pullSkillsResumeFromGraph(
     currentDate: number,
+    isThemes: boolean | string,
+    isTechnics: boolean | string,
+    isTools: boolean | string,
     fromSkill: string | null,
   ): void {
     this.http.get<any>(
-      `${this.apiUrlSkillsFilteredData}start_date=${currentDate}&from_feature=${fromSkill}`
+      `${this.apiUrlSkillsFilteredData}start_date=${currentDate}&technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&from_feature=${fromSkill}`
     ).subscribe(
       (response) => {
         this.skillsFilteredData.next(response);
