@@ -14,6 +14,7 @@ import { GalleryViewComponent } from './gallery/gallery-view/gallery-view.compon
 import { NotesViewComponent } from './notes/notes-view/notes-view.component';
 
 import { ResumeService } from './services/resume.service';
+import { SafeUrl } from './core/pipes';
 
 import { Routes } from '@angular/router';
 import { CenterBarNavigationComponent } from './resume/centerbar-navigation/centerbar-navigation.component';
@@ -49,7 +50,8 @@ const appRoutes: Routes = [
     CenterbarJobsComponent,
     CenterbarProjectsComponent,
     CenterbarPublicationsComponent,
-    RightbarSkillsComponent
+    RightbarSkillsComponent,
+    SafeUrl
   ],
   imports: [
     BrowserModule,

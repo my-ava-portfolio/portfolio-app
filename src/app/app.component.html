@@ -2,44 +2,41 @@
     <div id="map" class="leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0"></div>
 </div>
 
+<div class="row sticky-top" [hidden]="!navBarEnabled">
+  <nav id="top" class="navbar navbar-expand-md navbar-light bg-light navbar-style">
+      <div class="container">
+          <div class="navbar-header">
+              <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <a class="navbar-brand text-dark" [routerLink]="homePage.route">{{ this.navBarTitle }}</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li *ngFor="let page of portfolioPages" class="ml-3" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <a class="text-dark" [routerLink]="page.route">{{page.title}}</a>
+                </li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+</div>
 
 <div class="container-fluid">
-  <div class="row" [hidden]="!navBarEnabled">
-    <nav id="top" class="navbar navbar-expand-md navbar-light bg-light sticky-top navbar-style front">
-        <div class="container">
-            <div class="navbar-header">
-                <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand text-dark" [routerLink]="homePage.route">{{ this.navBarTitle }}</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                  <li *ngFor="let page of portfolioPages" class="ml-3" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-                  <a class="text-dark" [routerLink]="page.route">{{page.title}}</a>
-                  </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-  </div>
 
   <main>
     <router-outlet></router-outlet>
   </main>
 
-  <div class="row" [hidden]="!footerBarEnabled">
-    <footer class="footer front smooth_visible">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12">
-          </div>
-        </div>
-      </div>
-    </footer>
-  </div>
-
 </div>
 
+<footer class="footer" [hidden]="!footerBarEnabled">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+      </div>
+    </div>
+  </div>
+</footer>
 
 
