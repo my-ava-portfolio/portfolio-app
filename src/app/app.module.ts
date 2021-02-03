@@ -59,7 +59,9 @@ const appRoutes: Routes = [
     HttpClientModule,
     FontAwesomeModule,
     RouterModule.forRoot(appRoutes, {
-      anchorScrolling: 'enabled'
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled',
+      scrollOffset: [0, 64] // [x, y]
     }),
     NgbModule
   ],

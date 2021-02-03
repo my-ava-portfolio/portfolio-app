@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { faGlobeEurope, faMapMarkerAlt, faImages, faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { apiImgUrl } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
+
+import { Subscription } from 'rxjs';
+
 
 
 @Component({
@@ -11,7 +14,7 @@ import { ResumeService } from '../../services/resume.service';
   templateUrl: './centerbar-jobs.component.html',
   styleUrls: ['./centerbar-jobs.component.css']
 })
-export class CenterbarJobsComponent implements OnInit {
+export class CenterbarJobsComponent implements OnInit, OnDestroy {
   jobsData!: any;
 
   apiImgUrl = apiImgUrl;
@@ -22,11 +25,14 @@ export class CenterbarJobsComponent implements OnInit {
   faImages = faImages;
   faArrowAltCircleUp = faArrowAltCircleUp;
 
+
+  activitiesFilteredSubscription!: Subscription;
+
   constructor(
     private resumeService: ResumeService
   ) {
 
-    this.resumeService.activitiesFilteredData.subscribe(
+    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
         this.jobsData = data.jobs;
         // this.personalProjectsData = data.personnal_projects
@@ -41,6 +47,11 @@ export class CenterbarJobsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    console.log('lalala jobs')
+    this.activitiesFilteredSubscription.unsubscribe();
   }
 
 }

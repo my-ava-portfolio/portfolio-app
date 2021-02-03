@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit, Input, ViewEncapsulation, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Input, ViewEncapsulation, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 
 import * as d3 from 'd3';
 import { faGlobeEurope, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
 import { ResumeService } from '../../services/resume.service';
 
@@ -12,13 +13,15 @@ import { ResumeService } from '../../services/resume.service';
   styleUrls: ['./centerbar-navigation.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
+export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() graphInputData!: any;
   @Input() summaryData!: any;
 
   @ViewChild('svgGraphChart')
 
+
   svgGraphChart!: ElementRef;
+
   private defaultNodeIdSelected = '';
 
   isJobsGrouped: boolean | string = false;
@@ -62,11 +65,14 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
     { id: 'grouper_projects', label: 'grouper projets', cy: 54, cx: 35, text: '❉' }
   ];
 
+  activitiesFilteredSubscription!: Subscription;
+
+
   constructor(
     private resumeService: ResumeService
   ) {
 
-    this.resumeService.ActivitiesChartData.subscribe(
+    this.activitiesFilteredSubscription = this.resumeService.ActivitiesChartData.subscribe(
       (data) => {
         this.graphData = data;
         this._generateGraph(this.currentNodeIdSelected);
@@ -87,8 +93,13 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.chartWidth = this.svgGraphChart.nativeElement.offsetWidth;
-
   }
+
+  ngOnDestroy(): void {
+    console.log('lalala chart')
+    this.activitiesFilteredSubscription.unsubscribe();
+  }
+
 
   updateDate(event: any): void {
     this.currentDate = event.target.value;

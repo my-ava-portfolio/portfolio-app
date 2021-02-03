@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./gallery-view.component.css']
 })
 export class GalleryViewComponent implements OnInit, OnDestroy {
+  // TODO create a route to get all activities titles
   youtubeDefaultUrl = 'https://www.youtube.com'
   currentDate = new Date().getFullYear();
   defaultActivity: string | null = null;
@@ -50,8 +51,12 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('lalala')
-    this.activitiesFilteredSubscription.unsubscribe();
+    console.log('lalala gallery')
+    // this.activitiesFilteredSubscription.unsubscribe();
+  }
+
+  resetGallery(): any {
+    this.filterGallery(null);
   }
 
   filterGallery(activityName: string | null): any {

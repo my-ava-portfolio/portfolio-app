@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewEncapsulation  } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy  } from '@angular/core';
 
 import { faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 
 import { ResumeService } from '../../services/resume.service';
 import { apiImgUrl } from '../../core/inputs';
+
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,7 +14,7 @@ import { apiImgUrl } from '../../core/inputs';
   styleUrls: ['./resume-view.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ResumeViewComponent implements OnInit {
+export class ResumeViewComponent implements OnInit, OnDestroy {
 
   apiImgUrl = apiImgUrl;
 
@@ -38,12 +40,13 @@ export class ResumeViewComponent implements OnInit {
 
   isDataAvailable = false;
 
+  resumeDataSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService
   ) {
 
-    this.resumeService.resumeData.subscribe(
+    this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {
         console.log(data);
         this.contactData = data.contact;
@@ -67,5 +70,11 @@ export class ResumeViewComponent implements OnInit {
   ngOnInit(): void {
     this.resumeService.pullResumeGeneralData();
   }
+
+  ngOnDestroy(): void {
+    console.log('lalala resume content')
+    this.resumeDataSubscription.unsubscribe();
+  }
+
 
 }
