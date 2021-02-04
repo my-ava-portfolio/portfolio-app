@@ -14,6 +14,7 @@ import { GalleryViewComponent } from './gallery/gallery-view/gallery-view.compon
 import { NotesViewComponent } from './notes/notes-view/notes-view.component';
 
 import { ResumeService } from './services/resume.service';
+import { GalleryService } from './services/gallery.service';
 import { SafeUrl } from './core/pipes';
 
 import { Routes } from '@angular/router';
@@ -67,6 +68,7 @@ const appRoutes: Routes = [
   ],
   providers: [
     ResumeService,
+    GalleryService
   ],
   bootstrap: [AppComponent]
 })
