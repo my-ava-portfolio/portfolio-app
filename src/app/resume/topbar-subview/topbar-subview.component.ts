@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { faPrint } from '@fortawesome/free-solid-svg-icons';
-import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { githubIcon, linkedinIcon, printIcon } from '../../core/inputs';
 
 
 @Component({
@@ -20,9 +19,9 @@ export class TopbarSubviewComponent implements OnInit {
   linkBuilt!: string;
 
   // icons
-  faPrint = faPrint;
-  faGithub = faGithub;
-  faLinkedinIn = faLinkedinIn;
+  printIcon = printIcon;
+  githubIcon = githubIcon;
+  linkedinIcon = linkedinIcon;
 
   constructor() { }
 

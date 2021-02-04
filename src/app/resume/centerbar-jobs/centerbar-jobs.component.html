@@ -1,6 +1,6 @@
 <section id="jobs" class="col-lg-12 section mt-4">
   <h5 class="font-weight-bold mb-3">
-    <fa-icon class="mr-2" [icon]="faGlobeEurope"></fa-icon>
+    <fa-icon class="mr-2" [icon]="resumeIcon"></fa-icon>
     Expériences
   </h5>
 
@@ -15,10 +15,10 @@
           </div>
 
           <div class="col-lg-3">
-            <a class="btn btn-dark mr-2 float-right" [routerLink]="['/resume']" fragment="top" title="Haut de page"><fa-icon [icon]="faArrowAltCircleUp"></fa-icon></a>
+            <a class="btn btn-dark mr-2 float-right" [routerLink]="['/resume']" fragment="top" title="Haut de page"><fa-icon [icon]="arrowUpIcon"></fa-icon></a>
             <div *ngIf="job.pictures; then jobsShorcutGallery"></div>
               <ng-template #jobsShorcutGallery>
-                <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="job.identifier" target="_blank" title="Accès à la galerie"><fa-icon [icon]="faImages"></fa-icon></a>
+                <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="job.identifier" target="_blank" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
               </ng-template>
           </div>
         </div>
@@ -33,7 +33,7 @@
               <h6 class="font-weight-bold">{{job.company}}</h6>
               <div>
                 <a [id]="'location_' + job.identifier" role="button">
-                  <fa-icon class="mr-2 text-danger" [icon]="faMapMarkerAlt"></fa-icon>
+                  <fa-icon class="mr-2 text-danger" [icon]="locationIcon"></fa-icon>
                 </a>{{job.location}}
               </div>
               <div *ngIf="job.current; then currentJob else pastJob"></div>

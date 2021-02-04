@@ -1,6 +1,6 @@
 <section id="personal_projects" class="col-lg-12 mt-4">
     <h5 class="font-weight-bold mb-3">
-      <fa-icon class="mr-2" [icon]="faGlobeEurope"></fa-icon>
+      <fa-icon class="mr-2" [icon]="resumeIcon"></fa-icon>
       Projets personnels
     </h5>
 
@@ -13,26 +13,26 @@
         </div>
 
         <div class="col-lg-5">
-          <a class="btn btn-dark mr-2 float-right" [routerLink]="['/resume']" fragment="top" title="Haut de page"><fa-icon [icon]="faArrowAltCircleUp"></fa-icon></a>
+          <a class="btn btn-dark mr-2 float-right" [routerLink]="['/resume']" fragment="top" title="Haut de page"><fa-icon [icon]="arrowUpIcon"></fa-icon></a>
 
           <div *ngIf="project.url_github; then projectsShorcutGithub"></div>
           <ng-template #projectsShorcutGithub>
-            <a class="btn btn-secondary mr-2 float-right" [href]="project.url_github" target="_blank" title="Github"><fa-icon [icon]="faGithub"></fa-icon></a>
+            <a class="btn btn-secondary mr-2 float-right" [href]="project.url_github" target="_blank" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
           </ng-template>
 
           <div *ngIf="project.pictures || project.url_apps; then projectsShorcutGallery"></div>
           <ng-template #projectsShorcutGallery>
-            <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="project.identifier" target="_blank" title="Accès à la galerie"><fa-icon [icon]="faImages"></fa-icon></a>
+            <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="project.identifier" target="_blank" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
           </ng-template>
 
           <div *ngIf="project.url_jupyter_book; then projectsShorcutNotes"></div>
           <ng-template #projectsShorcutNotes>
-            <a class="btn btn-info mr-2 float-right" [routerLink]="['/notes']" [fragment]="project.url_jupyter_book" title="Accès aux notes"><fa-icon [icon]="faBookOpen"></fa-icon></a>
+            <a class="btn btn-info mr-2 float-right" [routerLink]="['/notes']" [fragment]="project.url_jupyter_book" title="Accès aux notes"><fa-icon [icon]="notesIcon"></fa-icon></a>
           </ng-template>
 
           <div *ngIf="project.url_website; then projectsShorcutWebsite"></div>
           <ng-template #projectsShorcutWebsite>
-            <a class="btn btn-primary mr-2 float-right" [href]="project.url_website"><fa-icon [icon]="faGlobe"></fa-icon></a>
+            <a class="btn btn-primary mr-2 float-right" [href]="project.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
           </ng-template>
 
         </div>

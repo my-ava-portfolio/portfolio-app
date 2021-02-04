@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, OnInit, Input, ViewEncapsulation, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 
 import * as d3 from 'd3';
-import { faGlobeEurope, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+
 import { Subscription } from 'rxjs';
 
 import { ResumeService } from '../../services/resume.service';
+import { topicIcon, helpIcon } from '../../core/inputs';
 
 
 @Component({
@@ -17,10 +18,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   @Input() graphInputData!: any;
   @Input() summaryData!: any;
 
-  @ViewChild('svgGraphChart')
-
-
-  svgGraphChart!: ElementRef;
+  @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
 
   private defaultNodeIdSelected = '';
 
@@ -31,11 +29,11 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   isToolsEnabled: boolean | string = false;
 
   // icons
-  faGlobeEurope = faGlobeEurope;
-  faQuestionCircle = faQuestionCircle;
+  topicIcon = topicIcon;
+  helpIcon = helpIcon;
 
   inputSummaryData!: any;
-  currentDate!: number;
+  currentDate: number = new Date().getFullYear();
   currentNodeIdSelected!: string;
 
   graphData!: any;
@@ -69,7 +67,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
 
   constructor(
-    private resumeService: ResumeService
+    private resumeService: ResumeService,
   ) {
 
     this.activitiesFilteredSubscription = this.resumeService.ActivitiesChartData.subscribe(
@@ -325,12 +323,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       .text(this.currentDate);
 
     this._buildLabelLayout();
-    // const labelLayout = d3.forceSimulation(label.nodes)
-    //   .force('charge', d3.forceManyBody().strength(-50))
-    //   .force('link', d3.forceLink(label.links).distance(0).strength(2));
-
-    const chartWidth: number = this.chartWidth;
-    const chartHeight = this.chartHeight;
 
     const graphLayout = d3.forceSimulation(this.graphData.nodes)
       .force('charge', d3.forceManyBody().strength(-400))

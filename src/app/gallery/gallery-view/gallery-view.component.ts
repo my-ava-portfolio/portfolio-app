@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { apiBaseUrl } from '../../core/inputs';
 
-import { ResumeService } from '../../services/resume.service';
+import { GalleryService } from '../../services/gallery.service';
 
 import { Subscription } from 'rxjs';
 
@@ -14,29 +13,33 @@ import { Subscription } from 'rxjs';
 })
 export class GalleryViewComponent implements OnInit, OnDestroy {
   // TODO create a route to get all activities titles
-  youtubeDefaultUrl = 'https://www.youtube.com'
-  currentDate = new Date().getFullYear();
+  youtubeDefaultUrl = 'https://www.youtube.com';
+  githubusercontentDefaultUrl = 'https://raw.githubusercontent.com/';
+  currentDate: number = new Date().getFullYear();
   defaultActivity: string | null = null;
+  currentActivity: string | null = null;
+
+  defaultCategory: string | null = null;
+  currentCategory: string | null = null;
 
   apiBaseUrl = apiBaseUrl;
-  jobsData: any;
-  projectsData: any;
+  galleryItems!: any;
 
+  isDataAvailable = false;
+
+
+  activitiesGallerySubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
 
   constructor(
-    private resumeService: ResumeService,
-    private sanitizer: DomSanitizer
+    private galleryService: GalleryService,
   ) {
-    this.sanitizer = sanitizer;
 
-    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
+    this.activitiesGallerySubscription = this.galleryService.activitiesGalleryData.subscribe(
       (data) => {
-        this.jobsData = data.jobs;
-        this.projectsData = data.personal_projects;
-
-        // this.personalProjectsData = data.personnal_projects
-        console.log(this.jobsData);
+        this.galleryItems = data.items;
+        this.isDataAvailable = true;
+        console.log(data);
 
       },
       (error) => {
@@ -47,23 +50,39 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.filterGallery(this.defaultActivity);
+
+    this.resetGallery();
+
   }
 
   ngOnDestroy(): void {
     console.log('lalala gallery')
-    // this.activitiesFilteredSubscription.unsubscribe();
+    this.activitiesGallerySubscription.unsubscribe();
+
   }
 
   resetGallery(): any {
-    this.filterGallery(null);
+    this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory);
   }
 
-  filterGallery(activityName: string | null): any {
-    this.resumeService.pullActivitiesResumeFromGraph(
-      this.currentDate,
-      activityName
-    );
+  getGalleryDataByActivity(activityName: string | null): any {
+    this.currentActivity = activityName;
+    this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory);
+  }
+
+  getGalleryDataByCategory(categoryName: string | null): any {
+    this.currentCategory = categoryName;
+    this.galleryService.pullExistingActivitiesGallery(null, this.currentCategory);
+  }
+
+  checkMediaType(mediaItem: string): string {
+    if (mediaItem.includes(this.youtubeDefaultUrl)) {
+      return 'youtube_url';
+    } else if (mediaItem.includes(this.githubusercontentDefaultUrl)) {
+      return 'githubusercontent_url';
+    } else {
+      return 'local_url';
+    }
   }
 
 }

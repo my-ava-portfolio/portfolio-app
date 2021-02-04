@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { faGlobeEurope, faFilePdf, faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { resumeIcon, arrowUpIcon, pdfFileIcon } from '../../core/inputs';
 
 
 @Component({
@@ -14,9 +14,9 @@ export class CenterbarPublicationsComponent implements OnInit {
   inputpublicationData!: any;
 
   // icons
-  faArrowAltCircleUp = faArrowAltCircleUp;
-  faFilePdf = faFilePdf;
-  faGlobeEurope = faGlobeEurope;
+  arrowUpIcon = arrowUpIcon;
+  pdfFileIcon = pdfFileIcon;
+  resumeIcon = resumeIcon;
 
   constructor() { }
 

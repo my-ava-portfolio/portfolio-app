@@ -3,13 +3,17 @@ import { Component, OnInit, Input } from '@angular/core';
 import { faUserGraduate, faMapMarkerAlt, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { apiImgUrl } from '../../core/inputs';
 
+import { degreeIcon, languageIcon, locationIcon } from '../../core/inputs';
+
+
+
 @Component({
   selector: 'app-leftbar-subview',
   templateUrl: './leftbar-subview.component.html',
   styleUrls: ['./leftbar-subview.component.css']
 })
 export class LeftbarSubviewComponent implements OnInit {
-  
+
   @Input() degreesData: any;
   @Input() languagesData: any;
   @Input() trainingsData: any;
@@ -21,9 +25,9 @@ export class LeftbarSubviewComponent implements OnInit {
   inputTrainingsData: any;
 
   // icons
-  faUserGraduate = faUserGraduate;
-  faMapMarkerAlt = faMapMarkerAlt;
-  faLanguage = faLanguage;
+  degreeIcon = degreeIcon;
+  locationIcon = locationIcon;
+  languageIcon = languageIcon;
 
   constructor() { }
 

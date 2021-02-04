@@ -1,11 +1,8 @@
-import { navBarTitle } from './../../core/inputs';
 import { Component, OnInit } from '@angular/core';
 
-import { faStar, faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons';
+import { skillIcon, arrowDownIcon } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
-
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -26,8 +23,8 @@ export class RightbarSkillsComponent implements OnInit {
   toolsCategoryEnabled!: boolean;
   skillsData!: any;
 
-  faStar = faStar;
-  faArrowAltCircleDown = faArrowAltCircleDown;
+  skillIcon = skillIcon;
+  arrowDownIcon = arrowDownIcon;
 
   constructor(
     private resumeService: ResumeService

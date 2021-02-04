@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 
-import { faAddressCard, faImages, faBookOpen } from '@fortawesome/free-solid-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-
 import { pagesObject } from '../../core/inputs';
 
+import { resumeIcon, galleryIcon, notesIcon, githubIcon } from '../../core/inputs';
 
 @Component({
   selector: 'app-home-view',
@@ -16,10 +14,10 @@ export class HomeViewComponent implements OnInit {
 
   quartersStatus!: any;
 
-  faAddressCard = faAddressCard;
-  faImages = faImages;
-  faBookOpen = faBookOpen;
-  faGithub = faGithub;
+  resumeIcon = resumeIcon;
+  galleryIcon = galleryIcon;
+  notesIcon = notesIcon;
+  githubIcon = githubIcon;
 
   title = 'Portfolio';
   author = 'Amaury Valorge';

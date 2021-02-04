@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { faGlobeEurope, faMapMarkerAlt, faImages, faArrowAltCircleUp, faBookOpen, faGlobe } from '@fortawesome/free-solid-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-
 import { apiImgUrl } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
 
-
 import { Subscription } from 'rxjs';
+
+import { resumeIcon, galleryIcon, notesIcon, githubIcon, arrowUpIcon, websiteIcon } from '../../core/inputs';
 
 
 
@@ -23,13 +21,12 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
   apiImgUrl = apiImgUrl;
 
   // icons
-  faMapMarkerAlt = faMapMarkerAlt;
-  faGlobeEurope = faGlobeEurope;
-  faImages = faImages;
-  faArrowAltCircleUp = faArrowAltCircleUp;
-  faGithub = faGithub;
-  faBookOpen = faBookOpen;
-  faGlobe = faGlobe;
+  resumeIcon = resumeIcon;
+  galleryIcon = galleryIcon;
+  arrowUpIcon = arrowUpIcon;
+  githubIcon = githubIcon;
+  notesIcon = notesIcon;
+  websiteIcon = websiteIcon;
 
   activitiesFilteredSubscription!: Subscription;
 

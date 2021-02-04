@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy  } from '@angular/core';
 
-import { faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
-
 import { ResumeService } from '../../services/resume.service';
 import { apiImgUrl } from '../../core/inputs';
 
@@ -17,9 +15,6 @@ import { Subscription } from 'rxjs';
 export class ResumeViewComponent implements OnInit, OnDestroy {
 
   apiImgUrl = apiImgUrl;
-
-  // icons
-  faGlobeEurope = faGlobeEurope;
 
   // resume top bar
   profilData: any;
