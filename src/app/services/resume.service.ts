@@ -10,14 +10,13 @@ import { apiBaseUrl } from '../core/inputs';
 })
 export class ResumeService {
 
-  private apiUrlResumeData = apiBaseUrl + 'general_resume_data';
+  private apiUrlResumeData = apiBaseUrl + 'resume_static_data';
   ErrorResumeDataApiFound: Subject<string> = new Subject<string>();
   resumeData: Subject<any> = new Subject<any>();
 
-  private apiUrlGraphData = apiBaseUrl + 'activities_graph?';
+  private apiUrlGraphData = apiBaseUrl + 'activities_graph_data?';
   errorActivitiesChartApiFound: Subject<string> = new Subject<string>();
   ActivitiesChartData: Subject<any> = new Subject<any>();
-
 
   private apiUrlSkillsFilteredData = apiBaseUrl + 'skills_filtered?';
   errorUrlSkillsFilteredApiFound: Subject<string> = new Subject<string>();
