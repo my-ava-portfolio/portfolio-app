@@ -69,7 +69,7 @@
 
     <div class="card-body">
       <span [class]="'badge badge-pill my-2 mx-2 text-white ' + activity.category_id" >{{activity.category}}</span>
-      <a autoscroll="true" [routerLink]="['/resume']" [fragment]="activity.identifier"><span class="badge badge-pill" [style]="'background-color:' + activity.color + ';color: white'">{{activity.title}}</span></a>
+      <a [routerLink]="['/resume']" [fragment]="activity.identifier"><span class="badge badge-pill" [style]="'background-color:' + activity.color + ';color: white'">{{activity.title}}</span></a>
       <span [class]="'badge badge-pill my-2 mx-2 text-white ' + activity.media_type" >{{activity.media_type}}</span>
       <h6 class="card-title">{{ picture.title }}</h6>
       <p class="card-text">{{picture.description}} blablabla</p>

@@ -5,6 +5,8 @@ import { GalleryService } from '../../services/gallery.service';
 
 import { Subscription } from 'rxjs';
 
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-gallery-view',
@@ -27,13 +29,24 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
   isDataAvailable = false;
 
+  fragment: string | null = null;
 
   activitiesGallerySubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
 
   constructor(
     private galleryService: GalleryService,
+    private activatedRoute: ActivatedRoute
   ) {
+
+    this.activatedRoute.fragment.subscribe(
+      (fragment) => {
+        if (fragment !== undefined) {
+          console.log('ralala', fragment)
+          this.fragment = fragment;
+        }
+      }
+  )
 
     this.activitiesGallerySubscription = this.galleryService.activitiesGalleryData.subscribe(
       (data) => {
@@ -50,9 +63,8 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
+    this.filterFromAnchor()
     this.resetGallery();
-
   }
 
   ngOnDestroy(): void {
@@ -60,6 +72,17 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     this.activitiesGallerySubscription.unsubscribe();
 
   }
+
+  filterFromAnchor(): void {
+    try {
+      if (this.fragment !== null) {
+        this.currentActivity  = this.fragment.replace('#', '')
+      }
+    } catch (e) {
+      console.log('anchor scrolling error');
+    }
+  }
+
 
   resetGallery(): any {
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory);
