@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 
-import { pagesObject } from '../../core/inputs';
+import { pagesObject } from '../core/inputs';
 
-import { resumeIcon, galleryIcon, notesIcon, githubIcon } from '../../core/inputs';
+import { resumeIcon, galleryIcon, notesIcon, githubIcon } from '../core/inputs';
 
 @Component({
   selector: 'app-home-view',
