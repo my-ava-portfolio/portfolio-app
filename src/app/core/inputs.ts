@@ -5,7 +5,7 @@ import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 export const apiBaseUrl = 'http://127.0.0.1:5000/';
 export const apiImgUrl = `${apiBaseUrl}/images/logo/`;
 
-export const navBarTitle = "Amaury Valorge - Portfolio"
+export const navBarTitle = 'Amaury Valorge - Portfolio';
 
 
 export const resumeIcon = faAddressCard;
@@ -31,7 +31,7 @@ export const homePage: any = {
   route: 'home',
   title: 'Accueil',
   status: false
-}
+};
 
 
 export const pages: any = [
@@ -61,6 +61,6 @@ export const pages: any = [
   }
 ];
 
-export const pagesObject: any = pages.reduce((a: any, x: any) => ({...a, [x.route]: x}), {})
+export const pagesObject: any = pages.reduce((a: any, x: any) => ({...a, [x.route]: x}), {});
 
 

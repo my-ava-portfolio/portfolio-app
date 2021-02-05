@@ -94,7 +94,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   }
 
   ngOnDestroy(): void {
-    console.log('lalala chart')
+    console.log('lalala chart');
     this.activitiesFilteredSubscription.unsubscribe();
   }
 

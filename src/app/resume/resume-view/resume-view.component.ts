@@ -67,7 +67,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('lalala resume content')
+    console.log('lalala resume content');
     this.resumeDataSubscription.unsubscribe();
   }
 

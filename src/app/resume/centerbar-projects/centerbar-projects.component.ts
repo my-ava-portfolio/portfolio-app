@@ -37,8 +37,8 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
     this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
 
-        this.personalProjectsData = data.personal_projects
-        console.log(this.personalProjectsData)
+        this.personalProjectsData = data.personal_projects;
+        console.log(this.personalProjectsData);
 
       },
       (error) => {
@@ -52,7 +52,7 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('lalala projects')
+    console.log('lalala projects');
     this.activitiesFilteredSubscription.unsubscribe();
   }
 

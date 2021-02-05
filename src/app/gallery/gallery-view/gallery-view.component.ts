@@ -42,11 +42,11 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment !== undefined) {
-          console.log('ralala', fragment)
+          console.log('ralala', fragment);
           this.fragment = fragment;
         }
       }
-  )
+  );
 
     this.activitiesGallerySubscription = this.galleryService.activitiesGalleryData.subscribe(
       (data) => {
@@ -63,12 +63,12 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.filterFromAnchor()
+    this.filterFromAnchor();
     this.resetGallery();
   }
 
   ngOnDestroy(): void {
-    console.log('lalala gallery')
+    console.log('lalala gallery');
     this.activitiesGallerySubscription.unsubscribe();
 
   }
@@ -76,7 +76,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   filterFromAnchor(): void {
     try {
       if (this.fragment !== null) {
-        this.currentActivity  = this.fragment.replace('#', '')
+        this.currentActivity  = this.fragment.replace('#', '');
       }
     } catch (e) {
       console.log('anchor scrolling error');

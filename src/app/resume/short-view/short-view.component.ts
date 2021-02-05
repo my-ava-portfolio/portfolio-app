@@ -108,14 +108,14 @@ export class ShortViewComponent implements OnInit, OnDestroy {
       true,
       true,
       null
-    )
+    );
   }
 
   ngOnDestroy(): void {
-    console.log('lalala resume content')
+    console.log('lalala resume content');
     this.resumeDataSubscription.unsubscribe();
     this.activitiesFilteredSubscription.unsubscribe();
-    this.skillsDataSubscription.unsubscribe()
+    this.skillsDataSubscription.unsubscribe();
   }
 
 

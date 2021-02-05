@@ -52,7 +52,7 @@ export class RightbarSkillsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.skillsDataSubscription.unsubscribe()
+    this.skillsDataSubscription.unsubscribe();
   }
 
 }

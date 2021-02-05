@@ -24,7 +24,7 @@ export class BackgroundComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initMap()
+    this.initMap();
   }
 
   initMap(): void {

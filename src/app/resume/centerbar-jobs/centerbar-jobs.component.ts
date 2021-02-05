@@ -10,7 +10,6 @@ import { startWith  } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 import { resumeIcon, galleryIcon, locationIcon, arrowUpIcon } from '../../core/inputs';
-import { delay } from "rxjs/operators";
 
 
 @Component({
@@ -43,16 +42,16 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
-        console.log('ralala', fragment)
+        console.log('ralala', fragment);
 
         if (fragment !== undefined) {
-          console.log('ralala', fragment)
+          console.log('ralala', fragment);
           this.fragment = fragment;
-          this.checkAndScrollToAnchorIfNeeded()
+          this.checkAndScrollToAnchorIfNeeded();
 
         }
       }
-    )
+    );
 
     this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
@@ -70,7 +69,7 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('lalala jobs')
+    console.log('lalala jobs');
     this.activitiesFilteredSubscription.unsubscribe();
   }
 
@@ -78,19 +77,19 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
 
     this.isAnchorExistsCheckerSubscription = this.isAnchorExistsChecker.pipe(startWith(0)).subscribe(() => {
       try {
-        console.log(this.fragment)
+        console.log(this.fragment);
         if (this.fragment !== null) {
-          const element: any = window.document.getElementById(this.fragment)
+          const element: any = window.document.getElementById(this.fragment);
           element.scrollIntoView();
-          console.log('bravo')
+          console.log('bravo');
         } else {
           console.log('no anchor defined');
         }
-        this.isAnchorExistsCheckerSubscription.unsubscribe()
+        this.isAnchorExistsCheckerSubscription.unsubscribe();
       } catch (e) {
         console.log('anchor not found yet');
       }
-    })
+    });
   }
 
 }
