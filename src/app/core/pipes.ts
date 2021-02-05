@@ -15,3 +15,13 @@ export class SafeUrl implements PipeTransform {
   }
 
 }
+
+@Pipe({
+  name: 'join'
+})
+export class JoinPipe implements PipeTransform {
+
+  transform(input: Array<any>, sep = ','): string {
+    return input.join(sep);
+  }
+}

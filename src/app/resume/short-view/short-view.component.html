@@ -1,0 +1,223 @@
+<div class="container"  *ngIf="isDataAvailable">
+
+  <div class="row">
+
+    <div class="col-md-7 align-self-center">
+      <h1 class="">{{ profilData.first_name }} {{ profilData.last_name }}</h1>
+      <h2 class="">{{ profilData.job }}</h2>
+      <h3 class="">{{ profilData.experience_duration }}</h3>
+    </div>
+
+    <div class="col-md-5 align-self-center">
+      <div *ngIf="contactData.linkedin; then linkedinLink"></div>
+      <ng-template #linkedinLink>
+        <li>
+          <fa-icon class="mr-2 text-white" [icon]="linkedinIcon"></fa-icon>
+          <a class="text-white" [href]="contactData.linkedin" target="_blank" [innerHTML]="reverse(contactData.linkedin)"></a>
+        </li>
+      </ng-template>
+
+      <div *ngIf="contactData.email; then emailLink"></div>
+      <ng-template #emailLink>
+        <li>
+          <fa-icon class="mr-2 text-white" [icon]="emailIcon"></fa-icon>
+          <a class="text-white" [href]="contactData.email" target="_blank" [innerHTML]="reverse(contactData.email)"></a>
+        </li>
+      </ng-template>
+
+      <div *ngIf="contactData.email; then phoneLink"></div>
+      <ng-template #phoneLink>
+        <li>
+          <fa-icon class="mr-2 text-white" [icon]="phoneIcon"></fa-icon>
+          <a class="text-white" [href]="contactData.phone" target="_blank" [innerHTML]="reverse(contactData.phone)"></a>
+        </li>
+      </ng-template>
+
+      <div *ngIf="contactData.website; then websiteLink"></div>
+      <ng-template #websiteLink>
+        <li>
+          <fa-icon class="mr-2 text-white" [icon]="websiteIcon"></fa-icon>
+          <a class="text-white" [href]="contactData.website" target="_blank" [innerHTML]="reverse(contactData.website)"></a>
+        </li>
+      </ng-template>
+
+      <div *ngIf="contactData.github; then githubLink"></div>
+      <ng-template #githubLink>
+        <li>
+          <fa-icon class="mr-2 text-white" [icon]="githubIcon"></fa-icon>
+          <a class="text-white" [href]="contactData.github" target="_blank" [innerHTML]="contactData.github"></a>
+        </li>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-sm-12">
+      <h2 class="topic">Education</h2>
+    </div>
+
+    <div id="degrees" class="col-sm-12 element">
+      <div class="col-sm-12">
+        <h3 class="sub-topic">Diplômes</h3>
+      </div>
+
+      <div class="col-sm-12 sub-element" *ngFor="let degree of degreesData">
+        <div class="col-sm-12">
+          <div class="">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy' }} - {{ degree.degree }}</div>
+        </div>
+        <div class="col-sm-12">
+          <div class="">{{ degree.school }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 element">
+      <div class="col-sm-12">
+        <h3 class="">Formations</h3>
+      </div>
+      <div class="col-sm-12" *ngFor="let training of trainingsData">
+        <div class="col-sm-12">
+          <div class="">{{ training.year }} - {{ training.name }}</div>
+        </div>
+        <div class="col-sm-12">
+          <div class="">{{ training.trainer }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="languages" class="col-sm-12 element">
+      <div class="col-sm-12">
+        <h3 class="sub-topic">Langues</h3>
+      </div>
+      <div class="col-sm-12">
+        <ul class="list">
+          <li *ngFor="let language of languagesData">
+            <p class="">{{language.language}} ({{language.level}})</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-sm-12">
+      <h2 class="">Expériences</h2>
+    </div>
+
+    <div class="col-sm-12" *ngFor="let job of jobsData">
+      <div class="col-sm-12">
+
+        <div *ngIf="job.current; then currentJob else pastJob"></div>
+        <ng-template #pastJob>
+          <span>{{job.contract}} - du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.duration}})</span>
+        </ng-template>
+        <ng-template #currentJob>
+          <span>{{job.contract}} - du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.duration}})</span>
+        </ng-template>
+
+        <div class="col-sm-12">
+          <p class="details">
+            <span class="text">{{job.title}}</span>
+            <span class="text-bold">: {{job.company}}</span>
+            <span class="location"> à {{job.location}}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-sm-12">
+      <h2>Projets</h2>
+    </div>
+
+    <div class="col-sm-4" *ngFor="let project of personalProjectsData">
+
+      <div class="col-sm-12">
+        <h4 class="">{{project.title}}</h4>
+      </div>
+      <div class="col-sm-12 ">
+        <p>{{project.short_description}}</p>
+      </div>
+
+      <div class="list col-sm-12">
+        <ul>
+          <div *ngIf="project.url_github; then projectsShorcutGithub"></div>
+          <ng-template #projectsShorcutGithub>
+            <li><span class="">Github: </span><a href="{{ project.url_github }}" target="_blank" >{{ project.url_github }}</a></li>
+          </ng-template>
+
+          <div *ngIf="project.url_website; then projectsShorcutWebsite"></div>
+          <ng-template #projectsShorcutWebsite>
+            <li><span class="">Site web: </span><a href="{{ project.url_website }}" target="_blank" >{{ project.url_website }}</a></li>
+          </ng-template>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>Recherches et publications</h2>
+    </div>
+
+    <div class="col-sm-12 sub-element" *ngFor="let publication of publicationsData">
+      <div class="col-sm-12">
+        <p class="">{{publication.year}}</p>
+      </div>
+      <div class="col-sm-12 details">
+        <p>{{publication.publication}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-sm-12">
+      <h2 class="topic">Compétences</h2>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="col-sm-12 text-centered">
+        <h4 class="sub-topic">Thématiques</h4>
+      </div>
+      <div class="col-sm-12">
+        <ul class="">
+          <li *ngFor="let skill of skillsData.themes">
+            <span class="text-bold">{{skill.name}}:</span> <span>{{skill.details | join }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="col-sm-12 text-centered">
+        <h3 class="sub-topic">Techniques</h3>
+      </div>
+      <div class="col-sm-12">
+        <ul class="">
+          <li *ngFor="let skill of skillsData.technics">
+            <span class="text-bold">{{skill.name}}:</span> <span>{{skill.details | join }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="tools" class="col-sm-6">
+      <div class="col-sm-12 text-centered">
+        <h3 class="sub-topic">Outils</h3>
+      </div>
+      <div class="col-sm-12">
+        <ul class="">
+          <li *ngFor="let skill of skillsData.tools">
+            <span class="text-bold">{{skill.name}}:</span> <span>{{skill.details | join }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -15,7 +15,7 @@ import { NotesViewComponent } from './notes/notes-view/notes-view.component';
 
 import { ResumeService } from './services/resume.service';
 import { GalleryService } from './services/gallery.service';
-import { SafeUrl } from './core/pipes';
+import { SafeUrl, JoinPipe } from './core/pipes';
 
 import { Routes } from '@angular/router';
 import { CenterBarNavigationComponent } from './resume/centerbar-navigation/centerbar-navigation.component';
@@ -26,6 +26,7 @@ import { CenterbarProjectsComponent } from './resume/centerbar-projects/centerba
 import { CenterbarPublicationsComponent } from './resume/centerbar-publications/centerbar-publications.component';
 import { RightbarSkillsComponent } from './resume/rightbar-skills/rightbar-skills.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ShortViewComponent } from './resume/short-view/short-view.component';
 
 
 
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeViewComponent },
   { path: 'resume', component: ResumeViewComponent },
+  { path: 'short_resume', component: ShortViewComponent },
   { path: 'gallery', component: GalleryViewComponent },
   { path: 'notes', component: NotesViewComponent },
 ];
@@ -52,7 +54,9 @@ const appRoutes: Routes = [
     CenterbarProjectsComponent,
     CenterbarPublicationsComponent,
     RightbarSkillsComponent,
-    SafeUrl
+    SafeUrl,
+    JoinPipe,
+    ShortViewComponent
   ],
   imports: [
     BrowserModule,

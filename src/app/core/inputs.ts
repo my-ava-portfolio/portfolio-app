@@ -1,4 +1,4 @@
-import { faPrint, faStar, faArrowAltCircleDown, faAddressCard, faImages, faBookOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faAddressCard, faImages, faBookOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 
@@ -24,6 +24,8 @@ export const skillIcon = faStar;
 export const arrowDownIcon = faArrowAltCircleDown;
 export const printIcon = faPrint;
 export const linkedinIcon = faLinkedinIn;
+export const emailIcon = faEnvelopeOpen;
+export const phoneIcon = faPhone;
 
 export const homePage: any = {
   route: 'home',
