@@ -37,25 +37,25 @@ export const homePage: any = {
 
 export const pages: any = [
   {
-    route: 'resume',
+    route: '/resume',
     title: 'Profil',
     status: false,
     icon: resumeIcon
   },
   {
-    route: 'map',
+    route: '/map',
     title: 'Carte',
     status: false,
     icon: MapIcon
   },
   {
-    route: 'gallery',
+    route: '/gallery',
     title: 'Galerie',
     status: false,
     icon: galleryIcon
   },
   {
-    route: 'notes',
+    route: '/notes',
     title: 'Notes',
     status: false,
     icon: notesIcon

@@ -7,11 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { HomeViewComponent } from './home-view/home-view.component';
-import { ResumeViewComponent } from './resume/resume-view/resume-view.component';
-import { GalleryViewComponent } from './gallery/gallery-view/gallery-view.component';
-import { NotesViewComponent } from './notes/notes-view/notes-view.component';
+
 
 import { ResumeService } from './services/resume.service';
 import { GalleryService } from './services/gallery.service';
@@ -19,6 +17,15 @@ import { MapService } from './services/map.service';
 import { SafeUrl, JoinPipe } from './core/pipes';
 
 import { Routes } from '@angular/router';
+
+import { HomeViewComponent } from './home-view/home-view.component';
+
+import { GalleryViewComponent } from './gallery/gallery-view/gallery-view.component';
+
+import { NotesViewComponent } from './notes/notes-view/notes-view.component';
+
+import { MainViewComponent } from './main-view/main-view.component';
+import { ResumeViewComponent } from './resume/resume-view/resume-view.component';
 import { CenterBarNavigationComponent } from './resume/centerbar-navigation/centerbar-navigation.component';
 import { TopbarSubviewComponent } from './resume/topbar-subview/topbar-subview.component';
 import { LeftbarSubviewComponent } from './resume/leftbar-subview/leftbar-subview.component';
@@ -26,14 +33,14 @@ import { CenterbarJobsComponent } from './resume/centerbar-jobs/centerbar-jobs.c
 import { CenterbarProjectsComponent } from './resume/centerbar-projects/centerbar-projects.component';
 import { CenterbarPublicationsComponent } from './resume/centerbar-publications/centerbar-publications.component';
 import { RightbarSkillsComponent } from './resume/rightbar-skills/rightbar-skills.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ShortViewComponent } from './resume/short-view/short-view.component';
-import { MainViewComponent } from './main-view/main-view.component';
-import { BackgroundComponent } from './background-view/map/background.component';
-import { ThemeLegendComponent } from './map/theme-legend/theme-legend.component';
+
 import { MapViewComponent } from './map/map-view/map-view.component';
-import { FooterComponent } from './background-view/footer/footer.component';
-import { HeaderComponent } from './background-view/header/header.component';
+import { ThemeLegendComponent } from './map/theme-legend/theme-legend.component';
+
+import { BackgroundComponent } from './background/map/background.component';
+import { FooterComponent } from './background/footer/footer.component';
+import { HeaderComponent } from './background/header/header.component';
 
 
 const appRoutes: Routes = [
@@ -77,10 +84,10 @@ const appRoutes: Routes = [
     ShortViewComponent,
     MainViewComponent,
     BackgroundComponent,
-    ThemeLegendComponent,
     MapViewComponent,
     FooterComponent,
     HeaderComponent,
+    ThemeLegendComponent,
   ],
   imports: [
     BrowserModule,
