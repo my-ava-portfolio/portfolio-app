@@ -11,7 +11,7 @@ export class ThemeLegendComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('map!', this.map)
+    console.log('map!', this.map);
   }
 
 }

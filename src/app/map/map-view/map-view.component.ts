@@ -24,7 +24,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       (element) => {
         this.mapContainer = element;
       }
-    )
+    );
 
   }
 
@@ -32,7 +32,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.mapContainerSubscription.unsubscribe()
+    this.mapContainerSubscription.unsubscribe();
   }
 
 }

@@ -32,6 +32,8 @@ import { MainViewComponent } from './main-view/main-view.component';
 import { BackgroundComponent } from './background-view/map/background.component';
 import { ThemeLegendComponent } from './map/theme-legend/theme-legend.component';
 import { MapViewComponent } from './map/map-view/map-view.component';
+import { FooterComponent } from './background-view/footer/footer.component';
+import { HeaderComponent } from './background-view/header/header.component';
 
 
 const appRoutes: Routes = [
@@ -77,6 +79,8 @@ const appRoutes: Routes = [
     BackgroundComponent,
     ThemeLegendComponent,
     MapViewComponent,
+    FooterComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { navBarTitle, homePage, pages } from '../core/inputs';
 
 @Component({
   selector: 'app-main-view',
@@ -10,14 +9,10 @@ import { navBarTitle, homePage, pages } from '../core/inputs';
 })
 export class MainViewComponent implements OnInit {
 
-  homePage: any = homePage;
-  navBarTitle: string = navBarTitle;
-  portfolioPages: any = pages;
-
   constructor() {
   }
 
   ngOnInit(): void {
   }
-  
+
 }
