@@ -33,33 +33,23 @@ import { BackgroundComponent } from './map/background/background.component';
 
 const appRoutes: Routes = [
 
-  // Site routes goes here
+  // Site routes sharing main-view component layout
   {
       path: '',
       component: MainViewComponent,
       children: [
-        { path: '', redirectTo: 'home', pathMatch: 'full' },
         { path: 'resume', component: ResumeViewComponent },
         { path: 'gallery', component: GalleryViewComponent },
         { path: 'notes', component: NotesViewComponent },
+        { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
       ]
   },
 
   // no layout routes
   { path: 'short_resume', component: ShortViewComponent },
   { path: 'home', component: HomeViewComponent },
-  { path: '**', redirectTo: '' }
 ];
 
-
-// const appRoutes: Routes = [
-//   { path: '', redirectTo: 'home', pathMatch: 'full' },
-//   { path: 'home', component: HomeViewComponent },
-//   { path: 'resume', component: ResumeViewComponent },
-//   { path: 'short_resume', component: ShortViewComponent },
-//   { path: 'gallery', component: GalleryViewComponent },
-//   { path: 'notes', component: NotesViewComponent },
-// ];
 
 
 @NgModule({
