@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, OnDestroy } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -15,7 +15,7 @@ import * as d3 from 'd3';
   styleUrls: ['./time-legend.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class TimeLegendComponent implements OnInit {
+export class TimeLegendComponent implements OnInit, OnDestroy {
   @Input() map: any;
 
   geoData!: any;
@@ -31,7 +31,7 @@ export class TimeLegendComponent implements OnInit {
   currentYear = currentYear;
   startDate!: Date;
   selectedDatePosition = 0;  // TODO check type
-  maxDatePosition: number = this.width - this.margin.left - this.margin.right - 40;
+  maxDatePosition: number = this.width - this.margin.left - this.margin.right ;
   dateRange!: any;
   movingCursor = false;
   timer!: any;
@@ -69,6 +69,11 @@ export class TimeLegendComponent implements OnInit {
 
   ngOnInit(): void {
     this.resumeService.pullResumeGeneralData();
+  }
+
+  ngOnDestroy(): void {
+    this.resumeDataSubscription.unsubscribe();
+    this.pullGeoDataSubscription.unsubscribe();
   }
 
   parseTime(time: string): Date | null {

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 import * as L from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
+
 import * as d3 from 'd3';
 
 import { MapService } from '../../services/map.service';
@@ -18,9 +19,12 @@ import { MapService } from '../../services/map.service';
 export class MapViewComponent implements OnInit, OnDestroy {
 
   mapContainer!: any;
+  zoomInitDone = false;
+  maxZoomValue = 9;
 
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
+
 
   constructor(
     private mapService: MapService,
@@ -37,7 +41,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.pullActivitiesGeoDataToMapSubscription = this.mapService.activitiesGeoDataToMap.subscribe(
       (geodata) => {
+        if (!this.zoomInitDone) {
+          this.zoomFromDataBounds(geodata);
+          this.zoomInitDone = true;
+        }
         this.activitiesMapping(geodata);
+
       }
     );
 
@@ -48,7 +57,19 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
+    this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
   }
+
+  zoomFromDataBounds(geojsonData: any): void {
+    this.mapContainer.fitBounds(
+      L.geoJSON(geojsonData).getBounds(),
+      {
+        animate: false,
+        maxZoom: this.maxZoomValue
+      }
+  );
+  }
+
 
   initActivitiesSvgLayer(): void {
     const svgLayerContainer: any = L.svg().addTo(this.mapContainer);
