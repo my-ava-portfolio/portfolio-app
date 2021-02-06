@@ -15,6 +15,7 @@ import { NotesViewComponent } from './notes/notes-view/notes-view.component';
 
 import { ResumeService } from './services/resume.service';
 import { GalleryService } from './services/gallery.service';
+import { MapService } from './services/map.service';
 import { SafeUrl, JoinPipe } from './core/pipes';
 
 import { Routes } from '@angular/router';
@@ -91,7 +92,8 @@ const appRoutes: Routes = [
   ],
   providers: [
     ResumeService,
-    GalleryService
+    GalleryService,
+    MapService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-theme-legend',
@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./theme-legend.component.css']
 })
 export class ThemeLegendComponent implements OnInit {
+  @Input() map: any;
 
   constructor() { }
 
   ngOnInit(): void {
+    console.log('map!', this.map)
   }
 
 }

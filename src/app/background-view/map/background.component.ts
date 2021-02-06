@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
 
+import { MapService } from '../../services/map.service';
+
 
 @Component({
   selector: 'app-background-map',
@@ -19,12 +21,15 @@ export class BackgroundComponent implements OnInit {
 
   map: any;
 
-  constructor() {
+  constructor(
+    private mapService: MapService,
+  ) {
 
   }
 
   ngOnInit(): void {
     this.initMap();
+    this.mapService.sendMapContainer(this.map);
   }
 
   initMap(): void {
