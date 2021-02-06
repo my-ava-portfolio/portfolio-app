@@ -31,7 +31,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.mapContainer = element;
         this.initActivitiesSvgLayer();
 
-        console.log('map ok', this.mapContainer)
+        console.log('map ok', this.mapContainer);
       }
     );
 
@@ -64,15 +64,16 @@ export class MapViewComponent implements OnInit, OnDestroy {
   activitiesMapping(data: any): void {
     const group: any = d3.select('#activities-container');
     const jobs = group.selectAll('.activityPoint')
-      .data(data, (d: any) => d.properties.id ) // need to defined an unique id to disordered draw, check doc...
+      .data(data, (d: any) => d.properties.id); // need to defined an unique id to disordered draw, check doc...
 
     jobs
       .enter()
-      .append('circle')
+      .append('a') // add hyper link and the svg circle
+      .attr('xlink:href', (d: any) => '/resume#' + d.properties.id)
       .attr('id', (d: any) => 'circle_location_' + d.properties.id)
       .attr('class', (d: any) => d.properties.type + ' activityPoint')
-      .append('a')
-      .attr('href', (d: any) => '/resume#' + d.properties.id)
+      .attr('cursor', 'pointer')
+      .append('circle')
       .on('mouseover', (d: any, i: any, n: any) => {
         // TODO popup
 
@@ -85,14 +86,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
         sliderNode.classed('slider-node-selected', !sliderNode.classed('slider-node-selected')); // toggle class
         const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
-
       })
       .on('mousemove', (d: any) => {
         // dynamic tooltip position
         // TODO popup
       })
       .on('mouseout', (d: any, i: any, n: any) => {
-
         // hightlight map point
         const currentElement: any = d3.select(n[i]);
         currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
@@ -104,14 +103,14 @@ export class MapViewComponent implements OnInit, OnDestroy {
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
       });
 
-    jobs
-      .transition()
+    d3.selectAll('.activityPoint circle').transition()
       .attr('r', (d: any) => d.properties.months * 2);
 
-    jobs.exit()
-      .transition().duration(10)
-        .attr('r', 1)
-        .remove();
+    jobs
+      .exit()
+      .transition()
+      .attr('r', 0)
+      .remove();
 
     this.mapContainer.on('moveend', this.reset.bind(this));
     this.reset();

@@ -35,6 +35,7 @@ export class TimeLegendComponent implements OnInit {
   dateRange!: any;
   movingCursor = false;
   timer!: any;
+  currentCountNodes = 0;
 
   resumeDataSubscription!: Subscription;
   pullGeoDataSubscription!: Subscription;
@@ -142,10 +143,18 @@ export class TimeLegendComponent implements OnInit {
       return false;
     });
 
-    // build_trip(h);
-    this.mapService.pullActivitiesGeoDataToMap(newData);
-    console.log("slider done", newData)
-    this.displaySliderNodes(newData);
+    // call api only if last count is different from the current count feature
+    if (newData.length !== this.currentCountNodes) {
+      // build_trip(h);
+      this.mapService.pullActivitiesGeoDataToMap(newData);
+      console.log("slider done", newData);
+      this.displaySliderNodes(newData);
+    }
+
+    // update count feature, to optimize api calls
+    this.currentCountNodes = newData.length
+
+
     // update position and text of label according to slider scale
 
     // update_slider_elements FUNC
@@ -195,11 +204,11 @@ export class TimeLegendComponent implements OnInit {
       .select( (d: any, i: any, n: any) => n[i].parentNode.appendChild(n[i].cloneNode(true)))  // copying itself
       .attr('class', 'track-overlay')
       .call(d3.drag()
-        .on('start.interrupt', () => {
-            slider.interrupt();
-            // TODO maybe useless - disable drap map, because dragging slider drag the map...
-        })
-        .on('start drag', () => {
+        // .on('start.interrupt', () => {
+        //     slider.interrupt();
+        //     // TODO maybe useless - disable drap map, because dragging slider drag the map...
+        // })
+        .on('drag start', () => {
             // to avoid cursor running if track is drag...
             playButton.text('Pause');
 
