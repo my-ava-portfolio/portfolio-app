@@ -152,7 +152,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     if (newData.length !== this.currentCountNodes) {
       // build_trip(h);
       this.mapService.pullActivitiesGeoDataToMap(newData);
-      console.log("slider done", newData);
+      console.log('slider done', newData);
       this.displaySliderNodes(newData);
     }
 
@@ -293,13 +293,13 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         .attr('id', 'trace')
         .attr('x1', this.dateRange(this.startDate));
 
-    // events
-    const events = slider.insert('g', '.track-overlay')
-      .attr('class', 'events');
-
     const handle = slider.insert('circle', '.track-overlay')
         .attr('id', 'handle')
         .attr('r', 10);
+
+    // events
+    const events = slider.append('g')
+      .attr('class', 'events');
 
     // update to end date
     d3.select('#slider-value').text(this.formatDate(this.endDate));
@@ -318,26 +318,38 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('id', (d: any) => 'location_' + d.properties.id)
       .attr('class', (d: any) => d.properties.type)
       .attr('r', 4)
+      .attr('cursor', 'pointer')
       .attr('cx', (d: any) => this.dateRange(this.parseTime(d.properties.start_date)))
       .on('mouseover', (d: any, i: any, n: any) => {
-        const currentElement: any = d3.select(n[i]);
-        currentElement.classed('slider-node-selected', !currentElement.classed('slider-node-selected')); // toggle class
-
-        const legendElement: any = d3.select('.svg_legend_item .' + d.properties.type);
-        legendElement.classed('selected', !legendElement.classed('selected'));
-
-        // TODO here to link with the feature map and popup
+        this.interactionWithEventNode(n[i], d, 4);
+        // TODO here to link with popup
       })
       .on('mouseout', (d: any, i: any, n: any) => {
-        const currentElement: any = d3.select(n[i]);
-        currentElement.classed('slider-node-selected', !currentElement.classed('slider-node-selected')); // toggle class
-        const legendElement: any = d3.select('.svg_legend_item .' + d.properties.type);
-        legendElement.classed('selected', !legendElement.classed('selected'));
-
-        // TODO here to link with the feature map and popup (do not forget to remove it at the vbegining of the func)
+        this.interactionWithEventNode(n[i], d, 2);
+        // TODO here to link with popup
 
       });
     sliderNodes.exit().remove();
-}
+  }
+
+  interactionWithEventNode(svgObject: any, data: any, scaleR: number): void {
+    const currentElement: any = d3.select(svgObject);
+    currentElement.classed('slider-node-selected', !currentElement.classed('slider-node-selected')); // toggle class
+
+    const legendElement: any = d3.select('#theme-legend .' + data.properties.type);
+    legendElement.classed('selected', !legendElement.classed('selected'));
+
+    const currentActivityCircle = d3.select('#svgActivitiesLayer #circle_' + currentElement.attr('id') + ' circle')
+    currentActivityCircle.classed('selected', !currentActivityCircle.classed('selected')); // toggle class
+    this.circleBouncer(currentActivityCircle, scaleR)
+  }
+
+  circleBouncer(object: any, rScale: number): void {
+    object
+        .transition()
+        .duration(1000)
+        .ease(d3.easeElastic)
+        .attr('r', (d: any) => d.properties.months * rScale)
+  }
 
 }
