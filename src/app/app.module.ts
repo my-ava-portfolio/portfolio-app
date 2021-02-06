@@ -41,6 +41,7 @@ import { ThemeLegendComponent } from './map/theme-legend/theme-legend.component'
 import { BackgroundComponent } from './background/map/background.component';
 import { FooterComponent } from './background/footer/footer.component';
 import { HeaderComponent } from './background/header/header.component';
+import { TimeLegendComponent } from './map/time-legend/time-legend.component';
 
 
 const appRoutes: Routes = [
@@ -88,6 +89,7 @@ const appRoutes: Routes = [
     FooterComponent,
     HeaderComponent,
     ThemeLegendComponent,
+    TimeLegendComponent,
   ],
   imports: [
     BrowserModule,

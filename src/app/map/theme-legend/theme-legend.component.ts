@@ -6,8 +6,6 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./theme-legend.component.css']
 })
 export class ThemeLegendComponent implements OnInit {
-  @Input() map: any;
-
   widthLegendElement = 200;
   heightLegendElement = 100;
 
@@ -32,7 +30,6 @@ export class ThemeLegendComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('legend map', this.map)
   }
 
 }

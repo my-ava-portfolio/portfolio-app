@@ -32,14 +32,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.pullGeoDataSubscription = this.mapService.activitiesGeoData.subscribe(
       (element) => {
         this.geoData = element;
-        console.log(this.geoData)
       }
     );
 
   }
 
   ngOnInit(): void {
-    this.mapService.pullActivitiesGeoData('2019-01-01')
   }
 
   ngOnDestroy(): void {
