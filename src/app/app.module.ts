@@ -59,7 +59,7 @@ const appRoutes: Routes = [
   },
 
   // no layout routes
-  { path: 'map', component: MapViewComponent },
+  { path: 'map', component: MapViewComponent, pathMatch: 'full'  },
   { path: 'short_resume', component: ShortViewComponent },
   { path: 'home', component: HomeViewComponent },
 ];

@@ -14,10 +14,13 @@ export class HomeViewComponent implements OnInit {
 
   quartersStatus!: any;
 
+  // icons
   resumeIcon = resumeIcon;
   galleryIcon = galleryIcon;
   notesIcon = notesIcon;
   githubIcon = githubIcon;
+
+  pagesObject = pagesObject;
 
   title = 'Portfolio';
   author = 'Amaury Valorge';
@@ -51,7 +54,7 @@ export class HomeViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.quartersStatus = pagesObject;
+    this.quartersStatus = this.pagesObject;
     this.welcomeMessage = this.defaultWelcomeMessage;
   }
 

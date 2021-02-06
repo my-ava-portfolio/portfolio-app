@@ -32,7 +32,8 @@ export const forwardIcon = faStepForward;
 
 
 export const homePage: any = {
-  route: 'home',
+  id: 'home',
+  route: '/home',
   title: 'Accueil',
   status: false
 };
@@ -42,37 +43,42 @@ export const currentDate = new Date()
 
 export const pages: any = [
   {
-    route: 'resume',
+    id: 'resume',
+    route: '/resume',
     title: 'Profil',
     status: false,
     icon: resumeIcon
   },
   {
-    route: 'map',
+    id: 'map',
+    route: '/map',
     title: 'Carte',
     status: false,
     icon: MapIcon
   },
   {
-    route: 'gallery',
+    id: 'gallery',
+    route: '/gallery',
     title: 'Galerie',
     status: false,
     icon: galleryIcon
   },
   {
-    route: 'notes',
+    id: 'notes',
+    route: '/notes',
     title: 'Notes',
     status: false,
     icon: notesIcon
   },
   {
-    route: 'github',
+    id: 'github',
+    route: '/github',
     title: 'Github',
     status: false,
     icon: githubIcon
   }
 ];
 
-export const pagesObject: any = pages.reduce((a: any, x: any) => ({...a, [x.route]: x}), {});
+export const pagesObject: any = pages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
 
 

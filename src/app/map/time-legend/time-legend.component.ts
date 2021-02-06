@@ -204,10 +204,6 @@ export class TimeLegendComponent implements OnInit {
       .select( (d: any, i: any, n: any) => n[i].parentNode.appendChild(n[i].cloneNode(true)))  // copying itself
       .attr('class', 'track-overlay')
       .call(d3.drag()
-        // .on('start.interrupt', () => {
-        //     slider.interrupt();
-        //     // TODO maybe useless - disable drap map, because dragging slider drag the map...
-        // })
         .on('drag start', () => {
             // to avoid cursor running if track is drag...
             playButton.text('Pause');
