@@ -58,7 +58,8 @@ export class TimeLegendComponent implements OnInit {
     this.pullGeoDataSubscription = this.mapService.activitiesGeoData.subscribe(
       (element) => {
         this.geoData = element;
-        console.log(this.geoData);
+        // all the data is loaded but we are going to filter it to map its features regarding datetime
+        // defined on the timeline
         this.buildTimeline(String(this.currentYear));
 
       }
@@ -86,7 +87,7 @@ export class TimeLegendComponent implements OnInit {
   }
 
 
-  startAnimation(): void {
+  startTimeLine(): void {
     const button = d3.select('#play-button');
     if (button.html() === 'Pause') {
         this.movingCursor = false;
@@ -107,6 +108,27 @@ export class TimeLegendComponent implements OnInit {
     }
   }
 
+  resetTimeLine(): void {
+    // reset action
+    d3.select('#play-button').html('Start');
+    // update to start date
+    d3.select('#slider-value').html(this.formatDate(this.startDate));
+    this.update(this.startDate);
+    this.selectedDatePosition = 0;
+    this.movingCursor = false;
+    clearInterval(this.timer);
+  }
+
+  forwardTimeLine(): void {
+    d3.select('#play-button').html('Play');
+    // update to start date
+    d3.select('#slider-value').html(this.formatDate(this.endDate));
+    this.update(this.endDate);
+    this.selectedDatePosition = 0;
+    this.movingCursor = false;
+    clearInterval(this.timer);
+  }
+
   update(h: any): void {
 
     // filter data set and redraw plot
@@ -121,7 +143,8 @@ export class TimeLegendComponent implements OnInit {
     });
 
     // build_trip(h);
-    // displayJobs(newData);
+    this.mapService.pullActivitiesGeoDataToMap(newData);
+    console.log("slider done", newData)
     this.displaySliderNodes(newData);
     // update position and text of label according to slider scale
 
@@ -154,11 +177,6 @@ export class TimeLegendComponent implements OnInit {
 
     const svg = d3.select('#slider-bar');
 
-    ////////// slider //////////
-
-
-    const startButton: any = d3.select('#start-button');
-    const endButton: any = d3.select('#end-button');
     const playButton: any = d3.select('#play-button');
 
     this._initDateRange();
@@ -273,70 +291,13 @@ export class TimeLegendComponent implements OnInit {
         .attr('id', 'handle')
         .attr('r', 10);
 
-    this._initPlayButton();
-    this._initStopButton();
-    this._initEndButton();
-
     // update to end date
     d3.select('#slider-value').text(this.formatDate(this.endDate));
     this.update(this.endDate);
 
   }
 
-  _initPlayButton(): void {
-    d3.select('#play-button').on('click', (d: any, i: any, n: any) => {
-      const button = n[i];
-      if (button.text() === 'Pause') {
-        this.movingCursor = false;
-        clearInterval(this.timer);
-        // var timer = 0;
-        button.text('Continue');
-
-      } else if (button.text() === 'Continue') {
-        this.movingCursor = true;
-        this.timer = setInterval(this.step.bind(this), 100);
-        button.text('Pause');
-
-      } else {
-        // start run
-        this.movingCursor = true;
-        this.timer = setInterval(this.step.bind(this), 100);
-        button.text('Pause');
-      }
-    });
-  }
-
-  _initStopButton(): void {
-    d3.select('#stop-button').on('click', () => {
-
-      // reset action
-      d3.select('#play-button').html('Start');
-      // update to start date
-      d3.select('#slider-value').html(this.formatDate(this.startDate));
-      this.update(this.startDate);
-      this.selectedDatePosition = 0;
-      this.movingCursor = false;
-      clearInterval(this.timer);
-    });
-  }
-
-  _initEndButton(): void {
-    d3.select('#end-button').on('click', () => {
-      // reset action
-      d3.select('#play-button').html('Play');
-      // update to start date
-      d3.select('#slider-value').html(this.formatDate(this.endDate));
-      this.update(this.endDate);
-      this.selectedDatePosition = 0;
-      this.movingCursor = false;
-      clearInterval(this.timer);
-    });
-  }
-
-
-
-
-  displaySliderNodes(geoData: any) {
+  displaySliderNodes(geoData: any): void {
     const sliderNodes = d3.select('#slider-bar .events')
       .selectAll('circle')
       .data(geoData, (d: any) => d.properties.id);
