@@ -1,4 +1,4 @@
-import { faMapMarkedAlt, faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faAddressCard, faImages, faBookOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faStepBackward, faStepForward, faMapMarkedAlt, faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faAddressCard, faImages, faBookOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 
@@ -27,6 +27,9 @@ export const linkedinIcon = faLinkedinIn;
 export const emailIcon = faEnvelopeOpen;
 export const phoneIcon = faPhone;
 export const MapIcon = faMapMarkedAlt;
+export const backwardIcon = faStepBackward;
+export const forwardIcon = faStepForward;
+
 
 export const homePage: any = {
   route: 'home',
@@ -34,28 +37,30 @@ export const homePage: any = {
   status: false
 };
 
+export const currentYear: number = new Date().getFullYear();
+export const currentDate = new Date()
 
 export const pages: any = [
   {
-    route: '/resume',
+    route: 'resume',
     title: 'Profil',
     status: false,
     icon: resumeIcon
   },
   {
-    route: '/map',
+    route: 'map',
     title: 'Carte',
     status: false,
     icon: MapIcon
   },
   {
-    route: '/gallery',
+    route: 'gallery',
     title: 'Galerie',
     status: false,
     icon: galleryIcon
   },
   {
-    route: '/notes',
+    route: 'notes',
     title: 'Notes',
     status: false,
     icon: notesIcon
