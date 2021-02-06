@@ -1,4 +1,4 @@
-import { faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faAddressCard, faImages, faBookOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarkedAlt, faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faAddressCard, faImages, faBookOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 
@@ -26,6 +26,7 @@ export const printIcon = faPrint;
 export const linkedinIcon = faLinkedinIn;
 export const emailIcon = faEnvelopeOpen;
 export const phoneIcon = faPhone;
+export const MapIcon = faMapMarkedAlt;
 
 export const homePage: any = {
   route: 'home',
@@ -40,6 +41,12 @@ export const pages: any = [
     title: 'Profil',
     status: false,
     icon: resumeIcon
+  },
+  {
+    route: 'map',
+    title: 'Carte',
+    status: false,
+    icon: MapIcon
   },
   {
     route: 'gallery',

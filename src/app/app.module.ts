@@ -28,7 +28,9 @@ import { RightbarSkillsComponent } from './resume/rightbar-skills/rightbar-skill
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ShortViewComponent } from './resume/short-view/short-view.component';
 import { MainViewComponent } from './main-view/main-view.component';
-import { BackgroundComponent } from './map/background/background.component';
+import { BackgroundComponent } from './background-view/map/background.component';
+import { ThemeLegendComponent } from './map/theme-legend/theme-legend.component';
+import { MapViewComponent } from './map/map-view/map-view.component';
 
 
 const appRoutes: Routes = [
@@ -46,6 +48,7 @@ const appRoutes: Routes = [
   },
 
   // no layout routes
+  { path: 'map', component: MapViewComponent },
   { path: 'short_resume', component: ShortViewComponent },
   { path: 'home', component: HomeViewComponent },
 ];
@@ -71,6 +74,8 @@ const appRoutes: Routes = [
     ShortViewComponent,
     MainViewComponent,
     BackgroundComponent,
+    ThemeLegendComponent,
+    MapViewComponent,
   ],
   imports: [
     BrowserModule,
