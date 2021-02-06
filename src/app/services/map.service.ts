@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 
-
+import { apiBaseUrl } from '../core/inputs';
 
 
 @Injectable({
@@ -12,11 +13,32 @@ export class MapService {
 
   mapContainer: Subject<any> = new Subject<any>();
 
-  constructor() { }
+  private apiUrlActivitiesGeoData = apiBaseUrl + 'activities_geodata?currentDate=';
+  ErrorapiUrlActivitiesGeoDataApiFound: Subject<string> = new Subject<string>();
+  activitiesGeoData: Subject<any> = new Subject<any>();
+
+
+  constructor(
+    private http: HttpClient
+  ) { }
 
 
   sendMapContainer(mapContainer: any): void {
     this.mapContainer.next(mapContainer);
   }
+
+  pullActivitiesGeoData(currentDate:string): void {
+
+    this.http.get<any>(this.apiUrlActivitiesGeoData + currentDate).subscribe(
+      (response) => {
+        this.activitiesGeoData.next(response);
+      },
+      (response) => {
+        // TODO improve error message, but API need improvments
+        this.ErrorapiUrlActivitiesGeoDataApiFound.next(response.error.message);
+      }
+    );
+  }
+
 
 }

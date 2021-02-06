@@ -14,8 +14,10 @@ import { MapService } from '../../services/map.service';
 export class MapViewComponent implements OnInit, OnDestroy {
 
   mapContainer!: any;
+  geoData!: any;
 
   mapContainerSubscription!: Subscription;
+  pullGeoDataSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -27,9 +29,17 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.pullGeoDataSubscription = this.mapService.activitiesGeoData.subscribe(
+      (element) => {
+        this.geoData = element;
+        console.log(this.geoData)
+      }
+    );
+
   }
 
   ngOnInit(): void {
+    this.mapService.pullActivitiesGeoData('2019-01-01')
   }
 
   ngOnDestroy(): void {
