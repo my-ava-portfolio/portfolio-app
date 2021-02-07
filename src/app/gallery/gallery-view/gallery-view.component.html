@@ -1,31 +1,4 @@
 <div id="content" class="container-fluid" *ngIf="isDataAvailable">
-  <div class="row projects-bar border justify-content-around text-center">
-    <div class="col-lg-5">
-
-      <div class="btn-group btn-group-toggle my-3" data-toggle="buttons">
-        <label class="btn btn-secondary active">
-          <input (click)="this.getGalleryDataByActivity('null')" type="radio" name="options" id="option1" autocomplete="off" checked>Tous
-        </label>
-        <label class="btn btn-secondary">
-          <input (click)="getGalleryDataByCategory('jobs')" type="radio" name="options" id="option2" autocomplete="off">Expériences
-        </label>
-        <label class="btn btn-secondary">
-          <input (click)="getGalleryDataByCategory('personal_projects')" type="radio" name="options" id="option3" autocomplete="off">Projets personnels
-        </label>
-      </div>
-
-    </div>
-
-    <div class="col-lg-6">
-      <div class="btn-group my-3">
-        <ng-container *ngFor="let activity of galleryItems">
-          <button (click)="getGalleryDataByActivity(activity.identifier)" type="button" [id]="activity.identifier" class="btn btn-primary btn-sm" [style]="'background-color:' + activity.color +'; border-color:'+ activity.color">{{ activity.title}}</button>
-        </ng-container>
-      </div>
-    </div>
-
-  </div>
-
   <div class="row justify-content-around y-scroll my-3">
     <div class="col-lg-10">
 
@@ -45,9 +18,36 @@
 
 </div>
 
+<div class="row projects-bar border justify-content-around text-center">
+  <div class="col-sm-6">
+
+    <div class="btn-group btn-group-toggle my-3" data-toggle="buttons">
+      <label class="btn btn-secondary active btn-sm">
+        <input (click)="this.getGalleryDataByActivity('null')" type="radio" name="options" id="option1" autocomplete="off" checked>Tous
+      </label>
+      <label class="btn btn-secondary btn-sm">
+        <input (click)="getGalleryDataByCategory('jobs')" type="radio" name="options" id="option2" autocomplete="off">Expériences
+      </label>
+      <label class="btn btn-secondary btn-sm">
+        <input (click)="getGalleryDataByCategory('personal_projects')" type="radio" name="options" id="option3" autocomplete="off">Projets personnels
+      </label>
+    </div>
+
+  </div>
+
+  <div class="col-sm-6">
+    <div class="btn-group my-3">
+      <ng-container *ngFor="let activity of galleryItems">
+        <button (click)="getGalleryDataByActivity(activity.identifier)" type="button" [id]="activity.identifier" class="btn btn-primary btn-sm" [style]="'background-color:' + activity.color +'; border-color:'+ activity.color">{{ activity.title}}</button>
+      </ng-container>
+    </div>
+  </div>
+
+</div>
+
 
 <ng-template #imgProject let-pictures=pictures let-activity=activity>
-  <div class="card border rounded py-2 px-2" *ngFor="let picture of pictures; let idx = index">
+  <div class="card border rounded py-2 px-2 border" *ngFor="let picture of pictures; let idx = index">
 
     <ng-container [ngSwitch]="checkMediaType(picture.media)">
 
