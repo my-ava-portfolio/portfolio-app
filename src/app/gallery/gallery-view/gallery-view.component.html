@@ -18,10 +18,12 @@
 
 </div>
 
-<div class="row projects-bar border justify-content-around text-center">
-  <div class="col-sm-6">
+<div class="row projects-bar border justify-content-center">
 
-    <div class="btn-group btn-group-toggle my-3" data-toggle="buttons">
+  <div class="col-lg-3  my-3">
+    <h5>Filtrage par thématiques</h5>
+
+    <div class="btn-group btn-group-toggle mt-1 ml-2" data-toggle="buttons">
       <label class="btn btn-secondary active btn-sm">
         <input (click)="this.getGalleryDataByActivity('null')" type="radio" name="options" id="option1" autocomplete="off" checked>Tous
       </label>
@@ -35,8 +37,10 @@
 
   </div>
 
-  <div class="col-sm-6">
-    <div class="btn-group my-3">
+  <div class="col-lg-3 my-3">
+    <h5>Filtrage par activités</h5>
+
+    <div class="btn-group mt1 ml-2">
       <ng-container *ngFor="let activity of galleryItems">
         <button (click)="getGalleryDataByActivity(activity.identifier)" type="button" [id]="activity.identifier" class="btn btn-primary btn-sm" [style]="'background-color:' + activity.color +'; border-color:'+ activity.color">{{ activity.title}}</button>
       </ng-container>
