@@ -1,0 +1,16 @@
+#separator {
+  width: 80%;
+}
+
+.title {
+  display: flex;
+}
+
+.title:before, .title:after {
+  color:white;
+  content:'';
+  flex:1;
+  border-bottom:groove 2px;
+  margin:auto 0.25em;
+  box-shadow: 0 -1px ;
+}
