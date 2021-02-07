@@ -35,10 +35,9 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   ZoomActivityValue = 12;
 
   apiImgUrl = apiImgUrl;
-  jobsData!: any;
   locationIcon = locationIcon;
   // check css code related to popup
-  popupWidth = 315;
+  popupWidth = 330;
   popupHeight = 190;
   geoFeaturesData!: any[];
 
@@ -51,18 +50,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
   ) {
-
-    // this.activatedRoute.fragment.subscribe(
-    //   (fragment) => {
-    //     if (fragment === undefined) {
-    //       this.fragment = null;
-    //     } else {
-    //       this.fragment = fragment;
-    //     }
-
-    //     console.log('fragment map', fragment)
-    //   }
-    // );
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element: any) => {
@@ -86,16 +73,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           this.zoomInitDone = true;
         }
-      }
-    );
-
-    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
-      (data) => {
-        this.jobsData = data.jobs;
-        console.log(this.jobsData);
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
