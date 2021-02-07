@@ -27,3 +27,12 @@
     stroke-opacity: 1;
 }
 
+.map-popup {
+  position: absolute;
+  visibility: hidden;
+  background-color: ghostwhite;
+  width: 315px;
+  height: 190;
+
+}
+

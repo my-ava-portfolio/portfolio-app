@@ -84,7 +84,7 @@ export class ResumeService {
     );
   }
 
-  pullActivitiesResumeFromGraph(
+  pullActivitiesResumeFromGraph( // TODO RENAME IT
     currentDate: number,
     fromSkill: string | null,
   ): void {

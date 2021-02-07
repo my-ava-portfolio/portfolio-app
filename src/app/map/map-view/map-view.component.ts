@@ -7,7 +7,11 @@ import 'leaflet/dist/images/marker-shadow.png';
 
 import * as d3 from 'd3';
 
+import { locationIcon } from '../../core/inputs';
+import { apiImgUrl, currentYear } from '../../core/inputs';
+
 import { MapService } from '../../services/map.service';
+import { ResumeService } from '../../services/resume.service';
 
 
 @Component({
@@ -17,17 +21,29 @@ import { MapService } from '../../services/map.service';
   encapsulation: ViewEncapsulation.None
 })
 export class MapViewComponent implements OnInit, OnDestroy {
+  currentDate = currentYear;
+
+  innerWidth!: any;
+  innerHeight!: any;
 
   mapContainer!: any;
   zoomInitDone = false;
   maxZoomValue = 9;
 
+  apiImgUrl = apiImgUrl;
+  jobsData!: any;
+  locationIcon = locationIcon;
+  // check css code related to popup
+  popupWidth = 315;
+  popupHeight = 190;
+
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
-
+  activitiesFilteredSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
+    private resumeService: ResumeService,
   ) {
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
@@ -50,9 +66,23 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
+      (data) => {
+        this.jobsData = data.jobs;
+        console.log(this.jobsData);
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
   }
 
   ngOnInit(): void {
+    this.resumeService.pullActivitiesResumeFromGraph(this.currentDate, null);
+    this.innerWidth = window.innerWidth;
+    this.innerHeight = window.innerHeight;
+
   }
 
   ngOnDestroy(): void {
@@ -107,10 +137,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
         sliderNode.classed('slider-node-selected', !sliderNode.classed('slider-node-selected')); // toggle class
         const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
+
+
       })
       .on('mousemove', (d: any) => {
         // dynamic tooltip position
-        // TODO popup
+        this.adaptActivityPopup(d.properties.id);
+
       })
       .on('mouseout', (d: any, i: any, n: any) => {
         // hightlight map point
@@ -122,6 +155,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
         sliderNode.classed('slider-node-selected', !sliderNode.classed('slider-node-selected')); // toggle class
         const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
+
+        this.disableActivityPopup(d.properties.id)
       });
 
     d3.selectAll('.activityPoint circle').transition()
@@ -152,6 +187,30 @@ export class MapViewComponent implements OnInit, OnDestroy {
     const y: number = d.geometry.coordinates[1];
     const x: number = d.geometry.coordinates[0];
     return this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x));
+  }
+
+  adaptActivityPopup(popupId: string): void {
+    const currentPopup: any = d3.select('#popup-feature-' + popupId)
+      .style('visibility', 'visible')
+      .style('left', () => {
+        if (d3.event.pageX + this.popupWidth + 20 > this.innerWidth) {
+          return d3.event.pageX - this.popupWidth - 15 + 'px';
+        } else {
+          return d3.event.pageX + 15 + 'px';
+        }
+      })
+      .style('top', () => {
+        if (d3.event.pageY + this.popupHeight + 20 > this.innerHeight) {
+          return d3.event.pageY - this.popupHeight - 15 + 'px';
+        } else {
+          return d3.event.pageY + 15 + 'px';
+        }
+      });
+  }
+
+  disableActivityPopup(popupId: string): void {
+    d3.select('#popup-feature-' + popupId)
+    .style('visibility', 'hidden')
   }
 
 }
