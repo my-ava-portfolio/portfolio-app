@@ -30,7 +30,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   innerHeight!: any;
 
   mapContainer!: any;
-  zoomInitDone = false;
+  zoomInitDone!: boolean;
   maxZoomValue = 9;
   ZoomActivityValue = 12;
 
@@ -59,17 +59,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
     );
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
-      (element) => {
+      (element: any) => {
         this.mapContainer = element;
         this.initActivitiesSvgLayer();
       }
     );
 
     this.pullActivitiesGeoDataToMapSubscription = this.mapService.activitiesGeoDataToMap.subscribe(
-      (geoFeaturesData) => {
+      (geoFeaturesData: any[]) => {
         this.geoFeaturesData = geoFeaturesData;
         console.log('data');
         this.activitiesMapping(geoFeaturesData);
+        console.log('lalala', this.zoomInitDone, this.fragment)
         if (!this.zoomInitDone) {
           if (this.fragment !== null) {
             console.log(this.fragment);
@@ -95,6 +96,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.fragment = null;
+    this.zoomInitDone = false;
     this.resumeService.pullActivitiesResumeFromGraph(this.currentDate, null);
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
@@ -107,6 +110,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   zoomFromDataBounds(geojsonData: any): void {
+
     this.mapContainer.fitBounds(
       L.geoJSON(geojsonData).getBounds(),
       {

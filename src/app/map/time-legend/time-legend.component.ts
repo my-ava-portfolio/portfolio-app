@@ -16,7 +16,7 @@ import * as d3 from 'd3';
   encapsulation: ViewEncapsulation.None
 })
 export class TimeLegendComponent implements OnInit, OnDestroy {
-  @Input() map: any;
+  @Input() mapContainer: any;
 
   geoData!: any;
 
@@ -223,7 +223,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         })
         .on('end', () => {
             // at the drag end we enable the drap map
-            this.map.dragging.enable();
+            this.mapContainer.dragging.enable();
 
             // enable timeline node selection
             d3.select('#slider-bar .events')
