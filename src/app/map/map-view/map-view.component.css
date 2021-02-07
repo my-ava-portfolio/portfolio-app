@@ -10,7 +10,7 @@
 }
 
 
-.jobs
+.jobs circle, circle.jobs
 {
     fill: #ff0000;;
     opacity: 0.7;
@@ -19,7 +19,8 @@
     stroke-opacity: 1;
 }
 
-.education{
+.education circle, circle.education
+{
     fill: #168720;
     opacity: 0.7;
     stroke: ghostwhite;
