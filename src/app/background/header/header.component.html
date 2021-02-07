@@ -1,19 +1,19 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light navbar-style sticky-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand text-dark" [routerLink]="homePage.route">{{ this.navBarTitle }}</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li *ngFor="let page of portfolioPages" class="ml-3" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-              <a class="text-dark" [routerLink]="page.route">
-                <fa-icon [icon]="page.icon" class="mr-1"></fa-icon>{{page.title}}
-              </a>
-              </li>
-            </ul>
-        </div>
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand text-dark" [routerLink]="homePage.route">{{ this.navBarTitle }}</a>
     </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li *ngFor="let page of portfolioPages" class="ml-3" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="text-dark" [routerLink]="page.route">
+            <fa-icon [icon]="page.icon" class="mr-1"></fa-icon>{{page.title}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
