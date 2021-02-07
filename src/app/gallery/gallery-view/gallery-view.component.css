@@ -140,10 +140,52 @@ footer {
 }
 
 .modal-dialog {
-  max-width: 65vh;
+  max-height: 100vh;
+  max-width: 100vh;
+
 }
 
 .card-columns .card {
   /* box-shadow: 0px 9px 20px rgb(0 0 0 / 50%); */
 }
 
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal {
+  background-color: rgba(0,0,0,0.7);
+}
+
+.img-responsive-height {
+  display: block;
+  width: auto;
+  max-height: 100%
+}
+
+@media (orientation: portrait) {
+  .img-size {
+      width: 60vh;
+      margin: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+  }
+}
+
+@media (orientation: landscape) {
+  .img-size {
+      width: auto;
+      max-height: 90vh;
+      margin: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+  }
+
+}

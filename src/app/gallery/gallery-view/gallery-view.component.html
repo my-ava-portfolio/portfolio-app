@@ -88,36 +88,21 @@
 </ng-template>
 
 
-
 <ng-template #imgModal let-picture=picture let-activityId=activityId let-pictureId=pictureId>
-<div class="modal fade" [id]="'modal-' + activityId + pictureId" tabindex="-1" role="dialog" aria-labelledby="imgkeyLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{ picture.title }}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+<div class="modal" [id]="'modal-' + activityId + pictureId" tabindex="-1" role="dialog" aria-labelledby="imgkeyLabel" aria-hidden="true">
 
-        <ng-container [ngSwitch]="checkMediaType(picture.media)">
+  <ng-container [ngSwitch]="checkMediaType(picture.media)">
+    <a data-dismiss="modal" aria-label="Close">
+      <ng-container *ngSwitchCase="'githubusercontent_url'">
+        <img [src]="picture.media | safeUrl" class="pointer img-size">
+      </ng-container>
 
-          <ng-container *ngSwitchCase="'githubusercontent_url'">
-            <img [src]="picture.media | safeUrl" class="card-img-top pointer py-2 px-2">
-          </ng-container>
+      <ng-container *ngSwitchCase="'local_url'">
+        <img [src]="apiBaseUrl + picture.media" class="pointer img-size">
+      </ng-container>
+    </a>
+  </ng-container>
 
-          <ng-container *ngSwitchCase="'local_url'">
-            <img [src]="apiBaseUrl + picture.media" class="card-img-top pointer py-2 px-2">
-          </ng-container>
-
-        </ng-container>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
 </div>
 </ng-template>
+
