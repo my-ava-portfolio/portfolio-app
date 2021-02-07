@@ -3,7 +3,10 @@ import { Component, OnInit, ViewEncapsulation, OnDestroy  } from '@angular/core'
 import { ResumeService } from '../../services/resume.service';
 import { apiImgUrl } from '../../core/inputs';
 
-import { Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
+import { startWith  } from 'rxjs/operators';
+
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -13,7 +16,7 @@ import { Subscription } from 'rxjs';
   encapsulation: ViewEncapsulation.None
 })
 export class ResumeViewComponent implements OnInit, OnDestroy {
-
+  fragment!: string | null;
   apiImgUrl = apiImgUrl;
 
   // resume top bar
@@ -37,9 +40,26 @@ export class ResumeViewComponent implements OnInit, OnDestroy {
 
   resumeDataSubscription!: Subscription;
 
+  isAnchorExistsChecker = interval(500); // observable which run all the time
+  isAnchorExistsCheckerSubscription!: Subscription;
+
   constructor(
-    private resumeService: ResumeService
+    private resumeService: ResumeService,
+    private activatedRoute: ActivatedRoute,
+
   ) {
+
+    this.activatedRoute.fragment.subscribe(
+      (fragment) => {
+        console.log('ralala', fragment);
+
+        if (fragment !== undefined) {
+          console.log('ralala', fragment);
+          this.fragment = fragment;
+          this.checkAndScrollToAnchorIfNeeded();
+        }
+      }
+    );
 
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {
@@ -71,5 +91,24 @@ export class ResumeViewComponent implements OnInit, OnDestroy {
     this.resumeDataSubscription.unsubscribe();
   }
 
+
+  checkAndScrollToAnchorIfNeeded(): void {
+
+    this.isAnchorExistsCheckerSubscription = this.isAnchorExistsChecker.pipe(startWith(0)).subscribe(() => {
+      try {
+        console.log(this.fragment);
+        if (this.fragment !== null) {
+          const element: any = window.document.getElementById(this.fragment);
+          element.scrollIntoView();
+          console.log('bravo');
+        } else {
+          console.log('no anchor defined');
+        }
+        this.isAnchorExistsCheckerSubscription.unsubscribe();
+      } catch (e) {
+        console.log('anchor not found yet');
+      }
+    });
+  }
 
 }
