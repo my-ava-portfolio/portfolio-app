@@ -46,8 +46,9 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     this.pullGeoDataSubscription = this.mapService.activitiesGeoData.subscribe(
       (element) => {
-        this.geoData = element;
-        const geoDataFeatures: any[] = element.features;
+        // TODO add trip (trip_data property from element variable)
+        this.geoData = element.activities_geojson;
+        const geoDataFeatures: any[] = this.geoData.features;
         const firstActivity: any[] = geoDataFeatures.filter((feature: any) => feature.id === '0');
         const startDate: Date = new Date(firstActivity[0].properties.start_date);
         startDate.setMonth(startDate.getMonth() - 1); // start date must be smaller than the first activity start_date
