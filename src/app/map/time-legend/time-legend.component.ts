@@ -29,7 +29,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   height = 50;
   endDate: Date = currentDate;
   currentYear = currentYear;
-  startDate = currentDate;
+  startDate!: Date;
   selectedDatePosition = 0;  // TODO check type
   maxDatePosition: number = this.width - this.margin.left - this.margin.right ;
   dateRange!: any;
@@ -47,11 +47,14 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     this.pullGeoDataSubscription = this.mapService.activitiesGeoData.subscribe(
       (element) => {
         this.geoData = element;
-        const geoDataFeatures: any[] = this.geoData.features;
-        const firstActivity: any[] = geoDataFeatures.filter((feature: any) => feature.id === "0");
-        this.startDate = new Date(firstActivity[0].properties.start_date)
+        const geoDataFeatures: any[] = element.features;
+        const firstActivity: any[] = geoDataFeatures.filter((feature: any) => feature.id === '0');
+        const startDate: Date = new Date(firstActivity[0].properties.start_date);
+        startDate.setMonth(startDate.getMonth() - 1); // start date must be smaller than the first activity start_date
+        this.startDate = startDate;
         // all the data is loaded but we are going to filter it to map its features regarding datetime
         // defined on the timeline
+        console.log(this.geoData)
         this.buildTimeline(String(this.currentYear));
 
       }

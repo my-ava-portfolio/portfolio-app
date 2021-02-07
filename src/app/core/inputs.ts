@@ -3,7 +3,7 @@ import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 
 export const apiBaseUrl = 'http://127.0.0.1:5000/';
-export const apiImgUrl = `${apiBaseUrl}/images/logo/`;
+export const apiImgUrl = `${apiBaseUrl}images/logo/`;
 
 export const navBarTitle = 'Amaury Valorge - Portfolio';
 
