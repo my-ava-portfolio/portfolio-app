@@ -85,7 +85,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
 
   resetGallery(): any {
-    this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory);
+    this.galleryService.pullExistingActivitiesGallery(this.defaultActivity, this.defaultCategory);
   }
 
   getGalleryDataByActivity(activityName: string | null): any {
