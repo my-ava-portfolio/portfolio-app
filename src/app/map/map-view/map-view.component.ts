@@ -54,9 +54,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
-        if (fragment !== null) {
-          this.fragment = fragment
-        }
+        this.fragment = fragment;
       }
     );
 
@@ -70,8 +68,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.pullActivitiesGeoDataToMapSubscription = this.mapService.activitiesGeoDataToMap.subscribe(
       (geoFeaturesData) => {
         this.geoFeaturesData = geoFeaturesData;
-        console.log(geoFeaturesData);
-
+        console.log('data');
         this.activitiesMapping(geoFeaturesData);
         if (!this.zoomInitDone) {
           if (this.fragment !== null) {
