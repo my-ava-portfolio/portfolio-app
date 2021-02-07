@@ -339,7 +339,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     const legendElement: any = d3.select('#theme-legend .' + data.properties.type);
     legendElement.classed('selected', !legendElement.classed('selected'));
 
-    const currentActivityCircle = d3.select('#svgActivitiesLayer #circle_' + currentElement.attr('id') + ' circle');
+    const currentActivityCircle = d3.select('#svgActivitiesLayer #node_location_' + data.properties.id + ' circle');
     currentActivityCircle.classed('selected', !currentActivityCircle.classed('selected')); // toggle class
     this.circleBouncer(currentActivityCircle, scaleR);
   }

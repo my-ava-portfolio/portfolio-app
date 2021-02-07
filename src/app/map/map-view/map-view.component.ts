@@ -127,6 +127,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         [dataFiltered[0].geometry.coordinates[1], dataFiltered[0].geometry.coordinates[0]],
         this.ZoomActivityValue
       );
+      this.bounceRepeat('#node_location_' + activityId + ' circle')
     }
     // else mean that the geom related is not display
 
@@ -152,7 +153,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       .enter()
       .append('a') // add hyper link and the svg circle
       .attr('xlink:href', (d: any) => '/resume#' + d.properties.id)
-      .attr('id', (d: any) => 'location_' + d.properties.id)
+      .attr('id', (d: any) => 'node_location_' + d.properties.id)
       .attr('class', (d: any) => d.properties.type + ' activityPoint')
       .attr('cursor', 'pointer')
       .append('circle')
@@ -177,6 +178,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       })
       .on('mouseout', (d: any, i: any, n: any) => {
+        this.disableActivityPopup(d.properties.id);
+
         // hightlight map point
         const currentElement: any = d3.select(n[i]);
         currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
@@ -187,7 +190,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
         const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
 
-        this.disableActivityPopup(d.properties.id);
       });
 
     d3.selectAll('.activityPoint circle').transition()
@@ -240,8 +242,25 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   disableActivityPopup(popupId: string): void {
-    d3.select('#popup-feature-' + popupId)
-    .style('visibility', 'hidden');
+    d3
+      .select('#popup-feature-' + popupId)
+      .style('visibility', 'hidden');
   }
+
+  bounceRepeat(activityPointId: string): void {
+    d3.select(activityPointId)
+      .transition()
+      .duration(1000)
+      .ease(d3.easeElastic)
+      .attr('r', (d: any) => d.properties.months * 4)
+      // .style("opacity", 1)
+      .transition()
+      .duration(300)
+      .ease(d3.easeLinear)
+      .attr('r', (d: any) => d.properties.months * 2)
+      // .style("opacity", 0)
+      .on('end', this.bounceRepeat.bind(this, activityPointId))
+  }
+
 
 }
