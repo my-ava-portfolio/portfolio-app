@@ -244,7 +244,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
   disableActivityPopup(popupId: string): void {
     d3
       .select('#popup-feature-' + popupId)
-      .style('visibility', 'hidden');
+      .style('visibility', 'hidden')
+      .style('left', 'unset') // reset position to avoid conflict with popup from timeline
+      .style('top', 'unset');
   }
 
   bounceRepeat(activityPointId: string): void {

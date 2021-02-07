@@ -322,12 +322,19 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('cx', (d: any) => this.dateRange(this.parseTime(d.properties.start_date)))
       .on('mouseover', (d: any, i: any, n: any) => {
         this.interactionWithEventNode(n[i], d, 4);
-        // TODO here to link with popup
+        // to link with popup
+        d3.select('#popup-feature-' + d.properties.id)
+          .style('visibility', 'visible')
+          .style('top', '10%')
+          .style('left', '2%')
       })
       .on('mouseout', (d: any, i: any, n: any) => {
         this.interactionWithEventNode(n[i], d, 2);
-        // TODO here to link with popup
-
+        // link with popup
+        d3.select('#popup-feature-' + d.properties.id)
+          .style('visibility', 'hidden')
+          .style('top', 'unset')
+          .style('left', 'unset')
       });
     sliderNodes.exit().remove();
   }
