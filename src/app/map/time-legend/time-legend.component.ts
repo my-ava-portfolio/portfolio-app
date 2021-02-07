@@ -213,7 +213,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
             // to avoid cursor running if track is drag...
             playButton.text('Pause');
 
-            this.selectedDatePosition = d3.event.x;
+          this.selectedDatePosition = d3.event.x;
             this.update(this.dateRange.invert(this.selectedDatePosition));
 
             // disable timeline node selection

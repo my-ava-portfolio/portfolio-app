@@ -32,7 +32,7 @@
           <div class="col-lg-8 align-self-center">
               <h6 class="font-weight-bold">{{job.company}}</h6>
               <div>
-                <a [id]="'location_' + job.identifier" role="button">
+                <a [id]="'location_' + job.identifier" role="button" [routerLink]="['/map']" [fragment]="job.identifier">
                   <fa-icon class="mr-2 text-danger" [icon]="locationIcon"></fa-icon>
                 </a>{{job.location}}
               </div>

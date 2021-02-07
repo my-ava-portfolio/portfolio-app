@@ -40,7 +40,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   // check css code related to popup
   popupWidth = 315;
   popupHeight = 190;
-  geojsonData!: any;
+  geoFeaturesData!: any[];
 
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
@@ -54,7 +54,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
-        this.fragment = fragment;
+        if (fragment !== null) {
+          this.fragment = fragment
+        }
       }
     );
 
@@ -67,15 +69,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.pullActivitiesGeoDataToMapSubscription = this.mapService.activitiesGeoDataToMap.subscribe(
       (geoFeaturesData) => {
+        this.geoFeaturesData = geoFeaturesData;
+        console.log(geoFeaturesData);
+
         this.activitiesMapping(geoFeaturesData);
-        if (this.fragment !== null) {
-          console.log(this.fragment);
-          this.zoomFromActivityId(geoFeaturesData, this.fragment);
-        } else {
-          if (!this.zoomInitDone) {
+        if (!this.zoomInitDone) {
+          if (this.fragment !== null) {
+            console.log(this.fragment);
+            this.zoomFromActivityId(this.geoFeaturesData, this.fragment);
+          } else {
             this.zoomFromDataBounds(geoFeaturesData);
-            this.zoomInitDone = true;
           }
+          this.zoomInitDone = true;
         }
       }
     );
@@ -117,10 +122,14 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   zoomFromActivityId(geoFeaturesData: any[], activityId: string): void {
     const dataFiltered: any = geoFeaturesData.filter((d: any) => d.properties.id === activityId);
-    this.mapContainer.setView(
-      [dataFiltered[0].geometry.coordinates[1], dataFiltered[0].geometry.coordinates[0]],
-      this.ZoomActivityValue
-    );
+    if (dataFiltered.length === 1) {
+      this.mapContainer.setView(
+        [dataFiltered[0].geometry.coordinates[1], dataFiltered[0].geometry.coordinates[0]],
+        this.ZoomActivityValue
+      );
+    }
+    // else mean that the geom related is not display
+
   }
 
   initActivitiesSvgLayer(): void {
@@ -143,7 +152,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       .enter()
       .append('a') // add hyper link and the svg circle
       .attr('xlink:href', (d: any) => '/resume#' + d.properties.id)
-      .attr('id', (d: any) => 'circle_location_' + d.properties.id)
+      .attr('id', (d: any) => 'location_' + d.properties.id)
       .attr('class', (d: any) => d.properties.type + ' activityPoint')
       .attr('cursor', 'pointer')
       .append('circle')
@@ -186,8 +195,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     jobs
       .exit()
-      .transition()
-      .attr('r', 0)
+      // .transition()
+      // .attr('r', 0)
       .remove();
 
     this.mapContainer.on('moveend', this.reset.bind(this));
