@@ -28,7 +28,7 @@ export class MapService {
     this.mapContainer.next(mapContainer);
   }
 
-  pullActivitiesGeoData(currentDate:string): void {
+  pullActivitiesGeoData(currentDate: string | null): void {
 
     this.http.get<any>(this.apiUrlActivitiesGeoData + currentDate).subscribe(
       (response) => {

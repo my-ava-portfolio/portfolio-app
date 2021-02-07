@@ -29,7 +29,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   height = 50;
   endDate: Date = currentDate;
   currentYear = currentYear;
-  startDate!: Date;
+  startDate = currentDate;
   selectedDatePosition = 0;  // TODO check type
   maxDatePosition: number = this.width - this.margin.left - this.margin.right ;
   dateRange!: any;
@@ -37,28 +37,19 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   timer!: any;
   currentCountNodes = 0;
 
-  resumeDataSubscription!: Subscription;
   pullGeoDataSubscription!: Subscription;
 
   constructor(
-    private resumeService: ResumeService,
     private mapService: MapService,
   ) {
 
-    this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
-      (data) => {
-        // get slider end date from API TODO : improve it !
-        this.startDate = new Date(data.general.start_date_slider);
-        this.mapService.pullActivitiesGeoData(this.formatDateToString(this.startDate));
-      },
-      (error) => {
-        console.log(' legend time error');
-      }
-    );
 
     this.pullGeoDataSubscription = this.mapService.activitiesGeoData.subscribe(
       (element) => {
         this.geoData = element;
+        const geoDataFeatures: any[] = this.geoData.features;
+        const firstActivity: any[] = geoDataFeatures.filter((feature: any) => feature.id === "0");
+        this.startDate = new Date(firstActivity[0].properties.start_date)
         // all the data is loaded but we are going to filter it to map its features regarding datetime
         // defined on the timeline
         this.buildTimeline(String(this.currentYear));
@@ -68,11 +59,11 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.resumeService.pullResumeGeneralData();
+    this.mapService.pullActivitiesGeoData(null);
   }
 
+
   ngOnDestroy(): void {
-    this.resumeDataSubscription.unsubscribe();
     this.pullGeoDataSubscription.unsubscribe();
   }
 

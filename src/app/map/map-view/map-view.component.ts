@@ -12,7 +12,6 @@ import { ActivatedRoute } from '@angular/router';
 import { locationIcon } from '../../core/inputs';
 import { apiImgUrl, currentYear } from '../../core/inputs';
 
-import { ResumeService } from '../../services/resume.service';
 import { MapService } from '../../services/map.service';
 
 
@@ -43,11 +42,9 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
-  activitiesFilteredSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
-    private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
   ) {
 
@@ -79,9 +76,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.fragment = null;
     this.zoomInitDone = false;
-    this.resumeService.pullActivitiesResumeFromGraph(this.currentDate, null);
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
 
