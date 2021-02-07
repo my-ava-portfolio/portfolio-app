@@ -4,8 +4,10 @@ import { Subscription } from 'rxjs';
 
 import * as L from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
-
 import * as d3 from 'd3';
+
+import { ActivatedRoute } from '@angular/router';
+
 
 import { locationIcon } from '../../core/inputs';
 import { apiImgUrl, currentYear } from '../../core/inputs';
@@ -21,6 +23,7 @@ import { ResumeService } from '../../services/resume.service';
   encapsulation: ViewEncapsulation.None
 })
 export class MapViewComponent implements OnInit, OnDestroy {
+  fragment!: string | null;
   currentDate = currentYear;
 
   innerWidth!: any;
@@ -29,6 +32,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   mapContainer!: any;
   zoomInitDone = false;
   maxZoomValue = 9;
+  ZoomActivityValue = 12;
 
   apiImgUrl = apiImgUrl;
   jobsData!: any;
@@ -36,6 +40,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   // check css code related to popup
   popupWidth = 315;
   popupHeight = 190;
+  geojsonData!: any;
 
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
@@ -44,25 +49,34 @@ export class MapViewComponent implements OnInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private resumeService: ResumeService,
+    private activatedRoute: ActivatedRoute,
   ) {
+
+    this.activatedRoute.fragment.subscribe(
+      (fragment) => {
+        this.fragment = fragment;
+      }
+    );
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element) => {
         this.mapContainer = element;
         this.initActivitiesSvgLayer();
-
-        console.log('map ok', this.mapContainer);
       }
     );
 
     this.pullActivitiesGeoDataToMapSubscription = this.mapService.activitiesGeoDataToMap.subscribe(
-      (geodata) => {
-        if (!this.zoomInitDone) {
-          this.zoomFromDataBounds(geodata);
-          this.zoomInitDone = true;
+      (geoFeaturesData) => {
+        this.activitiesMapping(geoFeaturesData);
+        if (this.fragment !== null) {
+          console.log(this.fragment);
+          this.zoomFromActivityId(geoFeaturesData, this.fragment);
+        } else {
+          if (!this.zoomInitDone) {
+            this.zoomFromDataBounds(geoFeaturesData);
+            this.zoomInitDone = true;
+          }
         }
-        this.activitiesMapping(geodata);
-
       }
     );
 
@@ -97,9 +111,17 @@ export class MapViewComponent implements OnInit, OnDestroy {
         animate: false,
         maxZoom: this.maxZoomValue
       }
-  );
+    );
+    console.log('default zoom')
   }
 
+  zoomFromActivityId(geoFeaturesData: any[], activityId: string): void {
+    const dataFiltered: any = geoFeaturesData.filter((d: any) => d.properties.id === activityId);
+    this.mapContainer.setView(
+      [dataFiltered[0].geometry.coordinates[1], dataFiltered[0].geometry.coordinates[0]],
+      this.ZoomActivityValue
+    );
+  }
 
   initActivitiesSvgLayer(): void {
     const svgLayerContainer: any = L.svg().addTo(this.mapContainer);
@@ -156,7 +178,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
 
-        this.disableActivityPopup(d.properties.id)
+        this.disableActivityPopup(d.properties.id);
       });
 
     d3.selectAll('.activityPoint circle').transition()
@@ -210,7 +232,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   disableActivityPopup(popupId: string): void {
     d3.select('#popup-feature-' + popupId)
-    .style('visibility', 'hidden')
+    .style('visibility', 'hidden');
   }
 
 }
