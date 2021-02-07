@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy  } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy, AfterViewInit  } from '@angular/core';
 
 import { ResumeService } from '../../services/resume.service';
 import { apiImgUrl } from '../../core/inputs';
@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./resume-view.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ResumeViewComponent implements OnInit, OnDestroy {
+export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   fragment!: string | null;
   apiImgUrl = apiImgUrl;
 
@@ -49,18 +49,6 @@ export class ResumeViewComponent implements OnInit, OnDestroy {
 
   ) {
 
-    this.activatedRoute.fragment.subscribe(
-      (fragment) => {
-        console.log('ralala', fragment);
-
-        if (fragment !== undefined) {
-          console.log('ralala', fragment);
-          this.fragment = fragment;
-          this.checkAndScrollToAnchorIfNeeded();
-        }
-      }
-    );
-
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {
         console.log(data);
@@ -83,7 +71,28 @@ export class ResumeViewComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
+    // this.fragment = null
     this.resumeService.pullResumeGeneralData();
+  }
+
+  ngAfterViewInit(): void {
+    this.activatedRoute.fragment.subscribe(
+      (fragment) => {
+        console.log('ralala', fragment);
+        if (fragment === undefined) {
+          this.fragment = null;
+        } else {
+          this.fragment = fragment;
+        }
+
+        console.log('ralala2', this.fragment);
+
+        if (this.fragment !== null) {
+          console.log('ralala3', this.fragment);
+          this.checkAndScrollToAnchorIfNeeded();
+        }
+      }
+    );
   }
 
   ngOnDestroy(): void {

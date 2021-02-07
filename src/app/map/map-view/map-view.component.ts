@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -12,8 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 import { locationIcon } from '../../core/inputs';
 import { apiImgUrl, currentYear } from '../../core/inputs';
 
-import { MapService } from '../../services/map.service';
 import { ResumeService } from '../../services/resume.service';
+import { MapService } from '../../services/map.service';
 
 
 @Component({
@@ -22,7 +22,7 @@ import { ResumeService } from '../../services/resume.service';
   styleUrls: ['./map-view.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class MapViewComponent implements OnInit, OnDestroy {
+export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   fragment!: string | null;
   currentDate = currentYear;
 
@@ -52,11 +52,17 @@ export class MapViewComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
   ) {
 
-    this.activatedRoute.fragment.subscribe(
-      (fragment) => {
-        this.fragment = fragment;
-      }
-    );
+    // this.activatedRoute.fragment.subscribe(
+    //   (fragment) => {
+    //     if (fragment === undefined) {
+    //       this.fragment = null;
+    //     } else {
+    //       this.fragment = fragment;
+    //     }
+
+    //     console.log('fragment map', fragment)
+    //   }
+    // );
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element: any) => {
@@ -96,12 +102,26 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.fragment = null;
+    // this.fragment = null;
     this.zoomInitDone = false;
     this.resumeService.pullActivitiesResumeFromGraph(this.currentDate, null);
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
 
+  }
+
+  ngAfterViewInit(): void {
+    this.activatedRoute.fragment.subscribe(
+      (fragment) => {
+        if (fragment === undefined) {
+          this.fragment = null;
+        } else {
+          this.fragment = fragment;
+        }
+
+        console.log('fragment map', fragment, this.fragment)
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -114,7 +134,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapContainer.fitBounds(
       L.geoJSON(geojsonData).getBounds(),
       {
-        animate: false,
         maxZoom: this.maxZoomValue
       }
     );

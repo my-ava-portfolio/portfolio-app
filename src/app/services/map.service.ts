@@ -17,7 +17,7 @@ export class MapService {
   ErrorapiUrlActivitiesGeoDataApiFound: Subject<string> = new Subject<string>();
   activitiesGeoData: Subject<any> = new Subject<any>();
 
-  activitiesGeoDataToMap: Subject<any> = new Subject<any>();
+  activitiesGeoDataToMap: Subject<any[]> = new Subject<any[]>();
 
   constructor(
     private http: HttpClient
@@ -41,7 +41,7 @@ export class MapService {
     );
   }
 
-  pullActivitiesGeoDataToMap(dataToMap: any): void {
+  pullActivitiesGeoDataToMap(dataToMap: any[]): void {
     this.activitiesGeoDataToMap.next(dataToMap);
   }
 
