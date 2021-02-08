@@ -39,6 +39,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   popupWidth = 330;
   popupHeight = 190;
   geoFeaturesData!: any[];
+  svgActivitiesLayerId = 'svgActivitiesLayer'
 
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
@@ -51,6 +52,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element: any) => {
         this.mapContainer = element;
+        console.log('tralalalallala', this.mapContainer)
         this.initActivitiesSvgLayer();
       }
     );
@@ -99,6 +101,8 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
     this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
+    d3.select('#' + this.svgActivitiesLayerId).remove()
+    this.mapService.resetMapView()
   }
 
   zoomFromDataBounds(geojsonData: any): void {
@@ -128,7 +132,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   initActivitiesSvgLayer(): void {
     const svgLayerContainer: any = L.svg().addTo(this.mapContainer);
     const svgLayerObject = d3.select(svgLayerContainer._container)
-      .attr('id', 'svgActivitiesLayer')
+      .attr('id', this.svgActivitiesLayerId)
       .attr('pointer-events', 'auto');
     svgLayerObject.select('g')
       .attr('class', 'leaflet-zoom-hide')
@@ -199,7 +203,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   reset(): void {
     // for the points we need to convert from latlong to map units
-    d3.select('#svgActivitiesLayer')
+    d3.select('#' + this.svgActivitiesLayerId)
       .selectAll('circle')
       .attr('transform', (d: any) => {
         return 'translate(' +

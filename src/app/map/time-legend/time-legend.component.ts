@@ -16,7 +16,7 @@ import * as d3 from 'd3';
   encapsulation: ViewEncapsulation.None
 })
 export class TimeLegendComponent implements OnInit, OnDestroy {
-  @Input() mapContainer: any;
+  mapContainer: any;
 
   geoData!: any;
 
@@ -38,11 +38,17 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   currentCountNodes = 0;
 
   pullGeoDataSubscription!: Subscription;
+  mapContainerSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
   ) {
 
+    this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
+      (element: any) => {
+        this.mapContainer = element;
+      }
+    );
 
     this.pullGeoDataSubscription = this.mapService.activitiesGeoData.subscribe(
       (element) => {
@@ -63,12 +69,14 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.mapService.getMapContainer();
     this.mapService.pullActivitiesGeoData(null);
   }
 
 
   ngOnDestroy(): void {
     this.pullGeoDataSubscription.unsubscribe();
+    this.mapContainerSubscription.unsubscribe()
   }
 
   parseTime(time: string): Date | null {

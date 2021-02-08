@@ -19,10 +19,21 @@ export class MapService {
 
   activitiesGeoDataToMap: Subject<any[]> = new Subject<any[]>();
 
+  isMapContainerCalled: Subject<boolean> = new Subject<boolean>();
+  isMapViewReset: Subject<boolean> = new Subject<boolean>();
+
+
   constructor(
     private http: HttpClient
   ) { }
 
+  getMapContainer(): void {
+    this.isMapContainerCalled.next(true);
+  }
+
+  resetMapView(): void {
+    this.isMapViewReset.next(true)
+  }
 
   sendMapContainer(mapContainer: any): void {
     this.mapContainer.next(mapContainer);

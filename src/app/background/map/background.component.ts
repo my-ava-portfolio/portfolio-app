@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import * as L from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
@@ -25,10 +25,33 @@ export class BackgroundComponent implements OnInit {
     private mapService: MapService,
   ) {
 
+    this.mapService.isMapContainerCalled.subscribe(
+      (status) => {
+        this.mapService.sendMapContainer(this.map);
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
+
+    this.mapService.isMapViewReset.subscribe(
+      (status) => {
+        this.resetView();
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
   }
 
   ngOnInit(): void {
     this.initMap();
+
+  }
+
+  sendMapContainer(): void {
     this.mapService.sendMapContainer(this.map);
   }
 
@@ -38,6 +61,13 @@ export class BackgroundComponent implements OnInit {
       zoom: this.zoomValue,
       zoomControl: false,
     }).addLayer(this.osmLayer);
+  }
+
+  resetView(): void {
+    this.map.setView(
+      this.InitialViewCoords,
+      this.zoomValue
+    )
   }
 
 }

@@ -52,6 +52,7 @@ const appRoutes: Routes = [
       component: MainViewComponent,
       children: [
         { path: 'resume', component: ResumeViewComponent },
+        { path: 'map', component: MapViewComponent },
         { path: 'gallery', component: GalleryViewComponent },
         { path: 'notes', component: NotesViewComponent },
         { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
@@ -59,7 +60,7 @@ const appRoutes: Routes = [
   },
 
   // no layout routes
-  { path: 'map', component: MapViewComponent, pathMatch: 'full'  },
+  // { path: 'map', component: MapViewComponent, pathMatch: 'full'  },
   { path: 'short_resume', component: ShortViewComponent },
   { path: 'home', component: HomeViewComponent },
 ];
