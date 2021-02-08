@@ -3,7 +3,7 @@ import { Router, Event, NavigationStart, NavigationEnd, NavigationError } from '
 
 import { pagesObject } from '../core/inputs';
 
-import { resumeIcon, galleryIcon, notesIcon, githubIcon } from '../core/inputs';
+import { infoIcon, resumeIcon, galleryIcon, notesIcon, githubIcon } from '../core/inputs';
 
 @Component({
   selector: 'app-home-view',
@@ -19,7 +19,8 @@ export class HomeViewComponent implements OnInit {
   galleryIcon = galleryIcon;
   notesIcon = notesIcon;
   githubIcon = githubIcon;
-
+  infoIcon = infoIcon;
+  
   pagesObject = pagesObject;
 
   title = 'Portfolio';

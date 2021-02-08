@@ -1,0 +1,31 @@
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 2s linear;
+}
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}
+
+.parallelogram {
+  -webkit-transform: skew(20deg);
+  -moz-transform: skew(20deg);
+  -o-transform: skew(20deg);
+  height: 100%;
+  background: ghostwhite;
+  border-radius: 1.25rem!important;
+  box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.unparallelogram {
+  -webkit-transform: skew(-20deg);
+  -moz-transform: skew(-20deg);
+  -o-transform: skew(-20deg);
+  }
+
+.circle {
+  border-radius: 50%;
+}
+

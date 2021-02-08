@@ -18,34 +18,40 @@
 
 </div>
 
-<div class="row projects-bar border justify-content-center">
+<div class="row projects-bar">
 
-  <div class="col-lg-3  my-3">
-    <h5>Filtrage par thématiques</h5>
+  <div class="col-lg-12">
+    <div class="row justify-content-center">
 
-    <div class="btn-group btn-group-toggle mt-1 ml-2" data-toggle="buttons">
-      <label class="btn btn-secondary active btn-sm">
-        <input (click)="this.resetGallery()" type="radio" name="options" id="option1" autocomplete="off" checked>Tous
-      </label>
-      <label class="btn btn-secondary btn-sm">
-        <input (click)="getGalleryDataByCategory('jobs')" type="radio" name="options" id="option2" autocomplete="off">Expériences
-      </label>
-      <label class="btn btn-secondary btn-sm">
-        <input (click)="getGalleryDataByCategory('personal_projects')" type="radio" name="options" id="option3" autocomplete="off">Projets personnels
-      </label>
+      <div class="col-lg-5 my-3 text-center">
+
+        <h5>Filtrage par thématiques</h5>
+
+        <div class="btn-group btn-group-toggle mt-1 ml-2" data-toggle="buttons">
+          <label class="btn btn-secondary active btn-sm">
+            <input (click)="this.resetGallery()" type="radio" name="options" id="option1" autocomplete="off" checked>Tous
+          </label>
+          <label class="btn btn-secondary btn-sm">
+            <input (click)="getGalleryDataByCategory('jobs')" type="radio" name="options" id="option2" autocomplete="off">Expériences
+          </label>
+          <label class="btn btn-secondary btn-sm">
+            <input (click)="getGalleryDataByCategory('personal_projects')" type="radio" name="options" id="option3" autocomplete="off">Projets personnels
+          </label>
+        </div>
+      </div>
+
+      <div class="col-lg-7 my-3 text-center">
+        <h5>Filtrage par activités</h5>
+
+        <div class="btn-group mt1 ml-2">
+          <ng-container *ngFor="let activity of galleryItems">
+            <button (click)="getGalleryDataByActivity(activity.identifier)" type="button" [id]="activity.identifier" class="btn btn-primary btn-sm" [style]="'background-color:' + activity.color +'; border-color:'+ activity.color">{{ activity.title}}</button>
+          </ng-container>
+        </div>
+      </div>
     </div>
-
   </div>
 
-  <div class="col-lg-3 my-3">
-    <h5>Filtrage par activités</h5>
-
-    <div class="btn-group mt1 ml-2">
-      <ng-container *ngFor="let activity of galleryItems">
-        <button (click)="getGalleryDataByActivity(activity.identifier)" type="button" [id]="activity.identifier" class="btn btn-primary btn-sm" [style]="'background-color:' + activity.color +'; border-color:'+ activity.color">{{ activity.title}}</button>
-      </ng-container>
-    </div>
-  </div>
 
 </div>
 

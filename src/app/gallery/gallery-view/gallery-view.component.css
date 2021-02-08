@@ -91,7 +91,7 @@ body {
 
 .projects-bar {
   position: fixed;
-  color: "#FFFFF";
+  /* color: "#FFFFF";*/
   background-color: #f5f5f5;
   box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
   bottom: 0;

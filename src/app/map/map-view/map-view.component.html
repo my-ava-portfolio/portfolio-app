@@ -3,24 +3,21 @@
 <app-header></app-header>
 
 
-  <div class="legend-container">
+<div class="row my-3 justify-content-center legend-container">
 
-    <div class="row mt-4 justify-content-center">
+  <div class="col-lg-4">
+    <app-theme-legend
+    ></app-theme-legend>
+  </div>
 
-      <div class="col-lg-3 ml-4">
-        <app-theme-legend
-        ></app-theme-legend>
-      </div>
-
-      <div class="col-lg-6">
-        <app-time-legend
-          [mapContainer]="mapContainer"
-        ></app-time-legend>
-      </div>
-
-    </div>
+  <div class="col-lg-7">
+    <app-time-legend
+      [mapContainer]="mapContainer"
+    ></app-time-legend>
+  </div>
 
 </div>
+
 
 <div [id]="'popup-feature-' + feature.properties.id" class="item card shadow map-popup" *ngFor="let feature of geoFeaturesData">
   <div class="card-body">
