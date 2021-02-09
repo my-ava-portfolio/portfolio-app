@@ -3,7 +3,8 @@ import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 
 export const apiBaseUrl = 'http://127.0.0.1:5000/';
-export const apiImgUrl = `${apiBaseUrl}images/logo/`;
+export const apiLogoUrl = `${apiBaseUrl}images/logo/`;
+export const apiMapsUrl = `${apiBaseUrl}images/maps/`;
 export const jupyterNotebookUrl = 'https://amauryval.github.io/my-notes/';
 
 export const navBarTitle = 'Amaury Valorge - Portfolio';

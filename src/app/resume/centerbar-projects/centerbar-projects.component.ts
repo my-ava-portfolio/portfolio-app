@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 
-import { apiImgUrl } from '../../core/inputs';
+import { apiLogoUrl } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
 
@@ -20,7 +20,7 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
 
   personalProjectsData!: any;
 
-  apiImgUrl = apiImgUrl;
+  apiImgUrl = apiLogoUrl;
 
   // icons
   resumeIcon = resumeIcon;

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy  } from '@angular/core';
 
 import { ResumeService } from '../../services/resume.service';
-import { apiImgUrl } from '../../core/inputs';
+import { apiLogoUrl } from '../../core/inputs';
 
 import { Subscription } from 'rxjs';
 
@@ -26,7 +26,7 @@ export class ShortViewComponent implements OnInit, OnDestroy {
   phoneIcon = phoneIcon;
   websiteIcon = websiteIcon;
 
-  apiImgUrl = apiImgUrl;
+  apiImgUrl = apiLogoUrl;
 
   // resume top bar
   profilData: any;

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation, OnDestroy, AfterViewInit  } from 
 
 import { ResumeService } from '../../services/resume.service';
 import { NotesService } from '../../services/notes.service';
-import { apiImgUrl } from '../../core/inputs';
+import { apiLogoUrl } from '../../core/inputs';
 
 import { interval, Subscription } from 'rxjs';
 import { startWith  } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   fragment!: string | null;
-  apiImgUrl = apiImgUrl;
+  apiImgUrl = apiLogoUrl;
 
   // resume top bar
   profilData: any;

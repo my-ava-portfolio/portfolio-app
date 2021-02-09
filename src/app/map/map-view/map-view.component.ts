@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 import { locationIcon } from '../../core/inputs';
-import { apiImgUrl, currentYear } from '../../core/inputs';
+import { apiLogoUrl, currentYear } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
 
@@ -33,7 +33,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   maxZoomValue = 9;
   ZoomActivityValue = 12;
 
-  apiImgUrl = apiImgUrl;
+  apiImgUrl = apiLogoUrl;
   locationIcon = locationIcon;
   // check css code related to popup
   popupWidth = 330;
