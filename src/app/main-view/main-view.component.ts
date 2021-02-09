@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, HostListener  } from '@angular/core';
+
+import { arrowUpIcon } from '../core/inputs';
 
 
 @Component({
@@ -9,10 +11,26 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class MainViewComponent implements OnInit {
 
+  scrolltoTopActivated!: boolean;
+  arrowUpIcon = arrowUpIcon;
+
   constructor() {
   }
 
   ngOnInit(): void {
+    this.scrolltoTopActivated = false;
   }
 
+  @HostListener('window:scroll',[])
+  checkIfScrollShouldBeEnabled(): void {
+    if ( window.scrollY > 100 ) {
+      this.scrolltoTopActivated = true;
+    } else {
+      this.scrolltoTopActivated = false;
+    }
+  }
+
+  scrollToTop(): void {
+    window.scrollTo(0, 0)
+  }
 }

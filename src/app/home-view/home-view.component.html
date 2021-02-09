@@ -1,3 +1,6 @@
+<app-background-map></app-background-map>
+
+
 <div class="container-fluid">
 
   <div class="row justify-content-around">
@@ -15,7 +18,7 @@
       <li class="empty quarter disabled"></li>
 
       <li id="notes" [ngClass]="quartersStatus.notes.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('notes')" (mouseout)="updateQuarterStatus('notes')">
-          <a class="quarter-text text-theme text-dark" href="/notes">
+          <a class="quarter-text text-theme text-dark" [routerLink]="['/notes']">
             <fa-icon [icon]="notesIcon" size="3x" [rotate]="180"></fa-icon>
           </a>
       </li>
@@ -23,7 +26,7 @@
       <li class="empty quarter disabled"></li>
 
       <li id="github" [ngClass]="quartersStatus.github.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('github')" (mouseout)="updateQuarterStatus('github')">
-          <a class="quarter-text text-theme text-dark" href="/notes">
+          <a class="quarter-text text-theme text-dark">
             <fa-icon [icon]="githubIcon" size="3x" [rotate]="90"></fa-icon>
           </a>
       </li>

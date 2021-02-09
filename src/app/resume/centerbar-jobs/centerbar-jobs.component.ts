@@ -7,7 +7,7 @@ import { ResumeService } from '../../services/resume.service';
 import { Subscription } from 'rxjs';
 import { startWith  } from 'rxjs/operators';
 
-import { resumeIcon, galleryIcon, locationIcon, arrowUpIcon } from '../../core/inputs';
+import { resumeIcon, galleryIcon, locationIcon } from '../../core/inputs';
 
 
 @Component({
@@ -26,7 +26,6 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
   locationIcon = locationIcon;
   resumeIcon = resumeIcon;
   galleryIcon = galleryIcon;
-  arrowUpIcon = arrowUpIcon;
 
   activitiesFilteredSubscription!: Subscription;
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 
 import { apiImgUrl } from '../../core/inputs';
 
@@ -6,7 +6,7 @@ import { ResumeService } from '../../services/resume.service';
 
 import { Subscription } from 'rxjs';
 
-import { resumeIcon, galleryIcon, notesIcon, githubIcon, arrowUpIcon, websiteIcon } from '../../core/inputs';
+import { resumeIcon, galleryIcon, notesIcon, githubIcon, websiteIcon } from '../../core/inputs';
 
 
 
@@ -16,6 +16,8 @@ import { resumeIcon, galleryIcon, notesIcon, githubIcon, arrowUpIcon, websiteIco
   styleUrls: ['./centerbar-projects.component.css']
 })
 export class CenterbarProjectsComponent implements OnInit, OnDestroy {
+  @Output() notePathEmit = new EventEmitter<string>();
+
   personalProjectsData!: any;
 
   apiImgUrl = apiImgUrl;
@@ -23,7 +25,6 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
   // icons
   resumeIcon = resumeIcon;
   galleryIcon = galleryIcon;
-  arrowUpIcon = arrowUpIcon;
   githubIcon = githubIcon;
   notesIcon = notesIcon;
   websiteIcon = websiteIcon;
@@ -54,6 +55,11 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     console.log('lalala projects');
     this.activitiesFilteredSubscription.unsubscribe();
+  }
+
+  emitNotePath(notePath: string): void {
+    console.log("hahaha", notePath)
+    this.notePathEmit.emit(notePath);
   }
 
 }

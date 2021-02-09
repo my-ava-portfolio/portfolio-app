@@ -14,3 +14,18 @@ ngb-popover-window {
   width: 100vh;
   height:auto;
 }
+
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  pointer-events: all;
+  opacity: 0;
+  transition: all 1s ease-in-out;
+ }
+ .show-scrollTop {
+  opacity: 1;
+  transition: all 1s ease-in-out;
+ }
