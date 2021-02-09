@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { FormsModule } from '@angular/forms';
 
 
 import { ResumeService } from './services/resume.service';
@@ -51,18 +51,18 @@ const appRoutes: Routes = [
       path: '',
       component: MainViewComponent,
       children: [
-        { path: 'resume', component: ResumeViewComponent },
-        { path: 'map', component: MapViewComponent },
-        { path: 'gallery', component: GalleryViewComponent },
-        { path: 'notes', component: NotesViewComponent },
+        { path: 'resume', component: ResumeViewComponent, data: { title: 'Profil' } },
+        { path: 'map', component: MapViewComponent, data: { title: 'Carte' } },
+        { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie' } },
+        { path: 'notes', component: NotesViewComponent, data: { title: 'Notes' } },
         { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
       ]
   },
 
   // no layout routes
   // { path: 'map', component: MapViewComponent, pathMatch: 'full'  },
-  { path: 'short_resume', component: ShortViewComponent },
-  { path: 'home', component: HomeViewComponent },
+  { path: 'short_resume', component: ShortViewComponent, data: { title: 'Profil version courte' } },
+  { path: 'home', component: HomeViewComponent, data: { title: 'Accueil - Amaury Valorge Portfolio' } },
 ];
 
 
@@ -102,7 +102,8 @@ const appRoutes: Routes = [
       anchorScrolling: 'enabled',
       scrollOffset: [0, 64] // [x, y]
     }),
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
   providers: [
     ResumeService,
