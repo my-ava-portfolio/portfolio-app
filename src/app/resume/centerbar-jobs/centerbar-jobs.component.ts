@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 
 import { apiImgUrl } from '../../core/inputs';
 
@@ -16,6 +16,8 @@ import { resumeIcon, galleryIcon, locationIcon } from '../../core/inputs';
   styleUrls: ['./centerbar-jobs.component.css']
 })
 export class CenterbarJobsComponent implements OnInit, OnDestroy {
+  @Output() notePathEmit = new EventEmitter<string>();
+
   fragment!: string | null;
 
   jobsData!: any;
@@ -51,6 +53,10 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     console.log('lalala jobs');
     this.activitiesFilteredSubscription.unsubscribe();
+  }
+
+  emitNotePath(notePath: string): void {
+    this.notePathEmit.emit(notePath);
   }
 
 }

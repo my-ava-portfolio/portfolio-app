@@ -5,6 +5,10 @@ import { pagesObject } from '../core/inputs';
 
 import { infoIcon, resumeIcon, galleryIcon, notesIcon, githubIcon } from '../core/inputs';
 
+import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+
+
 @Component({
   selector: 'app-home-view',
   templateUrl: './home-view.component.html',
@@ -20,7 +24,7 @@ export class HomeViewComponent implements OnInit {
   notesIcon = notesIcon;
   githubIcon = githubIcon;
   infoIcon = infoIcon;
-  
+
   pagesObject = pagesObject;
 
   title = 'Portfolio';
@@ -33,7 +37,14 @@ export class HomeViewComponent implements OnInit {
   welcomeMessage!: string;
   topicMessage!: string;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title
+    ) {
+
+    // to get the data properties from routes (app.module.ts)
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     // to call function when root changes occur
     this.router.events.subscribe((event: Event) => {

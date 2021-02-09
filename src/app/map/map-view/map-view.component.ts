@@ -7,7 +7,7 @@ import 'leaflet/dist/images/marker-shadow.png';
 import * as d3 from 'd3';
 
 import { ActivatedRoute } from '@angular/router';
-
+import { Title } from '@angular/platform-browser';
 
 import { locationIcon } from '../../core/inputs';
 import { apiImgUrl, currentYear } from '../../core/inputs';
@@ -47,7 +47,11 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private activatedRoute: ActivatedRoute,
+    private titleService: Title
   ) {
+
+    // to get the data properties from routes (app.module.ts)
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element: any) => {

@@ -7,6 +7,9 @@ import { Subscription } from 'rxjs';
 
 import { githubIcon, linkedinIcon, emailIcon, phoneIcon, websiteIcon } from '../../core/inputs';
 
+import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-short-view',
@@ -51,8 +54,13 @@ export class ShortViewComponent implements OnInit, OnDestroy {
   skillsDataSubscription!: Subscription;
 
   constructor(
-    private resumeService: ResumeService
-  ) {
+    private resumeService: ResumeService,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title
+    ) {
+
+    // to get the data properties from routes (app.module.ts)
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {

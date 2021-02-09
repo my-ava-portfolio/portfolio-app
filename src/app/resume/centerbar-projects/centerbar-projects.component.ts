@@ -58,7 +58,6 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
   }
 
   emitNotePath(notePath: string): void {
-    console.log("hahaha", notePath)
     this.notePathEmit.emit(notePath);
   }
 

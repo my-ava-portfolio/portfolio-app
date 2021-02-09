@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy, AfterViewInit  } from '@angular/core';
 
 import { ResumeService } from '../../services/resume.service';
+import { NotesService } from '../../services/notes.service';
 import { apiImgUrl } from '../../core/inputs';
 
 import { interval, Subscription } from 'rxjs';
 import { startWith  } from 'rxjs/operators';
 
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -45,9 +47,13 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   constructor(
     private resumeService: ResumeService,
+    private notesService: NotesService,
     private activatedRoute: ActivatedRoute,
-
+    private titleService: Title
   ) {
+
+    // to get the data properties from routes (app.module.ts)
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {
@@ -119,5 +125,11 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
       }
     });
   }
+
+  sendPathNotesLink(notePath: string): void {
+    this.notesService.pullNotesData(notePath);
+  }
+
+
 
 }
