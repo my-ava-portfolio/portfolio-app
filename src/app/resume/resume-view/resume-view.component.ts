@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
 
 import { ResumeService } from '../../services/resume.service';
 import { NotesService } from '../../services/notes.service';
@@ -14,8 +14,7 @@ import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-resume-view',
   templateUrl: './resume-view.component.html',
-  styleUrls: ['./resume-view.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./resume-view.component.css']
 })
 export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   fragment!: string | null;

@@ -1,25 +1,7 @@
-body {
-  font-size: 15px;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-}
-
-body::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
-}
-
-
-
-ngb-popover-window {
-  width: 100vh;
-  height:auto;
-}
-
-
 .scroll-to-top {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 50px;
+  right: 50px;
   cursor: pointer;
   pointer-events: all;
   opacity: 0;

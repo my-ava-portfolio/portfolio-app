@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -18,8 +18,7 @@ import { MapService } from '../../services/map.service';
 @Component({
   selector: 'app-map-view',
   templateUrl: './map-view.component.html',
-  styleUrls: ['./map-view.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./map-view.component.css']
 })
 export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   fragment!: string | null;
@@ -39,7 +38,10 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   popupWidth = 330;
   popupHeight = 190;
   geoFeaturesData!: any[];
-  svgActivitiesLayerId = 'svgActivitiesLayer'
+  svgActivitiesLayerId = 'svgActivitiesLayer';
+  circleOpacity = 0.7;
+  circleStroke = 'ghostwhite';
+  circleWidth = '3px';
 
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
@@ -144,6 +146,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+
   activitiesMapping(data: any): void {
     const group: any = d3.select('#activities-container');
     const jobs = group.selectAll('.activityPoint')
@@ -154,9 +157,13 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .append('a') // add hyper link and the svg circle
       .attr('xlink:href', (d: any) => '/resume#' + d.properties.id)
       .attr('id', (d: any) => 'node_location_' + d.properties.id)
-      .attr('class', (d: any) => d.properties.type + ' activityPoint')
+      .attr('class', 'activityPoint')
       .attr('cursor', 'pointer')
       .append('circle')
+      .style('opacity', this.circleOpacity)
+      .style('stroke', this.circleStroke)
+      .style('stroke-width', this.circleWidth)
+      .attr('class', (d: any) => d.properties.type)
       .on('mouseover', (d: any, i: any, n: any) => {
         // TODO popup
 
@@ -166,10 +173,9 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
         // legends
         // timeline highlight
         const sliderNode: any = d3.select('#slider-bar #location_' + d.properties.id);
-        sliderNode.classed('slider-node-selected', !sliderNode.classed('slider-node-selected')); // toggle class
+        sliderNode.classed('selected', !sliderNode.classed('selected')); // toggle class
         const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
-
 
       })
       .on('mousemove', (d: any) => {
@@ -186,7 +192,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
         // legends
         // timeline highlight
         const sliderNode: any = d3.select('#slider-bar #location_' + d.properties.id);
-        sliderNode.classed('slider-node-selected', !sliderNode.classed('slider-node-selected')); // toggle class
+        sliderNode.classed('selected', !sliderNode.classed('selected')); // toggle class
         const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
 

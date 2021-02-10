@@ -1,5 +1,5 @@
 import { faInfoCircle, faStepBackward, faStepForward, faMapMarkedAlt, faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faAddressCard, faImages, faBookOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
-import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 
 export const apiBaseUrl = 'http://127.0.0.1:5000/';
@@ -32,6 +32,7 @@ export const MapIcon = faMapMarkedAlt;
 export const backwardIcon = faStepBackward;
 export const forwardIcon = faStepForward;
 export const infoIcon = faInfoCircle;
+export const pythonIcon = faPython;
 
 export const homePage: any = {
   id: 'home',

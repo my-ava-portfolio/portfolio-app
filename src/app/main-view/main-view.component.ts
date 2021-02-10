@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, HostListener  } from '@angular/core';
+import { Component, OnInit, HostListener  } from '@angular/core';
 
 import { arrowUpIcon } from '../core/inputs';
 
@@ -7,7 +7,6 @@ import { arrowUpIcon } from '../core/inputs';
   selector: 'app-main-view',
   templateUrl: './main-view.component.html',
   styleUrls: ['./main-view.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class MainViewComponent implements OnInit {
 

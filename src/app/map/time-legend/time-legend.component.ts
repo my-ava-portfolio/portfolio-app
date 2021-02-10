@@ -320,7 +320,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .append('circle')
       .attr('id', (d: any) => 'location_' + d.properties.id)
       .attr('class', (d: any) => d.properties.type)
-      .attr('r', 4)
+      .attr('r', 5)
       .attr('cursor', 'pointer')
       .attr('cx', (d: any) => this.dateRange(this.parseTime(d.properties.start_date)))
       .on('mouseover', (d: any, i: any, n: any) => {
@@ -344,7 +344,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   interactionWithEventNode(svgObject: any, data: any, scaleR: number): void {
     const currentElement: any = d3.select(svgObject);
-    currentElement.classed('slider-node-selected', !currentElement.classed('slider-node-selected')); // toggle class
+    currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
 
     const legendElement: any = d3.select('#theme-legend .' + data.properties.type);
     legendElement.classed('selected', !legendElement.classed('selected'));
