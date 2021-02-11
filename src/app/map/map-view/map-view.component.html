@@ -1,15 +1,28 @@
 <div class="container-fluid">
 
-  <div class="row  legend-container">
-
-    <div class="col-lg-4">
-      <app-theme-legend
-      ></app-theme-legend>
+  <div class="row legend-container">
+    <div class="col-lg-3" >
+      <div class="btn-group-toggle text-white" data-toggle="buttons">
+        <label class="btn btn-dark active">
+          <input type="checkbox" checked autocomplete="off" (click)="showHideLegend()">
+          <fa-icon class="mr-2" [icon]="tagIcon"></fa-icon>
+          Légende
+        </label>
+      </div>
     </div>
 
-    <div class="col-lg-8">
-      <app-time-legend
-      ></app-time-legend>
+    <div class="col-lg-12 legend-content">
+      <div class="row">
+
+        <div class="col-lg-4" *ngIf="isLegendDisplayed">
+          <app-theme-legend
+          ></app-theme-legend>
+        </div>
+
+        <div class="col-lg-8" *ngIf="isLegendDisplayed">
+          <app-time-legend
+          ></app-time-legend>
+        </div>
     </div>
 
   </div>

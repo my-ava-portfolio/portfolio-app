@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon } from '../../core/inputs';
+import { locationIcon, tagIcon } from '../../core/inputs';
 import { apiLogoUrl, currentYear } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
@@ -24,6 +24,8 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   fragment!: string | null;
   currentDate = currentYear;
 
+  isLegendDisplayed = true;
+
   innerWidth!: any;
   innerHeight!: any;
 
@@ -33,7 +35,9 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   ZoomActivityValue = 12;
 
   apiImgUrl = apiLogoUrl;
+
   locationIcon = locationIcon;
+  tagIcon = tagIcon;
   // check css code related to popup
   popupWidth = 330;
   popupHeight = 190;
@@ -109,6 +113,10 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
     d3.select('#' + this.svgActivitiesLayerId).remove()
     this.mapService.resetMapView()
+  }
+
+  showHideLegend(): void {
+    this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
   zoomFromDataBounds(geojsonData: any): void {

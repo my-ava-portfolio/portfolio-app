@@ -61,6 +61,13 @@ export class BackgroundComponent implements OnInit {
       zoom: this.zoomValue,
       zoomControl: false,
     }).addLayer(this.osmLayer);
+
+    L.control.scale(
+      {
+        imperial: false,
+        position: 'bottomright'
+      }
+    ).addTo(this.map);
   }
 
   resetView(): void {
