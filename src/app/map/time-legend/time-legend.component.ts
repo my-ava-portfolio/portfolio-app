@@ -26,8 +26,10 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   sliderBarId = '#slider-bar'
   margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
-  width = 400;
+  width = 600;
   height = 50;
+  fontSize = '12px';
+
   endDate: Date = currentDate;
   currentYear = currentYear;
   startDate!: Date;
@@ -255,7 +257,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .append('text')
       .attr('x', this.dateRange)
       .attr('y', 0)
-      .style('font-size', '8px')
+      .style('font-size', this.fontSize)
       .attr('text-anchor', 'middle')
       .text((d: any) => this.formatDateToYearString(d));
 
