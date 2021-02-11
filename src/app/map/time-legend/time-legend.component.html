@@ -1,27 +1,27 @@
 
-  <div class="row text-center py-2">
-      <div class="col-lg-7">
-        <h5>Time line</h5>
+<div class="row text-center py-2">
+  <div class="col-lg-7">
+    <h5>Time line</h5>
 
-        <div class="col-lg-7 mx-2 my-3 text-center">
-          <svg
-            [attr.width]="width"
-            [attr.height]="height"
-            id="slider-bar"
-          >
-          </svg>
-        </div>
-      </div>
+    <div class="col-lg-12 my-3 text-center">
+      <svg
+        [attr.width]="width"
+        [attr.height]="height"
+        id="slider-bar"
+      >
+      </svg>
+    </div>
+  </div>
 
-      <div class="col-lg-2 my-auto text-center">
-        <h1 id="slider-value"></h1>
-      </div>
+  <div class="col-lg-2 my-auto text-center">
+    <h1 id="slider-value"></h1>
+  </div>
 
-      <div class="col-lg-3 my-auto text-center">
-        <a id="start-button" class="btn btn-dark btn-sm" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
-        <a id="play-button" class="btn btn-dark mx-2" role="button" (click)="startTimeLine()">Play</a>
-        <a id="end-button" class="btn btn-dark btn-sm" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
-      </div>
+  <div class="col-lg-3 my-auto text-center">
+    <a id="start-button" class="btn btn-dark btn-sm" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
+    <a id="play-button" class="btn btn-dark mx-2" role="button" (click)="startTimeLine()">Play</a>
+    <a id="end-button" class="btn btn-dark btn-sm" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
+  </div>
 </div>
 
 

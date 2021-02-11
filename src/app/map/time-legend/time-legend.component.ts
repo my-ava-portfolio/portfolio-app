@@ -24,14 +24,15 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   backwardIcon = backwardIcon;
   forwardIcon = forwardIcon;
 
+  sliderBarId = '#slider-bar'
   margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
-  width = 500;
+  width = 400;
   height = 50;
   endDate: Date = currentDate;
   currentYear = currentYear;
   startDate!: Date;
   selectedDatePosition = 0;  // TODO check type
-  maxDatePosition: number = this.width - this.margin.left - this.margin.right ;
+  maxDatePosition: number = this.width - this.margin.left - this.margin.right;
   dateRange!: any;
   movingCursor = false;
   timer!: any;
@@ -92,17 +93,17 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   }
 
   formatDateToString(time: Date): string {
-   return d3.timeFormat('%Y-%m-%d')(time);
+    return d3.timeFormat('%Y-%m-%d')(time);
   }
 
 
   startTimeLine(): void {
     const button = d3.select('#play-button');
     if (button.html() === 'Pause') {
-        this.movingCursor = false;
-        clearInterval(this.timer);
-        // var timer = 0;
-        button.text('Continue');
+      this.movingCursor = false;
+      clearInterval(this.timer);
+      // var timer = 0;
+      button.text('Continue');
 
     } else if (button.html() === 'Continue') {
       this.movingCursor = true;
@@ -141,7 +142,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   update(h: any): void {
 
     // filter data set and redraw plot
-    const newData = this.geoData.features.filter( (d: any) => {
+    const newData = this.geoData.features.filter((d: any) => {
       const selectedDate = this.parseTime(d.properties.start_date);
       // return parseDate(d.properties.end_date) >= h && parseDate(d.properties.start_date) < h;
       // filter by current slider date and slider start date
@@ -160,7 +161,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     }
 
     // update count feature, to optimize api calls
-    this.currentCountNodes = newData.length
+    this.currentCountNodes = newData.length;
 
 
     // update position and text of label according to slider scale
@@ -185,14 +186,14 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   _initDateRange(): void {
     this.dateRange = d3.scaleTime()
-    .domain([this.startDate, this.endDate])
-    .range([0, this.maxDatePosition])
-    .clamp(true);
+      .domain([this.startDate, this.endDate])
+      .range([0, this.maxDatePosition])
+      .clamp(true);
   }
 
   buildTimeline(date: string): void {
 
-    const svg = d3.select('#slider-bar');
+    const svg = d3.select(this.sliderBarId);
 
     const playButton: any = d3.select('#play-button');
 
@@ -207,56 +208,56 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('class', 'track')
       .attr('x1', this.dateRange.range()[0])
       .attr('x2', this.dateRange.range()[1])
-      .select( (d: any, i: any, n: any) => n[i].parentNode.appendChild(n[i].cloneNode(true))) // copying itself
+      .select((d: any, i: any, n: any) => n[i].parentNode.appendChild(n[i].cloneNode(true))) // copying itself
       .attr('class', 'track-inset')
-      .select( (d: any, i: any, n: any) => n[i].parentNode.appendChild(n[i].cloneNode(true)))  // copying itself
+      .select((d: any, i: any, n: any) => n[i].parentNode.appendChild(n[i].cloneNode(true)))  // copying itself
       .attr('class', 'track-overlay')
       .call(d3.drag()
         .on('drag start', () => {
-            // to avoid cursor running if track is drag...
-            playButton.text('Pause');
+          // to avoid cursor running if track is drag...
+          playButton.text('Pause');
 
           this.selectedDatePosition = d3.event.x;
-            this.update(this.dateRange.invert(this.selectedDatePosition));
+          this.update(this.dateRange.invert(this.selectedDatePosition));
 
-            // disable timeline node selection
-            d3.select('#slider-bar .events')
-              .selectAll('circle')
-              .style('pointer-events', 'none');
+          // disable timeline node selection
+          d3.select('#slider-bar .events')
+            .selectAll('circle')
+            .style('pointer-events', 'none');
         })
         .on('end', () => {
-            // at the drag end we enable the drap map
-            this.mapContainer.dragging.enable();
+          // at the drag end we enable the drap map
+          this.mapContainer.dragging.enable();
 
-            // enable timeline node selection
-            d3.select('#slider-bar .events')
-                .selectAll('circle')
-                .style('pointer-events', 'all');
+          // enable timeline node selection
+          d3.select('#slider-bar .events')
+            .selectAll('circle')
+            .style('pointer-events', 'all');
 
-            // reset button play if animation is done and play button == continue
-            if ( this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.endDate.toTimeString()
-              || this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.startDate.toTimeString()
-            ) {
-                playButton.text('Play');
-            } else {
-                playButton.text('Continue');
-            }
+          // reset button play if animation is done and play button == continue
+          if (this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.endDate.toTimeString()
+            || this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.startDate.toTimeString()
+          ) {
+            playButton.text('Play');
+          } else {
+            playButton.text('Continue');
+          }
         })
       )
-    ;
+      ;
 
     slider.insert('g', '.track-overlay')
-        .attr('class', 'ticks')
-        .attr('transform', 'translate(0,' + 18 + ')')
+      .attr('class', 'ticks')
+      .attr('transform', 'translate(0,' + 18 + ')')
       .selectAll('text')
-        .data(this.dateRange.ticks(10)) // number of label on the slider
-        .enter()
-        .append('text')
-        .attr('x', this.dateRange)
-        .attr('y', 0)
-        .style('font-size', '8px')
-        .attr('text-anchor', 'middle')
-        .text( (d: any) => this.formatDateToYearString(d));
+      .data(this.dateRange.ticks(10)) // number of label on the slider
+      .enter()
+      .append('text')
+      .attr('x', this.dateRange)
+      .attr('y', 0)
+      .style('font-size', '8px')
+      .attr('text-anchor', 'middle')
+      .text((d: any) => this.formatDateToYearString(d));
 
     // node trace events from geojson source
     const traceEvents = slider.insert('g', '.track-overlay')
@@ -280,25 +281,25 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
           }
         }
         return 2;
-    })
+      })
       .attr('cx', (d: any) => {
         const startDate = this.parseTime(d.properties.start_date);
         if (startDate !== null) {
-          if ( startDate >= this.startDate) {
+          if (startDate >= this.startDate) {
             return this.dateRange(startDate);
           }
         } else {
           return ''; // ?????
         }
-    });
+      });
 
     const trace = slider.insert('line', '.track-overlay')
-        .attr('id', 'trace')
-        .attr('x1', this.dateRange(this.startDate));
+      .attr('id', 'trace')
+      .attr('x1', this.dateRange(this.startDate));
 
     const handle = slider.insert('circle', '.track-overlay')
-        .attr('id', 'handle')
-        .attr('r', 10);
+      .attr('id', 'handle')
+      .attr('r', 10);
 
     // events
     const events = slider.append('g')
@@ -356,10 +357,10 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   circleBouncer(object: any, rScale: number): void {
     object
-        .transition()
-        .duration(1000)
-        .ease(d3.easeElastic)
-        .attr('r', (d: any) => d.properties.months * rScale)
+      .transition()
+      .duration(1000)
+      .ease(d3.easeElastic)
+      .attr('r', (d: any) => d.properties.months * rScale)
   }
 
 }
