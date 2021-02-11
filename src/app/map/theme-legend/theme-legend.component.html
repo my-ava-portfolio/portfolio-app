@@ -1,6 +1,30 @@
 <div class="row mx-1 py-2" id="theme-legend">
 
   <div class="col-sm-6">
+    <h5>Activités</h5>
+    <div class="col-lg-12">
+      <svg
+        [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement"
+      >
+        <circle *ngFor="let feature of activityTypesLegendData.circleJobs"
+          [attr.r]="activityTypesLegendData.circleR"
+          [attr.cx]="activityTypesLegendData.circleCxPos"
+          [attr.cy]="feature.cy"
+          [class]="feature.class">
+        </circle>
+
+        <text *ngFor="let feature of activityTypesLegendData.circleJobs"
+          [attr.x]="activityTypesLegendData.textXPos"
+          [attr.y]="feature.cy"
+          [attr.font-size]="fontSize"
+          [class]="feature.class + ' label'">{{ feature.label }}
+        </text>
+      </svg>
+    </div>
+  </div>
+
+
+  <div class="col-sm-6">
     <h5>Nombre de mois</h5>
     <div class="col-lg-12">
       <svg
@@ -27,29 +51,6 @@
             [attr.y2]="monthSize * 2 + 2"
             class="line-dot">
         </line>
-      </svg>
-    </div>
-  </div>
-
-  <div class="col-sm-6">
-    <h5>Activités</h5>
-    <div class="col-lg-12">
-      <svg
-        [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement"
-      >
-        <circle *ngFor="let feature of activityTypesLegendData.circleJobs"
-          [attr.r]="activityTypesLegendData.circleR"
-          [attr.cx]="activityTypesLegendData.circleCxPos"
-          [attr.cy]="feature.cy"
-          [class]="feature.class">
-        </circle>
-
-        <text *ngFor="let feature of activityTypesLegendData.circleJobs"
-          [attr.x]="activityTypesLegendData.textXPos"
-          [attr.y]="feature.cy"
-          [attr.font-size]="fontSize"
-          [class]="feature.class + ' label'">{{ feature.label }}
-        </text>
       </svg>
     </div>
   </div>
