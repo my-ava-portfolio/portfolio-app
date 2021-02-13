@@ -2,7 +2,7 @@ import { faTags, faInfoCircle, faStepBackward, faStepForward, faMapMarkedAlt, fa
 import { faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 // export const apiBaseUrl = 'http://127.0.0.1:5000/';
-export const apiBaseUrl = 'https://ava-api.herokuapp.com/api/v1/portfolio';
+export const apiBaseUrl = 'https://ava-api.herokuapp.com/api/v1/portfolio/';
 export const apiLogoUrl = `${apiBaseUrl}images/logo/`;
 export const apiMapsUrl = `${apiBaseUrl}images/maps/`;
 export const jupyterNotebookUrl = 'https://amauryval.github.io/my-notes/';
