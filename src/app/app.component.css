@@ -1,31 +1,136 @@
-.visible {
-  visibility: visible;
-  opacity: 1;
-  transition: opacity 2s linear;
-}
-.hidden {
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s 2s, opacity 2s linear;
+body {
+  font-size: 15px;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
 }
 
-.parallelogram {
-  -webkit-transform: skew(20deg);
-  -moz-transform: skew(20deg);
-  -o-transform: skew(20deg);
-  height: 100%;
-  background: ghostwhite;
-  border-radius: 1.25rem!important;
-  box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
+body::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
 }
-
-.unparallelogram {
-  -webkit-transform: skew(-20deg);
-  -moz-transform: skew(-20deg);
-  -o-transform: skew(-20deg);
-  }
 
 .circle {
   border-radius: 50%;
 }
 
+
+.container-width {
+  max-width: 1300px;
+}
+
+.bg-very-dark {
+  background-color: #2a2e33
+}
+
+.bg-less-dark {
+  background-color: #495057;
+}
+
+.thumbnail-width {
+  width: 30vw;
+}
+
+/* nav bar height */
+* {
+  scroll-margin-top: 65px;
+}
+
+
+/* style navigation chart and maps */
+circle.personal_projects {
+  fill: #f5a824;
+}
+
+circle.jobs {
+  fill: #ff0000;
+}
+
+circle.education {
+  fill: #168720;
+}
+
+circle.technics {
+  fill: #0ca81e;
+}
+
+circle.themes {
+  fill: #0c77a8;
+}
+
+circle.tools  {
+  fill: #5a2ea2;
+}
+
+.disabled-node circle {
+  fill: #b7b6b6 !important;
+}
+
+.disabled-group {
+  color: #aeaeae!important;
+}
+
+#svgSkillsChart circle {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+#svgSkillsLegend foreignObject{
+  cursor: pointer
+}
+
+circle.selected {
+  stroke: black!important;
+  stroke-width: 2px!important;
+}
+
+
+#svgSkillsLegend .nodeLabels text:not(.technics):not(.themes):not(.tools), #svgSkillsChart .nodeLabels text:not(.technics):not(.themes):not(.tools) {
+  fill: black;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: bold;
+  pointer-events: none; /* to prevent mouseover/drag capture*/
+}
+
+#svgSkillsChart .nodeLabels text.technics, #svgSkillsChart .nodeLabels text.themes, #svgSkillsChart .nodeLabels text.tools {
+  fill: black;
+  font-family: Arial;
+  font-size: 10px;
+  pointer-events: none; /* to prevent mouseover/drag capture*/
+}
+
+.activity-months {
+  fill: #b6b6b6;
+  opacity: 0.7;
+  stroke: ghostwhite;
+  stroke-width: 3px;
+  stroke-opacity: 1;
+}
+
+.line-dot {
+  stroke: #000000;
+  stroke-width: 1;
+  stroke-dasharray: 5,5;
+}
+
+
+.unabled-topic {
+  pointer-events: none;
+}
+
+.enabled-topic {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.bg-date {
+  text-anchor: middle;
+  font-size: 14vw;
+  dominant-baseline: middle;
+  pointer-events: none;
+  fill: #000000;
+  opacity: 0.2;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

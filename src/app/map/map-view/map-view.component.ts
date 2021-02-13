@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -7,10 +7,10 @@ import 'leaflet/dist/images/marker-shadow.png';
 import * as d3 from 'd3';
 
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
-
-import { locationIcon } from '../../core/inputs';
-import { apiImgUrl, currentYear } from '../../core/inputs';
+import { locationIcon, tagIcon } from '../../core/inputs';
+import { apiLogoUrl, currentYear } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
 
@@ -18,12 +18,13 @@ import { MapService } from '../../services/map.service';
 @Component({
   selector: 'app-map-view',
   templateUrl: './map-view.component.html',
-  styleUrls: ['./map-view.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./map-view.component.css']
 })
 export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   fragment!: string | null;
   currentDate = currentYear;
+
+  isLegendDisplayed = true;
 
   innerWidth!: any;
   innerHeight!: any;
@@ -33,12 +34,18 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   maxZoomValue = 9;
   ZoomActivityValue = 12;
 
-  apiImgUrl = apiImgUrl;
+  apiImgUrl = apiLogoUrl;
+
   locationIcon = locationIcon;
+  tagIcon = tagIcon;
   // check css code related to popup
   popupWidth = 330;
   popupHeight = 190;
   geoFeaturesData!: any[];
+  svgActivitiesLayerId = 'svgActivitiesLayer';
+  circleOpacity = 0.7;
+  circleStroke = 'ghostwhite';
+  circleWidth = '3px';
 
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
@@ -46,11 +53,16 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private activatedRoute: ActivatedRoute,
+    private titleService: Title
   ) {
+
+    // to get the data properties from routes (app.module.ts)
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element: any) => {
         this.mapContainer = element;
+        console.log('tralalalallala', this.mapContainer)
         this.initActivitiesSvgLayer();
       }
     );
@@ -99,6 +111,12 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
     this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
+    d3.select('#' + this.svgActivitiesLayerId).remove()
+    this.mapService.resetMapView()
+  }
+
+  showHideLegend(): void {
+    this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
   zoomFromDataBounds(geojsonData: any): void {
@@ -128,13 +146,14 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   initActivitiesSvgLayer(): void {
     const svgLayerContainer: any = L.svg().addTo(this.mapContainer);
     const svgLayerObject = d3.select(svgLayerContainer._container)
-      .attr('id', 'svgActivitiesLayer')
+      .attr('id', this.svgActivitiesLayerId)
       .attr('pointer-events', 'auto');
     svgLayerObject.select('g')
       .attr('class', 'leaflet-zoom-hide')
       .attr('id', 'activities-container');
 
   }
+
 
   activitiesMapping(data: any): void {
     const group: any = d3.select('#activities-container');
@@ -146,9 +165,13 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .append('a') // add hyper link and the svg circle
       .attr('xlink:href', (d: any) => '/resume#' + d.properties.id)
       .attr('id', (d: any) => 'node_location_' + d.properties.id)
-      .attr('class', (d: any) => d.properties.type + ' activityPoint')
+      .attr('class', 'activityPoint')
       .attr('cursor', 'pointer')
       .append('circle')
+      .style('opacity', this.circleOpacity)
+      .style('stroke', this.circleStroke)
+      .style('stroke-width', this.circleWidth)
+      .attr('class', (d: any) => d.properties.type)
       .on('mouseover', (d: any, i: any, n: any) => {
         // TODO popup
 
@@ -158,10 +181,9 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
         // legends
         // timeline highlight
         const sliderNode: any = d3.select('#slider-bar #location_' + d.properties.id);
-        sliderNode.classed('slider-node-selected', !sliderNode.classed('slider-node-selected')); // toggle class
+        sliderNode.classed('selected', !sliderNode.classed('selected')); // toggle class
         const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
-
 
       })
       .on('mousemove', (d: any) => {
@@ -178,7 +200,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
         // legends
         // timeline highlight
         const sliderNode: any = d3.select('#slider-bar #location_' + d.properties.id);
-        sliderNode.classed('slider-node-selected', !sliderNode.classed('slider-node-selected')); // toggle class
+        sliderNode.classed('selected', !sliderNode.classed('selected')); // toggle class
         const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
 
@@ -199,7 +221,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   reset(): void {
     // for the points we need to convert from latlong to map units
-    d3.select('#svgActivitiesLayer')
+    d3.select('#' + this.svgActivitiesLayerId)
       .selectAll('circle')
       .attr('transform', (d: any) => {
         return 'translate(' +

@@ -6,6 +6,7 @@ import { GalleryService } from '../../services/gallery.service';
 import { Subscription } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -36,8 +37,12 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private galleryService: GalleryService,
-    private activatedRoute: ActivatedRoute
-  ) {
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title
+    ) {
+
+    // to get the data properties from routes (app.module.ts)
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
@@ -85,7 +90,9 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
 
   resetGallery(): any {
-    this.galleryService.pullExistingActivitiesGallery(this.defaultActivity, this.defaultCategory);
+    this.currentCategory = this.defaultCategory;
+    this.currentCategory = this.defaultActivity;
+    this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory);
   }
 
   getGalleryDataByActivity(activityName: string | null): any {
@@ -95,6 +102,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
   getGalleryDataByCategory(categoryName: string | null): any {
     this.currentCategory = categoryName;
+    console.log('aa', this.currentCategory)
     this.galleryService.pullExistingActivitiesGallery(null, this.currentCategory);
   }
 

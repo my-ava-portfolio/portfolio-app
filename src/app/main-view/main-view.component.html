@@ -2,14 +2,10 @@
 
 <app-header></app-header>
 
+<router-outlet></router-outlet>
 
-<div class="container-fluid">
-
-  <main>
-    <router-outlet></router-outlet>
-  </main>
-
-</div>
-
+  <div id="gotop-button" *ngIf="scrolltoTopActivated" [ngClass]="{'show-scrollTop': scrolltoTopActivated}" class="bg-white py-2 px-2 circle shadow scroll-to-top">
+    <fa-icon [icon]="arrowUpIcon" size="4x" (click)="scrollToTop()"></fa-icon>
+  </div>
 
 

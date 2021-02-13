@@ -6,9 +6,10 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./theme-legend.component.css']
 })
 export class ThemeLegendComponent implements OnInit {
-  widthLegendElement = 200;
-  heightLegendElement = 100;
+  widthLegendElement = 250;
+  heightLegendElement = 110;
 
+  fontSize = '16px';
   // activity month legend data
   activityMonthLegendData: any = {
     circleMonthR: [40, 20, 10],

@@ -1,15 +1,3 @@
-#svgSkillsLegend circle.personal_projects, #svgSkillsChart circle.personal_projects {
-  fill: #f5a824;
-  r: 10;
-  stroke-width: 0px;
-}
-
-#svgSkillsLegend circle.jobs, #svgSkillsChart circle.jobs {
-  fill: #ff0000;
-  r: 10;
-  stroke-width: 0px;
-}
-
 .legend_graph_title {
   font-size: 12px;
   dominant-baseline: middle;
@@ -25,105 +13,9 @@
   padding-bottom: 15px;
 }
 
-#svgSkillsChart circle.personal_projects:hover {
-  r: 15;
-}
-
-#svgSkillsChart circle.jobs:hover {
-  r: 15;
-}
-
-#svgSkillsChart circle {
-  cursor: pointer;
-  pointer-events: auto;
-}
-
-#svgSkillsLegend foreignObject{
-  cursor: pointer
-}
-
-#svgSkillsLegend circle.technics, #svgSkillsChart circle.technics {
-  fill: #0ca81e;
-  r: 6;
-  stroke-width: 0px;
-}
-
-#svgSkillsLegend circle.themes, #svgSkillsChart circle.themes {
-  fill: #0c77a8;
-  r: 6;
-  stroke-width: 0px;
-}
-
-#svgSkillsLegend circle.tools, #svgSkillsChart circle.tools  {
-  fill: #5a2ea2;
-  r: 6;
-  stroke-width: 0px;
-}
-
-#skillsGraphElements circle:hover {
-  r: 11;
-}
-
-#svgSkillsChart circle.selected {
-  stroke: black;
-  stroke-width: 3px;
-}
-
-#svgSkillsLegend circle.unselected {
-  stroke-width: 0px;
-}
-
-#svgSkillsLegend .nodeLabels text:not(.technics):not(.themes):not(.tools), #svgSkillsChart .nodeLabels text:not(.technics):not(.themes):not(.tools) {
-  fill: black;
-  font-family: Arial;
-  font-size: 12px;
-  font-weight: bold;
-  pointer-events: none; /* to prevent mouseover/drag capture*/
-}
-
-#svgSkillsChart .nodeLabels text.technics, #svgSkillsChart .nodeLabels text.themes, #svgSkillsChart .nodeLabels text.tools {
-  fill: black;
-  font-family: Arial;
-  font-size: 10px;
-  pointer-events: none; /* to prevent mouseover/drag capture*/
-}
-
-
-.disabled-node circle {
-  fill: #b7b6b6 !important;
-  stroke-width: 0px;
-}
-
-
-.disabled-group {
-  color: #aeaeae!important;
-}
-
-.unabled-topic {
-  pointer-events: none;
-}
-
-.enabled-topic {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-
-.bg-date {
-  text-anchor: middle;
-  font-size: 14vw;
-  dominant-baseline: middle;
-  pointer-events: none;
-  fill: #000000;
-  opacity: 0.2;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
 .graph-activity-date, .graph-slider-date {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
 

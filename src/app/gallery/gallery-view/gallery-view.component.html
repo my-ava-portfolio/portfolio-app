@@ -1,11 +1,14 @@
-<div id="content" class="container-fluid" *ngIf="isDataAvailable">
-  <div class="row justify-content-around y-scroll my-3">
-    <div class="col-lg-10">
+<div class="container-fluid" *ngIf="isDataAvailable">
+  <div class="row justify-content-around">
+
+    <div class="col-lg-10 my-3">
 
       <div class="card-columns">
 
         <ng-container *ngFor="let activity of galleryItems">
           <ng-container *ngIf="activity.pictures">
+
+          <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
 
             <ng-container *ngTemplateOutlet="imgProject; context:{pictures: activity.pictures, activity: activity}"></ng-container>
 
@@ -13,47 +16,12 @@
         </ng-container>
 
       </div>
-      </div>
-  </div>
-
-</div>
-
-<div class="row projects-bar">
-
-  <div class="col-lg-12">
-    <div class="row justify-content-center">
-
-      <div class="col-lg-5 my-3 text-center">
-
-        <h5>Filtrage par thématiques</h5>
-
-        <div class="btn-group btn-group-toggle mt-1 ml-2" data-toggle="buttons">
-          <label class="btn btn-secondary active btn-sm">
-            <input (click)="this.resetGallery()" type="radio" name="options" id="option1" autocomplete="off" checked>Tous
-          </label>
-          <label class="btn btn-secondary btn-sm">
-            <input (click)="getGalleryDataByCategory('jobs')" type="radio" name="options" id="option2" autocomplete="off">Expériences
-          </label>
-          <label class="btn btn-secondary btn-sm">
-            <input (click)="getGalleryDataByCategory('personal_projects')" type="radio" name="options" id="option3" autocomplete="off">Projets personnels
-          </label>
-        </div>
-      </div>
-
-      <div class="col-lg-7 my-3 text-center">
-        <h5>Filtrage par activités</h5>
-
-        <div class="btn-group mt1 ml-2">
-          <ng-container *ngFor="let activity of galleryItems">
-            <button (click)="getGalleryDataByActivity(activity.identifier)" type="button" [id]="activity.identifier" class="btn btn-primary btn-sm" [style]="'background-color:' + activity.color +'; border-color:'+ activity.color">{{ activity.title}}</button>
-          </ng-container>
-        </div>
-      </div>
     </div>
+
   </div>
 
-
 </div>
+
 
 
 <ng-template #imgProject let-pictures=pictures let-activity=activity>
@@ -110,5 +78,42 @@
   </ng-container>
 
 </div>
+</ng-template>
+
+
+<ng-template #galleryControler>
+  <div class="card bg-light text-white text-center p-3">
+    <blockquote class="blockquote py-3 bg-dark mb-0">
+
+        <div class="col-lg-12 my-3">
+
+          <h5>Filtrage par thématiques</h5>
+
+          <div class="btn-group btn-group-toggle mt-1 ml-2" data-toggle="buttons">
+            <label class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bolder': currentCategory === null}">
+              <input (click)="this.resetGallery()" type="radio" name="options" id="option1" autocomplete="off">Tous
+            </label>
+            <label class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bolder': currentCategory === 'jobs'}">
+              <input (click)="getGalleryDataByCategory('jobs')" type="radio" name="options" id="option2" autocomplete="off" >Expériences
+            </label>
+            <label class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bolder': currentCategory === 'personal_projects'}">
+              <input (click)="getGalleryDataByCategory('personal_projects')" type="radio" name="options" id="option3" autocomplete="off" >Projets personnels
+            </label>
+          </div>
+        </div>
+
+        <div class="col-lg-12 my-3">
+
+          <h5>Filtrage par activités</h5>
+
+          <div class="btn-group mt1 ml-2">
+            <ng-container *ngFor="let activity of galleryItems">
+              <button (click)="getGalleryDataByActivity(activity.identifier)" type="button" [id]="activity.identifier" class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bold': currentActivity === activity.identifier}">{{ activity.title}}</button>
+            </ng-container>
+          </div>
+        </div>
+
+    </blockquote>
+  </div>
 </ng-template>
 

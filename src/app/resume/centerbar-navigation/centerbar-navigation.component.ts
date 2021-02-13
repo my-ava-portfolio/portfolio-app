@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, Input, ViewEncapsulation, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Input, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -11,8 +11,7 @@ import { topicIcon, helpIcon } from '../../core/inputs';
 @Component({
   selector: 'app-centerbar-navigation',
   templateUrl: './centerbar-navigation.component.html',
-  styleUrls: ['./centerbar-navigation.component.css'],
-  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./centerbar-navigation.component.css']
 })
 export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() graphInputData!: any;
@@ -44,6 +43,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   chartHeight = 300;
   chartWidth!: number;
 
+   // circle
+  strokeWidth = '0px';
+
   legendInputTitles = [
     { id: 'legend_graph_title', label: 'Activités', cx: 5, cy: 15 },
     { id: 'legend_graph_title', label: 'Compétences', cx: 160, cy: 15 },
@@ -51,11 +53,11 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
   // here to control topic graph... TODO improve it !
   legendInput = [
-    { id: 'jobs', status: 'unabled-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10 },
-    { id: 'personal_projects', status: 'unabled-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10 },
-    { id: 'themes', status: 'enabled-topic', label: 'Thématiques', cx: 175, cy: 35, text_cx: 190, r: 6 },
-    { id: 'technics', status: 'enabled-topic', label: 'Techniques', cx: 175, cy: 55, text_cx: 190, r: 6 },
-    { id: 'tools', status: 'enabled-topic', label: 'Outils', cx: 175, cy: 75, text_cx: 190, r: 6 }
+    { id: 'jobs', status: 'unabled-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
+    { id: 'personal_projects', status: 'unabled-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
+    { id: 'themes', status: 'enabled-topic', label: 'Thématiques', cx: 175, cy: 35, text_cx: 190, r: 6, rOver: 10 },
+    { id: 'technics', status: 'enabled-topic', label: 'Techniques', cx: 175, cy: 55, text_cx: 190, r: 6, rOver: 10 },
+    { id: 'tools', status: 'enabled-topic', label: 'Outils', cx: 175, cy: 75, text_cx: 190, r: 6, rOver: 10 }
   ];
 
   legendGroupInput = [
@@ -156,6 +158,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
         }
         return classesValue;
       })
+      .style('r', (d: any) => d.r)
+      .style('stroke-width', this.strokeWidth)
       .on('click', (d: any, i: any, n: any) => {
 
         if (d.id === 'themes') {
@@ -184,13 +188,13 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
             || elementSelectedInGraph.includes('technics')
             || elementSelectedInGraph.includes('tools')
           ) {
-              // it's a skill node
-              // unselect (so it's like a reset but on the current date)
-              this.buildGraphElements();
+            // it's a skill node
+            // unselect (so it's like a reset but on the current date)
+            this.buildGraphElements();
           } else {
-              // it's a job/project node
-              // click on the expected node
-              this.buildGraphElements();
+            // it's a job/project node
+            // click on the expected node
+            this.buildGraphElements();
           }
         }
       });
@@ -214,6 +218,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       .text(function(d: any) { return d.text; })
       .attr('x', (d: any) => d.cx)
       .attr('y', (d: any) => d.cy)
+      .style('r', (d: any) => d.r)
+      .style('stroke-width', this.strokeWidth)
       .on('click', (d: any, i: any, n: any) => {
         if (d.id === 'grouper_jobs') {
           this.isJobsGrouped = !this.isJobsGrouped;
@@ -368,7 +374,16 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       .attr('r', (d: any) => {
           const element = this.legendInput.filter(e => e.id === d.properties.type);
           return element[0].r;
-      });
+      })
+      .on('mouseover', (d: any, i: any, n: any) => {
+        const element = this.legendInput.filter(e => e.id === d.properties.type);
+        d3.select(n[i]).attr('r', element[0].rOver);
+      })
+      .on('mouseout', (d: any, i: any, n: any) => {
+        const element = this.legendInput.filter(e => e.id === d.properties.type);
+        d3.select(n[i]).attr('r', element[0].r);
+       })
+      ;
 
 
     const labelNode = svgElements.append('g').attr('class', 'nodeLabels')

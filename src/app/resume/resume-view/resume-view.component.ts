@@ -1,23 +1,24 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
 
 import { ResumeService } from '../../services/resume.service';
-import { apiImgUrl } from '../../core/inputs';
+import { NotesService } from '../../services/notes.service';
+import { apiLogoUrl } from '../../core/inputs';
 
 import { interval, Subscription } from 'rxjs';
 import { startWith  } from 'rxjs/operators';
 
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
   selector: 'app-resume-view',
   templateUrl: './resume-view.component.html',
-  styleUrls: ['./resume-view.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./resume-view.component.css']
 })
 export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   fragment!: string | null;
-  apiImgUrl = apiImgUrl;
+  apiImgUrl = apiLogoUrl;
 
   // resume top bar
   profilData: any;
@@ -45,9 +46,13 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   constructor(
     private resumeService: ResumeService,
+    private notesService: NotesService,
     private activatedRoute: ActivatedRoute,
-
+    private titleService: Title
   ) {
+
+    // to get the data properties from routes (app.module.ts)
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {
@@ -119,5 +124,11 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
       }
     });
   }
+
+  sendPathNotesLink(notePath: string): void {
+    this.notesService.pullNotesData(notePath);
+  }
+
+
 
 }

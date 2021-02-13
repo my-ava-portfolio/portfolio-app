@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy  } from '@angular/core';
 
 import { ResumeService } from '../../services/resume.service';
-import { apiImgUrl } from '../../core/inputs';
+import { apiLogoUrl } from '../../core/inputs';
 
 import { Subscription } from 'rxjs';
 
 import { githubIcon, linkedinIcon, emailIcon, phoneIcon, websiteIcon } from '../../core/inputs';
+
+import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -23,7 +26,7 @@ export class ShortViewComponent implements OnInit, OnDestroy {
   phoneIcon = phoneIcon;
   websiteIcon = websiteIcon;
 
-  apiImgUrl = apiImgUrl;
+  apiImgUrl = apiLogoUrl;
 
   // resume top bar
   profilData: any;
@@ -51,8 +54,13 @@ export class ShortViewComponent implements OnInit, OnDestroy {
   skillsDataSubscription!: Subscription;
 
   constructor(
-    private resumeService: ResumeService
-  ) {
+    private resumeService: ResumeService,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title
+    ) {
+
+    // to get the data properties from routes (app.module.ts)
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {

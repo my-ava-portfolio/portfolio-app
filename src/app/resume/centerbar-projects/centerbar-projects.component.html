@@ -13,8 +13,6 @@
         </div>
 
         <div class="col-lg-5">
-          <a class="btn btn-dark mr-2 float-right" [routerLink]="['/resume']" fragment="top" title="Haut de page"><fa-icon [icon]="arrowUpIcon"></fa-icon></a>
-
           <div *ngIf="project.url_github; then projectsShorcutGithub"></div>
           <ng-template #projectsShorcutGithub>
             <a class="btn btn-secondary mr-2 float-right" [href]="project.url_github" target="_blank" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
@@ -25,9 +23,9 @@
             <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="project.identifier" target="_blank" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
           </ng-template>
 
-          <div *ngIf="project.url_jupyter_book; then projectsShorcutNotes"></div>
-          <ng-template #projectsShorcutNotes>
-            <a class="btn btn-info mr-2 float-right" [routerLink]="['/notes']" [fragment]="project.url_jupyter_book" title="Accès aux notes"><fa-icon [icon]="notesIcon"></fa-icon></a>
+          <div *ngIf="project.url_jupyter_book; then projectsShortcutNotes"></div>
+          <ng-template #projectsShortcutNotes>
+            <a class="btn btn-info mr-2 float-right" [routerLink]="['/notes']" (click)="emitNotePath(project.url_jupyter_book)" title="Accès aux notes"><fa-icon [icon]="notesIcon"></fa-icon></a>
           </ng-template>
 
           <div *ngIf="project.url_website; then projectsShorcutWebsite"></div>
