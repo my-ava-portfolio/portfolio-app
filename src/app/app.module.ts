@@ -100,7 +100,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes, {
       scrollPositionRestoration: 'enabled',
       anchorScrolling: 'enabled',
-      scrollOffset: [0, 64] // [x, y]
+      scrollOffset: [0, 64], // [x, y]
+      useHash: true, // in order to prevent error 40 page on reload
     }),
     NgbModule,
     FormsModule
