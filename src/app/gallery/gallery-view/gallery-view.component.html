@@ -4,16 +4,17 @@
     <div class="col-lg-10 my-3">
 
       <div class="card-columns">
+        <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
 
-        <ng-container *ngFor="let activity of galleryItems">
-          <ng-container *ngIf="activity.pictures">
+        <ng-container *ngFor="let activity of galleryItems; let idx = index">
 
-          <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
-
-            <ng-container *ngTemplateOutlet="imgProject; context:{pictures: activity.pictures, activity: activity}"></ng-container>
-
+          <ng-container *ngIf="activity.medias">
+            <ng-container *ngTemplateOutlet="imgProject; context:{medias: activity.medias, activity: activity}"></ng-container>
           </ng-container>
+
         </ng-container>
+
+        <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
 
       </div>
     </div>
@@ -24,23 +25,31 @@
 
 
 
-<ng-template #imgProject let-pictures=pictures let-activity=activity>
-  <div class="card border rounded py-2 px-2 border" *ngFor="let picture of pictures; let idx = index">
+<ng-template #imgProject let-medias=medias let-activity=activity>
+  <div class="card border rounded py-2 px-2 border" *ngFor="let media_feature of medias; let idx = index">
 
-    <ng-container [ngSwitch]="checkMediaType(picture.media)">
+    <ng-container [ngSwitch]="media_feature.source">
 
-      <ng-container *ngSwitchCase="'youtube_url'">
+      <ng-container *ngSwitchCase="'youtube'">
         <div class="embed-responsive embed-responsive-16by9">
-          <iframe [src]="picture.media | safeUrl" class="embed-responsive-item" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
+          <iframe [src]="media_feature.media | safeUrl" class="embed-responsive-item" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
         </div>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'githubusercontent_url'">
-        <img [src]="picture.media | safeUrl" class="card-img-top pointer" alt="data" data-toggle="modal" [attr.data-target]="'#modal-' + activity.identifier + idx">
+      <ng-container *ngSwitchCase="'url_img'">
+        <img [src]="media_feature.media | safeUrl" class="card-img-top pointer" data-toggle="modal" [attr.data-target]="'#modal-' + activity.identifier + idx">
+        <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: activity.identifier, pictureId: idx}"></ng-container>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'local_url'">
-        <img [src]="apiBaseUrl + picture.media" class="card-img-top pointer" alt="data" data-toggle="modal" [attr.data-target]="'#modal-' + activity.identifier + idx">
+      <ng-container *ngSwitchCase="'url_app'">
+        <a [href]="media_feature.media | safeUrl" target="_blank">
+          <img [src]="'https://fakeimg.pl/350x200/?text=' + media_feature.title" class="card-img-top pointer">
+        </a>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'api_img'">
+        <img [src]="apiBaseUrl + media_feature.media" class="card-img-top pointer" data-toggle="modal" [attr.data-target]="'#modal-' + activity.identifier + idx">
+        <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiBaseUrl + media_feature.media, activityId: activity.identifier, pictureId: idx}"></ng-container>
       </ng-container>
 
     </ng-container>
@@ -48,36 +57,24 @@
     <div class="card-body">
       <span [class]="'badge badge-pill my-2 mx-2 text-white ' + activity.category_id" >{{activity.category}}</span>
       <a [routerLink]="['/resume']" [fragment]="activity.identifier"><span class="badge badge-pill" [style]="'background-color:' + activity.color + ';color: white'">{{activity.title}}</span></a>
-      <span [class]="'badge badge-pill my-2 mx-2 text-white ' + activity.media_type" >{{activity.media_type}}</span>
-      <h6 class="card-title">{{ picture.title }}</h6>
-      <p class="card-text">{{picture.description}} blablabla</p>
+      <span [class]="'badge badge-pill my-2 mx-2 text-white ' + media_feature.type" >{{media_feature.type}}</span>
+      <h6 class="card-title">{{ media_feature.title }}</h6>
+      <p class="card-text">{{media_feature.description}} blablabla</p>
     </div>
-
-    <ng-container *ngIf="!picture.media.includes(youtubeDefaultUrl)">
-      <ng-container *ngTemplateOutlet="imgModal; context: {picture: picture, activityId: activity.identifier, pictureId: idx}"></ng-container>
-    </ng-container>
 
   </div>
 
 </ng-template>
 
 
-<ng-template #imgModal let-picture=picture let-activityId=activityId let-pictureId=pictureId>
-<div class="modal" [id]="'modal-' + activityId + pictureId" tabindex="-1" role="dialog" aria-labelledby="imgkeyLabel" aria-hidden="true">
+<ng-template #imgModal let-pictureUrl=pictureUrl let-activityId=activityId let-pictureId=pictureId>
+  <div class="modal" [id]="'modal-' + activityId + pictureId" tabindex="-1" role="dialog" aria-labelledby="imgkeyLabel" aria-hidden="true">
 
-  <ng-container [ngSwitch]="checkMediaType(picture.media)">
     <a data-dismiss="modal" aria-label="Close">
-      <ng-container *ngSwitchCase="'githubusercontent_url'">
-        <img [src]="picture.media | safeUrl" class="pointer img-size">
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'local_url'">
-        <img [src]="apiBaseUrl + picture.media" class="pointer img-size">
-      </ng-container>
+      <img [src]="pictureUrl | safeUrl" class="pointer img-size">
     </a>
-  </ng-container>
 
-</div>
+  </div>
 </ng-template>
 
 

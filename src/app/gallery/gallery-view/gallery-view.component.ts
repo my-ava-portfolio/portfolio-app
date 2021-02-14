@@ -16,8 +16,6 @@ import { Title } from '@angular/platform-browser';
 })
 export class GalleryViewComponent implements OnInit, OnDestroy {
   // TODO create a route to get all activities titles
-  youtubeDefaultUrl = 'https://www.youtube.com';
-  githubusercontentDefaultUrl = 'https://raw.githubusercontent.com/';
   currentDate: number = new Date().getFullYear();
   defaultActivity: string | null = null;
   currentActivity: string | null = null;
@@ -104,16 +102,6 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     this.currentCategory = categoryName;
     console.log('aa', this.currentCategory)
     this.galleryService.pullExistingActivitiesGallery(null, this.currentCategory);
-  }
-
-  checkMediaType(mediaItem: string): string {
-    if (mediaItem.includes(this.youtubeDefaultUrl)) {
-      return 'youtube_url';
-    } else if (mediaItem.includes(this.githubusercontentDefaultUrl)) {
-      return 'githubusercontent_url';
-    } else {
-      return 'local_url';
-    }
   }
 
 }
