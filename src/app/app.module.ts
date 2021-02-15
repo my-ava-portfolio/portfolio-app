@@ -90,7 +90,7 @@ const appRoutes: Routes = [
     FooterComponent,
     HeaderComponent,
     ThemeLegendComponent,
-    TimeLegendComponent,
+    TimeLegendComponent
   ],
   imports: [
     BrowserModule,

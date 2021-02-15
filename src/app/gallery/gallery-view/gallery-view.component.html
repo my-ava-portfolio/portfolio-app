@@ -26,7 +26,7 @@
 
 
 <ng-template #imgProject let-medias=medias let-activity=activity>
-  <div class="card border rounded py-2 px-2 border" *ngFor="let media_feature of medias; let idx = index">
+  <div class="card border rounded py-2 px-2" *ngFor="let media_feature of medias; let idx = index">
 
     <ng-container [ngSwitch]="media_feature.source">
 
@@ -42,8 +42,8 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'url_app'">
-        <a [href]="media_feature.media | safeUrl" target="_blank">
-          <img [src]="'https://fakeimg.pl/350x200/?text=' + media_feature.title" class="card-img-top pointer">
+        <a [href]="media_feature.media | safeUrl" target="_blank" rel="noopener noreferrer">
+          <img [src]="media_feature.media_splash" class="card-img-top pointer">
         </a>
       </ng-container>
 
@@ -59,7 +59,9 @@
       <a [routerLink]="['/resume']" [fragment]="activity.identifier"><span class="badge badge-pill" [style]="'background-color:' + activity.color + ';color: white'">{{activity.title}}</span></a>
       <span [class]="'badge badge-pill my-2 mx-2 text-white ' + media_feature.type" >{{media_feature.type}}</span>
       <h6 class="card-title">{{ media_feature.title }}</h6>
-      <p class="card-text">{{media_feature.description}} blablabla</p>
+      <p class="card-text">{{media_feature.description}}</p>
+      <p class="card-text small">Données: {{media_feature.data}}</p>
+      <p class="card-text small">Outils: {{media_feature.tools}}</p>
     </div>
 
   </div>

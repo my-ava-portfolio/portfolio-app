@@ -6,6 +6,7 @@ export const apiBaseUrl = 'https://ava-api.herokuapp.com/api/v1/portfolio/';
 export const apiLogoUrl = `${apiBaseUrl}images/logo/`;
 export const apiMapsUrl = `${apiBaseUrl}images/maps/`;
 export const jupyterNotebookUrl = 'https://amauryval.github.io/my-notes/';
+export const githubUrl = 'https://github.com/amauryval/';
 
 export const navBarTitle = 'Amaury Valorge - Portfolio';
 
@@ -43,7 +44,7 @@ export const homePage: any = {
 };
 
 export const currentYear: number = new Date().getFullYear();
-export const currentDate = new Date()
+export const currentDate = new Date();
 
 export const pages: any = [
   {
@@ -76,7 +77,7 @@ export const pages: any = [
   },
   {
     id: 'github',
-    route: '/github',
+    route: githubUrl,
     title: 'Github',
     status: false,
     icon: githubIcon

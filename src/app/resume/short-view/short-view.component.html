@@ -128,12 +128,12 @@
         <ul>
           <div *ngIf="project.url_github; then projectsShorcutGithub"></div>
           <ng-template #projectsShorcutGithub>
-            <li><span class="">Github: </span><a class="small text-dark" href="{{ project.url_github }}" target="_blank" >{{ project.url_github }}</a></li>
+            <li><span class="">Github: </span><a class="small text-dark" href="{{ project.url_github }}" target="_blank" rel="noopener noreferrer">{{ project.url_github }}</a></li>
           </ng-template>
 
           <div *ngIf="project.url_website; then projectsShorcutWebsite"></div>
           <ng-template #projectsShorcutWebsite>
-            <li><span class="">Site web: </span><a class="small text-dark" href="{{ project.url_website }}" target="_blank" >{{ project.url_website }}</a></li>
+            <li><span class="">Site web: </span><a class="small text-dark" href="{{ project.url_website }}" target="_blank" rel="noopener noreferrer">{{ project.url_website }}</a></li>
           </ng-template>
         </ul>
       </div>
@@ -186,7 +186,7 @@
 
 <ng-template #contactListElement let-icon=icon let-data=data>
   <li>
-    <a class="text-dark small" [href]="data" target="_blank" [innerHTML]="reverse(data)"></a>
+    <a class="text-dark small" [href]="data" target="_blank" rel="noopener noreferrer" [innerHTML]="reverse(data)"></a>
     <fa-icon class="ml-2" [icon]="icon"></fa-icon>
   </li>
 </ng-template>

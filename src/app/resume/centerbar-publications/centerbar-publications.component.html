@@ -14,10 +14,9 @@
                 </div>
 
                 <div class="col-sm-3 mb-2">
-                  <a class="btn btn-dark mr-2 float-right" [routerLink]="['/resume']" fragment="top" title="Haut de page"><fa-icon [icon]="arrowUpIcon"></fa-icon></a>
                   <div *ngIf="publication.link; then publicationShorcutLink"></div>
                     <ng-template #publicationShorcutLink>
-                      <a class="btn btn-danger mr-2 float-right"  href="{{publication.link}}" target="_blank" title="Documents"><fa-icon [icon]="pdfFileIcon"></fa-icon></a>
+                      <a class="btn btn-danger mr-2 float-right"  href="{{publication.link}}" target="_blank" rel="noopener noreferrer" title="Documents"><fa-icon [icon]="pdfFileIcon"></fa-icon></a>
                     </ng-template>
 
                 </div>

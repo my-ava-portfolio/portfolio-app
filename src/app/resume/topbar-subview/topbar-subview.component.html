@@ -7,7 +7,7 @@
   </div>
 
   <div class="col-lg-6 text-center align-self-center my-3">
-    <a class="btn btn-secondary mr-2 mb-2" target="_blank" role="button" [routerLink]="['../short_resume']">
+    <a class="btn btn-secondary mr-2 mb-2" target="_blank" rel="noopener noreferrer" rel="noopener noreferrer" role="button" [routerLink]="['../short_resume']">
       <fa-icon class="text-white" [icon]="printIcon"></fa-icon>
     </a>
     <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="navigation">Navigation</a>
@@ -21,11 +21,11 @@
         <ul class="list-unstyled">
           <li>
             <fa-icon class="mr-2 text-white" [icon]="linkedinIcon"></fa-icon>
-            <a class="text-white" [href]="linkBuilt" (mouseover)="reverse(inputContactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank">LinkedIn</a>
+            <a class="text-white" [href]="linkBuilt" (mouseover)="reverse(inputContactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </li>
           <li>
             <fa-icon class="mr-2 text-white" [icon]="githubIcon"></fa-icon>
-            <a class="text-white" [href]="linkBuilt" (mouseover)="reverse(inputContactData.github)" (mouseout)="linkBuilt=''" target="_blank">Github</a>
+            <a class="text-white" [href]="linkBuilt" (mouseover)="reverse(inputContactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">Github</a>
           </li>
         </ul>
     </div>

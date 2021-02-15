@@ -15,7 +15,7 @@
           </div>
 
           <div class="col-lg-3">
-            <div *ngIf="job.pictures; then jobsShorcutGallery"></div>
+            <div *ngIf="job.medias; then jobsShorcutGallery"></div>
               <ng-template #jobsShorcutGallery>
                 <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="job.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
               </ng-template>

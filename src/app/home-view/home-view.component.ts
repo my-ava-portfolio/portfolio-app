@@ -3,7 +3,7 @@ import { Router, Event, NavigationStart, NavigationEnd, NavigationError } from '
 
 import { pagesObject } from '../core/inputs';
 
-import { infoIcon, resumeIcon, galleryIcon, notesIcon, githubIcon, pythonIcon } from '../core/inputs';
+import { infoIcon, resumeIcon, galleryIcon, notesIcon, githubIcon, pythonIcon, githubUrl } from '../core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -34,6 +34,7 @@ export class HomeViewComponent implements OnInit {
   author = 'Amaury Valorge';
   starterMessage = 'Géomaticien | Développeur';
   defaultWelcomeMessage = 'Portfolio';
+  githubUrl = githubUrl;
 
   quarterNotSelected = false;
   currentQuarterSelected!: string ;

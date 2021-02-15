@@ -26,7 +26,7 @@
       <li class="empty quarter disabled"></li>
 
       <li id="github" [ngClass]="quartersStatus.github.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('github')" (mouseout)="updateQuarterStatus('github')">
-          <a class="quarter-text text-theme text-dark">
+          <a class="quarter-text text-theme text-dark" [href]="githubUrl" target="_blank" rel="noopener noreferrer">
             <fa-icon [icon]="githubIcon" size="3x" [rotate]="90"></fa-icon>
           </a>
       </li>
@@ -69,7 +69,7 @@
 <ng-template #infoPopup>
 <div class="container">
 
-  <a class="mb-3 text-dark" [href]="authorRepoUrl" target="_blank">
+  <a class="mb-3 text-dark" [href]="authorRepoUrl" target="_blank" rel="noopener noreferrer">
     By amauryval - {{year}} <fa-icon class="ml-2" [icon]="githubIcon"></fa-icon>
   </a>
 
@@ -80,35 +80,35 @@
       <span class="ml-2 mr-2">Python {{this.pythonVersion}}</span>
     </li>
     <li class="ml-2 mb-1">
-      <a class="text-dark" [href]="lib1RepoUrl" target="_blank">
+      <a class="text-dark" [href]="lib1RepoUrl" target="_blank" rel="noopener noreferrer">
         <fa-icon class="mr-1" [icon]="githubIcon"></fa-icon>
         <span>{{this.lib1Name}}</span>
       </a>
     </li>
 
     <li class="ml-2 mb-1">
-      <a class="text-dark" [href]="angularRepoUrl" target="_blank">
+      <a class="text-dark" [href]="angularRepoUrl" target="_blank" rel="noopener noreferrer">
         <img class="mr-1" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/512px-Angular_full_color_logo.svg.png" height="20px" width="20px"/>
         <span>{{this.angularVersion.slice(1)}}</span>
       </a>
     </li>
 
     <li class="ml-2 mb-1">
-      <a class="text-dark" [href]="bootstrapRepoUrl" target="_blank">
+      <a class="text-dark" [href]="bootstrapRepoUrl" target="_blank" rel="noopener noreferrer">
         <img class="mr-1" src="https://ng-bootstrap.github.io/img/logo-stack.png" height="20px" width="20px"/>
         <span>{{this.bootstrapVersion.slice(1)}}</span>
       </a>
     </li>
 
     <li class="ml-2 mb-1">
-      <a class="text-dark" [href]="leafletRepoUrl" target="_blank">
+      <a class="text-dark" [href]="leafletRepoUrl" target="_blank" rel="noopener noreferrer">
         <img class="mr-1" src="https://rawgit.com/Leaflet/Leaflet/master/src/images/logo.svg" height="20px" width="60px"/>
         <span>{{this.leafletVersion.slice(1)}}</span>
       </a>
     </li>
 
     <li class="ml-2 mb-1">
-      <a class="text-dark" [href]="d3RepoUrl" target="_blank">
+      <a class="text-dark" [href]="d3RepoUrl" target="_blank" rel="noopener noreferrer">
         <img class="mr-1" src="https://d3js.org/logo.svg" height="20px" width="20px"/>
         <span>{{this.d3Version.slice(1)}}</span>
       </a>

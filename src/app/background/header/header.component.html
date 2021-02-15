@@ -9,7 +9,12 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li *ngFor="let page of portfolioPages" class="nav-item ml-3" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="text-dark" [routerLink]="page.route">
+
+          <a class="text-dark" [routerLink]="page.route" *ngIf="page.title !== 'Github'">
+            <fa-icon [icon]="page.icon" class="mr-1"></fa-icon>{{page.title}}
+          </a>
+
+          <a class="text-dark" [href]="page.route" target="_blank" rel="noopener noreferrer" *ngIf="page.title === 'Github'">
             <fa-icon [icon]="page.icon" class="mr-1"></fa-icon>{{page.title}}
           </a>
         </li>
