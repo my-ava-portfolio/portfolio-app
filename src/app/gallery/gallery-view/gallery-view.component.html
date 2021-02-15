@@ -60,8 +60,8 @@
       <span [class]="'badge badge-pill my-2 mx-2 text-white ' + media_feature.type" >{{media_feature.type}}</span>
       <h6 class="card-title">{{ media_feature.title }}</h6>
       <p class="card-text">{{media_feature.description}}</p>
-      <p class="card-text small">Données: {{media_feature.data}}</p>
-      <p class="card-text small">Outils: {{media_feature.tools}}</p>
+      <p class="card-text small" *ngIf="media_feature.data">Données: {{media_feature.data}}</p>
+      <p class="card-text small" *ngIf="media_feature.tools">Outils: {{media_feature.tools}}</p>
     </div>
 
   </div>
@@ -88,7 +88,7 @@
 
           <h5>Filtrage par thématiques</h5>
 
-          <div class="btn-group btn-group-toggle mt-1 ml-2" data-toggle="buttons">
+          <div class="btn-group btn-group-toggle mt-1 ml-2 flex-wrap" data-toggle="buttons">
             <label class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bolder': currentCategory === null}">
               <input (click)="this.resetGallery()" type="radio" name="options" id="option1" autocomplete="off">Tous
             </label>
@@ -105,7 +105,7 @@
 
           <h5>Filtrage par activités</h5>
 
-          <div class="btn-group mt1 ml-2">
+          <div class="btn-group mt1 ml-2 flex-wrap">
             <ng-container *ngFor="let activity of galleryItems">
               <button (click)="getGalleryDataByActivity(activity.identifier)" type="button" [id]="activity.identifier" class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bold': currentActivity === activity.identifier}">{{ activity.title}}</button>
             </ng-container>
