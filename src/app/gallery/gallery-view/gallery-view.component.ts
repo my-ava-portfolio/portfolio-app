@@ -23,6 +23,10 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   defaultCategory: string | null = null;
   currentCategory: string | null = null;
 
+  mediaTypes!: string[];
+  defaultType: string | null = null;
+  currentType: string | null = null;
+
   apiBaseUrl = apiBaseUrl;
   galleryItems!: any;
 
@@ -54,6 +58,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     this.activitiesGallerySubscription = this.galleryService.activitiesGalleryData.subscribe(
       (data) => {
         this.galleryItems = data.items;
+        this.mediaTypes = data.media_types_available;
         this.isDataAvailable = true;
         console.log(data);
 
@@ -89,19 +94,27 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
   resetGallery(): any {
     this.currentCategory = this.defaultCategory;
-    this.currentCategory = this.defaultActivity;
-    this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory);
+    this.currentActivity = this.defaultActivity;
+    this.currentType = this.defaultType;
+    this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
   }
 
   getGalleryDataByActivity(activityName: string | null): any {
     this.currentActivity = activityName;
-    this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory);
+    this.currentType = this.defaultType;
+    this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
   }
 
   getGalleryDataByCategory(categoryName: string | null): any {
     this.currentCategory = categoryName;
-    console.log('aa', this.currentCategory)
-    this.galleryService.pullExistingActivitiesGallery(null, this.currentCategory);
+    this.currentActivity = this.defaultActivity;
+    this.currentType = this.defaultType;
+    this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
+  }
+
+  getGalleryDataByType(typeName: string | null): any {
+    this.currentType = typeName;
+    this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
   }
 
 }

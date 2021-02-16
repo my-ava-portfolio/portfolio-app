@@ -19,11 +19,12 @@ export class GalleryService {
 
   pullExistingActivitiesGallery(
     activityName: string | null,
-    categoryName: string | null
+    categoryName: string | null,
+    typeName: string | null
   ): void {
 
 
-    this.http.get<any>(`${this.apiUrlActivitiesGallery}activity_name=${activityName}&category_name=${categoryName}`).subscribe(
+    this.http.get<any>(`${this.apiUrlActivitiesGallery}activity_name=${activityName}&category_name=${categoryName}&type_name=${typeName}`).subscribe(
       (response) => {
         this.activitiesGalleryData.next(response);
       },

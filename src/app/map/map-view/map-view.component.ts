@@ -163,7 +163,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     jobs
       .enter()
       .append('a') // add hyper link and the svg circle
-      .attr('xlink:href', (d: any) => '/resume#' + d.properties.id)
+      .attr('xlink:href', (d: any) => '#/resume#' + d.properties.id)
       .attr('id', (d: any) => 'node_location_' + d.properties.id)
       .attr('class', 'activityPoint')
       .attr('cursor', 'pointer')
