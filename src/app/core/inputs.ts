@@ -35,6 +35,10 @@ export const infoIcon = faInfoCircle;
 export const pythonIcon = faPython;
 export const tagIcon = faTags;
 
+export const svgTripIdPrefix = 'svg_trip_';
+export const trainIconUnicode = '\uf238' // font awesome unicode
+
+
 export const homePage: any = {
   id: 'home',
   route: '/home',

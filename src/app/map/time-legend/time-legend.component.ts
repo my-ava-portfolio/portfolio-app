@@ -2,8 +2,8 @@ import { Component, OnInit, Input, ViewEncapsulation, OnDestroy } from '@angular
 
 import { Subscription } from 'rxjs';
 
-import { currentYear, currentDate, backwardIcon, forwardIcon } from '../../core/inputs';
-import { ResumeService } from '../../services/resume.service';
+import { currentYear, currentDate, backwardIcon, forwardIcon, svgTripIdPrefix } from '../../core/inputs';
+
 import { MapService } from '../../services/map.service';
 
 import * as d3 from 'd3';
@@ -18,13 +18,14 @@ import * as d3 from 'd3';
 export class TimeLegendComponent implements OnInit, OnDestroy {
   mapContainer: any;
 
-  geoData!: any;
+  geoActivitiesData!: any;
+  geoTripsData!: any;
 
   // icons
   backwardIcon = backwardIcon;
   forwardIcon = forwardIcon;
 
-  sliderBarId = '#slider-bar'
+  sliderBarId = '#slider-bar';
   margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
   width = 600;
   height = 50;
@@ -39,6 +40,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   movingCursor = false;
   timer!: any;
   currentCountNodes = 0;
+
+  svgTripIdPrefix = svgTripIdPrefix;
 
   pullGeoDataSubscription!: Subscription;
   mapContainerSubscription!: Subscription;
@@ -55,16 +58,20 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     this.pullGeoDataSubscription = this.mapService.activitiesGeoData.subscribe(
       (element) => {
-        // TODO add trip (trip_data property from element variable)
-        this.geoData = element.activities_geojson;
-        const geoDataFeatures: any[] = this.geoData.features;
+
+        // build trip layers
+        this.geoTripsData = element.trips_data; // to filter by date
+        this.mapService.pullTripsGeoDataToMap(element.trips_data);
+
+        this.geoActivitiesData = element.activities_geojson;
+        const geoDataFeatures: any[] = this.geoActivitiesData.features;
         const firstActivity: any[] = geoDataFeatures.filter((feature: any) => feature.id === '0');
         const startDate: Date = new Date(firstActivity[0].properties.start_date);
         startDate.setMonth(startDate.getMonth() - 1); // start date must be smaller than the first activity start_date
         this.startDate = startDate;
         // all the data is loaded but we are going to filter it to map its features regarding datetime
         // defined on the timeline
-        console.log(this.geoData)
+        console.log(this.geoActivitiesData);
         this.buildTimeline(String(this.currentYear));
 
       }
@@ -79,7 +86,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.pullGeoDataSubscription.unsubscribe();
-    this.mapContainerSubscription.unsubscribe()
+    this.mapContainerSubscription.unsubscribe();
   }
 
   parseTime(time: string): Date | null {
@@ -141,10 +148,31 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     clearInterval(this.timer);
   }
 
+
+  updateTrips(h: Date): void {
+    this.geoTripsData.forEach((item: any) => {
+      const startDate: string = item.start_date;
+      const endDate: string = item.end_date;
+      const tripStartDate: Date | null = this.parseTime(startDate);
+      const tripEndDate: Date | null = this.parseTime(endDate);
+
+      const svgTrip = d3.selectAll('[id^=' + this.svgTripIdPrefix + item.name + ']');
+      console.log(svgTrip)
+      if (tripStartDate !== null && tripEndDate !== null) {
+
+        if ( h >= tripStartDate && h < tripEndDate ) {
+          svgTrip.style('visibility', 'visible');
+        } else {
+          svgTrip.style('visibility', 'hidden');
+        }
+      }
+    });
+  }
+
   update(h: any): void {
 
     // filter data set and redraw plot
-    const newData = this.geoData.features.filter((d: any) => {
+    const newData = this.geoActivitiesData.features.filter((d: any) => {
       const selectedDate = this.parseTime(d.properties.start_date);
       // return parseDate(d.properties.end_date) >= h && parseDate(d.properties.start_date) < h;
       // filter by current slider date and slider start date
@@ -156,7 +184,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     // call api only if last count is different from the current count feature
     if (newData.length !== this.currentCountNodes) {
-      // build_trip(h);
+      this.updateTrips(h);
       this.mapService.pullActivitiesGeoDataToMap(newData);
       console.log('slider done', newData);
       this.displaySliderNodes(newData);
@@ -166,9 +194,11 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     this.currentCountNodes = newData.length;
 
 
+
+
+
     // update position and text of label according to slider scale
 
-    // update_slider_elements FUNC
     d3.select('#trace').attr('x2', this.dateRange(h)); // trace
     d3.select('#handle').attr('cx', this.dateRange(h)); // handle
     d3.select('#slider-value').text(this.formatDate(h));
@@ -215,11 +245,11 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .select((d: any, i: any, n: any) => n[i].parentNode.appendChild(n[i].cloneNode(true)))  // copying itself
       .attr('class', 'track-overlay')
       .call(d3.drag()
-        .on('drag start', () => {
+        .on('drag start', (e: any) => {
           // to avoid cursor running if track is drag...
           playButton.text('Pause');
 
-          this.selectedDatePosition = d3.event.x;
+          this.selectedDatePosition = e.x;
           this.update(this.dateRange.invert(this.selectedDatePosition));
 
           // disable timeline node selection
@@ -264,7 +294,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     // node trace events from geojson source
     const traceEvents = slider.insert('g', '.track-overlay')
       .attr('class', 'trace-events');
-    traceEvents.selectAll('circle').data(this.geoData.features).enter()
+    traceEvents.selectAll('circle').data(this.geoActivitiesData.features).enter()
       .append('circle')
       .attr('class', (d: any) => {
         const selectedDate = this.parseTime(d.properties.start_date);
@@ -326,21 +356,21 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('r', 5)
       .attr('cursor', 'pointer')
       .attr('cx', (d: any) => this.dateRange(this.parseTime(d.properties.start_date)))
-      .on('mouseover', (d: any, i: any, n: any) => {
-        this.interactionWithEventNode(n[i], d, 4);
+      .on('mouseover', (e: any, d: any) => {
+        this.interactionWithEventNode(e.currentTarget, d, 4);
         // to link with popup
         d3.select('#popup-feature-' + d.properties.id)
           .style('visibility', 'visible')
           .style('top', '10%')
-          .style('left', '2%')
+          .style('left', '2%');
       })
-      .on('mouseout', (d: any, i: any, n: any) => {
-        this.interactionWithEventNode(n[i], d, 2);
+      .on('mouseout', (e: any, d: any) => {
+        this.interactionWithEventNode(e.currentTarget, d, 2);
         // link with popup
         d3.select('#popup-feature-' + d.properties.id)
           .style('visibility', 'hidden')
           .style('top', 'unset')
-          .style('left', 'unset')
+          .style('left', 'unset');
       });
     sliderNodes.exit().remove();
   }
@@ -362,7 +392,161 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .transition()
       .duration(1000)
       .ease(d3.easeElastic)
-      .attr('r', (d: any) => d.properties.months * rScale)
+      .attr('r', (d: any) => d.properties.months * rScale);
   }
+
+
+  // computeAnimatePointsOnLine(nodesPathData: any, layerId: string): void {
+  //   // this.removeFeaturesMapFromLayerId(layerId);
+
+  //   // input Data contains nodes
+  //   const inputData: any = nodesPathData.features;
+  //   const convertLatLngToLayerCoords = (d: any): any => {
+  //       return this.mapContainer.latLngToLayerPoint(
+  //           new L.LatLng(
+  //               d.geometry.coordinates[1],
+  //               d.geometry.coordinates[0]
+  //           )
+  //       );
+  //   };
+  //   inputData.forEach( (feature: any) => {
+  //       feature.LatLng = new L.LatLng(
+  //           feature.geometry.coordinates[1],
+  //           feature.geometry.coordinates[0]
+  //       );
+  //   });
+
+  //   const svgMapContainer: any = L.svg().addTo(this.mapContainer);
+  //   const svg: any = d3.select(svgMapContainer._container).attr('id', this.svgTripIdPrefix + layerId);
+  //   // leaflet-zoom-hide needed to avoid the phantom original SVG
+  //   const g: any = svg.append('g').attr('class', 'leaflet-zoom-hide path_' + layerId);
+
+  //   // function to generate a line
+  //   const toLine: any = d3.line()
+  //     // .interpolate("linear")
+  //     .x((d: any): number => convertLatLngToLayerCoords(d).x)
+  //     .y((d: any): number => convertLatLngToLayerCoords(d).y);
+
+
+  //   // Here we will make the points into a single
+  //   // line/path. Note that we surround the input_data
+  //   // with [] to tell d3 to treat all the points as a
+  //   // single line. For now these are basically points
+  //   // but below we set the "d" attribute using the
+  //   // line creator function from above.
+  //   const linePath: any  = g.selectAll('.lineConnect_' + layerId)
+  //     .data([inputData])
+  //     .enter()
+  //     .append('path')
+  //     .attr('class', 'train-line lineConnect_' + layerId)
+  //     .style('fill', 'none')
+  //     .style('opacity', 'unset') // add 0 to hide the path
+  //     .style('stroke', 'black')
+  //     .style('stroke-width', '3px')
+  //     .style('overflow', 'overlay');
+
+  //   // the traveling circle along the path
+  //   // TODO improve style : refactoring
+  //   const marker: any = g.append('circle')
+  //     .attr('r', 11)
+  //     .attr('id', 'marker_' + layerId)
+  //     .attr('class', 'train-marker travelMarker_' + layerId);
+  //     // .style('fill', 'yellow')
+  //     // .style('stroke', 'black')
+  //     // .style('stroke-width', '3px');
+
+  //   const textmarker: any  = g.append('text') // uncomment line? Firefox issue?
+  //     // .attr('font-family', '\'Font Awesome 5 Free\'')
+  //     // .attr('font-weight', 900)
+  //     // .style('color', 'black')
+  //     .text(this.trainIconUnicode)
+  //     // .attr('text-anchor', 'middle')
+  //     // .attr('alignment-baseline', 'middle')
+  //     .attr('id', 'markerText_' + layerId)
+  //     .attr('class', 'train-marker-text travelMarkerText_' + layerId);
+
+  //   // points that make the path, we'll be used to display them with the line chart
+  //   // we make them transparent
+  //   const ptFeatures: any = g.selectAll('circle')
+  //     .data(inputData)
+  //     .enter()
+  //     .append('circle')
+  //     .attr('class', 'waypoints_' + layerId)
+  //     .style('opacity', '0');
+
+  //   // Reposition the SVG to cover the features.
+  //   const reset = (): void => {
+
+  //     // we get the stating point
+  //     marker.attr('transform', (): string => {
+  //       const y: number = inputData[0].geometry.coordinates[1];
+  //       const x: number = inputData[0].geometry.coordinates[0];
+  //       return 'translate(' +
+  //         this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).x + ',' +
+  //         this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).y +
+  //       ')';
+  //     });
+
+  //     textmarker.attr('transform', (): string => {
+  //       const y: number = inputData[0].geometry.coordinates[1];
+  //       const x: number = inputData[0].geometry.coordinates[0];
+  //       return 'translate(' +
+  //         this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).x + ',' +
+  //         this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).y +
+  //       ')';
+  //     });
+
+  //     linePath.attr('d', toLine);
+
+  //     ptFeatures.attr('transform', (d: any): string => 'translate(' +
+  //         convertLatLngToLayerCoords(d).x + ',' +
+  //         convertLatLngToLayerCoords(d).y +
+  //       ')'
+  //     );
+
+  //   };
+
+  //   function transition(): void {
+  //     linePath.transition()
+  //       .duration(7500)
+  //       .attrTween('stroke-dasharray', tweenDash)
+  //       .on('end', (e: any): void => {
+  //         d3.select(e.currentTarget).call(transition); // infinite loop
+  //         linePath.style('stroke-dasharray', '0'); // after the first pass, the line will not disappear
+  //       })
+  //       ;
+  //   }
+
+  //   // this function feeds the attrTween operator above with the
+  //   // stroke and dash lengths
+  //   function tweenDash(): any {
+  //     return (t: any): any => {
+  //       // total length of path (single value)
+  //       const l: any = linePath.node().getTotalLength();
+  //       // t is the time converted from 0 to 1
+  //       const interpolate: any = d3.interpolateString('0,' + l, l + ',' + l);
+  //       // t is fraction of time 0-1 since transition began
+  //       const markerSelected: any = d3.select('#marker_' + layerId);
+  //       const textmarkerSelect: any = d3.select('#markerText_' + layerId);
+
+  //       const p = linePath.node().getPointAtLength(t * l);
+
+  //       // Move the marker to that point
+  //       markerSelected.attr('transform', 'translate(' + p.x + ',' + p.y + ')'); // move marker
+  //       textmarkerSelect.attr('transform', 'translate(' + p.x + ',' + p.y + ')'); // move marker
+
+  //       return interpolate(t);
+  //     };
+  //   }
+
+  //   // when the user zooms in or out you need to reset
+  //   // the view
+  //   this.mapContainer.on('moveend', reset);
+
+  //   // this puts stuff on the map!
+  //   reset();
+  //   transition();
+
+  // }
 
 }

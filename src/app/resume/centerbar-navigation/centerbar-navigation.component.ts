@@ -160,7 +160,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       })
       .style('r', (d: any) => d.r)
       .style('stroke-width', this.strokeWidth)
-      .on('click', (d: any, i: any, n: any) => {
+      .on('click', (e: any, d: any) => {
 
         if (d.id === 'themes') {
           this.isThemesEnabled = !this.isThemesEnabled;
@@ -170,7 +170,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
           this.isToolsEnabled = !this.isToolsEnabled;
         }
 
-        d3.select(n[i]).classed('disabled-node', !d3.select(n[i]).classed('disabled-node'));
+        d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
 
         const nodeSelectedOnGraph = d3.select('#skillsGraphElements .nodes .selected');
 
@@ -220,13 +220,13 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       .attr('y', (d: any) => d.cy)
       .style('r', (d: any) => d.r)
       .style('stroke-width', this.strokeWidth)
-      .on('click', (d: any, i: any, n: any) => {
+      .on('click', (e: any, d: any) => {
         if (d.id === 'grouper_jobs') {
           this.isJobsGrouped = !this.isJobsGrouped;
         } else if (d.id === 'grouper_projects') {
           this.isProjectsGrouped = !this.isProjectsGrouped;
         }
-        d3.select(n[i]).classed('disabled-group', !d3.select(n[i]).classed('disabled-group'));
+        d3.select(e.currentTarget).classed('disabled-group', !d3.select(e.currentTarget).classed('disabled-group'));
         this.buildGraphElements();
       });
 
@@ -375,13 +375,13 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
           const element = this.legendInput.filter(e => e.id === d.properties.type);
           return element[0].r;
       })
-      .on('mouseover', (d: any, i: any, n: any) => {
+      .on('mouseover', (e: any, d: any) => {
         const element = this.legendInput.filter(e => e.id === d.properties.type);
-        d3.select(n[i]).attr('r', element[0].rOver);
+        d3.select(e.currentTarget).attr('r', element[0].rOver);
       })
-      .on('mouseout', (d: any, i: any, n: any) => {
+      .on('mouseout', (e: any, d: any) => {
         const element = this.legendInput.filter(e => e.id === d.properties.type);
-        d3.select(n[i]).attr('r', element[0].r);
+        d3.select(e.currentTarget).attr('r', element[0].r);
        })
       ;
 
@@ -401,13 +401,13 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
           return d.node.properties.type;
       });
 
-    node.on('click', (d: any, i: any, n: any) => {
+    node.on('click', (e: any, d: any, i: any, n: any) => {
       const nodeIsPreselected = d3.select('#skillsGraphElements .nodes .selected');
 
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
-        this.currentNodeIdSelected = d3.select(n[i]).attr('id');
-        this._selectedDisplaying(n[i]);
+        this.currentNodeIdSelected = d3.select(e.currentTarget).attr('id');
+        this._selectedDisplaying(e.currentTarget);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
@@ -421,20 +421,20 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
     node.call(
       d3.drag()
-        .on('start', (d: any) => {
-          d3.event.sourceEvent.stopPropagation();
-          if (!d3.event.active) {
+        .on('start', (e: any, d: any) => {
+          e.sourceEvent.stopPropagation();
+          if (!e.active) {
             graphLayout.alphaTarget(0.3).restart();
           }
           d.fx = d.x;
           d.fy = d.y;
         })
-        .on('drag', (d: any) => {
-          d.fx = d3.event.x;
-          d.fy = d3.event.y;
+        .on('drag', (e: any, d: any) => {
+          d.fx = e.x;
+          d.fy = e.y;
         })
-        .on('end', (d: any) => {
-          if (!d3.event.active) {
+        .on('end', (e: any, d: any) => {
+          if (!e.active) {
             graphLayout.alphaTarget(0);
           }
           d.fx = null;

@@ -5,7 +5,7 @@
 
   <div class="row justify-content-around">
 
-    <ul class="main-circle">
+    <ul class="main-circle col-md-auto">
 
       <li class="empty quarter disabled"></li>
 
@@ -39,21 +39,20 @@
           </a>
 
       </li>
-
-      <div id="rose" class="center">
-        <div id="rose-content" class="">
-
-          <div class="col-sm-12 text-white">
-            <h2 class="">{{ this.author }}</h2>
-            <hr id="separator" class="bg-white">
-            <p>{{ this.starterMessage }}</p>
-            <h3 [hidden]="quarterNotSelected">{{ this.welcomeMessage }}</h3>
-            <h3 [hidden]="!quarterNotSelected">{{ this.topicMessage }}</h3>
-          </div>
-
-        </div>
-      </div>
     </ul>
+
+    <div id="rose" class="row text-center">
+
+      <div class="col-sm-12 my-auto text-white">
+        <h2 class="">{{ this.author }}</h2>
+        <hr id="separator" class="bg-white">
+        <p>{{ this.starterMessage }}</p>
+        <h3 [hidden]="quarterNotSelected">{{ this.welcomeMessage }}</h3>
+        <h3 [hidden]="!quarterNotSelected">{{ this.topicMessage }}</h3>
+      </div>
+
+    </div>
+
 
   </div>
 

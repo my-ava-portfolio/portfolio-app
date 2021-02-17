@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { trainIconUnicode } from '../../core/inputs';
+
 
 @Component({
   selector: 'app-theme-legend',
@@ -9,6 +11,8 @@ export class ThemeLegendComponent implements OnInit {
   widthLegendElement = 250;
   heightLegendElement = 110;
 
+
+
   fontSize = '16px';
   // activity month legend data
   activityMonthLegendData: any = {
@@ -17,7 +21,7 @@ export class ThemeLegendComponent implements OnInit {
     textXPos: 120
   };
 
-  // activity typs legend data
+  // activity types legend data
   activityTypesLegendData: any = {
     circleR: 18,
     circleCxPos: 20,
@@ -25,6 +29,21 @@ export class ThemeLegendComponent implements OnInit {
     circleJobs: [
       { cy: 25, class: 'jobs', label: 'Expériences' },
       { cy: 70, class: 'education', label: 'Formations' }
+    ]
+  };
+
+  // moves legend data
+  movesLineLegendData: any = {
+    textXPos: 50,
+    markerFontSize: '12px',
+    moves: [
+      { x1: 0, x2: 45, y1: 0, y2: 45 , r: 12,
+        classLine: 'train-line',
+        classMarker: 'train-marker',
+        classMarkerText: 'train-marker-text',
+        markerIcon: trainIconUnicode,
+        label: 'Train (pendulaire)'
+      },
     ]
   };
 

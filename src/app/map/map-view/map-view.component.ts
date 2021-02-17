@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagIcon } from '../../core/inputs';
+import { locationIcon, tagIcon, trainIconUnicode, svgTripIdPrefix } from '../../core/inputs';
 import { apiLogoUrl, currentYear } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
@@ -22,6 +22,10 @@ import { MapService } from '../../services/map.service';
 })
 export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   fragment!: string | null;
+
+  svgTripIdPrefix = svgTripIdPrefix;
+  trainIconUnicode = trainIconUnicode;
+
   currentDate = currentYear;
 
   isLegendDisplayed = true;
@@ -62,7 +66,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element: any) => {
         this.mapContainer = element;
-        console.log('tralalalallala', this.mapContainer)
         this.initActivitiesSvgLayer();
       }
     );
@@ -84,6 +87,20 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     );
+
+    this.mapService.tripsGeoDataToMap.subscribe(
+      (geoFeaturesData: any[]) => {
+        geoFeaturesData.forEach((item: any) => {
+          // create forward and backward trip
+          const tripDataReverted: any = Object.create(item.geojson_data);
+          const tripDataRevertedFeatures: any = tripDataReverted.features.slice().reverse();
+          tripDataReverted.features = tripDataRevertedFeatures;
+          this.computeAnimatePointsOnLine(item.geojson_data, item.name);
+          this.computeAnimatePointsOnLine(tripDataReverted, item.name + "_reverted");
+        });
+      }
+    );
+
 
   }
 
@@ -172,11 +189,11 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .style('stroke', this.circleStroke)
       .style('stroke-width', this.circleWidth)
       .attr('class', (d: any) => d.properties.type)
-      .on('mouseover', (d: any, i: any, n: any) => {
+      .on('mouseover', (e: any, d: any) => {
         // TODO popup
 
         // hightlight map point
-        const currentElement: any = d3.select(n[i]);
+        const currentElement: any = d3.select(e.currentTarget);
         currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
         // legends
         // timeline highlight
@@ -186,16 +203,16 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
 
       })
-      .on('mousemove', (d: any) => {
+      .on('mousemove', (e: any, d: any) => {
         // dynamic tooltip position
-        this.adaptActivityPopup(d.properties.id);
+        this.adaptActivityPopup(d.properties.id, e);
 
       })
-      .on('mouseout', (d: any, i: any, n: any) => {
+      .on('mouseout', (e: any, d: any) => {
         this.disableActivityPopup(d.properties.id);
 
         // hightlight map point
-        const currentElement: any = d3.select(n[i]);
+        const currentElement: any = d3.select(e.currentTarget);
         currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
         // legends
         // timeline highlight
@@ -236,21 +253,21 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x));
   }
 
-  adaptActivityPopup(popupId: string): void {
-    const currentPopup: any = d3.select('#popup-feature-' + popupId)
+  adaptActivityPopup(popupId: string, event: any): void {
+    d3.select('#popup-feature-' + popupId)
       .style('visibility', 'visible')
       .style('left', () => {
-        if (d3.event.pageX + this.popupWidth + 20 > this.innerWidth) {
-          return d3.event.pageX - this.popupWidth - 15 + 'px';
+        if (event.x + this.popupWidth + 20 > this.innerWidth) {
+          return event.x - this.popupWidth - 15 + 'px';
         } else {
-          return d3.event.pageX + 15 + 'px';
+          return event.x + 15 + 'px';
         }
       })
       .style('top', () => {
-        if (d3.event.pageY + this.popupHeight + 20 > this.innerHeight) {
-          return d3.event.pageY - this.popupHeight - 15 + 'px';
+        if (event.y + this.popupHeight + 20 > this.innerHeight) {
+          return event.y - this.popupHeight - 15 + 'px';
         } else {
-          return d3.event.pageY + 15 + 'px';
+          return event.y + 15 + 'px';
         }
       });
   }
@@ -276,6 +293,161 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('r', (d: any) => d.properties.months * 2)
       // .style("opacity", 0)
       .on('end', this.bounceRepeat.bind(this, activityPointId))
+  }
+
+  // animation on line
+
+  computeAnimatePointsOnLine(nodesPathData: any, layerId: string): void {
+    // this.removeFeaturesMapFromLayerId(layerId);
+
+    // input Data contains nodes
+    const inputData: any = nodesPathData.features;
+    const convertLatLngToLayerCoords = (d: any): any => {
+        return this.mapContainer.latLngToLayerPoint(
+            new L.LatLng(
+                d.geometry.coordinates[1],
+                d.geometry.coordinates[0]
+            )
+        );
+    };
+    inputData.forEach( (feature: any) => {
+        feature.LatLng = new L.LatLng(
+            feature.geometry.coordinates[1],
+            feature.geometry.coordinates[0]
+        );
+    });
+
+    const svgMapContainer: any = L.svg().addTo(this.mapContainer);
+    const svg: any = d3.select(svgMapContainer._container).attr('id', this.svgTripIdPrefix + layerId);
+    // leaflet-zoom-hide needed to avoid the phantom original SVG
+    const g: any = svg.append('g').attr('class', 'leaflet-zoom-hide path_' + layerId);
+
+    // function to generate a line
+    const toLine: any = d3.line()
+      // .interpolate("linear")
+      .x((d: any): number => convertLatLngToLayerCoords(d).x)
+      .y((d: any): number => convertLatLngToLayerCoords(d).y);
+
+
+    // Here we will make the points into a single
+    // line/path. Note that we surround the input_data
+    // with [] to tell d3 to treat all the points as a
+    // single line. For now these are basically points
+    // but below we set the "d" attribute using the
+    // line creator function from above.
+    const linePath: any  = g.selectAll('.lineConnect_' + layerId)
+      .data([inputData])
+      .enter()
+      .append('path')
+      .attr('class', 'train-line lineConnect_' + layerId)
+      .style('fill', 'none')
+      .style('opacity', 'unset') // add 0 to hide the path
+      .style('stroke', 'black')
+      .style('stroke-width', '3px')
+      .style('overflow', 'overlay');
+
+    // the traveling circle along the path
+    // TODO improve style : refactoring
+    const marker: any = g.append('circle')
+      .attr('r', 11)
+      .attr('id', 'marker_' + layerId)
+      .attr('class', 'train-marker travelMarker_' + layerId);
+      // .style('fill', 'yellow')
+      // .style('stroke', 'black')
+      // .style('stroke-width', '3px');
+
+    const textmarker: any  = g.append('text') // uncomment line? Firefox issue?
+      // .attr('font-family', '\'Font Awesome 5 Free\'')
+      // .attr('font-weight', 900)
+      // .style('color', 'black')
+      .text(this.trainIconUnicode)
+      // .attr('text-anchor', 'middle')
+      // .attr('alignment-baseline', 'middle')
+      .attr('id', 'markerText_' + layerId)
+      .attr('class', 'train-marker-text travelMarkerText_' + layerId);
+
+    // points that make the path, we'll be used to display them with the line chart
+    // we make them transparent
+    const ptFeatures: any = g.selectAll('circle')
+      .data(inputData)
+      .enter()
+      .append('circle')
+      .attr('class', 'waypoints_' + layerId)
+      .style('opacity', '0');
+
+    // Reposition the SVG to cover the features.
+    const reset = (): void => {
+
+      // we get the stating point
+      marker.attr('transform', (): string => {
+        const y: number = inputData[0].geometry.coordinates[1];
+        const x: number = inputData[0].geometry.coordinates[0];
+        return 'translate(' +
+          this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).x + ',' +
+          this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).y +
+        ')';
+      });
+
+      textmarker.attr('transform', (): string => {
+        const y: number = inputData[0].geometry.coordinates[1];
+        const x: number = inputData[0].geometry.coordinates[0];
+        return 'translate(' +
+          this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).x + ',' +
+          this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).y +
+        ')';
+      });
+
+      linePath.attr('d', toLine);
+
+      ptFeatures.attr('transform', (d: any): string => 'translate(' +
+          convertLatLngToLayerCoords(d).x + ',' +
+          convertLatLngToLayerCoords(d).y +
+        ')'
+      );
+
+    };
+
+    function transition(): void {
+      linePath.transition()
+        .duration(7500)
+        .attrTween('stroke-dasharray', tweenDash)
+        .on('end', (e: any): void => {
+          d3.select(e.currentTarget).call(transition); // infinite loop
+          linePath.style('stroke-dasharray', '0'); // after the first pass, the line will not disappear
+        })
+        ;
+    }
+
+    // this function feeds the attrTween operator above with the
+    // stroke and dash lengths
+    function tweenDash(): any {
+      return (t: any): any => {
+        // total length of path (single value)
+        const l: any = linePath.node().getTotalLength();
+        // t is the time converted from 0 to 1
+        const interpolate: any = d3.interpolateString('0,' + l, l + ',' + l);
+        // t is fraction of time 0-1 since transition began
+        const markerSelected: any = d3.select('#marker_' + layerId);
+        const textmarkerSelect: any = d3.select('#markerText_' + layerId);
+
+        const p = linePath.node().getPointAtLength(t * l);
+
+        // Move the marker to that point
+        markerSelected.attr('transform', 'translate(' + p.x + ',' + p.y + ')'); // move marker
+        textmarkerSelect.attr('transform', 'translate(' + p.x + ',' + p.y + ')'); // move marker
+
+        return interpolate(t);
+      };
+    }
+
+    // when the user zooms in or out you need to reset
+    // the view
+    this.mapContainer.on('moveend', reset);
+
+    // this puts stuff on the map!
+    reset();
+    transition();
+
   }
 
 

@@ -18,7 +18,8 @@ export class MapService {
   activitiesGeoData: Subject<any> = new Subject<any>();
 
   activitiesGeoDataToMap: Subject<any[]> = new Subject<any[]>();
-
+  tripsGeoDataToMap: Subject<any[]> = new Subject<any[]>();
+  
   isMapContainerCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 
@@ -56,5 +57,7 @@ export class MapService {
     this.activitiesGeoDataToMap.next(dataToMap);
   }
 
-
+  pullTripsGeoDataToMap(dataToMap: any[]): void {
+    this.tripsGeoDataToMap.next(dataToMap);
+  }
 }

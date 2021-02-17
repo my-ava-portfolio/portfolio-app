@@ -1,6 +1,6 @@
 <div class="row mx-1 py-2" id="theme-legend">
 
-  <div class="col-sm-6">
+  <div class="col-sm-4">
     <h5>Activités</h5>
     <div class="col-lg-12">
       <svg
@@ -24,7 +24,7 @@
   </div>
 
 
-  <div class="col-sm-6">
+  <div class="col-sm-4">
     <h5>Nombre de mois</h5>
     <div class="col-lg-12">
       <svg
@@ -51,6 +51,45 @@
             [attr.y2]="monthSize * 2 + 2"
             class="line-dot">
         </line>
+      </svg>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <h5>Déplacements</h5>
+    <div class="col-lg-12">
+      <svg
+        [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement"
+      >
+
+        <line *ngFor="let move_feature of movesLineLegendData.moves"
+          [attr.x1]="move_feature.x1"
+          [attr.x2]="move_feature.x2"
+          [attr.y1]="move_feature.y1"
+          [attr.y2]="move_feature.y2"
+          [class]="move_feature.classLine">
+        </line>
+
+        <circle *ngFor="let move_feature of movesLineLegendData.moves"
+          [attr.r]="move_feature.r"
+          [attr.cx]="move_feature.y2 / 2"
+          [attr.cy]="move_feature.y2 / 2"
+          [class]="move_feature.classMarker">>
+        </circle>
+        <text *ngFor="let move_feature of movesLineLegendData.moves"
+            [attr.x]="move_feature.y2 / 2"
+            [attr.y]="move_feature.y2 / 2"
+            [attr.font-size]="movesLineLegendData.markerFontSize"
+            [class]="move_feature.classMarkerText">{{ move_feature.markerIcon }}
+        </text>
+
+        <text *ngFor="let move_feature of movesLineLegendData.moves"
+            [attr.x]="movesLineLegendData.textXPos"
+            [attr.y]="move_feature.y2 / 2"
+            [attr.font-size]="fontSize"
+            class="label">{{ move_feature.label }}
+        </text>
+
       </svg>
     </div>
   </div>
