@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation, OnDestroy } from '@angular
 
 import { Subscription } from 'rxjs';
 
-import { currentYear, currentDate, backwardIcon, forwardIcon, svgTripIdPrefix } from '../../core/inputs';
+import { currentYear, currentDate, backwardIcon, forwardIcon, svgTripIdPrefix, tagIcon } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
 
@@ -17,6 +17,7 @@ import * as d3 from 'd3';
 })
 export class TimeLegendComponent implements OnInit, OnDestroy {
   mapContainer: any;
+  sliderDate!: string;
 
   geoActivitiesData!: any;
   geoTripsData!: any;
@@ -24,12 +25,13 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   // icons
   backwardIcon = backwardIcon;
   forwardIcon = forwardIcon;
+  tagIcon = tagIcon;
 
   sliderBarId = '#slider-bar';
   margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
   width = 600;
   height = 50;
-  fontSize = '12px';
+  fontSize = '14px';
 
   endDate: Date = currentDate;
   currentYear = currentYear;
@@ -131,7 +133,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     // reset action
     d3.select('#play-button').html('Start');
     // update to start date
-    d3.select('#slider-value').html(this.formatDate(this.startDate));
+    this.sliderDate = this.formatDate(this.startDate)
+    // d3.select('#slider-value').html(this.formatDate(this.startDate));
     this.update(this.startDate);
     this.selectedDatePosition = 0;
     this.movingCursor = false;
@@ -141,7 +144,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   forwardTimeLine(): void {
     d3.select('#play-button').html('Play');
     // update to start date
-    d3.select('#slider-value').html(this.formatDate(this.endDate));
+    this.sliderDate = this.formatDate(this.startDate)
+    // d3.select('#slider-value').html(this.formatDate(this.endDate));
     this.update(this.endDate);
     this.selectedDatePosition = 0;
     this.movingCursor = false;
@@ -157,7 +161,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       const tripEndDate: Date | null = this.parseTime(endDate);
 
       const svgTrip = d3.selectAll('[id^=' + this.svgTripIdPrefix + item.name + ']');
-      console.log(svgTrip)
+      console.log(svgTrip);
       if (tripStartDate !== null && tripEndDate !== null) {
 
         if ( h >= tripStartDate && h < tripEndDate ) {
@@ -201,7 +205,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     d3.select('#trace').attr('x2', this.dateRange(h)); // trace
     d3.select('#handle').attr('cx', this.dateRange(h)); // handle
-    d3.select('#slider-value').text(this.formatDate(h));
+    this.sliderDate = this.formatDate(h)
+    // d3.select('#slider-value').text(this.formatDate(h));
   }
 
   step(): void {
@@ -280,7 +285,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     slider.insert('g', '.track-overlay')
       .attr('class', 'ticks')
-      .attr('transform', 'translate(0,' + 18 + ')')
+      .attr('transform', 'translate(0,' + 21 + ')')
       .selectAll('text')
       .data(this.dateRange.ticks(10)) // number of label on the slider
       .enter()
@@ -290,6 +295,20 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .style('font-size', this.fontSize)
       .attr('text-anchor', 'middle')
       .text((d: any) => this.formatDateToYearString(d));
+
+    slider.insert('g', '.track-overlay')
+      .attr('class', 'ticks-line')
+      .attr('transform', 'translate(0,' + -6 + ')')
+      .selectAll('line')
+      .data(this.dateRange.ticks(10)) // number of label on the slider
+      .enter()
+      .append('line')
+      .attr('x1', this.dateRange)
+      .attr('x2', this.dateRange)
+      .attr('y1', 0)
+      .attr('y2', 12)
+      .style('stroke', 'grey')
+      .style('stroke-width', '2px');
 
     // node trace events from geojson source
     const traceEvents = slider.insert('g', '.track-overlay')
@@ -338,7 +357,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('class', 'events');
 
     // update to end date
-    d3.select('#slider-value').text(this.formatDate(this.endDate));
+    this.sliderDate = this.formatDate(this.endDate)
+    // d3.select('#slider-value').text(this.formatDate(this.endDate));
     this.update(this.endDate);
 
   }
@@ -394,159 +414,5 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .ease(d3.easeElastic)
       .attr('r', (d: any) => d.properties.months * rScale);
   }
-
-
-  // computeAnimatePointsOnLine(nodesPathData: any, layerId: string): void {
-  //   // this.removeFeaturesMapFromLayerId(layerId);
-
-  //   // input Data contains nodes
-  //   const inputData: any = nodesPathData.features;
-  //   const convertLatLngToLayerCoords = (d: any): any => {
-  //       return this.mapContainer.latLngToLayerPoint(
-  //           new L.LatLng(
-  //               d.geometry.coordinates[1],
-  //               d.geometry.coordinates[0]
-  //           )
-  //       );
-  //   };
-  //   inputData.forEach( (feature: any) => {
-  //       feature.LatLng = new L.LatLng(
-  //           feature.geometry.coordinates[1],
-  //           feature.geometry.coordinates[0]
-  //       );
-  //   });
-
-  //   const svgMapContainer: any = L.svg().addTo(this.mapContainer);
-  //   const svg: any = d3.select(svgMapContainer._container).attr('id', this.svgTripIdPrefix + layerId);
-  //   // leaflet-zoom-hide needed to avoid the phantom original SVG
-  //   const g: any = svg.append('g').attr('class', 'leaflet-zoom-hide path_' + layerId);
-
-  //   // function to generate a line
-  //   const toLine: any = d3.line()
-  //     // .interpolate("linear")
-  //     .x((d: any): number => convertLatLngToLayerCoords(d).x)
-  //     .y((d: any): number => convertLatLngToLayerCoords(d).y);
-
-
-  //   // Here we will make the points into a single
-  //   // line/path. Note that we surround the input_data
-  //   // with [] to tell d3 to treat all the points as a
-  //   // single line. For now these are basically points
-  //   // but below we set the "d" attribute using the
-  //   // line creator function from above.
-  //   const linePath: any  = g.selectAll('.lineConnect_' + layerId)
-  //     .data([inputData])
-  //     .enter()
-  //     .append('path')
-  //     .attr('class', 'train-line lineConnect_' + layerId)
-  //     .style('fill', 'none')
-  //     .style('opacity', 'unset') // add 0 to hide the path
-  //     .style('stroke', 'black')
-  //     .style('stroke-width', '3px')
-  //     .style('overflow', 'overlay');
-
-  //   // the traveling circle along the path
-  //   // TODO improve style : refactoring
-  //   const marker: any = g.append('circle')
-  //     .attr('r', 11)
-  //     .attr('id', 'marker_' + layerId)
-  //     .attr('class', 'train-marker travelMarker_' + layerId);
-  //     // .style('fill', 'yellow')
-  //     // .style('stroke', 'black')
-  //     // .style('stroke-width', '3px');
-
-  //   const textmarker: any  = g.append('text') // uncomment line? Firefox issue?
-  //     // .attr('font-family', '\'Font Awesome 5 Free\'')
-  //     // .attr('font-weight', 900)
-  //     // .style('color', 'black')
-  //     .text(this.trainIconUnicode)
-  //     // .attr('text-anchor', 'middle')
-  //     // .attr('alignment-baseline', 'middle')
-  //     .attr('id', 'markerText_' + layerId)
-  //     .attr('class', 'train-marker-text travelMarkerText_' + layerId);
-
-  //   // points that make the path, we'll be used to display them with the line chart
-  //   // we make them transparent
-  //   const ptFeatures: any = g.selectAll('circle')
-  //     .data(inputData)
-  //     .enter()
-  //     .append('circle')
-  //     .attr('class', 'waypoints_' + layerId)
-  //     .style('opacity', '0');
-
-  //   // Reposition the SVG to cover the features.
-  //   const reset = (): void => {
-
-  //     // we get the stating point
-  //     marker.attr('transform', (): string => {
-  //       const y: number = inputData[0].geometry.coordinates[1];
-  //       const x: number = inputData[0].geometry.coordinates[0];
-  //       return 'translate(' +
-  //         this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).x + ',' +
-  //         this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).y +
-  //       ')';
-  //     });
-
-  //     textmarker.attr('transform', (): string => {
-  //       const y: number = inputData[0].geometry.coordinates[1];
-  //       const x: number = inputData[0].geometry.coordinates[0];
-  //       return 'translate(' +
-  //         this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).x + ',' +
-  //         this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).y +
-  //       ')';
-  //     });
-
-  //     linePath.attr('d', toLine);
-
-  //     ptFeatures.attr('transform', (d: any): string => 'translate(' +
-  //         convertLatLngToLayerCoords(d).x + ',' +
-  //         convertLatLngToLayerCoords(d).y +
-  //       ')'
-  //     );
-
-  //   };
-
-  //   function transition(): void {
-  //     linePath.transition()
-  //       .duration(7500)
-  //       .attrTween('stroke-dasharray', tweenDash)
-  //       .on('end', (e: any): void => {
-  //         d3.select(e.currentTarget).call(transition); // infinite loop
-  //         linePath.style('stroke-dasharray', '0'); // after the first pass, the line will not disappear
-  //       })
-  //       ;
-  //   }
-
-  //   // this function feeds the attrTween operator above with the
-  //   // stroke and dash lengths
-  //   function tweenDash(): any {
-  //     return (t: any): any => {
-  //       // total length of path (single value)
-  //       const l: any = linePath.node().getTotalLength();
-  //       // t is the time converted from 0 to 1
-  //       const interpolate: any = d3.interpolateString('0,' + l, l + ',' + l);
-  //       // t is fraction of time 0-1 since transition began
-  //       const markerSelected: any = d3.select('#marker_' + layerId);
-  //       const textmarkerSelect: any = d3.select('#markerText_' + layerId);
-
-  //       const p = linePath.node().getPointAtLength(t * l);
-
-  //       // Move the marker to that point
-  //       markerSelected.attr('transform', 'translate(' + p.x + ',' + p.y + ')'); // move marker
-  //       textmarkerSelect.attr('transform', 'translate(' + p.x + ',' + p.y + ')'); // move marker
-
-  //       return interpolate(t);
-  //     };
-  //   }
-
-  //   // when the user zooms in or out you need to reset
-  //   // the view
-  //   this.mapContainer.on('moveend', reset);
-
-  //   // this puts stuff on the map!
-  //   reset();
-  //   transition();
-
-  // }
 
 }

@@ -53,6 +53,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
+  pullTripsGeoDataToMapSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -88,7 +89,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
 
-    this.mapService.tripsGeoDataToMap.subscribe(
+    this.pullTripsGeoDataToMapSubscription = this.mapService.tripsGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
         geoFeaturesData.forEach((item: any) => {
           // create forward and backward trip
@@ -128,7 +129,10 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
     this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
-    d3.select('#' + this.svgActivitiesLayerId).remove()
+    this.pullTripsGeoDataToMapSubscription.unsubscribe();
+
+    d3.select('#' + this.svgActivitiesLayerId).remove();
+    d3.selectAll('[id^=' + this.svgTripIdPrefix + ']').remove();
     this.mapService.resetMapView()
   }
 

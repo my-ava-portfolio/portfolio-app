@@ -1,19 +1,19 @@
 
-<div class="row py-2">
-  <div class="col-lg-7">
-    <h5>Time line</h5>
+<div class="row mx-1 py-3" id="theme-legend">
 
-    <div class="col-lg-12 my-3 text-center">
+  <div class="col-lg-7">
+    <h5>Barre Temporelle</h5>
+
       <svg
         [attr.viewBox]="'0 0 ' + width + ' ' + height"
         id="slider-bar"
       >
       </svg>
-    </div>
+
   </div>
 
   <div class="col-lg-2 my-auto text-center">
-    <h1 id="slider-value"></h1>
+    <h3 id="slider-value">{{ sliderDate | date:'MMMM y' }}</h3>
   </div>
 
   <div class="col-lg-3 my-auto text-center">

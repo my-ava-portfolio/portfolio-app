@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { trainIconUnicode } from '../../core/inputs';
+import { Component, OnInit } from '@angular/core';
+import { trainIconUnicode, tagIcon } from '../../core/inputs';
 
 
 @Component({
@@ -8,12 +8,14 @@ import { trainIconUnicode } from '../../core/inputs';
   styleUrls: ['./theme-legend.component.css']
 })
 export class ThemeLegendComponent implements OnInit {
+
   widthLegendElement = 250;
-  heightLegendElement = 110;
+  heightLegendElement = 90;
+  heightMoveLegendElement = 60;
 
+  tagIcon = tagIcon;
 
-
-  fontSize = '16px';
+  fontSize = '19px';
   // activity month legend data
   activityMonthLegendData: any = {
     circleMonthR: [40, 20, 10],

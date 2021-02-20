@@ -1,7 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -65,7 +68,7 @@ const appRoutes: Routes = [
   { path: 'home', component: HomeViewComponent, data: { title: 'Accueil - Amaury Valorge Portfolio' } },
 ];
 
-
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -109,7 +112,8 @@ const appRoutes: Routes = [
   providers: [
     ResumeService,
     GalleryService,
-    MapService
+    MapService,
+    {provide: LOCALE_ID, useValue: 'fr'}
   ],
   bootstrap: [AppComponent]
 })
