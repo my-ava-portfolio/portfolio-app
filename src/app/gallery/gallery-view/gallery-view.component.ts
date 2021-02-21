@@ -84,7 +84,8 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   filterFromAnchor(): void {
     try {
       if (this.fragment !== null) {
-        this.currentActivity  = this.fragment.replace('#', '');
+        this.currentActivity = this.fragment.replace('#', '');
+        console.log("hello")
       }
     } catch (e) {
       console.log('anchor scrolling error');
@@ -94,7 +95,6 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
   resetGallery(): any {
     this.currentCategory = this.defaultCategory;
-    this.currentActivity = this.defaultActivity;
     this.currentType = this.defaultType;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
   }
