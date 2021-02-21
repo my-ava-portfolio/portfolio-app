@@ -159,3 +159,10 @@ circle.selected {
   text-anchor: middle;
   alignment-baseline: middle;
 }
+
+.legend_graph_title {
+  font-size: 12px;
+  dominant-baseline: middle;
+  font-weight: bolder;
+  text-decoration: underline;
+}

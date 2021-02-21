@@ -1,10 +1,3 @@
-.legend_graph_title {
-  font-size: 12px;
-  dominant-baseline: middle;
-  font-weight: bolder;
-  text-decoration: underline;
-}
-
 #graph_legend {
   background-color: #eeeeee;
   border-radius: 15px;
