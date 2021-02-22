@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -30,12 +31,11 @@ export class AppComponent implements OnInit {
 
   // to display an alert message about device orientation
   @HostListener('window:orientationchange', ['$event']) onOrientationChange(event: any): void {
-    if (window.innerHeight < window.innerWidth) {
 
+    if (window.matchMedia('(orientation: landscape)').matches) {
       if (this.currentPage === '/map') {
         this.isPortraitDeviceMode = false;
       }
-
     } else {
       this.isPortraitDeviceMode = true;
     }
