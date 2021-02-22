@@ -2,3 +2,7 @@
   text-anchor: start;
   dominant-baseline: middle;
 }
+
+svg {
+  width: 10em;
+}
