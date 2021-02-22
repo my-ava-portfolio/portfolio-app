@@ -23,16 +23,15 @@ export class AppComponent implements OnInit {
     // to get the current page opened
     this.router.events.subscribe(_ => {
       this.currentPage = this.location.path();
+      this.displayOrientationAlert()
     });
   }
 
   ngOnInit(): void {
   }
 
-  // to display an alert message about device orientation
-  @HostListener('window:orientationchange', ['$event']) onOrientationChange(event: any): void {
-
-    if (window.matchMedia('(orientation: landscape)').matches) {
+  displayOrientationAlert(): void {
+    if (window.screen.orientation.angle === 90) {
       if (this.currentPage === '/map') {
         this.isPortraitDeviceMode = false;
       }
@@ -40,5 +39,12 @@ export class AppComponent implements OnInit {
       this.isPortraitDeviceMode = true;
     }
   }
+
+
+  // to display an alert message about device orientation
+  @HostListener('window:orientationchange', ['$event']) onOrientationChange(event: any): void {
+    this.displayOrientationAlert();
+  }
+
 
 }
