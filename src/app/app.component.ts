@@ -14,7 +14,7 @@ import { mobileIcon } from './core/inputs';
 export class AppComponent implements OnInit {
   mobileIcon = mobileIcon;
 
-  isPortraitDeviceMode = true;
+  isLandscapeDeviceMode = false;
   currentPage!: string;
 
   constructor(
@@ -33,12 +33,13 @@ export class AppComponent implements OnInit {
   }
 
   displayOrientationAlert(): void {
+    console.log('AAAA',window.screen.orientation.angle === 90,  this.currentPage )
     if (window.screen.orientation.angle === 90) {
       if (this.currentPage === '/map') {
-        this.isPortraitDeviceMode = false;
+        this.isLandscapeDeviceMode = true;
       }
     } else {
-      this.isPortraitDeviceMode = true;
+      this.isLandscapeDeviceMode = false;
     }
   }
 
