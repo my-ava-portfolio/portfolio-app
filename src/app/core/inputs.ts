@@ -1,4 +1,4 @@
-import { faTags, faInfoCircle, faStepBackward, faStepForward, faMapMarkedAlt, faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faAddressCard, faImages, faBookOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faMobileAlt, faTags, faInfoCircle, faStepBackward, faStepForward, faMapMarkedAlt, faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faAddressCard, faImages, faBookOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 // export const apiBaseUrl = 'http://127.0.0.1:5000/api/v1/portfolio/';
@@ -34,9 +34,10 @@ export const forwardIcon = faStepForward;
 export const infoIcon = faInfoCircle;
 export const pythonIcon = faPython;
 export const tagIcon = faTags;
+export const mobileIcon = faMobileAlt;
 
 export const svgTripIdPrefix = 'svg_trip_';
-export const trainIconUnicode = '\uf238' // font awesome unicode
+export const trainIconUnicode = '\uf238'; // font awesome unicode
 
 
 export const homePage: any = {

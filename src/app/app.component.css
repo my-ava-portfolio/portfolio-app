@@ -168,8 +168,7 @@ circle.selected {
 }
 
 #OrientationAlert {
-  background-color: black;
-  opacity: 0.7;
+  background-color: rgb(0 0 0 / 80%);
   z-index: 99999;
   height: 100vh;
   position: fixed;

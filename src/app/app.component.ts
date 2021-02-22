@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+
+import { mobileIcon } from './core/inputs';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { Location } from '@angular/common';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
+  mobileIcon = mobileIcon;
 
   isPortraitDeviceMode = true;
   currentPage!: string;
@@ -23,7 +25,7 @@ export class AppComponent implements OnInit {
     // to get the current page opened
     this.router.events.subscribe(_ => {
       this.currentPage = this.location.path();
-      this.displayOrientationAlert()
+      this.displayOrientationAlert();
     });
   }
 
