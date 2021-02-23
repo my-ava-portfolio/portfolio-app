@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { ResumeService } from './services/resume.service';
@@ -51,21 +52,22 @@ const appRoutes: Routes = [
 
   // Site routes sharing main-view component layout
   {
-      path: '',
-      component: MainViewComponent,
-      children: [
-        { path: 'resume', component: ResumeViewComponent, data: { title: 'Profil' } },
-        { path: 'map', component: MapViewComponent, data: { title: 'Carte' } },
-        { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie' } },
-        { path: 'notes', component: NotesViewComponent, data: { title: 'Notes' } },
-        { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
-      ]
+    path: '',
+    component: MainViewComponent,
+    children: [
+      { path: 'home', component: HomeViewComponent, data: { title: 'Accueil - Amaury Valorge Portfolio', page: 'home' } },
+      { path: 'resume', component: ResumeViewComponent, data: { title: 'Profil', page: 'profil' } },
+      { path: 'map', component: MapViewComponent, data: { title: 'Carte', page: 'map' } },
+      { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie', page: 'gallery' } },
+      { path: 'notes', component: NotesViewComponent, data: { title: 'Notes', page: 'notes' } },
+      { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
+    ]
   },
 
   // no layout routes
   // { path: 'map', component: MapViewComponent, pathMatch: 'full'  },
   { path: 'short_resume', component: ShortViewComponent, data: { title: 'Profil version courte' } },
-  { path: 'home', component: HomeViewComponent, data: { title: 'Accueil - Amaury Valorge Portfolio' } },
+  // { path: 'home', component: HomeViewComponent, data: { title: 'Accueil - Amaury Valorge Portfolio' } },
 ];
 
 registerLocaleData(localeFr);
@@ -97,6 +99,7 @@ registerLocaleData(localeFr);
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FontAwesomeModule,

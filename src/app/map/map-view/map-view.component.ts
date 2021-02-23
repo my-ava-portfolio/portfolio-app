@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -11,6 +11,7 @@ import { Title } from '@angular/platform-browser';
 
 import { locationIcon, tagIcon, trainIconUnicode, svgTripIdPrefix } from '../../core/inputs';
 import { apiLogoUrl, currentYear } from '../../core/inputs';
+import { minWidthLandscape, minHeightLandscape } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
 
@@ -28,6 +29,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   currentDate = currentYear;
 
+  isGeodataCanBeDisplayed = false;
   isLegendDisplayed = true;
 
   innerWidth!: any;
@@ -74,12 +76,9 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pullActivitiesGeoDataToMapSubscription = this.mapService.activitiesGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
         this.geoFeaturesData = geoFeaturesData;
-        console.log('data');
         this.activitiesMapping(geoFeaturesData);
-        console.log('lalala', this.zoomInitDone, this.fragment)
         if (!this.zoomInitDone) {
           if (this.fragment !== null) {
-            console.log(this.fragment);
             this.zoomFromActivityId(this.geoFeaturesData, this.fragment);
           } else {
             this.zoomFromDataBounds(geoFeaturesData);
@@ -110,6 +109,22 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
 
+    this.displayContentRegardingDeviceScreen();
+
+  }
+
+  @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
+    if (window.screen.orientation.angle === 90 && window.screen.width >= minWidthLandscape && window.screen.height >= minHeightLandscape) {
+      this.isGeodataCanBeDisplayed = true;
+    } else if (window.screen.orientation.angle === 0 ) {
+      this.isGeodataCanBeDisplayed = true;
+    } else {
+      this.isGeodataCanBeDisplayed = false;
+    }
+
+    if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
+      this.isLegendDisplayed = false;
+    }
   }
 
   ngAfterViewInit(): void {

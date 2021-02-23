@@ -2,11 +2,12 @@
   <div  class="container">
     <div class="row justify-content-around">
       <div class="col-lg-6 text-center">
-        <h1 class="text-white">Format paysage non disponible</h1>
+        <h1 class="text-white">{{ orientationErrorMessage }}</h1>
         <fa-icon class="text-white" [icon]="mobileIcon" size="5x"></fa-icon>
       </div>
     </div>
   </div>
 </div>
 
-<router-outlet></router-outlet>
+<router-outlet #appOutlet="outlet"></router-outlet>
+
