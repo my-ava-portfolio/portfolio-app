@@ -1,5 +1,7 @@
-import { faMobileAlt, faTags, faInfoCircle, faStepBackward, faStepForward, faMapMarkedAlt, faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faAddressCard, faImages, faBookOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faMobileAlt, faTags, faInfoCircle, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+
+import { faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
 
 // export const apiBaseUrl = 'http://127.0.0.1:5000/api/v1/portfolio/';
 export const apiBaseUrl = 'https://ava-api.herokuapp.com/api/v1/portfolio/';
@@ -9,10 +11,13 @@ export const jupyterNotebookUrl = 'https://amauryval.github.io/my-notes/';
 export const githubUrl = 'https://github.com/amauryval/';
 export const navBarTitle = 'Amaury Valorge - Portfolio';
 
+export const minWidthLandscape = 1024;
+export const minHeightLandscape = 768;
+
 
 export const resumeIcon = faAddressCard;
 export const galleryIcon = faImages;
-export const notesIcon = faBookOpen;
+export const notesIcon = faFileAlt;
 export const githubIcon = faGithub;
 export const topicIcon = faGlobeEurope;
 export const helpIcon = faQuestionCircle;
@@ -28,7 +33,7 @@ export const printIcon = faPrint;
 export const linkedinIcon = faLinkedinIn;
 export const emailIcon = faEnvelopeOpen;
 export const phoneIcon = faPhone;
-export const MapIcon = faMapMarkedAlt;
+export const MapIcon = faMap;
 export const backwardIcon = faStepBackward;
 export const forwardIcon = faStepForward;
 export const infoIcon = faInfoCircle;
