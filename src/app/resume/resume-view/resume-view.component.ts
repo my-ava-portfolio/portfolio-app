@@ -129,6 +129,4 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.notesService.pullNotesData(notePath);
   }
 
-
-
 }
