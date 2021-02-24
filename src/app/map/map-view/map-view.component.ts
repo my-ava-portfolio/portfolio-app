@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagIcon, trainIconUnicode, svgTripIdPrefix } from '../../core/inputs';
+import { locationIcon, tagIcon, centerIcon, trainIconUnicode, svgTripIdPrefix } from '../../core/inputs';
 import { apiLogoUrl, currentYear } from '../../core/inputs';
 import { minWidthLandscape, minHeightLandscape } from '../../core/inputs';
 
@@ -44,6 +44,8 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   locationIcon = locationIcon;
   tagIcon = tagIcon;
+  centerIcon = centerIcon;
+
   // check css code related to popup
   popupWidth = 330;
   popupHeight = 190;
@@ -151,6 +153,13 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapService.resetMapView()
   }
 
+
+  zoomOnData(): void {
+    if (this.geoFeaturesData !== undefined) {
+      this.zoomFromDataBounds(this.geoFeaturesData);
+    }
+  }
+
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
@@ -163,7 +172,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
         maxZoom: this.maxZoomValue
       }
     );
-    console.log('default zoom')
   }
 
   zoomFromActivityId(geoFeaturesData: any[], activityId: string): void {

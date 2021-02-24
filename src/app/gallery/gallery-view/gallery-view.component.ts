@@ -8,6 +8,9 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
+import { chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon } from '../../core/inputs';
+
+
 
 @Component({
   selector: 'app-gallery-view',
@@ -33,6 +36,14 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   isDataAvailable = false;
 
   fragment: string | null = null;
+
+  typeStyleMapping: any = {
+    chart: chartItemIcon,
+    video: videoItemIcon,
+    map: mapIcon,
+    app: appItemIcon,
+    tool: toolItemIcon
+  };
 
   activitiesGallerySubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
@@ -85,7 +96,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     try {
       if (this.fragment !== null) {
         this.currentActivity = this.fragment.replace('#', '');
-        console.log("hello")
+        console.log('hello')
       }
     } catch (e) {
       console.log('anchor scrolling error');

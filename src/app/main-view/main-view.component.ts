@@ -14,11 +14,7 @@ import { trigger, transition } from '@angular/animations';
   styleUrls: ['./main-view.component.css'],
   animations: [
     trigger('routerAnimations', [
-      transition('* => home', fadeAnimation),
-      transition('* => profil', fadeAnimation),
-      transition('* => map', fadeAnimation),
-      transition('* => gallery', fadeAnimation),
-      transition('* => notes', fadeAnimation),
+      transition('* => *', fadeAnimation),
     ])
   ]
 })

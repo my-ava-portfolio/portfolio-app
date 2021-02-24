@@ -30,7 +30,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   sliderBarId = '#slider-bar';
   margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
   width = 600;
-  height = 50;
+  height = 90;
   fontSize = '14px';
 
   endDate: Date = currentDate;
