@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { apiBaseUrl } from '../core/inputs';
+import { apiUrl } from '../core/inputs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GalleryService {
 
-  private apiUrlActivitiesGallery = apiBaseUrl + 'gallery_activities?';
+  private apiUrlActivitiesGallery = apiUrl + 'gallery_activities?';
   ErrorActivitiesGalleryApiFound: Subject<string> = new Subject<string>();
   activitiesGalleryData: Subject<any> = new Subject<any>();
 

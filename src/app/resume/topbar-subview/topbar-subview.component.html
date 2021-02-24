@@ -20,7 +20,7 @@
     <div class="row justify-content-center">
 
       <div class="col-lg-2 text-center">
-        <a class="" [href]="linkBuilt" (mouseover)="reverse('hello')" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+        <a class="" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(inputContactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="mr-2 text-white" [icon]="emailIcon" size="2x"></fa-icon>
         </a>
       </div>

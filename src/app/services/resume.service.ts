@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { apiBaseUrl } from '../core/inputs';
+import { apiUrl } from '../core/inputs';
 
 
 @Injectable({
@@ -10,19 +10,19 @@ import { apiBaseUrl } from '../core/inputs';
 })
 export class ResumeService {
 
-  private apiUrlResumeData = apiBaseUrl + 'resume_static_data';
+  private apiUrlResumeData = apiUrl + 'resume_static_data';
   ErrorResumeDataApiFound: Subject<string> = new Subject<string>();
   resumeData: Subject<any> = new Subject<any>();
 
-  private apiUrlGraphData = apiBaseUrl + 'activities_graph_data?';
+  private apiUrlGraphData = apiUrl + 'activities_graph_data?';
   errorActivitiesChartApiFound: Subject<string> = new Subject<string>();
   ActivitiesChartData: Subject<any> = new Subject<any>();
 
-  private apiUrlSkillsFilteredData = apiBaseUrl + 'skills_filtered?';
+  private apiUrlSkillsFilteredData = apiUrl + 'skills_filtered?';
   errorUrlSkillsFilteredApiFound: Subject<string> = new Subject<string>();
   skillsFilteredData: Subject<any> = new Subject<any>();
 
-  private apiUrlActivitiesFilteredData = apiBaseUrl + 'activities_filtered?';
+  private apiUrlActivitiesFilteredData = apiUrl + 'activities_filtered?';
   errorUrlActivitiesFilteredApiFound: Subject<string> = new Subject<string>();
   activitiesFilteredData: Subject<any> = new Subject<any>();
 

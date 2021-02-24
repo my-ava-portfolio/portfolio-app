@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 
-import { apiBaseUrl } from '../core/inputs';
+import { apiUrl } from '../core/inputs';
 
 
 @Injectable({
@@ -13,13 +13,13 @@ export class MapService {
 
   mapContainer: Subject<any> = new Subject<any>();
 
-  private apiUrlActivitiesGeoData = apiBaseUrl + 'activities_geodata?currentDate=';
+  private apiUrlActivitiesGeoData = apiUrl + 'activities_geodata?currentDate=';
   ErrorapiUrlActivitiesGeoDataApiFound: Subject<string> = new Subject<string>();
   activitiesGeoData: Subject<any> = new Subject<any>();
 
   activitiesGeoDataToMap: Subject<any[]> = new Subject<any[]>();
   tripsGeoDataToMap: Subject<any[]> = new Subject<any[]>();
-  
+
   isMapContainerCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 

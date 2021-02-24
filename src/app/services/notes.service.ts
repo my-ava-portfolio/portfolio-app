@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { apiBaseUrl } from '../core/inputs';
+import { apiUrl } from '../core/inputs';
 
 
 @Injectable({
@@ -11,7 +11,7 @@ import { apiBaseUrl } from '../core/inputs';
 })
 export class NotesService {
 
-  private apiUrlNotesData = apiBaseUrl + 'notes';
+  private apiUrlNotesData = apiUrl + 'notes';
   ErrorNotesDataApiFound: Subject<string> = new Subject<string>();
   notesData: Subject<any> = new Subject<any>();
 

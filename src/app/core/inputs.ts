@@ -3,10 +3,11 @@ import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortaw
 
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
 
-// export const apiBaseUrl = 'http://127.0.0.1:5000/api/v1/portfolio/';
-export const apiBaseUrl = 'https://ava-api.herokuapp.com/api/v1/portfolio/';
-export const apiLogoUrl = `${apiBaseUrl}images/logo/`;
-export const apiMapsUrl = `${apiBaseUrl}images/maps/`;
+import { apiBaseUrl } from '../../app/core/constants';
+
+export const apiUrl = apiBaseUrl;
+export const apiLogoUrl = `${apiUrl}images/logo/`;
+export const apiMapsUrl = `${apiUrl}images/maps/`;
 export const jupyterNotebookUrl = 'https://amauryval.github.io/my-notes/';
 export const githubUrl = 'https://github.com/amauryval/';
 export const navBarTitle = 'Amaury Valorge - Portfolio';

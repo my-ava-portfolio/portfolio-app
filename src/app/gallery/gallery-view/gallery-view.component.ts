@@ -1,5 +1,5 @@
- import { Component, OnInit, OnDestroy } from '@angular/core';
-import { apiBaseUrl } from '../../core/inputs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { apiUrl } from '../../core/inputs';
 
 import { GalleryService } from '../../services/gallery.service';
 
@@ -30,7 +30,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   defaultType: string | null = null;
   currentType: string | null = null;
 
-  apiBaseUrl = apiBaseUrl;
+  apiBaseUrl = apiUrl;
   galleryItems!: any;
 
   isDataAvailable = false;
