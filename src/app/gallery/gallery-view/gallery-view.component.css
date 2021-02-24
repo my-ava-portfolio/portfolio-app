@@ -149,6 +149,14 @@ footer {
   background-color: grey;
 }
 
+.tool {
+  background-color: black;
+}
+
+.library {
+  background-color: blue;
+}
+
 .modal-dialog {
   max-height: 100vh;
   max-width: 100vh;

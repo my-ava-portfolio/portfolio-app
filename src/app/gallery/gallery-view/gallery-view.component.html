@@ -58,7 +58,7 @@
       <span [class]="'badge badge-pill my-1 mx-2 text-white ' + activity.category_id" >{{activity.category}}</span>
       <a [routerLink]="['/resume']" [fragment]="activity.identifier"><span class="badge badge-pill" [style]="'background-color:' + activity.color + ';color: white'">{{activity.title}}</span></a>
       <span [class]="'badge badge-pill my-1 mx-2 text-white ' + media_feature.type">
-        <fa-icon class="mr-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{media_feature.type}}
+        <fa-icon class="mr-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
       </span>
       <h6 class="card-title">{{ media_feature.title }}</h6>
       <p class="card-text">{{media_feature.description}}</p>
