@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { apiBaseUrl } from '../../core/inputs';
 
 import { GalleryService } from '../../services/gallery.service';
@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon } from '../../core/inputs';
+import { pythonIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon } from '../../core/inputs';
 
 
 
@@ -38,11 +38,12 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   fragment: string | null = null;
 
   typeStyleMapping: any = {
-    chart: chartItemIcon,
-    video: videoItemIcon,
-    map: mapIcon,
-    app: appItemIcon,
-    tool: toolItemIcon
+    chart: { icon: chartItemIcon, title: 'Graphiques & tableaux' },
+    video: { icon: videoItemIcon, title: 'Vidéos' },
+    map: { icon: mapIcon, title: 'Cartes' },
+    app: { icon: appItemIcon, title: 'Applications' },
+    tool: { icon: toolItemIcon, title: 'Outils' },
+    library: { icon: pythonIcon, title: 'Libraries' },
   };
 
   activitiesGallerySubscription!: Subscription;

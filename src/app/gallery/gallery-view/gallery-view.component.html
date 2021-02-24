@@ -58,7 +58,7 @@
       <span [class]="'badge badge-pill my-1 mx-2 text-white ' + activity.category_id" >{{activity.category}}</span>
       <a [routerLink]="['/resume']" [fragment]="activity.identifier"><span class="badge badge-pill" [style]="'background-color:' + activity.color + ';color: white'">{{activity.title}}</span></a>
       <span [class]="'badge badge-pill my-1 mx-2 text-white ' + media_feature.type">
-        <fa-icon class="mr-1" [icon]="typeStyleMapping[media_feature.type]"></fa-icon>{{media_feature.type}}
+        <fa-icon class="mr-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{media_feature.type}}
       </span>
       <h6 class="card-title">{{ media_feature.title }}</h6>
       <p class="card-text">{{media_feature.description}}</p>
@@ -120,8 +120,8 @@
 
           <div class="btn-group mt1 ml-2 flex-wrap">
             <ng-container *ngFor="let type of mediaTypes">
-              <button (click)="getGalleryDataByType(type)" type="button" [title]="type" [id]="type" class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bold': currentType === type}">
-                <fa-icon [icon]="typeStyleMapping[type]"></fa-icon>
+              <button (click)="getGalleryDataByType(type)" type="button" [title]="typeStyleMapping[type].title" [id]="type" class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bold': currentType === type}">
+                <fa-icon [icon]="typeStyleMapping[type].icon"></fa-icon>
               </button>
             </ng-container>
           </div>
