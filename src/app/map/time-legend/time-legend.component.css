@@ -52,4 +52,6 @@ svg #trace {
   stroke-width:4;
 }
 
-
+#play-button {
+  width: 90px;
+}

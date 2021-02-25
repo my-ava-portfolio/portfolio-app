@@ -48,9 +48,12 @@ export const videoItemIcon = faYoutube;
 export const appItemIcon = faAppStore;
 export const toolItemIcon = faTools;
 
-export const svgTripIdPrefix = 'svg_trip_';
 export const trainIconUnicode = '\uf238'; // font awesome unicode
 
+export const svgActivitiesPointsLayerId = 'svgActivitiesLayer';
+export const svgTripIdPrefix = 'svg_trip_';
+export const legendActivities = 'legendActivity';
+export const sliderBarId = 'slider-bar';
 
 export const homePage: any = {
   id: 'home',
@@ -101,5 +104,3 @@ export const pages: any = [
 ];
 
 export const pagesObject: any = pages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
-
-

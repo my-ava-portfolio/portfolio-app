@@ -9,9 +9,10 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagIcon, centerIcon, trainIconUnicode, svgTripIdPrefix } from '../../core/inputs';
+import { locationIcon, tagIcon, centerIcon, trainIconUnicode,  } from '../../core/inputs';
 import { apiLogoUrl, currentYear } from '../../core/inputs';
 import { minWidthLandscape, minHeightLandscape } from '../../core/inputs';
+import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
 
@@ -25,6 +26,8 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   fragment!: string | null;
 
   svgTripIdPrefix = svgTripIdPrefix;
+  legendActivities = legendActivities;
+
   trainIconUnicode = trainIconUnicode;
 
   currentDate = currentYear;
@@ -50,7 +53,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   popupWidth = 330;
   popupHeight = 190;
   geoFeaturesData!: any[];
-  svgActivitiesLayerId = 'svgActivitiesLayer';
+  svgActivitiesLayerId = svgActivitiesPointsLayerId;
   circleOpacity = 0.7;
   circleStroke = 'ghostwhite';
   circleWidth = '3px';
@@ -98,7 +101,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
           const tripDataRevertedFeatures: any = tripDataReverted.features.slice().reverse();
           tripDataReverted.features = tripDataRevertedFeatures;
           this.computeAnimatePointsOnLine(item.geojson_data, item.name);
-          this.computeAnimatePointsOnLine(tripDataReverted, item.name + "_reverted");
+          this.computeAnimatePointsOnLine(tripDataReverted, item.name + '_reverted');
         });
       }
     );
@@ -209,7 +212,16 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .append('a') // add hyper link and the svg circle
       .attr('xlink:href', (d: any) => '#/resume#' + d.properties.id)
       .attr('id', (d: any) => 'node_location_' + d.properties.id)
-      .attr('class', 'activityPoint')
+      .attr('class', (d: any) => {
+        // in order to match with legend status
+        const relatedLegendElement = d3.selectAll('#' + this.legendActivities + ' circle.' + d.properties.type);
+        if (relatedLegendElement.size() > 0) {
+          if (relatedLegendElement.classed('disabled')) {
+            return 'invisible activityPoint ' + d.properties.type;
+          }
+        }
+        return 'activityPoint ' + d.properties.type;
+      })
       .attr('cursor', 'pointer')
       .append('circle')
       .style('opacity', this.circleOpacity)
@@ -217,8 +229,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .style('stroke-width', this.circleWidth)
       .attr('class', (d: any) => d.properties.type)
       .on('mouseover', (e: any, d: any) => {
-        // TODO popup
-
         // hightlight map point
         const currentElement: any = d3.select(e.currentTarget);
         currentElement.classed('selected', !currentElement.classed('selected')); // toggle class

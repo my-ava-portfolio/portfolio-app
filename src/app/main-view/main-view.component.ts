@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener  } from '@angular/core';
 
 import { arrowUpIcon } from '../core/inputs';
+
 import { fadeAnimation } from '../core/animation_routes';
 
 import { Router } from '@angular/router';

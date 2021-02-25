@@ -10,12 +10,13 @@
 
     <div class="col-md-5 text-right my-auto">
       <ul class="list-unstyled">
+
+        <ng-container *ngIf="contactData.mail">
+          <ng-container *ngTemplateOutlet="contactListElement; context: {icon: emailIcon, data: contactData.mail}"></ng-container>
+        </ng-container>
+        
         <ng-container *ngIf="contactData.linkedin">
           <ng-container *ngTemplateOutlet="contactListElement; context: {icon: linkedinIcon, data: contactData.linkedin}"></ng-container>
-        </ng-container>
-
-        <ng-container *ngIf="contactData.email">
-          <ng-container *ngTemplateOutlet="contactListElement; context: {icon: emailIcon, data: contactData.email}"></ng-container>
         </ng-container>
 
         <ng-container *ngIf="contactData.phone">

@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { currentYear, currentDate, backwardIcon, forwardIcon, svgTripIdPrefix, tagIcon } from '../../core/inputs';
+import { currentYear, currentDate, backwardIcon, forwardIcon, tagIcon } from '../../core/inputs';
+import { svgTripIdPrefix, sliderBarId, legendActivities } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
 
@@ -27,7 +28,9 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   forwardIcon = forwardIcon;
   tagIcon = tagIcon;
 
-  sliderBarId = '#slider-bar';
+  legendActivities = legendActivities;
+  sliderBarId = '#' + sliderBarId;
+
   margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
   width = 600;
   height = 90;
@@ -372,7 +375,16 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .enter()
       .append('circle')
       .attr('id', (d: any) => 'location_' + d.properties.id)
-      .attr('class', (d: any) => d.properties.type)
+      .attr('class', (d: any) => {
+        // in order to match with legend status
+        const relatedLegendElement = d3.selectAll('#' + this.legendActivities + ' circle.' + d.properties.type);
+        if (relatedLegendElement.size() > 0) {
+          if (relatedLegendElement.classed('disabled')) {
+            return 'invisible activityPoint ' + d.properties.type;
+          }
+        }
+        return 'activityPoint ' + d.properties.type;
+      })
       .attr('r', 5)
       .attr('cursor', 'pointer')
       .attr('cx', (d: any) => this.dateRange(this.parseTime(d.properties.start_date)))

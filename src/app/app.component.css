@@ -52,6 +52,14 @@ circle.education {
   fill: #168720;
 }
 
+circle.disabled {
+  fill: #b7b6b6;
+}
+
+circle.invisible {
+  visibility: hidden;
+}
+
 circle.technics {
   fill: #0ca81e;
 }
@@ -103,10 +111,10 @@ circle.selected {
 }
 
 .activity-months {
-  fill: #b6b6b6;
+  fill: white;
   opacity: 0.7;
-  stroke: ghostwhite;
-  stroke-width: 3px;
+  stroke: black;
+  stroke-width: 2px;
   stroke-opacity: 1;
 }
 
@@ -158,6 +166,7 @@ circle.selected {
   color: black;
   text-anchor: middle;
   alignment-baseline: middle;
+  pointer-events: none;
 }
 
 .legend_graph_title {
