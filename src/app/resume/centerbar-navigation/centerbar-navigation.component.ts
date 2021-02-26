@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 
 import { ResumeService } from '../../services/resume.service';
-import { topicIcon, helpIcon } from '../../core/inputs';
+import { topicIcon, helpIcon, ungroupIconUnicode } from '../../core/inputs';
 
 
 @Component({
@@ -30,6 +30,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   // icons
   topicIcon = topicIcon;
   helpIcon = helpIcon;
+  ungroupIconUnicode = ungroupIconUnicode;
 
   inputSummaryData!: any;
   currentDate: number = new Date().getFullYear();
@@ -61,8 +62,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   ];
 
   legendGroupInput = [
-    { id: 'grouper_jobs', label: 'grouper jobs', cy: 28, cx: 35, text: '❉' },  // jobs grouped is disabled (style)
-    { id: 'grouper_projects', label: 'grouper projets', cy: 54, cx: 35, text: '❉' }
+    { id: 'grouper_jobs', label: 'grouper jobs', cy: 31, cx: 35 },  // jobs grouped is disabled (style)
+    { id: 'grouper_projects', label: 'grouper projets', cy: 56, cx: 35 }
   ];
 
   activitiesFilteredSubscription!: Subscription;
@@ -215,7 +216,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
         }
         return classesValue;
       })
-      .text(function(d: any) { return d.text; })
+      .text(this.ungroupIconUnicode)
       .attr('x', (d: any) => d.cx)
       .attr('y', (d: any) => d.cy)
       .style('r', (d: any) => d.r)

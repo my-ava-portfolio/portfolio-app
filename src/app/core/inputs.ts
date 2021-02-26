@@ -48,7 +48,9 @@ export const videoItemIcon = faYoutube;
 export const appItemIcon = faAppStore;
 export const toolItemIcon = faTools;
 
-export const trainIconUnicode = '\uf238'; // font awesome unicode
+// font awesome unicode
+export const trainIconUnicode = '\uf238';
+export const ungroupIconUnicode = '\uf247';
 
 export const svgActivitiesPointsLayerId = 'svgActivitiesLayer';
 export const svgTripIdPrefix = 'svg_trip_';

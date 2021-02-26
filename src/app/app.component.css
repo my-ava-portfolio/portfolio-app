@@ -40,6 +40,12 @@ body::-webkit-scrollbar {
 
 
 /* style navigation chart and maps */
+.grouper_jobs, .grouper_projects {
+  font-family: 'Font Awesome 5 Free';
+  text-anchor: middle;
+  alignment-baseline: middle;
+}
+
 circle.personal_projects {
   fill: #f5a824;
 }
