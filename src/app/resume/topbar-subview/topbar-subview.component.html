@@ -19,19 +19,19 @@
   <div class="col-lg-3 align-self-center text-white">
     <div class="row justify-content-center">
 
-      <div class="col-lg-2 text-center">
+      <div class="col-sm-2 text-center mb-3">
         <a class="" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(inputContactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="mr-2 text-white" [icon]="emailIcon" size="2x"></fa-icon>
         </a>
       </div>
 
-      <div class="col-lg-2 text-center">
+      <div class="col-sm-2 text-center mb-3">
         <a class="" [href]="linkBuilt" (mouseover)="reverse(inputContactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="mr-2 text-white" [icon]="linkedinIcon" size="2x"></fa-icon>
         </a>
       </div>
 
-      <div class="col-lg-2 text-center">
+      <div class="col-sm-2 text-center mb-3">
         <a class="" [href]="linkBuilt" (mouseover)="reverse(inputContactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="mr-2 text-white" [icon]="githubIcon" size="2x"></fa-icon>
         </a>
