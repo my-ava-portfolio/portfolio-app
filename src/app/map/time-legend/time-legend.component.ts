@@ -254,8 +254,10 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('class', 'track-overlay')
       .call(d3.drag()
         .on('drag start', (e: any) => {
-          // to avoid cursor running if track is drag...
+
+          // to avoid cursor running if a click is done on the slider bar...
           playButton.text('Pause');
+          playButton.dispatch('click')
 
           this.selectedDatePosition = e.x;
           this.update(this.dateRange.invert(this.selectedDatePosition));
