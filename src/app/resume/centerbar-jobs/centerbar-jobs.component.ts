@@ -13,7 +13,7 @@ import { resumeIcon, galleryIcon, locationIcon } from '../../core/inputs';
 @Component({
   selector: 'app-centerbar-jobs',
   templateUrl: './centerbar-jobs.component.html',
-  styleUrls: ['./centerbar-jobs.component.css']
+  styleUrls: ['./centerbar-jobs.component.scss']
 })
 export class CenterbarJobsComponent implements OnInit, OnDestroy {
   @Output() notePathEmit = new EventEmitter<string>();

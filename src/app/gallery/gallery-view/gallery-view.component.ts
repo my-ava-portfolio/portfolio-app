@@ -15,7 +15,7 @@ import { pythonIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolIte
 @Component({
   selector: 'app-gallery-view',
   templateUrl: './gallery-view.component.html',
-  styleUrls: ['./gallery-view.component.css']
+  styleUrls: ['./gallery-view.component.scss']
 })
 export class GalleryViewComponent implements OnInit, OnDestroy {
   // TODO create a route to get all activities titles

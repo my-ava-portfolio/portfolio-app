@@ -12,7 +12,7 @@ import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-notes-view',
   templateUrl: './notes-view.component.html',
-  styleUrls: ['./notes-view.component.css']
+  styleUrls: ['./notes-view.component.scss']
 })
 export class NotesViewComponent implements OnDestroy {
   pageTitle!: string;

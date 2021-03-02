@@ -1,3 +1,7 @@
+$enable-responsive-font-sizes: true;
+
+@import "bootstrap";
+
 body {
   font-size: 15px;
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
@@ -7,6 +11,7 @@ body {
 body::-webkit-scrollbar {
   display: none;  /* Safari and Chrome */
 }
+
 
 .circle {
   border-radius: 50%;

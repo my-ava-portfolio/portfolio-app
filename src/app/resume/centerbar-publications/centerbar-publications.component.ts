@@ -6,7 +6,7 @@ import { resumeIcon, arrowUpIcon, pdfFileIcon } from '../../core/inputs';
 @Component({
   selector: 'app-centerbar-publications',
   templateUrl: './centerbar-publications.component.html',
-  styleUrls: ['./centerbar-publications.component.css']
+  styleUrls: ['./centerbar-publications.component.scss']
 })
 export class CenterbarPublicationsComponent implements OnInit {
   @Input() publicationsData: any;

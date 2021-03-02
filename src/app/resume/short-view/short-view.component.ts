@@ -14,7 +14,7 @@ import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-short-view',
   templateUrl: './short-view.component.html',
-  styleUrls: ['./short-view.component.css']
+  styleUrls: ['./short-view.component.scss']
 })
 export class ShortViewComponent implements OnInit, OnDestroy {
   currentDate: number = new Date().getFullYear();

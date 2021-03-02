@@ -11,7 +11,7 @@ import { topicIcon, helpIcon, ungroupIconUnicode } from '../../core/inputs';
 @Component({
   selector: 'app-centerbar-navigation',
   templateUrl: './centerbar-navigation.component.html',
-  styleUrls: ['./centerbar-navigation.component.css']
+  styleUrls: ['./centerbar-navigation.component.scss']
 })
 export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() graphInputData!: any;

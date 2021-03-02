@@ -10,7 +10,7 @@ import { degreeIcon, languageIcon, locationIcon } from '../../core/inputs';
 @Component({
   selector: 'app-leftbar-subview',
   templateUrl: './leftbar-subview.component.html',
-  styleUrls: ['./leftbar-subview.component.css']
+  styleUrls: ['./leftbar-subview.component.scss']
 })
 export class LeftbarSubviewComponent implements OnInit {
 

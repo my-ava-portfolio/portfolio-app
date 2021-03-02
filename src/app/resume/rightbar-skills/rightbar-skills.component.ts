@@ -10,7 +10,7 @@ import { ResumeService } from '../../services/resume.service';
 @Component({
   selector: 'app-rightbar-skills',
   templateUrl: './rightbar-skills.component.html',
-  styleUrls: ['./rightbar-skills.component.css']
+  styleUrls: ['./rightbar-skills.component.scss']
 })
 export class RightbarSkillsComponent implements OnInit, OnDestroy {
   isDataAvailable = false;

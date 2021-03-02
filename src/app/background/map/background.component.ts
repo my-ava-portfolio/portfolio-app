@@ -9,7 +9,7 @@ import { MapService } from '../../services/map.service';
 @Component({
   selector: 'app-background-map',
   templateUrl: './background.component.html',
-  styleUrls: ['./background.component.css']
+  styleUrls: ['./background.component.scss']
 })
 export class BackgroundComponent implements OnInit {
   private InitialViewCoords: any = [44.896741, 4.932861];

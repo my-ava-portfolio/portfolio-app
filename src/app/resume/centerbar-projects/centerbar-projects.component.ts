@@ -13,7 +13,7 @@ import { resumeIcon, galleryIcon, notesIcon, githubIcon, websiteIcon } from '../
 @Component({
   selector: 'app-centerbar-projects',
   templateUrl: './centerbar-projects.component.html',
-  styleUrls: ['./centerbar-projects.component.css']
+  styleUrls: ['./centerbar-projects.component.scss']
 })
 export class CenterbarProjectsComponent implements OnInit, OnDestroy {
   @Output() notePathEmit = new EventEmitter<string>();

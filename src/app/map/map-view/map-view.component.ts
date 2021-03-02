@@ -20,7 +20,7 @@ import { MapService } from '../../services/map.service';
 @Component({
   selector: 'app-map-view',
   templateUrl: './map-view.component.html',
-  styleUrls: ['./map-view.component.css']
+  styleUrls: ['./map-view.component.scss']
 })
 export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   fragment!: string | null;

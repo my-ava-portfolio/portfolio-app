@@ -14,7 +14,7 @@ import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-resume-view',
   templateUrl: './resume-view.component.html',
-  styleUrls: ['./resume-view.component.css']
+  styleUrls: ['./resume-view.component.scss']
 })
 export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   fragment!: string | null;

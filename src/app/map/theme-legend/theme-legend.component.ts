@@ -10,7 +10,7 @@ import * as d3 from 'd3';
 @Component({
   selector: 'app-theme-legend',
   templateUrl: './theme-legend.component.html',
-  styleUrls: ['./theme-legend.component.css']
+  styleUrls: ['./theme-legend.component.scss']
 })
 export class ThemeLegendComponent implements OnInit, AfterViewInit {
   svgActivitiesPointsLayerId = svgActivitiesPointsLayerId;

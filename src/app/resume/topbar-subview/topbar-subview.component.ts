@@ -6,7 +6,7 @@ import { githubIcon, linkedinIcon, printIcon, emailIcon } from '../../core/input
 @Component({
   selector: 'app-topbar-subview',
   templateUrl: './topbar-subview.component.html',
-  styleUrls: ['./topbar-subview.component.css']
+  styleUrls: ['./topbar-subview.component.scss']
 })
 export class TopbarSubviewComponent implements OnInit {
 
@@ -23,7 +23,7 @@ export class TopbarSubviewComponent implements OnInit {
   githubIcon = githubIcon;
   linkedinIcon = linkedinIcon;
   emailIcon = emailIcon;
-  
+
   constructor() { }
 
   ngOnInit(): void {

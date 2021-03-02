@@ -12,7 +12,7 @@ import { trigger, transition } from '@angular/animations';
 @Component({
   selector: 'app-main-view',
   templateUrl: './main-view.component.html',
-  styleUrls: ['./main-view.component.css'],
+  styleUrls: ['./main-view.component.scss'],
   animations: [
     trigger('routerAnimations', [
       transition('* => *', fadeAnimation),
