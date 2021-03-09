@@ -6,13 +6,7 @@
       <div class="card-columns">
         <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
 
-        <ng-container *ngFor="let activity of galleryItems; let idx = index">
-
-          <ng-container *ngIf="activity.medias">
-            <ng-container *ngTemplateOutlet="imgProject; context:{medias: activity.medias, activity: activity}"></ng-container>
-          </ng-container>
-
-        </ng-container>
+            <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
 
         <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
 
@@ -25,7 +19,7 @@
 
 
 
-<ng-template #imgProject let-medias=medias let-activity=activity>
+<ng-template #imgProject let-medias=medias>
   <div class="card border rounded py-2 px-2" *ngFor="let media_feature of medias; let idx = index">
 
     <ng-container [ngSwitch]="media_feature.source">
@@ -37,8 +31,8 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'url_img'">
-        <img [src]="media_feature.media | safeUrl" class="card-img-top pointer" data-toggle="modal" [attr.data-target]="'#modal-' + activity.identifier + idx">
-        <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: activity.identifier, pictureId: idx}"></ng-container>
+        <img [src]="media_feature.media | safeUrl" class="card-img-top pointer" data-toggle="modal" [attr.data-target]="'#modal-' + media_feature.identifier + idx">
+        <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
       </ng-container>
 
       <ng-container *ngSwitchCase="'url_app'">
@@ -48,15 +42,15 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'api_img'">
-        <img [src]="apiBaseUrl + media_feature.media" class="card-img-top pointer" data-toggle="modal" [attr.data-target]="'#modal-' + activity.identifier + idx">
-        <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiBaseUrl + media_feature.media, activityId: activity.identifier, pictureId: idx}"></ng-container>
+        <img [src]="apiBaseUrl + media_feature.media" class="card-img-top pointer" data-toggle="modal" [attr.data-target]="'#modal-' + media_feature.identifier + idx">
+        <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiBaseUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
       </ng-container>
 
     </ng-container>
 
     <div class="card-body">
-      <span [class]="'badge badge-pill my-1 mx-2 text-white ' + activity.category_id" >{{activity.category}}</span>
-      <a [routerLink]="['/resume']" [fragment]="activity.identifier"><span class="badge badge-pill" [style]="'background-color:' + activity.color + ';color: white'">{{activity.title}}</span></a>
+      <span [class]="'badge badge-pill my-1 mx-2 text-white ' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
+      <a [routerLink]="['/resume']" [fragment]="media_feature.identifier"><span class="badge badge-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
       <span [class]="'badge badge-pill my-1 mx-2 text-white ' + media_feature.type">
         <fa-icon class="mr-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
       </span>
@@ -94,11 +88,11 @@
             <label class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bolder': currentCategory === null}">
               <input (click)="this.resetGallery()" type="radio" name="options" id="option1" autocomplete="off">Tous
             </label>
-            <label class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bolder': currentCategory === 'jobs'}">
-              <input (click)="getGalleryDataByCategory('jobs')" type="radio" name="options" id="option2" autocomplete="off" >Expériences
+            <label class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bolder': currentCategory === 'job'}">
+              <input (click)="getGalleryDataByCategory('job')" type="radio" name="options" id="option2" autocomplete="off" >Expériences
             </label>
-            <label class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bolder': currentCategory === 'personal_projects'}">
-              <input (click)="getGalleryDataByCategory('personal_projects')" type="radio" name="options" id="option3" autocomplete="off" >Projets personnels
+            <label class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bolder': currentCategory === 'personal_project'}">
+              <input (click)="getGalleryDataByCategory('personal_project')" type="radio" name="options" id="option3" autocomplete="off" >Projets personnels
             </label>
           </div>
         </div>
@@ -108,8 +102,8 @@
           <h5>Filtrage par activités</h5>
 
           <div class="btn-group mt1 ml-2 flex-wrap">
-            <ng-container *ngFor="let activity of galleryItems">
-              <button (click)="getGalleryDataByActivity(activity.identifier)" type="button" [id]="activity.identifier" class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bold': currentActivity === activity.identifier}">{{ activity.title}}</button>
+            <ng-container *ngFor="let activity of activities | keyvalue">
+              <button (click)="getGalleryDataByActivity(activity.key)" type="button" [id]="activity.key" class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bold': currentActivity === activity.key}">{{ activity.value}}</button>
             </ng-container>
           </div>
         </div>

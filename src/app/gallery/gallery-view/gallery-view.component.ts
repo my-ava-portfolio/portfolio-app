@@ -26,6 +26,8 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   defaultCategory: string | null = null;
   currentCategory: string | null = null;
 
+  category!: string | null;
+  activities!: string[];
   mediaTypes!: string[];
   defaultType: string | null = null;
   currentType: string | null = null;
@@ -44,6 +46,11 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     app: { icon: appItemIcon, title: 'Applications' },
     tool: { icon: toolItemIcon, title: 'Outils' },
     library: { icon: pythonIcon, title: 'Libraries' },
+  };
+
+  categoriesActivity: any = {
+    job: 'Expériences',
+    personal_project: 'Projet personnel',
   };
 
   activitiesGallerySubscription!: Subscription;
@@ -71,6 +78,10 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
       (data) => {
         this.galleryItems = data.items;
         this.mediaTypes = data.media_types_available;
+        this.activities = data.activities;
+        console.log(data.category)
+        this.currentCategory = data.category;
+
         this.isDataAvailable = true;
         console.log(data);
 
@@ -106,6 +117,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
 
   resetGallery(): any {
+    this.currentActivity = this.defaultActivity;
     this.currentCategory = this.defaultCategory;
     this.currentType = this.defaultType;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);

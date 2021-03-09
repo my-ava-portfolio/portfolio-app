@@ -7,7 +7,7 @@ import { ResumeService } from '../../services/resume.service';
 import { Subscription } from 'rxjs';
 import { startWith  } from 'rxjs/operators';
 
-import { resumeIcon, galleryIcon, locationIcon } from '../../core/inputs';
+import { resumeIcon, galleryIcon, locationIcon, filterIcon } from '../../core/inputs';
 
 
 @Component({
@@ -28,6 +28,7 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
   locationIcon = locationIcon;
   resumeIcon = resumeIcon;
   galleryIcon = galleryIcon;
+  filterIcon = filterIcon;
 
   activitiesFilteredSubscription!: Subscription;
 
@@ -59,4 +60,7 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
     this.notePathEmit.emit(notePath);
   }
 
+  pushActivityId(activityId: string): void {
+    this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
+  }
 }

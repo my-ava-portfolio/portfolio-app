@@ -26,9 +26,16 @@ export class ResumeService {
   errorUrlActivitiesFilteredApiFound: Subject<string> = new Subject<string>();
   activitiesFilteredData: Subject<any> = new Subject<any>();
 
+  activityId: Subject<string> = new Subject<string>();
+
   constructor(
       private http: HttpClient
   ) {}
+
+
+  pullActivityIdToPreselectNodeGraph(activityId: string): void {
+    this.activityId.next(activityId)
+  }
 
   pullResumeGeneralData(): void {
 

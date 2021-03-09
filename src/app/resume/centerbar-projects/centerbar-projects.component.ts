@@ -6,7 +6,7 @@ import { ResumeService } from '../../services/resume.service';
 
 import { Subscription } from 'rxjs';
 
-import { resumeIcon, galleryIcon, notesIcon, githubIcon, websiteIcon } from '../../core/inputs';
+import { resumeIcon, galleryIcon, notesIcon, githubIcon, websiteIcon, filterIcon } from '../../core/inputs';
 
 
 
@@ -28,6 +28,7 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
   githubIcon = githubIcon;
   notesIcon = notesIcon;
   websiteIcon = websiteIcon;
+  filterIcon = filterIcon;
 
   activitiesFilteredSubscription!: Subscription;
 
@@ -61,4 +62,7 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
     this.notePathEmit.emit(notePath);
   }
 
+  pushActivityId(activityId: string): void {
+    this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
+  }
 }

@@ -81,6 +81,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pullActivitiesGeoDataToMapSubscription = this.mapService.activitiesGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
         this.geoFeaturesData = geoFeaturesData;
+        console.log(this.geoFeaturesData)
         this.activitiesMapping(geoFeaturesData);
         if (!this.zoomInitDone) {
           if (this.fragment !== null) {

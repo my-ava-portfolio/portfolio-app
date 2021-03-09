@@ -1,4 +1,4 @@
-import { faExpand, faTools, faMobileAlt, faTags, faInfoCircle, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faEnvelopeOpen, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faExpand, faTools, faMobileAlt, faTags, faInfoCircle, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
@@ -32,7 +32,7 @@ export const skillIcon = faStar;
 export const arrowDownIcon = faArrowAltCircleDown;
 export const printIcon = faPrint;
 export const linkedinIcon = faLinkedinIn;
-export const emailIcon = faEnvelopeOpen;
+export const emailIcon = faEnvelope;
 export const phoneIcon = faPhone;
 export const mapIcon = faMap;
 export const backwardIcon = faStepBackward;
@@ -42,6 +42,7 @@ export const pythonIcon = faPython;
 export const tagIcon = faTags;
 export const mobileIcon = faMobileAlt;
 export const centerIcon = faExpand;
+export const filterIcon = faFilter;
 
 export const chartItemIcon = faChartBar;
 export const videoItemIcon = faYoutube;

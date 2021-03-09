@@ -19,6 +19,7 @@ import { Title } from '@angular/platform-browser';
 export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   fragment!: string | null;
   apiImgUrl = apiLogoUrl;
+  activityIdFromActivityComponents!: string;
 
   // resume top bar
   profilData: any;
@@ -63,7 +64,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
         this.languagesData = data.languages;
         this.profilData = data.profil;
         this.trainingsData = data.trainings;
-        this.summaryData = data.carrier_summary;
+        this.summaryData = data.profil.carrier_summary;
         this.publicationsData = data.research_work;
 
         this.isDataAvailable = true;
@@ -127,6 +128,11 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   sendPathNotesLink(notePath: string): void {
     this.notesService.pullNotesData(notePath);
+  }
+
+  sendActivityId(activityId: string): void {
+    console.log(activityId)
+    this.activityIdFromActivityComponents = activityId;
   }
 
 }
