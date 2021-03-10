@@ -40,6 +40,9 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
       (data) => {
         this.jobsData = data.jobs;
         console.log(this.jobsData);
+
+        this.pushActivitiesAvailable(this.jobsData)
+
       },
       (error) => {
         console.log('error');
@@ -62,5 +65,9 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
 
   pushActivityId(activityId: string): void {
     this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
+  }
+
+  pushActivitiesAvailable(activities: any[]): void {
+    this.resumeService.pullJobsActivitiesAvailabled(activities);
   }
 }

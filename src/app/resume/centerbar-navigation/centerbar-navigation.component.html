@@ -22,11 +22,11 @@
             <span class="legend_graph_title">Activités disponibles</span>
 
             <div class="col-lg-12 activities_jobs_shortcuts">
-                <a [href]="'#' + activity.activity_id" type="button" class="my-1 mx-1 badge badge-danger" *ngFor="let activity of currentJobsActivitiesData">{{ activity.name}}</a>
+              <a [routerLink]="['/resume']" [fragment]="activity.identifier" type="button" class="my-1 mx-1 badge badge-danger" *ngFor="let activity of currentJobsActivitiesData">{{ activity.name}}</a>
             </div>
 
             <div class="col-lg-12 activities_projects_shortcuts">
-                  <a [href]="'#' + activity.activity_id" type="button" class="my-1 mx-1 badge badge-warning" *ngFor="let activity of currentPersonalProjectsActivitiesData">{{ activity.name}}</a>
+              <a [routerLink]="['/resume']" [fragment]="activity.identifier" type="button" class="my-1 mx-1 badge badge-warning" *ngFor="let activity of currentPersonalProjectsActivitiesData">{{ activity.name}}</a>
             </div>
           </div>
 

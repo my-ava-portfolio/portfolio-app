@@ -123,7 +123,6 @@ transform-origin: 0% 100%;
 
 .enabled {
   background-image: linear-gradient(-33deg, #c7c7c7 60%, #cccccc 55%, #cccccc 0%, #c7c7c7 25%)!important;
-
   background: #f6f6f6;
   cursor: pointer;
 }
@@ -259,4 +258,22 @@ transform-origin: 0% 100%;
 .bottom-right {
   bottom: 0;
   right: 0;
+}
+
+
+#bubble-text {
+  margin: auto;
+  position: fixed;
+  width: 60vh;
+  height: 35vh;
+  top: 0;
+  bottom: 0;
+  background-color: #343a40;
+  border-radius: 35%;
+  text-align: center;
+  border: 12px solid #676767;
+}
+
+.cardinal-points {
+  text-shadow: 3px 3px 3px white, 2px 0px 1em black, 0px 1px 1.2em white;
 }

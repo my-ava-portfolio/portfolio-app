@@ -28,13 +28,24 @@ export class ResumeService {
 
   activityId: Subject<string> = new Subject<string>();
 
+  activitiesJobsAvailable: Subject<any[]> = new Subject<any[]>();
+  activitiesProjectsAvailable: Subject<any[]> = new Subject<any[]>();
+
+
   constructor(
       private http: HttpClient
   ) {}
 
+  pullJobsActivitiesAvailabled(activities: any[]): void {
+    this.activitiesJobsAvailable.next(activities);
+  }
+
+  pullProjectsActivitiesAvailabled(activities: any[]): void {
+    this.activitiesProjectsAvailable.next(activities);
+  }
 
   pullActivityIdToPreselectNodeGraph(activityId: string): void {
-    this.activityId.next(activityId)
+    this.activityId.next(activityId);
   }
 
   pullResumeGeneralData(): void {

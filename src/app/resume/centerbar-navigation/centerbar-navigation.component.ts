@@ -70,6 +70,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
   activitiesFilteredSubscription!: Subscription;
   activitiesIdSubscription!: Subscription;
+  activitiesJobsAvailableSubscription!: Subscription;
+  activitiesProjectsAvailableSubscription!: Subscription;
 
 
   constructor(
@@ -78,9 +80,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
     this.activitiesFilteredSubscription = this.resumeService.ActivitiesChartData.subscribe(
       (data) => {
-        this.graphData = data.subjects_graph;
-        this.currentJobsActivitiesData = data.current_activities.job;
-        this.currentPersonalProjectsActivitiesData = data.current_activities.personal_project;
+        this.graphData = data;
 
         //current_activities
         console.log(this.currentNodeIdSelected)
@@ -106,6 +106,20 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       }
     )
 
+    this.activitiesJobsAvailableSubscription = this.resumeService.activitiesJobsAvailable.subscribe(
+      (activitiesAvailable) => {
+        console.log(activitiesAvailable)
+
+        this.currentJobsActivitiesData = activitiesAvailable;
+      }
+    )
+
+    this.activitiesProjectsAvailableSubscription = this.resumeService.activitiesProjectsAvailable.subscribe(
+      (activitiesAvailable) => {
+        console.log(activitiesAvailable)
+        this.currentPersonalProjectsActivitiesData = activitiesAvailable;
+      }
+    )
 
    }
 
@@ -153,6 +167,20 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     this.buildGraphElements();
   }
 
+  scrollToActivity(activityId: string): void {
+    const nodeSelected = d3.selectAll('#svgSkillsChart .nodes .selected');
+    if (nodeSelected.size() === 1) {
+      d3.select('#svgSkillsChart .nodes .selected').dispatch('click');
+    }
+
+    const nodeSelected_1 = d3.selectAll('#svgSkillsChart .nodes .selected');
+    if (nodeSelected_1.size() === 0) {
+      const element: any = window.document.getElementById(activityId);
+      element.scrollIntoView();
+    }
+
+  }
+
   rebuildActivitiesChartWithAPreselection(nodeToSelect: string): void {
     this.currentNodeIdSelected = nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
     this.currentDate = this.graphInputData.end_date_graph_slider;
@@ -163,7 +191,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     this.isProjectsGrouped = false;
     this.resetLegend();
     this.buildGraphElements();
-    d3.select('#svgSkillsChart .nodes #node-' + nodeToSelect).dispatch('click')
+    d3.select('#svgSkillsChart .nodes #node-' + nodeToSelect).dispatch('click');
   }
 
   resetLegend(): void {

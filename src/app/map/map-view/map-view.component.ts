@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagIcon, centerIcon, trainIconUnicode,  } from '../../core/inputs';
+import { locationIcon, tagIcon, centerIcon, trainIconUnicode, helpIcon } from '../../core/inputs';
 import { apiLogoUrl, currentYear } from '../../core/inputs';
 import { minWidthLandscape, minHeightLandscape } from '../../core/inputs';
 import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '../../core/inputs';
@@ -48,6 +48,9 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   locationIcon = locationIcon;
   tagIcon = tagIcon;
   centerIcon = centerIcon;
+  helpIcon = helpIcon;
+
+  helpPopup = 'To complete'
 
   // check css code related to popup
   popupWidth = 330;
@@ -75,6 +78,19 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
       (element: any) => {
         this.mapContainer = element;
         this.initActivitiesSvgLayer();
+
+        // to add scale
+        const scaleLeaflet: any = L.control.scale(
+          {
+            imperial: false,
+            position: 'bottomright'
+          }
+        );
+        scaleLeaflet.addTo(this.mapContainer);
+        console.log(scaleLeaflet.getContainer())
+        const divScale: any = window.document.getElementById('legend-scale');
+        divScale.appendChild(scaleLeaflet.getContainer())
+
       }
     );
 
