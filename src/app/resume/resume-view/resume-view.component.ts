@@ -35,15 +35,21 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   publicationsData!: any;
 
   // resume center bar
-  skillsData: any;
   generalData: any;
+
+  jobsData!: any;
+  personalProjectsData!: any;
+  skillsData!: any;
+  isActivitiesDataAvailable = false;
 
   isDataAvailable = false;
 
-  resumeDataSubscription!: Subscription;
 
   isAnchorExistsChecker = interval(500); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
+
+  resumeDataSubscription!: Subscription;
+  activitiesFilteredSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
@@ -73,6 +79,24 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
         console.log('error');
       }
     );
+
+    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
+      (data) => {
+
+        this.jobsData = data.activities_data.jobs;
+        this.personalProjectsData = data.activities_data.personal_projects;
+        this.skillsData = data.skills_data;
+        console.log(data.skills_data)
+        this.isActivitiesDataAvailable = true;
+
+        this.pushActivitiesAvailable(data.activities_data)
+
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
 
    }
 
@@ -104,6 +128,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   ngOnDestroy(): void {
     console.log('lalala resume content');
     this.resumeDataSubscription.unsubscribe();
+    this.activitiesFilteredSubscription.unsubscribe();
   }
 
 
@@ -133,6 +158,11 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   sendActivityId(activityId: string): void {
     console.log(activityId)
     this.activityIdFromActivityComponents = activityId;
+  }
+
+
+  pushActivitiesAvailable(activities: any[]): void {
+    this.resumeService.pullActivitiesAvailable(activities);
   }
 
 }

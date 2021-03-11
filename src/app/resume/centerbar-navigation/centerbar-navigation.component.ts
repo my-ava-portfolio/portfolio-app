@@ -82,9 +82,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       (data) => {
         this.graphData = data;
 
-        //current_activities
-        console.log(this.currentNodeIdSelected)
+        // current_activities
         this._generateGraph(this.currentNodeIdSelected);
+
       },
       (error) => {
         console.log('error');
@@ -106,18 +106,10 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       }
     )
 
-    this.activitiesJobsAvailableSubscription = this.resumeService.activitiesJobsAvailable.subscribe(
+    this.activitiesJobsAvailableSubscription = this.resumeService.activitiesAvailable.subscribe(
       (activitiesAvailable) => {
-        console.log(activitiesAvailable)
-
-        this.currentJobsActivitiesData = activitiesAvailable;
-      }
-    )
-
-    this.activitiesProjectsAvailableSubscription = this.resumeService.activitiesProjectsAvailable.subscribe(
-      (activitiesAvailable) => {
-        console.log(activitiesAvailable)
-        this.currentPersonalProjectsActivitiesData = activitiesAvailable;
+        this.currentPersonalProjectsActivitiesData = activitiesAvailable.personal_projects;
+        this.currentJobsActivitiesData = activitiesAvailable.jobs;
       }
     )
 
@@ -135,7 +127,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   }
 
   ngOnDestroy(): void {
-    console.log('lalala chart');
     this.activitiesFilteredSubscription.unsubscribe();
     this.activitiesIdSubscription.unsubscribe();
   }
@@ -579,15 +570,11 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     }
 
     // then we want to regenerate activities and skill components
-    this.resumeService.pullSkillsResumeFromGraph(
+    this.resumeService.pullActivitiesResumeFromGraph(
       this.currentDate,
       this.isThemesEnabled,
       this.isTechnicsEnabled,
       this.isToolsEnabled,
-      null
-    );
-    this.resumeService.pullActivitiesResumeFromGraph(
-      this.currentDate,
       null
     );
   }
@@ -604,25 +591,23 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       const elementData: any = d3.select(element).data()[0];
       // check origin node type
 
-      this.resumeService.pullSkillsResumeFromGraph(
+      this.resumeService.pullActivitiesResumeFromGraph(
         this.currentDate,
         this.isThemesEnabled,
         this.isTechnicsEnabled,
         this.isToolsEnabled,
         elementData.properties.id
       );
-      this.resumeService.pullActivitiesResumeFromGraph(this.currentDate, elementData.properties.id);
 
     } else {
 
-      this.resumeService.pullSkillsResumeFromGraph(
+      this.resumeService.pullActivitiesResumeFromGraph(
         this.currentDate,
         this.isThemesEnabled,
         this.isTechnicsEnabled,
         this.isToolsEnabled,
         null
       );
-      this.resumeService.pullActivitiesResumeFromGraph(this.currentDate, null);
     }
   }
 

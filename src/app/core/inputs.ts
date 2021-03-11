@@ -6,8 +6,8 @@ import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } fro
 import { apiBaseUrl } from '../../app/core/constants';
 
 export const apiUrl = apiBaseUrl;
-export const apiLogoUrl = `${apiUrl}images/logo/`;
-export const apiMapsUrl = `${apiUrl}images/maps/`;
+export const apiLogoUrl = `./assets/logo/`;
+export const apiMapsUrl = `./assets/maps/`;
 export const jupyterNotebookUrl = 'https://amauryval.github.io/my-notes/';
 export const githubUrl = 'https://github.com/amauryval/';
 export const navBarTitle = 'Amaury Valorge - Portfolio';

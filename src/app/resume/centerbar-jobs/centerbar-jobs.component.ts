@@ -1,11 +1,8 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
 
 import { apiLogoUrl } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
-
-import { Subscription } from 'rxjs';
-import { startWith  } from 'rxjs/operators';
 
 import { resumeIcon, galleryIcon, locationIcon, filterIcon } from '../../core/inputs';
 
@@ -17,10 +14,9 @@ import { resumeIcon, galleryIcon, locationIcon, filterIcon } from '../../core/in
 })
 export class CenterbarJobsComponent implements OnInit, OnDestroy {
   @Output() notePathEmit = new EventEmitter<string>();
+  @Input() jobsData: any;
 
   fragment!: string | null;
-
-  jobsData!: any;
 
   apiImgUrl = apiLogoUrl;
 
@@ -30,24 +26,9 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
   galleryIcon = galleryIcon;
   filterIcon = filterIcon;
 
-  activitiesFilteredSubscription!: Subscription;
-
   constructor(
     private resumeService: ResumeService
   ) {
-
-    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
-      (data) => {
-        this.jobsData = data.jobs;
-        console.log(this.jobsData);
-
-        this.pushActivitiesAvailable(this.jobsData)
-
-      },
-      (error) => {
-        console.log('error');
-      }
-    );
 
   }
 
@@ -55,8 +36,6 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('lalala jobs');
-    this.activitiesFilteredSubscription.unsubscribe();
   }
 
   emitNotePath(notePath: string): void {
@@ -67,7 +46,4 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
     this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
   }
 
-  pushActivitiesAvailable(activities: any[]): void {
-    this.resumeService.pullJobsActivitiesAvailabled(activities);
-  }
 }

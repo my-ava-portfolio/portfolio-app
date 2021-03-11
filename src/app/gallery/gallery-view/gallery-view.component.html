@@ -42,8 +42,8 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="'api_img'">
-        <img [src]="apiBaseUrl + media_feature.media" class="card-img-top pointer" data-toggle="modal" [attr.data-target]="'#modal-' + media_feature.identifier + idx">
-        <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiBaseUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
+        <img [src]="apiMapsUrl + media_feature.media" class="card-img-top pointer" data-toggle="modal" [attr.data-target]="'#modal-' + media_feature.identifier + idx">
+        <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiMapsUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
       </ng-container>
 
     </ng-container>

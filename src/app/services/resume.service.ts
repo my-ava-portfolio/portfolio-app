@@ -28,20 +28,15 @@ export class ResumeService {
 
   activityId: Subject<string> = new Subject<string>();
 
-  activitiesJobsAvailable: Subject<any[]> = new Subject<any[]>();
-  activitiesProjectsAvailable: Subject<any[]> = new Subject<any[]>();
+  activitiesAvailable: Subject<any> = new Subject<any>();
 
 
   constructor(
       private http: HttpClient
   ) {}
 
-  pullJobsActivitiesAvailabled(activities: any[]): void {
-    this.activitiesJobsAvailable.next(activities);
-  }
-
-  pullProjectsActivitiesAvailabled(activities: any[]): void {
-    this.activitiesProjectsAvailable.next(activities);
+  pullActivitiesAvailable(activities: any[]): void {
+    this.activitiesAvailable.next(activities);
   }
 
   pullActivityIdToPreselectNodeGraph(activityId: string): void {
@@ -52,7 +47,10 @@ export class ResumeService {
 
     this.http.get<any>(this.apiUrlResumeData).subscribe(
       (response) => {
-        this.resumeData.next(response);
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.resumeData.next(response);
+        }
       },
       (response) => {
         // TODO improve error message, but API need improvments
@@ -73,7 +71,11 @@ export class ResumeService {
       `${this.apiUrlGraphData}technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&start_date=${currentDateValue}&group_projects=${grouperProjects}&group_jobs=${grouperJobs}`
     ).subscribe(
       (response) => {
-        this.ActivitiesChartData.next(response);
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+
+          this.ActivitiesChartData.next(response);
+        }
       },
       (response) => {
         // TODO improve error message, but API need improvments
@@ -82,7 +84,7 @@ export class ResumeService {
     );
   }
 
-  pullSkillsResumeFromGraph(
+  pullActivitiesResumeFromGraph( // TODO RENAME IT
     currentDate: number,
     isThemes: boolean | string,
     isTechnics: boolean | string,
@@ -90,31 +92,17 @@ export class ResumeService {
     fromSkill: string | null,
   ): void {
     this.http.get<any>(
-      `${this.apiUrlSkillsFilteredData}start_date=${currentDate}&technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&from_feature=${fromSkill}`
+      `${this.apiUrlActivitiesFilteredData}start_date=${currentDate}&technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&from_feature=${fromSkill}`
     ).subscribe(
       (response) => {
-        this.skillsFilteredData.next(response);
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.activitiesFilteredData.next(response);
+        }
       },
-      (response) => {
+      (errror) => {
         // TODO improve error message, but API need improvments
-        this.errorUrlSkillsFilteredApiFound.next(response.error.message);
-      }
-    );
-  }
-
-  pullActivitiesResumeFromGraph( // TODO RENAME IT
-    currentDate: number,
-    fromSkill: string | null,
-  ): void {
-    this.http.get<any>(
-      `${this.apiUrlActivitiesFilteredData}start_date=${currentDate}&from_feature=${fromSkill}`
-    ).subscribe(
-      (response) => {
-        this.activitiesFilteredData.next(response);
-      },
-      (response) => {
-        // TODO improve error message, but API need improvments
-        this.errorUrlActivitiesFilteredApiFound.next(response.error.message);
+        this.errorUrlActivitiesFilteredApiFound.next(errror.error.message);
       }
     );
   }

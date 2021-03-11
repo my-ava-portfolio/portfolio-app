@@ -50,7 +50,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   centerIcon = centerIcon;
   helpIcon = helpIcon;
 
-  helpPopup = 'To complete'
+  helpPopup = 'To complete';
 
   // check css code related to popup
   popupWidth = 330;

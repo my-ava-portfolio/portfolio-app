@@ -20,7 +20,7 @@
             <div *ngIf="degree.img_school !== 'null';then schoolImgContent"></div>
             <ng-template #schoolImgContent>
               <div class="col-lg-6">
-                <img class="img-fluid rounded mx-auto d-block mb-2 thumbnail-width" [src]="apiImgUrl + degree.img_school"/>
+                <img class="img-fluid rounded mx-auto d-block mb-2 thumbnail-width" [src]="apiLogoUrl + degree.img_school"/>
               </div>
             </ng-template>
 

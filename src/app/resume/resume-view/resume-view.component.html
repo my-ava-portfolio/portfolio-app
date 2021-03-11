@@ -29,10 +29,12 @@
       ></app-centerbar-navigation>
 
       <app-centerbar-jobs
+        [jobsData]="jobsData"
         (notePathEmit)="sendPathNotesLink($event)"
       ></app-centerbar-jobs>
 
       <app-centerbar-projects
+        [personalProjectsData]="personalProjectsData"
         (notePathEmit)="sendPathNotesLink($event)"
       ></app-centerbar-projects>
       <app-centerbar-publications
@@ -45,7 +47,10 @@
 
     <div id="right-bar" class="col-lg-3">
 
-      <app-rightbar-skills></app-rightbar-skills>
+      <app-rightbar-skills
+        [skillsData]="skillsData"
+        [isActivitiesDataAvailable]="isActivitiesDataAvailable"
+      ></app-rightbar-skills>
 
 
     </div>

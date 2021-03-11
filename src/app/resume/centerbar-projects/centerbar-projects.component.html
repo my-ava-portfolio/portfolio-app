@@ -81,7 +81,7 @@
               <div class="col-lg-12 pl-3">
                   <span class="u">Détails</span>
                   <ul class="">
-                    <li *ngFor="let feat of project.subelements_tools | keyvalue">{{ feat.key }}: <em>{{ feat.value }}</em></li>
+                    <li *ngFor="let feat of project.subelements_tools">{{ feat.sub_skill }}: <em>{{ feat.details }}</em></li>
                   </ul>
               </div>
             </ng-template>

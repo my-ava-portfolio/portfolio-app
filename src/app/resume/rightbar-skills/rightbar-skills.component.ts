@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -13,14 +13,15 @@ import { ResumeService } from '../../services/resume.service';
   styleUrls: ['./rightbar-skills.component.scss']
 })
 export class RightbarSkillsComponent implements OnInit, OnDestroy {
-  isDataAvailable = false;
+  @Input() skillsData: any;
+  @Input() isActivitiesDataAvailable: any;
+
+
   skillsCategories = {
     technics: 'Techniques',
     themes: 'Thématiques',
     tools: 'Outils'
   };
-
-  skillsData!: any;
 
   skillIcon = skillIcon;
   arrowDownIcon = arrowDownIcon;
@@ -29,30 +30,31 @@ export class RightbarSkillsComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    private resumeService: ResumeService
+    // private resumeService: ResumeService
   ) {
 
-    this.skillsDataSubscription = this.resumeService.skillsFilteredData.subscribe(
-      (data) => {
-        this.skillsData = data;
+    // this.skillsDataSubscription = this.resumeService.skillsFilteredData.subscribe(
+    //   (data) => {
+    //     this.skillsData = data;
 
-        this.isDataAvailable = true;
-        console.log(data);
-      },
-      (error) => {
-        console.log('error');
-        this.isDataAvailable = false;
+    //     this.isDataAvailable = true;
+    //     console.log(data);
+    //   },
+    //   (error) => {
+    //     console.log('error');
+    //     this.isDataAvailable = false;
 
-      }
-    );
+    //   }
+    // );
 
   }
 
   ngOnInit(): void {
+    console.log(this.skillsData)
+
   }
 
   ngOnDestroy(): void {
-    this.skillsDataSubscription.unsubscribe();
   }
 
 }
