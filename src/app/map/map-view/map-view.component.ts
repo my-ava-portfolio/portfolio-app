@@ -140,8 +140,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.fragment = fragment;
         }
-
-        console.log('fragment map', fragment, this.fragment)
       }
     );
   }

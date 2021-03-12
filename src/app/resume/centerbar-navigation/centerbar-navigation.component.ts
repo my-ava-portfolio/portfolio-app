@@ -97,7 +97,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   }
 
   ngOnDestroy(): void {
-    console.log('lalala chart');
     this.activitiesFilteredSubscription.unsubscribe();
   }
 
@@ -177,7 +176,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
         if (nodeSelectedOnGraph.size() === 0) {
           // if none node is selected
-          console.log('a');
           this.buildGraphElements();
 
         } else if (nodeSelectedOnGraph.size() === 1) {
@@ -506,7 +504,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
     const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
     if (elementSelected.size() === 1) {
-      console.log(elementSelected.attr('class'));
 
       elementSelected.classed('selected', !elementSelected.classed('selected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' unselected');

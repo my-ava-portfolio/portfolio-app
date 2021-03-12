@@ -38,7 +38,6 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
     this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
         this.jobsData = data.jobs;
-        console.log(this.jobsData);
       },
       (error) => {
         console.log('error');
@@ -51,7 +50,6 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('lalala jobs');
     this.activitiesFilteredSubscription.unsubscribe();
   }
 

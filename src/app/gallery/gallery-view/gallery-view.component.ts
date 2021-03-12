@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { apiUrl } from '../../core/inputs';
+import { apiUrl, apiMapsUrl } from '../../core/inputs';
 
 import { GalleryService } from '../../services/gallery.service';
 
@@ -31,6 +31,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   currentType: string | null = null;
 
   apiBaseUrl = apiUrl;
+  apiMapsUrl = apiMapsUrl;
   galleryItems!: any;
 
   isDataAvailable = false;
@@ -61,7 +62,6 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment !== undefined) {
-          console.log('ralala', fragment);
           this.fragment = fragment;
         }
       }
@@ -72,7 +72,6 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
         this.galleryItems = data.items;
         this.mediaTypes = data.media_types_available;
         this.isDataAvailable = true;
-        console.log(data);
 
       },
       (error) => {
@@ -88,7 +87,6 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('lalala gallery');
     this.activitiesGallerySubscription.unsubscribe();
 
   }

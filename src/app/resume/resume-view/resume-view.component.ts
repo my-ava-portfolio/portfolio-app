@@ -56,7 +56,6 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {
-        console.log(data);
         this.contactData = data.contact;
         this.degreesData = data.education;
         this.generalData = data.general;
@@ -83,17 +82,13 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   ngAfterViewInit(): void {
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
-        console.log('ralala', fragment);
         if (fragment === undefined) {
           this.fragment = null;
         } else {
           this.fragment = fragment;
         }
 
-        console.log('ralala2', this.fragment);
-
         if (this.fragment !== null) {
-          console.log('ralala3', this.fragment);
           this.checkAndScrollToAnchorIfNeeded();
         }
       }
@@ -101,7 +96,6 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   }
 
   ngOnDestroy(): void {
-    console.log('lalala resume content');
     this.resumeDataSubscription.unsubscribe();
   }
 
@@ -110,11 +104,9 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
     this.isAnchorExistsCheckerSubscription = this.isAnchorExistsChecker.pipe(startWith(0)).subscribe(() => {
       try {
-        console.log(this.fragment);
         if (this.fragment !== null) {
           const element: any = window.document.getElementById(this.fragment);
           element.scrollIntoView();
-          console.log('bravo');
         } else {
           console.log('no anchor defined');
         }

@@ -37,7 +37,6 @@ export class RightbarSkillsComponent implements OnInit, OnDestroy {
         this.skillsData = data;
 
         this.isDataAvailable = true;
-        console.log(data);
       },
       (error) => {
         console.log('error');

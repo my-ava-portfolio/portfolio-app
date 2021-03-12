@@ -76,7 +76,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         this.startDate = startDate;
         // all the data is loaded but we are going to filter it to map its features regarding datetime
         // defined on the timeline
-        console.log(this.geoActivitiesData);
         this.buildTimeline(String(this.currentYear));
 
       }
@@ -164,7 +163,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       const tripEndDate: Date | null = this.parseTime(endDate);
 
       const svgTrip = d3.selectAll('[id^=' + this.svgTripIdPrefix + item.name + ']');
-      console.log(svgTrip);
       if (tripStartDate !== null && tripEndDate !== null) {
 
         if ( h >= tripStartDate && h < tripEndDate ) {
@@ -193,7 +191,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     if (newData.length !== this.currentCountNodes) {
       this.updateTrips(h);
       this.mapService.pullActivitiesGeoDataToMap(newData);
-      console.log('slider done', newData);
       this.displaySliderNodes(newData);
     }
 
