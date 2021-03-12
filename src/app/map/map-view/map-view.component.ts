@@ -87,7 +87,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         );
         scaleLeaflet.addTo(this.mapContainer);
-        console.log(scaleLeaflet.getContainer())
         const divScale: any = window.document.getElementById('legend-scale');
         divScale.appendChild(scaleLeaflet.getContainer())
 
@@ -97,7 +96,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pullActivitiesGeoDataToMapSubscription = this.mapService.activitiesGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
         this.geoFeaturesData = geoFeaturesData;
-        console.log(this.geoFeaturesData)
         this.activitiesMapping(geoFeaturesData);
         if (!this.zoomInitDone) {
           if (this.fragment !== null) {
@@ -158,7 +156,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
           this.fragment = fragment;
         }
 
-        console.log('fragment map', fragment, this.fragment)
       }
     );
   }

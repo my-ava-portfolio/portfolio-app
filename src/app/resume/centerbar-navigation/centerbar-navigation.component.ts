@@ -46,6 +46,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   chartHeight = 300;
   chartWidth!: number;
 
+  yearsList = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021]
+
    // circle
   strokeWidth = '0px';
 
@@ -233,7 +235,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
         if (nodeSelectedOnGraph.size() === 0) {
           // if none node is selected
-          console.log('a');
           this.buildGraphElements();
 
         } else if (nodeSelectedOnGraph.size() === 1) {
@@ -562,8 +563,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
     const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
     if (elementSelected.size() === 1) {
-      console.log(elementSelected.attr('class'));
-
       elementSelected.classed('selected', !elementSelected.classed('selected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' unselected');
       this._unfocusOnGraph();

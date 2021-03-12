@@ -50,8 +50,6 @@ export class RightbarSkillsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.skillsData)
-
   }
 
   ngOnDestroy(): void {

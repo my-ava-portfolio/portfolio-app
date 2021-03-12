@@ -63,7 +63,6 @@ export class ShortViewComponent implements OnInit, OnDestroy {
 
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {
-        console.log(data);
         this.contactData = data.contact;
         this.degreesData = data.education;
         this.generalData = data.general;
@@ -85,7 +84,6 @@ export class ShortViewComponent implements OnInit, OnDestroy {
         this.jobsData = data.activities_data.jobs;
         this.personalProjectsData = data.activities_data.personal_projects;
         this.skillsData = data.skills_data;
-        console.log(data.skills_data)
       },
       (error) => {
         console.log('error');
@@ -107,7 +105,6 @@ export class ShortViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('lalala resume content');
     this.resumeDataSubscription.unsubscribe();
     this.activitiesFilteredSubscription.unsubscribe();
   }
