@@ -83,7 +83,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.mapService.getMapContainer();
-    this.mapService.pullActivitiesGeoData(null);
+    this.mapService.pullActivitiesGeoData();
   }
 
 
