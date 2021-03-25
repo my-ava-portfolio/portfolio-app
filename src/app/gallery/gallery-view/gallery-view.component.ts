@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { apiUrl, apiMapsUrl } from '../../core/inputs';
+import { apiMapsUrl } from '../../core/inputs';
 
 import { GalleryService } from '../../services/gallery.service';
 
@@ -26,11 +26,12 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   defaultCategory: string | null = null;
   currentCategory: string | null = null;
 
+  category!: string | null;
+  activities!: string[];
   mediaTypes!: string[];
   defaultType: string | null = null;
   currentType: string | null = null;
 
-  apiBaseUrl = apiUrl;
   apiMapsUrl = apiMapsUrl;
   galleryItems!: any;
 
@@ -45,6 +46,11 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     app: { icon: appItemIcon, title: 'Applications' },
     tool: { icon: toolItemIcon, title: 'Outils' },
     library: { icon: pythonIcon, title: 'Libraries' },
+  };
+
+  categoriesActivity: any = {
+    job: 'Expériences',
+    personal_project: 'Projet personnel',
   };
 
   activitiesGallerySubscription!: Subscription;
@@ -71,6 +77,9 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
       (data) => {
         this.galleryItems = data.items;
         this.mediaTypes = data.media_types_available;
+        this.activities = data.activities;
+        this.currentCategory = data.category;
+
         this.isDataAvailable = true;
 
       },
@@ -95,7 +104,6 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     try {
       if (this.fragment !== null) {
         this.currentActivity = this.fragment.replace('#', '');
-        console.log('hello')
       }
     } catch (e) {
       console.log('anchor scrolling error');
@@ -104,6 +112,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
 
   resetGallery(): any {
+    this.currentActivity = this.defaultActivity;
     this.currentCategory = this.defaultCategory;
     this.currentType = this.defaultType;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);

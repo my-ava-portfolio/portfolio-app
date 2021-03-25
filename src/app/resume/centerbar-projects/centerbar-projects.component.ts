@@ -1,13 +1,10 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
 
 import { apiLogoUrl } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
 
-import { Subscription } from 'rxjs';
-
-import { resumeIcon, galleryIcon, notesIcon, githubIcon, websiteIcon } from '../../core/inputs';
-
+import { resumeIcon, galleryIcon, notesIcon, githubIcon, websiteIcon, filterIcon } from '../../core/inputs';
 
 
 @Component({
@@ -17,8 +14,7 @@ import { resumeIcon, galleryIcon, notesIcon, githubIcon, websiteIcon } from '../
 })
 export class CenterbarProjectsComponent implements OnInit, OnDestroy {
   @Output() notePathEmit = new EventEmitter<string>();
-
-  personalProjectsData!: any;
+  @Input() personalProjectsData: any;
 
   apiImgUrl = apiLogoUrl;
 
@@ -28,23 +24,11 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
   githubIcon = githubIcon;
   notesIcon = notesIcon;
   websiteIcon = websiteIcon;
-
-  activitiesFilteredSubscription!: Subscription;
+  filterIcon = filterIcon;
 
   constructor(
     private resumeService: ResumeService
   ) {
-
-    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
-      (data) => {
-
-        this.personalProjectsData = data.personal_projects;
-
-      },
-      (error) => {
-        console.log('error');
-      }
-    );
 
   }
 
@@ -52,11 +36,14 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.activitiesFilteredSubscription.unsubscribe();
   }
 
   emitNotePath(notePath: string): void {
     this.notePathEmit.emit(notePath);
+  }
+
+  pushActivityId(activityId: string): void {
+    this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
   }
 
 }

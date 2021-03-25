@@ -19,7 +19,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
   @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
 
-  private defaultNodeIdSelected = '';
+  private defaultNodeIdSelected = null;
 
   isJobsGrouped: boolean | string = false;
   isProjectsGrouped: boolean | string = true;
@@ -34,15 +34,19 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
   inputSummaryData!: any;
   currentDate: number = new Date().getFullYear();
-  currentNodeIdSelected!: string;
+  currentNodeIdSelected: string | null = null;
 
   graphData!: any;
+  currentJobsActivitiesData!: any;
+  currentPersonalProjectsActivitiesData!: any;
   adjlist!: any;
   labelLayout!: any;
   label!: any;
 
   chartHeight = 300;
   chartWidth!: number;
+
+  yearsList = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021]
 
    // circle
   strokeWidth = '0px';
@@ -54,8 +58,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
   // here to control topic graph... TODO improve it !
   legendInput = [
-    { id: 'jobs', status: 'unabled-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
-    { id: 'personal_projects', status: 'unabled-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
+    { id: 'job', status: 'unabled-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
+    { id: 'personal_project', status: 'unabled-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
     { id: 'themes', status: 'enabled-topic', label: 'Thématiques', cx: 175, cy: 35, text_cx: 190, r: 6, rOver: 10 },
     { id: 'technics', status: 'enabled-topic', label: 'Techniques', cx: 175, cy: 55, text_cx: 190, r: 6, rOver: 10 },
     { id: 'tools', status: 'enabled-topic', label: 'Outils', cx: 175, cy: 75, text_cx: 190, r: 6, rOver: 10 }
@@ -67,6 +71,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   ];
 
   activitiesFilteredSubscription!: Subscription;
+  activitiesIdSubscription!: Subscription;
+  activitiesJobsAvailableSubscription!: Subscription;
+  activitiesProjectsAvailableSubscription!: Subscription;
 
 
   constructor(
@@ -76,12 +83,37 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     this.activitiesFilteredSubscription = this.resumeService.ActivitiesChartData.subscribe(
       (data) => {
         this.graphData = data;
+
+        // current_activities
         this._generateGraph(this.currentNodeIdSelected);
+
       },
       (error) => {
         console.log('error');
       }
     );
+
+
+    this.activitiesIdSubscription = this.resumeService.activityId.subscribe(
+      (activityId) => {
+        if (this.currentNodeIdSelected === null) {
+          // in order to filter graph from components job and personal project
+          const elementId: string = 'node-' + activityId;
+          this.rebuildActivitiesChartWithAPreselection(elementId);
+        } else {
+          this.resetChart();
+        }
+        window.scrollTo(0, 0);
+
+      }
+    )
+
+    this.activitiesJobsAvailableSubscription = this.resumeService.activitiesAvailable.subscribe(
+      (activitiesAvailable) => {
+        this.currentPersonalProjectsActivitiesData = activitiesAvailable.personal_projects;
+        this.currentJobsActivitiesData = activitiesAvailable.jobs;
+      }
+    )
 
    }
 
@@ -98,8 +130,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
   ngOnDestroy(): void {
     this.activitiesFilteredSubscription.unsubscribe();
+    this.activitiesIdSubscription.unsubscribe();
   }
-
 
   updateDate(event: any): void {
     this.currentDate = event.target.value;
@@ -126,6 +158,33 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     this.isProjectsGrouped = true;
     this.resetLegend();
     this.buildGraphElements();
+  }
+
+  scrollToActivity(activityId: string): void {
+    const nodeSelected = d3.selectAll('#svgSkillsChart .nodes .selected');
+    if (nodeSelected.size() === 1) {
+      d3.select('#svgSkillsChart .nodes .selected').dispatch('click');
+    }
+
+    const nodeSelected_1 = d3.selectAll('#svgSkillsChart .nodes .selected');
+    if (nodeSelected_1.size() === 0) {
+      const element: any = window.document.getElementById(activityId);
+      element.scrollIntoView();
+    }
+
+  }
+
+  rebuildActivitiesChartWithAPreselection(nodeToSelect: string): void {
+    this.currentNodeIdSelected = nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
+    this.currentDate = this.graphInputData.end_date_graph_slider;
+    this.isThemesEnabled = true;
+    this.isTechnicsEnabled = true;
+    this.isToolsEnabled = false;
+    this.isJobsGrouped = false;
+    this.isProjectsGrouped = false;
+    this.resetLegend();
+    this.buildGraphElements();
+    d3.select('#svgSkillsChart .nodes #node-' + nodeToSelect).dispatch('click');
   }
 
   resetLegend(): void {
@@ -306,7 +365,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     };
   }
 
-  private _generateGraph(nodeIdToSelect: string): void {
+  private _generateGraph(nodeIdToSelect: string | null): void {
 
     this._initLabel();
 
@@ -442,7 +501,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     );
 
     // to preselect a node
-    if ( nodeIdToSelect.length > 0 ) {
+    if ( nodeIdToSelect !== null ) {
       this._selectedDisplaying('#skillsGraphElements #' + nodeIdToSelect);
     } else {
       this._defaultDisplayingByDate();
@@ -504,22 +563,17 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
     const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
     if (elementSelected.size() === 1) {
-
       elementSelected.classed('selected', !elementSelected.classed('selected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' unselected');
       this._unfocusOnGraph();
     }
 
     // then we want to regenerate activities and skill components
-    this.resumeService.pullSkillsResumeFromGraph(
+    this.resumeService.pullActivitiesResumeFromGraph(
       this.currentDate,
       this.isThemesEnabled,
       this.isTechnicsEnabled,
       this.isToolsEnabled,
-      null
-    );
-    this.resumeService.pullActivitiesResumeFromGraph(
-      this.currentDate,
       null
     );
   }
@@ -533,29 +587,26 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       elementSelected.attr('class', elementSelected.attr('class') + ' selected');
 
       this._focusOnGraph(elementSelected);
-
       const elementData: any = d3.select(element).data()[0];
       // check origin node type
 
-      this.resumeService.pullSkillsResumeFromGraph(
+      this.resumeService.pullActivitiesResumeFromGraph(
         this.currentDate,
         this.isThemesEnabled,
         this.isTechnicsEnabled,
         this.isToolsEnabled,
         elementData.properties.id
       );
-      this.resumeService.pullActivitiesResumeFromGraph(this.currentDate, elementData.properties.id);
 
     } else {
 
-      this.resumeService.pullSkillsResumeFromGraph(
+      this.resumeService.pullActivitiesResumeFromGraph(
         this.currentDate,
         this.isThemesEnabled,
         this.isTechnicsEnabled,
         this.isToolsEnabled,
         null
       );
-      this.resumeService.pullActivitiesResumeFromGraph(this.currentDate, null);
     }
   }
 

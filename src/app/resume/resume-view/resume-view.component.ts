@@ -19,6 +19,7 @@ import { Title } from '@angular/platform-browser';
 export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   fragment!: string | null;
   apiImgUrl = apiLogoUrl;
+  activityIdFromActivityComponents!: string;
 
   // resume top bar
   profilData: any;
@@ -34,15 +35,21 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   publicationsData!: any;
 
   // resume center bar
-  skillsData: any;
   generalData: any;
+
+  jobsData!: any;
+  personalProjectsData!: any;
+  skillsData!: any;
+  isActivitiesDataAvailable = false;
 
   isDataAvailable = false;
 
-  resumeDataSubscription!: Subscription;
 
   isAnchorExistsChecker = interval(500); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
+
+  resumeDataSubscription!: Subscription;
+  activitiesFilteredSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
@@ -62,7 +69,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
         this.languagesData = data.languages;
         this.profilData = data.profil;
         this.trainingsData = data.trainings;
-        this.summaryData = data.carrier_summary;
+        this.summaryData = data.profil.carrier_summary;
         this.publicationsData = data.research_work;
 
         this.isDataAvailable = true;
@@ -71,6 +78,23 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
         console.log('error');
       }
     );
+
+    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
+      (data) => {
+
+        this.jobsData = data.activities_data.jobs;
+        this.personalProjectsData = data.activities_data.personal_projects;
+        this.skillsData = data.skills_data;
+        this.isActivitiesDataAvailable = true;
+
+        this.pushActivitiesAvailable(data.activities_data)
+
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
 
    }
 
@@ -97,6 +121,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   ngOnDestroy(): void {
     this.resumeDataSubscription.unsubscribe();
+    this.activitiesFilteredSubscription.unsubscribe();
   }
 
 
@@ -119,6 +144,15 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   sendPathNotesLink(notePath: string): void {
     this.notesService.pullNotesData(notePath);
+  }
+
+  sendActivityId(activityId: string): void {
+    this.activityIdFromActivityComponents = activityId;
+  }
+
+
+  pushActivitiesAvailable(activities: any[]): void {
+    this.resumeService.pullActivitiesAvailable(activities);
   }
 
 }

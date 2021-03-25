@@ -1,5 +1,4 @@
 $enable-responsive-font-sizes: true;
-
 @import "bootstrap";
 
 body {
@@ -51,11 +50,11 @@ body::-webkit-scrollbar {
   alignment-baseline: middle;
 }
 
-circle.personal_projects {
+circle.personal_project {
   fill: #f5a824;
 }
 
-circle.jobs {
+circle.job {
   fill: #ff0000;
 }
 

@@ -4,42 +4,55 @@
 
   <div class="row justify-content-around">
 
-    <div id="rose-circle" class="row text-center">
+
+    <div id="cardinal-nodes" class="text-center">
+      <div class="position-absolute top-center cardinal-points py-1 px-1">
+        <h1>N</h1>
+      </div>
+
+      <div class="position-absolute mid-left cardinal-points py-1 px-1">
+        <h1>W</h1>
+      </div>
+
+      <div class="position-absolute mid-right cardinal-points py-1 px-1">
+        <h1>E</h1>
+      </div>
+
+      <div class="position-absolute bottom-center cardinal-points py-1 px-1">
+        <h1>S</h1>
+      </div>
+
+    </div>
+
+
+    <div id="rose-circle" class="text-center">
     </div>
 
     <ul class="main-circle col-md-auto">
 
       <li class="empty quarter disabled arrow"></li>
-
       <li id="maps_library" [ngClass]="quartersStatus.gallery.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('gallery')" (mouseout)="updateQuarterStatus('gallery')">
           <a class="quarter-text text-theme text-dark" [routerLink]="['/gallery']">
             <fa-icon [icon]="galleryIcon" size="3x" [rotate]="270" ></fa-icon>
           </a>
       </li>
-
       <li class="empty quarter disabled arrow"></li>
-
       <li id="notes" [ngClass]="quartersStatus.notes.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('notes')" (mouseout)="updateQuarterStatus('notes')">
           <a class="quarter-text text-theme text-dark" [routerLink]="['/notes']">
             <fa-icon [icon]="notesIcon" size="3x" [rotate]="180"></fa-icon>
           </a>
       </li>
-
       <li class="empty quarter disabled arrow"></li>
-
       <li id="github" [ngClass]="quartersStatus.github.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('github')" (mouseout)="updateQuarterStatus('github')">
           <a class="quarter-text text-theme text-dark" [href]="githubUrl" target="_blank" rel="noopener noreferrer">
             <fa-icon [icon]="githubIcon" size="3x" [rotate]="90"></fa-icon>
           </a>
       </li>
-
       <li class="empty quarter disabled arrow"></li>
-
       <li id="resume" [ngClass]="quartersStatus.resume.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('resume')" (mouseout)="updateQuarterStatus('resume')">
           <a class="quarter-text text-theme text-dark" [routerLink]="['/resume']">
             <fa-icon [icon]="resumeIcon" size="3x"></fa-icon>
           </a>
-
       </li>
     </ul>
 

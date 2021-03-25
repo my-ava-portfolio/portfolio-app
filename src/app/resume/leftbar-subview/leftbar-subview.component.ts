@@ -18,7 +18,7 @@ export class LeftbarSubviewComponent implements OnInit {
   @Input() languagesData: any;
   @Input() trainingsData: any;
 
-  apiImgUrl = apiLogoUrl;
+  apiLogoUrl = apiLogoUrl;
 
   inputDegreesData: any;
   inputLanguagesData: any;

@@ -70,8 +70,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
         this.geoActivitiesData = element.activities_geojson;
         const geoDataFeatures: any[] = this.geoActivitiesData.features;
-        const firstActivity: any[] = geoDataFeatures.filter((feature: any) => feature.id === '0');
-        const startDate: Date = new Date(firstActivity[0].properties.start_date);
+        const startDate: Date = new Date(element.start_date);
         startDate.setMonth(startDate.getMonth() - 1); // start date must be smaller than the first activity start_date
         this.startDate = startDate;
         // all the data is loaded but we are going to filter it to map its features regarding datetime
@@ -84,7 +83,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.mapService.getMapContainer();
-    this.mapService.pullActivitiesGeoData(null);
+    this.mapService.pullActivitiesGeoData();
   }
 
 

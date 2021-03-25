@@ -13,6 +13,9 @@
         </div>
 
         <div class="col-lg-5">
+
+          <a class="btn btn-dark mr-2 float-right" (click)="pushActivityId(project.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
+
           <div *ngIf="project.url_github; then projectsShorcutGithub"></div>
           <ng-template #projectsShorcutGithub>
             <a class="btn btn-secondary mr-2 float-right" [href]="project.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
@@ -70,7 +73,7 @@
             <h5>Environnement</h5>
             <div class="col-lg-12 pl-3">
               <ul class="row">
-                  <li class="col-sm-4" *ngFor="let tool of project.tools | keyvalue">{{ tool.key }}</li>
+                  <li class="col-sm-4" *ngFor="let tool of project.tools">{{ tool }}</li>
               </ul>
             </div>
             <div *ngIf="project.subelements_tools; then projectSubTools"></div>
@@ -78,7 +81,7 @@
               <div class="col-lg-12 pl-3">
                   <span class="u">Détails</span>
                   <ul class="">
-                    <li *ngFor="let feat of project.subelements_tools">{{ feat.name }}: <em>{{ feat.details }}</em></li>
+                    <li *ngFor="let feat of project.subelements_tools">{{ feat.sub_skill }}: <em>{{ feat.details }}</em></li>
                   </ul>
               </div>
             </ng-template>

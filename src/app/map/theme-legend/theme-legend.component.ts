@@ -38,7 +38,7 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
     circleCxPos: 20,
     textXPos: 50,
     circleJobs: [
-      { cy: 25, class: 'jobs', label: 'Expériences' },
+      { cy: 25, class: 'job', label: 'Expériences' },
       { cy: 70, class: 'education', label: 'Formations' }
     ]
   };

@@ -13,7 +13,7 @@ export class MapService {
 
   mapContainer: Subject<any> = new Subject<any>();
 
-  private apiUrlActivitiesGeoData = apiUrl + 'activities_geodata?currentDate=';
+  private apiUrlActivitiesGeoData = apiUrl + 'activities_geodata';
   ErrorapiUrlActivitiesGeoDataApiFound: Subject<string> = new Subject<string>();
   activitiesGeoData: Subject<any> = new Subject<any>();
 
@@ -40,9 +40,9 @@ export class MapService {
     this.mapContainer.next(mapContainer);
   }
 
-  pullActivitiesGeoData(currentDate: string | null): void {
+  pullActivitiesGeoData(): void {
 
-    this.http.get<any>(this.apiUrlActivitiesGeoData + currentDate).subscribe(
+    this.http.get<any>(this.apiUrlActivitiesGeoData).subscribe(
       (response) => {
         this.activitiesGeoData.next(response);
       },
