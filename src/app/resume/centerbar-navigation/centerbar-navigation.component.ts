@@ -103,7 +103,14 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
         } else {
           this.resetChart();
         }
-        window.scrollTo(0, 0);
+
+        const navigationDiv = document.querySelector('#navigation');
+        if (navigationDiv !== null) {
+          navigationDiv.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+
 
       }
     )

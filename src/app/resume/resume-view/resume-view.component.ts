@@ -45,7 +45,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   isDataAvailable = false;
 
 
-  isAnchorExistsChecker = interval(500); // observable which run all the time
+  isAnchorExistsChecker = interval(1000); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
 
   resumeDataSubscription!: Subscription;

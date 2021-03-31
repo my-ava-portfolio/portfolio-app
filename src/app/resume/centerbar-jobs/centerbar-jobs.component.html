@@ -16,7 +16,7 @@
 
           <div class="col-lg-3">
 
-            <a class="btn btn-dark mr-2 float-right" (click)="pushActivityId(job.identifier)"  title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
+            <a class="btn btn-dark mr-2 float-right" (click)="pushActivityId(job.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
 
             <div *ngIf="job.medias; then jobsShorcutGallery"></div>
               <ng-template #jobsShorcutGallery>
