@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -17,6 +17,8 @@ import * as d3 from 'd3';
   encapsulation: ViewEncapsulation.None
 })
 export class TimeLegendComponent implements OnInit, OnDestroy {
+  @Input() currentActivityIdSelected: any;
+
   mapContainer: any;
   sliderDate!: string;
 
@@ -35,6 +37,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   width = 600;
   height = 90;
   fontSize = '14px';
+  sliderNodesSize = 5;
 
   endDate: Date = currentDate;
   currentYear = currentYear;
@@ -69,13 +72,18 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         this.mapService.pullTripsGeoDataToMap(element.trips_data);
 
         this.geoActivitiesData = element.activities_geojson;
-        const geoDataFeatures: any[] = this.geoActivitiesData.features;
         const startDate: Date = new Date(element.start_date);
         startDate.setMonth(startDate.getMonth() - 1); // start date must be smaller than the first activity start_date
         this.startDate = startDate;
         // all the data is loaded but we are going to filter it to map its features regarding datetime
         // defined on the timeline
         this.buildTimeline(String(this.currentYear));
+
+        // if a circle is preselected
+        if ( this.currentActivityIdSelected !== undefined ) {
+          const currentElement: any = d3.select('#slider-bar #location_' + this.currentActivityIdSelected);
+          this.sliderEventCircleBounceRepeat(currentElement)
+        }
 
       }
     );
@@ -195,10 +203,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     // update count feature, to optimize api calls
     this.currentCountNodes = newData.length;
-
-
-
-
 
     // update position and text of label according to slider scale
 
@@ -383,29 +387,41 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         }
         return 'activityPoint ' + d.properties.type;
       })
-      .attr('r', 5)
+      .attr('r', this.sliderNodesSize)
       .attr('cursor', 'pointer')
       .attr('cx', (d: any) => this.dateRange(this.parseTime(d.properties.start_date)))
       .on('mouseover', (e: any, d: any) => {
-        this.interactionWithEventNode(e.currentTarget, d, 4);
+        if (d.properties.id !== this.currentActivityIdSelected) {
+          this.BounceMapActivityCircle(d, 4);
+        }
+
+        this.interactionWithEventNode(e.currentTarget, d);
         // to link with popup
         d3.select('#popup-feature-' + d.properties.id)
-          .style('visibility', 'visible')
-          .style('top', '10%')
-          .style('left', '2%');
+        .style('visibility', 'visible')
+        .style('top', '10%')
+        .style('left', '2%');
+
       })
       .on('mouseout', (e: any, d: any) => {
-        this.interactionWithEventNode(e.currentTarget, d, 2);
+
+        if (d.properties.id !== this.currentActivityIdSelected) {
+          this.BounceMapActivityCircle(d, 2);
+        }
+
+        this.interactionWithEventNode(e.currentTarget, d);
         // link with popup
         d3.select('#popup-feature-' + d.properties.id)
-          .style('visibility', 'hidden')
-          .style('top', 'unset')
+        .style('visibility', 'hidden')
+        .style('top', 'unset')
           .style('left', 'unset');
+
       });
     sliderNodes.exit().remove();
   }
 
-  interactionWithEventNode(svgObject: any, data: any, scaleR: number): void {
+  interactionWithEventNode(svgObject: any, data: any): void {
+
     const currentElement: any = d3.select(svgObject);
     currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
 
@@ -414,6 +430,11 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     const currentActivityCircle = d3.select('#svgActivitiesLayer #node_location_' + data.properties.id + ' circle');
     currentActivityCircle.classed('selected', !currentActivityCircle.classed('selected')); // toggle class
+
+  }
+
+  BounceMapActivityCircle(data: any, scaleR: number): void {
+    const currentActivityCircle = d3.select('#svgActivitiesLayer #node_location_' + data.properties.id + ' circle');
     this.circleBouncer(currentActivityCircle, scaleR);
   }
 
@@ -423,6 +444,21 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .duration(1000)
       .ease(d3.easeElastic)
       .attr('r', (d: any) => d.properties.months * rScale);
+  }
+
+  sliderEventCircleBounceRepeat(d3Object: any): void {
+    d3Object
+      .transition()
+      .duration(1000)
+      .ease(d3.easeElastic)
+      .attr('r', this.sliderNodesSize * 2)
+      // .style("opacity", 1)
+      .transition()
+      .duration(500)
+      .ease(d3.easeLinear)
+      .attr('r', this.sliderNodesSize)
+      // .style("opacity", 0)
+      .on('end', this.sliderEventCircleBounceRepeat.bind(this, d3Object));
   }
 
 }

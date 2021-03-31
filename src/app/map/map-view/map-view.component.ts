@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -22,8 +22,9 @@ import { MapService } from '../../services/map.service';
   templateUrl: './map-view.component.html',
   styleUrls: ['./map-view.component.scss']
 })
-export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MapViewComponent implements OnInit, OnDestroy {
   fragment!: string | null;
+  fragmentValue!: string;
 
   svgTripIdPrefix = svgTripIdPrefix;
   legendActivities = legendActivities;
@@ -50,7 +51,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   centerIcon = centerIcon;
   helpIcon = helpIcon;
 
-  helpPopup = 'To complete';
+  helpPopup = 'Voici une cartographie spatio-temporelles de mes expériences';
 
   // check css code related to popup
   popupWidth = 330;
@@ -68,7 +69,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title
+    private titleService: Title,
   ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -131,7 +132,22 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.displayContentRegardingDeviceScreen();
 
+    this.activatedRoute.fragment.subscribe(
+      (fragment) => {
+        if (fragment === undefined) {
+          this.fragment = null;
+        } else {
+          this.fragment = fragment;
+          this.fragmentValue = this.fragment;
+          console.log(this.fragmentValue)
+
+        }
+      }
+    );
+
   }
+
+
 
   @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
     if (window.screen.orientation.angle === 90 && window.screen.width >= minWidthLandscape && window.screen.height >= minHeightLandscape) {
@@ -147,17 +163,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngAfterViewInit(): void {
-    this.activatedRoute.fragment.subscribe(
-      (fragment) => {
-        if (fragment === undefined) {
-          this.fragment = null;
-        } else {
-          this.fragment = fragment;
-        }
-      }
-    );
-  }
 
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
@@ -198,6 +203,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ZoomActivityValue
       );
       this.bounceRepeat('#node_location_' + activityId + ' circle')
+
     }
     // else mean that the geom related is not display
 
@@ -338,11 +344,11 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('r', (d: any) => d.properties.months * 4)
       // .style("opacity", 1)
       .transition()
-      .duration(300)
+      .duration(500)
       .ease(d3.easeLinear)
-      .attr('r', (d: any) => d.properties.months * 2)
+      .attr('r', (d: any) => d.properties.months)
       // .style("opacity", 0)
-      .on('end', this.bounceRepeat.bind(this, activityPointId))
+      .on('end', this.bounceRepeat.bind(this, activityPointId));
   }
 
   // animation on line
