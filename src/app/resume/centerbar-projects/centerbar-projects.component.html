@@ -21,7 +21,7 @@
             <a class="btn btn-secondary mr-2 float-right" [href]="project.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
           </ng-template>
 
-          <div *ngIf="project.medias || project.url_apps; then projectsShorcutGallery"></div>
+          <div *ngIf="project.medias_found; then projectsShorcutGallery"></div>
           <ng-template #projectsShorcutGallery>
             <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="project.identifier" target="_blank" rel="noopener noreferrer" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
           </ng-template>

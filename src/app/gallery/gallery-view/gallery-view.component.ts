@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { pythonIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon } from '../../core/inputs';
+import { pythonIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '../../core/inputs';
 
 
 
@@ -46,6 +46,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     app: { icon: appItemIcon, title: 'Applications' },
     tool: { icon: toolItemIcon, title: 'Outils' },
     library: { icon: pythonIcon, title: 'Libraries' },
+    methodo: { icon: methodoIcon, title: 'Méthodologies'}
   };
 
   categoriesActivity: any = {

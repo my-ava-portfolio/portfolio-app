@@ -49,15 +49,15 @@
     </ng-container>
 
     <div class="card-body">
+      <h6 class="card-title">{{ media_feature.title }}</h6>
       <span [class]="'badge badge-pill my-1 mx-2 text-white ' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
       <a [routerLink]="['/resume']" [fragment]="media_feature.identifier"><span class="badge badge-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
       <span [class]="'badge badge-pill my-1 mx-2 text-white ' + media_feature.type">
         <fa-icon class="mr-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
       </span>
-      <h6 class="card-title">{{ media_feature.title }}</h6>
-      <p class="card-text">{{media_feature.description}}</p>
-      <p class="card-text small" *ngIf="media_feature.data">Données: {{media_feature.data}}</p>
-      <p class="card-text small" *ngIf="media_feature.tools">Outils: {{media_feature.tools}}</p>
+      <p class="card-text mt-2">{{media_feature.description}}</p>
+      <p class="card-text small" *ngIf="media_feature.data.length > 0">Données: {{media_feature.data}}</p>
+      <p class="card-text small" *ngIf="media_feature.tools.length > 0">Outils: {{media_feature.tools}}</p>
     </div>
 
   </div>
