@@ -395,7 +395,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       .data([inputData])
       .enter()
       .append('path')
-      .attr('class', 'train-line lineConnect_' + layerId)
+      .attr('class', 'train-line lineConnect_' + layerId)  // TODO add a property type into data linked to a scss class
       .style('fill', 'none')
       .style('opacity', 'unset') // add 0 to hide the path
       .style('stroke', 'black')

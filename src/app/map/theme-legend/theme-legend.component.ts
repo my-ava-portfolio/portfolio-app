@@ -53,7 +53,7 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
         classMarker: 'train-marker',
         classMarkerText: 'train-marker-text',
         markerIcon: trainIconUnicode,
-        label: 'Train (pendulaire)'
+        label: 'Train'
       },
     ]
   };

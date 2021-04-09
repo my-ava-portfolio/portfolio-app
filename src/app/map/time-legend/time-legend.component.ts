@@ -68,6 +68,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       (element) => {
 
         // build trip layers
+        // get all trips and display them
         this.geoTripsData = element.trips_data; // to filter by date
         this.mapService.pullTripsGeoDataToMap(element.trips_data);
 
@@ -172,7 +173,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       const svgTrip = d3.selectAll('[id^=' + this.svgTripIdPrefix + item.name + ']');
       if (tripStartDate !== null && tripEndDate !== null) {
 
-        if ( h >= tripStartDate && h < tripEndDate ) {
+        if (h >= tripStartDate && h < tripEndDate) {
           svgTrip.style('visibility', 'visible');
         } else {
           svgTrip.style('visibility', 'hidden');
@@ -182,6 +183,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   }
 
   update(h: any): void {
+    // always update the status of the trips regarding slider changes
+    this.updateTrips(h);
 
     // filter data set and redraw plot
     const newData = this.geoActivitiesData.features.filter((d: any) => {
@@ -196,7 +199,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     // call api only if last count is different from the current count feature
     if (newData.length !== this.currentCountNodes) {
-      this.updateTrips(h);
       this.mapService.pullActivitiesGeoDataToMap(newData);
       this.displaySliderNodes(newData);
     }
@@ -284,6 +286,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
           } else {
             playButton.text('Continue');
           }
+
         })
       )
       ;
