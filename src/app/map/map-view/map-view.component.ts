@@ -9,10 +9,11 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagIcon, centerIcon, trainIconUnicode, helpIcon } from '../../core/inputs';
+import { locationIcon, tagIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape } from '../../core/inputs';
 import { apiLogoUrl, currentYear } from '../../core/inputs';
-import { minWidthLandscape, minHeightLandscape } from '../../core/inputs';
 import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '../../core/inputs';
+
+import { checkIfScreenLandscapeOrientation } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
 
@@ -139,7 +140,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
         } else {
           this.fragment = fragment;
           this.fragmentValue = this.fragment;
-          console.log(this.fragmentValue)
 
         }
       }
@@ -147,17 +147,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   }
 
-
-
   @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
-    if (window.screen.orientation.angle === 90 && window.screen.width >= minWidthLandscape && window.screen.height >= minHeightLandscape) {
-      this.isGeodataCanBeDisplayed = true;
-    } else if (window.screen.orientation.angle === 0 ) {
-      this.isGeodataCanBeDisplayed = true;
-    } else {
-      this.isGeodataCanBeDisplayed = false;
-    }
+    this.isGeodataCanBeDisplayed = checkIfScreenLandscapeOrientation();
 
+    // if mode portrait and width screen <= 1024...
     if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
       this.isLegendDisplayed = false;
     }
