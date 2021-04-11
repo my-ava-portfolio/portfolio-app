@@ -45,7 +45,7 @@ export class MainViewComponent implements OnInit {
     this.scrolltoTopActivated = false;
   }
 
-  @HostListener('window:scroll',[])
+  @HostListener('window:scroll', [])
   checkIfScrollShouldBeEnabled(): void {
     if ( window.scrollY > 100 ) {
       this.scrolltoTopActivated = true;
