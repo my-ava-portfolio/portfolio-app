@@ -97,10 +97,10 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.displayContentRegardingDeviceScreen();
+    this.resetGallery();
 
     this.filterFromAnchor();
-    this.resetGallery();
+    this.displayContentRegardingDeviceScreen();
 
   }
 
@@ -112,7 +112,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   filterFromAnchor(): void {
     try {
       if (this.fragment !== null) {
-        this.currentActivity = this.fragment.replace('#', '');
+        this.getGalleryDataByActivity(this.fragment.replace('#', ''));
       }
     } catch (e) {
       console.log('anchor scrolling error');
