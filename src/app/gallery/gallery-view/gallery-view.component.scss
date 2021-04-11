@@ -216,3 +216,22 @@ footer {
   height: 100vh;
   overflow-y: scroll;
 }
+
+
+.legend-container {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+
+
+
+.legend-content {
+  color: "#FFFFF";
+  background-color: #f5f5f5;
+  box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-content {
+  min-height: 77vh;
+}

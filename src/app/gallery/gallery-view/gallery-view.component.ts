@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { apiMapsUrl } from '../../core/inputs';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { apiMapsUrl, minWidthLandscape } from '../../core/inputs';
 
 import { GalleryService } from '../../services/gallery.service';
 
@@ -8,8 +8,9 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { pythonIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '../../core/inputs';
+import { pythonIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '../../core/inputs';
 
+import { checkIfScreenLandscapeOrientation } from '../../core/inputs';
 
 
 @Component({
@@ -25,6 +26,10 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
   defaultCategory: string | null = null;
   currentCategory: string | null = null;
+
+  isGalleryDataCanBeDisplayed = false;
+  isLegendDisplayed = true;
+  tagIcon = tagIcon;
 
   category!: string | null;
   activities!: string[];
@@ -92,8 +97,11 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.displayContentRegardingDeviceScreen();
+
     this.filterFromAnchor();
     this.resetGallery();
+
   }
 
   ngOnDestroy(): void {
@@ -135,6 +143,20 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   getGalleryDataByType(typeName: string | null): any {
     this.currentType = typeName;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
+  }
+
+
+  @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
+    this.isGalleryDataCanBeDisplayed = checkIfScreenLandscapeOrientation();
+
+    // if mode portrait and width screen <= 1024...
+    if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
+      this.isLegendDisplayed = false;
+    }
+  }
+
+  showHideLegend(): void {
+    this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
 }
