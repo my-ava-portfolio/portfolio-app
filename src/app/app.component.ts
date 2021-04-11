@@ -36,9 +36,9 @@ export class AppComponent implements OnInit {
 
   displayOrientationAlert(): void {
     if (window.screen.orientation.angle === 90 && window.screen.width < minWidthLandscape && window.screen.height < minHeightLandscape ) {
-      if (this.currentPage === '/map') {
+      if (['/map', '/gallery'].includes(this.currentPage)) {
         this.isLandscapeDeviceMode = true;
-        this.orientationErrorMessage = "Carte disponible uniquement en mode portrait"
+        this.orientationErrorMessage = "Page disponible uniquement en mode portrait"
       }
     } else {
       this.isLandscapeDeviceMode = false;
