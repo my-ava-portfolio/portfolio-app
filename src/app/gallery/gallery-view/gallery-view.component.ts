@@ -10,7 +10,7 @@ import { Title } from '@angular/platform-browser';
 
 import { pythonIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '../../core/inputs';
 
-import { checkIfScreenLandscapeOrientation } from '../../core/inputs';
+import { checkIfScreenPortraitOrientation } from '../../core/inputs';
 
 
 @Component({
@@ -97,10 +97,13 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.resetGallery();
-
-    this.filterFromAnchor();
     this.displayContentRegardingDeviceScreen();
+
+    if (this.isGalleryDataCanBeDisplayed) {
+      this.resetGallery();
+      this.filterFromAnchor();
+    }
+
 
   }
 
@@ -147,7 +150,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
 
   @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
-    this.isGalleryDataCanBeDisplayed = checkIfScreenLandscapeOrientation();
+    this.isGalleryDataCanBeDisplayed = checkIfScreenPortraitOrientation();
 
     // if mode portrait and width screen <= 1024...
     if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {

@@ -13,7 +13,7 @@ import { locationIcon, tagIcon, centerIcon, trainIconUnicode, helpIcon, minWidth
 import { apiLogoUrl, currentYear } from '../../core/inputs';
 import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '../../core/inputs';
 
-import { checkIfScreenLandscapeOrientation } from '../../core/inputs';
+import { checkIfScreenPortraitOrientation } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
 
@@ -148,7 +148,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
-    this.isGeodataCanBeDisplayed = checkIfScreenLandscapeOrientation();
+    this.isGeodataCanBeDisplayed = checkIfScreenPortraitOrientation();
 
     // if mode portrait and width screen <= 1024...
     if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {

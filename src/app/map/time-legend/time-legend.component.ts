@@ -18,6 +18,7 @@ import * as d3 from 'd3';
 })
 export class TimeLegendComponent implements OnInit, OnDestroy {
   @Input() currentActivityIdSelected: any;
+  @Input() isGeodataCanBeDisplayed: any;
 
   mapContainer: any;
   sliderDate!: string;
@@ -91,8 +92,12 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.mapService.getMapContainer();
-    this.mapService.pullActivitiesGeoData();
+
+    if ( this.isGeodataCanBeDisplayed ) {
+      this.mapService.getMapContainer();
+      this.mapService.pullActivitiesGeoData();
+    }
+
   }
 
 

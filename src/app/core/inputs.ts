@@ -109,7 +109,7 @@ export const pages: any = [
 
 export const pagesObject: any = pages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
 
-export function checkIfScreenLandscapeOrientation(): boolean {
+export function checkIfScreenPortraitOrientation(): boolean {
   if (window.screen.orientation.angle === 90 && window.screen.width >= minWidthLandscape && window.screen.height >= minHeightLandscape) {
     return true;
   } else if (window.screen.orientation.angle === 0 ) {
