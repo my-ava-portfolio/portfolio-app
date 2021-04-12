@@ -20,15 +20,17 @@ export class NotesService {
   ) {  }
 
   pullNotesData(path: string): void {
-    this.http.get<any>(`${this.apiUrlNotesData}${path}`).subscribe(
-      (response) => {
+    this.http.get<any>(`${this.apiUrlNotesData}${path}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorNotesDataApiFound.next(error.error.message);
+      },
+      next: response => {
         this.notesData.next(response);
       },
-      (response) => {
-        // TODO improve error message, but API need improvments
-        this.ErrorNotesDataApiFound.next(response.error.message);
-      }
-    );
+    });
   }
 
 }

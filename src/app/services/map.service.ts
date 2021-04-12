@@ -42,15 +42,17 @@ export class MapService {
 
   pullActivitiesGeoData(): void {
 
-    this.http.get<any>(this.apiUrlActivitiesGeoData).subscribe(
-      (response) => {
+    this.http.get<any>(this.apiUrlActivitiesGeoData).subscribe({
+      complete: () => {
+      },
+      error: error => {
+      // TODO improve error message, but API need improvments
+      this.ErrorapiUrlActivitiesGeoDataApiFound.next(error.error.message);
+      },
+      next: response => {
         this.activitiesGeoData.next(response);
       },
-      (response) => {
-        // TODO improve error message, but API need improvments
-        this.ErrorapiUrlActivitiesGeoDataApiFound.next(response.error.message);
-      }
-    );
+    });
   }
 
   pullActivitiesGeoDataToMap(dataToMap: any[]): void {

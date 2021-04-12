@@ -30,6 +30,7 @@ export class ResumeService {
 
   activitiesAvailable: Subject<any> = new Subject<any>();
 
+  scrollToTop: Subject<boolean> = new Subject<boolean>();
 
   constructor(
       private http: HttpClient
@@ -45,18 +46,20 @@ export class ResumeService {
 
   pullResumeGeneralData(): void {
 
-    this.http.get<any>(this.apiUrlResumeData).subscribe(
-      (response) => {
+    this.http.get<any>(this.apiUrlResumeData).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
           this.resumeData.next(response);
         }
       },
-      (response) => {
-        // TODO improve error message, but API need improvments
-        this.ErrorResumeDataApiFound.next(response.error.message);
-      }
-    );
+    });
   }
 
   pullActivitiesGraphData(
@@ -69,19 +72,20 @@ export class ResumeService {
   ): void {
     this.http.get<any>(
       `${this.apiUrlGraphData}technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&start_date=${currentDateValue}&group_projects=${grouperProjects}&group_jobs=${grouperJobs}`
-    ).subscribe(
-      (response) => {
+    ).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.errorActivitiesChartApiFound.next(error.error.message);
+      },
+      next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-
           this.ActivitiesChartData.next(response);
         }
       },
-      (response) => {
-        // TODO improve error message, but API need improvments
-        this.errorActivitiesChartApiFound.next(response.error.message);
-      }
-    );
+    });
   }
 
   pullActivitiesResumeFromGraph( // TODO RENAME IT
@@ -93,20 +97,23 @@ export class ResumeService {
   ): void {
     this.http.get<any>(
       `${this.apiUrlActivitiesFilteredData}start_date=${currentDate}&technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&from_feature=${fromSkill}`
-    ).subscribe(
-      (response) => {
+    ).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.errorUrlActivitiesFilteredApiFound.next(error.error.message);
+      },
+      next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
           this.activitiesFilteredData.next(response);
         }
       },
-      (errror) => {
-        // TODO improve error message, but API need improvments
-        this.errorUrlActivitiesFilteredApiFound.next(errror.error.message);
-      }
-    );
+    });
   }
 
-  // TODO scroll to top service
-
+  scrollToTopAction(): void {
+    this.scrollToTop.next(true);
+  }
 }

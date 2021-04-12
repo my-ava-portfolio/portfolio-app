@@ -24,15 +24,18 @@ export class GalleryService {
   ): void {
 
 
-    this.http.get<any>(`${this.apiUrlActivitiesGallery}activity_name=${activityName}&category_name=${categoryName}&type_name=${typeName}`).subscribe(
-      (response) => {
+    this.http.get<any>(`${this.apiUrlActivitiesGallery}activity_name=${activityName}&category_name=${categoryName}&type_name=${typeName}`
+    ).subscribe({
+      complete: () => {
+      },
+      error: error => {
+      // TODO improve error message, but API need improvments
+      this.ErrorActivitiesGalleryApiFound.next(error.error.message);
+      },
+      next: response => {
         this.activitiesGalleryData.next(response);
       },
-      (response) => {
-        // TODO improve error message, but API need improvments
-        this.ErrorActivitiesGalleryApiFound.next(response.error.message);
-      }
-    );
+    });
   }
 
   }
