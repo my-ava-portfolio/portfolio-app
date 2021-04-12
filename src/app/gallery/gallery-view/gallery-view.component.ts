@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { apiMapsUrl, minWidthLandscape } from '../../core/inputs';
 
 import { GalleryService } from '../../services/gallery.service';
+import { ResumeService } from '../../services/resume.service';
 
 import { Subscription } from 'rxjs';
 
@@ -64,6 +65,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private galleryService: GalleryService,
+    private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title
     ) {
@@ -128,12 +130,14 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     this.currentCategory = this.defaultCategory;
     this.currentType = this.defaultType;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
+    this.resumeService.scrollToTopAction()
   }
 
   getGalleryDataByActivity(activityName: string | null): any {
     this.currentActivity = activityName;
     this.currentType = this.defaultType;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
+    this.resumeService.scrollToTopAction()
   }
 
   getGalleryDataByCategory(categoryName: string | null): any {
@@ -141,11 +145,13 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     this.currentActivity = this.defaultActivity;
     this.currentType = this.defaultType;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
+    this.resumeService.scrollToTopAction()
   }
 
   getGalleryDataByType(typeName: string | null): any {
     this.currentType = typeName;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
+    this.resumeService.scrollToTopAction()
   }
 
 

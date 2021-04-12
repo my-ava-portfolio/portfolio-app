@@ -4,6 +4,8 @@ import { arrowUpIcon } from '../core/inputs';
 
 import { fadeAnimation } from '../core/animation_routes';
 
+import { ResumeService } from '../services/resume.service';
+
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { trigger, transition } from '@angular/animations';
@@ -27,7 +29,8 @@ export class MainViewComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private location: Location
+    private location: Location,
+    private resumeService: ResumeService,
   ) {
 
     // to hide navbar if home page is opened
@@ -38,6 +41,10 @@ export class MainViewComponent implements OnInit {
         this.isNavBarDisplayed = true;
       }
     });
+
+    this.resumeService.scrollToTop.subscribe(_ => {
+      this.scrollToTop()
+    })
 
   }
 
@@ -61,6 +68,5 @@ export class MainViewComponent implements OnInit {
   prepareRouteTransition(outlet: any): any {
     return outlet.activatedRouteData.page || {};
   }
-
 
 }
