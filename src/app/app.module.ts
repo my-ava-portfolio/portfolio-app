@@ -18,7 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ResumeService } from './services/resume.service';
 import { GalleryService } from './services/gallery.service';
 import { MapService } from './services/map.service';
-import { SafeUrl, JoinPipe } from './core/pipes';
+import { SafeUrl, JoinPipe, ReversePipe } from './core/pipes';
 
 import { Routes } from '@angular/router';
 
@@ -88,6 +88,7 @@ registerLocaleData(localeFr);
     RightbarSkillsComponent,
     SafeUrl,
     JoinPipe,
+    ReversePipe,
     ShortViewComponent,
     MainViewComponent,
     BackgroundComponent,

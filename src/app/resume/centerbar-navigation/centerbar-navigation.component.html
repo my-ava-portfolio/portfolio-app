@@ -4,6 +4,7 @@
     Navigation
   </h5>
 
+
   <div class="item card">
     <div class="card-body">
 
@@ -19,14 +20,21 @@
 
           <div class="col-lg-12 align-self-center text-center">
 
-            <span class="legend_graph_title">Activités disponibles</span>
+            <span class="legend_graph_title">Expériences</span>
 
             <div class="col-lg-12 activities_jobs_shortcuts">
-              <a [routerLink]="['/resume']" [fragment]="activity.identifier" type="button" class="my-1 mx-1 badge badge-danger" *ngFor="let activity of currentJobsActivitiesData">{{ activity.name}}</a>
+              <span *ngFor="let activity of currentJobsActivitiesData | reverse">
+              <fa-icon class="mx-1" [icon]="nextIcon"></fa-icon>
+                <a [routerLink]="['/resume']" [fragment]="activity.identifier" (mouseout)="graphUnHightligthing()" (mouseover)="graphHightligthing(activity.identifier)" type="button" class="my-1 badge badge-danger">{{ activity.name }}</a>
+              </span>
             </div>
 
+            <span class="legend_graph_title">Projets personnels</span>
+
             <div class="col-lg-12 activities_projects_shortcuts">
-              <a [routerLink]="['/resume']" [fragment]="activity.identifier" type="button" class="my-1 mx-1 badge badge-warning" *ngFor="let activity of currentPersonalProjectsActivitiesData">{{ activity.name}}</a>
+              <span *ngFor="let activity of currentPersonalProjectsActivitiesData | reverse">
+                <a [routerLink]="['/resume']" [fragment]="activity.identifier" (mouseout)="graphUnHightligthing()" (mouseover)="graphHightligthing(activity.identifier)" type="button" class="my-1 mx-1 badge badge-warning">{{ activity.name}}</a>
+              </span>
             </div>
           </div>
 

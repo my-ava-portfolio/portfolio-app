@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 
 import { ResumeService } from '../../services/resume.service';
-import { topicIcon, helpIcon, ungroupIconUnicode } from '../../core/inputs';
+import { topicIcon, helpIcon, ungroupIconUnicode, nextIcon } from '../../core/inputs';
 
 
 @Component({
@@ -31,14 +31,15 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   topicIcon = topicIcon;
   helpIcon = helpIcon;
   ungroupIconUnicode = ungroupIconUnicode;
+  nextIcon = nextIcon;
 
   inputSummaryData!: any;
   currentDate: number = new Date().getFullYear();
   currentNodeIdSelected: string | null = null;
 
   graphData!: any;
-  currentJobsActivitiesData!: any;
-  currentPersonalProjectsActivitiesData!: any;
+  currentJobsActivitiesData: any = [];
+  currentPersonalProjectsActivitiesData: any = [];
   adjlist!: any;
   labelLayout!: any;
   label!: any;
@@ -46,9 +47,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   chartHeight = 300;
   chartWidth!: number;
 
-  yearsList = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021]
-
-   // circle
+  // circle
   strokeWidth = '0px';
 
   legendInputTitles = [
@@ -140,6 +139,27 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     this.activitiesIdSubscription.unsubscribe();
   }
 
+  graphHightligthing(activityIdentifier: string): void {
+    // d3.select()
+    const nodeToPreselected = d3.selectAll('#skillsGraphElements #node-' + activityIdentifier);
+    const nodeJobsToPreselected = d3.selectAll('#skillsGraphElements #node-job');
+    const nodePersonalProjectToPreselected = d3.selectAll('#skillsGraphElements #node-personal_project');
+
+    if (nodeToPreselected.size() === 1) {
+      this._graphSelectedFiltering('#skillsGraphElements #node-' + activityIdentifier, false);
+    } else if (nodeJobsToPreselected.size() === 1) {
+      // job node grouped
+      this._graphSelectedFiltering('#skillsGraphElements #node-job', false);
+    } else if (nodePersonalProjectToPreselected.size() === 1) {
+      // personal project node grouped
+      this._graphSelectedFiltering('#skillsGraphElements #node-personal_project', false);
+    }
+    // this.nodehighlighter()
+  }
+  graphUnHightligthing(): void {
+    this._defaultDisplayingByDate();
+  }
+
   updateDate(event: any): void {
     this.currentDate = event.target.value;
     this.buildGraphElements();
@@ -167,19 +187,17 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     this.buildGraphElements();
   }
 
-  scrollToActivity(activityId: string): void {
-    const nodeSelected = d3.selectAll('#svgSkillsChart .nodes .selected');
-    if (nodeSelected.size() === 1) {
-      d3.select('#svgSkillsChart .nodes .selected').dispatch('click');
-    }
-
-    const nodeSelected_1 = d3.selectAll('#svgSkillsChart .nodes .selected');
-    if (nodeSelected_1.size() === 0) {
-      const element: any = window.document.getElementById(activityId);
-      element.scrollIntoView();
-    }
-
-  }
+  // scrollToActivity(activityId: string): void {
+  //   const nodeSelected = d3.selectAll('#svgSkillsChart .nodes .selected');
+  //   if (nodeSelected.size() === 1) {
+  //     nodeSelected.dispatch('click');
+  //   }
+  //   const nodeSelected_1 = d3.selectAll('#svgSkillsChart .nodes .selected');
+  //   if (nodeSelected_1.size() === 0) {
+  //     const element: any = window.document.getElementById(activityId);
+  //     element.scrollIntoView();
+  //   }
+  // }
 
   rebuildActivitiesChartWithAPreselection(nodeToSelect: string): void {
     this.currentNodeIdSelected = nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
@@ -472,7 +490,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(e.currentTarget).attr('id');
-        this._selectedDisplaying(e.currentTarget);
+        this._graphSelectedFiltering(e.currentTarget);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
@@ -509,7 +527,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
     // to preselect a node
     if ( nodeIdToSelect !== null ) {
-      this._selectedDisplaying('#skillsGraphElements #' + nodeIdToSelect);
+      this._graphSelectedFiltering('#skillsGraphElements #' + nodeIdToSelect);
     } else {
       this._defaultDisplayingByDate();
     }
@@ -586,7 +604,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   }
 
 
-  private _selectedDisplaying(element: string): void {
+  private _graphSelectedFiltering(element: string, withContent = true): void {
 
     const elementSelected: any = d3.select(element);
     if (elementSelected.size() > 0) {
@@ -594,16 +612,19 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       elementSelected.attr('class', elementSelected.attr('class') + ' selected');
 
       this._focusOnGraph(elementSelected);
-      const elementData: any = d3.select(element).data()[0];
-      // check origin node type
+      if ( withContent ) {
+        const elementData: any = d3.select(element).data()[0];
+        // check origin node type
 
-      this.resumeService.pullActivitiesResumeFromGraph(
-        this.currentDate,
-        this.isThemesEnabled,
-        this.isTechnicsEnabled,
-        this.isToolsEnabled,
-        elementData.properties.id
-      );
+        this.resumeService.pullActivitiesResumeFromGraph(
+          this.currentDate,
+          this.isThemesEnabled,
+          this.isTechnicsEnabled,
+          this.isToolsEnabled,
+          elementData.properties.id
+        );
+      }
+
 
     } else {
 

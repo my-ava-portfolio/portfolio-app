@@ -1,4 +1,4 @@
-import { faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
@@ -44,6 +44,7 @@ export const mobileIcon = faMobileAlt;
 export const centerIcon = faExpand;
 export const filterIcon = faFilter;
 export const methodoIcon = faProjectDiagram;
+export const nextIcon = faAngleRight;
 
 export const chartItemIcon = faChartBar;
 export const videoItemIcon = faYoutube;
