@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   currentPage!: string;
 
   apiStatus!: string;
-  apiOff = false;
+  apiOff!: boolean;
   apiStatusMessage = 'Le serveur Heroku va démarrer dans 30 secondes environ !';
   apiStatusSubMessage = 'Un problème ?';
   apiStatusIssueLink = githubBugIssueUrl;
