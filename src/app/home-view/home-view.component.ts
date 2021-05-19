@@ -41,7 +41,7 @@ export class HomeViewComponent implements OnInit {
   welcomeMessage!: string;
   topicMessage!: string;
 
-  authorRepoUrl = 'https://github.com/amauryval/portfolio-angular';
+  authorRepoUrl = 'https://github.com/amauryval/portfolio';
   nameApp = name;
   year = 2021;
 
