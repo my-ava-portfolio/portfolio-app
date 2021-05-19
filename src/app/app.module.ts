@@ -14,7 +14,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
+import { ApiStatusService } from './services/apistatus.service';
 import { ResumeService } from './services/resume.service';
 import { GalleryService } from './services/gallery.service';
 import { MapService } from './services/map.service';
@@ -96,7 +96,7 @@ registerLocaleData(localeFr);
     FooterComponent,
     HeaderComponent,
     ThemeLegendComponent,
-    TimeLegendComponent
+    TimeLegendComponent,
   ],
   imports: [
     BrowserModule,
@@ -114,6 +114,7 @@ registerLocaleData(localeFr);
     FormsModule
   ],
   providers: [
+    ApiStatusService,
     ResumeService,
     GalleryService,
     MapService,

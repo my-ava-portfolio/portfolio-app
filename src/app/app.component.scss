@@ -195,6 +195,15 @@ circle.selected {
   z-index: 99999;
   height: 100vh;
   position: fixed;
-  overflow-y: scroll;
+  overflow-y: hidden;
+  width: 100%;
+}
+
+#ApiStartingAlert {
+  background-color: rgb(0 0 0 / 90%);
+  z-index: 99999;
+  height: 100vh;
+  position: fixed;
+  overflow-y: hidden;
   width: 100%;
 }
