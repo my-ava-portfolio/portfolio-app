@@ -1,4 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light navbar-style sticky-top">
+
   <div class="container">
     <div class="navbar-header">
       <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,6 +8,7 @@
       <a class="navbar-brand text-dark ml-2" [routerLink]="homePage.route">{{ this.navBarTitle }}</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
+
       <ul class="nav navbar-nav">
         <li *ngFor="let page of portfolioPages" class="nav-item ml-3" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" data-target=".navbar-collapse.show">
 
@@ -19,6 +21,22 @@
           </a>
         </li>
       </ul>
+
+      <div id="supportLink" class=" col-sm-5 text-right">
+        <a class="text-white mr-1" [href]="GithubBugIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactBugMessage" triggers="mouseenter:mouseleave">
+          <fa-icon class="text-danger" [icon]="bugIcon" size="1x"></fa-icon>
+        </a>
+        <a class="text-white mr-1" [href]="GithubQuestionIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactHelpMessage" triggers="mouseenter:mouseleave">
+          <fa-icon class="text-warning" [icon]="helpIcon" size="1x"></fa-icon>
+        </a>
+        <a class="text-white mr-1" [href]="GithubEnhancementIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactFeatureMessage" triggers="mouseenter:mouseleave">
+          <fa-icon class="text-success" [icon]="exclamationIcon" size="1x"></fa-icon>
+        </a>
+      </div>
+
     </div>
+
   </div>
+
 </nav>
+
