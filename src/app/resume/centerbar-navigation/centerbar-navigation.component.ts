@@ -50,6 +50,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   // circle
   strokeWidth = '0px';
 
+  job_identifier = 'job'
+  personal_project_identifier = 'personal_project'
+
   legendInputTitles = [
     { id: 'legend_graph_title', label: 'Activités', cx: 5, cy: 15 },
     { id: 'legend_graph_title', label: 'Compétences', cx: 160, cy: 15 },
@@ -139,23 +142,27 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     this.activitiesIdSubscription.unsubscribe();
   }
 
-  graphHightligthing(activityIdentifier: string): void {
-    // d3.select()
-    const nodeToPreselected = d3.selectAll('#skillsGraphElements #node-' + activityIdentifier);
-    const nodeJobsToPreselected = d3.selectAll('#skillsGraphElements #node-job');
-    const nodePersonalProjectToPreselected = d3.selectAll('#skillsGraphElements #node-personal_project');
+  graphHightligthing(activityIdentifier: string, activityType: string): void {
 
-    if (nodeToPreselected.size() === 1) {
+    const nodeToPreselected = d3.selectAll('#skillsGraphElements #node-' + activityIdentifier);
+
+    if ( nodeToPreselected.size() === 1 ) {
       this._graphSelectedFiltering('#skillsGraphElements #node-' + activityIdentifier, false);
-    } else if (nodeJobsToPreselected.size() === 1) {
-      // job node grouped
-      this._graphSelectedFiltering('#skillsGraphElements #node-job', false);
-    } else if (nodePersonalProjectToPreselected.size() === 1) {
-      // personal project node grouped
-      this._graphSelectedFiltering('#skillsGraphElements #node-personal_project', false);
+    } else if ( nodeToPreselected.size() === 0 ) {
+      // means that activities are grouped
+      if ( activityType === this.job_identifier ) {
+        // job node grouped
+        this._graphSelectedFiltering('#skillsGraphElements #node-job', false);
+      } else if ( activityType === this.personal_project_identifier ) {
+        // personal project node grouped
+        this._graphSelectedFiltering('#skillsGraphElements #node-personal_project', false);
+      }
+      // this.nodehighlighter()
+    } else {
+      console.log("graph hightlighting error")
     }
-    // this.nodehighlighter()
   }
+
   graphUnHightligthing(): void {
     this._defaultDisplayingByDate();
   }
