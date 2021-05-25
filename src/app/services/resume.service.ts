@@ -18,6 +18,7 @@ export class ResumeService {
   errorActivitiesChartApiFound: Subject<string> = new Subject<string>();
   ActivitiesChartData: Subject<any> = new Subject<any>();
 
+  // deprecated
   private apiUrlSkillsFilteredData = apiUrl + 'skills_filtered?';
   errorUrlSkillsFilteredApiFound: Subject<string> = new Subject<string>();
   skillsFilteredData: Subject<any> = new Subject<any>();

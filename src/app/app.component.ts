@@ -5,8 +5,8 @@ import { Location } from '@angular/common';
 import { ApiStatusService } from './services/apistatus.service';
 
 import { bugIcon, githubBugIssueUrl, loadingIcon, mobileIcon, minWidthLandscape, minHeightLandscape } from './core/inputs';
-import { interval, Subscription } from 'rxjs';
-import { startWith  } from 'rxjs/operators';
+import { interval, Subscription, timer } from 'rxjs';
+import { startWith, map  } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -24,9 +24,12 @@ export class AppComponent implements OnInit {
   isLandscapeDeviceMode = false;
   currentPage!: string;
 
+  countDown = 30;
+  countDownStreamSubscription!: Subscription;
+
   apiStatus!: string;
   apiOff!: boolean;
-  apiStatusMessage = 'Le serveur Heroku va démarrer dans 30 secondes environ !';
+  apiStatusMessage = 'Le serveur Heroku va démarrer dans ';
   apiStatusSubMessage = 'Un problème ?';
   apiStatusIssueLink = githubBugIssueUrl;
   ApiContinuousChecker = interval(5000); // observable which run all the time
@@ -40,11 +43,13 @@ export class AppComponent implements OnInit {
 
     this.ApiCheckService.apiHealth.subscribe(data => {
       this.apiStatus = data;
-
+      console.log(this.countDown)
       if (this.apiStatus === 'Ready') {
         this.apiOff = false;
-        // check all the time
-        // this.ApiContinuousCheckerSubscription.unsubscribe()
+        // to not check all the time
+        this.ApiContinuousCheckerSubscription.unsubscribe()
+        this.countDownStreamSubscription.unsubscribe();
+
       } else {
         this.apiOff = true;
       }
@@ -59,11 +64,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // to return to the home page on refresh
+    this.router.navigate([''])
+
+    this.startCountdownTimer()
     this.checkApiStatus();
   }
 
   ngOnDestroy(): void {
-    this.ApiContinuousCheckerSubscription.unsubscribe();
   }
 
   checkApiStatus(): void {
@@ -72,6 +80,19 @@ export class AppComponent implements OnInit {
       }
     );
   }
+
+  startCountdownTimer(): void {
+    const interval = 1000;
+    const duration = 30;
+    const countDownStream = timer(0, interval).pipe(
+      map(value => duration - value)
+    )
+    this.countDownStreamSubscription = countDownStream.subscribe(
+      value => {
+        this.countDown = value
+      }
+    );
+   }
 
   displayOrientationAlert(): void {
     if (window.screen.orientation.angle === 90 && window.screen.width < minWidthLandscape && window.screen.height < minHeightLandscape ) {
@@ -91,3 +112,7 @@ export class AppComponent implements OnInit {
   }
 
 }
+function abs(value: number): number {
+  throw new Error('Function not implemented.');
+}
+
