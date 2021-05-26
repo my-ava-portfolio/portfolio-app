@@ -73,7 +73,7 @@ export const homePage: any = {
 };
 
 export const currentYear: number = new Date().getFullYear();
-export const currentDate = new Date();
+export const currentDate = now();
 
 export const pages: any = [
   {
@@ -126,4 +126,9 @@ export function checkIfScreenPortraitOrientation(): boolean {
 
 }
 
+function now(): Date {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+  return date
+}
 
