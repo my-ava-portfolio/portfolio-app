@@ -2,11 +2,11 @@ import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/cor
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { ApiStatusService } from './services/apistatus.service';
+import { ApiService } from './services/api.service';
 
 import { bugIcon, githubBugIssueUrl, loadingIcon, mobileIcon, minWidthLandscape, minHeightLandscape } from './core/inputs';
 import { interval, Subscription, timer } from 'rxjs';
-import { startWith, map  } from 'rxjs/operators';
+import { startWith, map, delay  } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   isLandscapeDeviceMode = false;
   currentPage!: string;
 
-  countDown = 30;
+  countDown = 60;
   countDownStreamSubscription!: Subscription;
 
   apiStatus!: string;
@@ -36,14 +36,14 @@ export class AppComponent implements OnInit {
   ApiContinuousCheckerSubscription!: Subscription;
 
   constructor(
-    private ApiCheckService: ApiStatusService,
+    private apiService: ApiService,
     private router: Router,
     private location: Location,
   ) {
 
-    this.ApiCheckService.apiHealth.subscribe(data => {
+    this.apiService.apiHealth.subscribe(data => {
       this.apiStatus = data;
-      console.log(this.countDown)
+
       if (this.apiStatus === 'Ready') {
         this.apiOff = false;
         // to not check all the time
@@ -67,23 +67,26 @@ export class AppComponent implements OnInit {
     // to return to the home page on refresh
     this.router.navigate([''])
 
-    this.startCountdownTimer()
     this.checkApiStatus();
   }
 
   ngOnDestroy(): void {
+    this.ApiContinuousCheckerSubscription.unsubscribe()
+    this.countDownStreamSubscription.unsubscribe();
   }
 
   checkApiStatus(): void {
+    this.startCountdownTimer()
+
     this.ApiContinuousCheckerSubscription = this.ApiContinuousChecker.pipe(startWith(0)).subscribe(() => {
-        this.ApiCheckService.callApiStatus();
+        this.apiService.callApiStatus();
       }
     );
   }
 
   startCountdownTimer(): void {
     const interval = 1000;
-    const duration = 30;
+    const duration = 60;
     const countDownStream = timer(0, interval).pipe(
       map(value => duration - value)
     )
@@ -112,7 +115,5 @@ export class AppComponent implements OnInit {
   }
 
 }
-function abs(value: number): number {
-  throw new Error('Function not implemented.');
-}
+
 
