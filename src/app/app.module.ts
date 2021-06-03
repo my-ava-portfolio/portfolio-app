@@ -59,7 +59,7 @@ const appRoutes: Routes = [
       { path: 'resume', component: ResumeViewComponent, data: { title: 'Profil', page: 'profil' } },
       { path: 'map', component: MapViewComponent, data: { title: 'Carte', page: 'map' } },
       { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie', page: 'gallery' } },
-      { path: 'notes', component: NotesViewComponent, data: { title: 'Notes', page: 'notes' } },
+      { path: 'blog', component: NotesViewComponent, data: { title: 'Blog', page: 'blog' } },
       { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },

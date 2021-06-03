@@ -98,9 +98,9 @@ export const pages: any = [
     icon: galleryIcon
   },
   {
-    id: 'notes',
-    route: '/notes',
-    title: 'Notes',
+    id: 'blog',
+    route: '/blog',
+    title: 'Blog',
     status: false,
     icon: notesIcon
   },

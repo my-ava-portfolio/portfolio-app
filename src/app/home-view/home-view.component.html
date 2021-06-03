@@ -37,8 +37,8 @@
           </a>
       </li>
       <li class="empty quarter disabled arrow"></li>
-      <li id="notes" [ngClass]="quartersStatus.notes.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('notes')" (mouseout)="updateQuarterStatus('notes')">
-          <a class="quarter-text text-theme text-dark" [routerLink]="['/notes']">
+      <li id="notes" [ngClass]="quartersStatus.blog.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('blog')" (mouseout)="updateQuarterStatus('blog')">
+          <a class="quarter-text text-theme text-dark" [routerLink]="['/blog']">
             <fa-icon [icon]="notesIcon" size="3x" [rotate]="180"></fa-icon>
           </a>
       </li>

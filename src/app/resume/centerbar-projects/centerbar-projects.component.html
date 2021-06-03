@@ -28,7 +28,7 @@
 
           <div *ngIf="project.url_blog; then projectsShortcutNotes"></div>
           <ng-template #projectsShortcutNotes>
-            <a class="btn btn-info mr-2 float-right" [routerLink]="['/notes']" (click)="emitNotePath(project.url_blog)" title="Accès aux notes"><fa-icon [icon]="notesIcon"></fa-icon></a>
+            <a class="btn btn-info mr-2 float-right" [routerLink]="['/blog']" (click)="emitNotePath(project.url_blog)" title="Accès aux notes"><fa-icon [icon]="notesIcon"></fa-icon></a>
           </ng-template>
 
           <div *ngIf="project.url_website; then projectsShorcutWebsite"></div>
