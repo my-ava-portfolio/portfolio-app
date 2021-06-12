@@ -23,7 +23,7 @@
 
           <div *ngIf="project.medias_found; then projectsShorcutGallery"></div>
           <ng-template #projectsShorcutGallery>
-            <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="project.identifier" target="_blank" rel="noopener noreferrer" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
+            <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="project.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
           </ng-template>
 
           <div *ngIf="project.url_blog; then projectsShortcutNotes"></div>
