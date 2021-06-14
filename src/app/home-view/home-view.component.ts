@@ -103,6 +103,15 @@ export class HomeViewComponent implements OnInit {
 
   }
 
+
+  goToLink(topic: string): void {
+    if (topic === 'github') {
+      window.open(this.githubUrl, "_blank");
+    } else {
+      this.router.navigate(['/' + topic]);
+    }
+  }
+
   updateQuarterStatus(topic: string): void {
     const currentQuarterStatus: boolean = this.quartersStatus[topic].status;
     this.quartersStatus[topic].status = !currentQuarterStatus;

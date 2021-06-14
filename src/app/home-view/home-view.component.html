@@ -31,25 +31,25 @@
     <ul class="main-circle col-md-auto">
 
       <li class="empty quarter disabled arrow"></li>
-      <li id="maps_library" [ngClass]="quartersStatus.gallery.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('gallery')" (mouseout)="updateQuarterStatus('gallery')">
+      <li id="maps_library" [ngClass]="quartersStatus.gallery.status ? 'enabled' : 'disabled'" class="theme quarter" (click)="goToLink('gallery')" (mouseover)="updateQuarterStatus('gallery')" (mouseout)="updateQuarterStatus('gallery')">
           <a class="quarter-text text-theme text-dark" [routerLink]="['/gallery']">
             <fa-icon [icon]="galleryIcon" size="3x" [rotate]="270" ></fa-icon>
           </a>
       </li>
       <li class="empty quarter disabled arrow"></li>
-      <li id="notes" [ngClass]="quartersStatus.blog.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('blog')" (mouseout)="updateQuarterStatus('blog')">
+      <li id="notes" [ngClass]="quartersStatus.blog.status ? 'enabled' : 'disabled'"  class="theme quarter" (click)="goToLink('blog')" (mouseover)="updateQuarterStatus('blog')" (mouseout)="updateQuarterStatus('blog')">
           <a class="quarter-text text-theme text-dark" [routerLink]="['/blog']">
             <fa-icon [icon]="notesIcon" size="3x" [rotate]="180"></fa-icon>
           </a>
       </li>
       <li class="empty quarter disabled arrow"></li>
-      <li id="github" [ngClass]="quartersStatus.github.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('github')" (mouseout)="updateQuarterStatus('github')">
+      <li id="github" [ngClass]="quartersStatus.github.status ? 'enabled' : 'disabled'"  class="theme quarter" (click)="goToLink('github')" (mouseover)="updateQuarterStatus('github')" (mouseout)="updateQuarterStatus('github')">
           <a class="quarter-text text-theme text-dark" [href]="githubUrl" target="_blank" rel="noopener noreferrer">
             <fa-icon [icon]="githubIcon" size="3x" [rotate]="90"></fa-icon>
           </a>
       </li>
       <li class="empty quarter disabled arrow"></li>
-      <li id="resume" [ngClass]="quartersStatus.resume.status ? 'enabled' : 'disabled'"  class="theme quarter" (mouseover)="updateQuarterStatus('resume')" (mouseout)="updateQuarterStatus('resume')">
+      <li id="resume" [ngClass]="quartersStatus.resume.status ? 'enabled' : 'disabled'"  class="theme quarter" (click)="goToLink('resume')" (mouseover)="updateQuarterStatus('resume')" (mouseout)="updateQuarterStatus('resume')">
           <a class="quarter-text text-theme text-dark" [routerLink]="['/resume']">
             <fa-icon [icon]="resumeIcon" size="3x"></fa-icon>
           </a>
