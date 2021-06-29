@@ -33,25 +33,25 @@
       <li class="empty quarter disabled arrow"></li>
       <li id="maps_library" [ngClass]="quartersStatus.gallery.status ? 'enabled' : 'disabled'" class="theme quarter" (click)="goToLink('gallery')" (mouseover)="updateQuarterStatus('gallery')" (mouseout)="updateQuarterStatus('gallery')">
           <a class="quarter-text text-theme text-dark" [routerLink]="['/gallery']">
-            <fa-icon [icon]="galleryIcon" size="3x" [rotate]="270" ></fa-icon>
+            <fa-icon [icon]="getIcon('gallery')" size="3x" [rotate]="270" ></fa-icon>
           </a>
       </li>
       <li class="empty quarter disabled arrow"></li>
       <li id="notes" [ngClass]="quartersStatus.blog.status ? 'enabled' : 'disabled'"  class="theme quarter" (click)="goToLink('blog')" (mouseover)="updateQuarterStatus('blog')" (mouseout)="updateQuarterStatus('blog')">
           <a class="quarter-text text-theme text-dark" [routerLink]="['/blog']">
-            <fa-icon [icon]="notesIcon" size="3x" [rotate]="180"></fa-icon>
+            <fa-icon [icon]="getIcon('blog')" size="3x" [rotate]="180"></fa-icon>
           </a>
       </li>
       <li class="empty quarter disabled arrow"></li>
       <li id="github" [ngClass]="quartersStatus.github.status ? 'enabled' : 'disabled'"  class="theme quarter" (click)="goToLink('github')" (mouseover)="updateQuarterStatus('github')" (mouseout)="updateQuarterStatus('github')">
           <a class="quarter-text text-theme text-dark" [href]="githubUrl" target="_blank" rel="noopener noreferrer">
-            <fa-icon [icon]="githubIcon" size="3x" [rotate]="90"></fa-icon>
+            <fa-icon [icon]="getIcon('github')" size="3x" [rotate]="90"></fa-icon>
           </a>
       </li>
       <li class="empty quarter disabled arrow"></li>
       <li id="resume" [ngClass]="quartersStatus.resume.status ? 'enabled' : 'disabled'"  class="theme quarter" (click)="goToLink('resume')" (mouseover)="updateQuarterStatus('resume')" (mouseout)="updateQuarterStatus('resume')">
           <a class="quarter-text text-theme text-dark" [routerLink]="['/resume']">
-            <fa-icon [icon]="resumeIcon" size="3x"></fa-icon>
+            <fa-icon [icon]="getIcon('resume')" size="3x"></fa-icon>
           </a>
       </li>
     </ul>
@@ -68,7 +68,6 @@
 
     </div>
 
-
   </div>
 
   <div id="website-info" class="bg-white py-2 px-2 circle shadow">
@@ -78,12 +77,11 @@
 </div>
 
 
-
 <ng-template #infoPopup>
 <div class="container">
 
   <a class="mb-3 text-dark" [href]="authorRepoUrl" target="_blank" rel="noopener noreferrer">
-    By amauryval - {{year}} <fa-icon class="ml-2" [icon]="githubIcon"></fa-icon>
+    By amauryval - {{year}} <fa-icon class="ml-2" [icon]="getIcon('github')"></fa-icon>
   </a>
 
   <ul class="list-unstyled">
@@ -94,7 +92,7 @@
     </li>
     <li class="ml-2 mb-1">
       <a class="text-dark" [href]="lib1RepoUrl" target="_blank" rel="noopener noreferrer">
-        <fa-icon class="mr-1" [icon]="githubIcon"></fa-icon>
+        <fa-icon class="mr-1 " [icon]="getIcon('github')"></fa-icon>
         <span>{{this.lib1Name}}</span>
       </a>
     </li>

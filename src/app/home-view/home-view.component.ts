@@ -21,10 +21,6 @@ export class HomeViewComponent implements OnInit {
   quartersStatus!: any;
 
   // icons
-  resumeIcon = resumeIcon;
-  galleryIcon = galleryIcon;
-  notesIcon = notesIcon;
-  githubIcon = githubIcon;
   infoIcon = infoIcon;
   pythonIcon = pythonIcon;
 
@@ -119,6 +115,12 @@ export class HomeViewComponent implements OnInit {
     this.topicMessage = this.quartersStatus[topic].title;
   }
 
+
+  getIcon(topic: string): any {
+    const feature_found: any = this.pagesObject[topic];
+    return feature_found.icon;
+  }
+
   resetQuartersStatus(): void {
     for (const property in this.quartersStatus) {
       if (this.quartersStatus.hasOwnProperty(property)) {
@@ -128,3 +130,5 @@ export class HomeViewComponent implements OnInit {
   }
 
 }
+
+
