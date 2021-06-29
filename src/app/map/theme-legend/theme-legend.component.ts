@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
-import { trainIconUnicode, tagIcon } from '../../core/inputs';
+import { trainIconUnicode, tagsIcon } from '../../core/inputs';
 import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities, sliderBarId } from '../../core/inputs';
 
 
@@ -22,7 +22,7 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
   heightLegendElement = 90;
   heightMoveLegendElement = 60;
 
-  tagIcon = tagIcon;
+  tagIcon = tagsIcon;
 
   fontSize = '19px';
   // activity month legend data

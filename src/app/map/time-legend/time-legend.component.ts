@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation, OnDestroy, Input } from '@angular
 
 import { Subscription } from 'rxjs';
 
-import { currentYear, currentDate, backwardIcon, forwardIcon, tagIcon } from '../../core/inputs';
+import { currentYear, currentDate, backwardIcon, forwardIcon, tagsIcon } from '../../core/inputs';
 import { svgTripIdPrefix, sliderBarId, legendActivities } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
@@ -29,7 +29,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   // icons
   backwardIcon = backwardIcon;
   forwardIcon = forwardIcon;
-  tagIcon = tagIcon;
+  tagIcon = tagsIcon;
 
   legendActivities = legendActivities;
   sliderBarId = '#' + sliderBarId;

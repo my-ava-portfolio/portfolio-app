@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape } from '../../core/inputs';
+import { locationIcon, tagsIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape } from '../../core/inputs';
 import { apiLogoUrl, currentYear } from '../../core/inputs';
 import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '../../core/inputs';
 
@@ -48,7 +48,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   apiImgUrl = apiLogoUrl;
 
   locationIcon = locationIcon;
-  tagIcon = tagIcon;
+  tagIcon = tagsIcon;
   centerIcon = centerIcon;
   helpIcon = helpIcon;
 
