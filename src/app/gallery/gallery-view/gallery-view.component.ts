@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { pythonIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '../../core/inputs';
+import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '../../core/inputs';
 
 import { checkIfScreenPortraitOrientation } from '../../core/inputs';
 
@@ -30,6 +30,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
   isGalleryDataCanBeDisplayed = false;
   isLegendDisplayed = true;
+  tagsIcon = tagsIcon;
   tagIcon = tagIcon;
 
   category!: string | null;
@@ -86,8 +87,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
         this.galleryItems = data.items;
         this.mediaTypes = data.media_types_available;
         this.activities = data.activities;
-        this.currentCategory = data.category;
-
+        this.currentCategory = data.current_category;
         this.isDataAvailable = true;
 
       },
