@@ -46,6 +46,7 @@ import { BackgroundComponent } from './background/map/background.component';
 import { FooterComponent } from './background/footer/footer.component';
 import { HeaderComponent } from './background/header/header.component';
 import { TimeLegendComponent } from './map/time-legend/time-legend.component';
+import { CenterbarVolunteerComponent } from './resume/centerbar-volunteer/centerbar-volunteer.component';
 
 
 const appRoutes: Routes = [
@@ -97,6 +98,7 @@ registerLocaleData(localeFr);
     HeaderComponent,
     ThemeLegendComponent,
     TimeLegendComponent,
+    CenterbarVolunteerComponent,
   ],
   imports: [
     BrowserModule,
