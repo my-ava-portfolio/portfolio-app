@@ -39,6 +39,8 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   jobsData!: any;
   personalProjectsData!: any;
+  volunteersData!: any;
+
   skillsData!: any;
   isActivitiesDataAvailable = false;
 
@@ -84,6 +86,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
         this.jobsData = data.activities_data.jobs;
         this.personalProjectsData = data.activities_data.personal_projects;
+        this.volunteersData = data.activities_data.volunteers;
         this.skillsData = data.skills_data;
         this.isActivitiesDataAvailable = true;
 

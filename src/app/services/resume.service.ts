@@ -69,10 +69,11 @@ export class ResumeService {
     isTools: boolean | string,
     currentDateValue: number,
     grouperProjects: boolean | string,
-    grouperJobs: boolean | string
+    grouperJobs: boolean | string,
+    grouperVolunteers: boolean | string,
   ): void {
     this.http.get<any>(
-      `${this.apiUrlGraphData}technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&start_date=${currentDateValue}&group_projects=${grouperProjects}&group_jobs=${grouperJobs}`
+      `${this.apiUrlGraphData}technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&start_date=${currentDateValue}&group_projects=${grouperProjects}&group_jobs=${grouperJobs}&group_volunteers=${grouperVolunteers}`
     ).subscribe({
       complete: () => {
       },
