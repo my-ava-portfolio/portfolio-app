@@ -40,7 +40,7 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
     circleJobs: [
       { cy: 25, class: 'education', label: 'Formations' },
       { cy: 70, class: 'job', label: 'Expériences' },
-      { cy: 115, class: 'volunteer', label: 'Bénévolats' },
+      { cy: 115, class: 'volunteer', label: 'Bénévolat' },
     ]
   };
 
