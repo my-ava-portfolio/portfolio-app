@@ -48,19 +48,34 @@ body::-webkit-scrollbar {
 
 
 /* style navigation chart and maps */
-.grouper_jobs, .grouper_projects {
+.grouper_jobs, .grouper_projects .grouper_volunteers {
   font-family: 'Font Awesome 5 Free';
   text-anchor: middle;
   alignment-baseline: middle;
 }
 
 circle.personal_project {
-  fill: #f5a824;
+  fill: #f46d43;
+}
+.bg-color-personal_project {
+  background-color: #f46d43;
 }
 
 circle.job {
-  fill: #ff0000;
+  fill: #cb181d;
 }
+.bg-color-job {
+  background-color: #cb181d;
+}
+
+
+circle.volunteer {
+  fill: #feb24c;
+}
+.bg-color-volunteer {
+  background-color: #feb24c;
+}
+
 
 circle.education {
   fill: #168720;
@@ -75,15 +90,15 @@ circle.invisible {
 }
 
 circle.technics {
-  fill: #0ca81e;
+  fill: #984ea3;
 }
 
 circle.themes {
-  fill: #0c77a8;
+  fill: #377eb8;
 }
 
 circle.tools  {
-  fill: #5a2ea2;
+  fill: #4daf4a;
 }
 
 .disabled-node circle {
