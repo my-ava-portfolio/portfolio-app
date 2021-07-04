@@ -132,7 +132,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
         this.currentPersonalProjectsActivitiesData = activitiesAvailable.personal_projects;
         this.currentJobsActivitiesData = activitiesAvailable.jobs;
         this.currentVolunteersActivitiesData = activitiesAvailable.volunteers
-        console.log(activitiesAvailable)
       }
     )
 
