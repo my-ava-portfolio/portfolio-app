@@ -23,6 +23,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
   isJobsGrouped: boolean | string = false;
   isProjectsGrouped: boolean | string = true;
+  isVolunteersGrouped: boolean | string = true;
   isThemesEnabled: boolean | string = true;
   isTechnicsEnabled: boolean | string = true;
   isToolsEnabled: boolean | string = false;
@@ -40,6 +41,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   graphData!: any;
   currentJobsActivitiesData: any = [];
   currentPersonalProjectsActivitiesData: any = [];
+  currentVolunteersActivitiesData: any = [];
+
   adjlist!: any;
   labelLayout!: any;
   label!: any;
@@ -47,11 +50,15 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   chartHeight = 300;
   chartWidth!: number;
 
+  legendWidth = 270;
+  legendHeight = 120;
+
   // circle
   strokeWidth = '0px';
 
   job_identifier = 'job'
   personal_project_identifier = 'personal_project'
+  volunteer_identifier = 'volunteer'
 
   legendInputTitles = [
     { id: 'legend_graph_title', label: 'Activités', cx: 5, cy: 15 },
@@ -60,8 +67,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
   // here to control topic graph... TODO improve it !
   legendInput = [
-    { id: 'job', status: 'unabled-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
-    { id: 'personal_project', status: 'unabled-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.job_identifier, status: 'unabled-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.personal_project_identifier, status: 'unabled-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.volunteer_identifier, status: 'unabled-topic', label: 'Bénévolat', cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
     { id: 'themes', status: 'enabled-topic', label: 'Thématiques', cx: 175, cy: 35, text_cx: 190, r: 6, rOver: 10 },
     { id: 'technics', status: 'enabled-topic', label: 'Techniques', cx: 175, cy: 55, text_cx: 190, r: 6, rOver: 10 },
     { id: 'tools', status: 'enabled-topic', label: 'Outils', cx: 175, cy: 75, text_cx: 190, r: 6, rOver: 10 }
@@ -69,7 +77,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
   legendGroupInput = [
     { id: 'grouper_jobs', label: 'grouper jobs', cy: 31, cx: 35 },  // jobs grouped is disabled (style)
-    { id: 'grouper_projects', label: 'grouper projets', cy: 56, cx: 35 }
+    { id: 'grouper_projects', label: 'grouper projets', cy: 56, cx: 35 },
+    { id: 'grouper_volunteers', label: 'grouper volunteers', cy: 82, cx: 35 }
   ];
 
   activitiesFilteredSubscription!: Subscription;
@@ -119,8 +128,11 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
 
     this.activitiesJobsAvailableSubscription = this.resumeService.activitiesAvailable.subscribe(
       (activitiesAvailable) => {
+        // to display activities list
         this.currentPersonalProjectsActivitiesData = activitiesAvailable.personal_projects;
         this.currentJobsActivitiesData = activitiesAvailable.jobs;
+        this.currentVolunteersActivitiesData = activitiesAvailable.volunteers
+        console.log(activitiesAvailable)
       }
     )
 
@@ -156,6 +168,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       } else if ( activityType === this.personal_project_identifier ) {
         // personal project node grouped
         this._graphSelectedFiltering('#skillsGraphElements #node-personal_project', false);
+      } else if ( activityType === this.volunteer_identifier ) {
+        // volunteer node grouped
+        this._graphSelectedFiltering('#skillsGraphElements #node-volunteer', false);
       }
       // this.nodehighlighter()
     } else {
@@ -190,6 +205,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     this.isToolsEnabled = false;
     this.isJobsGrouped = false;
     this.isProjectsGrouped = true;
+    this.isVolunteersGrouped = true;
     this.resetLegend();
     this.buildGraphElements();
   }
@@ -214,6 +230,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     this.isToolsEnabled = false;
     this.isJobsGrouped = false;
     this.isProjectsGrouped = false;
+    this.isVolunteersGrouped = false
     this.resetLegend();
     this.buildGraphElements();
     d3.select('#svgSkillsChart .nodes #node-' + nodeToSelect).dispatch('click');
@@ -227,8 +244,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   private _buildLegendGraphActivities(): void {
     const svg = d3.select('.graph-legend')
       .append('svg').attr('id', 'svgSkillsLegend')
-      .attr('width', 270)
-      .attr('height', 100);
+      .attr('width', this.legendWidth)
+      .attr('height', this.legendHeight);
 
     const svgContainer = svg.append('g')
       .attr('class', 'skillsLegend');
@@ -302,6 +319,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
           classesValue = classesValue + ' disabled-group';
         } else if (d.id === 'grouper_projects' && !this.isProjectsGrouped) {
           classesValue = classesValue + ' disabled-group';
+        } else if (d.id === 'grouper_volunteers' && !this.isVolunteersGrouped) {
+          classesValue = classesValue + ' disabled-group';
         }
         return classesValue;
       })
@@ -315,6 +334,8 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
           this.isJobsGrouped = !this.isJobsGrouped;
         } else if (d.id === 'grouper_projects') {
           this.isProjectsGrouped = !this.isProjectsGrouped;
+        } else if (d.id === 'grouper_volunteers') {
+          this.isVolunteersGrouped = !this.isVolunteersGrouped;
         }
         d3.select(e.currentTarget).classed('disabled-group', !d3.select(e.currentTarget).classed('disabled-group'));
         this.buildGraphElements();
@@ -364,6 +385,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       this.isProjectsGrouped = '';
     }
 
+    if (!this.isVolunteersGrouped) {
+      this.isVolunteersGrouped = '';
+    }
 
     if (!this.isTechnicsEnabled) {
       this.isTechnicsEnabled = '';
@@ -384,6 +408,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       this.currentDate,
       this.isProjectsGrouped,
       this.isJobsGrouped,
+      this.isVolunteersGrouped,
     );
   }
 
