@@ -19,7 +19,7 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
   sliderBarId = sliderBarId;
 
   widthLegendElement = 250;
-  heightLegendElement = 90;
+  heightLegendElement = 140;
   heightMoveLegendElement = 60;
 
   tagIcon = tagsIcon;
@@ -38,8 +38,9 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
     circleCxPos: 20,
     textXPos: 50,
     circleJobs: [
-      { cy: 25, class: 'job', label: 'Expériences' },
-      { cy: 70, class: 'education', label: 'Formations' }
+      { cy: 25, class: 'education', label: 'Formations' },
+      { cy: 70, class: 'job', label: 'Expériences' },
+      { cy: 115, class: 'volunteer', label: 'Bénévolats' },
     ]
   };
 
