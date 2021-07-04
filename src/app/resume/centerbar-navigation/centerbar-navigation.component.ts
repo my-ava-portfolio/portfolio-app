@@ -313,7 +313,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       .attr('height', 18)
       .attr('class', (d: any) => {
         // in order to control the display or node, check header variables
-        let classesValue = d.id + ' ' + ' font-weight-bold';
+        let classesValue = d.id + ' ' + 'font-weight-bold';
         if (d.id === 'grouper_jobs' && !this.isJobsGrouped) {
           classesValue = classesValue + ' disabled-group';
         } else if (d.id === 'grouper_projects' && !this.isProjectsGrouped) {
