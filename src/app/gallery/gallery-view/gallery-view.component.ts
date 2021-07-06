@@ -59,6 +59,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   categoriesActivity: any = {
     job: 'Expériences',
     personal_project: 'Projet personnel',
+    volunteer: 'Bénévolat'
   };
 
   activitiesGallerySubscription!: Subscription;
