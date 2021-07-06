@@ -110,6 +110,13 @@
               <input (click)="getGalleryDataByCategory('personal_project')" type="radio" name="options" id="option3" autocomplete="off" >
               <fa-icon class="personal_project_color mr-2" [icon]="tagIcon"></fa-icon>Projets personnels
             </label>
+            <label class="btn btn-secondary btn-sm" [ngClass]="currentCategory === 'volunteer' ? 'font-weight-bolder' : 'inactive'">
+
+              <input (click)="getGalleryDataByCategory('volunteer')" type="radio" name="options" id="option4" autocomplete="off" >
+
+              <fa-icon class="volunteer_color mr-2" [icon]="tagIcon"></fa-icon>Bénévolat
+
+            </label>
           </div>
         </div>
 
