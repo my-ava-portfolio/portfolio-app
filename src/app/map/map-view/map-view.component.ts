@@ -61,7 +61,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   svgActivitiesLayerId = svgActivitiesPointsLayerId;
   circleOpacity = 0.7;
   circleStroke = 'ghostwhite';
-  circleWidth = '3px';
+  circleWidth = '2.5px';
 
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;

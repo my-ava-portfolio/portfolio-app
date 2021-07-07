@@ -63,7 +63,7 @@
 
     <div class="card-body">
       <h6 class="card-title">{{ media_feature.title }}</h6>
-      <span [class]="'badge badge-pill my-1 mx-2 text-white ' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
+      <span [class]="'badge badge-pill my-1 mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
       <a [routerLink]="['/resume']" [fragment]="media_feature.identifier"><span class="badge badge-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
       <span [class]="'badge badge-pill my-1 mx-2 text-white ' + media_feature.type">
         <fa-icon class="mr-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
@@ -111,11 +111,8 @@
               <fa-icon class="personal_project_color mr-2" [icon]="tagIcon"></fa-icon>Projets personnels
             </label>
             <label class="btn btn-secondary btn-sm" [ngClass]="currentCategory === 'volunteer' ? 'font-weight-bolder' : 'inactive'">
-
               <input (click)="getGalleryDataByCategory('volunteer')" type="radio" name="options" id="option4" autocomplete="off" >
-
               <fa-icon class="volunteer_color mr-2" [icon]="tagIcon"></fa-icon>Bénévolat
-
             </label>
           </div>
         </div>

@@ -54,6 +54,9 @@ body::-webkit-scrollbar {
   alignment-baseline: middle;
 }
 
+.personal_project_color {
+  color: #f46d43;
+}
 circle.personal_project {
   fill: #f46d43;
 }
@@ -61,6 +64,10 @@ circle.personal_project {
   background-color: #f46d43;
 }
 
+
+.job_color {
+  color: #cb181d;
+}
 circle.job {
   fill: #cb181d;
 }
@@ -68,12 +75,14 @@ circle.job {
   background-color: #cb181d;
 }
 
-
+.volunteer_color {
+  color: #b15928;
+}
 circle.volunteer {
-  fill: #feb24c;
+  fill: #b15928;
 }
 .bg-color-volunteer {
-  background-color: #feb24c;
+  background-color: #b15928;
 }
 
 
@@ -89,20 +98,30 @@ circle.invisible {
   visibility: hidden;
 }
 
+
+
 circle.technics {
-  fill: #984ea3;
+  stroke: #984ea3;
+  stroke-width: 3;
+  fill: white;
 }
 
 circle.themes {
-  fill: #377eb8;
+  stroke: #377eb8;
+  stroke-width: 3;
+  fill: white;
 }
 
 circle.tools  {
-  fill: #4daf4a;
+  stroke: #4daf4a;
+  stroke-width: 3;
+  fill: white;
 }
 
 .disabled-node circle {
-  fill: #b7b6b6 !important;
+  stroke: #b7b6b6;
+  stroke-width: 3;
+  fill: white !important;
 }
 
 .disabled-group {
