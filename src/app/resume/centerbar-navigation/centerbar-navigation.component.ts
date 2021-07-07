@@ -70,9 +70,9 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     { id: this.job_identifier, status: 'unabled-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
     { id: this.personal_project_identifier, status: 'unabled-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
     { id: this.volunteer_identifier, status: 'unabled-topic', label: 'Bénévolat', cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
-    { id: 'themes', status: 'enabled-topic', label: 'Thématiques', cx: 175, cy: 35, text_cx: 190, r: 6, rOver: 10 },
-    { id: 'technics', status: 'enabled-topic', label: 'Techniques', cx: 175, cy: 55, text_cx: 190, r: 6, rOver: 10 },
-    { id: 'tools', status: 'enabled-topic', label: 'Outils', cx: 175, cy: 75, text_cx: 190, r: 6, rOver: 10 }
+    { id: 'themes', status: 'enabled-topic', label: 'Thématiques', cx: 175, cy: 42, text_cx: 190, r: 5, rOver: 10 },
+    { id: 'technics', status: 'enabled-topic', label: 'Techniques', cx: 175, cy: 67, text_cx: 190, r: 5, rOver: 10 },
+    { id: 'tools', status: 'enabled-topic', label: 'Outils', cx: 175, cy: 92, text_cx: 190, r: 5, rOver: 10 }
   ];
 
   legendGroupInput = [
