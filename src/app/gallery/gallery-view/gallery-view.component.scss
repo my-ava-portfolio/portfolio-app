@@ -218,13 +218,18 @@ footer {
 }
 
 
-
 .legend-content {
   color: "#FFFFF";
   background-color: #f5f5f5;
   box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
 }
 
+
 .gallery-content {
   min-height: 77vh;
+}
+
+
+.activities-container {
+  // min-height: 88px; // increase if new activities added in the gallery...
 }
