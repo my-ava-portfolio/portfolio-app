@@ -19,13 +19,13 @@
 }
 
 .main-circle li {
-overflow: hidden;
-position: absolute;
-top: 0;
-right: 0;
-width: 50%;
-height: 50%;
-transform-origin: 0% 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 100%;
 }
 
 .theme.quarter {
@@ -39,10 +39,11 @@ transform-origin: 0% 100%;
   /*background: #cccccc;*/
   transition: all 0.4s;
   box-shadow: outset 6px -4px 20px 5px rgb(0 0 0 / 50%);
+  z-index:-1;
 }
 
 .quarter:first-child {
-  transform: rotate(28deg) skewY(-30deg);
+  transform: rotate(15deg) skewY(-30deg);
 }
 
 .quarter:nth-child(2) {
@@ -50,7 +51,7 @@ transform-origin: 0% 100%;
 }
 
 .quarter:nth-child(3) {
-  transform: rotate(118deg) skewY(-30deg);
+  transform: rotate(100deg) skewY(-30deg);
 }
 
 .quarter:nth-child(4) {
@@ -58,7 +59,7 @@ transform-origin: 0% 100%;
 }
 
 .quarter:nth-child(5) {
-  transform: rotate(208deg) skewY(-30deg);
+  transform: rotate(195deg) skewY(-30deg);
 }
 
 .quarter:nth-child(6) {
@@ -66,7 +67,7 @@ transform-origin: 0% 100%;
 }
 
 .quarter:nth-child(7) {
-  transform: rotate(298deg) skewY(-30deg);
+  transform: rotate(280deg) skewY(-30deg);
 }
 
 .quarter:nth-child(8) {
@@ -93,9 +94,10 @@ transform-origin: 0% 100%;
   height: 75vh;
   top: 0;
   bottom: 0;
-  background-color: #00000082;
+  background-color: #33333382;
   border-radius: 50%;
   border: 5px double #ffffff;
+  backdrop-filter: blur(2px);
 }
 
 
