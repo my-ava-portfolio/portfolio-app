@@ -5,6 +5,8 @@ import 'leaflet/dist/images/marker-shadow.png';
 
 import { MapService } from '../../services/map.service';
 
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-background-map',
@@ -19,11 +21,25 @@ export class BackgroundComponent implements OnInit {
     minZoom: 8
   });
 
+  isBlurred!: boolean;
+
   map: any;
 
   constructor(
+    private router: Router,
+    private location: Location,
     private mapService: MapService,
   ) {
+
+
+    // to apply bur
+    this.router.events.subscribe(_ => {
+      if ( ['/home', '/map'].includes(this.location.path()) ) {
+        this.isBlurred = false;
+      } else {
+        this.isBlurred = true;
+      }
+    });
 
     this.mapService.isMapContainerCalled.subscribe(
       (status) => {

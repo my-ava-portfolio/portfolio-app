@@ -27,5 +27,18 @@
 .leaflet-control-scale {
   visibility: visible!important;
   margin-bottom: 100px;
+  // margin: 3px !important;
 }
 
+.leaflet-control-scale-line {
+  background: rgb(255 255 255 / 83%)!important;
+}
+
+
+#attribution, #legend-scale {
+  font-size: 12px!important;
+  background-color: #f1f1f1c9!important;
+  margin: 3px!important;
+  padding: 5px;
+  border-radius: 5px;
+}

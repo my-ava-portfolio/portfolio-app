@@ -12,3 +12,7 @@
 .leaflet-control-scale {
   visibility: hidden;
 }
+
+.blurred {
+  filter: blur(2px);
+}

@@ -88,9 +88,20 @@ export class MapViewComponent implements OnInit, OnDestroy {
             position: 'bottomright'
           }
         );
+        const AttributionLeaflet: any = L.control.attribution(
+          {
+            position: 'bottomright'
+          }
+        );
+
         scaleLeaflet.addTo(this.mapContainer);
+        AttributionLeaflet.addTo(this.mapContainer);
+
         const divScale: any = window.document.getElementById('legend-scale');
+        const divAttribution: any = window.document.getElementById('attribution')
         divScale.appendChild(scaleLeaflet.getContainer())
+        divAttribution.appendChild(AttributionLeaflet.getContainer())
+
 
       }
     );
