@@ -195,7 +195,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       .attr('id', 'skillsGraphElements');
   }
 
-  // TODO add reset method (and use it on refresh)
+  // here to control default topic graph.
   resetChart(): void {
     this.currentNodeIdSelected = this.defaultNodeIdSelected;
     this.currentDate = this.graphInputData.end_date_graph_slider;
@@ -203,7 +203,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
     this.isTechnicsEnabled = true;
     this.isToolsEnabled = false;
     this.isJobsGrouped = false;
-    this.isProjectsGrouped = true;
+    this.isProjectsGrouped = false;
     this.isVolunteersGrouped = true;
     this.resetLegend();
     this.buildGraphElements();
