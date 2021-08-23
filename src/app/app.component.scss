@@ -138,8 +138,9 @@ circle.tools  {
 }
 
 circle.selected {
+  stroke: black!important;
+  stroke-width: 2px!important;
 }
-
 
 #svgSkillsLegend .nodeLabels text:not(.technics):not(.themes):not(.tools), #svgSkillsChart .nodeLabels text:not(.technics):not(.themes):not(.tools) {
   fill: black;
