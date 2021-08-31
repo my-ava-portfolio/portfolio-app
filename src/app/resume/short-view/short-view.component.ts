@@ -5,7 +5,7 @@ import { apiLogoUrl } from '../../core/inputs';
 
 import { Subscription } from 'rxjs';
 
-import { githubIcon, linkedinIcon, emailIcon, phoneIcon, websiteIcon } from '../../core/inputs';
+import { githubIcon, linkedinIcon, emailIcon, phoneIcon, websiteIcon, pdfFileIcon } from '../../core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -25,6 +25,7 @@ export class ShortViewComponent implements OnInit, OnDestroy {
   emailIcon = emailIcon;
   phoneIcon = phoneIcon;
   websiteIcon = websiteIcon;
+  pdfFileIcon = pdfFileIcon;
 
   apiImgUrl = apiLogoUrl;
 
@@ -101,7 +102,6 @@ export class ShortViewComponent implements OnInit, OnDestroy {
       true,
       null
     );
-
   }
 
   ngOnDestroy(): void {
@@ -117,5 +117,22 @@ export class ShortViewComponent implements OnInit, OnDestroy {
     }
     return output;
   }
+
+
+  print(landscape: boolean) {
+    var head = document.head || document.getElementsByTagName('short_resume')[0];
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.media = 'print';
+
+    style.appendChild(document.createTextNode(landscape ?
+      '@page { size: A4 landscape; margin: 0in;}' :
+      '@page { size: A4;  margin: 5in; scale: 55}'));
+
+    head.appendChild(style);
+    window.print();
+  }
+
+
 
 }
