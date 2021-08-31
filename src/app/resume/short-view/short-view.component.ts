@@ -118,21 +118,8 @@ export class ShortViewComponent implements OnInit, OnDestroy {
     return output;
   }
 
-
   print(landscape: boolean) {
-    var head = document.head || document.getElementsByTagName('short_resume')[0];
-    var style = document.createElement('style');
-    style.type = 'text/css';
-    style.media = 'print';
-
-    style.appendChild(document.createTextNode(landscape ?
-      '@page { size: A4 landscape; margin: 0in;}' :
-      '@page { size: A4;  margin: 5in; scale: 55}'));
-
-    head.appendChild(style);
     window.print();
   }
-
-
 
 }
