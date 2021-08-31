@@ -1,6 +1,7 @@
-<div class="container"  *ngIf="isDataAvailable">
+<button type="button" class="btn btn-danger d-print-none" (click)="print(false)">Export en PDF / Impression</button>
+<div id="short_resume" class="container-width my-4 mx-4"  *ngIf="isDataAvailable">
 
-  <div class="row justify-content-between">
+  <div id="general" class="row justify-content-center">
 
     <div class="col-md-6 align-self-center">
       <h3 class="font-weight-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h3>
@@ -38,148 +39,170 @@
   <div class="row">
 
     <div class="col-lg-12">
-      <h3 class="title text-center my-3">Education</h3>
+      <h3 class="title text-center my-2">Education</h3>
     </div>
-
-    <div id="degrees" class="col-lg-12 mt-2">
-      <div class="col-lg-12">
-        <h5 class="">Diplômes</h5>
-      </div>
-
-      <div class="col-lg-12 sub-element" *ngFor="let degree of degreesData">
-        <div class="col-lg-12">
-          <div class="font-weight-bold">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy' }} - {{ degree.degree }}</div>
-        </div>
-        <div class="col-lg-12">
-          <div class="font-weight-light ml-3">{{ degree.school }} à {{ degree.location }} </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-12 mt-2">
-      <div class="col-lg-12">
-        <h5 class="">Formations</h5>
-      </div>
-      <div class="col-lg-12" *ngFor="let training of trainingsData">
-        <div class="col-lg-12">
-          <div class="font-weight-bold">{{ training.year }} - {{ training.name }}</div>
-        </div>
-        <div class="col-lg-12">
-          <div class="font-weight-light ml-3">{{ training.trainer }}</div>
-        </div>
-      </div>
-    </div>
-
-    <div id="languages" class="col-lg-12 mt-2">
-      <div class="col-lg-12">
-        <h5 class="">Langues</h5>
-      </div>
-      <div class="col-lg-12">
-        <ul class="list-unstyled">
-          <li *ngFor="let language of languagesData">
-            <span class="ml-3">{{language.language}} - {{language.level}}</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
 
     <div class="col-lg-12">
-      <h3 class="title text-center my-3">Expériences</h3>
-    </div>
 
-    <div class="col-lg-12 mt-2" *ngFor="let job of jobsData">
-      <div class="col-lg-12">
 
-        <div *ngIf="job.current; then currentJob else pastJob"></div>
-        <ng-template #pastJob>
-          <span class="font-weight-bold">{{job.contract}} - Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.duration}})</span>
-        </ng-template>
-        <ng-template #currentJob>
-          <span class="font-weight-bold">{{job.contract}} - Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.duration}})</span>
-        </ng-template>
+      <div class="row justify-content-center mb-2">
 
-        <span class="font-weight-light"> - {{job.title}} </span>
+        <div id="degrees" class="col-md-7">
+          <h6 class="">Diplômes</h6>
 
-        <div class="col-lg-12">
-          <span class="font-weight-light"> {{job.company}} à {{job.location}}</span>
+          <div class="col-md-12 sub-element" *ngFor="let degree of degreesData">
+            <div class="col-md-12">
+              <span class="font-weight-bold my-0">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy' }} - {{ degree.degree }}</span>
+              <p class="font-weight-light ml-3">{{ degree.school }} à {{ degree.location }} </p>
+            </div>
+          </div>
         </div>
+
+        <div class="col-md-4">
+
+          <div id="tranings" class="col-md-12 mb-2">
+            <h6 class="">Formations</h6>
+            <div class="ml-3" *ngFor="let training of trainingsData">
+                <span class="font-weight-bold my-0 mr-1">{{ training.year }} - {{ training.name }}</span>
+                <span class="font-weight-light"> par {{ training.trainer }}</span>
+            </div>
+          </div>
+
+          <div id="languages" class="col-md-12">
+            <h6 class="">Langues</h6>
+            <div class="ml-3" *ngFor="let language of languagesData">
+                <span class="font-weight-bold my-0 mr-1">{{language.language}}</span><span class="font-weight-light"> - {{language.level}}</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
+
+
   </div>
 
-  <div class="row">
+  <div id="jobs" class="row justify-content-center">
 
     <div class="col-lg-12">
-      <h3 class="title text-center my-3">Projets</h3>
+      <h3 class="title text-center my-2">Expériences</h3>
     </div>
 
-    <div class="col-lg-4" *ngFor="let project of personalProjectsData">
+    <fieldset [ngClass]="job.status === 'InProgress' ? 'border rounded border-danger': 'border rounded'" class="col-lg-11 mb-3" *ngFor="let job of jobsData">
 
-      <div class="col-lg-12">
-        <h5>{{project.title}}</h5>
+      <legend [ngClass]="job.status === 'InProgress' ? 'text-danger': 'text-dark'" class="font-weight-bold text_legend px-2 my-0"><h6>{{job.title}}</h6></legend>
+
+      <div class="row justify-content-between nowrap mb-2">
+
+        <div class="col-md-12">
+          <div class="row justify-content-between mb-1">
+
+            <div class="col-md-8">
+              <span class="font-weight-bold"> {{job.company}} à {{job.location}}</span>
+            </div>
+
+            <div class="col-md-4 text-right">
+              <div *ngIf="job.status === 'InProgress'; then currentJob else pastJob"></div>
+                <ng-template #pastJob>
+                  <span class="font-weight-bold">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.contract}} - {{job.duration}})</span>
+                </ng-template>
+                <ng-template #currentJob>
+                  <span class="font-weight-bold"> Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.contract}} - {{job.duration}})</span>
+                </ng-template>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-md-1 mx-auto my-auto">
+          <img class="img-fluid rounded mx-auto d-block shadow img_company" [src]="apiImgUrl + job.img_company"/>
+        </div>
+
+        <div class="col-md-11 text-justify">
+          <p class="">{{job.presentation}}</p>
+        </div>
+
       </div>
-      <div class="col-lg-12 ">
+
+    </fieldset>
+
+  </div>
+
+  <div id="projects" class="row justify-content-around">
+
+    <div class="col-lg-12">
+      <h3 class="title text-center my-2">Projets personnels</h3>
+    </div>
+
+    <fieldset class="col-lg-3 border rounded mb-2" *ngFor="let project of personalProjectsData">
+        <legend class="font-weight-bold text_legend px-2 my-0"><h6>{{project.title}}</h6></legend>
+      <div class="col-lg-12 text-justify">
         <p>{{project.description}}</p>
       </div>
 
       <div class="list col-lg-12">
-        <ul>
+        <ul class="list-unstyled">
           <div *ngIf="project.url_github; then projectsShorcutGithub"></div>
           <ng-template #projectsShorcutGithub>
-            <li><span class="">Github: </span><a class="small text-dark" href="{{ project.url_github }}" target="_blank" rel="noopener noreferrer">{{ project.url_github }}</a></li>
+            <li><fa-icon class="mr-2" [icon]="githubIcon"></fa-icon><a class="small text-dark" href="{{ project.url_github }}" target="_blank" rel="noopener noreferrer">{{ project.url_github }}</a></li>
           </ng-template>
 
           <div *ngIf="project.url_website; then projectsShorcutWebsite"></div>
           <ng-template #projectsShorcutWebsite>
-            <li><span class="">Site web: </span><a class="small text-dark" href="{{ project.url_website }}" target="_blank" rel="noopener noreferrer">{{ project.url_website }}</a></li>
+            <li><fa-icon class="mr-2" [icon]="websiteIcon"></fa-icon><a class="small text-dark" href="{{ project.url_website }}" target="_blank" rel="noopener noreferrer">{{ project.url_website }}</a></li>
           </ng-template>
         </ul>
       </div>
-    </div>
+
+    </fieldset>
+
   </div>
 
-  <div class="row">
-    <div class="col-lg-12">
-      <h3 class="title text-center my-3">Recherches et publications</h3>
+
+  <div id="skills" class="row justify-content-center">
+
+    <div class="col-md-12">
+      <h3 class="title text-center my-2">Compétences</h3>
     </div>
 
-    <div class="col-lg-12 sub-element" *ngFor="let publication of publicationsData">
-      <div class="col-lg-12">
+    <ng-container *ngIf="skillsData">
+
+      <div class="col-md-6">
+        <ng-container *ngIf="skillsData.themes">
+          <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.themes, title: 'Thématiques'}"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="skillsData.technics">
+          <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.technics, title: 'Techniques'}"></ng-container>
+        </ng-container>
+
+      </div>
+
+      <div id="tools" class="col-md-6">
+        <ng-container *ngIf="skillsData.tools">
+          <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.tools, title: 'Outils'}"></ng-container>
+        </ng-container>
+      </div>
+
+    </ng-container>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <h3 class="title text-center my-2">Recherches et publications</h3>
+    </div>
+
+    <div class="col-md-12 sub-element" *ngFor="let publication of publicationsData">
+      <div class="col-md-12 ">
         <span class="font-weight-bold">{{publication.year}}</span>
       </div>
-      <div class="col-lg-12 ml-3">
+      <div class="col-md-12 ml-3 text-justify">
         <span>{{publication.publication}}</span>
+        <a class="text-dark ml-2" href="{{ publication.link }}" target="_blank" rel="noopener noreferrer">Accès <fa-icon class="mr-2" [icon]="pdfFileIcon"></fa-icon></a>
       </div>
     </div>
   </div>
 
-  <div class="row">
-
-    <div class="col-lg-12">
-      <h3 class="title text-center my-3">Compétences</h3>
-    </div>
-
-    <div class="col-lg-6">
-      <ng-container *ngIf="skillsData.themes">
-        <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.themes, title: 'Thématiques'}"></ng-container>
-      </ng-container>
-    </div>
-
-    <div class="col-lg-6">
-      <ng-container *ngIf="skillsData.technics">
-        <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.technics, title: 'Techniques'}"></ng-container>
-      </ng-container>
-    </div>
-
-    <div id="tools" class="col-lg-6">
-      <ng-container *ngIf="skillsData.tools">
-        <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.tools, title: 'Outils'}"></ng-container>
-      </ng-container>
-    </div>
-  </div>
 
 </div>
 
@@ -199,7 +222,7 @@
   <div class="col-lg-12">
     <ul class="">
       <li *ngFor="let feature of data">
-        <span class="font-weight-bold">{{feature.name}}:</span><span class="ml-1">{{feature.details | join }}</span>
+        <span class="font-weight-bold">{{feature.name}}:</span><span class="ml-1">{{feature.details | join }}.</span>
       </li>
     </ul>
   </div>
