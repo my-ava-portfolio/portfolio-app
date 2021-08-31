@@ -17,7 +17,11 @@ import { trigger, transition } from '@angular/animations';
   styleUrls: ['./main-view.component.scss'],
   animations: [
     trigger('routerAnimations', [
-      transition('* => *', fadeAnimation),
+      transition('* => home', fadeAnimation),
+      transition('* => profil', fadeAnimation),
+      transition('* => map', fadeAnimation),
+      transition('* => gallery', fadeAnimation),
+      transition('* => blog', fadeAnimation),
     ])
   ]
 })
@@ -66,6 +70,7 @@ export class MainViewComponent implements OnInit {
   }
 
   prepareRouteTransition(outlet: any): any {
+    // here the page attributes from app.module.ts to support animation
     return outlet.activatedRouteData.page || {};
   }
 
