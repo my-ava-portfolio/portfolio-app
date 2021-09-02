@@ -20,7 +20,7 @@ export class MapService {
   activitiesGeoDataToMap: Subject<any[]> = new Subject<any[]>();
   tripsGeoDataToMap: Subject<any[]> = new Subject<any[]>();
 
-  isMapContainerCalled: Subject<boolean> = new Subject<boolean>();
+  mapContainerCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 
 
@@ -29,7 +29,7 @@ export class MapService {
   ) { }
 
   getMapContainer(): void {
-    this.isMapContainerCalled.next(true);
+    this.mapContainerCalled.next(true);
   }
 
   resetMapView(): void {

@@ -1,4 +1,6 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+
+import { Subscription } from 'rxjs';
 
 import * as L from 'leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
@@ -25,6 +27,9 @@ export class BackgroundComponent implements OnInit {
 
   map: any;
 
+  mapContainerCalledSubscription!: Subscription;
+  mapServiceSubscription!: Subscription;
+
   constructor(
     private router: Router,
     private location: Location,
@@ -41,9 +46,9 @@ export class BackgroundComponent implements OnInit {
       }
     });
 
-    this.mapService.isMapContainerCalled.subscribe(
+    this.mapContainerCalledSubscription = this.mapService.mapContainerCalled.subscribe(
       (status) => {
-        this.mapService.sendMapContainer(this.map);
+        this.sendMapContainer()
       },
       (error) => {
         console.log('error');
@@ -51,7 +56,7 @@ export class BackgroundComponent implements OnInit {
     );
 
 
-    this.mapService.isMapViewReset.subscribe(
+    this.mapServiceSubscription = this.mapService.isMapViewReset.subscribe(
       (status) => {
         this.resetView();
       },
@@ -65,6 +70,11 @@ export class BackgroundComponent implements OnInit {
   ngOnInit(): void {
     this.initMap();
 
+  }
+
+  ngOnDestroy(): void {
+    this.mapContainerCalledSubscription.unsubscribe();
+    this.mapServiceSubscription.unsubscribe();
   }
 
   sendMapContainer(): void {
