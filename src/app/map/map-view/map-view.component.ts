@@ -102,7 +102,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         divScale.appendChild(scaleLeaflet.getContainer())
         divAttribution.appendChild(AttributionLeaflet.getContainer())
 
-
+        
       }
     );
 
@@ -175,6 +175,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     d3.select('#' + this.svgActivitiesLayerId).remove();
     d3.selectAll('[id^=' + this.svgTripIdPrefix + ']').remove();
+
+    d3.select(".leaflet-control-scale").remove();
+    d3.select(".leaflet-control-attribution").remove();
     this.mapService.resetMapView()
   }
 
