@@ -70,7 +70,7 @@ export class ShortViewComponent implements OnInit, OnDestroy {
         this.languagesData = data.languages;
         this.profilData = data.profil;
         this.trainingsData = data.trainings;
-        this.summaryData = data.carrier_summary;
+        this.summaryData = data.profil.carrier_summary;
         this.publicationsData = data.research_work;
 
         this.isDataAvailable = true;

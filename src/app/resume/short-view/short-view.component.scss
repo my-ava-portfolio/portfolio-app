@@ -27,7 +27,7 @@ html {
   font-size: 1rem;
 }
 
-p, span, a {
+p:not(#resume_summary), span, a {
   font-size: small;
 }
 

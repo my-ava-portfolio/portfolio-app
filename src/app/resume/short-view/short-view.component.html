@@ -1,12 +1,15 @@
-<button type="button" class="btn btn-danger d-print-none" (click)="print(false)">Export en PDF / Impression</button>
+<div class="row d-print-none mx-2 my-2">
+  <button type="button" class="btn btn-danger" (click)="print(false)">Export en PDF / Impression</button>
+</div>
+
 <div id="short_resume" class="container-width my-4 mx-4"  *ngIf="isDataAvailable">
 
   <div id="general" class="row justify-content-center">
 
     <div class="col-md-6 align-self-center">
-      <h3 class="font-weight-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h3>
-      <h5 class="">{{ profilData.job }}</h5>
-      <h5 class="">{{ profilData.experience_duration }}</h5>
+      <h2 class="font-weight-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h2>
+      <h3 class="">{{ profilData.job }}</h3>
+      <h3 class="">{{ profilData.experience_duration }}</h3>
     </div>
 
     <div class="col-md-5 text-right my-auto">
@@ -34,12 +37,18 @@
 
       </ul>
     </div>
+
+    <div class="col-md-11 mt-3">
+      <p id="resume_summary" class="text-justify">{{ summaryData }} </p>
+    </div>
+
+
   </div>
 
-  <div class="row">
+  <div id="education" class="row mb-3">
 
     <div class="col-lg-12">
-      <h3 class="title text-center my-2">Education</h3>
+      <h3 class="title text-center">Education</h3>
     </div>
 
     <div class="col-lg-12">
@@ -82,10 +91,10 @@
 
   </div>
 
-  <div id="jobs" class="row justify-content-center">
+  <div id="jobs" class="row justify-content-center mb-3">
 
     <div class="col-lg-12">
-      <h3 class="title text-center my-2">Expériences</h3>
+      <h3 class="title text-center mb-4">Expériences</h3>
     </div>
 
     <fieldset [ngClass]="job.status === 'InProgress' ? 'border rounded border-danger': 'border rounded'" class="col-lg-11 mb-3" *ngFor="let job of jobsData">
@@ -128,16 +137,16 @@
 
   </div>
 
-  <div id="projects" class="row justify-content-around">
+  <div id="projects" class="row justify-content-around mb-3">
 
     <div class="col-lg-12">
-      <h3 class="title text-center my-2">Projets personnels</h3>
+      <h3 class="title text-center mb-4">Projets personnels</h3>
     </div>
 
     <fieldset class="col-lg-3 border rounded mb-2" *ngFor="let project of personalProjectsData">
         <legend class="font-weight-bold text_legend px-2 my-0"><h6>{{project.title}}</h6></legend>
       <div class="col-lg-12 text-justify">
-        <p>{{project.description}}</p>
+        <p class="presentation">{{project.presentation}}</p>
       </div>
 
       <div class="list col-lg-12">
@@ -159,10 +168,10 @@
   </div>
 
 
-  <div id="skills" class="row justify-content-center">
+  <div id="skills" class="row justify-content-center mb-3">
 
     <div class="col-md-12">
-      <h3 class="title text-center my-2">Compétences</h3>
+      <h3 class="title text-center mb-4">Compétences</h3>
     </div>
 
     <ng-container *ngIf="skillsData">
@@ -187,9 +196,9 @@
     </ng-container>
   </div>
 
-  <div class="row justify-content-center">
+  <div class="row justify-content-center mb-3">
     <div class="col-md-12">
-      <h3 class="title text-center my-2">Recherches et publications</h3>
+      <h3 class="title text-center mb-4">Recherches et publications</h3>
     </div>
 
     <div class="col-md-12 sub-element" *ngFor="let publication of publicationsData">
@@ -210,7 +219,7 @@
 
 <ng-template #contactListElement let-icon=icon let-data=data>
   <li>
-    <a class="text-dark small" [href]="data" target="_blank" rel="noopener noreferrer" [innerHTML]="reverse(data)"></a>
+    <a class="text-dark" [href]="data" target="_blank" rel="noopener noreferrer" [innerHTML]="reverse(data)"></a>
     <fa-icon class="ml-2" [icon]="icon"></fa-icon>
   </li>
 </ng-template>
