@@ -21,7 +21,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   @Input() isGeodataCanBeDisplayed: any;
 
   mapContainer: any;
-  sliderDate!: string;
+  sliderDate!: Date;
 
   geoActivitiesData!: any;
   geoTripsData!: any;
@@ -148,7 +148,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     // reset action
     d3.select('#play-button').html('Start');
     // update to start date
-    this.sliderDate = this.formatDate(this.startDate)
+    this.sliderDate = this.startDate
     // d3.select('#slider-value').html(this.formatDate(this.startDate));
     this.update(this.startDate);
     this.selectedDatePosition = 0;
@@ -159,7 +159,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   forwardTimeLine(): void {
     d3.select('#play-button').html('Play');
     // update to start date
-    this.sliderDate = this.formatDate(this.startDate)
+    this.sliderDate = this.startDate
     // d3.select('#slider-value').html(this.formatDate(this.endDate));
     this.update(this.endDate);
     this.selectedDatePosition = 0;
@@ -215,7 +215,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     d3.select('#trace').attr('x2', this.dateRange(h)); // trace
     d3.select('#handle').attr('cx', this.dateRange(h)); // handle
-    this.sliderDate = this.formatDate(h)
+    this.sliderDate = h
     // d3.select('#slider-value').text(this.formatDate(h));
   }
 
@@ -370,8 +370,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('class', 'events');
 
     // update to end date
-    this.sliderDate = this.formatDate(this.endDate)
-    // d3.select('#slider-value').text(this.formatDate(this.endDate));
+    this.sliderDate = this.endDate
     this.update(this.endDate);
 
   }
