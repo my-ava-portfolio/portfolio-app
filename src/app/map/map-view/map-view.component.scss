@@ -42,3 +42,18 @@
   padding: 5px;
   border-radius: 5px;
 }
+
+
+#map-title {
+  background-color: #f1f1f1c9 !important;
+  padding: 10px;
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
+}
+
+#map-title:after {
+  left: -30px;
+  border-top: 30px solid salmon;
+  border-left: 30px solid transparent;
+  z-index: -10;
+}

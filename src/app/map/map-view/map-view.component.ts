@@ -102,7 +102,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         divScale.appendChild(scaleLeaflet.getContainer())
         divAttribution.appendChild(AttributionLeaflet.getContainer())
 
-        
+
       }
     );
 
@@ -419,15 +419,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
       // .style('stroke', 'black')
       // .style('stroke-width', '3px');
 
-    const textmarker: any  = g.append('text') // uncomment line? Firefox issue?
+    const textmarker: any = g.append('text') // uncomment line? Firefox issue?
       // .attr('font-family', '\'Font Awesome 5 Free\'')
       // .attr('font-weight', 900)
       // .style('color', 'black')
       .text(this.trainIconUnicode)
-      // .attr('text-anchor', 'middle')
-      // .attr('alignment-baseline', 'middle')
       .attr('id', 'markerText_' + layerId)
-      .attr('class', 'train-marker-text travelMarkerText_' + layerId);
+      .attr('class', 'train-marker-text travelMarkerText_' + layerId)
 
     // points that make the path, we'll be used to display them with the line chart
     // we make them transparent
