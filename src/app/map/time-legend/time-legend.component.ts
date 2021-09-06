@@ -405,9 +405,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         this.interactionWithEventNode(e.currentTarget, d);
         // to link with popup
         d3.select('#popup-feature-' + d.properties.id)
-        .style('visibility', 'visible')
-        .style('top', '10%')
-        .style('left', '2%');
+          .style('visibility', 'visible')
+        .style('left', '1%');
 
       })
       .on('mouseout', (e: any, d: any) => {
