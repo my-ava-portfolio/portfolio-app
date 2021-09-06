@@ -55,9 +55,9 @@ const appRoutes: Routes = [
     path: '',
     component: MainViewComponent,
     children: [
-      { path: 'home', component: HomeViewComponent, data: { title: 'Accueil - Amaury Valorge Portfolio', page: 'home' } },
+      { path: 'home', component: HomeViewComponent, data: { title: 'Amaury Valorge Portfolio', page: 'home' } },
       { path: 'resume', component: ResumeViewComponent, data: { title: 'Profil', page: 'profil' } },
-      { path: 'map', component: MapViewComponent, data: { title: 'Carte', page: 'map' } },
+      { path: 'map', component: MapViewComponent, data: { title: 'Carte des activités', page: 'map' } },
       { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie', page: 'gallery' } },
       { path: 'blog', component: NotesViewComponent, data: { title: 'Blog', page: 'blog' } },
       { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
