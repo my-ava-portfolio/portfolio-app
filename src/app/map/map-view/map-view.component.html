@@ -1,7 +1,7 @@
 <div class="container-fluid" *ngIf="isGeodataCanBeDisplayed">
 
   <div class="row justify-content-center">
-    <div class="col-3 text-center">
+    <div class="col-auto text-center">
       <h4 id="map-title" class="font-weight-bold">Localisation de mes activités</h4>
     </div>
   </div>
@@ -62,11 +62,11 @@
 </div>
 
 
-<div [id]="'popup-feature-' + feature.properties.id" class="item card shadow map-popup" *ngFor="let feature of geoFeaturesData">
+<div [id]="'popup-feature-' + feature.properties.id" class="col-md-4 item card shadow map-popup" *ngFor="let feature of geoFeaturesData">
   <div class="card-body">
     <div class="row justify-content-around">
 
-      <div class="col-lg-12 mb-3">
+      <div class="col-lg-12 mb-1">
         <h6 class="font-weight-bold">{{feature.properties.title}}</h6>
       </div>
     </div>
@@ -75,12 +75,12 @@
 
       <div *ngIf="feature.properties.img_activity !== 'null';then ImgActivity"></div>
       <ng-template #ImgActivity>
-        <div class="col-lg-6 mb-2 justify-content-around text-center">
+        <div class="col-6 mb-2 my-auto justify-content-around text-center">
           <img class="img-fluid rounded mx-auto d-block shadow mini-thumbnail-width" [src]="apiImgUrl + feature.properties.img_activity"/>
         </div>
       </ng-template>
 
-      <div class="col-lg-6">
+      <div class="col-6 my-auto">
         <h6 class="font-weight-bold small">{{feature.properties.name}}</h6>
         <div>
           <span class="small">
