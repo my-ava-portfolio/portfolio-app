@@ -11,8 +11,6 @@
   padding-bottom: 10px;
 }
 
-
-.activities_jobs_shortcuts, .activities_projects_shortcuts {
-  min-height: 30px;
+.disable_button {
+  pointer-events: none;
 }
-

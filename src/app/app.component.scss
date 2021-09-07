@@ -44,6 +44,14 @@ body::-webkit-scrollbar {
 
 
 /* style navigation chart and maps */
+
+.legend_graph_title { /* here due to svg */
+  font-size: 12px;
+  dominant-baseline: middle;
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
 .grouper_jobs, .grouper_projects, .grouper_volunteers {
   font-family: 'Font Awesome 5 Free';
   text-anchor: middle;
@@ -58,7 +66,14 @@ circle.personal_project {
 .bg-color-personal_project {
   background-color: #ff7f00;
 }
-
+.btn-outline-personal_project {
+  color: #ff7f00!important;
+  border-color: #ff7f00;
+}
+.btn-outline-personal_project:hover{
+  background-color:#ff7f00;
+  color: #ffffff!important;
+}
 
 .job_color {
   color: #e31a1c;
@@ -69,6 +84,15 @@ circle.job {
 .bg-color-job {
   background-color: #e31a1c;
 }
+.btn-outline-job {
+  color: #e31a1c!important;
+  border-color: #e31a1c;
+}
+.btn-outline-job:hover{
+  background-color:#e31a1c;
+  color: #ffffff!important;
+}
+
 
 .volunteer_color {
   color: #6a3d9a;
@@ -79,7 +103,14 @@ circle.volunteer {
 .bg-color-volunteer {
   background-color: #6a3d9a;
 }
-
+.btn-outline-volunteer {
+  color: #6a3d9a!important;
+  border-color: #6a3d9a;
+}
+.btn-outline-volunteer:hover{
+  background-color:#6a3d9a;
+  color: #ffffff!important;
+}
 
 circle.education {
   fill: #168720;
@@ -211,12 +242,7 @@ circle.selected {
   pointer-events: none;
 }
 
-.legend_graph_title {
-  font-size: 12px;
-  dominant-baseline: middle;
-  font-weight: bolder;
-  text-decoration: underline;
-}
+
 
 #OrientationAlert {
   background-color: rgb(0 0 0 / 80%);
