@@ -49,8 +49,8 @@ body::-webkit-scrollbar {
   font-size: 12px;
   dominant-baseline: middle;
   font-weight: bolder;
-  text-decoration: underline;
 }
+
 
 .grouper_jobs, .grouper_projects, .grouper_volunteers {
   font-family: 'Font Awesome 5 Free';
@@ -260,4 +260,9 @@ circle.selected {
   position: fixed;
   overflow-y: hidden;
   width: 100%;
+}
+
+
+.cursor {
+  cursor: pointer;
 }

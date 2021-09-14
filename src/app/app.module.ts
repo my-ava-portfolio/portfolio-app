@@ -36,7 +36,11 @@ import { LeftbarSubviewComponent } from './resume/leftbar-subview/leftbar-subvie
 import { CenterbarJobsComponent } from './resume/centerbar-jobs/centerbar-jobs.component';
 import { CenterbarProjectsComponent } from './resume/centerbar-projects/centerbar-projects.component';
 import { CenterbarPublicationsComponent } from './resume/centerbar-publications/centerbar-publications.component';
+import { CenterbarVolunteerComponent } from './resume/centerbar-volunteer/centerbar-volunteer.component';
+import { CenterbarPresentationComponent } from './resume/centerbar-presentation/centerbar-presentation.component';
 import { RightbarSkillsComponent } from './resume/rightbar-skills/rightbar-skills.component';
+
+
 import { ShortViewComponent } from './resume/short-view/short-view.component';
 
 import { MapViewComponent } from './map/map-view/map-view.component';
@@ -46,7 +50,7 @@ import { BackgroundComponent } from './background/map/background.component';
 import { FooterComponent } from './background/footer/footer.component';
 import { HeaderComponent } from './background/header/header.component';
 import { TimeLegendComponent } from './map/time-legend/time-legend.component';
-import { CenterbarVolunteerComponent } from './resume/centerbar-volunteer/centerbar-volunteer.component';
+
 
 const appRoutes: Routes = [
 
@@ -98,6 +102,7 @@ registerLocaleData(localeFr);
     ThemeLegendComponent,
     TimeLegendComponent,
     CenterbarVolunteerComponent,
+    CenterbarPresentationComponent,
   ],
   imports: [
     BrowserModule,

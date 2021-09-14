@@ -15,7 +15,6 @@ import { topicIcon, helpIcon, ungroupIconUnicode, nextIcon } from '../../core/in
 })
 export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() graphInputData!: any;
-  @Input() summaryData!: any;
 
   @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
 
@@ -34,7 +33,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   ungroupIconUnicode = ungroupIconUnicode;
   nextIcon = nextIcon;
 
-  inputSummaryData!: any;
   currentDate: number = new Date().getFullYear();
   currentNodeIdSelected: string | null = null;
 
@@ -138,7 +136,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
    }
 
   ngOnInit(): void {
-    this.inputSummaryData = this.summaryData;
     this.initSvgGraph();
     this._buildLegendGraphActivities();
     this.resetChart();
