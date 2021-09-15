@@ -4,7 +4,7 @@ import { apiLogoUrl } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
 
-import { resumeIcon, galleryIcon, locationIcon, notesIcon, githubIcon, websiteIcon, filterIcon } from '../../core/inputs';
+import { expandIcon, volunteerIcon, galleryIcon, locationIcon, notesIcon, githubIcon, websiteIcon, filterIcon } from '../../core/inputs';
 
 @Component({
   selector: 'app-centerbar-volunteer',
@@ -18,14 +18,15 @@ export class CenterbarVolunteerComponent implements OnInit {
   apiImgUrl = apiLogoUrl;
 
   // icons
-  resumeIcon = resumeIcon;
+  volunteerIcon = volunteerIcon;
   galleryIcon = galleryIcon;
   githubIcon = githubIcon;
   notesIcon = notesIcon;
   websiteIcon = websiteIcon;
   filterIcon = filterIcon;
   locationIcon = locationIcon;
-  
+  expandIcon = expandIcon;
+
   constructor(
     private resumeService: ResumeService
   ) {

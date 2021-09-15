@@ -1,4 +1,4 @@
-import { faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
@@ -23,7 +23,7 @@ export const resumeIcon = faAddressCard;
 export const galleryIcon = faImages;
 export const notesIcon = faFileAlt;
 export const githubIcon = faGithub;
-export const topicIcon = faGlobeEurope;
+export const navIcon = faGlobeEurope;
 export const helpIcon = faQuestionCircle;
 export const exclamationIcon = faExclamationCircle;
 export const locationIcon = faMapMarkerAlt;
@@ -56,6 +56,12 @@ export const videoItemIcon = faYoutube;
 export const appItemIcon = faAppStore;
 export const toolItemIcon = faTools;
 export const bugIcon = faBug;
+export const expandIcon = faExpand;
+export const projectIcon = faPaintBrush;
+export const publishIcon = faBook;
+export const volunteerIcon = faUserCog;
+export const jobIcon = faBuilding;
+export const presIcon = faAddressBook;
 
 // font awesome unicode
 export const trainIconUnicode = '\uf238';

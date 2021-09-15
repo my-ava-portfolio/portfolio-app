@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { topicIcon } from '../../core/inputs';
+import { presIcon, expandIcon } from '../../core/inputs';
 
 @Component({
   selector: 'app-centerbar-presentation',
@@ -10,12 +10,14 @@ export class CenterbarPresentationComponent implements OnInit {
   @Input() summaryData!: any;
   @Input() qualitiesData!: any;
 
+  cardEnabled = true;
 
   inputSummaryData!: any;
   inputQualitiesData!: any;
 
   // icons
-  topicIcon = topicIcon;
+  presIcon = presIcon;
+  expandIcon = expandIcon;
 
   constructor() { }
 

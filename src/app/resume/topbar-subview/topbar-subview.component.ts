@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { githubIcon, linkedinIcon, printIcon, emailIcon } from '../../core/inputs';
+import { navIcon, projectIcon, publishIcon, jobIcon, volunteerIcon, presIcon } from '../../core/inputs';
 
 
 @Component({
@@ -23,6 +24,13 @@ export class TopbarSubviewComponent implements OnInit {
   githubIcon = githubIcon;
   linkedinIcon = linkedinIcon;
   emailIcon = emailIcon;
+
+  projectIcon = projectIcon;
+  publishIcon = publishIcon;
+  volunteerIcon = volunteerIcon;
+  jobIcon = jobIcon;
+  presIcon = presIcon;
+  navIcon = navIcon;
 
   constructor() { }
 
