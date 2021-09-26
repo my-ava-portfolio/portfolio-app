@@ -1,38 +1,51 @@
-<div class="row">
+<div class="row justify-content-around my-3 text-center text-white my-3">
 
-  <div class="name-container col-lg-3 text-center my-3 text-white">
+  <div class="name-container col-lg-3 my-auto">
     <h2 class="font-weight-bold">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h2>
     <h5 class="font-weight-light">{{ inputProfilData.job }}</h5>
     <h5 class="font-weight-light">{{ inputProfilData.experience_duration }}</h5>
   </div>
 
-  <div class="col-lg-6 text-center align-self-center my-3">
+  <div class="col-lg-5 my-auto">
     <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['../short_resume']">
-      <fa-icon class="text-white" [icon]="printIcon"></fa-icon>
+      <fa-icon class="" [icon]="printIcon"></fa-icon>
     </a>
-    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="navigation">Navigation</a>
-    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="jobs">Expériences</a>
-    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="volunteers">Bénévolat</a>
-    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="personal_projects">Projets personnels</a>
-    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="publications">Publications</a>
+    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="presentation">
+      <fa-icon class="mr-1 text-white" [icon]="presIcon"></fa-icon>Présentation
+    </a>
+    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="navigation">
+      <fa-icon class="mr-1 text-white" [icon]="navIcon"></fa-icon>Navigation
+    </a>
+    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="jobs">
+      <fa-icon class="mr-1 text-white" [icon]="jobIcon"></fa-icon>Expériences
+    </a>
+    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="volunteers">
+      <fa-icon class="mr-1 text-white" [icon]="volunteerIcon"></fa-icon>Bénévolat
+    </a>
+    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="personal_projects">
+      <fa-icon class="mr-1 text-white" [icon]="projectIcon"></fa-icon>Projets personnels
+    </a>
+    <a class="btn btn-secondary mr-2 mb-2" role="button" [routerLink]="['/resume']" fragment="publications">
+      <fa-icon class="mr-1 text-white" [icon]="publishIcon"></fa-icon>Publications
+    </a>
   </div>
 
-  <div class="col-lg-3 align-self-center text-white">
+  <div class="col-lg-3 my-auto">
     <div class="row justify-content-center">
 
-      <div class="col-2 text-center mb-3">
+      <div class="col-2 mb-3">
         <a class="" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(inputContactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="mr-2 text-white" [icon]="emailIcon" size="2x"></fa-icon>
         </a>
       </div>
 
-      <div class="col-2 text-center mb-3">
+      <div class="col-2 mb-3">
         <a class="" [href]="linkBuilt" (mouseover)="reverse(inputContactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="mr-2 text-white" [icon]="linkedinIcon" size="2x"></fa-icon>
         </a>
       </div>
 
-      <div class="col-2 text-center mb-3">
+      <div class="col-2 mb-3">
         <a class="" [href]="linkBuilt" (mouseover)="reverse(inputContactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="mr-2 text-white" [icon]="githubIcon" size="2x"></fa-icon>
         </a>

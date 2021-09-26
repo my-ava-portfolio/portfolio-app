@@ -1,11 +1,12 @@
 <section id="publications" class="col-lg-12 mt-4 mb-5">
-
     <h5 class="font-weight-bold mb-3">
-      <fa-icon class="mr-2" [icon]="resumeIcon"></fa-icon>
+      <fa-icon class="mr-2" [icon]="publishIcon"></fa-icon>
       Publications
+      <fa-icon class="cursor float-right mr-2" [icon]="expandIcon" data-toggle="collapse" data-target=".publi_card"></fa-icon>
+
     </h5>
 
-    <div class="item card mb-3" *ngFor="let publication of inputpublicationData">
+    <div class="item card mb-3 publi_card collapse show" *ngFor="let publication of inputpublicationData">
         <div class="card-body">
             <div class="row header mb-3">
 

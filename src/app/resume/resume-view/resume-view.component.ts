@@ -32,6 +32,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   // resume center bar
   summaryData!: any;
+  qualitiesData!: any;
   publicationsData!: any;
 
   // resume center bar
@@ -72,6 +73,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
         this.profilData = data.profil;
         this.trainingsData = data.trainings;
         this.summaryData = data.profil.carrier_summary;
+        this.qualitiesData = data.profil.qualities;
         this.publicationsData = data.research_work;
 
         this.isDataAvailable = true;

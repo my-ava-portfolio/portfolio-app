@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { resumeIcon, arrowUpIcon, pdfFileIcon } from '../../core/inputs';
+import { expandIcon, publishIcon, arrowUpIcon, pdfFileIcon } from '../../core/inputs';
 
 
 @Component({
@@ -16,7 +16,8 @@ export class CenterbarPublicationsComponent implements OnInit {
   // icons
   arrowUpIcon = arrowUpIcon;
   pdfFileIcon = pdfFileIcon;
-  resumeIcon = resumeIcon;
+  publishIcon = publishIcon;
+  expandIcon = expandIcon;
 
   constructor() { }
 

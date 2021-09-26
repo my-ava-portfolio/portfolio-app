@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 
 import { ResumeService } from '../../services/resume.service';
-import { topicIcon, helpIcon, ungroupIconUnicode, nextIcon } from '../../core/inputs';
+import { expandIcon, navIcon, helpIcon, ungroupIconUnicode, nextIcon } from '../../core/inputs';
 
 
 @Component({
@@ -15,7 +15,6 @@ import { topicIcon, helpIcon, ungroupIconUnicode, nextIcon } from '../../core/in
 })
 export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() graphInputData!: any;
-  @Input() summaryData!: any;
 
   @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
 
@@ -29,12 +28,12 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   isToolsEnabled: boolean | string = false;
 
   // icons
-  topicIcon = topicIcon;
+  navIcon = navIcon;
   helpIcon = helpIcon;
   ungroupIconUnicode = ungroupIconUnicode;
   nextIcon = nextIcon;
+  expandIcon = expandIcon;
 
-  inputSummaryData!: any;
   currentDate: number = new Date().getFullYear();
   currentNodeIdSelected: string | null = null;
 
@@ -138,7 +137,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
    }
 
   ngOnInit(): void {
-    this.inputSummaryData = this.summaryData;
     this.initSvgGraph();
     this._buildLegendGraphActivities();
     this.resetChart();

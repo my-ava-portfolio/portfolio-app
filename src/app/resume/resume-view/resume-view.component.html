@@ -23,8 +23,12 @@
 
     <div id="center-bar" class="col-lg-6 bg-light border">
 
-      <app-centerbar-navigation
+      <app-centerbar-presentation
+        [qualitiesData]="qualitiesData"
         [summaryData]="summaryData"
+      ></app-centerbar-presentation>
+
+      <app-centerbar-navigation
         [graphInputData]="generalData"
       ></app-centerbar-navigation>
 

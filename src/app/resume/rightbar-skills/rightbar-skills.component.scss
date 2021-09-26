@@ -1,3 +1,5 @@
+@import '~src/styles';
+
 .active {
   color: grey
 }
@@ -15,4 +17,9 @@
 .collapsed .rotation {
   display: inline-block;
   transform: rotate(-90deg);
+}
+
+
+#skills {
+  @include fade-in;
 }
