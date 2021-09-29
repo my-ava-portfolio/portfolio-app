@@ -4,7 +4,7 @@ import { apiLogoUrl } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
 
-import { resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '../../core/inputs';
+import { expandIcon, resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '../../core/inputs';
 
 
 @Component({
@@ -26,7 +26,8 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
   galleryIcon = galleryIcon;
   filterIcon = filterIcon;
   trophyIcon = trophyIcon;
-
+  expandIcon = expandIcon;
+  
   constructor(
     private resumeService: ResumeService
   ) {
