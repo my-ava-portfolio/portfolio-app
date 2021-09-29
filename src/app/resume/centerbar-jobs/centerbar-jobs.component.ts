@@ -4,7 +4,7 @@ import { apiLogoUrl } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
 
-import { expandIcon, jobIcon, galleryIcon, locationIcon, filterIcon } from '../../core/inputs';
+import { resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '../../core/inputs';
 
 
 @Component({
@@ -22,10 +22,10 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
 
   // icons
   locationIcon = locationIcon;
-  jobIcon = jobIcon;
+  resumeIcon = resumeIcon;
   galleryIcon = galleryIcon;
   filterIcon = filterIcon;
-  expandIcon = expandIcon;
+  trophyIcon = trophyIcon;
 
   constructor(
     private resumeService: ResumeService
@@ -47,4 +47,12 @@ export class CenterbarJobsComponent implements OnInit, OnDestroy {
     this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
   }
 
+  countDictObject(inputDict: any): number {
+    return Object.keys(inputDict).length
+  }
+
+  forceArrayType(input: any): string[] {
+    return input
+  }
 }
+

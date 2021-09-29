@@ -1,21 +1,20 @@
 <section id="jobs" class="col-lg-12 section mt-4">
   <h5 class="font-weight-bold mb-3">
-    <fa-icon class="mr-2" [icon]="jobIcon"></fa-icon>
+    <fa-icon class="mr-2" [icon]="resumeIcon"></fa-icon>
     Expériences
-    <fa-icon class="cursor float-right mr-2" [icon]="expandIcon" data-toggle="collapse" data-target=".job_card"></fa-icon>
   </h5>
 
-  <div [id]="job.identifier" class="job_card item card mb-3 collapse show" *ngFor="let job of jobsData">
+  <div [id]="job.identifier" class="item card mb-3" *ngFor="let job of jobsData">
     <div class="card-body">
       <div class="col-lg-12">
 
-        <div class="row">
+        <div class="row mb-1">
 
-          <div class="col-lg-9 mb-1">
+          <div class="col-md-8">
             <h5 class="font-weight-bold">{{job.title}}</h5>
           </div>
 
-          <div class="col-lg-3">
+          <div class="col-md-4">
 
             <a class="btn btn-dark mr-2 float-right" (click)="pushActivityId(job.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
 
@@ -24,30 +23,39 @@
                 <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="job.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
               </ng-template>
 
+              <div *ngIf="this.countDictObject(job.recommendations) > 0" class="dropdown mr-2 float-right">
+                <button class="btn btn-success" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <fa-icon [icon]="trophyIcon"></fa-icon>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownRecomButton" *ngFor="let recommendation of job.recommendations | keyvalue">
+                  <a class="dropdown-item" [href]="recommendation.value" target="_blank" rel="noopener noreferrer">{{ recommendation.key }}</a>
+                </div>
+              </div>
+
           </div>
         </div>
 
         <div class="row mb-3 justify-content-around">
 
           <div class="col-lg-3 justify-content-around text-center my-3" data-toggle="collapse" [attr.data-target]="'#collapse-' + job.identifier">
-            <img class="cursor img-fluid rounded mx-auto d-block shadow thumbnail-width" [src]="apiImgUrl + job.img_company"/>
+            <img class="img-fluid rounded mx-auto d-block shadow thumbnail-width" [src]="apiImgUrl + job.img_company"/>
           </div>
 
           <div class="col-lg-8 align-self-center">
-              <h6 class="font-weight-bold">{{job.company}}</h6>
-              <div>
-                <a [id]="'location_' + job.identifier" role="button" [routerLink]="['/map']" [fragment]="job.identifier">
-                  <fa-icon class="mr-2 text-danger" [icon]="locationIcon"></fa-icon>
-                </a>{{job.location}}
-              </div>
-              <div *ngIf="job.status === 'InProgress'; then currentJob else pastJob"></div>
-                <ng-template #pastJob>
-                  <div>{{job.contract}} - du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.duration}})</div>
-                </ng-template>
+            <h6 class="font-weight-bold">{{job.company}}</h6>
+            <div>
+              <a [id]="'location_' + job.identifier" role="button" [routerLink]="['/map']" [fragment]="job.identifier">
+                <fa-icon class="mr-2 text-danger" [icon]="locationIcon"></fa-icon>
+              </a>{{job.location}}
+            </div>
+            <div *ngIf="job.status === 'InProgress'; then currentJob else pastJob"></div>
+              <ng-template #pastJob>
+                <div>{{job.contract}} - du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.duration}})</div>
+              </ng-template>
 
-                <ng-template #currentJob>
-                  <div>{{job.contract}} - du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.duration}})</div>
-                </ng-template>
+              <ng-template #currentJob>
+                <div>{{job.contract}} - du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.duration}})</div>
+              </ng-template>
           </div>
         </div>
 
@@ -75,9 +83,10 @@
 
           <div class="col-lg-12 mb-2">
               <h5>Missions</h5>
-              <div class="col-lg-12 pl-3">
+              <div class="col-lg-12 pl-3" *ngFor="let task of job.description | keyvalue">
+                <h6 *ngIf="task.key !== 'NoTitle'">{{ task.key }}</h6>
                 <ul>
-                  <li class="text-justify" *ngFor="let task of job.description">{{ task }}</li>
+                  <li class="text-justify" *ngFor="let description_element of forceArrayType(task.value)">{{ description_element }}</li>
                 </ul>
               </div>
           </div>

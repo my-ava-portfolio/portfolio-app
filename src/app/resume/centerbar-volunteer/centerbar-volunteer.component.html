@@ -74,12 +74,13 @@
           </div>
 
           <div class="col-lg-12 mb-2">
-              <h5>Missions</h5>
-              <div class="col-lg-12 pl-3">
-                <ul>
-                  <li class="text-justify" *ngFor="let task of job.description">{{ task }}</li>
-                </ul>
-              </div>
+            <h5>Missions</h5>
+            <div class="col-lg-12 pl-3" *ngFor="let task of job.description | keyvalue">
+              <h6 *ngIf="task.key !== 'NoTitle'">{{ task.key }}</h6>
+              <ul>
+                <li class="text-justify" *ngFor="let description_element of forceArrayType(task.value)">{{ description_element }}</li>
+              </ul>
+            </div>
           </div>
 
           <div class="col-sm-12">

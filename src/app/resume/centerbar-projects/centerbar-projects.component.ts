@@ -47,4 +47,8 @@ export class CenterbarProjectsComponent implements OnInit, OnDestroy {
     this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
   }
 
+  forceArrayType(input: any): string[] {
+    return input
+  }
+
 }

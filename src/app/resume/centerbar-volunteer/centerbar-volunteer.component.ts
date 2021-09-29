@@ -46,4 +46,9 @@ export class CenterbarVolunteerComponent implements OnInit {
   pushActivityId(activityId: string): void {
     this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
   }
+
+  forceArrayType(input: any): string[] {
+    return input
+  }
+  
 }
