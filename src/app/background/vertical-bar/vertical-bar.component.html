@@ -1,0 +1,78 @@
+<div id="sidebar-container" class="sticky-top hide-max-width">
+
+    <div id="website-title" class="d-flex justify-content-center py-3">
+      <span class="text-dark text-center">AV</span>
+    </div>
+
+    <ul class="list-group">
+
+        <li class="bg-blue-color list-group-item item-center">
+            <div class="d-flex w-100 justify-content-start" >
+              <small class="text-white">CV</small>
+            </div>
+        </li>
+
+        <ng-container *ngFor="let page of resumePages">
+
+          <a class="topic-item px-2 py-2 border bg-light" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
+            <div class="d-flex w-100 justify-content-around item-center" >
+                <fa-icon [icon]="page.icon" class=""></fa-icon>
+                <span class="hide-mean-width">{{page.title}}</span>
+                <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
+            </div>
+          </a>
+
+          <!-- Submenu content -->
+          <div [id]="'nav-' + page.id" class="collapse sidebar-submenu" *ngIf="page.sub_menus">
+            <ng-container *ngFor="let menu of page.sub_menus">
+            <a [routerLink]="menu.route" [fragment]="menu.fragment"  class="list-group-item list-group-item-action bg-white">
+              <span [class.active]="(activeFragment | async) === menu.fragment">{{menu.title}}</span>
+            </a>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <li class="bg-green-color list-group-item item-center">
+            <div class="d-flex w-100 justify-content-start" >
+              <small class="text-white">PROJETS</small>
+            </div>
+        </li>
+
+        <ng-container *ngFor="let page of projectPages">
+
+          <ng-container *ngIf="page.title !== 'Github'">
+          <a class="topic-item px-2 py-2 border" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
+            <div class="d-flex w-100 justify-content-around item-center" >
+                <fa-icon [icon]="page.icon" class=""></fa-icon>
+                <span class="hide-mean-width">{{page.title}}</span>
+                <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
+            </div>
+          </a>
+          </ng-container>
+
+          <ng-container *ngIf="page.title === 'Github'">
+          <a class="topic-item px-2 py-2 border" [href]="page.route" target="_blank" rel="noopener noreferrer">
+            <div class="d-flex w-100 justify-content-around item-center" >
+                <fa-icon [icon]="page.icon" class=""></fa-icon>
+                <span class="hide-mean-width">{{page.title}}</span>
+                <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
+            </div>
+          </a>
+          </ng-container>
+
+          <!-- Submenu content -->
+          <div [id]="'nav-' + page.id" class="collapse sidebar-submenu" *ngIf="page.sub_menus">
+            <a class="list-group-item list-group-item-action bg-white" [routerLink]="menu.route" [fragment]="menu.fragment" [routerLinkActive]="['active']"  [routerLinkActiveOptions]="{exact:true}" *ngFor="let menu of page.sub_menus">
+              <span class="">{{menu.title}}</span>
+            </a>
+          </div>
+        </ng-container>
+
+    </ul>
+    <!-- List Group END-->
+</div>
+
+
+
+
+

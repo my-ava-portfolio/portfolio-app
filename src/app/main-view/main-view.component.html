@@ -1,6 +1,10 @@
 <app-background-map></app-background-map>
 
+
 <app-header *ngIf="this.isNavBarDisplayed"></app-header>
+<app-vertical-bar></app-vertical-bar>
+
+
 
 <div class="page" [@routerAnimations]="prepareRouteTransition(outlet)">
   <router-outlet #outlet="outlet"></router-outlet>

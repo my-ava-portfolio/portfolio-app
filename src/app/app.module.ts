@@ -49,6 +49,8 @@ import { ThemeLegendComponent } from './map/theme-legend/theme-legend.component'
 import { BackgroundComponent } from './background/map/background.component';
 import { FooterComponent } from './background/footer/footer.component';
 import { HeaderComponent } from './background/header/header.component';
+import { VerticalBarComponent } from './background/vertical-bar/vertical-bar.component';
+
 import { TimeLegendComponent } from './map/time-legend/time-legend.component';
 
 
@@ -59,12 +61,11 @@ const appRoutes: Routes = [
     path: '',
     component: MainViewComponent,
     children: [
-      { path: 'home', component: HomeViewComponent, data: { title: 'Amaury Valorge Portfolio', page: 'home' } },
       { path: 'resume', component: ResumeViewComponent, data: { title: 'Profil', page: 'profil' } },
       { path: 'map', component: MapViewComponent, data: { title: 'Carte des activités', page: 'map' } },
       { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie', page: 'gallery' } },
       { path: 'blog', component: NotesViewComponent, data: { title: 'Blog', page: 'blog' } },
-      { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
+      { path: '', redirectTo: '/resume', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },
 
@@ -99,6 +100,7 @@ registerLocaleData(localeFr);
     MapViewComponent,
     FooterComponent,
     HeaderComponent,
+    VerticalBarComponent,
     ThemeLegendComponent,
     TimeLegendComponent,
     CenterbarVolunteerComponent,

@@ -1,4 +1,4 @@
-import { faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
@@ -63,6 +63,7 @@ export const volunteerIcon = faUserCog;
 export const jobIcon = faBuilding;
 export const presIcon = faAddressBook;
 export const trophyIcon = faTrophy
+export const caretRightIcon = faCaretRight
 
 // font awesome unicode
 export const trainIconUnicode = '\uf238';
@@ -83,45 +84,81 @@ export const homePage: any = {
 export const currentYear: number = new Date().getFullYear();
 export const currentDate = now();
 
-export const pages: any = [
+export const resumePages: any = [
   {
     id: 'resume',
     route: '/resume',
     title: 'Profil',
-    status: false,
-    icon: resumeIcon
+    icon: resumeIcon,
+    sub_menus: [
+      {
+        id: "print",
+        title: "Imprimer...",
+        route: '../short_resume',
+      },
+      {
+        id: "navigation",
+        title: "Navigation",
+        route: '/resume',
+        fragment: "navigation"
+      },
+      {
+        id: "jobs",
+        title: "Expériences",
+        route: '/resume',
+        fragment: "jobs"
+      },
+      {
+        id: "volunteers",
+        title: "Bénévolat",
+        route: '/resume',
+        fragment: "volunteers"
+      },
+      {
+        id: "personal_projects",
+        title: "Projets personnels",
+        route: '/resume',
+        fragment: "personal_projects"
+      },
+      {
+        id: "publications",
+        title: "Publications",
+        route: '/resume',
+        fragment: "publications"
+      },
+    ]
   },
   {
     id: 'map',
     route: '/map',
     title: 'Carte',
-    status: false,
     icon: mapIcon
   },
   {
     id: 'gallery',
     route: '/gallery',
     title: 'Galerie',
-    status: false,
     icon: galleryIcon
-  },
+  }
+];
+
+export const projectPages: any = [
   {
     id: 'blog',
     route: '/blog',
     title: 'Blog',
-    status: false,
     icon: notesIcon
   },
   {
     id: 'github',
     route: githubUrl,
     title: 'Github',
-    status: false,
     icon: githubIcon
   }
 ];
 
-export const pagesObject: any = pages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
+
+export const pagesObject: any = resumePages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
 
 export function checkIfScreenPortraitOrientation(): boolean {
   if (window.screen.orientation.angle === 90 && window.screen.width >= minWidthLandscape && window.screen.height >= minHeightLandscape) {
@@ -139,4 +176,3 @@ function now(): Date {
   date.setHours(0, 0, 0, 0);
   return date
 }
-
