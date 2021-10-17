@@ -1,4 +1,4 @@
-import { faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
@@ -65,6 +65,7 @@ export const presIcon = faAddressBook;
 export const trophyIcon = faTrophy
 export const caretRightIcon = faCaretRight;
 export const homeIcon = faHome;
+export const menuIcon = faBars;
 
 // font awesome unicode
 export const trainIconUnicode = '\uf238';
@@ -99,36 +100,49 @@ export const resumePages: any = [
         id: "print",
         title: "Imprimer...",
         route: '../short_resume',
+        icon: printIcon
+      },
+      {
+        id: "presentation",
+        title: "Présentation",
+        route: '/resume',
+        fragment: "presentation",
+        icon: presIcon
       },
       {
         id: "navigation",
         title: "Navigation",
         route: '/resume',
-        fragment: "navigation"
+        fragment: "navigation",
+        icon: navIcon
       },
       {
         id: "jobs",
         title: "Expériences",
         route: '/resume',
-        fragment: "jobs"
+        fragment: "jobs",
+        icon: jobIcon
       },
       {
         id: "volunteers",
         title: "Bénévolat",
         route: '/resume',
-        fragment: "volunteers"
+        fragment: "volunteers",
+        icon: volunteerIcon
       },
       {
         id: "personal_projects",
         title: "Projets personnels",
         route: '/resume',
-        fragment: "personal_projects"
+        fragment: "personal_projects",
+        icon: projectIcon
       },
       {
         id: "publications",
         title: "Publications",
         route: '/resume',
-        fragment: "publications"
+        fragment: "publications",
+        icon: publishIcon
       },
     ]
   },

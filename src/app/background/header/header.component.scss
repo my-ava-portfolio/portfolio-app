@@ -11,3 +11,25 @@
 
 
 
+
+
+.main-header .navbar-nav .nav-item {
+  margin: 0;
+}
+
+.navbar-expand .navbar-nav .nav-link {
+  // padding-right: 1rem;
+  padding-left: 0.5rem;
+}
+.main-header .nav-link {
+  height: 2.5rem;
+  position: relative;
+}
+.navbar-nav .nav-link {
+  padding-right: 0;
+  padding-left: 0;
+}
+.nav-link {
+  display: block;
+  padding: .5rem 1rem;
+}
