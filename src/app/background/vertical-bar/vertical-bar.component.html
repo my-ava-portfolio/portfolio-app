@@ -64,7 +64,7 @@
     <div [id]="'nav-' + page.id" class="collapse sidebar-submenu" *ngIf="page.sub_menus">
       <ng-container *ngFor="let menu of page.sub_menus">
       <a [routerLink]="menu.route" [fragment]="menu.fragment"  class="list-group-item list-group-item-action bg-white">
-        <span [class.active]="(activeFragment | async) === menu.fragment">{{menu.title}}</span>
+        <span class="font-italic" [class.active]="(activeFragment | async) === menu.fragment">{{menu.title}}</span>
       </a>
       </ng-container>
     </div>
