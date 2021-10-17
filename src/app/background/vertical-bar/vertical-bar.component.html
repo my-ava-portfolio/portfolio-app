@@ -5,27 +5,17 @@
     </div>
 
     <ul class="list-group">
+        <ng-container *ngTemplateOutlet="menuTitle; context:{title:'BIENVENUE', bgColor:'bg-orange-color'}"></ng-container>
 
-        <li class="bg-orange-color list-group-item item-center">
-            <div class="d-flex w-100 justify-content-center" >
-              <small class="text-white">BIENVENUE</small>
-            </div>
-        </li>
-
-
-        <li class="bg-blue-color list-group-item item-center">
-            <div class="d-flex w-100 justify-content-center" >
-              <small class="text-white">CV</small>
-            </div>
-        </li>
+        <ng-container *ngTemplateOutlet="menuTitle; context:{title:'CV', bgColor:'bg-blue-color'}"></ng-container>
 
         <ng-container *ngFor="let page of resumePages">
 
           <a class="topic-item px-2 py-2 border bg-light" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
             <div class="d-flex w-100 justify-content-between item-center" >
 
-              <span class="hide-mean-width">
-                <fa-icon [icon]="page.icon" class="m-3"></fa-icon>
+              <span class="ml-3 hide-mean-width">
+                <fa-icon [icon]="page.icon" class=""></fa-icon>
                 {{page.title}}
               </span>
 
@@ -43,11 +33,7 @@
           </div>
         </ng-container>
 
-        <li class="bg-green-color list-group-item item-center">
-            <div class="d-flex w-100 justify-content-center" >
-              <small class="text-white">PROJETS</small>
-            </div>
-        </li>
+        <ng-container *ngTemplateOutlet="menuTitle; context:{title:'PROJETS', bgColor:'bg-green-color'}"></ng-container>
 
         <ng-container *ngFor="let page of projectPages">
 
@@ -55,8 +41,8 @@
           <a class="topic-item px-2 py-2 border" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
             <div class="d-flex w-100 justify-content-between item-center" >
 
-              <span class="hide-mean-width">
-                <fa-icon [icon]="page.icon" class="m-3"></fa-icon>
+              <span class="ml-3 hide-mean-width">
+                <fa-icon [icon]="page.icon" class=""></fa-icon>
                 {{page.title}}
               </span>
 
@@ -69,8 +55,8 @@
           <a class="topic-item px-2 py-2 border" [href]="page.route" target="_blank" rel="noopener noreferrer">
             <div class="d-flex w-100 justify-content-between item-center" >
 
-              <span class="hide-mean-width">
-                <fa-icon [icon]="page.icon" class="m-3"></fa-icon>
+              <span class="ml-3 hide-mean-width">
+                <fa-icon [icon]="page.icon" class=""></fa-icon>
                 {{page.title}}
               </span>
 
@@ -93,5 +79,11 @@
 
 
 
-
+<ng-template #menuTitle let-title='title' let-bgColor="bgColor">
+  <li class="list-group-item item-center" [ngClass]="bgColor">
+      <div class="d-flex w-100 justify-content-center" >
+        <small class="text-white">{{ title }}</small>
+      </div>
+  </li>
+</ng-template>
 
