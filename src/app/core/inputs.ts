@@ -1,4 +1,4 @@
-import { faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
@@ -63,7 +63,8 @@ export const volunteerIcon = faUserCog;
 export const jobIcon = faBuilding;
 export const presIcon = faAddressBook;
 export const trophyIcon = faTrophy
-export const caretRightIcon = faCaretRight
+export const caretRightIcon = faCaretRight;
+export const homeIcon = faHome;
 
 // font awesome unicode
 export const trainIconUnicode = '\uf238';
@@ -81,9 +82,9 @@ export const currentDate = now();
 export const homePages: any = [
   {
     id: 'home',
-    route: '/home',
+    route: '/',
     title: 'Accueil',
-    icon: mapIcon
+    icon: homeIcon
   },
 ]
 
