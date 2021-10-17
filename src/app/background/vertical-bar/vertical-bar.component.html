@@ -6,8 +6,15 @@
 
     <ul class="list-group">
 
+        <li class="bg-orange-color list-group-item item-center">
+            <div class="d-flex w-100 justify-content-center" >
+              <small class="text-white">BIENVENUE</small>
+            </div>
+        </li>
+
+
         <li class="bg-blue-color list-group-item item-center">
-            <div class="d-flex w-100 justify-content-start" >
+            <div class="d-flex w-100 justify-content-center" >
               <small class="text-white">CV</small>
             </div>
         </li>
@@ -15,10 +22,14 @@
         <ng-container *ngFor="let page of resumePages">
 
           <a class="topic-item px-2 py-2 border bg-light" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
-            <div class="d-flex w-100 justify-content-around item-center" >
-                <fa-icon [icon]="page.icon" class=""></fa-icon>
-                <span class="hide-mean-width">{{page.title}}</span>
-                <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
+            <div class="d-flex w-100 justify-content-between item-center" >
+
+              <span class="hide-mean-width">
+                <fa-icon [icon]="page.icon" class="m-3"></fa-icon>
+                {{page.title}}
+              </span>
+
+              <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
             </div>
           </a>
 
@@ -33,7 +44,7 @@
         </ng-container>
 
         <li class="bg-green-color list-group-item item-center">
-            <div class="d-flex w-100 justify-content-start" >
+            <div class="d-flex w-100 justify-content-center" >
               <small class="text-white">PROJETS</small>
             </div>
         </li>
@@ -42,20 +53,28 @@
 
           <ng-container *ngIf="page.title !== 'Github'">
           <a class="topic-item px-2 py-2 border" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
-            <div class="d-flex w-100 justify-content-around item-center" >
-                <fa-icon [icon]="page.icon" class=""></fa-icon>
-                <span class="hide-mean-width">{{page.title}}</span>
-                <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
+            <div class="d-flex w-100 justify-content-between item-center" >
+
+              <span class="hide-mean-width">
+                <fa-icon [icon]="page.icon" class="m-3"></fa-icon>
+                {{page.title}}
+              </span>
+
+              <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
             </div>
           </a>
           </ng-container>
 
           <ng-container *ngIf="page.title === 'Github'">
           <a class="topic-item px-2 py-2 border" [href]="page.route" target="_blank" rel="noopener noreferrer">
-            <div class="d-flex w-100 justify-content-around item-center" >
-                <fa-icon [icon]="page.icon" class=""></fa-icon>
-                <span class="hide-mean-width">{{page.title}}</span>
-                <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
+            <div class="d-flex w-100 justify-content-between item-center" >
+
+              <span class="hide-mean-width">
+                <fa-icon [icon]="page.icon" class="m-3"></fa-icon>
+                {{page.title}}
+              </span>
+
+              <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
             </div>
           </a>
           </ng-container>

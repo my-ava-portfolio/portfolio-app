@@ -84,6 +84,15 @@ export const homePage: any = {
 export const currentYear: number = new Date().getFullYear();
 export const currentDate = now();
 
+export const homePages: any = [
+  {
+    id: 'home',
+    route: '/home',
+    title: 'Accueil',
+    icon: mapIcon
+  },
+]
+
 export const resumePages: any = [
   {
     id: 'resume',
