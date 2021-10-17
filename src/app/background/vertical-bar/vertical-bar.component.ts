@@ -6,7 +6,7 @@ import { share } from 'rxjs/operators';
 
 import { Location } from '@angular/common';
 
-import { navBarTitle, homePage, resumePages, projectPages } from '../../core/inputs';
+import { navBarTitle, homePages, resumePages, projectPages } from '../../core/inputs';
 import { caretRightIcon, helpIcon, exclamationIcon, bugIcon } from '../../core/inputs';
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '../../core/inputs';
 
@@ -20,7 +20,7 @@ export class VerticalBarComponent implements OnInit {
 
   currentPage!: string;
 
-  homePage: any = homePage;
+  homePages: any = homePages;
   navBarTitle: string = navBarTitle;
   resumePages: any = resumePages;
   projectPages: any = projectPages;

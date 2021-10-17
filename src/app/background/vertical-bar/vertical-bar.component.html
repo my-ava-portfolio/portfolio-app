@@ -5,73 +5,14 @@
     </div>
 
     <ul class="list-group">
-        <ng-container *ngTemplateOutlet="menuTitle; context:{title:'BIENVENUE', bgColor:'bg-orange-color'}"></ng-container>
+        <ng-container *ngTemplateOutlet="menuTitleBuilder; context:{title:'BIENVENUE', bgColor:'bg-orange-color'}"></ng-container>
+        <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: homePages}"></ng-container>
 
-        <ng-container *ngTemplateOutlet="menuTitle; context:{title:'CV', bgColor:'bg-blue-color'}"></ng-container>
+        <ng-container *ngTemplateOutlet="menuTitleBuilder; context:{title:'CV', bgColor:'bg-blue-color'}"></ng-container>
+        <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: resumePages}"></ng-container>
 
-        <ng-container *ngFor="let page of resumePages">
-
-          <a class="topic-item px-2 py-2 border bg-light" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
-            <div class="d-flex w-100 justify-content-between item-center" >
-
-              <span class="ml-3 hide-mean-width">
-                <fa-icon [icon]="page.icon" class=""></fa-icon>
-                {{page.title}}
-              </span>
-
-              <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
-            </div>
-          </a>
-
-          <!-- Submenu content -->
-          <div [id]="'nav-' + page.id" class="collapse sidebar-submenu" *ngIf="page.sub_menus">
-            <ng-container *ngFor="let menu of page.sub_menus">
-            <a [routerLink]="menu.route" [fragment]="menu.fragment"  class="list-group-item list-group-item-action bg-white">
-              <span [class.active]="(activeFragment | async) === menu.fragment">{{menu.title}}</span>
-            </a>
-            </ng-container>
-          </div>
-        </ng-container>
-
-        <ng-container *ngTemplateOutlet="menuTitle; context:{title:'PROJETS', bgColor:'bg-green-color'}"></ng-container>
-
-        <ng-container *ngFor="let page of projectPages">
-
-          <ng-container *ngIf="page.title !== 'Github'">
-          <a class="topic-item px-2 py-2 border" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
-            <div class="d-flex w-100 justify-content-between item-center" >
-
-              <span class="ml-3 hide-mean-width">
-                <fa-icon [icon]="page.icon" class=""></fa-icon>
-                {{page.title}}
-              </span>
-
-              <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
-            </div>
-          </a>
-          </ng-container>
-
-          <ng-container *ngIf="page.title === 'Github'">
-          <a class="topic-item px-2 py-2 border" [href]="page.route" target="_blank" rel="noopener noreferrer">
-            <div class="d-flex w-100 justify-content-between item-center" >
-
-              <span class="ml-3 hide-mean-width">
-                <fa-icon [icon]="page.icon" class=""></fa-icon>
-                {{page.title}}
-              </span>
-
-              <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
-            </div>
-          </a>
-          </ng-container>
-
-          <!-- Submenu content -->
-          <div [id]="'nav-' + page.id" class="collapse sidebar-submenu" *ngIf="page.sub_menus">
-            <a class="list-group-item list-group-item-action bg-white" [routerLink]="menu.route" [fragment]="menu.fragment" [routerLinkActive]="['active']"  [routerLinkActiveOptions]="{exact:true}" *ngFor="let menu of page.sub_menus">
-              <span class="">{{menu.title}}</span>
-            </a>
-          </div>
-        </ng-container>
+        <ng-container *ngTemplateOutlet="menuTitleBuilder; context:{title:'PROJETS', bgColor:'bg-green-color'}"></ng-container>
+        <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: projectPages}"></ng-container>
 
     </ul>
     <!-- List Group END-->
@@ -79,7 +20,7 @@
 
 
 
-<ng-template #menuTitle let-title='title' let-bgColor="bgColor">
+<ng-template #menuTitleBuilder let-title='title' let-bgColor="bgColor">
   <li class="list-group-item item-center" [ngClass]="bgColor">
       <div class="d-flex w-100 justify-content-center" >
         <small class="text-white">{{ title }}</small>
@@ -87,3 +28,45 @@
   </li>
 </ng-template>
 
+
+<ng-template #topicPagesBuilder let-topicPages='topicPages'>
+  <ng-container *ngFor="let page of topicPages">
+
+    <ng-container *ngIf="page.route">
+    <a class="topic-item px-2 py-2 border bg-light" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
+      <div class="d-flex w-100 justify-content-between item-center" >
+
+        <span class="ml-3 hide-mean-width">
+          <fa-icon [icon]="page.icon" class=""></fa-icon>
+          {{page.title}}
+        </span>
+
+        <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
+      </div>
+    </a>
+    </ng-container>
+
+    <ng-container *ngIf="page.url">
+    <a class="topic-item px-2 py-2 border" [href]="page.route" target="_blank" rel="noopener noreferrer">
+      <div class="d-flex w-100 justify-content-between item-center" >
+
+        <span class="ml-3 hide-mean-width">
+          <fa-icon [icon]="page.icon" class=""></fa-icon>
+          {{page.title}}
+        </span>
+
+        <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
+      </div>
+    </a>
+    </ng-container>
+
+    <!-- Submenu content -->
+    <div [id]="'nav-' + page.id" class="collapse sidebar-submenu" *ngIf="page.sub_menus">
+      <ng-container *ngFor="let menu of page.sub_menus">
+      <a [routerLink]="menu.route" [fragment]="menu.fragment"  class="list-group-item list-group-item-action bg-white">
+        <span [class.active]="(activeFragment | async) === menu.fragment">{{menu.title}}</span>
+      </a>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-template>

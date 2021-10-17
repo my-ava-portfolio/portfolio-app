@@ -74,12 +74,6 @@ export const svgTripIdPrefix = 'svg_trip_';
 export const legendActivities = 'legendActivity';
 export const sliderBarId = 'slider-bar';
 
-export const homePage: any = {
-  id: 'home',
-  route: '/home',
-  title: 'Accueil',
-  status: false
-};
 
 export const currentYear: number = new Date().getFullYear();
 export const currentDate = now();
@@ -160,14 +154,12 @@ export const projectPages: any = [
   },
   {
     id: 'github',
-    route: githubUrl,
+    url: githubUrl,
     title: 'Github',
     icon: githubIcon
   }
 ];
 
-
-export const pagesObject: any = resumePages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
 
 export function checkIfScreenPortraitOrientation(): boolean {
   if (window.screen.orientation.angle === 90 && window.screen.width >= minWidthLandscape && window.screen.height >= minHeightLandscape) {

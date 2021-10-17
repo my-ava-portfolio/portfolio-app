@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { navBarTitle, homePage } from '../../core/inputs';
+import { navBarTitle, homePages } from '../../core/inputs';
 import { helpIcon, exclamationIcon, bugIcon } from '../../core/inputs';
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '../../core/inputs';
 
@@ -16,9 +16,9 @@ import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '../.
 export class HeaderComponent implements OnInit {
   currentPage!: string;
 
-  homePage: any = homePage;
   navBarTitle: string = navBarTitle;
-
+  homePages: any = homePages;
+  
   bugIcon = bugIcon;
   helpIcon = helpIcon;
   exclamationIcon = exclamationIcon;
