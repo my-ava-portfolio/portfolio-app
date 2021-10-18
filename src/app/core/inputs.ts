@@ -132,7 +132,7 @@ export const resumePages: any = [
       },
       {
         id: "personal_projects",
-        title: "Projets personnels",
+        title: "Projets perso",
         route: '/resume',
         fragment: "personal_projects",
         icon: projectIcon

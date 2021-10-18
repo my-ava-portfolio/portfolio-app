@@ -1,11 +1,11 @@
-<div id="sidebar-container" class="sticky-top hide-max-width">
+<div id="sidebar-container" class="sticky-top hide-max-width show">
 
     <div id="website-title" class="d-flex justify-content-center py-3">
       <span class="text-dark text-center">AV</span>
     </div>
 
     <ul class="list-group">
-        <ng-container *ngTemplateOutlet="menuTitleBuilder; context:{title:'BIENVENUE', bgColor:'bg-orange-color'}"></ng-container>
+        <ng-container *ngTemplateOutlet="menuTitleBuilder; context:{title:'HOME', bgColor:'bg-orange-color'}"></ng-container>
         <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: homePages}"></ng-container>
 
         <ng-container *ngTemplateOutlet="menuTitleBuilder; context:{title:'CV', bgColor:'bg-blue-color'}"></ng-container>
@@ -33,7 +33,7 @@
   <ng-container *ngFor="let page of topicPages">
 
     <ng-container *ngIf="page.route">
-    <a class="topic-item px-2 py-2 border bg-light" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
+    <a class="topic-item px-2 py-2 border bg-light" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
       <div class="d-flex w-100 justify-content-between item-center" >
 
         <span class="">
@@ -47,7 +47,7 @@
     </ng-container>
 
     <ng-container *ngIf="page.url">
-    <a class="topic-item px-2 py-2 border" [href]="page.route" target="_blank" rel="noopener noreferrer">
+    <a class="topic-item px-2 py-2 border bg-light" [href]="page.route" target="_blank" rel="noopener noreferrer">
       <div class="d-flex w-100 justify-content-between item-center" >
 
         <span class="">
@@ -63,11 +63,12 @@
     <!-- Submenu content -->
     <div [id]="'nav-' + page.id" class="collapse sidebar-submenu" *ngIf="page.sub_menus">
       <ng-container *ngFor="let menu of page.sub_menus">
-      <a [routerLink]="menu.route" [fragment]="menu.fragment"  class="list-group-item list-group-item-action bg-white">
+      <a [routerLink]="menu.route" [fragment]="menu.fragment" [title]="menu.title" class="list-group-item list-group-item-action bg-white">
 
-      <div class="d-flex w-100 justify-content-between item-center" >
+      <div class="w-100 justify-content-center item-center" >
 
-        <span class="font-italic" [class.active]="(activeFragment | async) === menu.fragment">
+        <span class="font-italic text-muted" [class.active]="(activeFragment | async) === menu.fragment">
+          <fa-icon [icon]="caretRightIcon" class="float-right"></fa-icon>
           <fa-icon [icon]="menu.icon" class=""></fa-icon>
           <span class="ml-2 hide-mean-width font-italic">{{menu.title}}</span>
         </span>

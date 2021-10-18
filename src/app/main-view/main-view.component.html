@@ -2,13 +2,13 @@
 
 
 <app-header *ngIf="this.isNavBarDisplayed"></app-header>
-<app-vertical-bar></app-vertical-bar>
 
 
+    <app-vertical-bar></app-vertical-bar>
 
-<div class="page" [@routerAnimations]="prepareRouteTransition(outlet)">
-  <router-outlet #outlet="outlet"></router-outlet>
-</div>
+  <div class="page" [@routerAnimations]="prepareRouteTransition(outlet)">
+    <router-outlet #outlet="outlet"></router-outlet>
+  </div>
 
 <div id="gotop-button" *ngIf="scrolltoTopActivated" [ngClass]="{'show-scrollTop': scrolltoTopActivated}" class="bg-white py-1 px-1 circle shadow scroll-to-top">
   <fa-icon [icon]="arrowUpIcon" size="3x" (click)="scrollToTop()"></fa-icon>
