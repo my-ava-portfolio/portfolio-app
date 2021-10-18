@@ -17,6 +17,15 @@
 .page {
   position: absolute;
   top: 3.5rem;
-  left: 10%;
-  max-width: 90%;
+  left: 15%;
+  max-width: 85%;
+}
+
+
+@media only screen and (max-width: 1220px)  {
+  .page {
+    left: 0;
+    max-width: 100%;
+  }
+
 }

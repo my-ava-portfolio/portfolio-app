@@ -10,6 +10,16 @@
 }
 
 
+#toggle-button {
+  display: none;
+}
+
+@media only screen and (max-width: 1220px)  {
+  #toggle-button {
+    display: block;
+  }
+
+}
 
 
 
