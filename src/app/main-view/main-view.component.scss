@@ -14,18 +14,24 @@
  }
 
 
-.page {
-  position: absolute;
+.content {
   top: 3.5rem;
-  left: 15%;
-  max-width: 85%;
 }
 
+.left-side-bar{
+  -ms-flex: 0 0 15%;
+  flex: 0 0 15%;
+}
 
-@media only screen and (max-width: 1220px)  {
-  .page {
-    left: 0;
-    max-width: 100%;
+@media (max-width: 690px) {
+  .left-side-bar {
+    -ms-flex: unset;
+    flex: unset;
   }
-
 }
+
+.no-gutter {
+  padding-right: 0;
+  padding-left: 0;
+}
+
