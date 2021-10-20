@@ -1,4 +1,32 @@
+.section {
+  background-color: ghostwhite;
+  height: 50vh;
+  clip-path: polygon( 0 0, 100% 0, 100% 40%, 0 calc(90% - 5vw) );
+  transform: rotate(45deg);
+}
 
+.main-circle {
+  /* border-radius: 50%; */
+  margin: auto;
+  position: fixed;
+  width: 45vh;
+  height: 45vh;
+  top: 0;
+  bottom: 0;
+  /* left: 0; */
+  /* right: 0; */
+  /* min-height: unset!important; */
+}
+
+.main-circle li {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 100%;
+}
 
 .theme.quarter {
   /*background: #cccccc;*/

@@ -1,6 +1,6 @@
 .navbar {
-  // box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.5);
-  // width: 100%;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.5);
+  width: 100%;
   z-index: 2;
 }
 
@@ -11,17 +11,19 @@
 
 
 #toggle-button {
-  display: none;
+  display: block;
 }
 
-@media only screen and (max-width: 690px)  {
-  #toggle-button {
-    display: block;
-  }
+// @media only screen and (max-width: 690px)  {
+//   #toggle-button {
+//     display: block;
+//   }
 
+// }
+
+#navbarNav {
+  font-weight: 400;
 }
-
-
 
 .main-header .navbar-nav .nav-item {
   margin: 0;
@@ -32,7 +34,7 @@
   padding-left: 0.5rem;
 }
 .main-header .nav-link {
-  height: 2.5rem;
+  // height: 2.5rem;
   position: relative;
 }
 .navbar-nav .nav-link {
@@ -42,4 +44,9 @@
 .nav-link {
   display: block;
   padding: .5rem 1rem;
+}
+
+
+#contact-buttons {
+  display: -webkit-inline-box;
 }

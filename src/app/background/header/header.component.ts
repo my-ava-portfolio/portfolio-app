@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { navBarTitle, homePages, githubIcon, githubUrl, infoIcon, pythonIcon } from '../../core/inputs';
 import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '../../core/inputs';
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '../../core/inputs';
+import { resumePages, projectPages } from '../../core/inputs';
 
 import { name, dependencies } from '../../../../package.json';
 
@@ -18,7 +19,8 @@ export class HeaderComponent implements OnInit {
   currentPage!: string;
 
   navBarTitle: string = navBarTitle;
-  homePages: any = homePages;
+  topicPages: any = [...resumePages, ...projectPages];
+  homePage: any = homePages[0];
 
   bugIcon = bugIcon;
   helpIcon = helpIcon;
@@ -39,7 +41,7 @@ export class HeaderComponent implements OnInit {
   pythonIcon = pythonIcon;
   githubIcon = githubIcon;
   menuIcon = menuIcon;
-  
+
   title = 'Portfolio';
   author = 'Amaury Valorge';
   starterMessage = 'Géomaticien | Développeur';

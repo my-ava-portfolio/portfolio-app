@@ -2,20 +2,19 @@
   position: fixed!important;
   z-index: 1;
   // min-width: 15%;
-  overflow-y: hidden;
+  // overflow-y: hidden;
   height: 100vh;
   background-color: #ffffff;
-  width: 17%; // very important ! linked to the left navbar width
+  // width: 17%; // very important ! linked to the left navbar width
   left: 0;
   display: block
 }
 
 
-@media only screen and (max-width: 690px)  {
   #sidebar-container {
 
     padding: 0;
-    left: -40%;
+    left: -15em;
     -webkit-transition: left 0.2s ease-in-out;
     -moz-transition: left 0.2s ease-in-out;
     -o-transition: left 0.2s ease-in-out;
@@ -25,14 +24,13 @@
 
   #sidebar-container.show{
     left: 0;
-    width: 40%;
+    width: 15em;
     box-shadow: 20px 0px 20px 20px #000000c2;
     -webkit-transition: left 0.2s ease-in-out;
     -moz-transition: left 0.2s ease-in-out;
     -o-transition: left 0.2s ease-in-out;
     transition: left 0.2s ease-in-out;
   }
-}
 
 
 /* Menu item*/

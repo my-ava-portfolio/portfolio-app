@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
     this.apiService.apiHealth.subscribe(data => {
       this.apiStatus = data;
 
-      // this.apiStatus = 'Ready' // useful for local debugging
+      this.apiStatus = 'Ready' // useful for local debugging
       if (this.apiStatus === 'Ready') {
         this.apiOff = false;
         // to not check all the time
