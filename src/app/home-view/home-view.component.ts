@@ -8,7 +8,7 @@ import { infoIcon, githubIcon, pythonIcon, githubUrl } from '../core/inputs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { name, dependencies } from '../../../package.json';
+import { name } from '../../../package.json';
 
 
 @Component({
@@ -37,27 +37,6 @@ export class HomeViewComponent implements OnInit {
   topicMessage!: string;
 
   authorRepoUrl = 'https://github.com/amauryval/portfolio';
-  nameApp = name;
-  year = 2021;
-
-  pythonVersion = '3.8';
-
-  lib1Name = 'Flask';
-  lib1Version = '';
-  lib1RepoUrl = 'https://github.com/pallets/flask';
-
-  angularVersion!: string;
-  angularRepoUrl = 'https://github.com/angular/angular';
-
-  bootstrapVersion!: string;
-  bootstrapRepoUrl = 'https://ng-bootstrap.github.io/#/home';
-
-  leafletVersion!: string;
-  leafletRepoUrl = 'https://github.com/Leaflet/Leaflet';
-
-  d3Version!: string;
-  d3RepoUrl = 'https://github.com/d3/d3';
-
 
   constructor(
     private router: Router,
@@ -90,12 +69,6 @@ export class HomeViewComponent implements OnInit {
   ngOnInit(): void {
     this.quartersStatus = this.pagesObject;
     this.welcomeMessage = this.defaultWelcomeMessage;
-
-    this.angularVersion = dependencies['@angular/core'];
-    this.bootstrapVersion = dependencies['@ng-bootstrap/ng-bootstrap'];
-    this.leafletVersion = dependencies.leaflet;
-    this.d3Version = dependencies.d3;
-
   }
 
 
