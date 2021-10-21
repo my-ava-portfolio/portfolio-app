@@ -1,4 +1,4 @@
-import { faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
@@ -63,6 +63,9 @@ export const volunteerIcon = faUserCog;
 export const jobIcon = faBuilding;
 export const presIcon = faAddressBook;
 export const trophyIcon = faTrophy
+export const caretRightIcon = faCaretRight;
+export const homeIcon = faHome;
+export const menuIcon = faBars;
 
 // font awesome unicode
 export const trainIconUnicode = '\uf238';
@@ -73,55 +76,109 @@ export const svgTripIdPrefix = 'svg_trip_';
 export const legendActivities = 'legendActivity';
 export const sliderBarId = 'slider-bar';
 
-export const homePage: any = {
-  id: 'home',
-  route: '/home',
-  title: 'Accueil',
-  status: false
-};
 
 export const currentYear: number = new Date().getFullYear();
 export const currentDate = now();
 
-export const pages: any = [
+export const homePages: any = [
+  {
+    id: 'home',
+    route: '/',
+    title: 'Accueil',
+    icon: homeIcon
+  },
+]
+
+export const resumePages: any = [
   {
     id: 'resume',
     route: '/resume',
     title: 'Profil',
-    status: false,
-    icon: resumeIcon
+    icon: resumeIcon,
+    sub_menus: [
+      {
+        id: "print",
+        title: "Imprimer...",
+        route: '../short_resume',
+        icon: printIcon
+      },
+      {
+        id: "presentation",
+        title: "Présentation",
+        route: '/resume',
+        fragment: "presentation",
+        icon: presIcon
+      },
+      {
+        id: "navigation",
+        title: "Navigation",
+        route: '/resume',
+        fragment: "navigation",
+        icon: navIcon
+      },
+      {
+        id: "jobs",
+        title: "Expériences",
+        route: '/resume',
+        fragment: "jobs",
+        icon: jobIcon
+      },
+      {
+        id: "volunteers",
+        title: "Bénévolat",
+        route: '/resume',
+        fragment: "volunteers",
+        icon: volunteerIcon
+      },
+      {
+        id: "personal_projects",
+        title: "Projets perso",
+        route: '/resume',
+        fragment: "personal_projects",
+        icon: projectIcon
+      },
+      {
+        id: "publications",
+        title: "Publications",
+        route: '/resume',
+        fragment: "publications",
+        icon: publishIcon
+      },
+    ]
   },
   {
     id: 'map',
     route: '/map',
     title: 'Carte',
-    status: false,
     icon: mapIcon
   },
   {
     id: 'gallery',
     route: '/gallery',
     title: 'Galerie',
-    status: false,
     icon: galleryIcon
-  },
+  }
+];
+
+export const projectPages: any = [
   {
     id: 'blog',
     route: '/blog',
     title: 'Blog',
-    status: false,
     icon: notesIcon
   },
   {
     id: 'github',
-    route: githubUrl,
+    url: githubUrl,
     title: 'Github',
-    status: false,
     icon: githubIcon
   }
 ];
 
+
+const pages = [...resumePages, ...projectPages]
 export const pagesObject: any = pages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
+
 
 export function checkIfScreenPortraitOrientation(): boolean {
   if (window.screen.orientation.angle === 90 && window.screen.width >= minWidthLandscape && window.screen.height >= minHeightLandscape) {
@@ -139,4 +196,3 @@ function now(): Date {
   date.setHours(0, 0, 0, 0);
   return date
 }
-

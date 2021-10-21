@@ -3,10 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { navBarTitle, homePage, pages } from '../../core/inputs';
-import { helpIcon, exclamationIcon, bugIcon } from '../../core/inputs';
+import { navBarTitle, homePages, githubIcon, githubUrl, infoIcon, pythonIcon } from '../../core/inputs';
+import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '../../core/inputs';
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '../../core/inputs';
+import { resumePages, projectPages } from '../../core/inputs';
 
+import { name, dependencies } from '../../../../package.json';
 
 @Component({
   selector: 'app-header',
@@ -16,9 +18,9 @@ import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '../.
 export class HeaderComponent implements OnInit {
   currentPage!: string;
 
-  homePage: any = homePage;
   navBarTitle: string = navBarTitle;
-  portfolioPages: any = pages;
+  topicPages: any = [...resumePages, ...projectPages];
+  homePage: any = homePages[0];
 
   bugIcon = bugIcon;
   helpIcon = helpIcon;
@@ -33,6 +35,46 @@ export class HeaderComponent implements OnInit {
   contactFeatureMessage = 'Des améliorations ?';
 
   issueSufixTitle = ' page:';
+
+  // icons
+  infoIcon = infoIcon;
+  pythonIcon = pythonIcon;
+  githubIcon = githubIcon;
+  menuIcon = menuIcon;
+
+  title = 'Portfolio';
+  author = 'Amaury Valorge';
+  starterMessage = 'Géomaticien | Développeur';
+  defaultWelcomeMessage = 'Portfolio';
+  githubUrl = githubUrl;
+
+  quarterNotSelected = false;
+  currentQuarterSelected!: string ;
+  welcomeMessage!: string;
+  topicMessage!: string;
+
+  authorRepoUrl = 'https://github.com/amauryval/portfolio';
+  nameApp = name;
+  year = 2021;
+
+  pythonVersion = '3.8';
+
+  lib1Name = 'Flask';
+  lib1Version = '';
+  lib1RepoUrl = 'https://github.com/pallets/flask';
+
+  angularVersion!: string;
+  angularRepoUrl = 'https://github.com/angular/angular';
+
+  bootstrapVersion!: string;
+  bootstrapRepoUrl = 'https://ng-bootstrap.github.io/#/home';
+
+  leafletVersion!: string;
+  leafletRepoUrl = 'https://github.com/Leaflet/Leaflet';
+
+  d3Version!: string;
+  d3RepoUrl = 'https://github.com/d3/d3';
+
 
   constructor(
     private router: Router,
@@ -49,6 +91,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentPage = this.location.path();
+
+    this.angularVersion = dependencies['@angular/core'];
+    this.bootstrapVersion = dependencies['@ng-bootstrap/ng-bootstrap'];
+    this.leafletVersion = dependencies.leaflet;
+    this.d3Version = dependencies.d3;
   }
 
 }

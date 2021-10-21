@@ -12,3 +12,26 @@
   opacity: 1;
   transition: all 1s ease-in-out;
  }
+
+
+.page {
+  top: 3.5rem;
+}
+
+.left-side-bar{ // very important ! linked to the left navbar width
+  -ms-flex: 0 0 17%;
+  flex: 0 0 17%;
+}
+
+@media (max-width: 690px) {
+  .left-side-bar {
+    -ms-flex: unset;
+    flex: unset;
+  }
+}
+
+.no-gutter {
+  padding-right: 0;
+  padding-left: 0;
+}
+
