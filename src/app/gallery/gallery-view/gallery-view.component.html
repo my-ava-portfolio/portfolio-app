@@ -69,8 +69,8 @@
         <fa-icon class="mr-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
       </span>
       <p class="card-text mt-2">{{media_feature.description}}</p>
-      <p class="card-text small" *ngIf="media_feature.data !== ''">Données: {{media_feature.data}}</p>
-      <p class="card-text small" *ngIf="media_feature.tools !== ''">Outils: {{media_feature.tools}}</p>
+      <p class="card-text small" *ngIf="media_feature.data">Données: {{media_feature.data}}</p>
+      <p class="card-text small" *ngIf="media_feature.tools">Outils: {{media_feature.tools}}</p>
     </div>
 
   </div>
