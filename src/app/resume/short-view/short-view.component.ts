@@ -83,7 +83,7 @@ export class ShortViewComponent implements OnInit, OnDestroy {
     this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
         this.jobsData = data.activities_data.jobs;
-        this.personalProjectsData = data.activities_data.personal_projects;
+        this.personalProjectsData = data.activities_data.personal_projects.reverse();
         this.skillsData = data.skills_data;
       },
       (error) => {
