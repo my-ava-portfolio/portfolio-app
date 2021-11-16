@@ -1,62 +1,63 @@
-<div class="d-flex main-header navbar navbar-expand-md bg-light navbar-light sticky-top">
+<div class="navbar navbar-expand-md bg-light navbar-light sticky-top text-nowrap">
   <!-- Left navbar links -->
 
-  <div class="navbar-header">
+      <div class="col-sm-2 navbar-header">
 
-    <a class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </a>
-
-    <a class="navbar-brand text-dark ml-2" [routerLink]="homePage.route">
-      <span>{{ this.navBarTitle }}</span>
-    </a>
-  </div>
-
-
-
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="nav navbar-nav mr-auto">
-      <li *ngFor="let page of topicPages" class="nav-item ml-3" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" data-target=".navbar-collapse.show">
-
-        <a class="text-dark" [routerLink]="page.route" *ngIf="page.title !== 'Github'">
-          <fa-icon [icon]="page.icon" class="mr-1"></fa-icon>{{page.title}}
+        <a class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </a>
 
-        <a class="text-dark" [href]="page.url" target="_blank" rel="noopener noreferrer" *ngIf="page.title === 'Github'">
-          <fa-icon [icon]="page.icon" class="mr-1"></fa-icon>{{page.title}}
+        <a class="navbar-brand text-dark ml-2" [routerLink]="homePage.route">
+          <span>{{ this.navBarTitle }}</span>
         </a>
-      </li>
-    </ul>
+      </div>
 
-    <ul class="navbar-nav ml-auto collapse float-right" id="contact-buttons">
 
-      <li class="nav-item">
-        <a class="nav-link text-black" [ngbPopover]="infoPopup" container="body" popoverTitle="Infos" popoverClass="popup" placement="bottom">
-          <fa-icon class="m-1" [icon]="infoIcon" size="1x"></fa-icon>
-        </a>
-      </li>
 
-      <li class="nav-item">
-        <a class="nav-link text-danger" container="body" [href]="GithubBugIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactBugMessage" triggers="mouseenter:mouseleave">
-          <fa-icon class="m-1" [icon]="bugIcon" size="1x"></fa-icon>
-        </a>
-      </li>
+      <div class="col-sm-10 collapse navbar-collapse" id="navbarNav">
+        <ul class="nav navbar-nav mr-auto">
+          <li *ngFor="let page of topicPages" class="nav-item ml-3" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" data-target=".navbar-collapse.show">
 
-      <li class="nav-item">
-        <a class="nav-link text-warning" container="body" [href]="GithubQuestionIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactHelpMessage" triggers="mouseenter:mouseleave">
-          <fa-icon class="m-1" [icon]="helpIcon" size="1x"></fa-icon>
-        </a>
-      </li>
+            <a class="text-dark" [routerLink]="page.route" *ngIf="page.title !== 'Github'">
+              <fa-icon [icon]="page.icon" class="mr-1"></fa-icon>{{page.title}}
+            </a>
 
-      <li class="nav-item">
-        <a class="nav-link text-success" container="body" [href]="GithubEnhancementIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactFeatureMessage" triggers="mouseenter:mouseleave">
-          <fa-icon class="m-1" [icon]="exclamationIcon" size="1x"></fa-icon>
-        </a>
-      </li>
+            <a class="text-dark" [href]="page.url" target="_blank" rel="noopener noreferrer" *ngIf="page.title === 'Github'">
+              <fa-icon [icon]="page.icon" class="mr-1"></fa-icon>{{page.title}}
+            </a>
+          </li>
+        </ul>
 
-    </ul>
+        <ul class="navbar-nav ml-auto collapse float-right" id="contact-buttons">
 
-  </div>
+          <li class="nav-item">
+            <a class="nav-link text-black" [ngbPopover]="infoPopup" container="body" popoverTitle="Infos" popoverClass="popup" placement="bottom">
+              <fa-icon class="m-1" [icon]="infoIcon" size="1x"></fa-icon>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-danger" container="body" [href]="GithubBugIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactBugMessage" triggers="mouseenter:mouseleave">
+              <fa-icon class="m-1" [icon]="bugIcon" size="1x"></fa-icon>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-warning" container="body" [href]="GithubQuestionIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactHelpMessage" triggers="mouseenter:mouseleave">
+              <fa-icon class="m-1" [icon]="helpIcon" size="1x"></fa-icon>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-success" container="body" [href]="GithubEnhancementIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactFeatureMessage" triggers="mouseenter:mouseleave">
+              <fa-icon class="m-1" [icon]="exclamationIcon" size="1x"></fa-icon>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
 
 </div>
 
