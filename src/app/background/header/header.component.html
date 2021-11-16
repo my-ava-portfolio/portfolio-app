@@ -1,7 +1,7 @@
-<div class="navbar navbar-expand-md bg-light navbar-light sticky-top text-nowrap">
+<div class="d-flex navbar navbar-expand-md bg-light navbar-light sticky-top text-nowrap">
   <!-- Left navbar links -->
 
-      <div class="col-sm-2 navbar-header">
+      <div class="navbar-header">
 
         <a class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -14,7 +14,7 @@
 
 
 
-      <div class="col-sm-10 collapse navbar-collapse" id="navbarNav">
+      <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="nav navbar-nav mr-auto">
           <li *ngFor="let page of topicPages" class="nav-item ml-3" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" data-target=".navbar-collapse.show">
 
