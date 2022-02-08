@@ -13,7 +13,6 @@ import { startWith, map, delay  } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
-
 })
 export class AppComponent implements OnInit {
   mobileIcon = mobileIcon;

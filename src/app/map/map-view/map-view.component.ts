@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewEncapsulation } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -21,7 +21,8 @@ import { MapService } from '../../services/map.service';
 @Component({
   selector: 'app-map-view',
   templateUrl: './map-view.component.html',
-  styleUrls: ['./map-view.component.scss']
+  styleUrls: ['./map-view.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class MapViewComponent implements OnInit, OnDestroy {
   fragment!: string | null;
