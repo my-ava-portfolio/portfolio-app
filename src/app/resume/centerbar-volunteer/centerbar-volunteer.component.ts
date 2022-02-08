@@ -15,6 +15,14 @@ export class CenterbarVolunteerComponent implements OnInit {
   @Output() notePathEmit = new EventEmitter<string>();
   @Input() volunteersData: any;
 
+  activityTitle = "Bénévolat";
+  themesTitle = "Thèmes";
+  contextTitle = "Contexte";
+  missionTitle = "Missions";
+  envTitle = "Environnement";
+  trainingTitle = "Formations";
+  detailsTitle = "Détails";
+  
   apiImgUrl = apiLogoUrl;
 
   // icons
@@ -50,5 +58,5 @@ export class CenterbarVolunteerComponent implements OnInit {
   forceArrayType(input: any): string[] {
     return input
   }
-  
+
 }
