@@ -42,11 +42,11 @@
               </div>
               <div *ngIf="job.status === 'InProgress'; then currentJob else pastJob"></div>
                 <ng-template #pastJob>
-                  <div>Bénévolat - du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.duration}})</div>
+                  <div>{{ this.contractValueAlias(job.contract) }} - du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.duration}})</div>
                 </ng-template>
 
                 <ng-template #currentJob>
-                  <div>Bénévolat - du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.duration}})</div>
+                  <div>{{ this.contractValueAlias(job.contract) }} - du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.duration}})</div>
                 </ng-template>
           </div>
         </div>

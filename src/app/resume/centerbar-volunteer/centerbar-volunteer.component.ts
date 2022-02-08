@@ -22,7 +22,7 @@ export class CenterbarVolunteerComponent implements OnInit {
   envTitle = "Environnement";
   trainingTitle = "Formations";
   detailsTitle = "Détails";
-  
+
   apiImgUrl = apiLogoUrl;
 
   // icons
@@ -57,6 +57,13 @@ export class CenterbarVolunteerComponent implements OnInit {
 
   forceArrayType(input: any): string[] {
     return input
+  }
+
+  contractValueAlias(contractValue: string): string {
+    if (contractValue == "volunteer") {
+      return "Bénévolat";
+    }
+    return contractValue;
   }
 
 }
