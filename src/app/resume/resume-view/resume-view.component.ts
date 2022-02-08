@@ -87,7 +87,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
       (data) => {
 
         this.jobsData = data.activities_data.jobs;
-        this.personalProjectsData = data.activities_data.personal_projects;
+        this.personalProjectsData = data.activities_data.personal_projects.reverse();
         this.volunteersData = data.activities_data.volunteers;
         this.skillsData = data.skills_data;
         this.isActivitiesDataAvailable = true;
