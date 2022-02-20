@@ -26,7 +26,7 @@
       <ul class="navbar-nav ms-auto collapse float-end" id="contact-buttons">
 
         <li class="nav-item">
-          <a class="nav-link text-black" [ngbPopover]="infoPopup" container="body" popoverTitle="Infos" popoverClass="popup" placement="bottom">
+          <a class="nav-link text-black cursor" container="body" [ngbPopover]="infoPopup" container="body" popoverTitle="Infos" popoverClass="popup" placement="bottom"  triggers="mouseenter:mouseleave">
             <fa-icon class="m-1" [icon]="infoIcon" size="1x"></fa-icon>
           </a>
         </li>
