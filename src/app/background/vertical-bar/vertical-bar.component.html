@@ -32,15 +32,15 @@
   <ng-container *ngFor="let page of topicPages">
 
     <ng-container *ngIf="page.route">
-    <a class="topic-item px-2 py-2 border bg-light" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-toggle="collapse" [attr.data-target]="'#nav-' + page.id">
+    <a class="topic-item px-2 py-2 border bg-light" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" data-bs-toggle="collapse" [attr.data-bs-target]="'#nav-' + page.id">
       <div class="d-flex w-100 justify-content-between item-center" >
 
         <span class="">
           <fa-icon [icon]="page.icon" class=""></fa-icon>
-          <span class="ml-2 hide-mean-width">{{page.title}}</span>
+          <span class="ms-2 hide-mean-width">{{page.title}}</span>
         </span>
 
-        <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
+        <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-end"></fa-icon>
       </div>
     </a>
     </ng-container>
@@ -51,10 +51,10 @@
 
         <span class="">
           <fa-icon [icon]="page.icon" class=""></fa-icon>
-          <span class="ml-2 hide-mean-width">{{page.title}}</span>
+          <span class="ms-2 hide-mean-width">{{page.title}}</span>
         </span>
 
-        <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-right"></fa-icon>
+        <fa-icon [icon]="caretRightIcon" class="hide-mean-width float-end"></fa-icon>
       </div>
     </a>
     </ng-container>
@@ -67,9 +67,9 @@
       <div class="w-100 justify-content-center item-center" >
 
         <span class="font-italic text-muted" [class.active]="(activeFragment | async) === menu.fragment">
-          <fa-icon [icon]="caretRightIcon" class="float-right"></fa-icon>
+          <fa-icon [icon]="caretRightIcon" class="float-end"></fa-icon>
           <fa-icon [icon]="menu.icon" class=""></fa-icon>
-          <span class="ml-2 hide-mean-width font-italic">{{menu.title}}</span>
+          <span class="ms-2 hide-mean-width font-italic">{{menu.title}}</span>
         </span>
       </div>
 

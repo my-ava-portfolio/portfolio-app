@@ -1,10 +1,10 @@
-<div class="container-fluid" *ngIf="isGalleryDataCanBeDisplayed">
+<div class="container" *ngIf="isGalleryDataCanBeDisplayed">
   <div class="row justify-content-around">
 
-    <div class="col-lg-10 mt-4 gallery-content">
 
-      <div class="card-columns">
-        <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
+    <div class="col-lg-12 mt-4 mb-4 gallery-content">
+      <div class="grid-container">
+          <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
       </div>
     </div>
 
@@ -12,7 +12,7 @@
       <div class="row">
 
         <div class="col-9">
-          <button class="btn btn-dark mr-2" type="button" checked autocomplete="off" (click)="showHideLegend()">
+          <button class="btn btn-dark me-2" type="button" checked autocomplete="off" (click)="showHideLegend()">
             <fa-icon class="" [icon]="tagsIcon"></fa-icon>
             Légende
           </button>
@@ -33,48 +33,49 @@
 
 
 <ng-template #imgProject let-medias=medias>
-  <div class="card border rounded py-2 px-2" *ngFor="let media_feature of medias; let idx = index">
+  <div class="mb-4 feat-gallery" *ngFor="let media_feature of medias; let idx = index" style='{"position: relative;"}'>
+    <div class="card">
 
-    <ng-container [ngSwitch]="media_feature.source">
+      <ng-container [ngSwitch]="media_feature.source">
 
-      <ng-container *ngSwitchCase="'youtube'">
-        <div class="embed-responsive embed-responsive-16by9">
-          <iframe [src]="media_feature.media | safeUrl" class="embed-responsive-item" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
-        </div>
+        <ng-container *ngSwitchCase="'youtube'">
+          <div class="ratio ratio-16x9">
+            <iframe [src]="media_feature.media | safeUrl" class="" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'url_img'">
+          <img [src]="media_feature.media | safeUrl" class="card-img-top pointer" data-bs-toggle="modal" [attr.data-bs-target]="'#modal-' + media_feature.identifier + idx">
+          <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'url_app'">
+          <a [href]="media_feature.media | safeUrl" target="_blank" rel="noopener noreferrer">
+            <img [src]="media_feature.media_splash" class="card-img-top pointer">
+          </a>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'api_img'">
+          <img [src]="apiMapsUrl + media_feature.media" class="card-img-top pointer" data-bs-toggle="modal" [attr.data-bs-target]="'#modal-' + media_feature.identifier + idx">
+          <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiMapsUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
+        </ng-container>
+
       </ng-container>
 
-      <ng-container *ngSwitchCase="'url_img'">
-        <img [src]="media_feature.media | safeUrl" class="card-img-top pointer" data-toggle="modal" [attr.data-target]="'#modal-' + media_feature.identifier + idx">
-        <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
-      </ng-container>
+      <div class="card-body">
+        <h6 class="card-title">{{ media_feature.title }}</h6>
+        <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
+        <a [routerLink]="['/resume']" [fragment]="media_feature.identifier"><span class="badge rounded-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
+        <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + media_feature.type">
+          <fa-icon class="me-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
+        </span>
+        <p class="card-text mt-2">{{media_feature.description}}</p>
+        <p class="card-text small" *ngIf="media_feature.data">Données: {{media_feature.data}}</p>
+        <p class="card-text small" *ngIf="media_feature.tools">Outils: {{media_feature.tools}}</p>
+      </div>
 
-      <ng-container *ngSwitchCase="'url_app'">
-        <a [href]="media_feature.media | safeUrl" target="_blank" rel="noopener noreferrer">
-          <img [src]="media_feature.media_splash" class="card-img-top pointer">
-        </a>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'api_img'">
-        <img [src]="apiMapsUrl + media_feature.media" class="card-img-top pointer" data-toggle="modal" [attr.data-target]="'#modal-' + media_feature.identifier + idx">
-        <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiMapsUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
-      </ng-container>
-
-    </ng-container>
-
-    <div class="card-body">
-      <h6 class="card-title">{{ media_feature.title }}</h6>
-      <span [class]="'badge badge-pill my-1 mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
-      <a [routerLink]="['/resume']" [fragment]="media_feature.identifier"><span class="badge badge-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
-      <span [class]="'badge badge-pill my-1 mx-2 text-white ' + media_feature.type">
-        <fa-icon class="mr-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
-      </span>
-      <p class="card-text mt-2">{{media_feature.description}}</p>
-      <p class="card-text small" *ngIf="media_feature.data">Données: {{media_feature.data}}</p>
-      <p class="card-text small" *ngIf="media_feature.tools">Outils: {{media_feature.tools}}</p>
     </div>
-
   </div>
-
 </ng-template>
 
 
@@ -100,25 +101,25 @@
 
           <div class="btn-group my-1 mx-1" role="group">
             <button class="btn btn-secondary btn-sm" [ngClass]="currentCategory === null ? 'font-weight-bolder' : 'inactive'" (click)="this.resetGallery()">
-              <fa-icon class="mr-2" [icon]="tagIcon"></fa-icon>Tous
+              <fa-icon class="me-2" [icon]="tagIcon"></fa-icon>Tous
             </button>
           </div>
 
           <div class="btn-group my-1 mx-1" role="group">
             <button class="btn btn-secondary btn-sm" [ngClass]="currentCategory === 'job' ? 'font-weight-bolder' : 'inactive'" (click)="getGalleryDataByCategory('job')">
-              <fa-icon class="job_color mr-2" [icon]="tagIcon"></fa-icon>Expériences
+              <fa-icon class="job_color me-2" [icon]="tagIcon"></fa-icon>Expériences
             </button>
           </div>
 
           <div class="btn-group my-1 mx-1" role="group">
             <button class="btn btn-secondary btn-sm" [ngClass]="currentCategory === 'personal_project' ? 'font-weight-bolder' : 'inactive'" (click)="getGalleryDataByCategory('personal_project')">
-              <fa-icon class="personal_project_color mr-2" [icon]="tagIcon"></fa-icon>Projets personnels
+              <fa-icon class="personal_project_color me-2" [icon]="tagIcon"></fa-icon>Projets personnels
             </button>
           </div>
 
           <div class="btn-group my-1 mx-1" role="group">
             <button class="btn btn-secondary btn-sm" [ngClass]="currentCategory === 'volunteer' ? 'font-weight-bolder' : 'inactive'" (click)="getGalleryDataByCategory('volunteer')">
-              <fa-icon class="volunteer_color mr-2" [icon]="tagIcon"></fa-icon>Bénévolat
+              <fa-icon class="volunteer_color me-2" [icon]="tagIcon"></fa-icon>Bénévolat
             </button>
           </div>
 
@@ -132,7 +133,7 @@
         <div class="my-2 activities-container">
           <div class="btn-toolbar d-flex justify-content-center" role="toolbar">
             <ng-container *ngFor="let activity of activities | keyvalue">
-              <div class="btn-group my-1 mr-1" role="group">
+              <div class="btn-group my-1 me-1" role="group">
                 <button (click)="getGalleryDataByActivity(activity.key)" type="button" [id]="activity.key" class="btn btn-secondary btn-sm" [ngClass]="{'active font-weight-bold': currentActivity === activity.key}">
                   {{ activity.value}}
                 </button>

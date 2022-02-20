@@ -1,113 +1,114 @@
 <section id="personal_projects" class="col-lg-12 mt-4">
   <h5 class="font-weight-bold mb-3">
-    <fa-icon class="mr-2" [icon]="projectIcon"></fa-icon>
+    <fa-icon class="me-2" [icon]="projectIcon"></fa-icon>
     Projets personnels
-  <fa-icon class="cursor float-right mr-2" [icon]="expandIcon" data-toggle="collapse" data-target=".project_card"></fa-icon>
+  <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target=".project_card"></fa-icon>
   </h5>
 
-  <div [id]="project.identifier" class="project_card item card mb-3 collapse show" *ngFor="let project of personalProjectsData">
-    <div class="card-body">
-      <div class="row project-header">
+  <div class="col-lg-11 mx-auto">
+    <div [id]="project.identifier" class="project_card item card mb-3 collapse show" *ngFor="let project of personalProjectsData">
+      <div class="card-body">
+        <div class="row project-header">
 
-        <div class="col-lg-7 project-title cursor" data-toggle="collapse" [attr.data-target]="'#collapse-' + project.identifier">
-          <h5 class="font-weight-bold">{{ project.title }}</h5>
-        </div>
+          <div class="col-lg-7 project-title cursor" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + project.identifier">
+            <h5 class="font-weight-bold">{{ project.title }}</h5>
+          </div>
 
-        <div class="col-lg-5">
+          <div class="col-lg-5">
 
-          <a class="btn btn-dark mr-2 float-right" (click)="pushActivityId(project.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
+            <a class="btn btn-dark me-2 float-end" (click)="pushActivityId(project.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
 
-          <div *ngIf="project.url_github; then projectsShorcutGithub"></div>
-          <ng-template #projectsShorcutGithub>
-            <a class="btn btn-secondary mr-2 float-right" [href]="project.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
-          </ng-template>
+            <div *ngIf="project.url_github; then projectsShorcutGithub"></div>
+            <ng-template #projectsShorcutGithub>
+              <a class="btn btn-secondary me-2 float-end" [href]="project.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
+            </ng-template>
 
-          <div *ngIf="project.medias_found; then projectsShorcutGallery"></div>
-          <ng-template #projectsShorcutGallery>
-            <a class="btn btn-warning mr-2 float-right" [routerLink]="['/gallery']" [fragment]="project.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
-          </ng-template>
+            <div *ngIf="project.medias_found; then projectsShorcutGallery"></div>
+            <ng-template #projectsShorcutGallery>
+              <a class="btn btn-warning me-2 float-end" [routerLink]="['/gallery']" [fragment]="project.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
+            </ng-template>
 
-          <div *ngIf="project.url_blog; then projectsShortcutNotes"></div>
-          <ng-template #projectsShortcutNotes>
-            <a class="btn btn-info mr-2 float-right" [routerLink]="['/blog']" (click)="emitNotePath(project.url_blog)" title="Accès aux notes"><fa-icon [icon]="notesIcon"></fa-icon></a>
-          </ng-template>
+            <div *ngIf="project.url_blog; then projectsShortcutNotes"></div>
+            <ng-template #projectsShortcutNotes>
+              <a class="btn btn-info me-2 float-end" [routerLink]="['/blog']" (click)="emitNotePath(project.url_blog)" title="Accès aux notes"><fa-icon [icon]="notesIcon"></fa-icon></a>
+            </ng-template>
 
-          <div *ngIf="project.url_website; then projectsShorcutWebsite"></div>
-          <ng-template #projectsShorcutWebsite>
-            <a class="btn btn-primary mr-2 float-right" [href]="project.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
-          </ng-template>
-
-        </div>
-
-        <div class="col-sm-12">
-
-          <div class="col-lg-12 pl-3 mb-2">
-
-              <div *ngIf="project.status === 'InProgress'; then currentJob else pastJob"></div>
-                <ng-template #pastJob>
-                  <div class="font-italic">Du {{ project.start_date | date: 'MM-yyyy' }} à {{ project.end_date | date: 'MM-yyyy' }} ({{project.duration}}).</div>
-                </ng-template>
-
-                <ng-template #currentJob>
-                  <div class="font-italic">Depuis le {{ project.start_date | date: 'MM-yyyy' }} ({{project.duration}}) ...</div>
-                </ng-template>
+            <div *ngIf="project.url_website; then projectsShorcutWebsite"></div>
+            <ng-template #projectsShorcutWebsite>
+              <a class="btn btn-primary me-2 float-end" [href]="project.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
+            </ng-template>
 
           </div>
 
-          <div class="col-lg-12 pl-3">
-            <p class="text-justify">{{project.presentation}}</p>
+          <div class="col-sm-12">
+
+            <div class="col-lg-12 ps-3 mb-2">
+
+                <div *ngIf="project.status === 'InProgress'; then currentJob else pastJob"></div>
+                  <ng-template #pastJob>
+                    <div class="font-italic">Du {{ project.start_date | date: 'MM-yyyy' }} à {{ project.end_date | date: 'MM-yyyy' }} ({{project.duration}}).</div>
+                  </ng-template>
+
+                  <ng-template #currentJob>
+                    <div class="font-italic">Depuis le {{ project.start_date | date: 'MM-yyyy' }} ({{project.duration}}) ...</div>
+                  </ng-template>
+
+            </div>
+
+            <div class="col-lg-12 ps-3">
+              <p class="text-justify">{{project.presentation}}</p>
+            </div>
           </div>
+
         </div>
 
-      </div>
+        <div class="row collapse-project-item collapse show" [id]="'collapse-' + project.identifier">
 
-      <div class="row collapse-project-item collapse show" [id]="'collapse-' + project.identifier">
-
-        <div *ngIf="project.keywords; then projectThemes"></div>
-          <ng-template #projectThemes>
-            <div class="col-lg-12 mb-3">
-              <h5>Thèmes</h5>
-              <div class="col-lg-12 pl-3">
-                <span class="badge badge-primary mr-2" [style]="'background-color:' + item.value"
-                  *ngFor="let item of project.keywords | keyvalue"
-                >{{ item.key }}</span>
+          <div *ngIf="project.keywords; then projectThemes"></div>
+            <ng-template #projectThemes>
+              <div class="col-lg-12 mb-3">
+                <h5>Thèmes</h5>
+                <div class="col-lg-12 ps-3">
+                  <span class="badge me-2" [style]="'background-color:' + item.value"
+                    *ngFor="let item of project.keywords | keyvalue"
+                  >{{ item.key }}</span>
+                </div>
               </div>
+            </ng-template>
+
+          <div class="col-sm-12">
+            <h5 class="mb-3">Description</h5>
+            <div class="col-lg-12 ps-3" *ngFor="let task of project.description | keyvalue">
+              <h6 *ngIf="task.key !== 'NoTitle'">{{ task.key }}</h6>
+              <ul>
+                <li class="text-justify" *ngFor="let description_element of forceArrayType(task.value)">{{ description_element }}</li>
+              </ul>
             </div>
-          </ng-template>
-
-        <div class="col-sm-12">
-          <h5 class="mb-3">Description</h5>
-          <div class="col-lg-12 pl-3" *ngFor="let task of project.description | keyvalue">
-            <h6 *ngIf="task.key !== 'NoTitle'">{{ task.key }}</h6>
-            <ul>
-              <li class="text-justify" *ngFor="let description_element of forceArrayType(task.value)">{{ description_element }}</li>
-            </ul>
           </div>
-        </div>
 
 
-        <div class="col-sm-12">
-          <h5>Environnement</h5>
-          <div class="col-lg-12 pl-3">
-            <ul class="row">
-                <li class="col-sm-4" *ngFor="let tool of project.tools">{{ tool }}</li>
-            </ul>
-          </div>
-          <div *ngIf="project.subelements_tools; then projectSubTools"></div>
-          <ng-template #projectSubTools>
-            <div class="col-lg-12 pl-3">
-                <span class="u">Détails</span>
-                <ul class="">
-                  <li *ngFor="let feat of project.subelements_tools">{{ feat.sub_skill }}: <em>{{ feat.details }}</em></li>
-                </ul>
+          <div class="col-sm-12">
+            <h5>Environnement</h5>
+            <div class="col-lg-12 ps-3">
+              <ul class="row">
+                  <li class="col-sm-4" *ngFor="let tool of project.tools">{{ tool }}</li>
+              </ul>
             </div>
-          </ng-template>
-        </div>
+            <div *ngIf="project.subelements_tools; then projectSubTools"></div>
+            <ng-template #projectSubTools>
+              <div class="col-lg-12 ps-3">
+                  <span class="u">Détails</span>
+                  <ul class="">
+                    <li *ngFor="let feat of project.subelements_tools">{{ feat.sub_skill }}: <em>{{ feat.details }}</em></li>
+                  </ul>
+              </div>
+            </ng-template>
+          </div>
 
+        </div>
       </div>
     </div>
   </div>
-
 </section>
 
 

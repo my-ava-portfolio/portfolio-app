@@ -16,9 +16,13 @@ body::-webkit-scrollbar {
   border-radius: 50%;
 }
 
+.text-justify {
+  text-align: justify;
+}
+
 
 .container-width {
-  max-width: 1550px;
+  max-width: 1700px;
 }
 
 .bg-very-dark {
@@ -29,7 +33,7 @@ body::-webkit-scrollbar {
   background-color: #495057;
 }
 
-.thumbnail-width {
+.img-thumbnail {
   width: 30vw;
 }
 
@@ -244,4 +248,10 @@ circle.selected {
 
 .cursor {
   cursor: pointer;
+}
+
+
+.img-thumbnail {
+  @extend .img-thumbnail ;
+  max-width: 130px;
 }

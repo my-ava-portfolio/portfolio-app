@@ -1,58 +1,59 @@
 <section id="publications" class="col-lg-12 mt-4 mb-5">
     <h5 class="font-weight-bold mb-3">
-      <fa-icon class="mr-2" [icon]="publishIcon"></fa-icon>
+      <fa-icon class="me-2" [icon]="publishIcon"></fa-icon>
       Publications
-      <fa-icon class="cursor float-right mr-2" [icon]="expandIcon" data-toggle="collapse" data-target=".publi_card"></fa-icon>
-
+      <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target=".publi_card"></fa-icon>
     </h5>
 
-    <div class="item card mb-3 publi_card collapse show" *ngFor="let publication of inputpublicationData">
-        <div class="card-body">
-            <div class="row header mb-3">
+    <div class="col-lg-11 mx-auto">
+      <div class="item card mb-3 publi_card collapse show" *ngFor="let publication of inputpublicationData">
+          <div class="card-body">
+              <div class="row header mb-3">
 
-                <div class="col-sm-9 mb-2">
-                    <h5>{{publication.year}} - {{publication.editor}}</h5>
-                </div>
+                  <div class="col-sm-9 mb-2">
+                      <h5>{{publication.year}} - {{publication.editor}}</h5>
+                  </div>
 
-                <div class="col-sm-3 mb-2">
-                  <div *ngIf="publication.link; then publicationShorcutLink"></div>
-                    <ng-template #publicationShorcutLink>
-                      <a class="btn btn-danger mr-2 float-right"  href="{{publication.link}}" target="_blank" rel="noopener noreferrer" title="Documents"><fa-icon [icon]="pdfFileIcon"></fa-icon></a>
+                  <div class="col-sm-3 mb-2">
+                    <div *ngIf="publication.link; then publicationShorcutLink"></div>
+                      <ng-template #publicationShorcutLink>
+                        <a class="btn btn-danger me-2 float-end"  href="{{publication.link}}" target="_blank" rel="noopener noreferrer" title="Documents"><fa-icon [icon]="pdfFileIcon"></fa-icon></a>
+                      </ng-template>
+
+                  </div>
+              </div>
+
+              <div class="row mb-3">
+
+                  <div class="col-sm-12">
+                    <div class="col-sm-12 ps-3">
+                      <p class="text-justify">{{publication.publication}}</p>
+                    </div>
+                  </div>
+
+                  <div *ngIf="publication.keywords; then publicationThemes"></div>
+                    <ng-template #publicationThemes>
+                      <div class="col-lg-12 mb-3">
+                        <h5>Thèmes</h5>
+                        <div class="col-lg-12 ps-3">
+                          <span class="badge me-2" [style]="'background-color:' + item.value"
+                            *ngFor="let item of publication.keywords | keyvalue"
+                          >{{ item.key }}</span>
+                        </div>
+                      </div>
                     </ng-template>
 
-                </div>
-            </div>
 
-            <div class="row mb-3">
-
-                <div class="col-sm-12">
-                  <div class="col-sm-12 pl-3">
-                    <p class="text-justify">{{publication.publication}}</p>
-                  </div>
-                </div>
-
-                <div *ngIf="publication.keywords; then publicationThemes"></div>
-                  <ng-template #publicationThemes>
-                    <div class="col-lg-12 mb-3">
-                      <h5>Thèmes</h5>
-                      <div class="col-lg-12 pl-3">
-                        <span class="badge badge-primary mr-2" [style]="'background-color:' + item.value"
-                          *ngFor="let item of publication.keywords | keyvalue"
-                        >{{ item.key }}</span>
+                  <div class="col-sm-12">
+                      <h5>Description</h5>
+                      <div class="col-sm-12 ps-3">
+                        <p class="text-justify">{{publication.description}}</p>
                       </div>
-                    </div>
-                  </ng-template>
+                  </div>
 
-
-                <div class="col-sm-12">
-                    <h5>Description</h5>
-                    <div class="col-sm-12 pl-3">
-                      <p class="text-justify">{{publication.description}}</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+              </div>
+          </div>
+      </div>
     </div>
 
 </section>
