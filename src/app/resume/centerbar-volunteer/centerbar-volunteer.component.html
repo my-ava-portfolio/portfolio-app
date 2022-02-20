@@ -1,5 +1,5 @@
 <section id="volunteers" class="col-lg-12 section mt-4">
-  <h5 class="font-weight-bold mb-3">
+  <h5 class="fw-bolder mb-3">
     <fa-icon class="me-2" [icon]="volunteerIcon"></fa-icon>
     {{ this.activityTitle }}
       <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target=".voluntee_card"></fa-icon>
@@ -13,7 +13,7 @@
           <div class="row">
 
             <div class="col-lg-9 mb-1">
-              <h5 class="font-weight-bold">{{activity.title}}</h5>
+              <h5 class="fw-bolder">{{activity.title}}</h5>
             </div>
 
             <div class="col-lg-3">
@@ -35,7 +35,7 @@
             </div>
 
             <div class="col-8 align-self-center">
-                <h6 class="font-weight-bold">{{activity.company}}</h6>
+                <h6 class="fw-bolder">{{activity.company}}</h6>
                 <div>
                   <a [id]="'location_' + activity.identifier" role="button" [routerLink]="['/map']" [fragment]="activity.identifier">
                     <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
@@ -110,7 +110,7 @@
                   <h5>{{ this.trainingTitle }}</h5>
                   <div class="col-lg-12 ps-3">
                     <ul class="text-justified">
-                      <li *ngFor="let training of activity.trainings"><span class="font-weight-bold">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span></li>
+                      <li *ngFor="let training of activity.trainings"><span class="fw-bolder">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span></li>
                     </ul>
                   </div>
                 </div>

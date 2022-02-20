@@ -22,7 +22,7 @@
 <ng-template #menuTitleBuilder let-title='title' let-bgColor="bgColor">
   <li class="list-group-item item-center" [ngClass]="bgColor">
       <div class="d-flex w-100 justify-content-center" >
-        <small class="text-white font-weight-bold">{{ title }}</small>
+        <small class="text-white fw-bolder">{{ title }}</small>
       </div>
   </li>
 </ng-template>
@@ -66,10 +66,10 @@
 
       <div class="w-100 justify-content-center item-center" >
 
-        <span class="font-italic text-muted" [class.active]="(activeFragment | async) === menu.fragment">
+        <span class="fst-italic text-muted" [class.active]="(activeFragment | async) === menu.fragment">
           <fa-icon [icon]="caretRightIcon" class="float-end"></fa-icon>
           <fa-icon [icon]="menu.icon" class=""></fa-icon>
-          <span class="ms-2 hide-mean-width font-italic">{{menu.title}}</span>
+          <span class="ms-2 hide-mean-width fst-italic">{{menu.title}}</span>
         </span>
       </div>
 

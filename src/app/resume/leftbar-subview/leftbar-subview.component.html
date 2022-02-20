@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-lg-12 align-self-center my-4">
-    <h4 class="text-center font-weight-bold text-white">Formations</h4>
+    <h4 class="text-center fw-bolder text-white">Formations</h4>
   </div>
 </div>
 
 <div class="row bg-dark">
   <div class="col-lg-12 align-self-center mt-3">
-    <h5 class="text-center font-weight-bold text-white">
+    <h5 class="text-center fw-bolder text-white">
       <fa-icon class="me-2 text-white" [icon]="degreeIcon"></fa-icon>Diplômes
     </h5>
   </div>
@@ -25,7 +25,7 @@
             </ng-template>
 
             <div class="col-lg-12">
-              <div class="text-white font-weight-bold mb-2">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }} - {{ degree.degree }}</div>
+              <div class="text-white fw-bolder mb-2">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }} - {{ degree.degree }}</div>
             </div>
             <div class="col-lg-12">
               <div class="text-white mb-3">{{ degree.school }}</div>
@@ -44,7 +44,7 @@
 
 <div class="row bg-dark">
   <div class="col-lg-12 align-self-center mt-3">
-    <h5 class="text-center font-weight-bold text-white">
+    <h5 class="text-center fw-bolder text-white">
       <fa-icon class="me-2 text-white" [icon]="degreeIcon"></fa-icon>Formations
     </h5>
   </div>
@@ -63,7 +63,7 @@
             </ng-template>
 
             <div class="col-sm-12">
-              <div class="text-white font-weight-bold mb-2">{{ training.year }} - {{ training.name }}</div>
+              <div class="text-white fw-bolder mb-2">{{ training.year }} - {{ training.name }}</div>
             </div>
             <div class="col-sm-12">
               <div class="text-white">par {{ training.trainer }}</div>
@@ -77,7 +77,7 @@
 
 <div class="row bg-dark pb-5">
   <div class="col-lg-12 align-self-center mt-3">
-    <h5 class="text-center font-weight-bold text-white">
+    <h5 class="text-center fw-bolder text-white">
       <fa-icon class="me-2 text-white" [icon]="languageIcon"></fa-icon>Langues
     </h5>
   </div>
@@ -87,7 +87,7 @@
         <div class="col-lg-12">
           <ul class="list-unstyled justify-content-around text-center">
             <li *ngFor="let language of inputLanguagesData">
-              <span class="font-weight-bold  text-white">{{language.language}} </span>
+              <span class="fw-bolder  text-white">{{language.language}} </span>
               <span class="text-white">({{language.level}})</span>
             </li>
           </ul>
