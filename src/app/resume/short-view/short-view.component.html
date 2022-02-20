@@ -6,13 +6,13 @@
 
   <div id="general" class="row justify-content-center">
 
-    <div class="col-md-6 align-self-center">
-      <h2 class="font-weight-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h2>
-      <h3 class="">{{ profilData.job }}</h3>
-      <h3 class="">{{ profilData.experience_duration }}</h3>
+    <div class="col-6 align-self-center">
+      <h4 class="fw-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h4>
+      <h5 class="">{{ profilData.job }}</h5>
+      <h6 class="">{{ profilData.experience_duration }}</h6>
     </div>
 
-    <div class="col-md-5 text-right my-auto">
+    <div class="col-6 text-end my-auto">
       <ul class="list-unstyled">
 
         <ng-container *ngIf="contactData.mail">
@@ -54,33 +54,33 @@
     <div class="col-lg-12">
 
 
-      <div class="row justify-content-center mb-2">
+      <div class="row justify-content-center">
 
-        <div id="degrees" class="col-md-7">
+        <div id="degrees" class="col-md-7 mt-2">
           <h6 class="">Diplômes</h6>
 
           <div class="col-md-12 sub-element" *ngFor="let degree of degreesData">
             <div class="col-md-12">
-              <span class="font-weight-bold my-0">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy' }} - {{ degree.degree }}</span>
-              <p class="font-weight-light ms-3">{{ degree.school }} à {{ degree.location }} </p>
+              <span class="fw-bold my-0">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy' }} - {{ degree.degree }}</span>
+              <p class="fw-light ms-3">{{ degree.school }} à {{ degree.location }} </p>
             </div>
           </div>
         </div>
 
         <div class="col-md-4">
 
-          <div id="tranings" class="col-md-12 mb-2">
+          <div id="tranings" class="col-6 mt-2">
             <h6 class="">Formations</h6>
             <div class="ms-3" *ngFor="let training of trainingsData">
-                <span class="font-weight-bold my-0 me-1">{{ training.year }} - {{ training.name }}</span>
-                <span class="font-weight-light"> par {{ training.trainer }}</span>
+                <span class="fw-bold my-0 me-1">{{ training.year }} - {{ training.name }}</span>
+                <span class="fw-light"> par {{ training.trainer }}</span>
             </div>
           </div>
 
-          <div id="languages" class="col-md-12">
+          <div id="languages" class="col-6 mt-2">
             <h6 class="">Langues</h6>
             <div class="ms-3" *ngFor="let language of languagesData">
-                <span class="font-weight-bold my-0 me-1">{{language.language}}</span><span class="font-weight-light"> - {{language.level}}</span>
+                <span class="fw-bold my-0 me-1">{{language.language}}</span><span class="fw-light"> - {{language.level}}</span>
             </div>
           </div>
         </div>
@@ -99,35 +99,35 @@
 
     <fieldset [ngClass]="job.status === 'InProgress' ? 'border rounded border-danger': 'border rounded'" class="col-lg-11 mb-3" *ngFor="let job of jobsData">
 
-      <legend [ngClass]="job.status === 'InProgress' ? 'text-danger': 'text-dark'" class="font-weight-bold text_legend px-2 my-0"><h6>{{job.title}}</h6></legend>
+      <legend [ngClass]="job.status === 'InProgress' ? 'text-danger': 'text-dark'" class="fw-bold text_legend px-2 my-0"><h6>{{job.title}}</h6></legend>
 
       <div class="row justify-content-between nowrap mb-2">
 
-        <div class="col-md-12">
+        <div class="col-12">
           <div class="row justify-content-between mb-1">
 
-            <div class="col-md-8">
-              <span class="font-weight-bold"> {{job.company}} à {{job.location}}</span>
+            <div class="col-6">
+              <span class="fw-bold"> {{job.company}} à {{job.location}}</span>
             </div>
 
-            <div class="col-md-4 text-right">
+            <div class="col-6 text-end">
               <div *ngIf="job.status === 'InProgress'; then currentJob else pastJob"></div>
                 <ng-template #pastJob>
-                  <span class="font-weight-bold">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.contract}} - {{job.duration}})</span>
+                  <span class="fw-bold">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.contract}} - {{job.duration}})</span>
                 </ng-template>
                 <ng-template #currentJob>
-                  <span class="font-weight-bold"> Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.contract}} - {{job.duration}})</span>
+                  <span class="fw-bold"> Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.contract}} - {{job.duration}})</span>
                 </ng-template>
             </div>
           </div>
 
         </div>
 
-        <div class="col-md-1 mx-auto my-auto">
+        <div class="col-1 m-auto">
           <img class="img-fluid rounded mx-auto d-block shadow img_company" [src]="apiImgUrl + job.img_company"/>
         </div>
 
-        <div class="col-md-11 text-justify">
+        <div class="col-10 m-auto text-justify">
           <p class="">{{job.presentation}}</p>
         </div>
 
@@ -144,8 +144,8 @@
     </div>
 
 
-    <fieldset class="col-lg-3 border rounded m-2" *ngFor="let project of personalProjectsData">
-        <legend class="font-weight-bold text_legend px-2 my-0"><h6>{{project.title}}</h6></legend>
+    <fieldset class="col-5 border rounded m-2" *ngFor="let project of personalProjectsData">
+        <legend class="fw-bold text_legend px-2 my-0"><h6>{{project.title}}</h6></legend>
       <div class="col-lg-12 text-justify">
         <p class="presentation">{{project.presentation}}</p>
       </div>
@@ -177,7 +177,7 @@
 
     <ng-container *ngIf="skillsData">
 
-      <div class="col-md-6">
+      <div class="col-6">
         <ng-container *ngIf="skillsData.themes">
           <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.themes, title: 'Thématiques'}"></ng-container>
         </ng-container>
@@ -188,7 +188,7 @@
 
       </div>
 
-      <div id="tools" class="col-md-6">
+      <div id="tools" class="col-6">
         <ng-container *ngIf="skillsData.tools">
           <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.tools, title: 'Outils'}"></ng-container>
         </ng-container>
@@ -204,7 +204,7 @@
 
     <div class="col-md-12 sub-element" *ngFor="let publication of publicationsData">
       <div class="col-md-12 ">
-        <span class="font-weight-bold">{{publication.year}}</span>
+        <span class="fw-bold">{{publication.year}}</span>
       </div>
       <div class="col-md-12 ms-3 text-justify">
         <span>{{publication.publication}}</span>
@@ -232,7 +232,7 @@
   <div class="col-lg-12">
     <ul class="">
       <li *ngFor="let feature of data">
-        <span class="font-weight-bold">{{feature.name}}:</span><span class="ms-1">{{feature.details | join }}.</span>
+        <span class="fw-bold">{{feature.name}}:</span><span class="ms-1">{{feature.details | join }}.</span>
       </li>
     </ul>
   </div>
