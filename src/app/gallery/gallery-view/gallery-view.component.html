@@ -2,8 +2,8 @@
   <div class="row justify-content-around">
 
 
-    <div class="col-lg-12 my-4 gallery-content">
-      <div class="grid-container mb-5">
+    <div class="col-lg-12 mt-4 gallery-content">
+      <div class="grid-container">
           <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
       </div>
     </div>
@@ -31,8 +31,9 @@
 
 
 <ng-template #imgProject let-medias=medias>
-  <div class="mb-4 feat-gallery" *ngFor="let media_feature of medias; let idx = index" style='{"position: relative;"}'>
+  <div class="mb-4 feat-gallery rounded border shadow-lg bg-white p-2" *ngFor="let media_feature of medias; let idx = index" style='{"position: relative;"}'>
     <div class="card">
+
 
       <ng-container [ngSwitch]="media_feature.source">
 
@@ -43,7 +44,9 @@
         </ng-container>
 
         <ng-container *ngSwitchCase="'url_img'">
-          <img [src]="media_feature.media | safeUrl" class="card-img-top pointer" data-bs-toggle="modal" [attr.data-bs-target]="'#modal-' + media_feature.identifier + idx">
+          <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
+            <img [src]="media_feature.media | safeUrl" class="card-img-top pointer" data-bs-toggle="modal" data-bs-target="'#modal-' + media_feature.identifier + idx">
+          </a>
           <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
         </ng-container>
 
@@ -78,13 +81,20 @@
 
 
 <ng-template #imgModal let-pictureUrl=pictureUrl let-activityId=activityId let-pictureId=pictureId>
-  <div class="modal" [id]="'modal-' + activityId + pictureId" tabindex="-1" role="dialog" aria-labelledby="imgkeyLabel" aria-hidden="true">
 
-    <a data-dismiss="modal" aria-label="Close">
-      <img [src]="pictureUrl | safeUrl" class="pointer img-size">
-    </a>
+  <div class="modal" tabindex="-1" [id]="'modal-' + activityId + pictureId">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-conent">
 
+        <div class="modal-body">
+          <img [src]="pictureUrl | safeUrl" class="pointer img-size">
+        </div>
+
+      </div>
+    </div>
   </div>
+
+
 </ng-template>
 
 

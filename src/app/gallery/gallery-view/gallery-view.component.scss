@@ -183,7 +183,7 @@ footer {
   .img-size {
       width: 60vh;
       margin: auto;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       bottom: 0;
@@ -196,7 +196,7 @@ footer {
       width: auto;
       max-height: 90vh;
       margin: auto;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       bottom: 0;
