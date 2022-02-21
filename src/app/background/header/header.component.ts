@@ -93,7 +93,7 @@ export class HeaderComponent implements OnInit {
     this.currentPage = this.location.path();
 
     this.angularVersion = dependencies['@angular/core'];
-    this.bootstrapVersion = dependencies['@ng-bootstrap/ng-bootstrap'];
+    this.bootstrapVersion = dependencies['bootstrap'];
     this.leafletVersion = dependencies.leaflet;
     this.d3Version = dependencies.d3;
   }

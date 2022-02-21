@@ -1,30 +1,30 @@
 <div class="row">
   <div class="col-lg-12 align-self-center my-4">
-    <h4 class="text-center font-weight-bold text-white">Compétences</h4>
+    <h4 class="text-center fw-bolder text-white">Compétences</h4>
   </div>
 </div>
 
 <div id="skills" class="row bg-dark mb-3" *ngIf="isActivitiesDataAvailable">
 
-  <div class="col-lg-12 align-self-center mb-2">
-    <h5 class="pointer text-center text-white my-3" data-toggle="collapse" data-target=".themes-multi-collapse">
-      <fa-icon class="mr-2" [icon]="skillIcon"></fa-icon>
+  <div class="col-lg-10 mx-auto mb-2">
+    <h5 class="pointer text-center text-white my-3" data-bs-toggle="collapse" data-bs-target=".themes-multi-collapse">
+      <fa-icon class="me-2" [icon]="skillIcon"></fa-icon>
       Thématiques
     </h5>
     <ng-container *ngTemplateOutlet="skillDetails; context:{category:'themes'}"></ng-container>
   </div>
 
-  <div class="col-lg-12 align-self-center mb-2">
-    <h5 class="pointer text-center text-white my-3" data-toggle="collapse" data-target=".technics-multi-collapse">
-      <fa-icon class="mr-2" [icon]="skillIcon"></fa-icon>
+  <div class="col-lg-10 mx-auto mb-2">
+    <h5 class="pointer text-center text-white my-3" data-bs-toggle="collapse" data-bs-target=".technics-multi-collapse">
+      <fa-icon class="me-2" [icon]="skillIcon"></fa-icon>
       Techniques
     </h5>
     <ng-container *ngTemplateOutlet="skillDetails; context:{category:'technics'}"></ng-container>
   </div>
 
-  <div class="col-lg-12 align-self-center mb-2">
-    <h5 class="pointer text-center text-white my-3" data-toggle="collapse" data-target=".tools-multi-collapse">
-      <fa-icon class="mr-2" [icon]="skillIcon"></fa-icon>
+  <div class="col-lg-10 mx-auto mb-2">
+    <h5 class="pointer text-center text-white my-3" data-bs-toggle="collapse" data-bs-target=".tools-multi-collapse">
+      <fa-icon class="me-2" [icon]="skillIcon"></fa-icon>
       Outils
     </h5>
     <ng-container *ngTemplateOutlet="skillDetails; context:{category:'tools'}"></ng-container>
@@ -35,7 +35,7 @@
 
 <ng-template #skillDetails let-category='category'>
   <div class="skills col-lg-12" *ngFor="let skill of skillsData[category]; let idx = index">
-    <h6 [ngClass]="{ 'collapsed':!skill.active || !skill.enabled, 'pointer':skill.active }" class="text-white" data-toggle="collapse" [attr.data-target]="'#collapse' + category + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapse' + category + idx"><a><fa-icon class="mr-2 rotation" [icon]="arrowDownIcon"></fa-icon>{{ skill.name }}</a></h6>
+    <h6 [ngClass]="{ 'collapsed':!skill.active || !skill.enabled, 'pointer':skill.active }" class="text-white" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + category + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapse' + category + idx"><a><fa-icon class="me-2 rotation" [icon]="arrowDownIcon"></fa-icon>{{ skill.name }}</a></h6>
 
     <div *ngIf="skill.enabled; then skillDetails"></div>
     <ng-template #skillDetails>
