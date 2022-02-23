@@ -14,7 +14,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ApiService } from './services/api.service';
 import { ResumeService } from './services/resume.service';
 import { GalleryService } from './services/gallery.service';
 import { MapService } from './services/map.service';
@@ -121,7 +120,6 @@ registerLocaleData(localeFr);
     FormsModule
   ],
   providers: [
-    ApiService,
     ResumeService,
     GalleryService,
     MapService,
