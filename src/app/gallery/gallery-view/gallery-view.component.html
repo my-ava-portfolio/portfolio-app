@@ -1,9 +1,9 @@
-<div class="" *ngIf="isGalleryDataCanBeDisplayed">
+<div class="container container-width-extended" *ngIf="isGalleryDataCanBeDisplayed">
   <div class="row justify-content-around">
 
 
     <div class="col-lg-12 mt-4 gallery-content">
-      <div class="container container-width-extended grid-container align-items-center">
+      <div class="grid-container">
           <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
       </div>
     </div>
@@ -18,7 +18,7 @@
           </button>
         </div>
 
-        <div class="col-12 bg-white legend-content text-center py-4" *ngIf="isLegendDisplayed">
+        <div class="col-12 bg-white legend-content text-center py-3" *ngIf="isLegendDisplayed">
           <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
         </div>
       </div>
