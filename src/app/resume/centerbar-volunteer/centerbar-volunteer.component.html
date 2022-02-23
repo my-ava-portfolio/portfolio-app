@@ -30,11 +30,11 @@
 
           <div class="row mb-3 justify-content-around">
 
-            <div class="col-3 justify-content-around text-center my-3 cursor" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + activity.identifier">
+            <div class="col-sm-3 justify-content-around text-center my-3 cursor" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + activity.identifier">
               <img class="img-fluid rounded mx-auto d-block shadow img-thumbnail" [src]="apiImgUrl + activity.img_company"/>
             </div>
 
-            <div class="col-8 align-self-center">
+            <div class="col-sm-8 align-self-center">
                 <h6 class="fw-bolder">{{activity.company}}</h6>
                 <div>
                   <a [id]="'location_' + activity.identifier" role="button" [routerLink]="['/map']" [fragment]="activity.identifier">
