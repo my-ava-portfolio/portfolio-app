@@ -9,7 +9,7 @@ export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
 export const apiCoreUrl = apiBaseUrl + 'api/v1/core/';
 export const apiLogoUrl = `./assets/logo/`;
 export const apiMapsUrl = `./assets/maps/`;
-export const jupyterNotebookUrl = 'https://amauryval.github.io/';
+export const personalBlogUrl = 'https://blog.amauryval.github.io/';
 export const githubUrl = 'https://github.com/amauryval/';
 export const navBarTitle = 'Amaury Valorge - Portfolio';
 export const githubBugIssueUrl = 'https://github.com/amauryval/portfolio/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';

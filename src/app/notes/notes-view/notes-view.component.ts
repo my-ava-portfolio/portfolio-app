@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { NotesService } from '../../services/notes.service';
 
-import { jupyterNotebookUrl as personalBlogUrl } from '../../core/inputs';
+import { personalBlogUrl } from '../../core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
