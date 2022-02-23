@@ -173,16 +173,9 @@ footer {
   background-color: rgba(0,0,0,0.7);
 }
 
-.img-responsive-height {
-  display: block;
-  width: auto;
-  max-height: 100%
-}
-
 @media (orientation: portrait) {
   .img-size {
-      width: 60vh;
-      margin: auto;
+      width: -webkit-fill-available;
       position: fixed;
       top: 0;
       left: 0;
@@ -193,9 +186,7 @@ footer {
 
 @media (orientation: landscape) {
   .img-size {
-      width: auto;
-      max-height: 90vh;
-      margin: auto;
+      height: -webkit-fill-available;
       position: fixed;
       top: 0;
       left: 0;

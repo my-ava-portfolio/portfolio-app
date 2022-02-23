@@ -84,13 +84,11 @@
 
   <div class="modal" tabindex="-1" [id]="'modal-' + activityId + pictureId">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-      <div class="modal-conent">
 
-        <div class="modal-body">
-          <img [src]="pictureUrl | safeUrl" class="pointer img-size">
-        </div>
-
+      <div class="modal-body">
+        <img [src]="pictureUrl | safeUrl" class="pointer img-size m-auto p-1">
       </div>
+
     </div>
   </div>
 
