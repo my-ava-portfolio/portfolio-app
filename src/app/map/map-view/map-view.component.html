@@ -75,12 +75,12 @@
 
       <div *ngIf="feature.properties.img_activity !== 'null';then ImgActivity"></div>
       <ng-template #ImgActivity>
-        <div class="col-md-4 my-auto justify-content-around text-center">
+        <div class="col-4 my-auto justify-content-around text-center">
           <img class="img-fluid rounded mx-auto d-block shadow mini-img-thumbnail" [src]="apiImgUrl + feature.properties.img_activity"/>
         </div>
       </ng-template>
 
-      <div class="col-md-8 my-auto">
+      <div class="col-8 my-auto">
         <h6 class="fw-bolder">{{feature.properties.name}}</h6>
           <span class="small">
             <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
