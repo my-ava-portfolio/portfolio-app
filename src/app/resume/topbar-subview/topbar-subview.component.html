@@ -8,9 +8,16 @@
 
   <div class="col-lg-5 my-auto">
 
-    <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="'[' + topic.title + ']'" *ngFor="let topic of this.resumeTopics">
-      <fa-icon class="me-1" [icon]="topic.icon"></fa-icon>{{ topic.title }}
-    </a>
+    <ng-container *ngFor="let topic of this.resumeTopics">
+
+      <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="topic.route" *ngIf="topic.id === 'print'">
+        <fa-icon class="me-1" [icon]="topic.icon"></fa-icon>{{ topic.title }}
+      </a>
+
+      <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="topic.route" [fragment]="topic.fragment" *ngIf="topic.id !== 'print'">
+        <fa-icon class="me-1" [icon]="topic.icon"></fa-icon>{{ topic.title }}
+      </a>
+    </ng-container>
 
   </div>
 
