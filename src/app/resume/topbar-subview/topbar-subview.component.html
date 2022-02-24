@@ -7,27 +7,11 @@
   </div>
 
   <div class="col-lg-5 my-auto">
-    <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="['../short_resume']">
-      <fa-icon class="" [icon]="printIcon"></fa-icon>
+
+    <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="'[' + topic.title + ']'" *ngFor="let topic of this.resumeTopics">
+      <fa-icon class="me-1" [icon]="topic.icon"></fa-icon>{{ topic.title }}
     </a>
-    <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="['/resume']" fragment="presentation">
-      <fa-icon class="me-1 text-white" [icon]="presIcon"></fa-icon>Présentation
-    </a>
-    <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="['/resume']" fragment="navigation">
-      <fa-icon class="me-1 text-white" [icon]="navIcon"></fa-icon>Navigation
-    </a>
-    <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="['/resume']" fragment="jobs">
-      <fa-icon class="me-1 text-white" [icon]="jobIcon"></fa-icon>Expériences
-    </a>
-    <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="['/resume']" fragment="volunteers">
-      <fa-icon class="me-1 text-white" [icon]="volunteerIcon"></fa-icon>Bénévolat
-    </a>
-    <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="['/resume']" fragment="personal_projects">
-      <fa-icon class="me-1 text-white" [icon]="projectIcon"></fa-icon>Projets personnels
-    </a>
-    <a class="btn btn-secondary me-2 mb-2" role="button" [routerLink]="['/resume']" fragment="publications">
-      <fa-icon class="me-1 text-white" [icon]="publishIcon"></fa-icon>Publications
-    </a>
+
   </div>
 
   <div class="col-lg-3 my-auto">

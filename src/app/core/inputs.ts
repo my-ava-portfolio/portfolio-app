@@ -98,7 +98,7 @@ export const resumePages: any = [
     sub_menus: [
       {
         id: "print",
-        title: "Imprimer...",
+        title: "",
         route: '../short_resume',
         icon: printIcon
       },

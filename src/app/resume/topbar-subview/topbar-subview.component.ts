@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { githubIcon, linkedinIcon, printIcon, emailIcon } from '../../core/inputs';
 import { navIcon, projectIcon, publishIcon, jobIcon, volunteerIcon, presIcon } from '../../core/inputs';
 
+import { resumePages } from '../../core/inputs';
 
 @Component({
   selector: 'app-topbar-subview',
@@ -31,6 +32,8 @@ export class TopbarSubviewComponent implements OnInit {
   jobIcon = jobIcon;
   presIcon = presIcon;
   navIcon = navIcon;
+  
+  resumeTopics: any = resumePages[0].sub_menus;
 
   constructor() { }
 
