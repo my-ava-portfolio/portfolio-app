@@ -1,17 +1,17 @@
-<div class="container-fluid container-width-extended bg-very-dark" *ngIf="isDataAvailable">
+<div class="container-fluid" *ngIf="isDataAvailable">
 
-  <div class="row justify-content-around">
+  <div class="row">
 
-    <div id="topbar_bar" class="topbar col-lg-12 bg-dark">
+    <div id="topbar_bar" class="topbar col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2">
 
-      <app-topbar-subview
+      <app-profil-bar
         [profilData]="profilData"
         [contactData]="contactData"
-      ></app-topbar-subview>
+      ></app-profil-bar>
 
     </div>
 
-    <div id="left-bar" class="col-lg-3">
+    <!-- <div id="left-bar" class="col-lg-2 offset-sm-3">
 
       <app-leftbar-subview
         [degreesData]="degreesData"
@@ -19,9 +19,9 @@
         [trainingsData]="trainingsData"
       ></app-leftbar-subview>
 
-    </div>
+    </div> -->
 
-    <div id="center-bar" class="col-lg-6 bg-light border">
+    <div id="center-bar" class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-10 bg-light border offset-lg-2 offset-xl-2">
 
       <app-centerbar-presentation
         [qualitiesData]="qualitiesData"
@@ -52,7 +52,7 @@
 
     </div>
 
-    <div id="right-bar" class="col-lg-3">
+    <!-- <div id="right-bar" class="col-lg-2 offset-sm-4">
 
       <app-rightbar-skills
         [skillsData]="skillsData"
@@ -60,7 +60,7 @@
       ></app-rightbar-skills>
 
 
-    </div>
+    </div> -->
 
   </div>
 

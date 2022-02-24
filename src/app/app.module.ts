@@ -50,6 +50,7 @@ import { HeaderComponent } from './background/header/header.component';
 import { VerticalBarComponent } from './background/vertical-bar/vertical-bar.component';
 
 import { TimeLegendComponent } from './map/time-legend/time-legend.component';
+import { ProfilBarComponent } from './resume/profil-bar/profil-bar.component';
 
 
 const appRoutes: Routes = [
@@ -103,6 +104,7 @@ registerLocaleData(localeFr);
     TimeLegendComponent,
     CenterbarVolunteerComponent,
     CenterbarPresentationComponent,
+    ProfilBarComponent,
   ],
   imports: [
     BrowserModule,
