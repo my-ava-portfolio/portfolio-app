@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LeftbarSubviewComponent } from './leftbar-subview.component';
+import { EducationBarComponent } from './education-bar.component';
 
-describe('LeftbarSubviewComponent', () => {
-  let component: LeftbarSubviewComponent;
-  let fixture: ComponentFixture<LeftbarSubviewComponent>;
+describe('EducationBarComponent', () => {
+  let component: EducationBarComponent;
+  let fixture: ComponentFixture<EducationBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LeftbarSubviewComponent ]
+      declarations: [ EducationBarComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LeftbarSubviewComponent);
+    fixture = TestBed.createComponent(EducationBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,31 @@
+.nav-link {
+  color: black;
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  --bs-bg-opacity: 0.25;
+  background-color: rgba(var(--bs-secondary-rgb), var(--bs-bg-opacity))!important;
+}
+
+.nav-link.active {
+  @extend .nav-link;
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity))!important;
+
+}
+
+img{
+  height: 6vh;
+}
+
+.title-date {
+  text-align: center;
+  background-color:  rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+  background: url("http://i.imgur.com/Kkw7rPC.png?1") center center repeat-x #fff;
+}
+.title-date p {
+  background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+  padding: 10px;
+  display: inline-block;
+}

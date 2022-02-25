@@ -1,19 +1,27 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { faUserGraduate, faMapMarkerAlt, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { apiLogoUrl } from '../../core/inputs';
 
 import { degreeIcon, languageIcon, locationIcon } from '../../core/inputs';
-
+import { presIcon, expandIcon } from '../../core/inputs';
+import { state, trigger, transition, animate, style } from '@angular/animations'
 
 
 @Component({
-  selector: 'app-leftbar-subview',
-  templateUrl: './leftbar-subview.component.html',
-  styleUrls: ['./leftbar-subview.component.scss']
+  selector: 'app-education-bar',
+  templateUrl: './education-bar.component.html',
+  styleUrls: ['./education-bar.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      state('in', style({opacity: 0})),
+      transition(':enter', [
+        style({opacity: '0'}),
+        animate('700ms ease-in-out', style({opacity: '1'}))
+      ]),
+    ]),
+  ]
 })
-export class LeftbarSubviewComponent implements OnInit {
-
+export class EducationBarComponent implements OnInit {
   @Input() degreesData: any;
   @Input() languagesData: any;
   @Input() trainingsData: any;
@@ -28,6 +36,11 @@ export class LeftbarSubviewComponent implements OnInit {
   degreeIcon = degreeIcon;
   locationIcon = locationIcon;
   languageIcon = languageIcon;
+  presIcon = presIcon;
+  expandIcon = expandIcon;
+
+
+  tabView = 'degrees-widget';
 
   constructor() { }
 
@@ -36,5 +49,4 @@ export class LeftbarSubviewComponent implements OnInit {
     this.inputLanguagesData = this.languagesData;
     this.inputTrainingsData = this.trainingsData;
   }
-
 }
