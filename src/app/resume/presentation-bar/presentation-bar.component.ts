@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { presIcon, expandIcon } from '../../core/inputs';
 
+
 @Component({
-  selector: 'app-centerbar-presentation',
-  templateUrl: './centerbar-presentation.component.html',
-  styleUrls: ['./centerbar-presentation.component.css']
+  selector: 'app-presentation-bar',
+  templateUrl: './presentation-bar.component.html',
+  styleUrls: ['./presentation-bar.component.css']
 })
-export class CenterbarPresentationComponent implements OnInit {
+export class PresentationBarComponent implements OnInit {
   @Input() summaryData!: any;
   @Input() qualitiesData!: any;
 
