@@ -2,7 +2,7 @@
 
   <div class="row">
 
-    <div id="topbar_bar" class="topbar col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2">
+    <div id="topbar_bar" class="topbar col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-2">
 
       <app-profil-bar
         [profilData]="profilData"
@@ -11,22 +11,21 @@
 
     </div>
 
-    <!-- <div id="left-bar" class="col-lg-2 offset-sm-3">
 
-      <app-leftbar-subview
+
+    <div id="center-bar" class="col-xs-12 col-sm-12 col-md-12 col-lg-15 col-xl-10 offset-xl-2 mt-2 me-2 mb-2">
+
+      <app-presentation-bar
+        [qualitiesData]="qualitiesData"
+        [summaryData]="summaryData"
+      ></app-presentation-bar>
+
+      <app-education-bar
         [degreesData]="degreesData"
         [languagesData]="languagesData"
         [trainingsData]="trainingsData"
-      ></app-leftbar-subview>
+      ></app-education-bar>
 
-    </div> -->
-
-    <div id="center-bar" class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-10 bg-light border offset-lg-2 offset-xl-2">
-
-      <app-centerbar-presentation
-        [qualitiesData]="qualitiesData"
-        [summaryData]="summaryData"
-      ></app-centerbar-presentation>
 
       <app-centerbar-navigation
         [graphInputData]="generalData"

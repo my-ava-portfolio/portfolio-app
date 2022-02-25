@@ -31,12 +31,10 @@ import { MainViewComponent } from './main-view/main-view.component';
 import { ResumeViewComponent } from './resume/resume-view/resume-view.component';
 import { CenterBarNavigationComponent } from './resume/centerbar-navigation/centerbar-navigation.component';
 import { TopbarSubviewComponent } from './resume/topbar-subview/topbar-subview.component';
-import { LeftbarSubviewComponent } from './resume/leftbar-subview/leftbar-subview.component';
 import { CenterbarJobsComponent } from './resume/centerbar-jobs/centerbar-jobs.component';
 import { CenterbarProjectsComponent } from './resume/centerbar-projects/centerbar-projects.component';
 import { CenterbarPublicationsComponent } from './resume/centerbar-publications/centerbar-publications.component';
 import { CenterbarVolunteerComponent } from './resume/centerbar-volunteer/centerbar-volunteer.component';
-import { CenterbarPresentationComponent } from './resume/centerbar-presentation/centerbar-presentation.component';
 import { RightbarSkillsComponent } from './resume/rightbar-skills/rightbar-skills.component';
 
 
@@ -51,6 +49,8 @@ import { VerticalBarComponent } from './background/vertical-bar/vertical-bar.com
 
 import { TimeLegendComponent } from './map/time-legend/time-legend.component';
 import { ProfilBarComponent } from './resume/profil-bar/profil-bar.component';
+import { PresentationBarComponent } from './resume/presentation-bar/presentation-bar.component';
+import { EducationBarComponent } from './resume/education-bar/education-bar.component';
 
 
 const appRoutes: Routes = [
@@ -86,7 +86,6 @@ registerLocaleData(localeFr);
     NotesViewComponent,
     CenterBarNavigationComponent,
     TopbarSubviewComponent,
-    LeftbarSubviewComponent,
     CenterbarJobsComponent,
     CenterbarProjectsComponent,
     CenterbarPublicationsComponent,
@@ -103,8 +102,9 @@ registerLocaleData(localeFr);
     ThemeLegendComponent,
     TimeLegendComponent,
     CenterbarVolunteerComponent,
-    CenterbarPresentationComponent,
     ProfilBarComponent,
+    PresentationBarComponent,
+    EducationBarComponent,
   ],
   imports: [
     BrowserModule,
