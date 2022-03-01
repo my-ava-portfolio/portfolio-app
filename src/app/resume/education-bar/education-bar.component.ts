@@ -19,6 +19,11 @@ import { state, trigger, transition, animate, style } from '@angular/animations'
         animate('700ms ease-in-out', style({opacity: '1'}))
       ]),
     ]),
+    trigger('expandCollapse', [
+      state('open', style({height: '100%', opacity: 1})),
+      state('closed', style({height: 0, opacity: 0})),
+      transition('* => *', [animate('1000ms')])
+  ]),
   ]
 })
 export class EducationBarComponent implements OnInit {
@@ -41,6 +46,9 @@ export class EducationBarComponent implements OnInit {
 
 
   tabView = 'degrees-widget';
+  tabView2 = 'languages-widget';
+
+  isWidgetOpen = true;
 
   constructor() { }
 

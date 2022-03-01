@@ -5,7 +5,7 @@ import { presIcon, expandIcon } from '../../core/inputs';
 @Component({
   selector: 'app-presentation-bar',
   templateUrl: './presentation-bar.component.html',
-  styleUrls: ['./presentation-bar.component.css']
+  styleUrls: ['./presentation-bar.component.scss']
 })
 export class PresentationBarComponent implements OnInit {
   @Input() summaryData!: any;
