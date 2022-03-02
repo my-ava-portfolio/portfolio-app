@@ -44,7 +44,6 @@ import { MapViewComponent } from './map/map-view/map-view.component';
 import { ThemeLegendComponent } from './map/theme-legend/theme-legend.component';
 
 import { BackgroundComponent } from './background/map/background.component';
-import { VerticalBarComponent } from './background/vertical-bar/vertical-bar.component';
 import { NavigationBarComponent } from './background/navigation-bar/navigation-bar.component';
 
 import { TimeLegendComponent } from './map/time-legend/time-legend.component';
@@ -97,7 +96,6 @@ registerLocaleData(localeFr);
     MainViewComponent,
     BackgroundComponent,
     MapViewComponent,
-    VerticalBarComponent,
     ThemeLegendComponent,
     TimeLegendComponent,
     CenterbarVolunteerComponent,
