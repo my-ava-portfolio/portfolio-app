@@ -6,8 +6,8 @@ import { fadeAnimation } from '../core/animation_routes';
 
 import { ResumeService } from '../services/resume.service';
 
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { navBarIcon } from '../core/inputs';
+
 import { trigger, transition } from '@angular/animations';
 
 
@@ -28,6 +28,8 @@ import { trigger, transition } from '@angular/animations';
 export class MainViewComponent implements OnInit {
   sideBarCollapsed: boolean = true;
 
+  navBarIcon = navBarIcon;
+
   enabledStateChange = true;
   scrolltoTopActivated!: boolean;
   arrowUpIcon = arrowUpIcon;
@@ -35,19 +37,8 @@ export class MainViewComponent implements OnInit {
 
 
   constructor(
-    private router: Router,
-    private location: Location,
     private resumeService: ResumeService,
   ) {
-
-    // to hide navbar if home page is opened
-    this.router.events.subscribe(_ => {
-      if (this.location.path() === '/home') {
-        this.isNavBarDisplayed = false;
-      } else {
-        this.isNavBarDisplayed = true;
-      }
-    });
 
     this.resumeService.scrollToTop.subscribe(_ => {
       this.scrollToTop()

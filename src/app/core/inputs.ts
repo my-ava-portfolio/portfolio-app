@@ -1,7 +1,7 @@
-import { faBars, faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faAlignLeft, faBars, faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
-import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
+import {  faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
 
 import { apiBaseUrl } from '../../app/core/constants';
 
@@ -66,6 +66,7 @@ export const trophyIcon = faTrophy
 export const caretRightIcon = faCaretRight;
 export const homeIcon = faHome;
 export const menuIcon = faBars;
+export const navBarIcon = faAlignLeft;
 
 // font awesome unicode
 export const trainIconUnicode = '\uf238';
