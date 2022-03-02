@@ -25,7 +25,7 @@ import { trigger, transition } from '@angular/animations';
   ]
 })
 export class MainViewComponent implements OnInit {
-  sideBarCollapsed: boolean = true;
+  sideBarCollapsed!: boolean;
 
   navBarIcon = navBarIcon;
 
@@ -65,6 +65,10 @@ export class MainViewComponent implements OnInit {
   prepareRouteTransition(outlet: any): any {
     // here the page attributes from app.module.ts to support animation
     return outlet.activatedRouteData.page || {};
+  }
+
+  getSideBarCollapseStatus(status: boolean) {
+    this.sideBarCollapsed = status;
   }
 
 }

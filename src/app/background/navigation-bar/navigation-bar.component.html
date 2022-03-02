@@ -1,15 +1,15 @@
-<nav id="sidebar" [ngClass]="sideBarDisplayed ? 'inactive' : 'active'">
+<nav id="sidebar" [ngClass]="sideBarCollapsed ? 'inactive' : 'active'">
   <div class="m-3 pt-2">
     <div class="sidebar-header text-white text-center m-2">
 
-      <div id="profil-name" class="mb-2" *ngIf="sideBarDisplayed">
-        <img class="rounded mx-auto d-block rounded-circle img-fluid pb-2" src="https://fakeimg.pl/75x75/">
+      <div id="profil-name" class="mb-2" *ngIf="sideBarCollapsed">
+        <img class="rounded mx-auto d-block rounded-circle img-fluid p-2" src="https://fakeimg.pl/75x75/">
         <h3>{{ this.navBarTitle }}</h3>
         <h6 class="mt-2 bg-white rounded-pill text-black profil-badge small">Géomaticien & Développeur</h6>
       </div>
 
-      <div id="profil-shortname" class="mb-2" *ngIf="!sideBarDisplayed">
-        <img class="rounded d-block rounded-circle img-fluid pb-2" src="https://fakeimg.pl/75x75/">
+      <div id="profil-shortname" class="mb-2" *ngIf="!sideBarCollapsed">
+        <img class="rounded d-block rounded-circle img-fluid p-2" src="https://fakeimg.pl/75x75/">
         <strong>AV</strong>
       </div>
 
@@ -17,7 +17,7 @@
         <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: topicPages}"></ng-container>
       </ul>
 
-      <ul class="list-group list-inline justify-content-center" id="contact-buttons" [ngClass]="sideBarDisplayed ? 'list-group-horizontal' : ''">
+      <ul class="list-group list-inline justify-content-center" id="contact-buttons" [ngClass]="sideBarCollapsed ? 'list-group-horizontal' : ''">
 
         <li>
           <a class="text-white cursor" container="body" [ngbPopover]="infoPopup" container="body" popoverTitle="Infos" popoverClass="popup" placement="right"  triggers="mouseenter:mouseleave">
@@ -71,7 +71,7 @@
 
 <ng-template #linkTopicStyle  let-page='page'>
   <fa-icon [icon]="page.icon" class="me-2"></fa-icon>
-  <span class="ms-2" *ngIf="sideBarDisplayed">{{page.title}}</span>
+  <span class="ms-2" *ngIf="sideBarCollapsed">{{page.title}}</span>
 </ng-template>
 
 

@@ -19,7 +19,7 @@ import { name, dependencies } from '../../../../package.json';
   styleUrls: ['./navigation-bar.component.scss']
 })
 export class NavigationBarComponent implements OnInit {
-  @Input() sideBarDisplayed: any;
+  @Input() sideBarCollapsed: any;
 
   currentPage!: string;
 
