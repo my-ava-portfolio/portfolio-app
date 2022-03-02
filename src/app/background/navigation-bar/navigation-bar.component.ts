@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+
 import { Location } from '@angular/common';
+import { share } from 'rxjs/operators';
 
 import { navBarTitle, homePages, githubIcon, githubUrl, infoIcon, pythonIcon } from '../../core/inputs';
 import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '../../core/inputs';
@@ -11,16 +14,18 @@ import { resumePages, projectPages } from '../../core/inputs';
 import { name, dependencies } from '../../../../package.json';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: 'app-navigation-bar',
+  templateUrl: './navigation-bar.component.html',
+  styleUrls: ['./navigation-bar.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class NavigationBarComponent implements OnInit {
+  @Input() sideBarDisplayed: any;
+
   currentPage!: string;
 
   navBarTitle: string = navBarTitle;
   topicPages: any = [...resumePages, ...projectPages];
-  homePage: any = homePages[0];
+  homePages: any = homePages[0];
 
   bugIcon = bugIcon;
   helpIcon = helpIcon;
@@ -75,10 +80,13 @@ export class HeaderComponent implements OnInit {
   d3Version!: string;
   d3RepoUrl = 'https://github.com/d3/d3';
 
+  // https://stackoverflow.com/questions/63468292/how-to-add-active-class-to-link-which-has-fragmment-in-angular
+  activeFragment = this.route.fragment.pipe(share());
 
   constructor(
     private router: Router,
     private location: Location,
+    public route: ActivatedRoute
   ) {
 
     // to get the current page opened and adapt content regarding orientation
@@ -87,7 +95,7 @@ export class HeaderComponent implements OnInit {
       this.currentPage = this.location.path();
     });
 
-   }
+  }
 
   ngOnInit(): void {
     this.currentPage = this.location.path();
@@ -97,5 +105,6 @@ export class HeaderComponent implements OnInit {
     this.leafletVersion = dependencies.leaflet;
     this.d3Version = dependencies.d3;
   }
+
 
 }

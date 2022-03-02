@@ -17,19 +17,22 @@ import { trigger, transition } from '@angular/animations';
   styleUrls: ['./main-view.component.scss'],
   animations: [
     trigger('routerAnimations', [
-      transition('* => home', fadeAnimation),
-      transition('* => resume', fadeAnimation),
-      transition('* => map', fadeAnimation),
-      transition('* => gallery', fadeAnimation),
-      transition('* => blog', fadeAnimation),
+      // transition('* => home', fadeAnimation),
+      // transition('* => resume', fadeAnimation),
+      // transition('* => map', fadeAnimation),
+      // transition('* => gallery', fadeAnimation),
+      // transition('* => blog', fadeAnimation),
     ])
   ]
 })
 export class MainViewComponent implements OnInit {
+  sideBarCollapsed: boolean = true;
+
   enabledStateChange = true;
   scrolltoTopActivated!: boolean;
   arrowUpIcon = arrowUpIcon;
   isNavBarDisplayed!: boolean;
+
 
   constructor(
     private router: Router,

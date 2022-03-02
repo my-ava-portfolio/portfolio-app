@@ -44,8 +44,8 @@ import { MapViewComponent } from './map/map-view/map-view.component';
 import { ThemeLegendComponent } from './map/theme-legend/theme-legend.component';
 
 import { BackgroundComponent } from './background/map/background.component';
-import { HeaderComponent } from './background/header/header.component';
 import { VerticalBarComponent } from './background/vertical-bar/vertical-bar.component';
+import { NavigationBarComponent } from './background/navigation-bar/navigation-bar.component';
 
 import { TimeLegendComponent } from './map/time-legend/time-legend.component';
 import { ProfilBarComponent } from './resume/profil-bar/profil-bar.component';
@@ -60,7 +60,7 @@ const appRoutes: Routes = [
     path: '',
     component: MainViewComponent,
     children: [
-      { path: 'home', component: HomeViewComponent, data: { title: 'Amaury Valorge Portfolio', page: 'home' } },
+      // { path: 'home', component: HomeViewComponent, data: { title: 'Amaury Valorge Portfolio', page: 'home' } },
       { path: 'resume', component: ResumeViewComponent, data: { title: 'Profil', page: 'resume' } },
       { path: 'map', component: MapViewComponent, data: { title: 'Carte des activités', page: 'map' } },
       { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie', page: 'gallery' } },
@@ -72,7 +72,7 @@ const appRoutes: Routes = [
   // no layout routes
   // { path: 'map', component: MapViewComponent, pathMatch: 'full'  },
   { path: 'short_resume', component: ShortViewComponent, data: { title: 'Profil', page: 'short_resume' } },
-  // { path: 'home', component: HomeViewComponent, data: { title: 'Accueil - Amaury Valorge Portfolio' } },
+  { path: 'home', component: HomeViewComponent, data: { title: 'Accueil - Amaury Valorge Portfolio' } },
 ];
 
 registerLocaleData(localeFr);
@@ -97,7 +97,6 @@ registerLocaleData(localeFr);
     MainViewComponent,
     BackgroundComponent,
     MapViewComponent,
-    HeaderComponent,
     VerticalBarComponent,
     ThemeLegendComponent,
     TimeLegendComponent,
@@ -105,6 +104,7 @@ registerLocaleData(localeFr);
     ProfilBarComponent,
     PresentationBarComponent,
     EducationBarComponent,
+    NavigationBarComponent,
   ],
   imports: [
     BrowserModule,

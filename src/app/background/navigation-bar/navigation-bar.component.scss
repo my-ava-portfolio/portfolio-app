@@ -1,0 +1,54 @@
+#sidebar{
+  height: 100vh;
+  min-width: 250px;
+  max-width: 250px;
+  transition: all 0.3s;
+}
+
+
+#sidebar.active{
+  min-width: 80px;
+  max-width: 80px;
+  text-align: center;
+}
+
+
+
+#sidebar ul li a {
+  text-align: left;
+}
+
+
+@media (max-width: 768px){
+  /* 80px and its content aligned to centre. Pushing it off the screen with the
+     negative left margin
+  */
+  #sidebar.active{
+      min-width: 80px;
+      max-width: 80px;
+      text-align: center;
+      margin-left: -80px !important;
+  }
+
+
+  #sidebar {
+      margin-left: 0;
+  }
+
+}
+
+
+.profil-badge {
+  display: inline-block;
+  padding: 5px 25px;
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+
+
+// #contact-buttons {
+//   display: -webkit-inline-box;
+// }

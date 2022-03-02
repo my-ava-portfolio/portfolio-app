@@ -1,0 +1,135 @@
+<nav id="sidebar" [ngClass]="sideBarDisplayed ? 'inactive' : 'active'">
+  <div class="m-3 pt-2">
+    <div class="sidebar-header text-white text-center m-2">
+
+      <div id="profil-name" class="mb-2" *ngIf="sideBarDisplayed">
+        <img class="rounded mx-auto d-block rounded-circle img-fluid pb-2" src="https://fakeimg.pl/75x75/">
+        <h3>{{ this.navBarTitle }}</h3>
+        <h6 class="mt-2 bg-white rounded-pill text-black profil-badge small">Géomaticien & Développeur</h6>
+      </div>
+
+      <div id="profil-shortname" class="mb-2" *ngIf="!sideBarDisplayed">
+        <img class="rounded d-block rounded-circle img-fluid pb-2" src="https://fakeimg.pl/75x75/">
+        <strong>AV</strong>
+      </div>
+
+      <ul class="list-unstyled"  id="main-topics-buttons">
+        <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: topicPages}"></ng-container>
+      </ul>
+
+      <ul class="list-group list-inline justify-content-center" id="contact-buttons" [ngClass]="sideBarDisplayed ? 'list-group-horizontal' : ''">
+
+        <li>
+          <a class="text-white cursor" container="body" [ngbPopover]="infoPopup" container="body" popoverTitle="Infos" popoverClass="popup" placement="right"  triggers="mouseenter:mouseleave">
+            <fa-icon class="m-1" [icon]="infoIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+        <li>
+          <a class="text-danger" container="body" [href]="GithubBugIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactBugMessage" triggers="mouseenter:mouseleave">
+            <fa-icon class="m-1" [icon]="bugIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+        <li>
+          <a class="text-warning" container="body" [href]="GithubQuestionIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactHelpMessage" triggers="mouseenter:mouseleave">
+            <fa-icon class="m-1" [icon]="helpIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+        <li>
+          <a class="text-success" container="body" [href]="GithubEnhancementIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactFeatureMessage" triggers="mouseenter:mouseleave">
+            <fa-icon class="m-1" [icon]="exclamationIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<ng-template #topicPagesBuilder let-topicPages='topicPages'>
+  <ng-container *ngFor="let page of topicPages">
+
+      <li class="border-bottom text-warning">
+        <ng-container *ngIf="page.route">
+          <a class="text-warning text-decoration-none p-2 d-block" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+            <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
+          </a>
+        </ng-container>
+        <ng-container *ngIf="page.url">
+          <a class="text-warning text-decoration-none p-2 d-block" [href]="page.route" target="_blank" rel="noopener noreferrer">
+            <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
+          </a>
+        </ng-container>
+      </li>
+
+  </ng-container>
+</ng-template>
+
+<ng-template #linkTopicStyle  let-page='page'>
+  <fa-icon [icon]="page.icon" class="me-2"></fa-icon>
+  <span class="ms-2" *ngIf="sideBarDisplayed">{{page.title}}</span>
+</ng-template>
+
+
+
+<ng-template #infoPopup>
+<div class="container">
+
+  <a class="mb-3 text-dark" [href]="authorRepoUrl" target="_blank" rel="noopener noreferrer">
+    By amauryval - {{year}} <fa-icon class="ms-2" [icon]="githubIcon"></fa-icon>
+  </a>
+
+  <ul class="list-unstyled">
+
+    <li class="ms-2 mb-1">
+      <fa-icon [icon]="pythonIcon"></fa-icon>
+      <span class="me-2 ms-2">Python {{this.pythonVersion}}</span>
+    </li>
+    <li class="ms-2 mb-1">
+      <a class="text-dark" [href]="lib1RepoUrl" target="_blank" rel="noopener noreferrer">
+        <fa-icon class="me-1 " [icon]="githubIcon"></fa-icon>
+        <span>{{this.lib1Name}}</span>
+      </a>
+    </li>
+
+    <li class="ms-2 mb-1">
+      <a class="text-dark" [href]="angularRepoUrl" target="_blank" rel="noopener noreferrer">
+        <img class="me-1" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/512px-Angular_full_color_logo.svg.png" height="20px" width="20px"/>
+        <span>{{this.angularVersion.slice(1)}}</span>
+      </a>
+    </li>
+
+    <li class="ms-2 mb-1">
+      <a class="text-dark" [href]="bootstrapRepoUrl" target="_blank" rel="noopener noreferrer">
+        <img class="me-1" src="https://ng-bootstrap.github.io/img/logo-stack.png" height="20px" width="20px"/>
+        <span>{{this.bootstrapVersion.slice(1)}}</span>
+      </a>
+    </li>
+
+    <li class="ms-2 mb-1">
+      <a class="text-dark" [href]="leafletRepoUrl" target="_blank" rel="noopener noreferrer">
+        <img class="me-1" src="https://rawgit.com/Leaflet/Leaflet/master/src/images/logo.svg" height="20px" width="60px"/>
+        <span>{{this.leafletVersion.slice(1)}}</span>
+      </a>
+    </li>
+
+    <li class="ms-2 mb-1">
+      <a class="text-dark" [href]="d3RepoUrl" target="_blank" rel="noopener noreferrer">
+        <img class="me-1" src="https://d3js.org/logo.svg" height="20px" width="20px"/>
+        <span>{{this.d3Version.slice(1)}}</span>
+      </a>
+    </li>
+
+  </ul>
+</div>
+
+ <ng-template>
+
+
+
+
+
