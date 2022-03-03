@@ -1,10 +1,20 @@
+
+
+
+
 #sidebar{
-  height: 100vh;
+  //height: 100vh;
   min-width: 250px;
   max-width: 250px;
   transition: all 0.3s;
+  overflow-y: auto;
+  //top: 0; // sticky behavior
+  //position: sticky; // sticky behavior
 }
 
+#sidebar::-webkit-scrollbar {
+  display: none;
+}
 
 #sidebar.active{
   min-width: 80px;
@@ -12,17 +22,31 @@
   text-align: center;
 }
 
-
+#sidebar ul li:hover{
+  font-weight: 600;
+}
 
 #sidebar ul li a {
   text-align: left;
 }
 
 
+
 @media (max-width: 768px){
   /* 80px and its content aligned to centre. Pushing it off the screen with the
      negative left margin
   */
+
+  #sidebar{
+    //height: 100vh;
+    min-width: 200px;
+    max-width: 200px;
+    transition: all 0.3s;
+    overflow-y: auto;
+    //top: 0; // sticky behavior
+    //position: sticky; // sticky behavior
+  }
+
   #sidebar.active{
       min-width: 80px;
       max-width: 80px;

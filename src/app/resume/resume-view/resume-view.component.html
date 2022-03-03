@@ -1,19 +1,19 @@
-<div class="conainer" *ngIf="isDataAvailable">
+<div class="container-fluid" *ngIf="isDataAvailable">
 
   <div class="row">
 
-    <div id="topbar_bar" class="topbar col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-2 mt-2">
+    <!-- <div id="topbar_bar" class="topbar col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-2 mt-2">
 
       <app-profil-bar
         [profilData]="profilData"
         [contactData]="contactData"
       ></app-profil-bar>
 
-    </div>
+    </div> -->
 
 
 
-    <div id="center-bar" class="col-xs-12 col-sm-12 col-md-12 col-lg-15 col-xl-10 offset-xl-2 mt-2 me-2 mb-2">
+    <div id="center-bar" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-2">
 
       <app-presentation-bar
         [qualitiesData]="qualitiesData"
@@ -27,7 +27,7 @@
       ></app-education-bar>
 
 
-      <app-centerbar-navigation
+      <!-- <app-centerbar-navigation
         [graphInputData]="generalData"
       ></app-centerbar-navigation>
 
@@ -47,7 +47,7 @@
       ></app-centerbar-projects>
       <app-centerbar-publications
         [publicationsData]="publicationsData"
-      ></app-centerbar-publications>
+      ></app-centerbar-publications> -->
 
     </div>
 
