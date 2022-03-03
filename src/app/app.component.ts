@@ -35,8 +35,6 @@ export class AppComponent implements OnInit {
     private location: Location,
   ) {
 
-
-
     // to get the current page opened and adapt content regarding orientation
     this.router.events.subscribe(_ => {
       this.currentPage = this.location.path();

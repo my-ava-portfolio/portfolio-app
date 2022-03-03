@@ -72,7 +72,7 @@ const appRoutes: Routes = [
   // no layout routes
   // { path: 'map', component: MapViewComponent, pathMatch: 'full'  },
   { path: 'short_resume', component: ShortViewComponent, data: { title: 'Profil', page: 'short_resume' } },
-  { path: 'home', component: HomeViewComponent, data: { title: 'Accueil - Amaury Valorge Portfolio' } },
+  { path: 'home', component: HomeViewComponent, data: { title: 'Amaury Valorge Portfolio' } },
 ];
 
 registerLocaleData(localeFr);

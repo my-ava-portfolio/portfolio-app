@@ -1,30 +1,16 @@
-import { trainIconUnicode } from './../core/inputs';
 import { Component, OnInit, HostListener  } from '@angular/core';
 
 import { arrowUpIcon } from '../core/inputs';
-
-import { fadeAnimation } from '../core/animation_routes';
 
 import { ResumeService } from '../services/resume.service';
 import { ControlerService } from 'src/app/services/controler.service';
 
 import { navBarIcon } from '../core/inputs';
 
-import { trigger, transition } from '@angular/animations';
-
-
 @Component({
   selector: 'app-main-view',
   templateUrl: './main-view.component.html',
   styleUrls: ['./main-view.component.scss'],
-  animations: [
-    trigger('routerAnimations', [
-      // transition('* => resume', fadeAnimation),
-      // transition('* => map', fadeAnimation),
-      // transition('* => gallery', fadeAnimation),
-      // transition('* => blog', fadeAnimation),
-    ])
-  ]
 })
 export class MainViewComponent implements OnInit {
   // Here to set the default status of the bar
@@ -50,8 +36,6 @@ export class MainViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.sideBarCollapsed)
-
     this.scrolltoTopActivated = false;
   }
 
@@ -68,10 +52,8 @@ export class MainViewComponent implements OnInit {
     window.scrollTo(0, 0)
   }
 
-  prepareRouteTransition(outlet: any): any {
+  updatePage(outlet: any): any {
     this.controlerService.pullTitlePage(outlet.activatedRouteData.title)
-    // here the page attributes from app.module.ts to support animation
-    return outlet.activatedRouteData.page || {};
   }
 
   getSideBarCollapseStatus(status: boolean) {

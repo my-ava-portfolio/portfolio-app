@@ -13,7 +13,7 @@
     [sideBarCollapsed]="sideBarCollapsed"
     ></app-control-bar>
 
-    <router-outlet #outlet="outlet" [@routerAnimations]="prepareRouteTransition(outlet)"></router-outlet>
+    <router-outlet #outlet="outlet" (activate)="updatePage(outlet)"></router-outlet>
 
   </div>
 
