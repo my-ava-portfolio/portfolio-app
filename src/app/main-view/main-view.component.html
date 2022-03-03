@@ -1,12 +1,12 @@
 
-<div class="wrapper">
+<div id="main" class="d-flex align-items-stretch">
 
   <app-navigation-bar
   class="bg-dark"
   [sideBarCollapsed]="sideBarCollapsed"
   ></app-navigation-bar>
 
-  <div id="content" class="page">
+  <div id="content" class="w-100">
 
     <app-control-bar
     (sideBarCollapsedEmit)="getSideBarCollapseStatus($event)"

@@ -50,7 +50,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   isDataAvailable = false;
 
-  resumeTopics: any = resumePages.sub_menus;
+  resumeTopics: any[] = resumePages[0].sub_menus;
 
 
   isAnchorExistsChecker = interval(1000); // observable which run all the time
@@ -112,6 +112,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   ngOnInit(): void {
     // this.fragment = null
     this.resumeService.pullResumeGeneralData();
+    this.sendResumeSubMenus()
   }
 
   ngAfterViewInit(): void {
@@ -133,7 +134,6 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   ngOnDestroy(): void {
     this.resumeDataSubscription.unsubscribe();
     this.activitiesFilteredSubscription.unsubscribe();
-    this.sendResumeSubMenus()
   }
 
 
@@ -168,5 +168,6 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus(this.resumeTopics)
+    console.log("a")
   }
 }

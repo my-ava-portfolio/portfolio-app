@@ -28,6 +28,7 @@ export class ControlBarComponent implements OnInit, OnDestroy {
     this.controlerSubMenusSubscription = this.controlerService.subMenuFeatures.subscribe(
       (data) => {
         this.subMenus = data;
+        console.log(this.subMenus)
       },
       (error) => {
         console.log('error');
@@ -43,13 +44,8 @@ export class ControlBarComponent implements OnInit, OnDestroy {
   }
 
   sideBarCollapseUpdated(): void {
-    console.log(this.sideBarCollapsed)
-
     this.sideBarCollapsed = !this.sideBarCollapsed
     this.sideBarCollapsedEmit.emit(this.sideBarCollapsed);
-
-    console.log(this.sideBarCollapsed)
-
   }
 
 }
