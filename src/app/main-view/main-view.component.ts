@@ -1,3 +1,4 @@
+import { trainIconUnicode } from './../core/inputs';
 import { Component, OnInit, HostListener  } from '@angular/core';
 
 import { arrowUpIcon } from '../core/inputs';
@@ -25,11 +26,12 @@ import { trigger, transition } from '@angular/animations';
   ]
 })
 export class MainViewComponent implements OnInit {
-  sideBarCollapsed!: boolean;
+  // Here to set the default status of the bar
+  // TODO check the orientation to collapse or not the bar
+  sideBarCollapsed: boolean = true;
 
   navBarIcon = navBarIcon;
 
-  enabledStateChange = true;
   scrolltoTopActivated!: boolean;
   arrowUpIcon = arrowUpIcon;
   isNavBarDisplayed!: boolean;
@@ -46,6 +48,8 @@ export class MainViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.sideBarCollapsed)
+
     this.scrolltoTopActivated = false;
   }
 

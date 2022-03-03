@@ -1,30 +1,55 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { navBarIcon } from '../../core/inputs';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { navBarIcon, subMenuIcon } from '../../core/inputs';
+
+import { ControlerService } from '../../services/controler.service';
+
 
 @Component({
   selector: 'app-control-bar',
   templateUrl: './control-bar.component.html',
-  styleUrls: ['./control-bar.component.css']
+  styleUrls: ['./control-bar.component.scss']
 })
-export class ControlBarComponent implements OnInit {
+export class ControlBarComponent implements OnInit, OnDestroy {
   @Output() sideBarCollapsedEmit = new EventEmitter<boolean>();
+  @Input() sideBarCollapsed!: boolean;
 
-  // Here to set the default status of the bar
-  // TODO check the orientation to collapse or not the bar
-  sideBarCollapsed: boolean = true;
   navBarIcon = navBarIcon;
+  subMenuIcon = subMenuIcon;
 
-  constructor() { }
+  subMenus!: any;
+
+  controlerSubMenusSubscription!: Subscription;
+
+  constructor(
+    private controlerService: ControlerService,
+  ) {
+
+    this.controlerSubMenusSubscription = this.controlerService.subMenuFeatures.subscribe(
+      (data) => {
+        this.subMenus = data;
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+  }
 
   ngOnInit(): void {
-    this.sideBarCollapseUpdated()
+  }
 
+  ngOnDestroy(): void {
+    this.controlerSubMenusSubscription.unsubscribe();
   }
 
   sideBarCollapseUpdated(): void {
-    this.sideBarCollapsed = !this.sideBarCollapsed
     console.log(this.sideBarCollapsed)
+
+    this.sideBarCollapsed = !this.sideBarCollapsed
     this.sideBarCollapsedEmit.emit(this.sideBarCollapsed);
+
+    console.log(this.sideBarCollapsed)
+
   }
 
 }

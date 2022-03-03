@@ -2,7 +2,10 @@ import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
 
 import { ResumeService } from '../../services/resume.service';
 import { NotesService } from '../../services/notes.service';
+import { ControlerService } from '../../services/controler.service';
+
 import { apiLogoUrl } from '../../core/inputs';
+import { resumePages } from '../../core/inputs';
 
 import { interval, Subscription } from 'rxjs';
 import { startWith  } from 'rxjs/operators';
@@ -47,6 +50,8 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   isDataAvailable = false;
 
+  resumeTopics: any = resumePages.sub_menus;
+
 
   isAnchorExistsChecker = interval(1000); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
@@ -55,6 +60,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   activitiesFilteredSubscription!: Subscription;
 
   constructor(
+    private controlerService: ControlerService,
     private resumeService: ResumeService,
     private notesService: NotesService,
     private activatedRoute: ActivatedRoute,
@@ -127,6 +133,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   ngOnDestroy(): void {
     this.resumeDataSubscription.unsubscribe();
     this.activitiesFilteredSubscription.unsubscribe();
+    this.sendResumeSubMenus()
   }
 
 
@@ -155,9 +162,11 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.activityIdFromActivityComponents = activityId;
   }
 
-
   pushActivitiesAvailable(activities: any[]): void {
     this.resumeService.pullActivitiesAvailable(activities);
   }
 
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus(this.resumeTopics)
+  }
 }
