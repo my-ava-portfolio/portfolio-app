@@ -86,7 +86,7 @@ export class NavigationBarComponent implements OnInit {
   constructor(
     private router: Router,
     private location: Location,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
   ) {
 
     // to get the current page opened and adapt content regarding orientation

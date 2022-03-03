@@ -6,12 +6,17 @@ import { Subject } from 'rxjs';
 })
 export class ControlerService {
   subMenuFeatures: Subject<any> = new Subject<any>();
+  titlePageFeature: Subject<any> = new Subject<any>();
 
   constructor() { }
 
 
   pullSubMenus(menus: any[]): void {
     this.subMenuFeatures.next(menus);
+  }
+
+  pullTitlePage(pageName: string): void {
+    this.titlePageFeature.next(pageName);
   }
 
 }

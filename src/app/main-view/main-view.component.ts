@@ -6,6 +6,7 @@ import { arrowUpIcon } from '../core/inputs';
 import { fadeAnimation } from '../core/animation_routes';
 
 import { ResumeService } from '../services/resume.service';
+import { ControlerService } from 'src/app/services/controler.service';
 
 import { navBarIcon } from '../core/inputs';
 
@@ -39,6 +40,7 @@ export class MainViewComponent implements OnInit {
 
   constructor(
     private resumeService: ResumeService,
+    private controlerService: ControlerService,
   ) {
 
     this.resumeService.scrollToTop.subscribe(_ => {
@@ -67,6 +69,7 @@ export class MainViewComponent implements OnInit {
   }
 
   prepareRouteTransition(outlet: any): any {
+    this.controlerService.pullTitlePage(outlet.activatedRouteData.title)
     // here the page attributes from app.module.ts to support animation
     return outlet.activatedRouteData.page || {};
   }

@@ -17,8 +17,10 @@ export class ControlBarComponent implements OnInit, OnDestroy {
   navBarIcon = navBarIcon;
   subMenuIcon = subMenuIcon;
 
+  pageTitle!: string;
   subMenus!: any;
 
+  controlerPageTitleSubscription!: Subscription;
   controlerSubMenusSubscription!: Subscription;
 
   constructor(
@@ -34,6 +36,17 @@ export class ControlBarComponent implements OnInit, OnDestroy {
         console.log('error');
       }
     );
+
+    this.controlerPageTitleSubscription = this.controlerService.titlePageFeature.subscribe(
+      (data) => {
+        this.pageTitle = data;
+        console.log(this.pageTitle)
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
   }
 
   ngOnInit(): void {
@@ -41,6 +54,7 @@ export class ControlBarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.controlerSubMenusSubscription.unsubscribe();
+    this.controlerPageTitleSubscription.unsubscribe();
   }
 
   sideBarCollapseUpdated(): void {

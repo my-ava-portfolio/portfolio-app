@@ -1,17 +1,22 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow border rounded sticky-top">
+<nav class="navbar navbar-expand-xl navbar-light bg-light shadow border rounded sticky-top">
   <div class="container-fluid">
 
       <button type="button" id="sidebarCollapse" class="btn btn-warning" (click)="sideBarCollapseUpdated()">
         <fa-icon [icon]="navBarIcon"></fa-icon>
       </button>
 
+      <h3 class="d-xl-none ms-auto fw-bold">{{this.pageTitle}}</h3>
 
-      <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSubMenus" aria-controls="navbarSubMenus" aria-expanded="false" aria-label="Toggle navigation">
+
+      <button class="btn btn-dark d-inline-block d-xl-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSubMenus" aria-controls="navbarSubMenus" aria-expanded="false" aria-label="Toggle navigation">
         <fa-icon [icon]="subMenuIcon"></fa-icon>
       </button>
 
+
       <div class="collapse navbar-collapse" id="navbarSubMenus">
-        <ul class="navbar-nav ms-auto align-items-center">
+
+        <ul class="navbar-nav ms-auto align-items-center flex-nowrap">
+          <h3 class="fw-bold mx-3 d-lg-none d-xl-block">{{this.pageTitle}} - </h3>
 
           <li *ngFor="let page of subMenus" class="nav-item">
 
@@ -25,7 +30,8 @@
           </li>
 
         </ul>
-    </div>
+      </div>
+
 
 
   </div>
