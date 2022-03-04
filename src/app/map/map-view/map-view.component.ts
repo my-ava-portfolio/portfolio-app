@@ -16,6 +16,7 @@ import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '.
 import { checkIfScreenPortraitOrientation } from '../../core/inputs';
 
 import { MapService } from '../../services/map.service';
+import { ControlerService } from 'src/app/services/controler.service';
 
 
 @Component({
@@ -72,6 +73,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
+    private controlerService: ControlerService,
   ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -139,6 +141,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.sendResumeSubMenus()
+
     this.zoomInitDone = false;
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
@@ -157,6 +161,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
     );
 
+  }
+
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus([])
   }
 
   @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
