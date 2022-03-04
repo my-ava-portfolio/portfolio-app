@@ -28,7 +28,6 @@ import { ControlerService } from 'src/app/services/controler.service';
 export class MapViewComponent implements OnInit, OnDestroy {
 
   mapContainerWidth!: number;
-  displayLegend!: boolean;
 
   fragment!: string | null;
   fragmentValue!: string;
@@ -86,12 +85,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.pullPageContentWidthSubscription = this.controlerService.widthContentPage.subscribe(
       (width: number) => {
-        console.log("cata", width)
         this.mapContainerWidth = width;
-        this.displayLegend = true;
-        if (width <= 200) {
-          this.displayLegend = false;
-        }
       }
     );
 
