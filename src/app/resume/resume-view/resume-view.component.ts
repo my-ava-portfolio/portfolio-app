@@ -136,7 +136,10 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.activitiesFilteredSubscription.unsubscribe();
   }
 
-
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus(this.resumeTopics)
+  }
+  
   checkAndScrollToAnchorIfNeeded(): void {
 
     this.isAnchorExistsCheckerSubscription = this.isAnchorExistsChecker.pipe(startWith(0)).subscribe(() => {
@@ -166,8 +169,4 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.resumeService.pullActivitiesAvailable(activities);
   }
 
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus(this.resumeTopics)
-    console.log("a")
-  }
 }
