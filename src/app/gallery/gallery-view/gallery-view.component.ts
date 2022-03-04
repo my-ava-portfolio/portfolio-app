@@ -12,6 +12,7 @@ import { Title } from '@angular/platform-browser';
 import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '../../core/inputs';
 
 import { checkIfScreenPortraitOrientation } from '../../core/inputs';
+import { ControlerService } from 'src/app/services/controler.service';
 
 
 @Component({
@@ -69,7 +70,8 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     private galleryService: GalleryService,
     private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title
+    private titleService: Title,
+    private controlerService: ControlerService,
     ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -100,19 +102,22 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.sendResumeSubMenus()
+
     this.displayContentRegardingDeviceScreen();
 
     if (this.isGalleryDataCanBeDisplayed) {
       this.resetGallery();
       this.filterFromAnchor();
     }
-
-
   }
 
   ngOnDestroy(): void {
     this.activitiesGallerySubscription.unsubscribe();
+  }
 
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus([])
   }
 
   filterFromAnchor(): void {
