@@ -7,6 +7,7 @@ import { personalBlogUrl } from '../../core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { ControlerService } from 'src/app/services/controler.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class NotesViewComponent implements OnDestroy {
   constructor(
     private notesService: NotesService,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title
+    private titleService: Title,
+    private controlerService: ControlerService,
   ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -39,8 +41,16 @@ export class NotesViewComponent implements OnDestroy {
 
   }
 
+  ngOnInit(): void {
+    this.sendResumeSubMenus()
+  }
+
   ngOnDestroy(): void {
     this.notesDataSubscription.unsubscribe()
+  }
+
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus([])
   }
 
 }
