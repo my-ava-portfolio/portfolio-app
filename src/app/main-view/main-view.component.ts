@@ -43,6 +43,8 @@ export class MainViewComponent implements OnInit {
 
   }
 
+  @HostListener('fullscreen', ['$event']) // TODO verify!!!
+  @HostListener('window:orientationchange', ['$event'])
   @HostListener('window:resize', ['$event'])
   getContentSize(): void {
     let element = this.contentSize
