@@ -405,8 +405,9 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         this.interactionWithEventNode(e.currentTarget, d);
         // to link with popup
         d3.select('#popup-feature-' + d.properties.id)
-          .style('visibility', 'visible')
+          .style('display', 'block')
           .style('right', '1%');
+        console.log("aaa")
       })
       .on('mouseout', (e: any, d: any) => {
 
@@ -417,7 +418,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         this.interactionWithEventNode(e.currentTarget, d);
         // link with popup
         d3.select('#popup-feature-' + d.properties.id)
-        .style('visibility', 'hidden')
+        .style('display', 'none')
         .style('top', 'unset')
           .style('left', 'unset');
 

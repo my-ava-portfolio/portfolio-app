@@ -39,7 +39,7 @@
 
   #sidebar{
     //height: 100vh;
-    min-width: 200px;
+    width: 200px;
     max-width: 200px;
     transition: all 0.3s;
     overflow-y: auto;
@@ -48,7 +48,7 @@
   }
 
   #sidebar.active{
-      min-width: 80px;
+      width: 80px;
       max-width: 80px;
       text-align: center;
       margin-left: -80px !important;

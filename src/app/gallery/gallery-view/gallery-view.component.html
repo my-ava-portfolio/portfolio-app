@@ -31,8 +31,8 @@
 
 
 <ng-template #imgProject let-medias=medias>
-  <div class="mb-4 feat-gallery rounded border shadow-lg bg-white p-2" *ngFor="let media_feature of medias; let idx = index" style='{"position: relative;"}'>
-    <div class="card">
+  <div class="mb-4 feat-gallery bg-white p-2" *ngFor="let media_feature of medias; let idx = index" style='{"position: unset;"}'>
+    <div class="card rounded border shadow-lg bg-white p-2">
 
 
       <ng-container [ngSwitch]="media_feature.source">

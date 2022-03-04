@@ -30,6 +30,9 @@ export class BackgroundComponent implements OnInit {
   mapContainerCalledSubscription!: Subscription;
   mapServiceSubscription!: Subscription;
 
+  // in order to activate map interactions
+  mapInteractionEnabled: boolean = false;
+
   constructor(
     private router: Router,
     private location: Location,
@@ -41,8 +44,10 @@ export class BackgroundComponent implements OnInit {
     this.router.events.subscribe(_ => {
       if ( ['/home', '/map'].includes(this.location.path()) ) {
         this.isBlurred = false;
+        this.mapInteractionEnabled = true;
       } else {
         this.isBlurred = true;
+        this.mapInteractionEnabled = false;
       }
     });
 

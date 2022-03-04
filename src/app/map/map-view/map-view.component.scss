@@ -1,7 +1,23 @@
+.map-content {
+  min-height: 72vh;
+}
+
+.grid-container {
+  columns: 200px;
+  -webkit-column-count: 3;
+  -webkit-column-gap: 3%; // Saf3, Chrome
+  -moz-column-count: 3;
+  -moz-column-gap: 3%; // FF3.5+
+  column-count: 3;
+  column-gap: 3%; // Opera 11+
+}
+
 .legend-container {
   position: fixed;
   bottom: 0;
-  width: 100%;
+  transition: all 0.1s;
+
+  // width: 100%;
 }
 
 .legend-content {
@@ -12,7 +28,7 @@
 
 .map-popup {
   position: absolute;
-  visibility: hidden;
+  display: none;
   background-color: ghostwhite;
   max-width: 400px;
 }

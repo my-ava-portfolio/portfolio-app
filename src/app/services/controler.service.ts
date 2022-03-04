@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 export class ControlerService {
   subMenuFeatures: Subject<any> = new Subject<any>();
   titlePageFeature: Subject<any> = new Subject<any>();
+  widthContentPage: Subject<any> = new Subject<any>();
 
   constructor() { }
 
@@ -17,6 +18,10 @@ export class ControlerService {
 
   pullTitlePage(pageName: string): void {
     this.titlePageFeature.next(pageName);
+  }
+
+  pullContentWidth(width: string): void {
+    this.widthContentPage.next(width);
   }
 
 }

@@ -161,7 +161,8 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
   }
 
 
-  @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
+  @HostListener('window:orientationchange', ['$event'])
+  displayContentRegardingDeviceScreen(): void {
     this.isGalleryDataCanBeDisplayed = checkIfScreenPortraitOrientation();
 
     // if mode portrait and width screen <= 1024...

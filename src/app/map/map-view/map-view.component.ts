@@ -26,6 +26,9 @@ import { ControlerService } from 'src/app/services/controler.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class MapViewComponent implements OnInit, OnDestroy {
+
+  mapContainerWidth!: number;
+
   fragment!: string | null;
   fragmentValue!: string;
 
@@ -68,6 +71,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
   pullTripsGeoDataToMapSubscription!: Subscription;
+  pullPageContentWidthSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -78,6 +82,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
+
+    this.pullPageContentWidthSubscription = this.controlerService.widthContentPage.subscribe(
+      (width: number) => {
+        console.log("cata", width)
+        this.mapContainerWidth = width;
+      }
+    );
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element: any) => {
@@ -136,11 +147,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
         });
       }
     );
-
-
   }
 
   ngOnInit(): void {
+
     this.sendResumeSubMenus()
 
     this.zoomInitDone = false;
@@ -326,8 +336,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   adaptActivityPopup(popupId: string, event: any): void {
+    // TODO improve popup display
     d3.select('#popup-feature-' + popupId)
-      .style('visibility', 'visible')
+      .style('display', 'block')
       .style('left', () => {
         if (event.x + this.popupWidth + 20 > this.innerWidth) {
           return event.x - this.popupWidth - 15 + 'px';

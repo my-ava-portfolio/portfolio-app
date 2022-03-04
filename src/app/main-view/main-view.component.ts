@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener  } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef, ViewChild, AfterViewInit  } from '@angular/core';
 
 import { arrowUpIcon } from '../core/inputs';
 
@@ -13,6 +13,8 @@ import { navBarIcon } from '../core/inputs';
   styleUrls: ['./main-view.component.scss'],
 })
 export class MainViewComponent implements OnInit {
+  @ViewChild('contentSize') contentSize!: ElementRef;
+
   // Here to set the default status of the bar
   // TODO check the orientation to collapse or not the bar
   sideBarCollapsed: boolean = true;
@@ -37,6 +39,21 @@ export class MainViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.scrolltoTopActivated = false;
+    this.getContentSize();
+
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getContentSize(): void {
+    let element = this.contentSize
+    if (element !== undefined) {
+      let width = this.contentSize.nativeElement.offsetWidth;
+      let height = this.contentSize.nativeElement.offsetHeight;
+      this.controlerService.pullContentWidth(width)
+      console.log('Width:' + width);
+      console.log('Height: ' + height);
+    }
+
   }
 
   @HostListener('window:scroll', [])
@@ -54,10 +71,14 @@ export class MainViewComponent implements OnInit {
 
   updatePage(outlet: any): any {
     this.controlerService.pullTitlePage(outlet.activatedRouteData.title)
+    this.getContentSize();
+
   }
 
   getSideBarCollapseStatus(status: boolean) {
     this.sideBarCollapsed = status;
+    setTimeout(() => this.getContentSize(),300); // 2500 is millisecond
+
   }
 
 }

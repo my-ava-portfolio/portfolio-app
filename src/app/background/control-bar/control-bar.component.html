@@ -20,7 +20,7 @@
 
           <li *ngFor="let page of subMenus" class="nav-item">
 
-            <a class="nav-link text-dark float-end" [routerLink]="page.route" [fragment]="page.fragment" *ngIf="page.id !== 'print'"  data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+            <a class="nav-link text-dark float-end" [routerLink]="page.route" [fragment]="page.fragment" *ngIf="page.id !== 'print'" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
               <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
             </a>
 
