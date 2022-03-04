@@ -77,7 +77,7 @@ export class MainViewComponent implements OnInit {
 
   getSideBarCollapseStatus(status: boolean) {
     this.sideBarCollapsed = status;
-    setTimeout(() => this.getContentSize(),300); // 2500 is millisecond
+    setTimeout(() => this.getContentSize(),400); // 2500 is millisecond
 
   }
 
