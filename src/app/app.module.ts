@@ -52,6 +52,7 @@ import { PresentationBarComponent } from './resume/presentation-bar/presentation
 import { EducationBarComponent } from './resume/education-bar/education-bar.component';
 import { ControlBarComponent } from './background/control-bar/control-bar.component';
 
+import { SwipeDirective } from './directives/swipe.directive';
 
 const appRoutes: Routes = [
 
@@ -105,6 +106,7 @@ registerLocaleData(localeFr);
     EducationBarComponent,
     NavigationBarComponent,
     ControlBarComponent,
+    SwipeDirective
   ],
   imports: [
     BrowserModule,

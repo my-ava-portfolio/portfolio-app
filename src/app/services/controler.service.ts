@@ -8,6 +8,7 @@ export class ControlerService {
   subMenuFeatures: Subject<any> = new Subject<any>();
   titlePageFeature: Subject<any> = new Subject<any>();
   widthContentPage: Subject<any> = new Subject<any>();
+  sideBarCollapsed: Subject<any> = new Subject<any>();
 
   constructor() { }
 

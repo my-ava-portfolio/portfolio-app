@@ -8,7 +8,6 @@ import { infoIcon, githubIcon, pythonIcon, githubUrl } from '../core/inputs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { name } from '../../../package.json';
 
 
 @Component({

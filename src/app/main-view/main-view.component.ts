@@ -7,6 +7,8 @@ import { ControlerService } from 'src/app/services/controler.service';
 
 import { navBarIcon } from '../core/inputs';
 
+
+
 @Component({
   selector: 'app-main-view',
   templateUrl: './main-view.component.html',
@@ -80,7 +82,24 @@ export class MainViewComponent implements OnInit {
   getSideBarCollapseStatus(status: boolean) {
     this.sideBarCollapsed = status;
     setTimeout(() => this.getContentSize(),400); // 2500 is millisecond
-
   }
+
+  goToRight(event: any): void {
+    console.log(event)
+    this.sideBarCollapsed = false;
+  }
+
+  goToLeft(event: any): void {
+    console.log(event)
+    this.sideBarCollapsed = true;
+  }
+
+  collaspedSideBarIfNeeded(): void {
+    console.log(this.sideBarCollapsed)
+    this.sideBarCollapsed = !this.sideBarCollapsed;
+  }
+
+
+
 
 }
