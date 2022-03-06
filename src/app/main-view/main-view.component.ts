@@ -84,13 +84,11 @@ export class MainViewComponent implements OnInit {
     setTimeout(() => this.getContentSize(),400); // 2500 is millisecond
   }
 
-  goToRight(event: any): void {
-    console.log(event)
+  navigationBarToRight(event: any): void {
     this.sideBarCollapsed = false;
   }
 
-  goToLeft(event: any): void {
-    console.log(event)
+  navigationBarToLeft(event: any): void {
     this.sideBarCollapsed = true;
   }
 
