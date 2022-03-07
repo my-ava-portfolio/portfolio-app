@@ -1,15 +1,14 @@
 <nav id="sidebar" class="bg-dark sticky-top overflow-auto vh-100" [ngClass]="sideBarCollapsed ? 'inactive' : 'active'">
   <div class="p-3">
     <div class="sidebar-header text-white text-center m-2">
+      <img class="rounded mx-auto rounded-circle img-fluid p-2" src="https://fakeimg.pl/75x75/">
 
       <div id="profil-name" class="mb-2" *ngIf="sideBarCollapsed">
-        <img class="rounded mx-auto d-block rounded-circle img-fluid p-2" src="https://fakeimg.pl/75x75/">
         <h3>{{ this.navBarTitle }}</h3>
-        <h6 class="mt-2 bg-white rounded-pill text-black profil-badge small">Géomaticien & Développeur</h6>
+        <h6 class="mt-2 bg-white rounded-pill text-black profil-badge small">Géomaticien - Développeur</h6>
       </div>
 
       <div id="profil-shortname" class="mb-2" *ngIf="!sideBarCollapsed">
-        <img class="rounded d-block rounded-circle img-fluid p-2" src="https://fakeimg.pl/75x75/">
         <strong>AV</strong>
       </div>
 
