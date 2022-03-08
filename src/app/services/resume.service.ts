@@ -10,9 +10,14 @@ import { apiUrl } from '../core/inputs';
 })
 export class ResumeService {
 
-  private apiUrlResumeData = apiUrl + 'resume_static_data';
   ErrorResumeDataApiFound: Subject<string> = new Subject<string>();
+
+  private apiUrlResumeData = apiUrl + 'resume_static_data';
   resumeData: Subject<any> = new Subject<any>();
+  private apiUrlContactData = apiUrl + 'contact_data';
+  contactData: Subject<any> = new Subject<any>();
+  private apiUrlGeneralData = apiUrl + 'general_data';
+  generalData: Subject<any> = new Subject<any>();
 
   private apiUrlGraphData = apiUrl + 'activities_graph_data?';
   errorActivitiesChartApiFound: Subject<string> = new Subject<string>();
@@ -58,6 +63,42 @@ export class ResumeService {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
           this.resumeData.next(response);
+        }
+      },
+    });
+  }
+
+  pullContactData(): void {
+
+    this.http.get<any>(`${this.apiUrlContactData}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.contactData.next(response);
+        }
+      },
+    });
+  }
+
+  pullGeneralData(): void {
+
+    this.http.get<any>(`${this.apiUrlGeneralData}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.generalData.next(response);
         }
       },
     });

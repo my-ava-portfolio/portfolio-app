@@ -1,3 +1,4 @@
+import { currentYear } from './../../core/inputs';
 import { Component, OnInit, Input } from '@angular/core';
 
 import { Router } from '@angular/router';
@@ -6,12 +7,15 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { share } from 'rxjs/operators';
 
-import { navBarTitle, homePages, githubIcon, githubUrl, infoIcon, pythonIcon } from '../../core/inputs';
+import { homePages, infoIcon, pythonIcon } from '../../core/inputs';
+import { githubIcon, linkedinIcon, emailIcon } from '../../core/inputs';
 import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '../../core/inputs';
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '../../core/inputs';
 import { resumePages, projectPages } from '../../core/inputs';
 
 import { name, dependencies } from '../../../../package.json';
+import { ResumeService } from 'src/app/services/resume.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -23,7 +27,6 @@ export class NavigationBarComponent implements OnInit {
 
   currentPage!: string;
 
-  navBarTitle: string = navBarTitle;
   topicPages: any = [...resumePages, ...projectPages];
   homePages: any = homePages[0];
 
@@ -46,24 +49,15 @@ export class NavigationBarComponent implements OnInit {
   pythonIcon = pythonIcon;
   githubIcon = githubIcon;
   menuIcon = menuIcon;
-
-  title = 'Portfolio';
-  author = 'Amaury Valorge';
-  starterMessage = 'Géomaticien | Développeur';
-  defaultWelcomeMessage = 'Portfolio';
-  githubUrl = githubUrl;
-
-  quarterNotSelected = false;
-  currentQuarterSelected!: string ;
-  welcomeMessage!: string;
-  topicMessage!: string;
+  linkedinIcon = linkedinIcon;
+  emailIcon = emailIcon;
 
   authorRepoUrl = 'https://github.com/amauryval/portfolio';
   nameApp = name;
-  year = 2021;
 
-  pythonVersion = '3.8';
+  currentYear = new Date().getFullYear();
 
+  pythonVersion = '3.9';
   lib1Name = 'Flask';
   lib1Version = '';
   lib1RepoUrl = 'https://github.com/pallets/flask';
@@ -83,10 +77,18 @@ export class NavigationBarComponent implements OnInit {
   // https://stackoverflow.com/questions/63468292/how-to-add-active-class-to-link-which-has-fragmment-in-angular
   activeFragment = this.route.fragment.pipe(share());
 
+  linkBuilt!: string;
+  contactData!: any;
+  contactDataSubscription!: Subscription;
+
+  generalData!: any;
+  generalDataSubscription!: Subscription;
+
   constructor(
     private router: Router,
     private location: Location,
     public route: ActivatedRoute,
+    private resumeService: ResumeService,
   ) {
 
     // to get the current page opened and adapt content regarding orientation
@@ -95,15 +97,46 @@ export class NavigationBarComponent implements OnInit {
       this.currentPage = this.location.path();
     });
 
+    this.contactDataSubscription = this.resumeService.contactData.subscribe(
+      (data) => {
+        console.log(data)
+        this.contactData = data;
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
+    this.generalDataSubscription = this.resumeService.generalData.subscribe(
+      (data) => {
+        console.log(data)
+        this.generalData = data;
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
+
   }
 
   ngOnInit(): void {
     this.currentPage = this.location.path();
+    this.resumeService.pullContactData();
+    this.resumeService.pullGeneralData();
 
     this.angularVersion = dependencies['@angular/core'];
     this.bootstrapVersion = dependencies['bootstrap'];
     this.leafletVersion = dependencies.leaflet;
     this.d3Version = dependencies.d3;
+  }
+
+  reverse(value: string): void {
+    let output = '';
+    for (let i = value.length - 1; i >= 0; i--) {
+      output += value[i];
+    }
+    this.linkBuilt = output;
   }
 
 

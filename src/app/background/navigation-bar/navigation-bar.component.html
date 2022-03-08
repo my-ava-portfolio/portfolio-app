@@ -1,18 +1,40 @@
 <nav id="sidebar" class="bg-dark sticky-top overflow-auto vh-100" [ngClass]="sideBarCollapsed ? 'inactive' : 'active'">
   <div class="p-3">
-    <div class="sidebar-header text-white text-center m-2">
+    <div class="sidebar-header text-white text-center m-1" *ngIf="generalData">
       <img class="rounded mx-auto rounded-circle img-fluid p-2" src="https://fakeimg.pl/75x75/">
 
       <div id="profil-name" class="mb-2" *ngIf="sideBarCollapsed">
-        <h3>{{ this.navBarTitle }}</h3>
-        <h6 class="mt-2 bg-white rounded-pill text-black profil-badge small">Géomaticien - Développeur</h6>
+        <h3>{{ generalData.first_name }} {{ generalData.last_name }}</h3>
+        <h6 class="mt-2 bg-white rounded-pill text-black profil-badge small">{{ generalData.job }}</h6>
       </div>
 
       <div id="profil-shortname" class="mb-2" *ngIf="!sideBarCollapsed">
-        <strong>AV</strong>
+        <strong>{{ generalData.first_name[0] }}{{ generalData.last_name[0] }}</strong>
       </div>
 
-      <ul class="list-unstyled"  id="main-topics-buttons">
+      <ul class="list-unstyled">
+
+        <li class="m-1 badge bg-white rounded-pill" *ngIf="contactData">
+          <a class="" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+            <fa-icon class="text-black" [icon]="emailIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+        <li class="m-1 badge bg-white rounded-pill">
+          <a class="" [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+            <fa-icon class="text-black" [icon]="linkedinIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+        <li class="m-1 badge bg-white rounded-pill">
+          <a class="" [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+            <fa-icon class="text-black" [icon]="githubIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+      </ul>
+
+      <ul class="list-unstyled" [ngClass]="sideBarCollapsed ? '' : 'd-flex flex-column align-items-center'" id="main-topics-buttons">
         <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: topicPages}"></ng-container>
       </ul>
 
@@ -69,7 +91,7 @@
 </ng-template>
 
 <ng-template #linkTopicStyle  let-page='page'>
-  <fa-icon [icon]="page.icon" class="me-2"></fa-icon>
+  <fa-icon [icon]="page.icon"></fa-icon>
   <span class="ms-2" *ngIf="sideBarCollapsed">{{page.title}}</span>
 </ng-template>
 
@@ -79,7 +101,7 @@
 <div class="container">
 
   <a class="mb-3 text-dark" [href]="authorRepoUrl" target="_blank" rel="noopener noreferrer">
-    By amauryval - {{year}} <fa-icon class="ms-2" [icon]="githubIcon"></fa-icon>
+    By amauryval - {{currentYear}} <fa-icon class="ms-2" [icon]="githubIcon"></fa-icon>
   </a>
 
   <ul class="list-unstyled">
