@@ -1,7 +1,7 @@
 <nav id="sidebar" class="bg-dark sticky-top overflow-auto vh-100" [ngClass]="sideBarCollapsed ? 'inactive' : 'active'">
   <div class="p-3">
     <div class="sidebar-header text-white text-center m-1" *ngIf="generalData">
-      <img class="rounded mx-auto rounded-circle img-fluid p-2" src="https://fakeimg.pl/75x75/">
+      <img class="rounded mx-auto rounded-circle img-fluid p-2" [src]="imageProfile" [ngClass]="sideBarCollapsed ? 'img-thumbnail' : ''">
 
       <div id="profil-name" class="mb-2" *ngIf="sideBarCollapsed">
         <h3>{{ generalData.first_name }} {{ generalData.last_name }}</h3>
@@ -74,9 +74,9 @@
 <ng-template #topicPagesBuilder let-topicPages='topicPages'>
   <ng-container *ngFor="let page of topicPages">
 
-      <li class="border-bottom text-warning" hoverClass="fw-bold" [routerLinkActive]="['fw-bolder']" [routerLinkActiveOptions]="{exact:true}">
+      <li class="border-bottom text-warning" hoverClass="fw-bold">
         <ng-container *ngIf="page.route">
-          <a class="text-warning text-decoration-none p-2 d-flex d-block" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="text-warning text-decoration-none p-2 d-flex d-block" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['fw-bolder']" [routerLinkActiveOptions]="{exact:true}">
             <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
           </a>
         </ng-container>

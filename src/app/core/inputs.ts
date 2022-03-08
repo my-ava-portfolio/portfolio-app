@@ -6,15 +6,14 @@ import {  faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } fr
 import { apiBaseUrl } from '../../app/core/constants';
 
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
-export const apiCoreUrl = apiBaseUrl + 'api/v1/core/';
 export const apiLogoUrl = `./assets/logo/`;
 export const apiMapsUrl = `./assets/maps/`;
 export const personalBlogUrl = 'https://blog.amaury-valorge.com/';
 export const githubUrl = 'https://github.com/amauryval/';
-export const navBarTitle = 'Amaury Valorge - Portfolio';
-export const githubBugIssueUrl = 'https://github.com/amauryval/portfolio/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';
-export const githubQuestionUrl = 'https://github.com/amauryval/portfolio/issues/new?assignees=amauryval&labels=question&template=question-.md&title=';
-export const githubEnhancementUrl = 'https://github.com/amauryval/portfolio/issues/new?assignees=amauryval&labels=enhancement&template=feature_request.md&title=';
+export const githubBugIssueUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';
+export const githubQuestionUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=question&template=question-.md&title=';
+export const githubEnhancementUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=enhancement&template=feature_request.md&title=';
+export const imageProfile = 'https://fakeimg.pl/250x250/';
 
 export const minWidthLandscape = 1024;
 export const minHeightLandscape = 768;
@@ -91,11 +90,21 @@ export const homePages: any = [
   },
 ]
 
+export const aboutMePage: any = [
+  {
+    id: 'about',
+    route: '/',
+    title: 'A propos...',
+    icon: homeIcon
+  }
+]
+
 export const resumePages: any = [
   {
     id: 'resume',
     route: '/resume',
     title: 'Profil',
+    verbose_title: 'Accès au CV',
     icon: resumeIcon,
     sub_menus: [
       {
@@ -152,12 +161,14 @@ export const resumePages: any = [
     id: 'map',
     route: '/map',
     title: 'Carte',
+    verbose_title: 'Accès à la carte',
     icon: mapIcon
   },
   {
     id: 'gallery',
     route: '/gallery',
     title: 'Galerie',
+    verbose_title: 'Accès à la galerie',
     icon: galleryIcon
   }
 ];
@@ -167,19 +178,21 @@ export const projectPages: any = [
     id: 'blog',
     route: '/blog',
     title: 'Blog',
+    verbose_title: 'Accès au blog',
     icon: notesIcon
   },
   {
     id: 'github',
     url: githubUrl,
     title: 'Github',
+    verbose_title: 'Accès à Github',
     icon: githubIcon
   }
 ];
 
 
-const pages = [...resumePages, ...projectPages]
-export const pagesObject: any = pages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
+export const mainTopicsPages = [...resumePages, ...projectPages]
+export const pagesObject: any = mainTopicsPages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
 
 
 export function checkIfScreenPortraitOrientation(): boolean {

@@ -1,0 +1,19 @@
+#presentation-card{
+  transition: all 0.3s;
+}
+
+.section-title{
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.section-title:before {
+  content: "";
+  display: inline-block;
+  background: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity)) !important;
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}

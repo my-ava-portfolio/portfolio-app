@@ -1,5 +1,4 @@
-import { currentYear } from './../../core/inputs';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -11,7 +10,7 @@ import { homePages, infoIcon, pythonIcon } from '../../core/inputs';
 import { githubIcon, linkedinIcon, emailIcon } from '../../core/inputs';
 import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '../../core/inputs';
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '../../core/inputs';
-import { resumePages, projectPages } from '../../core/inputs';
+import { currentYear, aboutMePage, resumePages, projectPages, imageProfile } from '../../core/inputs';
 
 import { name, dependencies } from '../../../../package.json';
 import { ResumeService } from 'src/app/services/resume.service';
@@ -22,12 +21,12 @@ import { Subscription } from 'rxjs';
   templateUrl: './navigation-bar.component.html',
   styleUrls: ['./navigation-bar.component.scss']
 })
-export class NavigationBarComponent implements OnInit {
+export class NavigationBarComponent implements OnInit, OnDestroy {
   @Input() sideBarCollapsed: any;
 
   currentPage!: string;
 
-  topicPages: any = [...resumePages, ...projectPages];
+  topicPages: any = [...aboutMePage, ...resumePages, ...projectPages];
   homePages: any = homePages[0];
 
   bugIcon = bugIcon;
@@ -55,7 +54,7 @@ export class NavigationBarComponent implements OnInit {
   authorRepoUrl = 'https://github.com/amauryval/portfolio';
   nameApp = name;
 
-  currentYear = new Date().getFullYear();
+  currentYear = currentYear;
 
   pythonVersion = '3.9';
   lib1Name = 'Flask';
@@ -76,6 +75,8 @@ export class NavigationBarComponent implements OnInit {
 
   // https://stackoverflow.com/questions/63468292/how-to-add-active-class-to-link-which-has-fragmment-in-angular
   activeFragment = this.route.fragment.pipe(share());
+
+  imageProfile: string = imageProfile;
 
   linkBuilt!: string;
   contactData!: any;
@@ -129,6 +130,12 @@ export class NavigationBarComponent implements OnInit {
     this.bootstrapVersion = dependencies['bootstrap'];
     this.leafletVersion = dependencies.leaflet;
     this.d3Version = dependencies.d3;
+  }
+
+  ngOnDestroy(): void {
+    this.contactDataSubscription.unsubscribe()
+    this.generalDataSubscription.unsubscribe()
+
   }
 
   reverse(value: string): void {

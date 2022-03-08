@@ -139,7 +139,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus(this.resumeTopics)
   }
-  
+
   checkAndScrollToAnchorIfNeeded(): void {
 
     this.isAnchorExistsCheckerSubscription = this.isAnchorExistsChecker.pipe(startWith(0)).subscribe(() => {

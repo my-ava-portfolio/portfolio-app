@@ -21,7 +21,7 @@ import { SafeUrl, JoinPipe, ReversePipe } from './core/pipes';
 
 import { Routes } from '@angular/router';
 
-import { HomeViewComponent } from './home-view/home-view.component';
+import { HomeViewComponent } from './home/home-view/home-view.component';
 
 import { GalleryViewComponent } from './gallery/gallery-view/gallery-view.component';
 
@@ -48,7 +48,7 @@ import { NavigationBarComponent } from './background/navigation-bar/navigation-b
 
 import { TimeLegendComponent } from './map/time-legend/time-legend.component';
 import { ProfilBarComponent } from './resume/profil-bar/profil-bar.component';
-import { PresentationBarComponent } from './resume/presentation-bar/presentation-bar.component';
+import { PresentationBarComponent } from './home/presentation-bar/presentation-bar.component';
 import { EducationBarComponent } from './resume/education-bar/education-bar.component';
 import { ControlBarComponent } from './background/control-bar/control-bar.component';
 
@@ -63,19 +63,19 @@ const appRoutes: Routes = [
     path: '',
     component: MainViewComponent,
     children: [
-      // { path: 'home', component: HomeViewComponent, data: { title: 'Amaury Valorge Portfolio', page: 'home' } },
+      { path: '', component: HomeViewComponent, data: { title: 'Bienvenue', page: 'about' } },
       { path: 'resume', component: ResumeViewComponent, data: { title: 'Profil', page: 'resume' } },
       { path: 'map', component: MapViewComponent, data: { title: 'Carte des activités', page: 'map' } },
       { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie', page: 'gallery' } },
       { path: 'blog', component: NotesViewComponent, data: { title: 'Blog', page: 'blog' } },
-      { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
+      // { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },
 
   // no layout routes
   // { path: 'map', component: MapViewComponent, pathMatch: 'full'  },
   { path: 'short_resume', component: ShortViewComponent, data: { title: 'Profil', page: 'short_resume' } },
-  { path: 'home', component: HomeViewComponent, data: { title: 'Amaury Valorge Portfolio' } },
+  // { path: 'home', component: HomeViewComponent, data: { title: 'Amaury Valorge Portfolio' } },
 ];
 
 registerLocaleData(localeFr);

@@ -1,0 +1,73 @@
+<section id="aboutMe" class="about-me-section p-3 mt-2 bg-light">
+    <div class="container">
+        <div id="profile-teaser" class="d-flex flex-column flex-lg-row">
+            <div>
+              <h2 class="name fw-bold mb-1">{{ inputGeneralData.first_name }} {{ inputGeneralData.last_name }}</h2>
+              <div class="ms-3 mb-3 d-flex flex-row">
+                <h4 class="col-6">{{ inputGeneralData.job }}</h4>
+                <h5 class="col-6">{{ inputGeneralData.experience_duration }}</h5>
+              </div>
+              <div class="mb-4">
+                  {{ inputGeneralData.carrier_summary }}
+              </div>
+
+              <h4 class="section-title mb-2">Bienvenue</h4>
+              <div class="mb-4">
+                Vous voici sur mon site personnel, à la fois pour présenter mon parcours et mes réalisations, mais aussi un bac à sable qui
+                me permet de centraliser mes expérimentations.
+              </div>
+
+              <div class="mb-4 ms-3 d-flex flex-wrap">
+                  <ul class="list-unstyled d-flex flex-wrap">
+                    <li class=" " *ngFor="let page of resumePages">
+                        <ng-container *ngIf="page.route ">
+                          <a class="btn btn-primary me-2 mb-3 " [title]="page.title " [routerLink]="page.route " [routerLinkActive]="[ 'fw-bolder'] " [routerLinkActiveOptions]="{exact:true} ">
+                              <fa-icon [icon]="page.icon "></fa-icon>
+                              {{ page.verbose_title }}
+                          </a>
+                        </ng-container>
+                        <ng-container *ngIf="page.url ">
+                          <a class="btn btn-primary me-2 mb-3 " [href]="page.route " target="_blank " rel="noopener noreferrer ">
+                              <fa-icon [icon]="page.icon "></fa-icon>
+                              {{ page.verbose_title }}
+                          </a>
+                        </ng-container>
+                    </li>
+                  </ul>
+
+                  <ul class="list-unstyled d-flex flex-wrap">
+                    <li class=" " *ngFor="let page of projectPages">
+                      <ng-container *ngIf="page.route ">
+                        <a class="btn btn-secondary me-2 mb-3 " [title]="page.title " [routerLink]="page.route " [routerLinkActive]="[ 'fw-bolder'] " [routerLinkActiveOptions]="{exact:true} ">
+                            <fa-icon [icon]="page.icon "></fa-icon>
+                            {{ page.verbose_title }}
+                        </a>
+                      </ng-container>
+                      <ng-container *ngIf="page.url ">
+                        <a class="btn btn-secondary me-2 mb-3 " [href]="page.route " target="_blank " rel="noopener noreferrer ">
+                            <fa-icon [icon]="page.icon "></fa-icon>
+                            {{ page.verbose_title }}
+                        </a>
+                      </ng-container>
+                    </li>
+                  </ul>
+              </div>
+
+              <h4 class="section-title mb-2">Mes domaines</h4>
+
+
+
+
+            </div>
+
+            <div>
+                <img class="profile-image m-3" [src]="imageProfile " alt=" ">
+            </div>
+
+
+        </div>
+    </div>
+
+
+</section>
+
