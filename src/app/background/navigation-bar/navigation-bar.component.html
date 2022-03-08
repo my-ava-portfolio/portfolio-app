@@ -74,14 +74,14 @@
 <ng-template #topicPagesBuilder let-topicPages='topicPages'>
   <ng-container *ngFor="let page of topicPages">
 
-      <li class="border-bottom text-warning" [routerLinkActive]="['active-bold']" [routerLinkActiveOptions]="{exact:true}">
+      <li class="border-bottom text-warning" hoverClass="fw-bold" [routerLinkActive]="['fw-bolder']" [routerLinkActiveOptions]="{exact:true}">
         <ng-container *ngIf="page.route">
-          <a class="text-warning text-decoration-none p-2 d-block" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="text-warning text-decoration-none p-2 d-flex d-block" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
             <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
           </a>
         </ng-container>
         <ng-container *ngIf="page.url">
-          <a class="text-warning text-decoration-none p-2 d-block" [href]="page.route" target="_blank" rel="noopener noreferrer">
+          <a class="text-warning text-decoration-none p-2 d-flex d-block" [href]="page.route" target="_blank" rel="noopener noreferrer">
             <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
           </a>
         </ng-container>
@@ -91,8 +91,10 @@
 </ng-template>
 
 <ng-template #linkTopicStyle  let-page='page'>
-  <fa-icon [icon]="page.icon"></fa-icon>
-  <span class="ms-2" *ngIf="sideBarCollapsed">{{page.title}}</span>
+  <div class="w-25 text-center">
+    <fa-icon [icon]="page.icon"></fa-icon>
+  </div>
+  <span class="w-75" *ngIf="sideBarCollapsed">{{page.title}}</span>
 </ng-template>
 
 

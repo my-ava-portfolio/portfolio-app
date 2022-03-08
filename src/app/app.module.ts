@@ -53,6 +53,8 @@ import { EducationBarComponent } from './resume/education-bar/education-bar.comp
 import { ControlBarComponent } from './background/control-bar/control-bar.component';
 
 import { SwipeDirective } from './directives/swipe.directive';
+import { HoverClassDirective } from './directives/hover-class.directive';
+
 
 const appRoutes: Routes = [
 
@@ -106,7 +108,8 @@ registerLocaleData(localeFr);
     EducationBarComponent,
     NavigationBarComponent,
     ControlBarComponent,
-    SwipeDirective
+    SwipeDirective,
+    HoverClassDirective
   ],
   imports: [
     BrowserModule,
