@@ -13,6 +13,7 @@
       </div>
 
       <ul class="list-unstyled">
+        <h6 class="fw-bold" *ngIf="sideBarCollapsed">Contact</h6>
 
         <li class="m-1 badge bg-white rounded-pill" *ngIf="contactData">
           <a class="" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">

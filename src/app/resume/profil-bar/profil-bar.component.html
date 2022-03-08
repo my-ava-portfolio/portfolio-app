@@ -1,4 +1,4 @@
-<div class="row justify-content-around align-items-center text-center text-white bg-dark rounded-3 m-2">
+<div class="justify-content-around align-items-center text-center text-white bg-dark rounded-3 p-2">
   <div class="col-lg-12 col-md-12 align-self-start">
 
     <div id="widget-title" class="col-sm-12 col-md-12 mt-3">
@@ -16,48 +16,6 @@
             </a>
           </span>
         </ng-container>
-
-    </div>
-
-    <div id="widget-contact" class="col-sm-12 col-md-12 mt-3">
-      <h6 class="fw-bold">Contact</h6>
-
-      <ul class="list-unstyled">
-
-        <li class="m-1 badge bg-white rounded-pill">
-          <a class="" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(inputContactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-            <fa-icon class="text-black" [icon]="emailIcon" size="1x"></fa-icon>
-          </a>
-        </li>
-
-        <li class="m-1 badge bg-white rounded-pill">
-          <a class="" [href]="linkBuilt" (mouseover)="reverse(inputContactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-            <fa-icon class="text-black" [icon]="linkedinIcon" size="1x"></fa-icon>
-          </a>
-        </li>
-
-        <li class="m-1 badge bg-white rounded-pill">
-          <a class="" [href]="linkBuilt" (mouseover)="reverse(inputContactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-            <fa-icon class="text-black" [icon]="githubIcon" size="1x"></fa-icon>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-    <div id="widget-resume-topic" class="col-sm-12 col-md-12 mt-3 text-center">
-      <h6 class="fw-bold">Rubriques</h6>
-      <ul class="list-unstyled">
-
-        <ng-container  *ngFor="let topic of this.resumeTopics">
-          <li class="badge bg-secondary rounded-pill profil-badge mx-1" *ngIf="topic.id !== 'print'">
-            <a class="text-white text-decoration-none" role="button" [routerLink]="topic.route" [fragment]="topic.fragment">
-              <fa-icon class="me-1" [icon]="topic.icon"></fa-icon>{{ topic.title }}
-            </a>
-          </li>
-        </ng-container>
-
-      </ul>
 
     </div>
 
