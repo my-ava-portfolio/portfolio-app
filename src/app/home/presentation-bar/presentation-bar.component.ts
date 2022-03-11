@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { plusIcon, presIcon, expandIcon, resumePages, projectPages, imageProfile } from '../../core/inputs';
+import { arrowsDownIcon, presIcon, expandIcon, resumePages, projectPages, imageProfile } from '../../core/inputs';
 
 
 @Component({
@@ -21,8 +21,8 @@ export class PresentationBarComponent implements OnInit {
   // icons
   presIcon = presIcon;
   expandIcon = expandIcon;
-  plusIcon = plusIcon;
-  
+  arrowsDownIcon = arrowsDownIcon;
+
   constructor() { }
 
   ngOnInit(): void {
