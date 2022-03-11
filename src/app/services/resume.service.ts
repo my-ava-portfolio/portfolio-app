@@ -18,6 +18,8 @@ export class ResumeService {
   contactData: Subject<any> = new Subject<any>();
   private apiUrlGeneralData = apiUrl + 'general_data';
   generalData: Subject<any> = new Subject<any>();
+  private apiUrlFullSkillsData = apiUrl + 'full_skills_data';
+  fullSkillsData: Subject<any> = new Subject<any>();
 
   private apiUrlGraphData = apiUrl + 'activities_graph_data?';
   errorActivitiesChartApiFound: Subject<string> = new Subject<string>();
@@ -103,6 +105,27 @@ export class ResumeService {
       },
     });
   }
+
+
+  pullFullSkillsData(): void {
+
+    this.http.get<any>(`${this.apiUrlFullSkillsData}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.fullSkillsData.next(response);
+        }
+      },
+    });
+  }
+
+
 
   pullActivitiesGraphData(
     isTechnics: boolean | string,

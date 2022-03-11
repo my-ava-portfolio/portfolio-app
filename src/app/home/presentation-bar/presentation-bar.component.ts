@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { presIcon, expandIcon, resumePages, projectPages, imageProfile } from '../../core/inputs';
+import { plusIcon, presIcon, expandIcon, resumePages, projectPages, imageProfile } from '../../core/inputs';
 
 
 @Component({
@@ -10,6 +10,9 @@ import { presIcon, expandIcon, resumePages, projectPages, imageProfile } from '.
 export class PresentationBarComponent implements OnInit {
   @Input() inputGeneralData!: any;
 
+  @Input() inputThemesData!: any;
+  @Input() inputTechnicsData!: any;
+  @Input() inputToolsData!: any;
 
   resumePages: any[] = resumePages;
   projectPages: any[] = projectPages;
@@ -18,7 +21,8 @@ export class PresentationBarComponent implements OnInit {
   // icons
   presIcon = presIcon;
   expandIcon = expandIcon;
-
+  plusIcon = plusIcon;
+  
   constructor() { }
 
   ngOnInit(): void {

@@ -16,6 +16,11 @@ export class HomeViewComponent implements OnInit, OnDestroy {
   generalData!: any;
   generalDataSubscription!: Subscription;
 
+  fullSkillsThemes!: any;
+  fullSkillsTechnics!: any;
+  fullSkillsTools!: any;
+  fullSkillsDataSubscription!: Subscription;
+
   constructor(
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
@@ -34,16 +39,30 @@ export class HomeViewComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.fullSkillsDataSubscription = this.resumeService.fullSkillsData.subscribe(
+      (data) => {
 
+        this.fullSkillsThemes = data.themes;
+        this.fullSkillsTechnics = data.technics;
+        this.fullSkillsTools = data.tools;
+
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
 
    }
 
   ngOnInit(): void {
     this.resumeService.pullGeneralData();
+    this.resumeService.pullFullSkillsData();
+
   }
 
   ngOnDestroy(): void {
-    this.generalDataSubscription.unsubscribe()
+    this.generalDataSubscription.unsubscribe();
+    this.fullSkillsDataSubscription.unsubscribe();
 
   }
 
