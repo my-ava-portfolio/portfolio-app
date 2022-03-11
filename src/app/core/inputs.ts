@@ -1,9 +1,9 @@
-import { faPlusCircle, faAlignJustify, faAlignLeft, faBars, faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faPenSquare, faMicrochip, faTerminal, faChartLine, faDatabase, faAngleDoubleDown, faAlignJustify, faAlignLeft, faBars, faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
-
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
 
 import { apiBaseUrl } from '../../app/core/constants';
+
 
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
 export const apiLogoUrl = `./assets/logo/`;
@@ -67,7 +67,13 @@ export const homeIcon = faHome;
 export const menuIcon = faBars;
 export const navBarIcon = faAlignLeft;
 export const subMenuIcon = faAlignJustify;
-export const plusIcon = faPlusCircle;
+export const arrowsDownIcon = faAngleDoubleDown;
+export const databaseIcon = faDatabase;
+export const dataVizIcon = faChartLine;
+export const codingIcon = faTerminal;
+export const integrationIcon = faTools;
+export const modelingIcon = faMicrochip;
+export const specIcon = faPenSquare;
 
 // font awesome unicode
 export const trainIconUnicode = '\uf238';
