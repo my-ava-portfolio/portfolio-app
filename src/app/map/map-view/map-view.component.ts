@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, HostListener, ViewEncapsulation } from '@
 import { Subscription } from 'rxjs';
 
 import * as L from 'leaflet';
-import 'leaflet/dist/images/marker-shadow.png';
+
 import * as d3 from 'd3';
 
 import { ActivatedRoute } from '@angular/router';
@@ -29,7 +29,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   mapContainerWidth!: number;
 
-  fragment!: string | null;
+  fragment!: any;
   fragmentValue!: string;
 
   svgTripIdPrefix = svgTripIdPrefix;
@@ -161,7 +161,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment === undefined) {
-          this.fragment = null;
+          this.fragment = undefined;
         } else {
           this.fragment = fragment;
           this.fragmentValue = this.fragment;
@@ -357,7 +357,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   disableActivityPopup(popupId: string): void {
     d3
       .select('#popup-feature-' + popupId)
-      .style('visibility', 'hidden')
+      .style('display', 'none')
       .style('left', 'unset') // reset position to avoid conflict with popup from timeline
       .style('top', 'unset');
   }

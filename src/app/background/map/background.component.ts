@@ -3,8 +3,6 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import * as L from 'leaflet';
-import 'leaflet/dist/images/marker-shadow.png';
-
 import { MapService } from '../../services/map.service';
 
 import { Router } from '@angular/router';

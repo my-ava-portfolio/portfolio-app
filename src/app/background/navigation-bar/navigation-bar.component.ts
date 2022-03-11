@@ -12,7 +12,6 @@ import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '../../core/inputs'
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '../../core/inputs';
 import { currentYear, aboutMePage, resumePages, projectPages, imageProfile } from '../../core/inputs';
 
-import { name, dependencies } from '../../../../package.json';
 import { ResumeService } from 'src/app/services/resume.service';
 import { Subscription } from 'rxjs';
 
@@ -52,11 +51,10 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   emailIcon = emailIcon;
 
   authorRepoUrl = 'https://github.com/amauryval/portfolio';
-  nameApp = name;
 
   currentYear = currentYear;
 
-  pythonVersion = '3.9';
+  pythonVersion = '3';
   lib1Name = 'Flask';
   lib1Version = '';
   lib1RepoUrl = 'https://github.com/pallets/flask';
@@ -125,11 +123,6 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
     this.currentPage = this.location.path();
     this.resumeService.pullContactData();
     this.resumeService.pullGeneralData();
-
-    this.angularVersion = dependencies['@angular/core'];
-    this.bootstrapVersion = dependencies['bootstrap'];
-    this.leafletVersion = dependencies.leaflet;
-    this.d3Version = dependencies.d3;
   }
 
   ngOnDestroy(): void {

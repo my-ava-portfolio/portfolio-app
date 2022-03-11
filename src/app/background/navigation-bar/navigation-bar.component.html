@@ -41,8 +41,11 @@
 
       <ul class="list-group list-inline justify-content-center" id="contact-buttons" [ngClass]="sideBarCollapsed ? 'list-group-horizontal' : ''">
 
+
+
+
         <li>
-          <a class="text-white cursor" container="body" [ngbPopover]="infoPopup" container="body" popoverTitle="Infos" popoverClass="popup" placement="right"  triggers="mouseenter:mouseleave">
+          <a class="text-white cursor" data-bs-toggle="modal" data-bs-target="#websiteInfos">
             <fa-icon class="m-1" [icon]="infoIcon" size="1x"></fa-icon>
           </a>
         </li>
@@ -100,58 +103,74 @@
 
 
 
-<ng-template #infoPopup>
-<div class="container">
+<div class="modal fade" id="websiteInfos"  tabindex="-1" aria-labelledby="websiteInfos" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
 
-  <a class="mb-3 text-dark" [href]="authorRepoUrl" target="_blank" rel="noopener noreferrer">
-    By amauryval - {{currentYear}} <fa-icon class="ms-2" [icon]="githubIcon"></fa-icon>
-  </a>
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Informations</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <a class="mb-3 text-dark" [href]="authorRepoUrl" target="_blank" rel="noopener noreferrer">
+          By amauryval - {{currentYear}} <fa-icon class="ms-2" [icon]="githubIcon"></fa-icon>
+        </a>
 
-  <ul class="list-unstyled">
+        <ul class="list-unstyled">
 
-    <li class="ms-2 mb-1">
-      <fa-icon [icon]="pythonIcon"></fa-icon>
-      <span class="me-2 ms-2">Python {{this.pythonVersion}}</span>
-    </li>
-    <li class="ms-2 mb-1">
-      <a class="text-dark" [href]="lib1RepoUrl" target="_blank" rel="noopener noreferrer">
-        <fa-icon class="me-1 " [icon]="githubIcon"></fa-icon>
-        <span>{{this.lib1Name}}</span>
-      </a>
-    </li>
+          <li class="">
+            <fa-icon [icon]="pythonIcon"></fa-icon>
+            <span class="me-1">Python {{this.pythonVersion}}</span>
+          </li>
+          <li class="">
+            <a class="text-decoration-none" [href]="lib1RepoUrl" target="_blank" rel="noopener noreferrer">
+              <fa-icon class="" [icon]="githubIcon"></fa-icon>
+              <span> {{this.lib1Name}}</span>
+            </a>
+          </li>
 
-    <li class="ms-2 mb-1">
-      <a class="text-dark" [href]="angularRepoUrl" target="_blank" rel="noopener noreferrer">
-        <img class="me-1" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/512px-Angular_full_color_logo.svg.png" height="20px" width="20px"/>
-        <span>{{this.angularVersion.slice(1)}}</span>
-      </a>
-    </li>
+          <li class="">
+            <a class="text-decoration-none" [href]="angularRepoUrl" target="_blank" rel="noopener noreferrer">
+              <img class="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/512px-Angular_full_color_logo.svg.png" height="20px" width="20px"/>
+            </a>
+            <span> Angular</span>
+          </li>
 
-    <li class="ms-2 mb-1">
-      <a class="text-dark" [href]="bootstrapRepoUrl" target="_blank" rel="noopener noreferrer">
-        <img class="me-1" src="https://ng-bootstrap.github.io/img/logo-stack.png" height="20px" width="20px"/>
-        <span>{{this.bootstrapVersion.slice(1)}}</span>
-      </a>
-    </li>
+          <li class="">
+            <a class="text-decoration-none" [href]="bootstrapRepoUrl" target="_blank" rel="noopener noreferrer">
+              <img class="" src="https://ng-bootstrap.github.io/img/logo-stack.png" height="20px" width="20px"/>
+            </a>
+          </li>
 
-    <li class="ms-2 mb-1">
-      <a class="text-dark" [href]="leafletRepoUrl" target="_blank" rel="noopener noreferrer">
-        <img class="me-1" src="https://rawgit.com/Leaflet/Leaflet/master/src/images/logo.svg" height="20px" width="60px"/>
-        <span>{{this.leafletVersion.slice(1)}}</span>
-      </a>
-    </li>
+          <li class="">
+            <a class="text-decoration-none" [href]="leafletRepoUrl" target="_blank" rel="noopener noreferrer">
+              <img class="" src="https://rawgit.com/Leaflet/Leaflet/master/src/images/logo.svg" height="20px" width="60px"/>
+            </a>
+          </li>
 
-    <li class="ms-2 mb-1">
-      <a class="text-dark" [href]="d3RepoUrl" target="_blank" rel="noopener noreferrer">
-        <img class="me-1" src="https://d3js.org/logo.svg" height="20px" width="20px"/>
-        <span>{{this.d3Version.slice(1)}}</span>
-      </a>
-    </li>
+          <li class="">
+            <a class="text-decoration-none" [href]="d3RepoUrl" target="_blank" rel="noopener noreferrer">
+              <img class="" src="https://d3js.org/logo.svg" height="20px" width="20px"/>
+            </a>
+          </li>
 
-  </ul>
+        </ul>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
- <ng-template>
+
+
+
+
+
+
 
 
 
