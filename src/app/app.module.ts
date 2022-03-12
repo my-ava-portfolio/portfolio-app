@@ -29,13 +29,12 @@ import { NotesViewComponent } from './notes/notes-view/notes-view.component';
 
 import { MainViewComponent } from './main-view/main-view.component';
 import { ResumeViewComponent } from './resume/resume-view/resume-view.component';
-import { CenterBarNavigationComponent } from './resume/centerbar-navigation/centerbar-navigation.component';
-import { TopbarSubviewComponent } from './resume/topbar-subview/topbar-subview.component';
 import { CenterbarJobsComponent } from './resume/centerbar-jobs/centerbar-jobs.component';
 import { CenterbarProjectsComponent } from './resume/centerbar-projects/centerbar-projects.component';
 import { CenterbarPublicationsComponent } from './resume/centerbar-publications/centerbar-publications.component';
 import { CenterbarVolunteerComponent } from './resume/centerbar-volunteer/centerbar-volunteer.component';
 import { RightbarSkillsComponent } from './resume/rightbar-skills/rightbar-skills.component';
+import { GraphBarComponent } from './resume/graph-bar/graph-bar.component';
 
 
 import { ShortViewComponent } from './resume/short-view/short-view.component';
@@ -87,8 +86,6 @@ registerLocaleData(localeFr);
     ResumeViewComponent,
     GalleryViewComponent,
     NotesViewComponent,
-    CenterBarNavigationComponent,
-    TopbarSubviewComponent,
     CenterbarJobsComponent,
     CenterbarProjectsComponent,
     CenterbarPublicationsComponent,
@@ -109,8 +106,9 @@ registerLocaleData(localeFr);
     NavigationBarComponent,
     ControlBarComponent,
     SwipeDirective,
-    HoverClassDirective
-  ],
+    HoverClassDirective,
+    GraphBarComponent,
+   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
