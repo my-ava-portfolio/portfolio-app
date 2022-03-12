@@ -121,11 +121,11 @@ export const resumePages: any = [
         icon: printIcon
       },
       {
-        id: "presentation",
-        title: "Présentation",
+        id: "education",
+        title: "Formation",
         route: '/resume',
-        fragment: "presentation",
-        icon: presIcon
+        fragment: "education",
+        icon: degreeIcon
       },
       {
         id: "navigation",
