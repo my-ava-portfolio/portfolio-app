@@ -1,5 +1,42 @@
 $enable-responsive-font-sizes: true;
-@import "bootstrap";
+
+
+// Variables
+$very-dark: #2a2e33;
+$less-dark: #495057;
+$personal-project-color: #ff7f00;
+$job-color: #e31a1c;
+$volunteer-color: #6a3d9a;
+$education-color: #168720;
+$disabled-color: #b7b6b6;
+$technics-color: #3b77a1;
+$themes-color: #76a02f;
+$tools-color: #302e2e;
+
+@function get_color($value) {
+  @if $value == "themes" {
+    @return $themes-color;
+  }
+  @if $value == "technics" {
+    @return $technics-color;
+  }
+  @if $value == "tools" {
+    @return $tools-color;
+  }
+  @if $value == "job" {
+    @return $job-color;
+  }
+  @if $value == "personal_project" {
+    @return $personal-project-color;
+  }
+  @if $value == "volunteer" {
+    @return $volunteer-color;
+  }
+  @if $value == "education" {
+    @return $education-color;
+  }
+}
+
 
 body {
   font-size: 15px;
@@ -32,16 +69,17 @@ body::-webkit-scrollbar {
 }
 
 
+
 .container-width-extended {
   max-width: 1700px;
 }
 
 .bg-very-dark {
-  background-color: #2a2e33
+  background-color: $very-dark;
 }
 
 .bg-less-dark {
-  background-color: #495057;
+  background-color: $less-dark;
 }
 
 .img-thumbnail {
@@ -72,115 +110,67 @@ body::-webkit-scrollbar {
   text-anchor: middle;
 }
 
-.personal_project_color {
-  color: #ff7f00;
-}
-circle.personal_project {
-  fill: #ff7f00;
-}
-.bg-color-personal_project {
-  background-color: #ff7f00;
-}
-.btn-outline-personal_project {
-  color: #ff7f00!important;
-  border-color: #ff7f00;
-}
-.btn-outline-personal_project:hover{
-  background-color:#ff7f00;
-  color: #ffffff!important;
-}
 
-.job_color {
-  color: #e31a1c;
-}
-circle.job {
-  fill: #e31a1c;
-}
-.bg-color-job {
-  background-color: #e31a1c;
-}
-.btn-outline-job {
-  color: #e31a1c!important;
-  border-color: #e31a1c;
-}
-.btn-outline-job:hover{
-  background-color:#e31a1c;
-  color: #ffffff!important;
-}
+@each $name in 'education' 'personal_project' 'job' 'volunteer' {
+  .#{$name}_color {
+    color: get_color($name);
+  }
 
+  circle.#{$name} {
+    fill: get_color($name);
 
-.volunteer_color {
-  color: #6a3d9a;
-}
-circle.volunteer {
-  fill: #6a3d9a;
-}
-.bg-color-volunteer {
-  background-color: #6a3d9a;
-}
-.btn-outline-volunteer {
-  color: #6a3d9a!important;
-  border-color: #6a3d9a;
-}
-.btn-outline-volunteer:hover{
-  background-color:#6a3d9a;
-  color: #ffffff!important;
-}
+    &.selected {
+      stroke: black!important;
+      stroke-width: 2px!important;
+    }
 
-circle.education {
-  fill: #168720;
-}
+    &.disabled {
+      fill: $disabled-color;
+    }
 
-circle.disabled {
-  fill: #b7b6b6;
-}
+    &.invisible {
+      visibility: hidden;
+    }
+  }
 
-circle.invisible {
-  visibility: hidden;
+  .bg-color-#{$name} {
+    background-color: get_color($name);
+  }
+  .btn-outline-#{$name} {
+    color: get_color($name)!important;
+    border-color: get_color($name)r;
+    &:hover {
+      background-color:  get_color($name);
+      color: #ffffff!important;
+    }
+  }
+
 }
 
 
-.bg-color-technics {
-  background-color: #3b77a1;
-}
-.btn.bg-color-technics:hover{
-  background-color: #215479;
-  border-color: #173952;
-}
-circle.technics {
-  stroke: #3b77a1;
-  stroke-width: 5;
-  fill: white;
+@each $name in 'themes' 'technics' 'tools' {
+
+  circle.#{$name} {
+    stroke: get_color($name);
+    stroke-width: 5;
+    fill: white;
+
+    &.invisible {
+      visibility: hidden;
+    }
+  }
+
+  .bg-color-#{$name} {
+    background-color: get_color($name);
+    &:hover {
+      background-color: lighten(get_color($name), 7.5%);
+    }
+  }
 }
 
-.bg-color-themes {
-  background-color: #76a02f;
-}
-.btn.bg-color-themes:hover{
-  background-color: #537714;
-  border-color: #4a6b10;
-}
-circle.themes {
-  stroke: #76a02f;
-  stroke-width: 5;
-  fill: white;
-}
-
-.bg-color-tools {
-  background-color: #302e2e;
-}
-.btn.bg-color-tools:hover{
-  background-color: #5f5f5f;
-  border-color: #353535;
-}
-circle.tools  {
-  stroke: #302e2e;
-  stroke-width: 5;
-  fill: white;
-}
 
 .disabled-node circle {
-  stroke: #b7b6b6;
+  stroke: $disabled-color;
   stroke-width: 3;
   fill: white !important;
 }
@@ -198,10 +188,7 @@ circle.tools  {
   cursor: pointer
 }
 
-circle.selected {
-  stroke: black!important;
-  stroke-width: 2px!important;
-}
+
 
 #svgSkillsLegend .nodeLabels text:not(.technics):not(.themes):not(.tools), #svgSkillsChart .nodeLabels text:not(.technics):not(.themes):not(.tools) {
   fill: black;
@@ -256,19 +243,8 @@ circle.selected {
 }
 
 
-
-
 #OrientationAlert {
   background-color: rgb(0 0 0 / 80%);
-  z-index: 99999;
-  height: 100vh;
-  position: fixed;
-  overflow-y: hidden;
-  width: 100%;
-}
-
-#ApiStartingAlert {
-  background-color: rgb(0 0 0 / 90%);
   z-index: 99999;
   height: 100vh;
   position: fixed;

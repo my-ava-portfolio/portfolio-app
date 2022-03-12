@@ -121,37 +121,42 @@ footer {
   height: 150px
 }
 
+// variables
+$map-color: teal;
+$app-color: blue;
+$video-color: brown;
+$chart-color: grey;
+$tool-color: black;
+$library-color: blue;
+$methodo-color: cyan;
+
 
 .map {
-  background-color: teal;
+  background-color: $map-color;
 }
 
 .app {
-  background-color: blue;
+  background-color: $app-color;
 }
 
 .video {
-  background-color: rgb(80, 9, 173);
-}
-
-.app {
-  background-color: rgb(0, 183, 255);
+  background-color: $video-color;
 }
 
 .chart {
-  background-color: grey;
+  background-color: $chart-color;
 }
 
 .tool {
-  background-color: black;
+  background-color: $tool-color;
 }
 
 .library {
-  background-color: blue;
+  background-color: $library-color;
 }
 
 .methodo {
-  background-color: rgb(0, 204, 255);
+  background-color: $methodo-color;
 }
 
 .modal-dialog {
