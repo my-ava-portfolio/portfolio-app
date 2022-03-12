@@ -7,13 +7,12 @@ import { Subscription } from 'rxjs';
 import { ResumeService } from '../../services/resume.service';
 import { expandIcon, navIcon, helpIcon, ungroupIconUnicode, nextIcon } from '../../core/inputs';
 
-
 @Component({
-  selector: 'app-centerbar-navigation',
-  templateUrl: './centerbar-navigation.component.html',
-  styleUrls: ['./centerbar-navigation.component.scss']
+  selector: 'app-graph-bar',
+  templateUrl: './graph-bar.component.html',
+  styleUrls: ['./graph-bar.component.scss']
 })
-export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GraphBarComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() graphInputData!: any;
 
   @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
@@ -84,7 +83,6 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
   activitiesIdSubscription!: Subscription;
   activitiesJobsAvailableSubscription!: Subscription;
   activitiesProjectsAvailableSubscription!: Subscription;
-
 
   constructor(
     private resumeService: ResumeService,
@@ -747,8 +745,7 @@ export class CenterBarNavigationComponent implements OnInit, AfterViewInit, OnDe
       });
   }
 
-
-
 }
+
 
 

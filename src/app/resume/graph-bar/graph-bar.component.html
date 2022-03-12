@@ -1,0 +1,76 @@
+<section id="navigation" class="border bg-light rounded-3 p-4">
+
+  <div class="row">
+
+    <div class="col-lg-12 mx-auto">
+      <h5 class="fw-bolder mb-3">
+        <fa-icon class="me-2" [icon]="navIcon"></fa-icon>Navigation
+        <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#navigation-cards" aria-hidden="true"></fa-icon>
+      </h5>
+    </div>
+    <div class="col-lg-12 mx-auto">
+
+      <div id="navigation-card" class="row">
+
+        <div id="degrees-card" class="col-lg-12">
+          <div class="collapse show item card">
+            <div class="card-body">
+
+              <div class="row justify-content-around text-center my-3">
+                <div class="col-lg-6">
+                  <span class="graph_title me-1">Graphe d'activités</span>
+                  <span class="badge rounded-pill text-info cursor" [ngbPopover]="helpPopup" popoverTitle="Graphe d'activités" placement="top"><fa-icon [icon]="helpIcon"></fa-icon></span>
+
+                </div>
+
+                <div class="col-lg-12 graph-content"></div>
+
+              </div>
+
+              <div class="col-lg-12 graph-content"></div>
+
+              <div #svgGraphChart class="row justify-content-around text-center my-3">
+
+                <div class="col-lg-6">
+                  <div class="graph-legend"></div>
+                </div>
+
+                <div class="col-lg-6">
+                  <span class="legend_graph_title">Barre temporelle</span>
+
+                  <div class="row justify-content-center my-2">
+
+                    <div class="col-3 text-end">
+                      {{ graphInputData.start_date_graph_slider }}
+                    </div>
+
+                    <div class="col-6">
+                      <input class="w-100 my-1 border-0" type="range" steps="1" [min]="graphInputData.start_date_graph_slider" [max]="graphInputData.end_date_graph_slider" [value]="currentDate"  (change)="updateDate($event)"/>
+                    </div>
+
+                    <div class="col-3 text-start">
+                      {{ graphInputData.end_date_graph_slider }}
+                    </div>
+
+                  </div>
+                  <button id="reset-graph mx-1" class="btn btn-primary" (click)="resetChart()"><span></span>Reset</button>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+</div>
+
+
+<ng-template #helpPopup>
+  <div class="popup">
+    <div class="content">
+      Le graphe est interactif. N'hésitez pas à interagir, le contenu du CV s'adaptera en fonction de vos sélections.
+    </div>
+  </div>
+</ng-template>
