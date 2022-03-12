@@ -1,12 +1,10 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
 import * as L from 'leaflet';
 import { MapService } from '../../services/map.service';
 
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-background-map',
@@ -14,14 +12,15 @@ import { Location } from '@angular/common';
   styleUrls: ['./background.component.scss']
 })
 export class BackgroundComponent implements OnInit {
+  @Input() isBlurred!: boolean;
+  @Input() isMapInteractionEnabled!: boolean;
+
   private InitialViewCoords: any = [44.896741, 4.932861];
   private zoomValue = 8;
   private osmLayer: any = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {
     maxZoom: 13,
     minZoom: 8
   });
-
-  isBlurred!: boolean;
 
   map: any;
 
@@ -32,25 +31,12 @@ export class BackgroundComponent implements OnInit {
   mapInteractionEnabled: boolean = false;
 
   constructor(
-    private router: Router,
-    private location: Location,
     private mapService: MapService,
   ) {
 
 
-    // to apply bur
-    this.router.events.subscribe(_ => {
-      if ( ['/home', '/map'].includes(this.location.path()) ) {
-        this.isBlurred = false;
-        this.mapInteractionEnabled = true;
-      } else {
-        this.isBlurred = true;
-        this.mapInteractionEnabled = false;
-      }
-    });
-
     this.mapContainerCalledSubscription = this.mapService.mapContainerCalled.subscribe(
-      (status) => {
+      (_) => {
         this.sendMapContainer()
       },
       (error) => {
@@ -60,7 +46,7 @@ export class BackgroundComponent implements OnInit {
 
 
     this.mapServiceSubscription = this.mapService.isMapViewReset.subscribe(
-      (status) => {
+      (_) => {
         this.resetView();
       },
       (error) => {

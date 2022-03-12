@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ElementRef, ViewChild, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef, ViewChild  } from '@angular/core';
 
 import { arrowUpIcon } from '../core/inputs';
 
@@ -6,6 +6,8 @@ import { ResumeService } from '../services/resume.service';
 import { ControlerService } from 'src/app/services/controler.service';
 
 import { navBarIcon } from '../core/inputs';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 
 
@@ -32,6 +34,7 @@ export class MainViewComponent implements OnInit {
     private resumeService: ResumeService,
     private controlerService: ControlerService,
   ) {
+
 
     this.resumeService.scrollToTop.subscribe(_ => {
       this.scrollToTop()

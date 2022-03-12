@@ -12,6 +12,17 @@ body::-webkit-scrollbar {
 }
 
 
+#backgroundMap {
+  // position: absolute;
+  z-index: -1;
+}
+
+#map {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
 // .circle {
 //   border-radius: 50%;
 // }
