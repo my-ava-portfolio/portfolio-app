@@ -23,9 +23,24 @@
 }
 
 
+.fieldset {
+  // border: solid 0.1em;
+  // color: black;
+  // border-radius: 0.5em;
+  // margin: 2em 1em 1em;
+  // padding:0 1em 1em;
+}
+
+.legend {
+  transform: translatey(-50%);
+  width: max-content;
+}
+
 .card-box {
   position: relative;
   color: #fff;
+  //height: 100px;
+  //clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   //padding: 20px 10px 40px;
   //margin: 20px 0px;
 }
@@ -61,6 +76,7 @@
   position: absolute;
   left: 0px;
   bottom: 0px;
+  height: 35%;
   text-align: center;
   //padding: 3px 0;
   color: rgba(255, 255, 255, 0.8);

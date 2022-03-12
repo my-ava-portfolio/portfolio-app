@@ -218,3 +218,16 @@ function now(): Date {
   date.setHours(0, 0, 0, 0);
   return date
 }
+
+
+export function stringToColor(inputText: string, seed: number): string {
+
+  let hash = 0;
+  for (let i = 0; i < inputText.length; i++) {
+     hash = inputText.charCodeAt(i) + ((hash << seed) - hash);
+  }
+  let temp_color = (hash & 0x00FFFFFF).toString(16).toUpperCase();
+
+  return "#" + "00000".substring(0, 6 - temp_color.length) + temp_color;
+
+}

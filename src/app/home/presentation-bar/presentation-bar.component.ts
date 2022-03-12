@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { arrowsDownIcon, presIcon, expandIcon, resumePages, projectPages, imageProfile } from '../../core/inputs';
+import { stringToColor } from '../../core/inputs';
+
 
 
 @Component({
@@ -22,7 +24,8 @@ export class PresentationBarComponent implements OnInit {
   presIcon = presIcon;
   expandIcon = expandIcon;
   arrowsDownIcon = arrowsDownIcon;
-
+  stringToColorFunc = stringToColor;
+  
   constructor() { }
 
   ngOnInit(): void {
