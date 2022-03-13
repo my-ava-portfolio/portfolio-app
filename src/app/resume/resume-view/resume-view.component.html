@@ -18,14 +18,25 @@
       ></app-education-bar>
     </div>
 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-2">
-
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-4 p-2">
        <app-graph-bar
         [graphInputData]="generalData"
       ></app-graph-bar>
     </div>
 
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 p-2">
+      <app-activity-bar
+        [jobsData]="jobsData"
+        [personalProjectsData]="personalProjectsData"
+        (notePathEmit)="sendPathNotesLink($event)"
+      ></app-activity-bar>
+
+    </div>
+
 <!--
+
+
       <app-centerbar-jobs
         [jobsData]="jobsData"
         (notePathEmit)="sendPathNotesLink($event)"
@@ -56,6 +67,8 @@
     </div> -->
 
   </div>
+
+
 
 
 </div>

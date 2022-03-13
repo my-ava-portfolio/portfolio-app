@@ -135,10 +135,10 @@ export const resumePages: any = [
         icon: navIcon
       },
       {
-        id: "jobs",
+        id: "activity",
         title: "Expériences",
         route: '/resume',
-        fragment: "jobs",
+        fragment: "activity",
         icon: jobIcon
       },
       {

@@ -16,15 +16,15 @@
 }
 
 img{
-  max-height: 6vh;
+  max-height: 10vh;
 }
 
 .title-date {
   text-align: center;
-  background: url("http://i.imgur.com/Kkw7rPC.png?1") center center repeat-x #fff;
+  background: url("http://i.imgur.com/Kkw7rPC.png?1") center center repeat-x rgba(var(--bs-light-rgb), var(--bs-bg-opacity));
 }
 .title-date p {
-  background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
+  background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
   padding: 10px;
   display: inline-block;
 }
