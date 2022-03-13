@@ -42,13 +42,15 @@ export class AppComponent implements OnInit {
   ) {
 
     this.router.events.subscribe(_ => {
-      if ( this.mapInteractionPages.includes(this.location.path()) ) {
+      // TODO find /map route string value from app.ts ?
+      if ( this.mapInteractionPages.includes(this.location.path()) || this.location.path().includes('/map') ) {
         this.mapBlurred = false;
         this.mapInteractionEnabled = true;
       } else {
         this.mapBlurred = true;
         this.mapInteractionEnabled = false;
       }
+      console.log(this.location.path(), this.mapInteractionEnabled)
     });
 
     // to get the current page opened and adapt content regarding orientation
