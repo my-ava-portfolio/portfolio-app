@@ -88,97 +88,98 @@ export const sliderBarId = 'slider-bar';
 export const currentYear: number = new Date().getFullYear();
 export const currentDate = now();
 
-export const homePages: any = [
-  {
-    id: 'home',
-    route: '/',
-    title: 'Accueil',
-    icon: homeIcon
-  },
-]
+export const homePages: any = {
+  id: 'home',
+  route: '/',
+  title: 'Accueil',
+  icon: homeIcon
+};
 
-export const aboutMePage: any = [
-  {
-    id: 'about',
-    route: '/',
-    title: 'A propos...',
-    icon: homeIcon
-  }
-]
+export const aboutMePage: any = {
+  id: 'about',
+  route: '/',
+  title: 'A propos...',
+  icon: resumeIcon
+};
 
-export const resumePages: any = [
-  {
-    id: 'resume',
-    route: '/resume',
-    title: 'Profil',
-    verbose_title: 'Accès au CV',
-    icon: resumeIcon,
-    sub_menus: [
-      {
-        id: "print",
-        title: "",
-        route: '../short_resume',
-        icon: printIcon
-      },
-      {
-        id: "education",
-        title: "Formation",
-        route: '/resume',
-        fragment: "education",
-        icon: degreeIcon
-      },
-      {
-        id: "navigation",
-        title: "Navigation",
-        route: '/resume',
-        fragment: "navigation",
-        icon: navIcon
-      },
-      {
-        id: "activity",
-        title: "Expériences",
-        route: '/resume',
-        fragment: "activity",
-        icon: jobIcon
-      },
-      {
-        id: "volunteers",
-        title: "Bénévolat",
-        route: '/resume',
-        fragment: "volunteers",
-        icon: volunteerIcon
-      },
-      {
-        id: "personal_projects",
-        title: "Projets perso",
-        route: '/resume',
-        fragment: "personal_projects",
-        icon: projectIcon
-      },
-      {
-        id: "publications",
-        title: "Publications",
-        route: '/resume',
-        fragment: "publications",
-        icon: publishIcon
-      },
-    ]
-  },
-  {
-    id: 'map',
-    route: '/map',
-    title: 'Carte',
-    verbose_title: 'Accès à la carte',
-    icon: mapIcon
-  },
-  {
-    id: 'gallery',
-    route: '/gallery',
-    title: 'Galerie',
-    verbose_title: 'Accès à la galerie',
-    icon: galleryIcon
-  }
-];
+export const educationPages: any = {
+  id: 'education',
+  route: '/education',
+  title: 'Formation',
+  verbose_title: 'Accès à mes formations',
+  icon: degreeIcon,
+  sub_menus: [
+    {
+      id: "degrees",
+      title: "Diplômes",
+      fragment: "degrees",
+      icon: degreeIcon
+    },
+    {
+      id: "languages",
+      title: "langues",
+      fragment: "languages",
+      icon: languageIcon
+    },
+    {
+      id: "trainings",
+      title: "Formation",
+      fragment: "trainings",
+      icon: navIcon
+    }
+  ]
+};
+
+export const experiencesPages: any = {
+  id: 'experiences',
+  route: '/experiences',
+  title: 'Expériences',
+  verbose_title: 'Accès au CV',
+  icon: resumeIcon,
+  sub_menus: [
+    {
+      id: "print",
+      title: "",
+      route: '../short_resume',
+      icon: printIcon
+    },
+    {
+      id: "companies",
+      title: "Entreprises",
+      fragment: "companies",
+      icon: navIcon
+    },
+    {
+      id: "personal_projects",
+      title: "Projets personnels",
+      fragment: "personal_projects",
+      icon: projectIcon
+    },
+    {
+      id: "volunteers",
+      title: "Bénévolat",
+      fragment: "volunteers",
+      icon: volunteerIcon
+    },
+  ]
+};
+
+export const mapPages: any = {
+  id: 'map',
+  route: '/map',
+  title: 'Carte',
+  verbose_title: 'Accès à la carte',
+  icon: mapIcon
+};
+
+export const galleryPages: any = {
+  id: 'gallery',
+  route: '/gallery',
+  title: 'Galerie',
+  verbose_title: 'Accès à la galerie',
+  icon: galleryIcon
+};
+
 
 export const projectPages: any = [
   {
@@ -197,8 +198,8 @@ export const projectPages: any = [
   }
 ];
 
-
-export const mainTopicsPages = [...resumePages, ...projectPages]
+export const resumeTopicsPages = [...[educationPages], ...[experiencesPages], ...[mapPages], ...[galleryPages]]
+export const mainTopicsPages = [...[aboutMePage], ...resumeTopicsPages, ...projectPages]
 export const pagesObject: any = mainTopicsPages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
 
 
