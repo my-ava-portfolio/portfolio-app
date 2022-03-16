@@ -10,7 +10,7 @@ import { homePages, infoIcon, pythonIcon } from '../../core/inputs';
 import { githubIcon, linkedinIcon, emailIcon } from '../../core/inputs';
 import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '../../core/inputs';
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '../../core/inputs';
-import { currentYear, aboutMePage, resumePages, projectPages, imageProfile } from '../../core/inputs';
+import { currentYear, mainTopicsPages, imageProfile } from '../../core/inputs';
 
 import { ResumeService } from 'src/app/services/resume.service';
 import { Subscription } from 'rxjs';
@@ -25,7 +25,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 
   currentPage!: string;
 
-  topicPages: any = [...aboutMePage, ...resumePages, ...projectPages];
+  topicPages: any = mainTopicsPages;
   homePages: any = homePages[0];
 
   bugIcon = bugIcon;
