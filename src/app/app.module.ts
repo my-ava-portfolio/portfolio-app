@@ -34,7 +34,7 @@ import { CenterbarProjectsComponent } from './resume/centerbar-projects/centerba
 import { CenterbarPublicationsComponent } from './resume/centerbar-publications/centerbar-publications.component';
 import { CenterbarVolunteerComponent } from './resume/centerbar-volunteer/centerbar-volunteer.component';
 import { RightbarSkillsComponent } from './resume/rightbar-skills/rightbar-skills.component';
-import { GraphBarComponent } from './resume/graph-bar/graph-bar.component';
+import { GraphBarComponent } from './experiences/graph-bar/graph-bar.component';
 
 
 import { ShortViewComponent } from './resume/short-view/short-view.component';
@@ -46,14 +46,18 @@ import { BackgroundComponent } from './background/map/background.component';
 import { NavigationBarComponent } from './background/navigation-bar/navigation-bar.component';
 
 import { TimeLegendComponent } from './map/time-legend/time-legend.component';
-import { ProfilBarComponent } from './resume/profil-bar/profil-bar.component';
+import { ProfilBarComponent } from './experiences/profil-bar/profil-bar.component';
 import { PresentationBarComponent } from './home/presentation-bar/presentation-bar.component';
 import { EducationBarComponent } from './resume/education-bar/education-bar.component';
 import { ControlBarComponent } from './background/control-bar/control-bar.component';
 
 import { SwipeDirective } from './directives/swipe.directive';
 import { HoverClassDirective } from './directives/hover-class.directive';
-import { ActivityBarComponent } from './resume/activity-bar/activity-bar.component';
+import { ActivityBarComponent } from './experiences/activity-bar/activity-bar.component';
+import { EducationViewComponent } from './education/education-view/education-view.component';
+import { DegreesBarComponent } from './education/degrees-bar/degrees-bar.component';
+import { TrainingsBarComponent } from './education/trainings-bar/trainings-bar.component';
+import { ExperiencesViewComponent } from './experiences/experiences-view/experiences-view.component';
 
 
 const appRoutes: Routes = [
@@ -64,7 +68,8 @@ const appRoutes: Routes = [
     component: MainViewComponent,
     children: [
       { path: '', component: HomeViewComponent, data: { title: 'Bienvenue', page: 'about' } },
-      { path: 'resume', component: ResumeViewComponent, data: { title: 'Profil', page: 'resume' } },
+      { path: 'experiences', component: ExperiencesViewComponent, data: { title: 'Expériences', page: 'experiences' } },
+      { path: 'education', component: EducationViewComponent, data: { title: 'Formation', page: 'education' } },
       { path: 'map', component: MapViewComponent, data: { title: 'Carte des activités', page: 'map' } },
       { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie', page: 'gallery' } },
       { path: 'blog', component: NotesViewComponent, data: { title: 'Blog', page: 'blog' } },
@@ -110,6 +115,10 @@ registerLocaleData(localeFr);
     HoverClassDirective,
     GraphBarComponent,
     ActivityBarComponent,
+    EducationViewComponent,
+    DegreesBarComponent,
+    TrainingsBarComponent,
+    ExperiencesViewComponent,
    ],
   imports: [
     BrowserModule,
