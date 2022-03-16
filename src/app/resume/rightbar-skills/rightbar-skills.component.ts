@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { skillIcon, arrowDownIcon } from '../../core/inputs';
+import { skillIcon, arrowDownIcon, expandIcon } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
 
@@ -24,6 +24,7 @@ export class RightbarSkillsComponent implements OnInit, OnDestroy {
   };
 
   skillIcon = skillIcon;
+  expandIcon = expandIcon;
   arrowDownIcon = arrowDownIcon;
 
   skillsDataSubscription!: Subscription;

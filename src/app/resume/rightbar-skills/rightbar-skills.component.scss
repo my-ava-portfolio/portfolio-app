@@ -23,3 +23,16 @@
 #skills {
   @include fade-in;
 }
+
+
+.li:after {
+  content: "";
+  display: inline-block;
+  background: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity)) !important;
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  left: 0.5em;
+  top: 0;
+}
+
