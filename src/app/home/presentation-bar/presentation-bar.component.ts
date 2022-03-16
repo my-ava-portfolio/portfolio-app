@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { arrowsDownIcon, presIcon, expandIcon, resumePages, projectPages, imageProfile } from '../../core/inputs';
+import { arrowsDownIcon, presIcon, expandIcon, resumeTopicsPages, projectPages, imageProfile } from '../../core/inputs';
 import { stringToColor } from '../../core/inputs';
 
 
@@ -16,7 +16,7 @@ export class PresentationBarComponent implements OnInit {
   @Input() inputTechnicsData!: any;
   @Input() inputToolsData!: any;
 
-  resumePages: any[] = resumePages;
+  resumePages: any[] = resumeTopicsPages;
   projectPages: any[] = projectPages;
 
   imageProfile: string = imageProfile;
@@ -25,7 +25,7 @@ export class PresentationBarComponent implements OnInit {
   expandIcon = expandIcon;
   arrowsDownIcon = arrowsDownIcon;
   stringToColorFunc = stringToColor;
-  
+
   constructor() { }
 
   ngOnInit(): void {

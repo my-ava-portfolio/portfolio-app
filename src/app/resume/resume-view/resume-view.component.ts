@@ -5,7 +5,7 @@ import { NotesService } from '../../services/notes.service';
 import { ControlerService } from '../../services/controler.service';
 
 import { apiLogoUrl } from '../../core/inputs';
-import { resumePages } from '../../core/inputs';
+import { experiencesPages } from '../../core/inputs';
 
 import { interval, Subscription } from 'rxjs';
 import { startWith  } from 'rxjs/operators';
@@ -50,7 +50,7 @@ export class ResumeViewComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   isDataAvailable = false;
 
-  resumeTopics: any[] = resumePages[0].sub_menus;
+  resumeTopics: any[] = experiencesPages[0].sub_menus;
 
 
   isAnchorExistsChecker = interval(1000); // observable which run all the time
