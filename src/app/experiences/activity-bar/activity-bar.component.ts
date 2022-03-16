@@ -44,8 +44,7 @@ export class ActivityBarComponent implements OnInit, OnChanges {
   trophyIcon = trophyIcon;
   expandIcon = expandIcon;
   arrowsDownIcon = arrowsDownIcon;
-  
-  tabView = 'companies';
+
 
   activityTitle = "Bénévolat";
   themesTitle = "Thèmes";
@@ -55,6 +54,7 @@ export class ActivityBarComponent implements OnInit, OnChanges {
   trainingTitle = "Formations";
   detailsTitle = "Détails";
 
+  tabView = 'companies';
   availabled_topics = ["companies", "personal_projects"]
   defaultTabView = this.availabled_topics[0];
 
