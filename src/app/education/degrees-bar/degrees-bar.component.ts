@@ -2,8 +2,8 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 
 import { apiLogoUrl } from '../../core/inputs';
 
-import { degreeIcon, languageIcon, locationIcon } from '../../core/inputs';
-import { presIcon, expandIcon } from '../../core/inputs';
+import { degreeIcon, locationIcon } from '../../core/inputs';
+import { presIcon, expandIcon, languageIcon } from '../../core/inputs';
 import { state, trigger, transition, animate, style } from '@angular/animations'
 
 
