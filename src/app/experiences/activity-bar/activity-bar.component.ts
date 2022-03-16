@@ -5,7 +5,7 @@ import { apiLogoUrl } from '../../core/inputs';
 
 import { ResumeService } from '../../services/resume.service';
 
-import { expandIcon, resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '../../core/inputs';
+import { arrowsDownIcon, expandIcon, resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '../../core/inputs';
 
 
 @Component({
@@ -43,7 +43,8 @@ export class ActivityBarComponent implements OnInit, OnChanges {
   filterIcon = filterIcon;
   trophyIcon = trophyIcon;
   expandIcon = expandIcon;
-
+  arrowsDownIcon = arrowsDownIcon;
+  
   tabView = 'companies';
 
   activityTitle = "Bénévolat";
