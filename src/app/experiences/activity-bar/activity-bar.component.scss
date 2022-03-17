@@ -20,6 +20,18 @@
 }
 
 
+.rotation {
+  display: inline-block;
+  transform: rotate(-180deg);
+}
+
+
+.disabled {
+  pointer-events: none;
+  opacity: .65;
+}
+
+
 @import "https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700";
 
 // Variables

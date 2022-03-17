@@ -95,7 +95,7 @@ export class ActivityBarComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
 
-    if (changes.fragment.currentValue !== undefined) {
+    if (changes.fragment !== undefined) {
       let fragmentCurrentValue: string = changes.fragment.currentValue
       if (this.availabled_topics.includes(fragmentCurrentValue)) {
         this.tabView = changes.fragment.currentValue;

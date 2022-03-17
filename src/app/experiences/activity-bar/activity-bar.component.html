@@ -18,15 +18,18 @@
 
               <div class="col-lg-8 mx-auto border mb-2">
                 <ul class="nav nav-pills nav-justified" role="tablist">
-                  <li class="nav-item" role="presentation" id="companies">
+                  <li *ngIf="jobsData" class="nav-item" role="presentation" id="companies" [ngClass]="jobsData.length === 0 ? 'disabled' : ''">
+
                     <a class="nav-link fw-bold active" [class.active]="tabView == 'companies'" rel="companies" (click)="tabView = 'companies'">
                       <fa-icon class="me-2" [icon]="resumeIcon"></fa-icon>Entreprises
+                      <span class="badge bg-danger">{{ jobsData.length }}</span>
                     </a>
                   </li>
 
-                  <li class="nav-item" role="presentation" id="personal_projects">
+                  <li *ngIf="personalProjectsData" class="nav-item" role="presentation" id="personal_projects"  [ngClass]="personalProjectsData.length === 0 ? 'disabled' : ''">
                     <a class="nav-link fw-bold" [class.active]="tabView == 'personal_projects'" rel="personal_projects" (click)="tabView = 'personal_projects'">
                       <fa-icon class="me-2" [icon]="resumeIcon"></fa-icon>Projets personnels
+                      <span class="badge bg-danger" >{{ personalProjectsData.length }}</span>
                     </a>
                   </li>
 
@@ -69,11 +72,6 @@
           </div>
         </div>
         <div class="timeline-content pb-4" [ngClass]="indexOfActivity % 2 !== 0 ? 'right' : ''">
-          <!-- <h6>{{activity.title}}</h6>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Atque, facilis quo maiores magnam modi ab libero praesentium blanditiis.
-          </p> -->
 
             <div class="card-body border shadow bg-light border-secondary ">
               <div class="col-lg-12">
@@ -129,13 +127,13 @@
 
                   </div>
 
-                  <div class="col-12 justify-content-around text-center cursor my-2" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + activity.identifier">
-                    <fa-icon class="" [icon]="arrowsDownIcon"></fa-icon>
+                  <div clickClass="rotation" class="col-12 justify-content-around text-center cursor my-2" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + activity.identifier">
+                    <fa-icon class="" [icon]="arrowsDownIcon" ></fa-icon>
                   </div>
 
                 </div>
 
-                <div class="row collapse-item collapse" [id]="'collapse-' + activity.identifier">
+                <div class="row g-0 collapse-item collapse" [id]="'collapse-' + activity.identifier">
 
 
                   <div class="col-12 mx-auto border mb-2">
