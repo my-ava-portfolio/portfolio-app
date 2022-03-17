@@ -1,33 +1,19 @@
 <section id="aboutMe" class="about-me-section" *ngIf="inputGeneralData">
 
-  <div id="profile-teaser" class="d-flex flex-row mt-2">
+  <div id="profile-teaser" class="d-flex flex-row mt-2 border">
 
     <div id="" class="d-flex flex-column">
 
-      <div class="d-flex flex-row bg-light ">
-
-        <div class="bg-white p-3">
-          <h2 class="name fw-bold mb-1">{{ inputGeneralData.first_name }} {{ inputGeneralData.last_name }}</h2>
-          <div class="ms-3 mb-3 d-flex flex-column flex-lg-row justify-content-between">
-            <h4 class="">{{ inputGeneralData.job }}</h4>
-            <h6 class="text-end fst-italic">{{ inputGeneralData.experience_duration }}</h6>
-          </div>
-          <div class="ps-5">
-              {{ inputGeneralData.carrier_summary }}
-          </div>
-
-        </div>
-
-        <div class="bg-light p-2 d-none d-lg-block my-auto">
-          <img class="profile-image m-3" [src]="imageProfile " alt=" ">
-        </div>
-      </div>
+      <app-profil-bar
+        mode=""
+        [profilData]="inputGeneralData"
+      ></app-profil-bar>
 
 
-      <div class="bg-white p-3">
+      <div class="bg-light p-3">
 
         <h3 class="section-title mb-2">Bienvenue</h3>
-        <div class="mb-4 ps-5">
+        <div class="mb-4 ps-5 small">
           Vous voici sur mon site personnel, à la fois pour présenter mon parcours et mes réalisations, mais aussi un bac à sable qui
           me permet de centraliser mes expérimentations.
         </div>
@@ -71,7 +57,7 @@
 
       </div>
 
-      <div class="bg-white p-3">
+      <div class="bg-light p-3">
         <h3 class="section-title mb-2">Mes domaines</h3>
 
 
