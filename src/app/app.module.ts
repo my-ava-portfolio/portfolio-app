@@ -53,6 +53,8 @@ import { ControlBarComponent } from './background/control-bar/control-bar.compon
 
 import { SwipeDirective } from './directives/swipe.directive';
 import { HoverClassDirective } from './directives/hover-class.directive';
+import { ClickClassDirective } from './directives/click-class.directive';
+
 import { ActivityBarComponent } from './experiences/activity-bar/activity-bar.component';
 import { EducationViewComponent } from './education/education-view/education-view.component';
 import { DegreesBarComponent } from './education/degrees-bar/degrees-bar.component';
@@ -113,6 +115,7 @@ registerLocaleData(localeFr);
     ControlBarComponent,
     SwipeDirective,
     HoverClassDirective,
+    ClickClassDirective,
     GraphBarComponent,
     ActivityBarComponent,
     EducationViewComponent,
