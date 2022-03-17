@@ -11,11 +11,10 @@ import { experiencesPages } from '../../core/inputs';
   styleUrls: ['./profil-bar.component.scss']
 })
 export class ProfilBarComponent implements OnInit {
+  @Input() mode: any;
   @Input() profilData: any;
-  @Input() contactData: any;
 
   inputProfilData!: any;
-  inputContactData!: any;
 
   linkBuilt!: string;
 
@@ -31,7 +30,7 @@ export class ProfilBarComponent implements OnInit {
   jobIcon = jobIcon;
   presIcon = presIcon;
   navIcon = navIcon;
-  avatarImg: string = "https://fakeimg.pl/75x75/";
+  avatarImg: string = "https://fakeimg.pl/250x250";
 
   experiencesTopics: any = experiencesPages.sub_menus;
 
@@ -39,7 +38,7 @@ export class ProfilBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.inputProfilData = this.profilData;
-    this.inputContactData = this.contactData;
+    console.log(this.profilData)
     console.log(this.experiencesTopics);
   }
 
