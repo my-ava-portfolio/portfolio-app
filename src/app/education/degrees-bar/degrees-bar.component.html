@@ -40,8 +40,8 @@
                 <div class="tab" id="degrees-tab" *ngSwitchCase="'degrees'" [@fadeInOut]>
                   <div  class="row justify-content-center">
 
-                    <div [id]="degree.identifier" class="col-sm-12 col-md-4 col-lg-2" *ngFor="let degree of inputDegreesData">
-                      <div  class="educ-feature text-center small p-4 m-2 border shadow bg-light">
+                    <div [id]="degree.identifier" class="col-sm-12 col-md-4 col-lg-3" *ngFor="let degree of inputDegreesData">
+                      <div  class="educ-feature text-center small p-4 m-2 border shadog-light">
 
                         <div class="title-date col-sm-8 col-md-10 col-lg-12 mx-auto">
                           <p class="fw-bolder mb-0">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }}</p>
