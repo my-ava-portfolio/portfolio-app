@@ -2,7 +2,7 @@
   <div class="row">
 
 
-    <div class="col-lg-12 mt-4 gallery-content mb-5">
+    <div class="col-lg-12 mt-4 gallery-content mb-5 px-5">
       <div class="grid-container">
           <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
       </div>
@@ -70,7 +70,7 @@
         <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + media_feature.type">
           <fa-icon class="me-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
         </span>
-        <p class="card-text mt-2">{{media_feature.description}}</p>
+        <p class="card-text mt-2 small">{{media_feature.description}}</p>
         <p class="card-text small" *ngIf="media_feature.data">Données: {{media_feature.data}}</p>
         <p class="card-text small" *ngIf="media_feature.tools">Outils: {{media_feature.tools}}</p>
       </div>
