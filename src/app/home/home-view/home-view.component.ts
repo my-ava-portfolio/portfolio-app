@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ControlerService } from 'src/app/services/controler.service';
 import { ResumeService } from 'src/app/services/resume.service';
 
 
@@ -12,6 +13,9 @@ import { ResumeService } from 'src/app/services/resume.service';
   styleUrls: ['./home-view.component.css']
 })
 export class HomeViewComponent implements OnInit, OnDestroy {
+
+  homeTopics: any[] = [];
+
 
   generalData!: any;
   generalDataSubscription!: Subscription;
@@ -24,6 +28,7 @@ export class HomeViewComponent implements OnInit, OnDestroy {
   constructor(
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
+    private controlerService: ControlerService,
     private resumeService: ResumeService,
   ) {
 
@@ -57,6 +62,7 @@ export class HomeViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.resumeService.pullGeneralData();
     this.resumeService.pullFullSkillsData();
+    this.sendResumeSubMenus()
 
   }
 
@@ -65,5 +71,9 @@ export class HomeViewComponent implements OnInit, OnDestroy {
     this.fullSkillsDataSubscription.unsubscribe();
 
   }
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus(this.homeTopics)
+  }
+
 
 }
