@@ -135,12 +135,12 @@ body::-webkit-scrollbar {
 
   .bg-color-#{$name} {
     background-color: get_color($name);
+    color: white;
   }
   .btn-outline-#{$name} {
-    color: get_color($name)!important;
     border-color: get_color($name)r;
     &:hover {
-      background-color:  get_color($name);
+      background-color: lighten(get_color($name), 7.5%);
       color: #ffffff!important;
     }
   }

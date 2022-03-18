@@ -106,6 +106,7 @@ export const educationPages: any = {
   id: 'education',
   route: '/education',
   title: 'Formation',
+  colorType: 'education',
   verbose_title: 'Accès à mes formations',
   icon: degreeIcon,
   sub_menus: [
@@ -134,6 +135,7 @@ export const experiencesPages: any = {
   id: 'experiences',
   route: '/experiences',
   title: 'Expériences',
+  colorType: 'job',
   verbose_title: 'Accès au CV',
   icon: resumeIcon,
   sub_menus: [
