@@ -406,7 +406,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         // to link with popup
         d3.select('#popup-feature-' + d.properties.id)
           .style('display', 'block')
-          .style('right', '1%');
+          .style('right', '1em')
+          .style('top', '5em');
         console.log("aaa")
       })
       .on('mouseout', (e: any, d: any) => {
@@ -419,8 +420,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         // link with popup
         d3.select('#popup-feature-' + d.properties.id)
         .style('display', 'none')
-        .style('top', 'unset')
-          .style('left', 'unset');
+        .style('right', 'unset')
+          .style('right', 'unset');
 
       });
     sliderNodes.exit().remove();
