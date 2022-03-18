@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagsIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape } from '../../core/inputs';
+import { locationIcon, tagsIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape, imageProfile } from '../../core/inputs';
 import { apiLogoUrl, currentYear } from '../../core/inputs';
 import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '../../core/inputs';
 
@@ -26,6 +26,7 @@ import { ControlerService } from 'src/app/services/controler.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class MapViewComponent implements OnInit, OnDestroy {
+  imageProfile: string = imageProfile;
 
   mapContainerWidth!: number;
 
@@ -40,7 +41,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
   currentDate = currentYear;
 
   isGeodataCanBeDisplayed = false;
-  isLegendDisplayed = true;
+  isWelcomeCardDisplayed = true;
+  isLegendDisplayed = false;
+  isThemesLegendDisplayed = true;
+  isTimeLegendDisplayed = true;
 
   innerWidth!: any;
   innerHeight!: any;
@@ -73,11 +77,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
   pullTripsGeoDataToMapSubscription!: Subscription;
   pullPageContentWidthSubscription!: Subscription;
 
+  generalDataSubscription!: Subscription;
+  generalData!: any;
+
   constructor(
     private mapService: MapService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
+
   ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -146,6 +154,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         });
       }
     );
+
   }
 
   ngOnInit(): void {
@@ -206,8 +215,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  showHideWelcomeCard(): void {
+    this.isWelcomeCardDisplayed = !this.isWelcomeCardDisplayed;
+    if ( this.isWelcomeCardDisplayed ) {
+      this.isLegendDisplayed = false
+    }
+  }
+
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
+    if ( this.isLegendDisplayed ) {
+      this.isWelcomeCardDisplayed = false
+    }
   }
 
   zoomFromDataBounds(geojsonData: any): void {
@@ -338,6 +357,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     // TODO improve popup display
     d3.select('#popup-feature-' + popupId)
       .style('display', 'block')
+      .style('z-index', '1')
       .style('left', () => {
         if (event.x + this.popupWidth + 20 > this.innerWidth) {
           return event.x - this.popupWidth - 15 + 'px';
@@ -357,6 +377,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   disableActivityPopup(popupId: string): void {
     d3
       .select('#popup-feature-' + popupId)
+      .style('z-index', 'unset')
       .style('display', 'none')
       .style('left', 'unset') // reset position to avoid conflict with popup from timeline
       .style('top', 'unset');

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ElementRef, ViewChild  } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef, ViewChild, AfterViewInit  } from '@angular/core';
 
 import { arrowUpIcon } from '../core/inputs';
 
@@ -16,7 +16,7 @@ import { Location } from '@angular/common';
   templateUrl: './main-view.component.html',
   styleUrls: ['./main-view.component.scss'],
 })
-export class MainViewComponent implements OnInit {
+export class MainViewComponent implements OnInit, AfterViewInit {
   @ViewChild('contentSize') contentSize!: ElementRef;
 
   // Here to set the default status of the bar
@@ -35,7 +35,6 @@ export class MainViewComponent implements OnInit {
     private controlerService: ControlerService,
   ) {
 
-
     this.resumeService.scrollToTop.subscribe(_ => {
       this.scrollToTop()
     })
@@ -44,6 +43,10 @@ export class MainViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.scrolltoTopActivated = false;
+
+  }
+
+  ngAfterViewInit(): void {
     this.getContentSize();
 
   }

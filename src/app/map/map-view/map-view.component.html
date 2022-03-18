@@ -1,3 +1,17 @@
+
+<div id="welcomeCard" class="d-flex flex-row justify-content-start">
+  <div class="col-12 col-lg-5">
+    <app-profil-card
+      [isActive]="isWelcomeCardDisplayed"
+      (cardClosedEmit)="showHideWelcomeCard()"
+
+    ></app-profil-card>
+  </div>
+</div>
+
+<ng-container *ngTemplateOutlet="activitiesPopups; context:{}"></ng-container>
+
+
 <div class="container-fluid" *ngIf="isGeodataCanBeDisplayed">
 
   <div class="row legend-container justify-content-between" [style.width]="mapContainerWidth + 'px'">
@@ -6,11 +20,15 @@
       <div class="row">
 
         <div class="col-8 mt-auto">
-          <button class="btn btn-dark me-2" type="button" checked autocomplete="off" (click)="showHideLegend()">
+          <button class="btn btn-sm btn-info me-2 fw-bolder" type="button" checked autocomplete="off" (click)="showHideWelcomeCard()">
+            <fa-icon class="text-white" [icon]="helpIcon"></fa-icon>
+          </button>
+          <button class="btn btn-sm btn-dark me-2" type="button" checked autocomplete="off" (click)="showHideLegend()">
             <fa-icon class="" [icon]="tagIcon"></fa-icon>
             Légende
           </button>
-          <button class="btn btn-warning me-2" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
+
+          <button class="btn btn-sm btn-warning me-2" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
             <fa-icon class="" [icon]="centerIcon"></fa-icon>
           </button>
         </div>
@@ -31,17 +49,28 @@
       </div>
     </div>
 
-    <div class="col-lg-12 legend-content">
+    <div class="col-12 legend-content" style="min-height : 2em;">
 
-      <div class="row justify-content-center">
+      <div class="d-flex flex-row align-items-center" [ngClass]="isLegendDisplayed ?  '' : 'd-none'">
 
-        <div class="col-lg-4" [ngClass]="isLegendDisplayed ?  'd-block' : 'd-none'">
-          <app-theme-legend
+        <div class="d-flex flex-column justify-content-center">
+
+          <button class="btn btn-sm btn-warning me-2" type="button" checked autocomplete="off" (click)="isThemesLegendDisplayed = !isThemesLegendDisplayed">
+            <fa-icon class="" [icon]="tagIcon"></fa-icon>
+          </button>
+
+        </div>
+
+        <div class="col-12 col-lg-4">
+
+          <app-theme-legend  [ngClass]="isThemesLegendDisplayed ?  '' : 'd-none'"
           ></app-theme-legend>
         </div>
 
-        <div class="" [ngClass]="isLegendDisplayed ?  'col-lg-7' : 'col-lg-8'">
-          <app-time-legend
+
+        <div class="col-12 col-lg-7">
+
+          <app-time-legend  [ngClass]="isTimeLegendDisplayed ?  '' : 'd-none'"
             [isGeodataCanBeDisplayed]="isGeodataCanBeDisplayed"
             [currentActivityIdSelected]="fragmentValue"
           ></app-time-legend>
@@ -57,7 +86,7 @@
   </div>
 </div>
 
-
+<ng-template #activitiesPopups>
 <div [id]="'popup-feature-' + feature.properties.id" class="col-md-4 item card shadow map-popup" *ngFor="let feature of geoFeaturesData">
   <div class="card-body">
     <div class="row justify-content-around">
@@ -95,3 +124,4 @@
     </div>
   </div>
 </div>
+</ng-template>
