@@ -37,7 +37,7 @@ import { MainViewComponent } from './main-view/main-view.component';
 // import { CenterbarPublicationsComponent } from './resume/centerbar-publications/centerbar-publications.component';
 // import { CenterbarVolunteerComponent } from './resume/centerbar-volunteer/centerbar-volunteer.component';
 // import { EducationBarComponent } from './resume/education-bar/education-bar.component';
-
+import { HomeViewComponent } from './home/home-view/home-view.component';
 import { ProfilCardComponent } from './home/profil-card/profil-card.component';
 
 import { EducationViewComponent } from './education/education-view/education-view.component';
@@ -67,13 +67,13 @@ const appRoutes: Routes = [
     path: '',
     component: MainViewComponent,
     children: [
-      { path: 'home', component: MapViewComponent, data: { title: 'Bienvenue', page: 'about' } },
+      { path: '', component: HomeViewComponent, data: { title: 'Bienvenue', page: 'about' } },
       { path: 'experiences', component: ExperiencesViewComponent, data: { title: 'Expériences', page: 'experiences' } },
       { path: 'education', component: EducationViewComponent, data: { title: 'Formation', page: 'education' } },
       { path: 'map', component: MapViewComponent, data: { title: 'Carte des activités', page: 'map' } },
       { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie', page: 'gallery' } },
       { path: 'blog', component: NotesViewComponent, data: { title: 'Blog', page: 'blog' } },
-      { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
+      // { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },
 
@@ -88,6 +88,7 @@ registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     AppComponent,
+    HomeViewComponent,
     GalleryViewComponent,
     NotesViewComponent,
     RightbarSkillsComponent,

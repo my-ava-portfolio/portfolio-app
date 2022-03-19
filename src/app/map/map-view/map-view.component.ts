@@ -25,7 +25,7 @@ import { ControlerService } from 'src/app/services/controler.service';
   styleUrls: ['./map-view.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class MapViewComponent implements OnInit, OnDestroy {
+export class MapViewComponent implements OnInit, OnDestroy  {
   imageProfile: string = imageProfile;
 
   mapContainerWidth!: number;
@@ -41,10 +41,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   currentDate = currentYear;
 
   isGeodataCanBeDisplayed = false;
-  isWelcomeCardDisplayed = true;
-  isLegendDisplayed = false;
-  isThemesLegendDisplayed = true;
-  isTimeLegendDisplayed = true;
+  isLegendDisplayed = true;
 
   innerWidth!: any;
   innerHeight!: any;
@@ -85,7 +82,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
-
   ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -166,11 +162,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.innerHeight = window.innerHeight;
 
     this.displayContentRegardingDeviceScreen();
-
+    console.log("tytyty")
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
-        if (fragment === undefined) {
-          this.fragment = undefined;
+        console.log("ZZZZZZZZZZ", fragment)
+        if (fragment === null) {
+          this.fragment = null;
         } else {
           this.fragment = fragment;
           this.fragmentValue = this.fragment;
@@ -215,18 +212,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  showHideWelcomeCard(): void {
-    this.isWelcomeCardDisplayed = !this.isWelcomeCardDisplayed;
-    if ( this.isWelcomeCardDisplayed ) {
-      this.isLegendDisplayed = false
-    }
-  }
-
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
-    if ( this.isLegendDisplayed ) {
-      this.isWelcomeCardDisplayed = false
-    }
   }
 
   zoomFromDataBounds(geojsonData: any): void {

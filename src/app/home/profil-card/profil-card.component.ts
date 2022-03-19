@@ -10,7 +10,7 @@ import { ResumeService } from 'src/app/services/resume.service';
 })
 export class ProfilCardComponent implements OnInit {
   @Input() isActive!: any;
-  @Output() cardClosedEmit = new EventEmitter<boolean>();
+  // @Output() cardClosedEmit = new EventEmitter<boolean>();
 
   resumePages: any[] = resumeTopicsPages;
   projectPages: any[] = projectPages;
@@ -41,10 +41,10 @@ export class ProfilCardComponent implements OnInit {
     this.resumeService.pullGeneralData();
   }
 
-  cardClosedAction(): void {
-    this.cardClosed = !this.cardClosed
-    this.cardClosedEmit.emit(this.cardClosed);
-  }
+  // cardClosedAction(): void {
+  //   this.cardClosed = !this.cardClosed
+  //   this.cardClosedEmit.emit(this.cardClosed);
+  // }
 
 }
 

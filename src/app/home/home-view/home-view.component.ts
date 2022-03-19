@@ -16,7 +16,8 @@ export class HomeViewComponent implements OnInit, OnDestroy {
 
   homeTopics: any[] = [];
 
-
+  isWelcomeCardDisplayed = true;
+  
   generalData!: any;
   generalDataSubscription!: Subscription;
 
@@ -75,5 +76,8 @@ export class HomeViewComponent implements OnInit, OnDestroy {
     this.controlerService.pullSubMenus(this.homeTopics)
   }
 
+  showHideWelcomeCard(): void {
+    this.isWelcomeCardDisplayed = !this.isWelcomeCardDisplayed;
+  }
 
 }
