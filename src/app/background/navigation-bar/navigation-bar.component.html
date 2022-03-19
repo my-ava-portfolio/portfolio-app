@@ -1,7 +1,7 @@
 <nav id="sidebar" class="bg-dark sticky-top overflow-auto vh-100" [ngClass]="sideBarCollapsed ? 'inactive' : 'active'">
   <div class="p-3">
     <div class="sidebar-header text-white text-center m-1" *ngIf="generalData">
-      <img class="rounded mx-auto rounded-circle img-fluid p-2" [src]="imageProfile" [ngClass]="sideBarCollapsed ? 'img-thumbnail' : ''">
+      <img class="rounded mx-auto rounded-circle img-fluid p-2 " [src]="imageProfile" [ngClass]="sideBarCollapsed ? 'img-thumbnail' : ''">
 
       <div id="profil-name" class="mb-2" *ngIf="sideBarCollapsed">
         <h3>{{ generalData.first_name }} {{ generalData.last_name }}</h3>

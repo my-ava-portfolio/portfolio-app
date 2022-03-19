@@ -138,10 +138,11 @@ body::-webkit-scrollbar {
     color: white;
   }
   .btn-outline-#{$name} {
-    border-color: get_color($name)r;
+    border-color: get_color($name);
     &:hover {
       background-color: lighten(get_color($name), 7.5%);
       color: #ffffff!important;
+      border-color: get_color($name);
     }
   }
 
@@ -164,6 +165,7 @@ body::-webkit-scrollbar {
     background-color: get_color($name);
     &:hover {
       background-color: lighten(get_color($name), 7.5%);
+      border-color: get_color($name);
     }
   }
 }
