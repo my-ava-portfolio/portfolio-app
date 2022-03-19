@@ -28,7 +28,6 @@ import { ControlerService } from 'src/app/services/controler.service';
 export class MapViewComponent implements OnInit, OnDestroy  {
   imageProfile: string = imageProfile;
 
-  mapContainerWidth!: number;
 
   fragment!: any;
   fragmentValue!: string;
@@ -86,12 +85,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
-
-    this.pullPageContentWidthSubscription = this.controlerService.widthContentPage.subscribe(
-      (width: number) => {
-        this.mapContainerWidth = width;
-      }
-    );
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element: any) => {

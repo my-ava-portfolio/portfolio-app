@@ -1,22 +1,30 @@
 .map-content {
-  min-height: 72vh;
+  //min-height: 72vh;
+  pointer-events: none;
 }
 
-.grid-container {
-  columns: 200px;
-  -webkit-column-count: 3;
-  -webkit-column-gap: 3%; // Saf3, Chrome
-  -moz-column-count: 3;
-  -moz-column-gap: 3%; // FF3.5+
-  column-count: 3;
-  column-gap: 3%; // Opera 11+
+.gallery-content {
+  min-height: 100vh;
 }
+
 
 .legend-container {
-  position: fixed;
+  position: sticky;
   bottom: 0;
   transition: all 0.1s;
 }
+
+@media (max-width: 576px){
+
+  .legend-container {
+    position: fixed;
+    width: 100%;
+  }
+
+}
+
+
+
 .legend-content {
   color: "#FFFFF";
   background-color: #f5f5f5;
