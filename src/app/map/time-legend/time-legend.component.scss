@@ -53,7 +53,7 @@ svg #trace {
 }
 
 #play-button {
-  // width: 90px;
+  width: 90px; // mandatory to avoid div size change caused by text value changing
 }
 
 

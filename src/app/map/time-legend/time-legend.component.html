@@ -1,7 +1,7 @@
 <div class="row mt-auto py-3 justify-content-center align-self-center align-items-center" id="theme-legend">
 
   <div class="col-12 col-xl-8">
-    <h6>Barre Temporelle</h6>
+    <h6 class="fw-bold">Barre Temporelle</h6>
 
       <svg
         [attr.viewBox]="'0 0 ' + width + ' ' + height"
@@ -11,12 +11,22 @@
 
   </div>
 
-  <div class="col-12 col-xl-4 text-center">
-    <h3 id="slider-value">{{ sliderDate | date:'MMMM y' }}</h3>
-    <a id="start-button" class="btn btn-dark btn-sm m-1" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
-    <a id="play-button" class="btn btn-dark btn-sm px-1 m-1 small" role="button" (click)="startTimeLine()">Play</a>
-    <a id="end-button" class="btn btn-dark btn-sm m-1" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
+  <div class="col-12 col-xl-4">
+    <div class="row text-center">
+
+      <div class="col-12">
+        <span class="fs-1" id="slider-value">{{ sliderDate | date:'MMMM y' }}</span>
+      </div>
+
+      <div class="col-12 text-center">
+        <a id="start-button" class="btn btn-dark btn-sm m-1" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
+        <a id="play-button" class="btn btn-dark btn-sm px-1 m-1 small" role="button" (click)="startTimeLine()">Play</a>
+        <a id="end-button" class="btn btn-dark btn-sm m-1" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
+      </div>
+
   </div>
+
+
 
 </div>
 
