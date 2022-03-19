@@ -59,6 +59,7 @@ export class MainViewComponent implements OnInit, AfterViewInit {
     if (element !== undefined) {
       let width = this.contentSize.nativeElement.offsetWidth;
       let height = this.contentSize.nativeElement.offsetHeight;
+      // TODO deprecated
       this.controlerService.pullContentWidth(width)
       console.log('Width:' + width);
       console.log('Height: ' + height);

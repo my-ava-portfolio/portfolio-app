@@ -22,6 +22,7 @@ export class ControlerService {
   }
 
   pullContentWidth(width: string): void {
+    // TODO deprecated
     this.widthContentPage.next(width);
   }
 
