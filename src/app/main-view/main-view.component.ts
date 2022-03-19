@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ElementRef, ViewChild, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef, ViewChild  } from '@angular/core';
 
 import { arrowUpIcon } from '../core/inputs';
 
@@ -6,9 +6,6 @@ import { ResumeService } from '../services/resume.service';
 import { ControlerService } from 'src/app/services/controler.service';
 
 import { navBarIcon } from '../core/inputs';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-
 
 
 @Component({
@@ -16,7 +13,7 @@ import { Location } from '@angular/common';
   templateUrl: './main-view.component.html',
   styleUrls: ['./main-view.component.scss'],
 })
-export class MainViewComponent implements OnInit, AfterViewInit {
+export class MainViewComponent implements OnInit {
   @ViewChild('contentSize') contentSize!: ElementRef;
 
   // Here to set the default status of the bar
@@ -46,27 +43,6 @@ export class MainViewComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit(): void {
-    this.getContentSize();
-
-  }
-
-  @HostListener('fullscreen', ['$event']) // TODO verify!!!
-  @HostListener('window:orientationchange', ['$event'])
-  @HostListener('window:resize', ['$event'])
-  getContentSize(): void {
-    let element = this.contentSize
-    if (element !== undefined) {
-      let width = this.contentSize.nativeElement.offsetWidth;
-      let height = this.contentSize.nativeElement.offsetHeight;
-      // TODO deprecated
-      this.controlerService.pullContentWidth(width)
-      console.log('Width:' + width);
-      console.log('Height: ' + height);
-    }
-
-  }
-
   @HostListener('window:scroll', [])
   checkIfScrollShouldBeEnabled(): void {
     if ( window.scrollY > 100 ) {
@@ -82,13 +58,11 @@ export class MainViewComponent implements OnInit, AfterViewInit {
 
   updatePage(outlet: any): any {
     this.controlerService.pullTitlePage(outlet.activatedRouteData.title)
-    this.getContentSize();
 
   }
 
   getSideBarCollapseStatus(status: boolean) {
     this.sideBarCollapsed = status;
-    setTimeout(() => this.getContentSize(),400); // 2500 is millisecond
   }
 
   navigationBarToRight(event: any): void {
