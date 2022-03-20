@@ -155,10 +155,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.innerHeight = window.innerHeight;
 
     this.displayContentRegardingDeviceScreen();
-    console.log("tytyty")
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
-        console.log("ZZZZZZZZZZ", fragment)
         if (fragment === null) {
           this.fragment = null;
         } else {

@@ -67,13 +67,13 @@ const appRoutes: Routes = [
     path: '',
     component: MainViewComponent,
     children: [
-      { path: '', component: HomeViewComponent, data: { title: 'Bienvenue', page: 'about' } },
+      { path: 'home', component: HomeViewComponent, data: { title: 'Bienvenue', page: 'about' } },
       { path: 'experiences', component: ExperiencesViewComponent, data: { title: 'Expériences', page: 'experiences' } },
       { path: 'education', component: EducationViewComponent, data: { title: 'Formation', page: 'education' } },
       { path: 'map', component: MapViewComponent, data: { title: 'Carte des activités', page: 'map' } },
       { path: 'gallery', component: GalleryViewComponent, data: { title: 'Galerie', page: 'gallery' } },
       { path: 'blog', component: NotesViewComponent, data: { title: 'Blog', page: 'blog' } },
-      // { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
+      { path: '', redirectTo: '/home', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },
 
