@@ -23,7 +23,9 @@ export class MapService {
   mapContainerCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 
-
+  newSvgLayerName: Subject<string> = new Subject<string>();
+  removeSvgLayerName: Subject<string> = new Subject<string>();
+  
   constructor(
     private http: HttpClient
   ) { }
@@ -61,5 +63,13 @@ export class MapService {
 
   pullTripsGeoDataToMap(dataToMap: any[]): void {
     this.tripsGeoDataToMap.next(dataToMap);
+  }
+
+  pullNewSvgLayerName(layerName: string): void {
+    this.newSvgLayerName.next(layerName);
+  }
+
+  pullRemoveSvgLayerName(layerName: string): void {
+    this.removeSvgLayerName.next(layerName);
   }
 }
