@@ -3,8 +3,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import * as L from 'leaflet';
+import * as d3 from 'd3';
+
 import { MapService } from '../../services/map.service';
 
+import { PointsSvgLayerOnLeaflet } from '../../core/points_svg_layer';
 
 @Component({
   selector: 'app-background-map',
@@ -24,8 +27,15 @@ export class BackgroundComponent implements OnInit {
 
   map: any;
 
+  homeMapLayer!: PointsSvgLayerOnLeaflet;
+
+  // will contain all my layers and their nodes
+  mapLayers: any = {};
+
   mapContainerCalledSubscription!: Subscription;
   mapServiceSubscription!: Subscription;
+  newSvgMapSubscription!: Subscription;
+  removeSvgMapSubscription!: Subscription;
 
   // in order to activate map interactions
   mapInteractionEnabled: boolean = false;
@@ -54,6 +64,24 @@ export class BackgroundComponent implements OnInit {
       }
     );
 
+    this.newSvgMapSubscription = this.mapService.newSvgLayerName.subscribe(
+      (layerName: string) => {
+        this.homeMapLayer = new PointsSvgLayerOnLeaflet(this.map, layerName).initialize()
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
+    this.removeSvgMapSubscription = this.mapService.removeSvgLayerName.subscribe(
+      (layerName: string) => {
+        this.homeMapLayer.removeSvgLayer()
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
   }
 
   ngOnInit(): void {
@@ -64,6 +92,7 @@ export class BackgroundComponent implements OnInit {
   ngOnDestroy(): void {
     this.mapContainerCalledSubscription.unsubscribe();
     this.mapServiceSubscription.unsubscribe();
+    this.newSvgMapSubscription.unsubscribe();
   }
 
   sendMapContainer(): void {

@@ -4,6 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ControlerService } from 'src/app/services/controler.service';
+import { MapService } from 'src/app/services/map.service';
 import { ResumeService } from 'src/app/services/resume.service';
 
 
@@ -17,7 +18,7 @@ export class HomeViewComponent implements OnInit, OnDestroy {
   homeTopics: any[] = [];
 
   isWelcomeCardDisplayed = true;
-  
+
   generalData!: any;
   generalDataSubscription!: Subscription;
 
@@ -31,6 +32,7 @@ export class HomeViewComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private controlerService: ControlerService,
     private resumeService: ResumeService,
+    private mapService: MapService
   ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -65,11 +67,13 @@ export class HomeViewComponent implements OnInit, OnDestroy {
     this.resumeService.pullFullSkillsData();
     this.sendResumeSubMenus()
 
+    this.mapService.pullNewSvgLayerName("home")
   }
 
   ngOnDestroy(): void {
     this.generalDataSubscription.unsubscribe();
     this.fullSkillsDataSubscription.unsubscribe();
+    this.mapService.pullRemoveSvgLayerName("home")
 
   }
   sendResumeSubMenus(): void {
