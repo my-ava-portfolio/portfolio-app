@@ -69,10 +69,14 @@ export class PointsSvgLayerOnLeaflet {
     this.mapContainer.on("moveend", this.updateMapLayer.bind(this))
 
     this.updateMapLayer()
+    this.initTooltip()
+
   };
 
   removeSvgLayer(deletePoints: boolean = false): void {
     d3.select('#' + this.layerName).remove()
+    d3.selectAll("[id^='tooltip-" + this.layerName + "']").remove()
+
     if (deletePoints) {
       console.log('popo')
       this.points = [];
@@ -99,8 +103,66 @@ export class PointsSvgLayerOnLeaflet {
       });
   }
 
+  initTooltip(): any {
+    let toolTip = d3.select("html")
+      .selectAll(".tooltip")
+      .data(this.points)
+      .enter()
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip") // mandatory, css adapted
+      .attr("id", (d: any) => { return "tooltip-" + this.layerName + d.id })
+      .style("background-color", "white")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("padding", "5px");
 
+    d3.select('#' + this.layerName + '-container')
+      .selectAll("circle")
+      // .on("click", this.mouseClick.bind(this))
+      .on("mouseover", this.mouseOver.bind(this))
+      .on("mousemove", this.mouseMove.bind(this))
+      .on("mouseleave", this.mouseLeave.bind(this))
 
+    return toolTip
+
+  }
+
+  mouseOver(e: any, d: any): void {
+    d3.select("#tooltip-" + this.layerName + d.id )
+      .style("opacity", 1)
+
+    d3.select(e.currentTarget)
+      .style("stroke", "black")
+      .style("opacity", 1)
+  }
+
+  mouseMove(e: any, d: any): void {
+    d3.select("#tooltip-" + this.layerName + d.id )
+      .html(`POINT(${d.coords.x} ${d.coords.y})`)
+      .style("left", e.x + 15 + "px")
+      .style("top", e.y + 15 + "px")
+    console.log("aaa")
+  }
+
+  mouseLeave(e: any, d: any): void {
+    d3.select("#tooltip-" + this.layerName+ d.id )
+      .style("opacity", 0)
+
+    d3.select(e.currentTarget)
+      .style("stroke", "none")
+  }
+
+  mouseClick(e: any, d: any): void {
+    d3.select("#tooltip-" + this.layerName + d.id)
+      .html(`POINT(${d.coords.x} ${d.coords.y})`)
+      .style("left", e.x + 15 + "px")
+      .style("top", e.y + 15 + "px")
+      .style("opacity", 1)
+
+    console.log("aaa")
+  }
 
 
 }
