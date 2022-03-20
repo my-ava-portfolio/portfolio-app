@@ -91,7 +91,8 @@ export class BackgroundComponent implements OnInit {
     this.newLinesSvgMapSubscription = this.mapService.newLinesSvgLayerName.subscribe(
       (layerName: string) => {
         this.homeLinesMapLayer = new LinesSvgLayerOnLeaflet(this.map, layerName);
-        this.homeLinesMapLayer.buildLineLayer();
+        this.homeLinesMapLayer.addLines();
+        // this.homeLinesMapLayer.buildLineLayer();
       }
     );
     this.removeLinesSvgMapSubscription = this.mapService.removeLinesSvgLayerName.subscribe(
@@ -119,8 +120,8 @@ export class BackgroundComponent implements OnInit {
 
         if (this.homeLinesMapLayer !== null) {
           console.log("map added", this.currentCoordsSelected)
-
-          this.homeLinesMapLayer.addPoints(coords);
+          
+          this.homeLinesMapLayer.addPoints(0, coords);
         }
       }
     );
