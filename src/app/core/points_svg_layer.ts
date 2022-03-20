@@ -41,7 +41,12 @@ export class PointsSvgLayerOnLeaflet {
       .attr("class", "cursor")
       .attr("stroke", "red")
       .attr("stroke-width", 3)
-      .attr("fill-opacity", .4);
+      .attr("fill-opacity", .4)
+      .attr('transform', (d: any) => {
+        return 'translate(' +
+          this.mapContainer.latLngToLayerPoint([d.coords.x, d.coords.y]).x + ',' +
+          this.mapContainer.latLngToLayerPoint([d.coords.x, d.coords.y]).y + ')';
+      });
 
     let dragHandler = d3.drag()
       .on("drag", (e: any, d: any) => {
@@ -68,7 +73,7 @@ export class PointsSvgLayerOnLeaflet {
 
     this.mapContainer.on("moveend", this.updateMapLayer.bind(this))
 
-    this.updateMapLayer()
+    // this.updateMapLayer()
     this.initTooltip()
 
   };
