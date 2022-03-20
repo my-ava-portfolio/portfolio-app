@@ -8,6 +8,8 @@ import * as d3 from 'd3';
 import { MapService } from '../../services/map.service';
 
 import { PointsSvgLayerOnLeaflet } from '../../core/points_svg_layer';
+import { LinesSvgLayerOnLeaflet } from '../../core/lines_svg_layer';
+
 
 @Component({
   selector: 'app-background-map',
@@ -29,14 +31,20 @@ export class BackgroundComponent implements OnInit {
   currentCoordsSelected!: any;
 
   homePointsMapLayer: PointsSvgLayerOnLeaflet | null = null;
+  homeLinesMapLayer: LinesSvgLayerOnLeaflet | null = null;
+
 
   // will contain all my layers and their nodes
   mapLayers: any = {};
 
   mapContainerCalledSubscription!: Subscription;
   mapServiceSubscription!: Subscription;
-  newSvgMapSubscription!: Subscription;
-  removeSvgMapSubscription!: Subscription;
+
+  newPointsSvgMapSubscription!: Subscription;
+  removePointsSvgMapSubscription!: Subscription;
+
+  newLinesSvgMapSubscription!: Subscription;
+  removeLinesSvgMapSubscription!: Subscription;
 
   getCoordsMapSubscription!: Subscription;
 
@@ -51,9 +59,6 @@ export class BackgroundComponent implements OnInit {
     this.mapContainerCalledSubscription = this.mapService.mapContainerCalled.subscribe(
       (_) => {
         this.sendMapContainer()
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
@@ -61,23 +66,17 @@ export class BackgroundComponent implements OnInit {
     this.mapServiceSubscription = this.mapService.isMapViewReset.subscribe(
       (_) => {
         this.resetView();
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
-    this.newSvgMapSubscription = this.mapService.newSvgLayerName.subscribe(
+    // points layer support
+    this.newPointsSvgMapSubscription = this.mapService.newPointsSvgLayerName.subscribe(
       (layerName: string) => {
         this.homePointsMapLayer = new PointsSvgLayerOnLeaflet(this.map, layerName);
         this.homePointsMapLayer.buildPointsLayer();
-      },
-      (error) => {
-        console.log('error');
       }
     );
-
-    this.removeSvgMapSubscription = this.mapService.removeSvgLayerName.subscribe(
+    this.removePointsSvgMapSubscription = this.mapService.removePointsSvgLayerName.subscribe(
       (layerName: string) => {
         console.log("hahaha")
         if (this.homePointsMapLayer !== null) {
@@ -85,11 +84,27 @@ export class BackgroundComponent implements OnInit {
           this.homePointsMapLayer = null;
         }
 
-      },
-      (error) => {
-        console.log('error');
       }
     );
+
+    // lines layer support
+    this.newLinesSvgMapSubscription = this.mapService.newLinesSvgLayerName.subscribe(
+      (layerName: string) => {
+        this.homeLinesMapLayer = new LinesSvgLayerOnLeaflet(this.map, layerName);
+        this.homeLinesMapLayer.buildLineLayer();
+      }
+    );
+    this.removeLinesSvgMapSubscription = this.mapService.removeLinesSvgLayerName.subscribe(
+      (layerName: string) => {
+        console.log("hahaha")
+        if (this.homeLinesMapLayer !== null) {
+          this.homeLinesMapLayer.removeSvgLayer(true)
+          this.homeLinesMapLayer = null;
+        }
+
+      }
+    );
+
 
     this.getCoordsMapSubscription = this.mapService.newCoords.subscribe(
       (coords: any) => {
@@ -100,12 +115,13 @@ export class BackgroundComponent implements OnInit {
           console.log("map added", this.currentCoordsSelected)
 
           this.homePointsMapLayer.addPoints(coords);
+        };
+
+        if (this.homeLinesMapLayer !== null) {
+          console.log("map added", this.currentCoordsSelected)
+
+          this.homeLinesMapLayer.addPoints(coords);
         }
-
-
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
@@ -118,7 +134,7 @@ export class BackgroundComponent implements OnInit {
   ngOnDestroy(): void {
     this.mapContainerCalledSubscription.unsubscribe();
     this.mapServiceSubscription.unsubscribe();
-    this.newSvgMapSubscription.unsubscribe();
+    this.newPointsSvgMapSubscription.unsubscribe();
     this.getCoordsMapSubscription.unsubscribe()
   }
 

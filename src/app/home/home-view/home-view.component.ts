@@ -17,6 +17,9 @@ export class HomeViewComponent implements OnInit, OnDestroy {
 
   homeTopics: any[] = [];
 
+  pointsSvGLayerId = "HomePoints";
+  linesSvGLayerId = "HomeLiness";
+
   isWelcomeCardDisplayed = true;
 
   generalData!: any;
@@ -72,7 +75,9 @@ export class HomeViewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.generalDataSubscription.unsubscribe();
     this.fullSkillsDataSubscription.unsubscribe();
-    this.mapService.pullRemoveSvgLayerName("home")
+
+    // clean all layers
+    this.mapService.pullRemovePointsSvgLayerName("homePoints")
 
   }
   sendResumeSubMenus(): void {
@@ -86,9 +91,18 @@ export class HomeViewComponent implements OnInit, OnDestroy {
   createPointsSvgLayer(enabled: boolean): void {
     console.log(enabled)
     if (enabled) {
-      this.mapService.pullNewSvgLayerName("home")
+      this.mapService.pullPointsSvgLayerName("homePoints")
     } else {
-      this.mapService.pullRemoveSvgLayerName("home")
+      this.mapService.pullRemovePointsSvgLayerName("homePoints")
+    }
+  }
+
+  createLinesSvgLayer(enabled: boolean): void {
+    console.log(enabled)
+    if (enabled) {
+      this.mapService.pullLinesSvgLayerName("homeLines")
+    } else {
+      this.mapService.pullRemoveLinesSvgLayerName("homeLines")
     }
   }
 

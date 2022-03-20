@@ -23,8 +23,11 @@ export class MapService {
   mapContainerCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 
-  newSvgLayerName: Subject<string> = new Subject<string>();
-  removeSvgLayerName: Subject<string> = new Subject<string>();
+  newPointsSvgLayerName: Subject<string> = new Subject<string>();
+  removePointsSvgLayerName: Subject<string> = new Subject<string>();
+
+  newLinesSvgLayerName: Subject<string> = new Subject<string>();
+  removeLinesSvgLayerName: Subject<string> = new Subject<string>();
 
   newCoords: Subject<number[]> = new Subject<number[]>();
 
@@ -67,12 +70,18 @@ export class MapService {
     this.tripsGeoDataToMap.next(dataToMap);
   }
 
-  pullNewSvgLayerName(layerName: string): void {
-    this.newSvgLayerName.next(layerName);
+  pullPointsSvgLayerName(layerName: string): void {
+    this.newPointsSvgLayerName.next(layerName);
+  }
+  pullRemovePointsSvgLayerName(layerName: string): void {
+    this.removePointsSvgLayerName.next(layerName);
   }
 
-  pullRemoveSvgLayerName(layerName: string): void {
-    this.removeSvgLayerName.next(layerName);
+  pullLinesSvgLayerName(layerName: string): void {
+    this.newLinesSvgLayerName.next(layerName);
+  }
+  pullRemoveLinesSvgLayerName(layerName: string): void {
+    this.removeLinesSvgLayerName.next(layerName);
   }
 
   pullMapCoords(coordinates: any): void {

@@ -84,12 +84,26 @@
 
         <div class="d-flex flex-column flex-lg-row justify-content-aroun mt-1">
 
-          <div class="form-check mb-2 ps-5 small">
-            <input class="form-check-input" type="checkbox" (change)="pointsEditorAction($event)" id="PointsEditor">
-            <label class="form-check-label" for="PointsEditor">
-              Créer des points
-            </label>
-          </div>
+          <ul class="list-unstyled d-flex flex-row">
+
+            <li class="">
+              <div class="form-check mb-2 ps-5 small">
+                <input class="form-check-input" type="checkbox" (change)="pointsEditorAction($event)" id="PointsEditor">
+                <label class="form-check-label" for="PointsEditor">
+                  Créer des points
+                </label>
+              </div>
+            </li>
+
+            <li class="">
+              <div class="form-check mb-2 ps-5 small">
+                <input class="form-check-input" type="checkbox" (change)="linesEditorAction($event)" id="LinesEditor">
+                <label class="form-check-label" for="LinesEditor">
+                  Créer des lignes
+                </label>
+              </div>
+            </li>
+          </ul>
 
         </div>
 

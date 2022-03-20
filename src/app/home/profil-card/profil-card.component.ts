@@ -12,7 +12,8 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormArray} from '@angu
   styleUrls: ['./profil-card.component.scss']
 })
 export class ProfilCardComponent implements OnInit {
-  @Output() pointEditorEmit = new EventEmitter<boolean>();
+  @Output() pointsEditorEmit = new EventEmitter<boolean>();
+  @Output() linesEditorEmit = new EventEmitter<boolean>();
 
   resumePages: any[] = resumeTopicsPages;
   projectPages: any[] = projectPages;
@@ -46,11 +47,14 @@ export class ProfilCardComponent implements OnInit {
     this.resumeService.pullGeneralData();
   }
 
-
-
   pointsEditorAction(event: any): void {
-    this.pointEditorEmit.emit(event.target.checked);
+    this.pointsEditorEmit.emit(event.target.checked);
   }
+
+  linesEditorAction(event: any): void {
+    this.linesEditorEmit.emit(event.target.checked);
+  }
+
 
 }
 
