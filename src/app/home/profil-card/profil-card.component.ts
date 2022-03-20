@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { imageProfile, projectPages, resumeTopicsPages } from 'src/app/core/inputs';
 import { ResumeService } from 'src/app/services/resume.service';
+
+import { FormBuilder, FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
+
 
 @Component({
   selector: 'app-profil-card',
@@ -9,8 +12,7 @@ import { ResumeService } from 'src/app/services/resume.service';
   styleUrls: ['./profil-card.component.scss']
 })
 export class ProfilCardComponent implements OnInit {
-  @Input() isActive!: any;
-  // @Output() cardClosedEmit = new EventEmitter<boolean>();
+  @Output() pointEditorEmit = new EventEmitter<boolean>();
 
   resumePages: any[] = resumeTopicsPages;
   projectPages: any[] = projectPages;
@@ -21,6 +23,9 @@ export class ProfilCardComponent implements OnInit {
   generalDataSubscription!: Subscription;
 
   cardClosed: boolean = false;
+
+
+  pointEditorStatus: boolean = false;
 
   constructor(
     private resumeService: ResumeService
@@ -41,10 +46,11 @@ export class ProfilCardComponent implements OnInit {
     this.resumeService.pullGeneralData();
   }
 
-  // cardClosedAction(): void {
-  //   this.cardClosed = !this.cardClosed
-  //   this.cardClosedEmit.emit(this.cardClosed);
-  // }
+
+
+  pointsEditorAction(event: any): void {
+    this.pointEditorEmit.emit(event.target.checked);
+  }
 
 }
 

@@ -26,8 +26,9 @@ export class BackgroundComponent implements OnInit {
   });
 
   map: any;
+  currentCoordsSelected!: any;
 
-  homeMapLayer!: PointsSvgLayerOnLeaflet;
+  homePointsMapLayer: PointsSvgLayerOnLeaflet | null = null;
 
   // will contain all my layers and their nodes
   mapLayers: any = {};
@@ -36,6 +37,8 @@ export class BackgroundComponent implements OnInit {
   mapServiceSubscription!: Subscription;
   newSvgMapSubscription!: Subscription;
   removeSvgMapSubscription!: Subscription;
+
+  getCoordsMapSubscription!: Subscription;
 
   // in order to activate map interactions
   mapInteractionEnabled: boolean = false;
@@ -66,7 +69,8 @@ export class BackgroundComponent implements OnInit {
 
     this.newSvgMapSubscription = this.mapService.newSvgLayerName.subscribe(
       (layerName: string) => {
-        this.homeMapLayer = new PointsSvgLayerOnLeaflet(this.map, layerName).initialize()
+        this.homePointsMapLayer = new PointsSvgLayerOnLeaflet(this.map, layerName);
+        this.homePointsMapLayer.buildPointsLayer();
       },
       (error) => {
         console.log('error');
@@ -75,7 +79,30 @@ export class BackgroundComponent implements OnInit {
 
     this.removeSvgMapSubscription = this.mapService.removeSvgLayerName.subscribe(
       (layerName: string) => {
-        this.homeMapLayer.removeSvgLayer()
+        console.log("hahaha")
+        if (this.homePointsMapLayer !== null) {
+          this.homePointsMapLayer.removeSvgLayer(true)
+          this.homePointsMapLayer = null;
+        }
+
+      },
+      (error) => {
+        console.log('error');
+      }
+    );
+
+    this.getCoordsMapSubscription = this.mapService.newCoords.subscribe(
+      (coords: any) => {
+        this.currentCoordsSelected = coords;
+        console.log("map clicked", this.currentCoordsSelected)
+
+        if (this.homePointsMapLayer !== null) {
+          console.log("map added", this.currentCoordsSelected)
+
+          this.homePointsMapLayer.addPoints(coords);
+        }
+
+
       },
       (error) => {
         console.log('error');
@@ -86,13 +113,13 @@ export class BackgroundComponent implements OnInit {
 
   ngOnInit(): void {
     this.initMap();
-
   }
 
   ngOnDestroy(): void {
     this.mapContainerCalledSubscription.unsubscribe();
     this.mapServiceSubscription.unsubscribe();
     this.newSvgMapSubscription.unsubscribe();
+    this.getCoordsMapSubscription.unsubscribe()
   }
 
   sendMapContainer(): void {
@@ -106,13 +133,15 @@ export class BackgroundComponent implements OnInit {
       zoomControl: false,
     }).addLayer(this.osmLayer);
 
+    this.map.on('click', this.setCoordsOnMap.bind(this));
+
     // to add scale
-    // L.control.scale(
-    //   {
-    //     imperial: false,
-    //     position: 'bottomright'
-    //   }
-    // ).addTo(this.map);
+    L.control.scale(
+      {
+        imperial: false,
+        position: 'bottomright'
+      }
+    ).addTo(this.map);
   }
 
   resetView(): void {
@@ -122,4 +151,14 @@ export class BackgroundComponent implements OnInit {
     )
   }
 
+
+  setCoordsOnMap(event: any): void {
+    // get coordinates from map click
+    const coordinates: any = {
+      x: event.latlng.lat,
+      y: event.latlng.lng
+    };
+    this.mapService.pullMapCoords(coordinates);
+  }
 }
+

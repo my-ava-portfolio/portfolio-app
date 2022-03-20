@@ -25,7 +25,9 @@ export class MapService {
 
   newSvgLayerName: Subject<string> = new Subject<string>();
   removeSvgLayerName: Subject<string> = new Subject<string>();
-  
+
+  newCoords: Subject<number[]> = new Subject<number[]>();
+
   constructor(
     private http: HttpClient
   ) { }
@@ -72,4 +74,10 @@ export class MapService {
   pullRemoveSvgLayerName(layerName: string): void {
     this.removeSvgLayerName.next(layerName);
   }
+
+  pullMapCoords(coordinates: any): void {
+    this.newCoords.next(coordinates);
+
+  }
+
 }

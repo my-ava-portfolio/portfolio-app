@@ -67,7 +67,6 @@ export class HomeViewComponent implements OnInit, OnDestroy {
     this.resumeService.pullFullSkillsData();
     this.sendResumeSubMenus()
 
-    this.mapService.pullNewSvgLayerName("home")
   }
 
   ngOnDestroy(): void {
@@ -82,6 +81,15 @@ export class HomeViewComponent implements OnInit, OnDestroy {
 
   showHideWelcomeCard(): void {
     this.isWelcomeCardDisplayed = !this.isWelcomeCardDisplayed;
+  }
+
+  createPointsSvgLayer(enabled: boolean): void {
+    console.log(enabled)
+    if (enabled) {
+      this.mapService.pullNewSvgLayerName("home")
+    } else {
+      this.mapService.pullRemoveSvgLayerName("home")
+    }
   }
 
 }

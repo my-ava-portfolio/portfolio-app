@@ -15,25 +15,19 @@ export class PointsSvgLayerOnLeaflet {
 
   }
 
-  initialize(): this {
-    this.mapContainer.on('click', this.addNodeOnLayer.bind(this));
-    return this
-  };
 
-  private addPoints(newPoint: any): void {
+  addPoints(newPoint: any): void {
     let idValue: number = Date.now();
     let pointProperties: any = {
       id: idValue,
-      coords : newPoint.latlng,
+      coords : newPoint,
 
     }
     this.points.push(pointProperties);
-    console.log(this.points)
+    this.buildPointsLayer()
   };
 
-  private addNodeOnLayer(event: any) {
-
-    this.addPoints(event);
+  buildPointsLayer() {
     this.removeSvgLayer();
     this.initSvgLayer()
 
@@ -58,7 +52,10 @@ export class PointsSvgLayerOnLeaflet {
           (node: any): boolean =>
               node.id === d.id
         );
-        this.points[pointToUpdate].coords = coordsUpdated;
+        this.points[pointToUpdate].coords = {
+          x: coordsUpdated.lat,
+          y: coordsUpdated.lng
+        };;
         this.updateMapLayer()
       })
       .on("end", (e: any, d: any) => {
@@ -74,8 +71,12 @@ export class PointsSvgLayerOnLeaflet {
     this.updateMapLayer()
   };
 
-  removeSvgLayer(): void {
+  removeSvgLayer(deletePoints: boolean = false): void {
     d3.select('#' + this.layerName).remove()
+    if (deletePoints) {
+      console.log('popo')
+      this.points = [];
+    }
   };
 
   private initSvgLayer(): void {
@@ -93,8 +94,8 @@ export class PointsSvgLayerOnLeaflet {
       .selectAll("circle")
       .attr('transform', (d: any) => {
         return 'translate(' +
-          this.mapContainer.latLngToLayerPoint([d.coords.lat, d.coords.lng]).x + ',' +
-          this.mapContainer.latLngToLayerPoint([d.coords.lat, d.coords.lng]).y + ')';
+          this.mapContainer.latLngToLayerPoint([d.coords.x, d.coords.y]).x + ',' +
+          this.mapContainer.latLngToLayerPoint([d.coords.x, d.coords.y]).y + ')';
       });
   }
 
