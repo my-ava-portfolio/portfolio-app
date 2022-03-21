@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { imageProfile, projectPages, resumeTopicsPages } from 'src/app/core/inputs';
 import { ResumeService } from 'src/app/services/resume.service';
@@ -35,9 +35,6 @@ export class ProfilCardComponent implements OnInit {
     this.generalDataSubscription = this.resumeService.generalData.subscribe(
       (data) => {
         this.generalData = data;
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
