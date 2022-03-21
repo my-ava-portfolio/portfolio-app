@@ -1,0 +1,96 @@
+
+
+
+
+#toolbox-sidebar{
+  //height: 100vh;
+  min-width: 250px;
+  max-width: 250px;
+  transition: all 0.3s;
+  overflow-y: auto;
+  //top: 0; // sticky behavior
+  //position: sticky; // sticky behavior
+  border-bottom-left-radius: 2em !important;
+
+}
+
+#sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+#toolbox-sidebar.collapsed{
+  min-width: 80px;
+  max-width: 80px;
+  text-align: center;
+}
+
+#toolbox-sidebar ul li:hover{
+  font-weight: 600;
+}
+
+#toolbox-sidebar ul li a {
+  text-align: left;
+}
+
+
+
+@media (max-width: 768px){
+  /* 80px and its content aligned to centre. Pushing it off the screen with the
+     negative left margin
+  */
+
+  #toolbox-sidebar{
+    margin-top: 3rem !important;
+    position: fixed;
+    height: 100%;
+    //height: 100vh;
+    min-width: 200px;
+    max-width: 200px;
+    transition: all 0.3s;
+    overflow-y: auto;
+    //top: 0; // sticky behavior
+    //position: sticky; // sticky behavior
+  }
+
+  #toolbox-sidebar.collapsed{
+      min-width: 80px;
+      max-width: 80px;
+      text-align: center;
+      margin-left: -80px !important;
+  }
+
+
+  #toolbox-sidebar {
+      margin-left: 0;
+  }
+
+}
+
+
+
+
+
+
+#tools {
+
+  a {
+
+    border-top-left-radius: 50rem !important;
+    border-bottom-left-radius: 50rem !important;
+
+    &:hover {
+      background-color: rgb(92, 92, 92);
+    }
+
+    &.active {
+      color: black!important;
+      background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
+
+    }
+
+  }
+
+
+}
+
+

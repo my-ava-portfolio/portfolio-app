@@ -1,0 +1,90 @@
+<div id="toolbox-sidebar" class="sticky-top overflow-auto shadow-lg" [ngClass]="sidebarCollapsed ? 'collapsed' : ''">
+
+  <div class="d-flex flex-column align-items-start">
+
+    <div id="header" class="d-flex flex-row text-white align-items-center bg-dark w-100">
+
+      <div class="nav flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <button class="nav-link active btn btn-warning btn-sm m-3" type="button" (click)="sidebarCollapsed = !sidebarCollapsed">
+          <fa-icon class="glyphicon" [icon]="toolsIcon"></fa-icon>
+        </button>
+      </div>
+      <div *ngIf="!sidebarCollapsed">
+        <span class="fw-bold fs-4">Bac à sable</span>
+      </div>
+    </div>
+
+    <div id="tools" class="d-flex flex-row w-100 bg-white">
+
+      <div class="nav flex-column ps-3 bg-dark text-center" id="pills-tab" role="tablist" aria-orientation="vertical">
+        <a class="active bg-seconday text-warning p-3 active " id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
+          <fa-icon class="glyphicon" [icon]="locationIcon"></fa-icon>
+        </a>
+        <a class="bg-secondar text-warning p-3" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+          <fa-icon class="glyphicon" [icon]="lineIcon"></fa-icon>
+        </a>
+        <a class="bg-secondar text-warning p-3" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+          <fa-icon class="glyphicon" [icon]="PolygonIcon"></fa-icon>
+        </a>
+
+      </div>
+      <div class="d-flex flew-row tab-content bg-white w-100" id="v-pills-tabContent" *ngIf="!sidebarCollapsed">
+
+        <div class="tab-pane fade show active bg-white" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+          <ul class="list-unstyled list-group-flush bg-white">
+            <li class="list-group-item">
+              <span>Crystals dfdsf sf sdf sdf sdf </span>
+            </li>
+            <li class="list-group-item">
+              <span>Healing</span>
+            </li>
+            <li class="list-group-item">
+              <span>Exploring</span>
+            </li>
+            <li class="list-group-item">
+              <span>QiGong</span>
+            </li>
+            <li class="list-group-item">
+              <span>Myself</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-pane fade bg-white" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+          <ul class="list-unstyled list-group-flush bg-white">
+            <li class="list-group-item">
+              <span>tutu</span>
+            </li>
+            <li class="list-group-item">
+              <span>Heasfsdfsdfling</span>
+            </li>
+            <li class="list-group-item">
+              <span>Exp sdfloring</span>
+            </li>
+            <li class="list-group-item">
+              <span>QiGo ng</span>
+            </li>
+            <li class="list-group-item">
+              <span>Mysf s sdfelf</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

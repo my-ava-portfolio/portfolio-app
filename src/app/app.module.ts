@@ -58,6 +58,7 @@ import { GalleryViewComponent } from './gallery/gallery-view/gallery-view.compon
 import { NotesViewComponent } from './notes/notes-view/notes-view.component';
 
 import { ShortViewComponent } from './resume/short-view/short-view.component';
+import { ToolboxComponent } from './home/toolbox/toolbox.component';
 
 
 const appRoutes: Routes = [
@@ -114,6 +115,7 @@ registerLocaleData(localeFr);
     TrainingsBarComponent,
     ExperiencesViewComponent,
     ProfilCardComponent,
+    ToolboxComponent,
    ],
   imports: [
     BrowserModule,
