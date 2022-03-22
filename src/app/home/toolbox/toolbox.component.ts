@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { ResumeService } from 'src/app/services/resume.service';
 import { helpIcon, toolsIcon, locationIcon, lineIcon, PolygonIcon } from '../../core/inputs';
 
 
@@ -15,7 +18,15 @@ export class ToolboxComponent implements OnInit {
 
   sidebarCollapsed: boolean = false;
 
-  constructor() { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title,
+    private resumeService: ResumeService
+  ) {
+
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
+
+   }
 
   ngOnInit(): void {
   }

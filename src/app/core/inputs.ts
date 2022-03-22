@@ -93,9 +93,23 @@ export const currentDate = now();
 
 export const homePages: any = {
   id: 'home',
-  route: '/',
+  route: '/home/about_me',
   title: 'Accueil',
-  icon: homeIcon
+  icon: homeIcon,
+  sub_menus: [
+    {
+      id: "about_me",
+      title: "A propos...",
+      route: "/home/about_me",
+      icon: resumeIcon
+    },
+    {
+      id: "sandbox",
+      title: "Bac à sable",
+      route: "/home/sandbox",
+      icon: toolsIcon
+    }
+  ]
 };
 
 export const aboutMePage: any = {

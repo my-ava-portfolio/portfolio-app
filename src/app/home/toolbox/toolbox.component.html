@@ -1,8 +1,8 @@
-<div id="toolbox-sidebar" class="sticky-top overflow-auto shadow-lg" [ngClass]="sidebarCollapsed ? 'collapsed' : ''">
+<div id="toolbox-sidebar" class="overflow-hidden card text-white shadow" [ngClass]="sidebarCollapsed ? 'collapsed' : ''">
 
-  <div class="d-flex flex-column align-items-start">
+  <div class="d-flex flex-column align-items-start bg-dark bg-gradient">
 
-    <div id="header" class="d-flex flex-row text-white align-items-center bg-dark w-100">
+    <div id="header" class="d-flex flex-row text-white align-items-center w-100">
 
       <div class="nav flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         <button class="nav-link active btn btn-warning btn-sm m-3" type="button" (click)="sidebarCollapsed = !sidebarCollapsed">
@@ -10,13 +10,13 @@
         </button>
       </div>
       <div *ngIf="!sidebarCollapsed">
-        <span class="fw-bold fs-4">Bac à sable</span>
+        <span class="fw-bold fs-4 text-nowrap">Bac à sable</span>
       </div>
     </div>
 
     <div id="tools" class="d-flex flex-row w-100 bg-white">
 
-      <div class="nav flex-column ps-3 bg-dark text-center" id="pills-tab" role="tablist" aria-orientation="vertical">
+      <div class="nav flex-column ps-3 bg-dark bg-gradient text-center" id="pills-tab" role="tablist" aria-orientation="vertical">
         <a class="active bg-seconday text-warning p-3 active " id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">
           <fa-icon class="glyphicon" [icon]="locationIcon"></fa-icon>
         </a>

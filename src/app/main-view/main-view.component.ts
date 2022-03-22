@@ -58,7 +58,6 @@ export class MainViewComponent implements OnInit {
 
   updatePage(outlet: any): any {
     this.controlerService.pullTitlePage(outlet.activatedRouteData.title)
-
   }
 
   getSideBarCollapseStatus(status: boolean) {

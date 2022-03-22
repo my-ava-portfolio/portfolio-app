@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+
+import { homePages } from 'src/app/core/inputs';
+
+
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from 'src/app/services/map.service';
 import { ResumeService } from 'src/app/services/resume.service';
@@ -11,11 +13,11 @@ import { ResumeService } from 'src/app/services/resume.service';
 @Component({
   selector: 'app-home-view',
   templateUrl: './home-view.component.html',
-  styleUrls: ['./home-view.component.css']
+  styleUrls: ['./home-view.component.scss']
 })
 export class HomeViewComponent implements OnInit, OnDestroy {
 
-  homeTopics: any[] = [];
+  homeTopics: any[] = homePages;
 
   pointsSvGLayerId = "HomePoints";
   linesSvGLayerId = "HomeLiness";
@@ -31,22 +33,16 @@ export class HomeViewComponent implements OnInit, OnDestroy {
   fullSkillsDataSubscription!: Subscription;
 
   constructor(
-    private titleService: Title,
-    private activatedRoute: ActivatedRoute,
     private controlerService: ControlerService,
     private resumeService: ResumeService,
     private mapService: MapService
   ) {
 
     // to get the data properties from routes (app.module.ts)
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.generalDataSubscription = this.resumeService.generalData.subscribe(
       (data) => {
         this.generalData = data;
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
@@ -57,9 +53,6 @@ export class HomeViewComponent implements OnInit, OnDestroy {
         this.fullSkillsTechnics = data.technics;
         this.fullSkillsTools = data.tools;
 
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
@@ -80,6 +73,12 @@ export class HomeViewComponent implements OnInit, OnDestroy {
     this.mapService.pullRemovePointsSvgLayerName("homePoints")
 
   }
+
+  updatePage(outlet: any): any {
+    this.controlerService.pullTitlePage(outlet.activatedRouteData.title)
+  }
+
+
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus(this.homeTopics)
   }

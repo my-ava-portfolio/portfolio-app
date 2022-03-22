@@ -4,6 +4,8 @@ import { imageProfile, projectPages, resumeTopicsPages } from 'src/app/core/inpu
 import { ResumeService } from 'src/app/services/resume.service';
 
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -29,8 +31,12 @@ export class ProfilCardComponent implements OnInit {
   pointEditorStatus: boolean = false;
 
   constructor(
+    private titleService: Title,
+    private activatedRoute: ActivatedRoute,
     private resumeService: ResumeService
   ) {
+
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.generalDataSubscription = this.resumeService.generalData.subscribe(
       (data) => {
