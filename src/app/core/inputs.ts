@@ -254,3 +254,8 @@ export function stringToColor(inputText: string, seed: number): string {
   return "#" + "00000".substring(0, 6 - temp_color.length) + temp_color;
 
 }
+
+
+export function getattr(obj: any, prop: string, def = null ): any {
+  return prop in obj ? obj[prop] : def;
+}

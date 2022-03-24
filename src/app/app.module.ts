@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 import { ResumeService } from './services/resume.service';
 import { GalleryService } from './services/gallery.service';
@@ -135,7 +136,8 @@ registerLocaleData(localeFr);
       useHash: true, // in order to prevent error 40 page on reload
     }),
     NgbModule,
-    FormsModule
+    FormsModule,
+    ColorPickerModule
   ],
   providers: [
     ResumeService,

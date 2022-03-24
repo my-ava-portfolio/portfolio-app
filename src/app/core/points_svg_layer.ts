@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import * as L from 'leaflet';
 
+import { getattr } from '../core/inputs';
 
 
 export class Point {
@@ -8,6 +9,7 @@ export class Point {
   id: string = `feat_${Date.now()}`;
   _name!: string;
   _tag: string = "noTag"
+  _color: string = "#FF0000"
   private _x!: number;
   private _y!: number;
 
@@ -48,16 +50,14 @@ export class Point {
     this._name = nameValue;
   }
 
-  updateCoord(x: number, y: number) {
-    this._x = x;
-    this._y = y;
+  get color(): string {
+    return this._color;
+  }
+  set color(colorValue: string) {
+    this._color = colorValue;
   }
 
-  to_array(): number[] {
-    return [this._x, this._y];
-  };
-
-  to_wkt(): string {
+  toWkt(): string {
     return `POINT(${this._x} ${this._y})`;
   };
 
@@ -67,15 +67,13 @@ export class Point {
     let propertiesKeys: string[] = Object.getOwnPropertyNames(this);
     propertiesKeys.forEach(
       (property: any): void => {
-        properties[property] = this.getattr(this, property)
+        properties[property] = getattr(this, property)
       }
     );
     return properties;
   }
 
-  private getattr(obj: any, prop: string, def = null ): any {
-    return prop in obj ? obj[prop] : def;
-  }
+
 
 }
 
@@ -116,10 +114,10 @@ export class PointsSvgLayerOnLeaflet {
       .enter()
       .append("circle")
       .style("r", 14)
-      .style("fill", "red")
+      .style("fill", (d: any) => {return d.color})
       .attr("id", (d: any) => {return d.id})
       .attr("class", "cursor")
-      .attr("stroke", "red")
+      .attr("stroke", (d: any) => {return d.color})
       .attr("stroke-width", "3px")
       .attr("fill-opacity", .4)
       .attr('transform', (point: any, event: any) => {
@@ -188,6 +186,17 @@ export class PointsSvgLayerOnLeaflet {
     });
 
     return pointFound;
+  };
+
+  updateGeomByProperty(filterPropertyName: any, filterPropertyValue: any, updatedPropertyName: any, updatedPropertyValue: any): void {
+
+    this.points.forEach((element: any, index: number) => {
+      // element is a Point...
+      if (element[filterPropertyName] === filterPropertyValue) {
+        element[updatedPropertyName] = updatedPropertyValue;
+      }
+    });
+
   };
 
   highLightPointById(idToSelect: string): void {
@@ -268,7 +277,7 @@ export class PointsSvgLayerOnLeaflet {
 
   mouseMove(e: any, d: any): void {
     d3.select("#tooltip-" + this.layerName + d.id)
-      .html(d.to_wkt())
+      .html(d.toWkt())
       .style("left", e.x + 15 + "px")
       .style("top", e.y + 15 + "px")
   }

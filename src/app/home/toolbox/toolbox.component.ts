@@ -26,7 +26,7 @@ export class ToolboxComponent implements OnInit  {
   removeIcon = removeIcon;
   helpIcon = helpIcon;
   centerIcon = centerIcon;
-  
+
   geomTypesList: any[] = [
     {
       name: 'points',
@@ -41,13 +41,14 @@ export class ToolboxComponent implements OnInit  {
       icon: this.PolygonIcon
     },
   ];
+  color = '#FF0000';
 
   sidebarCollapsed: boolean = false;
 
   editStatus!: any;
   editModeEnabled: boolean = false;
   geomTypeButton!: string;
-  geomInfo!: Point;
+  geomFeature!: Point;
 
   pointsLayer!: PointsSvgLayerOnLeaflet
   pointsMapped: any[] = []
@@ -55,6 +56,9 @@ export class ToolboxComponent implements OnInit  {
   linessMapped: any[] = []
 
   mapContainer!: any;
+
+  defaultNamePlaceHolder = 'Saisir un nom';
+  defaultTagPlaceHolder = 'Saisir un tag';
 
   mapContainerSubscription!: Subscription;
   getCoordsMapSubscription!: Subscription;
@@ -151,8 +155,8 @@ export class ToolboxComponent implements OnInit  {
   getGeomInfo(geomId: string): void {
     if (this.getCurrentGeomType() === 'points') {
 
-      this.geomInfo = this.pointsLayer.getPointById(geomId);
-      console.log(this.geomInfo)
+      this.geomFeature = this.pointsLayer.getPointById(geomId);
+      console.log(this.geomFeature)
     }
   }
 
@@ -169,5 +173,18 @@ export class ToolboxComponent implements OnInit  {
       this.pointsLayer.unHighLightPointById(geomId);
     }
   }
+
+  refreshLayer(): void {
+    if (this.getCurrentGeomType() === 'points') {
+      this.pointsLayer.buildPointsLayer();
+    }
+  }
+
+  applyByProperties(filterPropertyName: any, filterPropertyValue: any, updatedPropertyName: any, updatedPropertyValue: any): void {
+    if (this.getCurrentGeomType() === 'points') {
+      this.pointsLayer.updateGeomByProperty(filterPropertyName, filterPropertyValue, updatedPropertyName, updatedPropertyValue);
+    }
+  }
+
 
 }

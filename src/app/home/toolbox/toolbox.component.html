@@ -159,30 +159,41 @@
     </div>
     <div class="modal-body">
 
-      <ul class="list-unstyled" *ngIf="geomInfo">
+      <ul class="list-unstyled" *ngIf="geomFeature">
 
         <li class="">
-          <span class="me-1">{{ geomInfo.name }} </span>
+          <span class="me-1">{{ geomFeature.name }} </span>
         </li>
         <li class="">
-          <span class="me-1">{{ geomInfo.to_wkt() }} </span>
+          <span class="me-1">{{ geomFeature.toWkt() }} </span>
         </li>
         <li class="">
-          <span class="me-1">{{ geomInfo.tag }} </span>
+          <span class="me-1">{{ geomFeature.tag }} </span>
         </li>
       </ul>
 
-      <div id="nameEditor" class="d-flex flew-row mx-auto align-items-center my-2">
-        <label for="nameLabel" class="form-label-hidden mx-1">Nom</label>
-        <input #nameLabel type="text" class="form-control mx-1" id="nameLabel" placeholder="">
-        <button type="submit" class="btn btn-primary mx-1" (click)="geomInfo.name = nameLabel.value">Valider</button>
-      </div>
+      <form >
+        <div id="nameEditor" class="d-flex flew-row mx-auto align-items-center my-2">
+          <label for="nameLabel" class="form-label-hidden mx-1">Nom</label>
+          <input #nameLabel type="text" class="form-control mx-1" id="nameLabel" [placeholder]="defaultNamePlaceHolder">
+          <button type="submit" class="btn btn-primary mx-1" (click)="geomFeature.name = nameLabel.value">Valider</button>
+        </div>
 
-      <div id="tagEditor" class="d-flex flew-row mx-auto align-items-center my-2">
-        <label for="inputTag" class="form-label-hidden mx-1">Tag</label>
-        <input #tagLabel type="text" class="form-control mx-1" id="inputTag" placeholder="">
-        <button type="submit" class="btn btn-primary mx-1" (click)="geomInfo.tag = tagLabel.value">Valider</button>
-      </div>
+        <div id="tagEditor" class="d-flex flew-row mx-auto align-items-center my-2">
+          <label for="inputTag" class="form-label-hidden mx-1">Tag</label>
+          <input #tagLabel type="text" class="form-control mx-1" id="inputTag" [placeholder]="defaultTagPlaceHolder">
+          <button type="submit" class="btn btn-primary mx-1" (click)="geomFeature.tag = tagLabel.value">Valider</button>
+        </div>
+
+
+        <div id="colorEditor" class="d-flex flew-row mx-auto align-items-center my-2">
+          <label>Color Output format</label>
+          <input #colorlabel class="form-control" [value]="color" [(colorPicker)]="color" [style.background]="color"/>
+          <button type="submit" class="btn btn-primary mx-1" (click)="geomFeature.color = colorlabel.value; refreshLayer()">Valider</button>
+          <button type="submit" class="btn btn-primary mx-1" (click)="applyByProperties('tag', geomFeature.tag, 'color', colorlabel.value); refreshLayer()">Valider sur tous</button>
+
+          </div>
+      </form>
 
     </div>
     <div class="modal-footer">
