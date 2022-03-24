@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
 
   mapBlurred: boolean = false;
   mapInteractionEnabled: boolean = false;
-  mapInteractionPages: string[] = ['/home', '/map']
+  mapInteractionPages: string[] = ['/home/about_me', '/home/sandbox', '/map']
 
   mobileIcon = mobileIcon;
   loadingIcon = loadingIcon;
