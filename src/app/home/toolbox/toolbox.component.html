@@ -39,7 +39,7 @@
               <div class="d-flex flew-row align-items-center justify-content-between" [id]="point.id" (mouseover)="highLightGeom(point.id)" (mouseleave)="unHighLightGeom(point.id)">
 
                 <div class="d-flex flex-column align-items-center">
-                  <div class="small" >Point {{ point.position }} </div>
+                  <div class="small" >{{ point.name }} </div>
                   <div class="small badge rounded-pill bg-secondary" >{{ point.tag }} </div>
 
 
@@ -158,19 +158,31 @@
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-      <a class="mb-3 text-dark">
-        By amauryval <fa-icon class="ms-2" [icon]="helpIcon"></fa-icon>
-      </a>
 
       <ul class="list-unstyled" *ngIf="geomInfo">
 
         <li class="">
-          <span class="me-1">{{ geomInfo.id }} </span>
+          <span class="me-1">{{ geomInfo.name }} </span>
         </li>
         <li class="">
           <span class="me-1">{{ geomInfo.to_wkt() }} </span>
         </li>
+        <li class="">
+          <span class="me-1">{{ geomInfo.tag }} </span>
+        </li>
       </ul>
+
+      <div id="nameEditor" class="d-flex flew-row mx-auto align-items-center my-2">
+        <label for="nameLabel" class="form-label-hidden mx-1">Nom</label>
+        <input #nameLabel type="text" class="form-control mx-1" id="nameLabel" placeholder="">
+        <button type="submit" class="btn btn-primary mx-1" (click)="geomInfo.name = nameLabel.value">Valider</button>
+      </div>
+
+      <div id="tagEditor" class="d-flex flew-row mx-auto align-items-center my-2">
+        <label for="inputTag" class="form-label-hidden mx-1">Tag</label>
+        <input #tagLabel type="text" class="form-control mx-1" id="inputTag" placeholder="">
+        <button type="submit" class="btn btn-primary mx-1" (click)="geomInfo.tag = tagLabel.value">Valider</button>
+      </div>
 
     </div>
     <div class="modal-footer">
@@ -179,4 +191,3 @@
   </div>
 </div>
 
-</div>

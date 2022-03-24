@@ -6,17 +6,17 @@ import * as L from 'leaflet';
 export class Point {
 
   id: string = `feat_${Date.now()}`;
-  position!: number;
+  _name!: string;
   _tag: string = "noTag"
   private _x!: number;
   private _y!: number;
 
   constructor(
-    position: number,
+    name: string,
     coordsX: number,
     coordsY: number,
   ) {
-    this.position = position;
+    this._name = name;
     this._x = coordsX;
     this._y = coordsY;
   }
@@ -39,6 +39,13 @@ export class Point {
   }
   set tag(tagValue: string) {
     this._tag = tagValue;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+  set name(nameValue: string) {
+    this._name = nameValue;
   }
 
   updateCoord(x: number, y: number) {
@@ -90,7 +97,12 @@ export class PointsSvgLayerOnLeaflet {
 
   addPoints(coordinates: any): void {
     this.pointCount += 1
-    this.points.push(new Point(this.pointCount, coordinates.x, coordinates.y));
+    this.points.push(
+      new Point(`Point ${this.pointCount.toString()}`,
+       coordinates.x,
+        coordinates.y
+      )
+    );
     this.buildPointsLayer()
   };
 
@@ -259,8 +271,6 @@ export class PointsSvgLayerOnLeaflet {
       .html(d.to_wkt())
       .style("left", e.x + 15 + "px")
       .style("top", e.y + 15 + "px")
-
-    console.log("aaa")
   }
 
   mouseLeave(e: any, d: any): void {
@@ -277,7 +287,6 @@ export class PointsSvgLayerOnLeaflet {
       .style("top", e.y + 15 + "px")
       .style("opacity", 1)
 
-    console.log("aaa")
   }
 
 }
