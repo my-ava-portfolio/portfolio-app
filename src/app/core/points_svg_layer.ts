@@ -150,8 +150,7 @@ export class PointsSvgLayerOnLeaflet {
 
   removeSvgLayer(deletePoints: boolean = false): void {
     d3.select('#' + this.layerName).remove()
-    d3.selectAll("[id^='tooltip-" + this.layerName + "']").remove()
-
+    d3.selectAll("[id^='tooltip-]").remove()
     if (deletePoints) {
       this.points = [];
     }
@@ -227,8 +226,8 @@ export class PointsSvgLayerOnLeaflet {
       .data(this.points)
       .enter()
       .append("div")
-      .style("opacity", 0)
-      .attr("class", "tooltip") // mandatory, css adapted
+      .style("opacity", 1)
+      .attr("class", "tooltip d-none") // mandatory, css adapted
       .attr("id", (d: any) => { return "tooltip-" + this.layerName + d.id })
       .style("background-color", "white")
       .style("border", "solid")
@@ -248,8 +247,8 @@ export class PointsSvgLayerOnLeaflet {
   }
 
   mouseOver(e: any, d: any): void {
-    d3.select("#tooltip-" + this.layerName + d.id)
-      .style("opacity", 1)
+    let tooltip = d3.select("#tooltip-" + this.layerName + d.id)
+    tooltip.classed('d-none', !tooltip.classed('d-none'));
 
     d3.select(e.currentTarget)
       .style("opacity", 1)
@@ -265,8 +264,9 @@ export class PointsSvgLayerOnLeaflet {
   }
 
   mouseLeave(e: any, d: any): void {
-    d3.select("#tooltip-" + this.layerName + d.id)
-      .style("opacity", 0)
+    let tooltip = d3.select("#tooltip-" + this.layerName + d.id)
+    tooltip.classed('d-none', !tooltip.classed('d-none'));
+
 
   }
 

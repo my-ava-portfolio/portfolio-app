@@ -1,6 +1,6 @@
 <div id="toolbox-sidebar" class="overflow-hidden card text-white shadow" [ngClass]="sidebarCollapsed ? 'collapsed' : ''">
 
-  <div class="d-flex flex-column align-items-start bg-dark bg-gradient">
+  <div class="d-flex flex-column align-items-start bg-dark bg-gradient overflow-auto">
 
 
     <div id="header" class="d-flex flex-row text-white align-items-center">
@@ -15,13 +15,11 @@
       </div>
     </div>
 
-    <div class="d-flex flew-row w-100" id="-pills-tabContent">
       <ng-container *ngFor="let geomTypeValue of geomTypesList">
         <ng-container *ngTemplateOutlet="toolBarMenu; context:{geomType: geomTypeValue}"></ng-container>
       </ng-container>
-    </div>
 
-    <div id="tools" class="d-flex flex-row w-100 bg-white">
+    <div id="menus" class="d-flex flex-row w-100 bg-white">
 
       <div class="nav flex-column ps-3 bg-dark bg-gradient text-center" role="tablist" aria-orientation="vertical">
 
@@ -50,6 +48,10 @@
                 <div class="d-flex flew-row">
                   <button class="btn btn-info btn-sm text-white m-1" type="button" data-bs-toggle="modal" data-bs-target="#geomPopup" (click)="getGeomInfo(point.id)">
                     <fa-icon class="glyphicon" [icon]="helpIcon"></fa-icon>
+                  </button>
+
+                  <button class="btn btn-sm bg-warning m-1" type="button">
+                    <fa-icon class="glyphicon" [icon]="toolsIcon"></fa-icon>
                   </button>
 
                   <button class="btn btn-danger btn-sm m-1" type="button" (click)="removeGeom('point', point.id)">
@@ -119,12 +121,21 @@
 
 
 <ng-template #toolBarMenu let-geomLayer='geomType'>
+  <div class="d-flex flew-row mx-auto align-items-center" [id]="geomLayer.name + '-tools'" *ngIf="geomTypeButton === geomLayer.name">
 
-  <div class="bg-white" [id]="geomLayer.name + '-tools'" *ngIf="geomTypeButton === geomLayer.name">
+      <h6 class="m-1">Edition de {{geomLayer.name}}</h6>
+      <button class="btn btn-sm m-1" type="button" [ngClass]="editStatus[geomLayer.name] ? 'btn-danger' : 'btn-secondary'" (click)="editModeSelector(geomLayer.name)">
+        <fa-icon class="glyphicon" [icon]="editIcon"></fa-icon>
+      </button>
 
-    <button class="btn btn-sm" type="button" [ngClass]="editStatus[geomLayer.name] ? 'btn-danger' : 'btn-secondary'" (click)="editModeSelector(geomLayer.name)">
-      <fa-icon class="glyphicon" [icon]="editIcon"></fa-icon> Editer ({{geomLayer.name}})
-    </button>
+      <button class="btn btn-sm bg-warning m-1" type="button">
+        <fa-icon class="glyphicon" [icon]="toolsIcon"></fa-icon>
+      </button>
+
+      <button class="btn btn-sm bg-warning m-1" type="button">
+        <fa-icon class="glyphicon" [icon]="centerIcon"></fa-icon>
+      </button>
+
   </div>
 </ng-template>
 

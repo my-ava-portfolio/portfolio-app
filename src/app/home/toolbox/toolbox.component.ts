@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
-import { helpIcon, removeIcon, toolsIcon, locationIcon, lineIcon, PolygonIcon, editIcon, addIcon } from '../../core/inputs';
+import { centerIcon, helpIcon, removeIcon, toolsIcon, locationIcon, lineIcon, PolygonIcon, editIcon, addIcon } from '../../core/inputs';
 
 import { PointsSvgLayerOnLeaflet } from '../../core/points_svg_layer';
 import { Point } from '../../core/points_svg_layer';
@@ -25,7 +25,8 @@ export class ToolboxComponent implements OnInit  {
   addIcon = addIcon;
   removeIcon = removeIcon;
   helpIcon = helpIcon;
-
+  centerIcon = centerIcon;
+  
   geomTypesList: any[] = [
     {
       name: 'points',
