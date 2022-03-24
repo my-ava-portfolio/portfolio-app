@@ -1,5 +1,5 @@
 
-
+$max-height: 50vh;
 
 
 #toolbox-sidebar{
@@ -92,6 +92,12 @@
 
   }
 
+  ul{
+    overflow: hidden;
+    overflow-y: scroll;
+    height: $max-height;
+  }
+  ul{}
 
 }
 
