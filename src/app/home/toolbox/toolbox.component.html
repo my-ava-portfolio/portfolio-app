@@ -40,8 +40,11 @@
             <li class="list-group-item" *ngFor="let point of pointsMapped">
               <div class="d-flex flew-row align-items-center justify-content-between" [id]="point.id" (mouseover)="highLightGeom(point.id)" (mouseleave)="unHighLightGeom(point.id)">
 
-                <div class="d-flex flew-row">
-                  <span class="small" >Point {{ point.position }} </span>
+                <div class="d-flex flex-column align-items-center">
+                  <div class="small" >Point {{ point.position }} </div>
+                  <div class="small badge rounded-pill bg-secondary" >{{ point.tag }} </div>
+
+
                 </div>
 
                 <div class="d-flex flew-row">

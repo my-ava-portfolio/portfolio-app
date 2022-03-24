@@ -7,6 +7,7 @@ export class Point {
 
   id: string = `feat_${Date.now()}`;
   position!: number;
+  _tag: string = "noTag"
   private _x!: number;
   private _y!: number;
 
@@ -31,6 +32,13 @@ export class Point {
   }
   set y(coord: number) {
     this._y = coord;
+  }
+
+  get tag(): string {
+    return this._tag;
+  }
+  set tag(tagValue: string) {
+    this._tag = tagValue;
   }
 
   updateCoord(x: number, y: number) {
