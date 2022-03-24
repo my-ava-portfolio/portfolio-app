@@ -3,11 +3,12 @@
 
 
 #toolbox-sidebar{
+  pointer-events: all;
   right: 0;
   position: absolute;
   // //height: 100vh;
-  min-width: 250px;
-  max-width: 250px;
+  min-width: 275px;
+  // max-width: 250px;
   transition: all 0.3s;
   overflow: unset;
   //top: 0; // sticky behavior
@@ -26,7 +27,7 @@
 }
 
 #toolbox-sidebar ul li:hover{
-  font-weight: 600;
+  background-color: rgb(206, 206, 206);
 }
 
 #toolbox-sidebar ul li a {
