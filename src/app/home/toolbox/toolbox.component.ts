@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
@@ -11,12 +11,13 @@ import { LinesSvgLayerOnLeaflet } from '../../core/lines_svg_layer';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { MapService } from 'src/app/services/map.service';
 
+
 @Component({
   selector: 'app-toolbox',
   templateUrl: './toolbox.component.html',
   styleUrls: ['./toolbox.component.scss']
 })
-export class ToolboxComponent implements OnInit  {
+export class ToolboxComponent implements OnInit, OnDestroy  {
   toolsIcon = toolsIcon;
   pointIcon = locationIcon;
   lineIcon = lineIcon;
@@ -27,33 +28,39 @@ export class ToolboxComponent implements OnInit  {
   helpIcon = helpIcon;
   centerIcon = centerIcon;
 
+  pointsLayer!: PointsSvgLayerOnLeaflet;
+  pointsMapped: any[] = [];
+  linesLayer!: LinesSvgLayerOnLeaflet;
+  linessMapped: any[] = [];
+
   geomTypesList: any[] = [
     {
       name: 'points',
-      icon: this.pointIcon
+      icon: this.pointIcon,
+      selected: true,
+      edited: false,
+      features: []
     },
     {
       name: 'lines',
-      icon: this.lineIcon
+      icon: this.lineIcon,
+      selected: false,
+      edited: false,
+      features: []
     },
     {
       name: 'polygons',
-      icon: this.PolygonIcon
+      icon: this.PolygonIcon,
+      selected: false,
+      edited: false,
+      features: []
     },
   ];
   color = '#FF0000';
 
   sidebarCollapsed: boolean = false;
 
-  editStatus!: any;
-  editModeEnabled: boolean = false;
-  geomTypeButton!: string;
   geomFeature!: Point;
-
-  pointsLayer!: PointsSvgLayerOnLeaflet
-  pointsMapped: any[] = []
-  linesLayer!: LinesSvgLayerOnLeaflet
-  linessMapped: any[] = []
 
   mapContainer!: any;
 
@@ -61,15 +68,11 @@ export class ToolboxComponent implements OnInit  {
   defaultTagPlaceHolder = 'Editer le tag';
 
   mapContainerSubscription!: Subscription;
-  getCoordsMapSubscription!: Subscription;
-
-  newPointsSvgMapSubscription!: Subscription;
-  removePointsSvgMapSubscription!: Subscription;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
-    private mapService: MapService,
+    private mapService: MapService
   ) {
 
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
@@ -83,110 +86,180 @@ export class ToolboxComponent implements OnInit  {
 
         // this.linesLayer = new LinesSvgLayerOnLeaflet(this.mapContainer, "sandboxLines")
         // this.linesLayer.addLines();
+        // TODO support lines and polygons
 
-      }
-    );
-
-    this.getCoordsMapSubscription = this.mapService.newCoords.subscribe(
-      (coords: any) => {
-
-        let currentGeomTypeEdited = this.getCurrentGeomType();
-        console.log(currentGeomTypeEdited)
-
-        if ( currentGeomTypeEdited === 'points' ) {
-          this.pointsLayer.addPoints(coords)
-          this.pointsMapped = this.pointsLayer.points
-
-        } else if ( currentGeomTypeEdited === 'lines' ) {
-          this.linesLayer.addPoints(0, coords);
-          this.pointsMapped = []
-        }
+        this.geomTypesList.forEach((element, _) => {
+          if ( element.name === 'points' ) {
+            element.features = this.pointsLayer.points;
+          } else if ( element.name === 'lines' ) {
+            element.features = []; // TODO
+          } else if ( element.name === 'polygons' ) {
+            element.features = []; // TODO
+          }
+        });
       }
     );
 
    }
 
   ngOnInit(): void {
-    this.resetEditModeDefaultValues(false);
+    // init all the map container
     this.mapService.getMapContainer();
-    this.displayGeomToolbar('points')
-  }
 
-  editModeSelector(geomType: string): void {
+    // let start with the point menu
+    this.setGeomMenu('points')
+  };
 
-    if (this.editModeEnabled) {
-      // desactivate
-      this.resetEditModeDefaultValues(false);
+  ngOnDestroy(): void {
+    this.mapContainerSubscription.unsubscribe();
+
+    this.mapContainer.off('click')
+    this.removeLayer('points')
+    // TODO add func to remove the layers
+
+  };
+
+  // SELECTION MENU //
+  setGeomMenu(menu: string): void {
+    // STARTER FROM MENU //
+    // reset
+    this.resetGeomMenu()
+
+    // disable all the map click events (from each geom editor class)
+    this.mapContainer.off('click')
+
+    // select menu
+    this.geomTypesList.forEach((element, _) => {
+      if ( element.name === menu ) {
+        element.selected = true;
+      }
+    });
+  };
+
+  resetGeomMenu(): void {
+
+    this.geomTypesList.forEach((element, _) => {
+      element.selected = false;
+      element.edited = false;
+    });
+  };
+
+  switchEditGeomMenu(): void {
+    this._getCurrentItemMenu().edited = !this._getCurrentItemMenu().edited;
+  };
+
+  getCurrentGeomMenu(): any {
+    let selectedMenu = this._getCurrentItemMenu()
+    return selectedMenu;
+  };
+
+  private _getCurrentItemMenu(): any {
+    let currentMenu!: string;
+    this.geomTypesList.forEach((element, _) => {
+      if ( element.selected ) {
+        currentMenu = element;
+      }
+    });
+    return currentMenu
+  };
+  // SELECTION MENU //
+
+  // ADD ACTION //
+  addGeomFromToolbar(): void {
+    // STARTER FROM ADD TOOLBUTTION //
+
+    let currentMenu: any = this.getCurrentGeomMenu();
+
+    if (currentMenu.edited) {
+      // so go to desactivate
+      if (currentMenu.name === "points") {
+        this.pointsLayer.disableMapClick()
+        this.pointsLayer.addButtonStatus(false) // very important to support mouseover circle
+      }
+      // TODO add lines and polygons cond
+
     } else {
-      // activate
-      this.resetEditModeDefaultValues(true);
-      this.editStatus[geomType] = true;
+      // so go to activate
+      this._startEditing(currentMenu.name)
     }
-  }
 
-  resetEditModeDefaultValues(setEditMode: boolean): void {
-    this.switchEditMode(setEditMode);
+    this.switchEditGeomMenu()
+  };
+  // ADD ACTION //
 
-    this.editStatus = {
-      "points": false,
-      "lines": false,
-      "polygons": false,
+
+  _startEditing(currentMenu: string): void {
+    if ( currentMenu === 'points' ) {
+      this.pointsLayer.enableMapClick()
+      this.pointsLayer.addButtonStatus(true) // very important to support mouseover circle
+
+      this.pointsMapped = this.pointsLayer.points
+
+    } else if ( currentMenu === 'lines' ) {
+      // this.linesLayer.addPoints(0, coords);
+      this.linessMapped = []
     }
-  }
+  };
 
-  getCurrentGeomType(): string {
-    return Object.keys(this.editStatus).filter((key: string) => this.editStatus[key])[0];
-  }
 
-  switchEditMode(status: boolean): void {
-    this.editModeEnabled = status;
-  }
+  // GEOM BUTTONS ACTIONS //
+  enabledGeomEditing(geomId: string): void {
+    if (this.getCurrentGeomMenu().name === 'points') {
+      this.pointsLayer.setCurrentGeomEdited(geomId);
+    }
+    // TODO add lines and polygons cond
 
-  removeGeom(geomType: string, geomId: string): void {
-    if (geomType === 'point') {
+  };
+
+  removeGeom(geomId: string): void {
+    if (this.getCurrentGeomMenu().name === 'points') {
       this.pointsLayer.removePointById(geomId)
     }
-  }
+    // TODO add lines and polygons cond
 
-  displayGeomToolbar(geomType: string): void {
-    this.geomTypeButton = geomType;
-  }
+  };
 
   getGeomInfo(geomId: string): void {
-    if (this.getCurrentGeomType() === 'points') {
-
+    if (this.getCurrentGeomMenu().name === 'points') {
       this.geomFeature = this.pointsLayer.getPointById(geomId);
-      console.log(this.geomFeature)
-
     }
-  }
+    // TODO add lines and polygons cond
+  };
+  // GEOM BUTTONS ACTIONS //
+
 
   highLightGeom(geomId: string): void {
-    if (this.getCurrentGeomType() === 'points') {
-
-      this.pointsLayer.highLightPointById(geomId);
-    }
-  }
+    this.pointsLayer.highLightPointById(geomId);
+  };
 
   unHighLightGeom(geomId: string): void {
-    if (this.getCurrentGeomType() === 'points') {
-
-      this.pointsLayer.unHighLightPointById(geomId);
-    }
-  }
+    this.pointsLayer.unHighLightPointById(geomId);
+  };
 
   refreshLayer(): void {
-    if (this.getCurrentGeomType() === 'points') {
-      console.log("tttt")
+    if (this.getCurrentGeomMenu().name === 'points') {
       this.pointsLayer.buildPointsLayer();
     }
-  }
+  };
 
   applyByProperties(filterPropertyName: any, filterPropertyValue: any, updatedPropertyName: any, updatedPropertyValue: any): void {
-    if (this.getCurrentGeomType() === 'points') {
+    if (this.getCurrentGeomMenu().name === 'points') {
       this.pointsLayer.updateGeomByProperty(filterPropertyName, filterPropertyValue, updatedPropertyName, updatedPropertyValue);
     }
-  }
+  };
+
+  removeLayer(geomMenu: string): void {
+
+    if ( geomMenu === 'points' ) {
+      this.pointsLayer.removeSvgLayer(true);
+
+    } else if ( geomMenu === 'lines' ) {
+
+    } else if ( geomMenu === 'polygons' ) {
+
+    }
+
+  };
 
 
 }

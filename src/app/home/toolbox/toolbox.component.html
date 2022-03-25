@@ -15,11 +15,11 @@
       </div>
     </div>
 
-      <ng-container *ngFor="let geomTypeValue of geomTypesList">
-        <ng-container *ngTemplateOutlet="toolBarMenu; context:{geomType: geomTypeValue}"></ng-container>
-      </ng-container>
+    <ng-container *ngFor="let geomTypeValue of geomTypesList">
+      <ng-container *ngTemplateOutlet="toolBarMenu; context:{geomType: geomTypeValue}"></ng-container>
+    </ng-container>
 
-    <div id="menus" class="d-flex flex-row w-100 bg-white">
+    <div id="menus" class="d-flex flex-row w-100">
 
       <div class="nav flex-column ps-3 bg-dark bg-gradient text-center" role="tablist" aria-orientation="vertical">
 
@@ -30,81 +30,53 @@
 
       </div>
 
-      <div class="tab-content bg-white w-100" id="v-pills-tabContent" *ngIf="!sidebarCollapsed">
+      <div class="tab-content w-100" id="v-pills-tabContent" *ngIf="!sidebarCollapsed">
 
-        <div class="tab-pane fade show active bg-white points-features" id="tab-points-features" role="tabpanel" aria-labelledby="">
+        <ng-container *ngFor="let geomTypeValue of geomTypesList">
 
-          <ul class="list-unstyled list-group-flush bg-white">
-            <li class="list-group-item" *ngFor="let point of pointsMapped">
-              <div class="d-flex flew-row align-items-center justify-content-between" [id]="point.id" (mouseover)="highLightGeom(point.id)" (mouseleave)="unHighLightGeom(point.id)">
+          <div class="tab-pane fade" [ngClass]="geomTypeValue.selected ? 'show active': ''" [id]="'tab-' + geomTypeValue.name + '-features'" role="tabpanel" aria-labelledby="">
 
-                <div class="d-flex flex-column align-items-center">
-                  <div class="small" >{{ point.name }} </div>
-                  <div class="small badge rounded-pill bg-secondary" >{{ point.tag }} </div>
+            <ul class="list-unstyled list-group-flush bg-white">
+
+              <ng-container *ngIf="geomTypeValue.features.length !== 0">
+                <ng-container *ngFor="let point of geomTypeValue.features">
+
+                  <li class="list-group-item" [id]="point.id">
+
+                    <div class="d-flex flew-row align-items-stretch justify-content-between" (mouseover)="highLightGeom(point.id)" (mouseleave)="unHighLightGeom(point.id)">
+
+                      <div class="d-flex flew-row">
+                        <div [style.background-color]="point.color" class="geom-color me-1" ></div>
+                        <div class="d-flex flex-column align-items-center">
+                          <div class="small" >{{ point.name }} </div>
+                          <div class="small badge rounded-pill bg-secondary" >{{ point.tag }} </div>
+                        </div>
+                      </div>
 
 
-                </div>
 
-                <div class="d-flex flew-row">
-                  <button class="btn btn-info btn-sm text-white m-1" type="button" data-bs-toggle="modal" data-bs-target="#geomPopup" (click)="getGeomInfo(point.id)">
-                    <fa-icon class="glyphicon" [icon]="helpIcon"></fa-icon>
-                  </button>
+                      <div class="d-flex flew-row align-items-center">
+                        <div class="badge text-white add-button" [ngClass]="point.edited ? 'btn-danger' : 'btn-secondary'" type="button" (click)="enabledGeomEditing(point.id)">
+                          <fa-icon class="glyphicon" [icon]="editIcon"></fa-icon>
+                        </div>
 
-                  <button class="btn btn-sm bg-warning m-1" type="button">
-                    <fa-icon class="glyphicon" [icon]="toolsIcon"></fa-icon>
-                  </button>
+                        <div class="badge bg-info text-white info-button" type="button" data-bs-toggle="modal" data-bs-target="#geomPopup" (click)="getGeomInfo(point.id)">
+                          <fa-icon class="glyphicon" [icon]="toolsIcon"></fa-icon>
+                        </div>
 
-                  <button class="btn btn-danger btn-sm m-1" type="button" (click)="removeGeom('point', point.id)">
-                    <fa-icon class="glyphicon" [icon]="removeIcon"></fa-icon>
-                  </button>
-                </div>
+                        <div class="badge btn-danger" type="button" (click)="removeGeom(point.id)">
+                          <fa-icon class="glyphicon" [icon]="removeIcon"></fa-icon>
+                        </div>
+                      </div>
 
-              </div>
-            </li>
-          </ul>
-        </div>
+                    </div>
 
-        <div class="tab-pane fade bg-white lines-features" id="tab-lines-features" role="tabpanel" aria-labelledby="">
-
-          <ul class="list-unstyled list-group-flush bg-white">
-            <li class="list-group-item">
-              <span>tutu</span>
-            </li>
-            <li class="list-group-item">
-              <span>Heasfsdfsdfling</span>
-            </li>
-            <li class="list-group-item">
-              <span>Exp sdfloring</span>
-            </li>
-            <li class="list-group-item">
-              <span>QiGo ng</span>
-            </li>
-            <li class="list-group-item">
-              <span>Mysf s sdfelf</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="tab-pane fade bg-white polygons-features" id="tab-polygons-features" role="tabpanel" aria-labelledby="">
-
-          <ul class="list-unstyled list-group-flush bg-white">
-            <li class="list-group-item">
-              <span>tutu</span>
-            </li>
-            <li class="list-group-item">
-              <span>Heasfsdfsdfling</span>
-            </li>
-            <li class="list-group-item">
-              <span>Exp sdfloring</span>
-            </li>
-            <li class="list-group-item">
-              <span>QiGo ng</span>
-            </li>
-            <li class="list-group-item">
-              <span>Mysf s sdfelf</span>
-            </li>
-          </ul>
-        </div>
+                  </li>
+                </ng-container>
+              </ng-container>
+            </ul>
+          </div>
+        </ng-container>
 
       </div>
     </div>
@@ -120,11 +92,11 @@
 
 
 
-<ng-template #toolBarMenu let-geomLayer='geomType'>
-  <div class="d-flex flew-row mx-auto align-items-center" [id]="geomLayer.name + '-tools'" *ngIf="geomTypeButton === geomLayer.name">
+<ng-template #toolBarMenu let-geomMenu='geomType'>
+  <div class="d-flex flew-row mx-auto align-items-center" [id]="geomMenu.name + '-tools'" *ngIf="getCurrentGeomMenu().name === geomMenu.name">
 
-      <h6 class="m-1">Edition de {{geomLayer.name}}</h6>
-      <button class="btn btn-sm m-1" type="button" [ngClass]="editStatus[geomLayer.name] ? 'btn-danger' : 'btn-secondary'" (click)="editModeSelector(geomLayer.name)">
+      <h6 class="m-1">Edition de {{geomMenu.name}}</h6>
+      <button class="btn btn-sm m-1" type="button" [ngClass]="getCurrentGeomMenu().edited ? 'btn-danger' : 'btn-secondary'" (click)="addGeomFromToolbar()">
         <fa-icon class="glyphicon" [icon]="editIcon"></fa-icon>
       </button>
 
@@ -140,9 +112,9 @@
 </ng-template>
 
 
-<ng-template #selectorMenu let-geomLayer='geomType'>
-  <a class="text-warning p-3" [ngClass]="geomTypeButton === geomLayer.name ? 'active' : ''" [id]="geomLayer.name + '-menu'" data-bs-toggle="tab" [attr.data-bs-target]="'#tab-' + geomLayer.name + '-features'" type="button" role="tab" aria-controls="" aria-selected="true" (click)="resetEditModeDefaultValues(false); displayGeomToolbar(geomLayer.name);">
-    <fa-icon class="glyphicon" [icon]="geomLayer.icon"></fa-icon>
+<ng-template #selectorMenu let-geomMenu='geomType'>
+  <a class="text-warning p-3" [ngClass]="geomMenu.selected ? 'active' : ''" [id]="geomMenu.name + '-menu'" data-bs-toggle="tab" [attr.data-bs-target]="'#tab-' + geomMenu.name + '-features'" type="button" role="tab" aria-controls="" aria-selected="true" (click)="setGeomMenu(geomMenu.name);">
+    <fa-icon class="glyphicon" [icon]="geomMenu.icon"></fa-icon>
   </a>
 </ng-template>
 

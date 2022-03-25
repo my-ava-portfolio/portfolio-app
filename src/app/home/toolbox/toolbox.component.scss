@@ -26,8 +26,8 @@ $max-height: 50vh;
   text-align: center;
 }
 
-#toolbox-sidebar ul li:hover{
-  background-color: rgb(206, 206, 206);
+#menus ul li:hover{
+  background-color: lightgrey!important; // if updated, check color mouseMoveCircle() on point_svg_layer.ts
 }
 
 #toolbox-sidebar ul li a {
@@ -97,8 +97,10 @@ $max-height: 50vh;
     overflow-y: scroll;
     height: $max-height;
   }
-  ul{}
 
 }
 
+.geom-color{
+  width: 5;
+}
 

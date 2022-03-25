@@ -5,11 +5,11 @@ import { getattr } from '../core/inputs';
 
 
 export class Point {
-
   id: string = `feat_${Date.now()}`;
   _name!: string;
   _tag: string = "noTag"
   _color: string = "#FF0000"
+  _editStatus: boolean = false;
   private _x!: number;
   private _y!: number;
 
@@ -57,6 +57,13 @@ export class Point {
     this._color = colorValue;
   }
 
+  get edited(): boolean {
+    return this._editStatus;
+  }
+  set edited(editStatus: boolean) {
+    this._editStatus = editStatus;
+  }
+
   toWkt(): string {
     return `POINT(${this._x} ${this._y})`;
   };
@@ -82,7 +89,10 @@ export class PointsSvgLayerOnLeaflet {
 
   private mapContainer: any;
   private layerName: string;
-  private pointCount: number = -1
+  private pointCount: number = -1;
+  private addActionEnabled!: boolean;
+
+  private currentGeomEdited: string = '';
 
   points: any[] = [];
 
@@ -92,8 +102,9 @@ export class PointsSvgLayerOnLeaflet {
 
   }
 
-
   addPoints(coordinates: any): void {
+    this.addActionEnabled = true
+
     this.pointCount += 1
     this.points.push(
       new Point(`Point ${this.pointCount.toString()}`,
@@ -103,6 +114,21 @@ export class PointsSvgLayerOnLeaflet {
     );
     this.buildPointsLayer()
   };
+
+  setCurrentGeomEdited(geomId: string): void {
+    this.currentGeomEdited = geomId;
+    let currentPoint = this.getPointById(geomId)
+    console.log(currentPoint)
+    if (currentPoint) {
+      currentPoint.edited = !currentPoint.edited
+
+    }
+  }
+  unsetCurrentGeomEdited(geomId: string): void {
+    this.getPointById(geomId).edited = false
+    this.currentGeomEdited = '';
+  }
+
 
   buildPointsLayer() {
     this.removeSvgLayer();
@@ -125,7 +151,7 @@ export class PointsSvgLayerOnLeaflet {
         return 'translate(' +
           this.mapContainer.latLngToLayerPoint([point.x, point.y]).x + ',' +
           this.mapContainer.latLngToLayerPoint([point.x, point.y]).y + ')';
-      });
+      })
 
     let dragHandler = d3.drag()
       .on("start", (e: any, d: any) => {
@@ -133,14 +159,20 @@ export class PointsSvgLayerOnLeaflet {
 
       })
       .on("drag", (e: any, d: any) => {
+        let pointsCurrentlyEdited = this.getPointCurrentlyEdited()
 
-        let coordsUpdated = this.mapContainer.layerPointToLatLng([e.sourceEvent.clientX, e.sourceEvent.clientY])
+        pointsCurrentlyEdited.forEach((element: Point, index: number) => {
+          if (element.id ===  d.id) {
+            let coordsUpdated = this.mapContainer.layerPointToLatLng([e.sourceEvent.clientX, e.sourceEvent.clientY])
 
-        let currentPoints: Point = e.subject;
-        currentPoints.x = coordsUpdated.lat
-        currentPoints.y = coordsUpdated.lng
+            let currentPoints: Point = e.subject;
+            currentPoints.x = coordsUpdated.lat
+            currentPoints.y = coordsUpdated.lng
 
-        this.updateMapLayer()
+            this.updateMapLayer()
+          }
+        });
+
       })
       .on("end", (e: any, d: any) => {
         this.mapContainer.dragging.enable();
@@ -188,8 +220,19 @@ export class PointsSvgLayerOnLeaflet {
     return pointFound;
   };
 
+  getPointCurrentlyEdited(): Point[] {
+    let pointEditedFound: Point[] = [];
+
+    this.points.forEach((element: Point, index: number) => {
+      if ( element.edited ) {
+        pointEditedFound.push(this.points[index]);
+      }
+    });
+
+    return pointEditedFound;
+  };
+
   updateGeomByProperty(filterPropertyName: any, filterPropertyValue: any, updatedPropertyName: any, updatedPropertyValue: any): void {
-    console.log("aaaaa")
     this.points.forEach((element: any, index: number) => {
       // element is a Point...
       if (element[filterPropertyName] === filterPropertyValue) {
@@ -201,7 +244,6 @@ export class PointsSvgLayerOnLeaflet {
   };
 
   highLightPointById(idToSelect: string): void {
-    console.log("pouette", d3.select('#' + idToSelect))
     d3.select('#' + idToSelect)
     .transition()
     .duration(1000)
@@ -259,48 +301,87 @@ export class PointsSvgLayerOnLeaflet {
 
     d3.select('#' + this.layerName + '-container')
       .selectAll("circle")
-      // .on("click", this.mouseClick.bind(this))
-      .on("mouseover", this.mouseOver.bind(this))
-      .on("mousemove", this.mouseMove.bind(this))
-      .on("mouseleave", this.mouseLeave.bind(this))
+      .on("click", this.mouseClickCircle.bind(this))
+      .on("mouseover", this.mouseOverCircle.bind(this))
+      .on("mousemove", this.mouseMoveCircle.bind(this))
+      .on("mouseleave", this.mouseLeaveCircle.bind(this))
 
     return toolTip
 
   }
 
-  mouseOver(e: any, d: any): void {
-    let tooltip = d3.select("#tooltip-" + this.layerName + d.id)
-    tooltip.classed('d-none', !tooltip.classed('d-none'));
+  mouseOverCircle(e: any, d: any): void {
+    this.enableToolTip(e, d);
+    this.highLightPointById(d.id);
+    // disable map event in order to click
+    this.disableMapClick()
 
     d3.select(e.currentTarget)
-      .style("opacity", 1)
+      .style("opacity", 1);
   }
 
-  mouseMove(e: any, d: any): void {
+  mouseMoveCircle(e: any, d: any): void {
     d3.select("#tooltip-" + this.layerName + d.id)
       .html(d.toWkt())
       .style("left", e.x + 15 + "px")
-      .style("top", e.y + 15 + "px")
+      .style("top", e.y + 15 + "px");
+
+      d3.select("#menus #" + d.id).style("background-color", "lightgrey")
 
   }
 
-  mouseLeave(e: any, d: any): void {
+  mouseLeaveCircle(e: any, d: any): void {
+    // enable map event in order to click
+    d3.select("#menus #" + d.id).style("background-color", "white")
+
+
+    if ( this.addActionEnabled ) {
+      this.enableMapClick()
+    }
+    this.disableToolTip(e, d)
+    this.unHighLightPointById(d.id)
+  }
+
+  mouseClickCircle(e: any, d: any): void {
+    this.disableToolTip(e, d)
+
+    d3.select("#" + d.id + ' .info-button').dispatch('click');
+  }
+
+  disableToolTip(e: any, d: any): void {
     let tooltip = d3.select("#tooltip-" + this.layerName + d.id)
     // to prevent display conflic if geom are near of each other
     if (!tooltip.classed('d-none')) {
       tooltip.classed('d-none', !tooltip.classed('d-none'));
     }
-
   }
 
-  mouseClick(e: any, d: any): void {
-    d3.select("#tooltip-" + this.layerName + d.id)
-      .html(d.to_wkt())
-      .style("left", e.x + 15 + "px")
-      .style("top", e.y + 15 + "px")
-      .style("opacity", 1)
-
+  enableToolTip(e: any, d: any): void {
+    let tooltip = d3.select("#tooltip-" + this.layerName + d.id)
+    tooltip.classed('d-none', !tooltip.classed('d-none'));
   }
+
+  enableMapClick(): void {
+    this.mapContainer.on('click', this.setCoordsOnMap.bind(this));
+  }
+
+  addButtonStatus(status: boolean): void {
+    this.addActionEnabled = status;
+  }
+
+  disableMapClick(): void {
+    this.mapContainer.off('click');
+  }
+
+  setCoordsOnMap(event: any): void {
+    // get coordinates from map click
+    const coordinates: any = {
+      x: event.latlng.lat,
+      y: event.latlng.lng
+    };
+    this.addPoints(coordinates)
+  }
+
 
 }
 
