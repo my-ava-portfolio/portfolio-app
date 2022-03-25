@@ -189,10 +189,11 @@ export class PointsSvgLayerOnLeaflet {
   };
 
   updateGeomByProperty(filterPropertyName: any, filterPropertyValue: any, updatedPropertyName: any, updatedPropertyValue: any): void {
-
+    console.log("aaaaa")
     this.points.forEach((element: any, index: number) => {
       // element is a Point...
       if (element[filterPropertyName] === filterPropertyValue) {
+        console.log(element[updatedPropertyName], updatedPropertyValue)
         element[updatedPropertyName] = updatedPropertyValue;
       }
     });
@@ -280,12 +281,15 @@ export class PointsSvgLayerOnLeaflet {
       .html(d.toWkt())
       .style("left", e.x + 15 + "px")
       .style("top", e.y + 15 + "px")
+
   }
 
   mouseLeave(e: any, d: any): void {
     let tooltip = d3.select("#tooltip-" + this.layerName + d.id)
-    tooltip.classed('d-none', !tooltip.classed('d-none'));
-
+    // to prevent display conflic if geom are near of each other
+    if (!tooltip.classed('d-none')) {
+      tooltip.classed('d-none', !tooltip.classed('d-none'));
+    }
 
   }
 

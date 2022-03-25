@@ -157,9 +157,9 @@
       <h5 class="modal-title" id="staticBackdropLabel">Informations</h5>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" *ngIf="geomFeature">
 
-      <ul class="list-unstyled" *ngIf="geomFeature">
+      <ul class="list-unstyled" >
 
         <li class="">
           <span class="me-1">{{ geomFeature.name }} </span>

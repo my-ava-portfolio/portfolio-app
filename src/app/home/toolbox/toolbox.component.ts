@@ -57,8 +57,8 @@ export class ToolboxComponent implements OnInit  {
 
   mapContainer!: any;
 
-  defaultNamePlaceHolder = 'Saisir un nom';
-  defaultTagPlaceHolder = 'Saisir un tag';
+  defaultNamePlaceHolder = 'Editer le nom';
+  defaultTagPlaceHolder = 'Editer le tag';
 
   mapContainerSubscription!: Subscription;
   getCoordsMapSubscription!: Subscription;
@@ -157,6 +157,7 @@ export class ToolboxComponent implements OnInit  {
 
       this.geomFeature = this.pointsLayer.getPointById(geomId);
       console.log(this.geomFeature)
+
     }
   }
 
@@ -176,6 +177,7 @@ export class ToolboxComponent implements OnInit  {
 
   refreshLayer(): void {
     if (this.getCurrentGeomType() === 'points') {
+      console.log("tttt")
       this.pointsLayer.buildPointsLayer();
     }
   }
