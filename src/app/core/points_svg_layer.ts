@@ -116,7 +116,6 @@ export class PointsSvgLayerOnLeaflet {
   };
 
   setCurrentGeomEdited(geomId: string): void {
-    this.currentGeomEdited = geomId;
     let currentPoint = this.getPointById(geomId)
     console.log(currentPoint)
     if (currentPoint) {
@@ -126,7 +125,6 @@ export class PointsSvgLayerOnLeaflet {
   }
   unsetCurrentGeomEdited(geomId: string): void {
     this.getPointById(geomId).edited = false
-    this.currentGeomEdited = '';
   }
 
 
@@ -273,11 +271,9 @@ export class PointsSvgLayerOnLeaflet {
 
   private updateMapLayer(): void {
 
-    console.log(this.points)
     d3.select('#' + this.layerName + '-container')
       .selectAll("circle")
       .attr('transform', (d: any) => {
-        console.log([d.x, d.y])
         return 'translate(' +
           this.mapContainer.latLngToLayerPoint([d.x, d.y]).x + ',' +
           this.mapContainer.latLngToLayerPoint([d.x, d.y]).y + ')';
@@ -285,6 +281,10 @@ export class PointsSvgLayerOnLeaflet {
   }
 
   initTooltip(): any {
+    d3.select("html")
+      .selectAll(".tooltip")
+      .remove()
+
     let toolTip = d3.select("html")
       .selectAll(".tooltip")
       .data(this.points)
@@ -374,12 +374,12 @@ export class PointsSvgLayerOnLeaflet {
   }
 
   setCoordsOnMap(event: any): void {
-    // get coordinates from map click
-    const coordinates: any = {
-      x: event.latlng.lat,
-      y: event.latlng.lng
-    };
-    this.addPoints(coordinates)
+      // get coordinates from map click
+      const coordinates: any = {
+        x: event.latlng.lat,
+        y: event.latlng.lng
+      };
+      this.addPoints(coordinates)
   }
 
 

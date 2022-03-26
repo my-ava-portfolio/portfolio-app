@@ -114,8 +114,18 @@
 
 <ng-template #selectorMenu let-geomMenu='geomType'>
   <a class="text-warning p-3" [ngClass]="geomMenu.selected ? 'active' : ''" [id]="geomMenu.name + '-menu'" data-bs-toggle="tab" [attr.data-bs-target]="'#tab-' + geomMenu.name + '-features'" type="button" role="tab" aria-controls="" aria-selected="true" (click)="setGeomMenu(geomMenu.name);">
-    <fa-icon class="glyphicon" [icon]="geomMenu.icon"></fa-icon>
+
+    <span type="button" class="position-relative">
+      <fa-icon class="glyphicon me-3" [icon]="geomMenu.icon"></fa-icon>
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        {{ geomMenu.features.length }}
+      </span>
+    </span>
   </a>
+
+
+
+
 </ng-template>
 
 

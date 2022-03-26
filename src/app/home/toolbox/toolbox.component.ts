@@ -29,9 +29,7 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
   centerIcon = centerIcon;
 
   pointsLayer!: PointsSvgLayerOnLeaflet;
-  pointsMapped: any[] = [];
   linesLayer!: LinesSvgLayerOnLeaflet;
-  linessMapped: any[] = [];
 
   geomTypesList: any[] = [
     {
@@ -123,6 +121,7 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
   setGeomMenu(menu: string): void {
     // STARTER FROM MENU //
     // reset
+    this.disableGeomFeatureEditing()
     this.resetGeomMenu()
 
     // disable all the map click events (from each geom editor class)
@@ -143,6 +142,19 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
       element.edited = false;
     });
   };
+
+  disableGeomFeatureEditing(): void {
+    if ( this.getCurrentGeomMenu() !== undefined ) {
+
+      let currentFeatures: any = this.getCurrentGeomMenu().features
+
+      if ( currentFeatures.length > 0 ) {
+        currentFeatures.forEach((element: any, _: any) => {
+          element.edited = false;
+        });
+      }
+    }
+  }
 
   switchEditGeomMenu(): void {
     this._getCurrentItemMenu().edited = !this._getCurrentItemMenu().edited;
@@ -180,6 +192,7 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
 
     } else {
       // so go to activate
+      console.log("edit on")
       this._startEditing(currentMenu.name)
     }
 
@@ -193,11 +206,8 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
       this.pointsLayer.enableMapClick()
       this.pointsLayer.addButtonStatus(true) // very important to support mouseover circle
 
-      this.pointsMapped = this.pointsLayer.points
-
     } else if ( currentMenu === 'lines' ) {
       // this.linesLayer.addPoints(0, coords);
-      this.linessMapped = []
     }
   };
 
