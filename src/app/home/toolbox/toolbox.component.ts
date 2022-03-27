@@ -121,8 +121,7 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
   setGeomMenu(menu: string): void {
     // STARTER FROM MENU //
     // reset
-    this.disableGeomFeatureEditing()
-    this.resetGeomMenu()
+    this.resetGeomMenuandEdits()
 
     // disable all the map click events (from each geom editor class)
     this.mapContainer.off('click')
@@ -135,26 +134,20 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
     });
   };
 
-  resetGeomMenu(): void {
+  resetGeomMenuandEdits(): void {
 
     this.geomTypesList.forEach((element, _) => {
       element.selected = false;
       element.edited = false;
+
+      element.features.forEach((element: any, _: any) => {
+        element.edited = false;
+      });
+
     });
+
+    this.pointsLayer.setAddButtonStatus(false);
   };
-
-  disableGeomFeatureEditing(): void {
-    if ( this.getCurrentGeomMenu() !== undefined ) {
-
-      let currentFeatures: any = this.getCurrentGeomMenu().features
-
-      if ( currentFeatures.length > 0 ) {
-        currentFeatures.forEach((element: any, _: any) => {
-          element.edited = false;
-        });
-      }
-    }
-  }
 
   switchEditGeomMenu(): void {
     this._getCurrentItemMenu().edited = !this._getCurrentItemMenu().edited;
@@ -186,7 +179,7 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
       // so go to desactivate
       if (currentMenu.name === "points") {
         this.pointsLayer.disableMapClick()
-        this.pointsLayer.addButtonStatus(false) // very important to support mouseover circle
+        this.pointsLayer.setAddButtonStatus(false) // very important to support mouseover circle
       }
       // TODO add lines and polygons cond
 
@@ -204,7 +197,7 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
   _startEditing(currentMenu: string): void {
     if ( currentMenu === 'points' ) {
       this.pointsLayer.enableMapClick()
-      this.pointsLayer.addButtonStatus(true) // very important to support mouseover circle
+      this.pointsLayer.setAddButtonStatus(true) // very important to support mouseover circle
 
     } else if ( currentMenu === 'lines' ) {
       // this.linesLayer.addPoints(0, coords);
