@@ -3,6 +3,8 @@ import * as L from 'leaflet';
 
 import { getattr } from '../core/inputs';
 
+import { coordinates } from '../core/core-geom';
+
 
 export class Point {
   id: string = `feat_${Date.now()}`;
@@ -10,30 +12,27 @@ export class Point {
   _tag: string = "noTag"
   _color: string = "#FF0000"
   _editStatus: boolean = false;
-  private _x!: number;
-  private _y!: number;
+  private _coords!: coordinates;
 
   constructor(
     name: string,
-    coordsX: number,
-    coordsY: number,
+    coords: coordinates,
   ) {
     this._name = name;
-    this._x = coordsX;
-    this._y = coordsY;
+    this._coords = coords;
   }
 
   get x(): number {
-    return this._x;
+    return this._coords.x;
   }
   set x(coord: number) {
-    this._x = coord;
+    this._coords.x = coord;
   }
   get y(): number {
-    return this._y;
+    return this._coords.y;
   }
   set y(coord: number) {
-    this._y = coord;
+    this._coords.y = coord;
   }
 
   get tag(): string {
@@ -65,7 +64,7 @@ export class Point {
   }
 
   toWkt(): string {
-    return `POINT(${this._x} ${this._y})`;
+    return `POINT(${this._coords.x} ${this._coords.y})`;
   };
 
   getProperties(): any {
@@ -79,9 +78,6 @@ export class Point {
     );
     return properties;
   }
-
-
-
 }
 
 
@@ -108,8 +104,7 @@ export class PointsSvgLayerOnLeaflet {
     this.pointCount += 1
     this.points.push(
       new Point(`Point ${this.pointCount.toString()}`,
-       coordinates.x,
-        coordinates.y
+       coordinates
       )
     );
     this.buildLayer()
