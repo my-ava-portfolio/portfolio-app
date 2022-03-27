@@ -83,6 +83,7 @@ export class PointGeom extends CommonProperties {
 
 }
 
+
 export class Point extends PointGeom {
   id: string = `feat_${Date.now()}`;
   private _color: string = "#FF0000"
@@ -103,6 +104,41 @@ export class Point extends PointGeom {
   // TODO add more styles getter and setter
 
 }
+
+
+
+// lines
+export class Line extends CommonProperties {
+  nodesLine: Point[] = [];
+  nodesIdx: number = -1;
+
+  constructor(
+    name: string,
+  ) {
+    super(name);
+  }
+
+  addNode(coords: CoordinatesType) {
+    this.nodesIdx += 1;
+    this.nodesLine.push(
+      new Point('PointLine-' + this.nodesIdx, coords)
+    )
+  }
+
+  toWkt(): string {
+    let nodesLineCoordinates: string[] = []
+
+    this.nodesLine.forEach(
+      (node: any): void => {
+        nodesLineCoordinates.push([node.x, node.y].join(' '))
+      }
+    );
+    return `LINESTRING(${nodesLineCoordinates.join(',')})`;
+  };
+
+}
+
+
 
 
 export function getattr(obj: any, prop: string, def = null ): any {
