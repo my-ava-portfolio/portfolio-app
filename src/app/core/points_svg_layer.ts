@@ -83,18 +83,20 @@ export class Point {
 
 export class PointsSvgLayerOnLeaflet {
 
+  private containerTag: string = "-container"
   private mapContainer: any;
   private layerName: string;
   private pointCount: number = -1;
   private addActionEnabled!: boolean;
-
-  private currentGeomEdited: string = '';
 
   points: any[] = [];
 
   constructor(mapContainer: any, layerName: string) {
     this.mapContainer = mapContainer;
     this.layerName = layerName;
+
+    // init it only one time
+    this.mapMoveEndEvent()
 
   }
 
@@ -128,24 +130,20 @@ export class PointsSvgLayerOnLeaflet {
     this.initSvgLayer()
 
 
-    d3.select('#' + this.layerName + '-container')
-      .selectAll("circle")
+    d3.select('#' + this.layerName + this.containerTag)
+      .selectAll(".feature")
       .data(this.points)
       .enter()
+      .append("g")
+      .attr("class", "feature")
+      .attr("id", (d: any) => {return d.id})
       .append("circle")
       .style("r", 14)
       .style("fill", (d: any) => {return d.color})
-      .attr("id", (d: any) => {return d.id})
       .attr("class", "cursor")
       .attr("stroke", (d: any) => {return d.color})
       .attr("stroke-width", "3px")
       .attr("fill-opacity", .4)
-      .attr('transform', (point: any, event: any) => {
-        console.log(point, event)
-        return 'translate(' +
-          this.mapContainer.latLngToLayerPoint([point.x, point.y]).x + ',' +
-          this.mapContainer.latLngToLayerPoint([point.x, point.y]).y + ')';
-      })
 
     let dragHandler = d3.drag()
       .on("start", (e: any, d: any) => {
@@ -153,34 +151,24 @@ export class PointsSvgLayerOnLeaflet {
 
       })
       .on("drag", (e: any, d: any) => {
-        let pointsCurrentlyEdited = this.getPointCurrentlyEdited()
+        let currentPoint: Point = e.subject;
 
-        pointsCurrentlyEdited.forEach((element: Point, index: number) => {
-          if (element.id === d.id) {
-            let pointsGroup = d3.select('#' + this.layerName + '-container')
-            var xy = d3.pointer(e, pointsGroup.node()); // WARNING we have to get the event coordinates based on the upper <g> to be compatible with the leaflet translation (panning)
+        if (currentPoint.edited) {
+          let pointsGroup = d3.select('#' + this.layerName + this.containerTag)
+          // WARNING we have to get the event coordinates based on the upper <g> to be compatible with the leaflet translation (panning)
+          let divCoords: number[] = d3.pointer(e, pointsGroup.node()); // WARNING we have to get the event coordinates based on the upper <g> to be compatible with the leaflet translation (panning)
 
-            d3.select('#' + d.id)
-              // .style('r', '15')
-              .attr('transform', 'translate(' + xy[0] + ',' + xy[1] + ')' );
+          let coordsUpdated = this.mapContainer.layerPointToLatLng(divCoords)
 
-            console.log(xy,[e.sourceEvent.x, e.sourceEvent.y])
+          let currentPoint: Point = e.subject;
+          currentPoint.x = coordsUpdated.lat
+          currentPoint.y = coordsUpdated.lng
 
-
-
-            let coordsUpdated = this.mapContainer.layerPointToLatLng([xy[0], xy[1]])
-
-            let currentPoints: Point = e.subject;
-            currentPoints.x = coordsUpdated.lat
-            currentPoints.y = coordsUpdated.lng
-
-            // this.updateMapLayer()
-          }
-        });
+          this.updateMapLayer()
+        }
 
       })
       .on("end", (e: any, d: any) => {
-        console.log(e)
         this.mapContainer.dragging.enable();
       });
 
@@ -189,12 +177,24 @@ export class PointsSvgLayerOnLeaflet {
         .selectAll("circle")
     );
 
-    this.mapContainer.on("moveend", this.updateMapLayer.bind(this))
-
     this.updateMapLayer()
     this.initTooltip()
 
   };
+
+  private updateMapLayer(): void {
+    console.log("haha")
+    d3.selectAll('.feature')
+      .attr('transform', (d: any) => {
+        return 'translate(' +
+          this.mapContainer.latLngToLayerPoint([d.x, d.y]).x + ',' +
+          this.mapContainer.latLngToLayerPoint([d.x, d.y]).y + ')';
+      })
+  }
+
+  mapMoveEndEvent(): void {
+    this.mapContainer.on("moveend", this.updateMapLayer.bind(this))
+  }
 
   removeSvgLayer(deletePoints: boolean = false): void {
     d3.select('#' + this.layerName).remove()
@@ -250,7 +250,7 @@ export class PointsSvgLayerOnLeaflet {
   };
 
   highLightPointById(idToSelect: string): void {
-    d3.select('#' + idToSelect)
+    d3.select('#' + idToSelect + " circle")
     .transition()
     .duration(1000)
     .ease(d3.easeElastic)
@@ -259,7 +259,7 @@ export class PointsSvgLayerOnLeaflet {
   };
 
   unHighLightPointById(idToSelect: string): void {
-    d3.select('#' + idToSelect)
+    d3.select('#' + idToSelect + " circle")
     .transition()
     .duration(1000)
     .ease(d3.easeElastic)
@@ -272,21 +272,12 @@ export class PointsSvgLayerOnLeaflet {
     const svgLayerObject = d3.select(svgLayerContainer._container)
       .attr('id', this.layerName)
       .attr('pointer-events', 'auto');
+
     svgLayerObject.select('g')
       .attr('class', 'leaflet-zoom-hide')
-      .attr('id', this.layerName + '-container');
+      .attr('id', this.layerName +  this.containerTag);
+
   };
-
-  private updateMapLayer(): void {
-
-    d3.select('#' + this.layerName + '-container')
-      .selectAll("circle")
-      .attr('transform', (d: any) => {
-        return 'translate(' +
-          this.mapContainer.latLngToLayerPoint([d.x, d.y]).x + ',' +
-          this.mapContainer.latLngToLayerPoint([d.x, d.y]).y + ')';
-      })
-  }
 
   initTooltip(): any {
     d3.select("html")
@@ -307,8 +298,8 @@ export class PointsSvgLayerOnLeaflet {
       .style("border-width", "3px")
       .style("padding", "5px");
 
-    d3.select('#' + this.layerName + '-container')
-      .selectAll("circle")
+    d3.select('#' + this.layerName + this.containerTag)
+      .selectAll(".feature")
       .on("click", this.mouseClickCircle.bind(this))
       .on("mouseover", this.mouseOverCircle.bind(this))
       .on("mousemove", this.mouseMoveCircle.bind(this))
