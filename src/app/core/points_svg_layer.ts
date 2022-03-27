@@ -127,6 +127,7 @@ export class PointsSvgLayerOnLeaflet {
     this.removeSvgLayer();
     this.initSvgLayer()
 
+
     d3.select('#' + this.layerName + '-container')
       .selectAll("circle")
       .data(this.points)
@@ -155,19 +156,31 @@ export class PointsSvgLayerOnLeaflet {
         let pointsCurrentlyEdited = this.getPointCurrentlyEdited()
 
         pointsCurrentlyEdited.forEach((element: Point, index: number) => {
-          if (element.id ===  d.id) {
-            let coordsUpdated = this.mapContainer.layerPointToLatLng([e.sourceEvent.clientX, e.sourceEvent.clientY])
+          if (element.id === d.id) {
+            let pointsGroup = d3.select('#' + this.layerName + '-container')
+            var xy = d3.pointer(e, pointsGroup.node()); // WARNING we have to get the event coordinates based on the upper <g> to be compatible with the leaflet translation (panning)
+
+            d3.select('#' + d.id)
+              // .style('r', '15')
+              .attr('transform', 'translate(' + xy[0] + ',' + xy[1] + ')' );
+
+            console.log(xy,[e.sourceEvent.x, e.sourceEvent.y])
+
+
+
+            let coordsUpdated = this.mapContainer.layerPointToLatLng([xy[0], xy[1]])
 
             let currentPoints: Point = e.subject;
             currentPoints.x = coordsUpdated.lat
             currentPoints.y = coordsUpdated.lng
 
-            this.updateMapLayer()
+            // this.updateMapLayer()
           }
         });
 
       })
       .on("end", (e: any, d: any) => {
+        console.log(e)
         this.mapContainer.dragging.enable();
       });
 
