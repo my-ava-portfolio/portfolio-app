@@ -15,51 +15,45 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ColorPickerModule } from 'ngx-color-picker';
 
-import { ResumeService } from './services/resume.service';
-import { GalleryService } from './services/gallery.service';
-import { MapService } from './services/map.service';
-import { SafeUrl, JoinPipe, ReversePipe } from './core/pipes';
+import { ResumeService } from '@services/resume.service';
+import { GalleryService } from '@services/gallery.service';
+import { MapService } from '@services/map.service';
+import { SafeUrl, JoinPipe, ReversePipe } from '@shared/pipes';
 
 import { Routes } from '@angular/router';
 
-import { SwipeDirective } from './directives/swipe.directive';
-import { HoverClassDirective } from './directives/hover-class.directive';
-import { ClickClassDirective } from './directives/click-class.directive';
+import { SwipeDirective } from '@directives/swipe.directive';
+import { HoverClassDirective } from '@directives/hover-class.directive';
+import { ClickClassDirective } from '@directives/click-class.directive';
 
-import { BackgroundComponent } from './background/map/background.component';
-import { NavigationBarComponent } from './background/navigation-bar/navigation-bar.component';
-import { ControlBarComponent } from './background/control-bar/control-bar.component';
+import { BackgroundComponent } from '@components-shared/map/background.component';
+import { NavigationBarComponent } from '@components-shared/navigation-bar/navigation-bar.component';
+import { ControlBarComponent } from '@components-shared/control-bar/control-bar.component';
 
-import { MainViewComponent } from './main-view/main-view.component';
+import { MainViewComponent } from '@components/main-view/main-view.component';
 
-// import { ResumeViewComponent } from './resume/resume-view/resume-view.component';
-// import { CenterbarJobsComponent } from './resume/centerbar-jobs/centerbar-jobs.component';
-// import { CenterbarProjectsComponent } from './resume/centerbar-projects/centerbar-projects.component';
-// import { CenterbarPublicationsComponent } from './resume/centerbar-publications/centerbar-publications.component';
-// import { CenterbarVolunteerComponent } from './resume/centerbar-volunteer/centerbar-volunteer.component';
-// import { EducationBarComponent } from './resume/education-bar/education-bar.component';
-import { HomeViewComponent } from './home/home-view/home-view.component';
-import { ProfilCardComponent } from './home/profil-card/profil-card.component';
+import { HomeViewComponent } from '@components/home/home-view/home-view.component';
+import { ProfilCardComponent } from '@components/home/profil-card/profil-card.component';
+import { ToolboxComponent } from '@components/home/toolbox/toolbox.component';
 
-import { EducationViewComponent } from './education/education-view/education-view.component';
-import { DegreesBarComponent } from './education/degrees-bar/degrees-bar.component';
-import { TrainingsBarComponent } from './education/trainings-bar/trainings-bar.component';
+import { EducationViewComponent } from '@components/education/education-view/education-view.component';
+import { DegreesBarComponent } from '@components/education/degrees-bar/degrees-bar.component';
+import { TrainingsBarComponent } from '@components/education/trainings-bar/trainings-bar.component';
 
-import { RightbarSkillsComponent } from './resume/rightbar-skills/rightbar-skills.component';
-import { GraphBarComponent } from './experiences/graph-bar/graph-bar.component';
-import { ProfilBarComponent } from './experiences/profil-bar/profil-bar.component';
-import { ActivityBarComponent } from './experiences/activity-bar/activity-bar.component';
-import { ExperiencesViewComponent } from './experiences/experiences-view/experiences-view.component';
+import { RightbarSkillsComponent } from '@components/experiences/rightbar-skills/rightbar-skills.component';
+import { GraphBarComponent } from '@components/experiences/graph-bar/graph-bar.component';
+import { ProfilBarComponent } from '@components/experiences/profil-bar/profil-bar.component';
+import { ActivityBarComponent } from '@components/experiences/activity-bar/activity-bar.component';
+import { ExperiencesViewComponent } from '@components/experiences/experiences-view/experiences-view.component';
 
-import { MapViewComponent } from './map/map-view/map-view.component';
-import { ThemeLegendComponent } from './map/theme-legend/theme-legend.component';
-import { TimeLegendComponent } from './map/time-legend/time-legend.component';
+import { MapViewComponent } from '@components/map/map-view/map-view.component';
+import { ThemeLegendComponent } from '@components/map/theme-legend/theme-legend.component';
+import { TimeLegendComponent } from '@components/map/time-legend/time-legend.component';
 
-import { GalleryViewComponent } from './gallery/gallery-view/gallery-view.component';
-import { NotesViewComponent } from './notes/notes-view/notes-view.component';
+import { GalleryViewComponent } from '@components/gallery/gallery-view/gallery-view.component';
+import { NotesViewComponent } from './components/notes/notes-view/notes-view.component';
 
-import { ShortViewComponent } from './resume/short-view/short-view.component';
-import { ToolboxComponent } from './home/toolbox/toolbox.component';
+// import { ShortViewComponent } from './resume/short-view/short-view.component';
 
 
 const appRoutes: Routes = [
@@ -86,7 +80,7 @@ const appRoutes: Routes = [
 
   // no layout routes
   // { path: 'map', component: MapViewComponent, pathMatch: 'full'  },
-  { path: 'short_resume', component: ShortViewComponent, data: { title: 'Profil', page: 'short_resume' } },
+  // { path: 'short_resume', component: ShortViewComponent, data: { title: 'Profil', page: 'short_resume' } },
   // { path: 'home', component: HomeViewComponent, data: { title: 'Amaury Valorge Portfolio' } },
 ];
 
@@ -102,7 +96,7 @@ registerLocaleData(localeFr);
     SafeUrl,
     JoinPipe,
     ReversePipe,
-    ShortViewComponent,
+    // ShortViewComponent,
     MainViewComponent,
     BackgroundComponent,
     MapViewComponent,

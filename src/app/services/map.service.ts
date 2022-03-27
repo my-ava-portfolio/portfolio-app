@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 
-import { apiUrl } from '../core/inputs';
+import { apiUrl } from '@shared/inputs';
 
 
 @Injectable({
