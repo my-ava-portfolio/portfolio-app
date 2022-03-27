@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import * as L from 'leaflet';
 
-import { Point } from './core-geom';
+import { Point, CoordinatesType } from './core-geom';
 
 
 
@@ -14,7 +14,7 @@ export class PointsSvgLayerOnLeaflet {
   private pointCount: number = -1;
   private addActionEnabled!: boolean;
 
-  points: any[] = [];
+  points: Point[] = [];
 
   constructor(mapContainer: any, layerName: string) {
     this.mapContainer = mapContainer;
@@ -25,25 +25,21 @@ export class PointsSvgLayerOnLeaflet {
 
   }
 
-  addPoints(coordinates: any): void {
+  addPoints(coordinates: CoordinatesType): void {
     this.addActionEnabled = true
-    console.log(coordinates)
     this.pointCount += 1
     this.points.push(
       new Point(`Point ${this.pointCount.toString()}`,
        coordinates
       )
     );
-    console.log( this.points)
     this.buildLayer()
   };
 
   setCurrentGeomEdited(geomId: string): void {
     let currentPoint = this.getPointById(geomId)
-    console.log(currentPoint)
     if (currentPoint) {
       currentPoint.edited = !currentPoint.edited
-
     }
   }
   unsetCurrentGeomEdited(geomId: string): void {

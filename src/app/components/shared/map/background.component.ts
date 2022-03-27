@@ -3,12 +3,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import * as L from 'leaflet';
-import * as d3 from 'd3';
 
 import { MapService } from '@services/map.service';
-
-import { PointsSvgLayerOnLeaflet } from '@helpers/points_svg_layer';
-import { LinesSvgLayerOnLeaflet } from '@helpers/lines_svg_layer';
 
 
 @Component({
@@ -28,23 +24,9 @@ export class BackgroundComponent implements OnInit {
   });
 
   map: any;
-  currentCoordsSelected!: any;
-
-  homePointsMapLayer: PointsSvgLayerOnLeaflet | null = null;
-  homeLinesMapLayer: LinesSvgLayerOnLeaflet | null = null;
-
-
-  // will contain all my layers and their nodes
-  mapLayers: any = {};
 
   mapContainerCalledSubscription!: Subscription;
   mapServiceSubscription!: Subscription;
-
-  newPointsSvgMapSubscription!: Subscription;
-  removePointsSvgMapSubscription!: Subscription;
-
-  newLinesSvgMapSubscription!: Subscription;
-  removeLinesSvgMapSubscription!: Subscription;
 
   // in order to activate map interactions
   mapInteractionEnabled: boolean = false;
@@ -67,44 +49,6 @@ export class BackgroundComponent implements OnInit {
       }
     );
 
-    // points layer support
-    this.newPointsSvgMapSubscription = this.mapService.newPointsSvgLayerName.subscribe(
-      (layerName: string) => {
-        this.homePointsMapLayer = new PointsSvgLayerOnLeaflet(this.map, layerName);
-        this.homePointsMapLayer.buildLayer();
-      }
-    );
-    this.removePointsSvgMapSubscription = this.mapService.removePointsSvgLayerName.subscribe(
-      (layerName: string) => {
-        console.log("hahaha")
-        if (this.homePointsMapLayer !== null) {
-          this.homePointsMapLayer.removeSvgLayer(true)
-          this.homePointsMapLayer = null;
-        }
-
-      }
-    );
-
-    // lines layer support
-    this.newLinesSvgMapSubscription = this.mapService.newLinesSvgLayerName.subscribe(
-      (layerName: string) => {
-        this.homeLinesMapLayer = new LinesSvgLayerOnLeaflet(this.map, layerName);
-        this.homeLinesMapLayer.addLines();
-        // this.homeLinesMapLayer.buildLineLayer();
-      }
-    );
-    this.removeLinesSvgMapSubscription = this.mapService.removeLinesSvgLayerName.subscribe(
-      (layerName: string) => {
-        console.log("hahaha")
-        if (this.homeLinesMapLayer !== null) {
-          this.homeLinesMapLayer.removeSvgLayer(true)
-          this.homeLinesMapLayer = null;
-        }
-
-      }
-    );
-
-
   }
 
   ngOnInit(): void {
@@ -114,7 +58,6 @@ export class BackgroundComponent implements OnInit {
   ngOnDestroy(): void {
     this.mapContainerCalledSubscription.unsubscribe();
     this.mapServiceSubscription.unsubscribe();
-    this.newPointsSvgMapSubscription.unsubscribe();
   }
 
   sendMapContainer(): void {
