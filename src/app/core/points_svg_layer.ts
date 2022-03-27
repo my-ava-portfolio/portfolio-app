@@ -27,13 +27,14 @@ export class PointsSvgLayerOnLeaflet {
 
   addPoints(coordinates: any): void {
     this.addActionEnabled = true
-
+    console.log(coordinates)
     this.pointCount += 1
     this.points.push(
       new Point(`Point ${this.pointCount.toString()}`,
        coordinates
       )
     );
+    console.log( this.points)
     this.buildLayer()
   };
 
@@ -111,6 +112,7 @@ export class PointsSvgLayerOnLeaflet {
     console.log("haha")
     d3.selectAll('.feature')
       .attr('transform', (d: any) => {
+        console.log(d)
         return 'translate(' +
           this.mapContainer.latLngToLayerPoint([d.x, d.y]).x + ',' +
           this.mapContainer.latLngToLayerPoint([d.x, d.y]).y + ')';
@@ -289,7 +291,7 @@ export class PointsSvgLayerOnLeaflet {
     this.mapContainer.on('click', this.setCoordsOnMap.bind(this));
   }
 
-  addButtonStatus(status: boolean): void {
+  setAddButtonStatus(status: boolean): void {
     this.addActionEnabled = status;
   }
 
@@ -298,12 +300,12 @@ export class PointsSvgLayerOnLeaflet {
   }
 
   setCoordsOnMap(event: any): void {
-      // get coordinates from map click
-      const coordinates: any = {
-        x: event.latlng.lat,
-        y: event.latlng.lng
-      };
-      this.addPoints(coordinates)
+    // get coordinates from map click
+    const coordinates: any = {
+      x: event.latlng.lat,
+      y: event.latlng.lng
+    };
+    this.addPoints(coordinates)
   }
 
 
