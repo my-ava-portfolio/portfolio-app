@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { centerIcon, helpIcon, removeIcon, toolsIcon, locationIcon, lineIcon, PolygonIcon, editIcon, addIcon } from '../../core/inputs';
 
 import { PointsSvgLayerOnLeaflet } from '../../core/points_svg_layer';
-import { Point } from '../../core/points_svg_layer';
+import { Point } from '../../core/core-geom';
 
 import { LinesSvgLayerOnLeaflet } from '../../core/lines_svg_layer';
 import { Subscription } from 'rxjs/internal/Subscription';

@@ -256,6 +256,3 @@ export function stringToColor(inputText: string, seed: number): string {
 }
 
 
-export function getattr(obj: any, prop: string, def = null ): any {
-  return prop in obj ? obj[prop] : def;
-}
