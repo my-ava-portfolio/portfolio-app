@@ -80,7 +80,7 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
         this.mapContainer = map;
 
         this.pointsLayer = new PointsSvgLayerOnLeaflet(this.mapContainer, "sandboxPoints");
-        this.pointsLayer.buildPointsLayer();
+        this.pointsLayer.buildLayer();
 
         // this.linesLayer = new LinesSvgLayerOnLeaflet(this.mapContainer, "sandboxLines")
         // this.linesLayer.addLines();
@@ -248,7 +248,7 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
 
   refreshLayer(): void {
     if (this.getCurrentGeomMenu().name === 'points') {
-      this.pointsLayer.buildPointsLayer();
+      this.pointsLayer.buildLayer();
     }
   };
 

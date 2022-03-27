@@ -71,7 +71,7 @@ export class BackgroundComponent implements OnInit {
     this.newPointsSvgMapSubscription = this.mapService.newPointsSvgLayerName.subscribe(
       (layerName: string) => {
         this.homePointsMapLayer = new PointsSvgLayerOnLeaflet(this.map, layerName);
-        this.homePointsMapLayer.buildPointsLayer();
+        this.homePointsMapLayer.buildLayer();
       }
     );
     this.removePointsSvgMapSubscription = this.mapService.removePointsSvgLayerName.subscribe(

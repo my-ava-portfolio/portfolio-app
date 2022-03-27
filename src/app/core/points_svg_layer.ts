@@ -112,7 +112,7 @@ export class PointsSvgLayerOnLeaflet {
         coordinates.y
       )
     );
-    this.buildPointsLayer()
+    this.buildLayer()
   };
 
   setCurrentGeomEdited(geomId: string): void {
@@ -128,7 +128,7 @@ export class PointsSvgLayerOnLeaflet {
   }
 
 
-  buildPointsLayer() {
+  buildLayer() {
     this.removeSvgLayer();
     this.initSvgLayer()
 
@@ -203,7 +203,7 @@ export class PointsSvgLayerOnLeaflet {
         this.points.splice(index, 1);
       }
     });
-    this.buildPointsLayer()
+    this.buildLayer()
   };
 
   getPointById(idToSelect: string): Point {
