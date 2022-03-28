@@ -1,0 +1,16 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { MapViewComponent } from '@modules/map/map-view/map-view.component';
+
+
+const routes: Routes = [
+  { path: '', component: MapViewComponent, data: { title: 'Carte des activités', page: 'map' } },
+]
+
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class MapRoutingModule { }
