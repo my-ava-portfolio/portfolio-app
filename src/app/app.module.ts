@@ -16,11 +16,11 @@ import { GalleryService } from '@services/gallery.service';
 import { MapService } from '@services/map.service';
 
 
-import { SwipeDirective } from '@directives/swipe.directive';
-import { HoverClassDirective } from '@directives/hover-class.directive';
-import { ClickClassDirective } from '@directives/click-class.directive';
+import { SwipeDirective } from '@shared/directives/swipe.directive';
+import { HoverClassDirective } from '@shared/directives/hover-class.directive';
+import { ClickClassDirective } from '@shared/directives/click-class.directive';
 
-import { BackgroundComponent } from '@shared/layout/map/background.component';
+import { BackgroundComponent } from '@shared/layout/background-map/background.component';
 import { NavigationBarComponent } from '@shared/layout/navigation-bar/navigation-bar.component';
 import { ControlBarComponent } from '@shared/layout/control-bar/control-bar.component';
 

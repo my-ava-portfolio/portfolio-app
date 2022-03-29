@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { PipesModule } from './../shared/pipes/pipes.module';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
-import { ExperiencesRoutingModule } from './experiences-routing.module';
+import { ExperiencesRoutingModule } from '@modules/experiences/experiences-routing.module';
 
 import { RightbarSkillsComponent } from '@modules/experiences/rightbar-skills/rightbar-skills.component';
 import { GraphBarComponent } from '@modules/experiences/graph-bar/graph-bar.component';
