@@ -104,4 +104,8 @@ export class ActivityBarComponent implements OnInit, OnChanges {
 
   }
 
+  trackByMethod(index:number, el:any): number {
+    return el.identifier;
+  }
+
 }

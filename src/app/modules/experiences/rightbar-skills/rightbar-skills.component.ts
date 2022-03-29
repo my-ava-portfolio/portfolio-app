@@ -31,22 +31,7 @@ export class RightbarSkillsComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    // private resumeService: ResumeService
   ) {
-
-    // this.skillsDataSubscription = this.resumeService.skillsFilteredData.subscribe(
-    //   (data) => {
-    //     this.skillsData = data;
-
-    //     this.isDataAvailable = true;
-    //     console.log(data);
-    //   },
-    //   (error) => {
-    //     console.log('error');
-    //     this.isDataAvailable = false;
-
-    //   }
-    // );
 
   }
 
@@ -54,6 +39,11 @@ export class RightbarSkillsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+  }
+
+  trackByMethod(index: number, el: any): number {
+    // TODO add an id field
+    return el.name;
   }
 
 }

@@ -62,7 +62,7 @@
   <div  class="row justify-content-center">
     <div id="timeline">
 
-      <div [id]="activity.identifier" class="timeline-item mb-3 mb-lg-0" *ngFor="let activity of activitiesData;let indexOfActivity=index;">
+      <div [id]="activity.identifier" class="timeline-item mb-3 mb-lg-0" *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod">
         <div class="timeline-icon">
           <div class="row align-items-center h-100 text-center text-white fw-bold">
             <div class="col-12">

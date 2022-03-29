@@ -33,7 +33,7 @@
 
       <div class="row justify-content-around">
 
-        <div class="skills col-6" *ngFor="let skill of skillsData[category]; let idx = index">
+        <div class="skills col-6" *ngFor="let skill of skillsData[category]; let idx = index; trackBy: trackByMethod">
           <h6 [ngClass]="{ 'collapsed':!skill.active || !skill.enabled, 'pointer':skill.active }" class="" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + category + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapse' + category + idx"><a><fa-icon class="me-2"  clickClass="rotation" [icon]="arrowDownIcon"></fa-icon>{{ skill.name }}</a></h6>
 
           <div *ngIf="skill.enabled; then skillDetails"></div>
