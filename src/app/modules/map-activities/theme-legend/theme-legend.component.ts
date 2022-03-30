@@ -18,7 +18,7 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
   legendActivities = legendActivities;
   sliderBarId = sliderBarId;
 
-  widthLegendElement = 250;
+  widthLegendElement = 200;
   heightLegendElement = 140;
   heightMoveLegendElement = 60;
 

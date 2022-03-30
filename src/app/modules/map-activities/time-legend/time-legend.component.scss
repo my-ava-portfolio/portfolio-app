@@ -61,3 +61,14 @@ circle.preselected {
   stroke: black!important;
   stroke-width: 2px!important;
 }
+
+#slider-bar {
+  width: 40em;
+}
+
+
+@media (max-width: 576px){
+  #slider-bar {
+    width: 20em;
+  }
+}

@@ -12,6 +12,7 @@ import { apiUrl } from '@core/inputs';
 export class MapService {
 
   mapContainer: Subject<any> = new Subject<any>();
+  mapContainerScale: Subject<any> = new Subject<any>();
 
   private apiUrlActivitiesGeoData = apiUrl + 'activities_geodata';
   ErrorapiUrlActivitiesGeoDataApiFound: Subject<string> = new Subject<string>();
@@ -21,6 +22,7 @@ export class MapService {
   tripsGeoDataToMap: Subject<any[]> = new Subject<any[]>();
 
   mapContainerCalled: Subject<boolean> = new Subject<boolean>();
+  mapContainerLegendCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 
   newPointsSvgLayerName: Subject<string> = new Subject<string>();
@@ -39,12 +41,20 @@ export class MapService {
     this.mapContainerCalled.next(true);
   }
 
+  getMapContainerForLegend(): void {
+    this.mapContainerLegendCalled.next(true);
+  }
+
   resetMapView(): void {
     this.isMapViewReset.next(true)
   }
 
   sendMapContainer(mapContainer: any): void {
     this.mapContainer.next(mapContainer);
+  }
+
+  sendMapScale(scaleFeatures: any): void {
+    this.mapContainerScale.next(scaleFeatures);
   }
 
   pullActivitiesGeoData(): void {

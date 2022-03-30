@@ -188,7 +188,7 @@ export const experiencesPages: any = {
 
 export const mapPages: any = {
   id: 'map',
-  route: '/map',
+  route: '/map/activities',
   title: 'Carte',
   verbose_title: 'Accès à la carte',
   icon: mapIcon

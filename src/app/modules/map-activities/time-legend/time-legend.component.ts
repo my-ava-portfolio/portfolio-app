@@ -14,7 +14,7 @@ import * as d3 from 'd3';
   selector: 'app-time-legend',
   templateUrl: './time-legend.component.html',
   styleUrls: ['./time-legend.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None  // TODO avoid this
 })
 export class TimeLegendComponent implements OnInit, OnDestroy {
   @Input() currentActivityIdSelected: any;

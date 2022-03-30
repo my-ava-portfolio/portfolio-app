@@ -1,13 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MapViewComponent } from '@modules/map/map-view/map-view.component';
+import { LayoutComponent } from '@modules/map/layout/layout.component';
 
 
 const routes: Routes = [
-  { path: '', component: MapViewComponent, data: { title: 'Carte des activités', page: 'map' } },
-]
 
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'activities',
+        loadChildren: () => import('@modules/map-activities/map-activities.module').then(m => m.MapActivitiesModule),
+      },
+      {
+        path: 'sandbox',
+        loadChildren: () => import('@modules/map-sandbox/map-sandbox.module').then(m => m.MapSandboxModule),
+      },
+    ]
+  }
+]
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

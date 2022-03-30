@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewEncapsulation, AfterViewInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -25,7 +25,7 @@ import { ControlerService } from 'src/app/services/controler.service';
   styleUrls: ['./map-view.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class MapViewComponent implements OnInit, OnDestroy  {
+export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
   imageProfile: string = imageProfile;
 
 
@@ -69,6 +69,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   circleWidth = '2.5px';
 
   mapContainerSubscription!: Subscription;
+  ScaleFeaturesSubscription!: Subscription;
+
   pullActivitiesGeoDataToMapSubscription!: Subscription;
   pullTripsGeoDataToMapSubscription!: Subscription;
   pullPageContentWidthSubscription!: Subscription;
@@ -86,32 +88,22 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
+    // this.ScaleFeaturesSubscription = this.mapService.mapContainerScale.subscribe(
+    //   (scaleFeatures: any) => {
+
+    //     const divScale: any = window.document.getElementById('legend-scale');
+    //     const divAttribution: any = window.document.getElementById('attribution')
+    //     divScale.appendChild(scaleFeatures.scale.getContainer())
+    //     divAttribution.appendChild(scaleFeatures.attribution.getContainer())
+    //     console.log('booum')
+    //   }
+    // );
+
+
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
-      (element: any) => {
-        this.mapContainer = element;
+      (mapContainer: any) => {
+        this.mapContainer = mapContainer;
         this.initActivitiesSvgLayer();
-
-        // to add scale
-        const scaleLeaflet: any = L.control.scale(
-          {
-            imperial: false,
-            position: 'bottomright'
-          }
-        );
-        const AttributionLeaflet: any = L.control.attribution(
-          {
-            position: 'bottomright'
-          }
-        );
-
-        scaleLeaflet.addTo(this.mapContainer);
-        AttributionLeaflet.addTo(this.mapContainer);
-
-        const divScale: any = window.document.getElementById('legend-scale');
-        const divAttribution: any = window.document.getElementById('attribution')
-        divScale.appendChild(scaleLeaflet.getContainer())
-        divAttribution.appendChild(AttributionLeaflet.getContainer())
-
 
       }
     );
@@ -147,7 +139,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit(): void {
-
     this.sendResumeSubMenus()
 
     this.zoomInitDone = false;
@@ -169,8 +160,14 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   }
 
+  ngAfterViewInit(): void {
+    // this.mapService.getMapContainerForLegend()
+  }
+
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([])
+    this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title)
+
   }
 
   @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
@@ -187,6 +184,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.mapContainerSubscription.unsubscribe();
     this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
     this.pullTripsGeoDataToMapSubscription.unsubscribe();
+    // this.ScaleFeaturesSubscription.unsubscribe();
 
     d3.select('#' + this.svgActivitiesLayerId).remove();
     d3.selectAll('[id^=' + this.svgTripIdPrefix + ']').remove();

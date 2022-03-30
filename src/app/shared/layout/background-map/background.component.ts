@@ -26,6 +26,7 @@ export class BackgroundComponent implements OnInit {
   map: any;
 
   mapContainerCalledSubscription!: Subscription;
+  mapContainerLegendCalledSubscription!: Subscription;
   mapServiceSubscription!: Subscription;
 
   // in order to activate map interactions
@@ -36,9 +37,37 @@ export class BackgroundComponent implements OnInit {
   ) {
 
 
+    this.mapContainerLegendCalledSubscription = this.mapService.mapContainerLegendCalled.subscribe(
+      (_) => {
+
+
+        // to add scale
+        const scaleLeaflet: any = L.control.scale(
+          {
+            imperial: false,
+            position: 'bottomright'
+          }
+        );
+        const AttributionLeaflet: any = L.control.attribution(
+          {
+            position: 'bottomright'
+          }
+        );
+
+        scaleLeaflet.addTo(this.map);
+        AttributionLeaflet.addTo(this.map);
+
+        this.mapService.sendMapScale({
+          scale: scaleLeaflet,
+          attribution: AttributionLeaflet
+        });
+
+      }
+    );
+
     this.mapContainerCalledSubscription = this.mapService.mapContainerCalled.subscribe(
       (_) => {
-        this.sendMapContainer()
+        this.mapService.sendMapContainer(this.map);
       }
     );
 
@@ -60,9 +89,6 @@ export class BackgroundComponent implements OnInit {
     this.mapServiceSubscription.unsubscribe();
   }
 
-  sendMapContainer(): void {
-    this.mapService.sendMapContainer(this.map);
-  }
 
   initMap(): void {
     this.map = L.map('map', {
@@ -74,12 +100,12 @@ export class BackgroundComponent implements OnInit {
     // this.map.on('click', this.setCoordsOnMap.bind(this));
 
     // to add scale
-    L.control.scale(
-      {
-        imperial: false,
-        position: 'bottomright'
-      }
-    ).addTo(this.map);
+    // L.control.scale(
+    //   {
+    //     imperial: false,
+    //     position: 'bottomright'
+    //   }
+    // ).addTo(this.map);
   }
 
   resetView(): void {
