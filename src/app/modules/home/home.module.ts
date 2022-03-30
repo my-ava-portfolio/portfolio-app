@@ -9,13 +9,11 @@ import { HomeRoutingModule } from '@modules/home/home-routing.module';
 
 import { HomeViewComponent } from '@modules/home/home-view/home-view.component';
 import { ProfilCardComponent } from '@modules/home/profil-card/profil-card.component';
-import { ToolboxComponent } from '@modules/home/toolbox/toolbox.component'
 
 
 @NgModule({
   declarations: [
     HomeViewComponent,
-    ToolboxComponent,
     ProfilCardComponent
   ],
   imports: [

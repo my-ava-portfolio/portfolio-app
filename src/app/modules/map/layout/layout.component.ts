@@ -6,6 +6,7 @@ import { checkIfScreenPortraitOrientation } from '@core/inputs';
 import { locationIcon, tagIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape, imageProfile } from '@core/inputs';
 
 import { MapService } from '@services/map.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -18,11 +19,15 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   tagIcon = tagIcon;
   centerIcon = centerIcon;
   isLegendDisplayed: boolean = true;
-  
+
   ScaleFeaturesSubscription!: Subscription;
+
+  currentMapTool!: string;
 
   constructor(
     private mapService: MapService,
+    private router: Router,
+
   ) {
 
     this.ScaleFeaturesSubscription = this.mapService.mapContainerScale.subscribe(
@@ -36,10 +41,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
 
+    this.router.events.subscribe(route => {
+      this.currentMapTool = router.url;
+      console.log('aaaaaa', router)
+    });
+
   }
 
   ngOnInit(): void {
-
   }
 
   ngAfterViewInit(): void {

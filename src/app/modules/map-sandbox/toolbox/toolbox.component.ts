@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
-import { centerIcon, helpIcon, removeIcon, toolsIcon, locationIcon, lineIcon, PolygonIcon, editIcon, addIcon } from '@core/inputs';
+import { centerIcon, helpIcon, removeIcon, toolsIcon, locationIcon, lineIcon, PolygonIcon, editIcon, addIcon, homePages } from '@core/inputs';
 
 import { PointsSvgLayerOnLeaflet } from '@core-helpers/points_svg_layer';
 import { Point } from '@core-helpers/core-geom';
@@ -10,6 +10,7 @@ import { Point } from '@core-helpers/core-geom';
 import { LinesSvgLayerOnLeaflet } from '@core-helpers/lines_svg_layer';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { MapService } from 'src/app/services/map.service';
+import { ControlerService } from '@services/controler.service';
 
 
 @Component({
@@ -30,6 +31,9 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
 
   pointsLayer!: PointsSvgLayerOnLeaflet;
   linesLayer!: LinesSvgLayerOnLeaflet;
+
+  homeTopics: any[] = homePages;
+
 
   geomTypesList: any[] = [
     {
@@ -70,7 +74,8 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
   constructor(
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
-    private mapService: MapService
+    private mapService: MapService,
+    private controlerService: ControlerService,
   ) {
 
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
@@ -102,6 +107,8 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
     // init all the map container
     this.mapService.getMapContainer();
 
+    this.sendResumeSubMenus()
+
     // let start with the point menu
     this.setGeomMenu('points')
   };
@@ -114,6 +121,12 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
     // TODO add func to remove the layers
 
   };
+
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus(this.homeTopics)
+    this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title)
+
+  }
 
   // SELECTION MENU //
   setGeomMenu(menu: string): void {

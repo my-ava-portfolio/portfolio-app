@@ -1,3 +1,5 @@
+<router-outlet name="map-sandbox"></router-outlet>
+
 
 <div class="container-fluid g-0">
   <div class="d-flex flex-column">
@@ -36,12 +38,8 @@
 
         </div>
 
-        <div class="d-flex flex-column flex-lg-row bg-white legend-content text-center py-3 justify-content-center"  style="min-height : 2em;"  [ngClass]="isLegendDisplayed ? 'd-block' : 'd-none'">
-          <router-outlet
-          ></router-outlet>
-        </div>
-
-        <div class="d-flex flex-column flex-lg-row bg-white legend-content text-center py-3 justify-content-center legend-content-disable"  [ngClass]="isLegendDisplayed ? 'd-none' : 'd-block'">
+        <div class="d-flex flex-column flex-lg-row bg-white legend-content text-center py-3 justify-content-center" [ngClass]="isLegendDisplayed ? 'd-block' : 'd-none'">
+          <router-outlet name="map-activities"></router-outlet>
         </div>
 
       </div>

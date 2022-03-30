@@ -109,7 +109,7 @@ export const homePages: any = {
     {
       id: "sandbox",
       title: "Bac à sable",
-      route: "/home/sandbox",
+      route: "/map/sandbox",
       icon: toolsIcon
     }
   ]
