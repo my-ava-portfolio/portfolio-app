@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 
-import { EducationViewComponent } from '@modules/education/education-view/education-view.component';
+import { LayoutComponent } from '@modules/education/layout/layout.component';
 
 
 const routes: Routes = [
-  { path: '', component: EducationViewComponent, data: { title: 'Formation', page: 'education' } },
+  { path: '', component: LayoutComponent, data: { title: 'Formation', page: 'education' } },
 ];
 
 @NgModule({

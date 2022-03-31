@@ -4,6 +4,8 @@ import { apiLogoUrl } from '@core/inputs';
 
 import { degreeIcon, locationIcon } from '@core/inputs';
 import { presIcon, expandIcon, languageIcon } from '@core/inputs';
+import { mapPages } from '@core/inputs';
+
 import { state, trigger, transition, animate, style } from '@angular/animations'
 
 
@@ -30,6 +32,8 @@ export class DegreesBarComponent implements OnInit, OnChanges {
   @Input() fragment: any;
   @Input() degreesData: any;
   @Input() languagesData: any;
+
+  mapPages: any = mapPages;
 
   apiLogoUrl = apiLogoUrl;
   cardTitle!: string;

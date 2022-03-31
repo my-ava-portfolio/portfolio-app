@@ -13,13 +13,12 @@ import { startWith  } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-
 @Component({
-  selector: 'app-education-view',
-  templateUrl: './education-view.component.html',
-  styleUrls: ['./education-view.component.scss']
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss']
 })
-export class EducationViewComponent implements OnInit {
+export class LayoutComponent implements OnInit {
   fragment!: string | null;
   apiImgUrl = apiLogoUrl;
 
@@ -58,6 +57,8 @@ export class EducationViewComponent implements OnInit {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
+    // TODO add a dedicated route to get education data
+    // TODO get linked publications
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {
         this.contactData = data.contact;

@@ -56,7 +56,7 @@
 
                         <div class="col-sm-12 col-md-10 col-lg-12 mx-auto">
                           <p class="fw-bolder mb-2">{{ degree.degree }}</p>
-                          <a [id]="'location_' + degree.identifier" role="button"  [routerLink]="['/map']" [fragment]="degree.identifier">
+                          <a [id]="'location_' + degree.identifier" role="button" [routerLink]="[mapPages.route]" [fragment]="degree.identifier">
                             <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
                           </a>{{ degree.school }} - {{degree.location}}
                         </div>
