@@ -20,11 +20,10 @@ import { SwipeDirective } from '@shared/directives/swipe.directive';
 import { HoverClassDirective } from '@shared/directives/hover-class.directive';
 import { ClickClassDirective } from '@shared/directives/click-class.directive';
 
+import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { BackgroundComponent } from '@shared/components/background-map/background.component';
 import { NavigationBarComponent } from '@shared/components/navigation-bar/navigation-bar.component';
 import { ControlBarComponent } from '@shared/components/control-bar/control-bar.component';
-
-import { LayoutComponent } from '@shared/components/layout/layout.component';
 
 
 registerLocaleData(localeFr);
