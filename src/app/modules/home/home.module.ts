@@ -7,13 +7,14 @@ import { FormsModule } from '@angular/forms';
 
 import { HomeRoutingModule } from '@modules/home/home-routing.module';
 
-import { HomeViewComponent } from '@modules/home/home-view/home-view.component';
+import { LayoutComponent } from '@modules/home/layout/layout.component';
+
 import { ProfilCardComponent } from '@modules/home/profil-card/profil-card.component';
 
 
 @NgModule({
   declarations: [
-    HomeViewComponent,
+    LayoutComponent,
     ProfilCardComponent
   ],
   imports: [

@@ -97,7 +97,7 @@ export const currentDate = now();
 export const homePages: any = {
   id: 'home',
   route: '/home/about_me',
-  title: 'Accueil',
+  title: 'A propos...',
   icon: homeIcon,
   sub_menus: [
     {
@@ -113,13 +113,6 @@ export const homePages: any = {
       icon: toolsIcon
     }
   ]
-};
-
-export const aboutMePage: any = {
-  id: 'about',
-  route: '/',
-  title: 'A propos...',
-  icon: resumeIcon
 };
 
 export const educationPages: any = {
@@ -221,7 +214,7 @@ export const projectPages: any = [
 ];
 
 export const resumeTopicsPages = [...[educationPages], ...[experiencesPages], ...[mapPages], ...[galleryPages]]
-export const mainTopicsPages = [...[aboutMePage], ...resumeTopicsPages, ...projectPages]
+export const mainTopicsPages = [...[homePages], ...resumeTopicsPages, ...projectPages]
 export const pagesObject: any = mainTopicsPages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
 
 
