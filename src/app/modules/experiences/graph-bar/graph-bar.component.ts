@@ -135,9 +135,11 @@ export class GraphBarComponent implements OnInit, AfterViewInit, OnDestroy {
    }
 
   ngOnInit(): void {
-    this.initSvgGraph();
-    this._buildLegendGraphActivities();
     this.resetChart();
+
+    this.initSvgGraph();
+    //TODO seems useless... DEPRECATED ?
+    // this._buildLegendGraphActivities();
   }
 
   ngAfterViewInit(): void {
@@ -365,7 +367,7 @@ export class GraphBarComponent implements OnInit, AfterViewInit, OnDestroy {
         .attr('y', (d: any) => d.cy)
         .text((d: any) => d.label);
 
-    // TODO seems regenerate graph twice
+    // TODO seems regenerate graph twice: DEPRECATED ?
     // this.buildGraphElements('');
 
   }
@@ -441,7 +443,7 @@ export class GraphBarComponent implements OnInit, AfterViewInit, OnDestroy {
     this._buildLabelLayout();
 
     const graphLayout = d3.forceSimulation(this.graphData.nodes)
-      .force('charge', d3.forceManyBody().strength(-400))
+      .force('charge', d3.forceManyBody().strength(-600))
       .force('x', d3.forceX(this.chartWidth / 2))
       .force('y', d3.forceY(this.chartHeight / 2))
       .force('center', d3.forceCenter(this.chartWidth / 2, this.chartHeight / 2))
