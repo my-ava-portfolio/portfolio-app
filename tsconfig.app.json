@@ -11,7 +11,8 @@
       "@core-helpers/*": ["src/app/core/helpers/*"],
       "@shared/*": ["src/app/shared/*"],
       "@modules/*": ["src/app/modules/*"],
-      "@core/*": ["src/app/core/*"]
+      "@core/*": ["src/app/core/*"],
+      "@root/*": ["src/*"]
     },
   },
   "files": [
