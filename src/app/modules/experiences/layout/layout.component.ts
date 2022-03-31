@@ -12,11 +12,28 @@ import { startWith  } from 'rxjs/operators';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { trigger, state, animate, transition, style } from '@angular/animations';
+
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
+  animations: [
+    // TODO refactor!
+    trigger('fadeInOut', [
+      state('in', style({opacity: 0})),
+      transition(':enter', [
+        style({opacity: '0'}),
+        animate('600ms ease-in-out', style({opacity: '1'}))
+      ]),
+    ]),
+    trigger('expandCollapse', [
+      state('open', style({height: '100%', opacity: 1})),
+      state('closed', style({height: 0, opacity: 0})),
+      transition('* => *', [animate('1000ms')])
+  ]),
+  ]
 })
 export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   fragment!: string | null;
@@ -57,6 +74,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   resumeDataSubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
+  routeSubscription!: Subscription;
 
   constructor(
     private controlerService: ControlerService,
@@ -89,7 +107,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
       (data) => {
 
         this.jobsData = data.activities_data.jobs;
-        this.personalProjectsData = data.activities_data.personal_projects.reverse();
+        this.personalProjectsData = data.activities_data.personal_projects;
         this.volunteersData = data.activities_data.volunteers;
         this.skillsData = data.skills_data;
         this.isActivitiesDataAvailable = true;
@@ -99,7 +117,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
       }
     );
 
-    this.activatedRoute.fragment.subscribe(
+    this.routeSubscription = this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment === undefined) {
           this.fragment = null;
@@ -121,24 +139,12 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   }
 
   ngAfterViewInit(): void {
-    // this.activatedRoute.fragment.subscribe(
-    //   (fragment) => {
-    //     if (fragment === undefined) {
-    //       this.fragment = null;
-    //     } else {
-    //       this.fragment = fragment;
-    //     }
-
-    //     if (this.fragment !== null) {
-    //       this.checkAndScrollToAnchorIfNeeded();
-    //     }
-    //   }
-    // );
   }
 
   ngOnDestroy(): void {
     this.resumeDataSubscription.unsubscribe();
     this.activitiesFilteredSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   sendResumeSubMenus(): void {
