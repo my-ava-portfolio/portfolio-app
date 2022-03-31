@@ -100,7 +100,7 @@
                     <div class="col-8 align-self-center">
                       <h6 class="fw-bolder">{{activity.company}}</h6>
                       <div>
-                        <a [id]="'location_' + activity.identifier" role="button" [routerLink]="['/map']" [fragment]="activity.identifier">
+                        <a [id]="'location_' + activity.identifier" role="button" [routerLink]="['/map/activities']" [fragment]="activity.identifier">
                           <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
                         </a>{{activity.location}}
                       </div>

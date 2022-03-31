@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagsIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape, imageProfile } from '@core/inputs';
+import { locationIcon, tagsIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape, imageProfile, experiencesPages, educationPages } from '@core/inputs';
 import { apiLogoUrl, currentYear } from '@core/inputs';
 import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '@core/inputs';
 
@@ -28,9 +28,11 @@ import { ControlerService } from 'src/app/services/controler.service';
 export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
   imageProfile: string = imageProfile;
 
-
   fragment!: any;
   fragmentValue!: string;
+
+  experiencesPages: any = experiencesPages;
+  educationPages: any = educationPages;
 
   svgTripIdPrefix = svgTripIdPrefix;
   legendActivities = legendActivities;
@@ -249,7 +251,14 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
     jobs
       .enter()
       .append('a') // add hyper link and the svg circle
-      .attr('xlink:href', (d: any) => '#/resume#' + d.properties.id)
+      .attr('xlink:href', (d: any) => {
+        if (d.properties.type === 'education') {
+          return '#' + this.educationPages.route + '#' + d.properties.id;
+        } else if (d.properties.type == "job") {
+          return '#' + this.experiencesPages.route + '#' + d.properties.id;
+        }
+        return '#none';
+      })
       .attr('id', (d: any) => 'node_location_' + d.properties.id)
       .attr('class', (d: any) => {
         // in order to match with legend status

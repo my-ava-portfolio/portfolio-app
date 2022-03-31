@@ -71,20 +71,17 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {
-        this.contactData = data.contact;
+        // this.contactData = data.contact;
         // this.degreesData = data.education;
         this.generalData = data.general;
         // this.languagesData = data.languages;
-        this.profilData = data.profil;
+        // this.profilData = data.profil;
         // this.trainingsData = data.trainings;
         // this.summaryData = data.profil.carrier_summary;
-        this.qualitiesData = data.profil.qualities;
+        // this.qualitiesData = data.profil.qualities;
         // this.publicationsData = data.research_work;
 
         this.isDataAvailable = true;
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
@@ -99,22 +96,9 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
         this.pushActivitiesAvailable(data.activities_data)
 
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
-
-   }
-
-  ngOnInit(): void {
-    // this.fragment = null
-    this.resumeService.pullResumeGeneralData();
-    this.sendResumeSubMenus()
-  }
-
-  ngAfterViewInit(): void {
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment === undefined) {
@@ -128,6 +112,28 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
         }
       }
     );
+   }
+
+  ngOnInit(): void {
+    // this.fragment = null
+    this.resumeService.pullResumeGeneralData();
+    this.sendResumeSubMenus()
+  }
+
+  ngAfterViewInit(): void {
+    // this.activatedRoute.fragment.subscribe(
+    //   (fragment) => {
+    //     if (fragment === undefined) {
+    //       this.fragment = null;
+    //     } else {
+    //       this.fragment = fragment;
+    //     }
+
+    //     if (this.fragment !== null) {
+    //       this.checkAndScrollToAnchorIfNeeded();
+    //     }
+    //   }
+    // );
   }
 
   ngOnDestroy(): void {

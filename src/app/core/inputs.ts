@@ -179,7 +179,7 @@ export const experiencesPages: any = {
   ]
 };
 
-export const mapPages: any = {
+export const mapActivitiesPage: any = {
   id: 'map',
   route: '/map/activities',
   title: 'Carte',
@@ -213,7 +213,7 @@ export const projectPages: any = [
   }
 ];
 
-export const resumeTopicsPages = [...[educationPages], ...[experiencesPages], ...[mapPages], ...[galleryPages]]
+export const resumeTopicsPages = [...[educationPages], ...[experiencesPages], ...[mapActivitiesPage], ...[galleryPages]]
 export const mainTopicsPages = [...[homePages], ...resumeTopicsPages, ...projectPages]
 export const pagesObject: any = mainTopicsPages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
 
