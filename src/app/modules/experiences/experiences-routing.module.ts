@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ExperiencesViewComponent } from '@modules/experiences/experiences-view/experiences-view.component';
-
+import { LayoutComponent } from '@modules/experiences/layout/layout.component';
 
 const routes: Routes = [
-  { path: '', component: ExperiencesViewComponent, data: { title: 'Formation', page: 'education' } },
+  { path: '', component: LayoutComponent, data: { title: 'Expériences', page: 'experiences' } },
 ]
 
 

@@ -1,0 +1,41 @@
+<div class="container-fluid" *ngIf="isDataAvailable">
+
+  <div class="d-flex flex-column flex-lg-row">
+
+    <div class="d-flex flex-column">
+
+      <div class="p-2">
+        <app-graph-bar
+          [graphInputData]="generalData"
+        ></app-graph-bar>
+      </div>
+
+
+      <div class="p-2">
+        <app-activity-bar
+          [fragment]="fragment"
+          [jobsData]="jobsData"
+          [personalProjectsData]="personalProjectsData"
+          (notePathEmit)="sendPathNotesLink($event)"
+        ></app-activity-bar>
+      </div>
+
+    </div>
+
+
+    <div class="col-12 col-xl-4 p-2">
+
+      <app-rightbar-skills
+        [skillsData]="skillsData"
+        [isActivitiesDataAvailable]="isActivitiesDataAvailable"
+      ></app-rightbar-skills>
+
+
+    </div>
+
+  </div>
+
+
+
+
+</div>

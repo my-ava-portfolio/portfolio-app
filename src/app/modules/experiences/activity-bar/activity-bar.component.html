@@ -64,7 +64,7 @@
 
       <div [id]="activity.identifier" class="timeline-item mb-3 mb-lg-0" *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod">
         <div class="timeline-icon">
-          <div class="row align-items-center h-100 text-center text-white fw-bold">
+          <div class="row align-items-center h-100 text-center text-white fw-bold" [ngClass]="activity.status === 'InProgress' ? 'border-warning bg-danger' : ''">
             <div class="col-12">
             {{ activity.start_date | date: 'yyyy' }}
             </div>
@@ -73,152 +73,150 @@
         </div>
         <div class="timeline-content pb-4" [ngClass]="indexOfActivity % 2 !== 0 ? 'right' : ''">
 
-            <div class="card-body border shadow bg-light border-secondary ">
+            <div class="card-body border rounded shadow bg-light border-secondary ">
               <div class="col-lg-12">
+                <div class="d-flex flex-column">
 
-                <div class="row">
+                  <div class="title d-flex flex-row justify-content-between">
 
-                  <div class="col-lg-9">
-                    <h6 class="fw-bolder">{{activity.title}}</h6>
-                  </div>
-
-                  <div class="col-lg-3">
-
-                    <a class="btn btn-dark me-2 float-end" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
-
-                    <div *ngIf="activity.medias_found; then jobsShorcutGallery"></div>
-                      <ng-template #jobsShorcutGallery>
-                        <a class="btn btn-warning me-2 float-end" [routerLink]="['/gallery']" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
-                      </ng-template>
-
-                  </div>
-                </div>
-
-                <div class="row justify-content-around">
-
-                  <div class="col-2 justify-content-around text-center my-3">
-                    <img class="img-fluid rounded mx-auto d-block shadow" [src]="apiImgUrl + activity.img_company"/>
-                  </div>
-
-                  <div class="col-8 align-self-center">
-                    <h6 class="fw-bolder">{{activity.company}}</h6>
-                    <div>
-                      <a [id]="'location_' + activity.identifier" role="button" [routerLink]="['/map']" [fragment]="activity.identifier">
-                        <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
-                      </a>{{activity.location}}
+                    <div class="me-auto">
+                      <h6 class="fw-bolder">{{activity.title}}</h6>
                     </div>
-                    <div *ngIf="activity.status === 'InProgress'; then currentJob else pastJob"></div>
-                      <ng-template #pastJob>
-                        <div>{{ this.contractValueAlias(activity.contract) }} - du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }} ({{activity.duration}})</div>
-                      </ng-template>
 
-                      <ng-template #currentJob>
-                        <div>{{ this.contractValueAlias(activity.contract) }} - du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{activity.duration}})</div>
-                      </ng-template>
+                    <div class="">
 
-                      <div *ngIf="activity.keywords; then jobThemes"></div>
-                      <ng-template #jobThemes>
-                        <div class="col-lg-12 my-3">
-                            <span class="badge me-2" [style]="'background-color:' + item.value"
+                      <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
+                      <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="['/gallery']" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
+
+                    </div>
+                  </div>
+
+                  <div class="header row justify-content-around">
+
+                    <div class="col-2 justify-content-around text-center my-3">
+                      <img class="img-fluid rounded mx-auto d-block shadow" [src]="apiImgUrl + activity.img_company"/>
+                    </div>
+
+                    <div class="col-8 align-self-center">
+                      <h6 class="fw-bolder">{{activity.company}}</h6>
+                      <div>
+                        <a [id]="'location_' + activity.identifier" role="button" [routerLink]="['/map']" [fragment]="activity.identifier">
+                          <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
+                        </a>{{activity.location}}
+                      </div>
+
+                      <div *ngIf="activity.status === 'InProgress'; then currentJob else pastJob"></div>
+                        <ng-template #pastJob>
+                          <div>{{ this.contractValueAlias(activity.contract) }} - du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }} ({{activity.duration}})</div>
+                        </ng-template>
+
+                        <ng-template #currentJob>
+                          <div>{{ this.contractValueAlias(activity.contract) }} - du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{activity.duration}})</div>
+                        </ng-template>
+
+
+                        <div class="col-lg-12 my-3" *ngIf="activity.keywords">
+                            <span class="badge rounded-pill m-1" [style]="'background-color:' + item.value"
                               *ngFor="let item of activity.keywords | keyvalue"
                             >{{ item.key }}</span>
                         </div>
-                      </ng-template>
 
-                  </div>
-
-                  <div clickClass="rotation" class="col-12 justify-content-around text-center cursor my-2" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + activity.identifier">
-                    <fa-icon class="" [icon]="arrowsDownIcon" ></fa-icon>
-                  </div>
-
-                </div>
-
-                <div class="row g-0 collapse-item collapse" [id]="'collapse-' + activity.identifier">
-
-
-                  <div class="col-12 mx-auto border mb-2">
-                    <ul class="nav nav-pills nav-justified" role="tablist">
-
-                      <li class="nav-item" role="presentation">
-                        <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#context-' + activity.identifier" type="button" role="tab">
-                          {{ this.contextTitle }}
-                        </a>
-                      </li>
-
-                      <li class="nav-item" role="presentation">
-                        <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#mission-' + activity.identifier" type="button" role="tab">
-                          {{ this.missionTitle }}
-                        </a>
-                      </li>
-
-                      <li class="nav-item" role="presentation">
-                        <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#env-' + activity.identifier" type="button" role="tab">
-                          {{ this.envTitle }}
-                        </a>
-                      </li>
-
-                      <li class="nav-item" role="presentation" *ngIf="activity.trainings">
-                        <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#training-' + activity.identifier" type="button" role="tab">
-                          {{ this.trainingTitle }}
-                        </a>
-                      </li>
-
-                    </ul>
-                  </div>
-
-                  <div class="tab-content" id="myTabContent">
-
-
-                    <div class="col-lg-12 mb-2 tab-pane fade" [id]="'context-' + activity.identifier" role="tabpanel">
-                      <h6 class="fw-bolder">{{ this.contextTitle }}</h6>
-                      <div class="col-lg-12 ps-3">
-                        <p class="text-justify small">{{ activity.presentation }}</p>
-                      </div>
                     </div>
 
+                    <div clickClass="rotation" class="col-12 justify-content-around text-center cursor my-2" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + activity.identifier">
+                      <fa-icon class="" [icon]="arrowsDownIcon" ></fa-icon>
+                    </div>
 
-                  <div class="col-lg-12 mb-2 tab-pane fade" [id]="'mission-' + activity.identifier" role="tabpanel">
-                    <h6 class="fw-bolder">{{ this.missionTitle }}</h6>
-                    <div class="col-lg-12 ps-3" *ngFor="let task of activity.description | keyvalue">
-                      <h6 *ngIf="task.key !== 'NoTitle'">{{ task.key }}</h6>
-                      <ul class="small">
-                        <li class="text-justify" *ngFor="let description_element of forceArrayType(task.value)">{{ description_element }}</li>
+                  </div>
+
+                  <div class="content row g-0 collapse-item collapse" [id]="'collapse-' + activity.identifier">
+
+
+                    <div class="col-12 mx-auto border mb-2">
+                      <ul class="nav nav-pills nav-justified" role="tablist">
+
+                        <li class="nav-item" role="presentation">
+                          <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#context-' + activity.identifier" type="button" role="tab">
+                            {{ this.contextTitle }}
+                          </a>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                          <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#mission-' + activity.identifier" type="button" role="tab">
+                            {{ this.missionTitle }}
+                          </a>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                          <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#env-' + activity.identifier" type="button" role="tab">
+                            {{ this.envTitle }}
+                          </a>
+                        </li>
+
+                        <li class="nav-item" role="presentation" *ngIf="activity.trainings">
+                          <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#training-' + activity.identifier" type="button" role="tab">
+                            {{ this.trainingTitle }}
+                          </a>
+                        </li>
+
                       </ul>
                     </div>
-                  </div>
 
-                  <div class="col-sm-12 tab-pane fade" [id]="'env-' + activity.identifier" role="tabpanel">
-                    <h6 class="fw-bolder">{{ this.envTitle }}</h6>
-                    <div class="col-lg-12 ps-3">
-                      <ul class="row small">
-                          <li class="col-sm-4" *ngFor="let tool of activity.tools">
-                            {{ tool }}
-                          </li>
-                      </ul>
-                    </div>
-                    <div *ngIf="activity.subelements_tools; then jobSubTools"></div>
-                    <ng-template #jobSubTools>
-                      <div class="col-lg-12 ps-3">
-                        <span><u>{{ this.detailsTitle }}</u></span>
-                        <ul class="small">
-                          <li *ngFor="let feat of activity.subelements_tools">{{ feat.sub_skill }}: <em>{{ feat.details }}</em></li>
-                        </ul>
-                      </div>
-                    </ng-template>
-                  </div>
+                    <div class="tab-content" id="myTabContent">
 
-                  <div *ngIf="activity.trainings ; then jobTrainings"></div>
-                    <ng-template #jobTrainings>
-                      <div class="col-lg-12 mb-2 tab-pane fade" [id]="'training-' + activity.identifier" role="tabpanel">
-                        <h6 class="fw-bolder">{{ this.trainingTitle }}</h6>
+
+                      <div class="col-lg-12 mb-2 tab-pane fade" [id]="'context-' + activity.identifier" role="tabpanel">
+                        <h6 class="fw-bolder">{{ this.contextTitle }}</h6>
                         <div class="col-lg-12 ps-3">
-                          <ul class="text-justified small">
-                            <li *ngFor="let training of activity.trainings"><span class="fw-bolder">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span></li>
-                          </ul>
+                          <p class="text-justify small">{{ activity.presentation }}</p>
                         </div>
                       </div>
-                    </ng-template>
 
+
+                    <div class="col-lg-12 mb-2 tab-pane fade" [id]="'mission-' + activity.identifier" role="tabpanel">
+                      <h6 class="fw-bolder">{{ this.missionTitle }}</h6>
+                      <div class="col-lg-12 ps-3" *ngFor="let task of activity.description | keyvalue">
+                        <h6 *ngIf="task.key !== 'NoTitle'">{{ task.key }}</h6>
+                        <ul class="small">
+                          <li class="text-justify" *ngFor="let description_element of forceArrayType(task.value)">{{ description_element }}</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 tab-pane fade" [id]="'env-' + activity.identifier" role="tabpanel">
+                      <h6 class="fw-bolder">{{ this.envTitle }}</h6>
+                      <div class="col-lg-12 ps-3">
+                        <ul class="row small">
+                            <li class="col-sm-4" *ngFor="let tool of activity.tools">
+                              {{ tool }}
+                            </li>
+                        </ul>
+                      </div>
+                      <div *ngIf="activity.subelements_tools; then jobSubTools"></div>
+                      <ng-template #jobSubTools>
+                        <div class="col-lg-12 ps-3">
+                          <span><u>{{ this.detailsTitle }}</u></span>
+                          <ul class="small">
+                            <li *ngFor="let feat of activity.subelements_tools">{{ feat.sub_skill }}: <em>{{ feat.details }}</em></li>
+                          </ul>
+                        </div>
+                      </ng-template>
+                    </div>
+
+                    <div *ngIf="activity.trainings ; then jobTrainings"></div>
+                      <ng-template #jobTrainings>
+                        <div class="col-lg-12 mb-2 tab-pane fade" [id]="'training-' + activity.identifier" role="tabpanel">
+                          <h6 class="fw-bolder">{{ this.trainingTitle }}</h6>
+                          <div class="col-lg-12 ps-3">
+                            <ul class="text-justified small">
+                              <li *ngFor="let training of activity.trainings"><span class="fw-bolder">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </ng-template>
+
+
+                    </div>
 
                   </div>
 

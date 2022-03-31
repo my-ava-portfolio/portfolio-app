@@ -13,13 +13,12 @@ import { startWith  } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-
 @Component({
-  selector: 'app-experiences-view',
-  templateUrl: './experiences-view.component.html',
-  styleUrls: ['./experiences-view.component.scss']
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss']
 })
-export class ExperiencesViewComponent implements OnInit, OnDestroy, AfterViewInit  {
+export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   fragment!: string | null;
   apiImgUrl = apiLogoUrl;
   activityIdFromActivityComponents!: string;
