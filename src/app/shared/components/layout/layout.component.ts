@@ -9,11 +9,11 @@ import { navBarIcon } from '@core/inputs';
 
 
 @Component({
-  selector: 'app-main-view',
-  templateUrl: './main-view.component.html',
-  styleUrls: ['./main-view.component.scss'],
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss']
 })
-export class MainViewComponent implements OnInit {
+export class LayoutComponent implements OnInit {
   @ViewChild('contentSize') contentSize!: ElementRef;
 
   // Here to set the default status of the bar
@@ -76,8 +76,5 @@ export class MainViewComponent implements OnInit {
     console.log(this.sideBarCollapsed)
     this.sideBarCollapsed = !this.sideBarCollapsed;
   }
-
-
-
 
 }

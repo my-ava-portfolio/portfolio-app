@@ -1,18 +1,29 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 
-import { MainViewComponent } from '@shared/layout/main-view/main-view.component';
+import { Observable, of } from 'rxjs';
+
+import { LayoutComponent } from '@shared/components/layout/layout.component';
+
+
+export class CustomPreloadingStrategy implements PreloadingStrategy {
+  preload(route: Route, load: Function): Observable<any> {
+    return route.data && route.data.preload ? load() : of(null);
+  }
+}
+
 
 
 const appRoutes: Routes = [
 
   {
     path: '',
-    component: MainViewComponent,
+    component: LayoutComponent,
     children: [
       {
         path: 'home',
-        loadChildren: () => import('@modules/home/home.module').then(m => m.HomeModule)
+        loadChildren: () => import('@modules/home/home.module').then(m => m.HomeModule),
+        data: {preload: true}
       },
       {
         path: 'experiences',
@@ -34,7 +45,7 @@ const appRoutes: Routes = [
         path: 'blog',
         loadChildren: () => import('@modules/blog/blog.module').then(m => m.BlogModule),
       },
-      { path: '', redirectTo: '/home/about_me', pathMatch: 'full' }, // in order to redirect to the home page if the main url is called
+      { path: '**', redirectTo: '/home/about_me', pathMatch : 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },
   // no layout routes
@@ -49,7 +60,8 @@ const appRoutes: Routes = [
       scrollPositionRestoration: 'enabled',
       anchorScrolling: 'enabled',
       scrollOffset: [0, 64], // [x, y]
-      useHash: true, // in order to prevent error 40 page on reload
+      useHash: true, // in order to prevent error 40 page on reload,
+      // preloadingStrategy: CustomPreloadingStrategy
     })
   ],
   exports: [RouterModule]

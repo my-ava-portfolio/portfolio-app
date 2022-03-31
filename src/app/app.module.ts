@@ -20,11 +20,11 @@ import { SwipeDirective } from '@shared/directives/swipe.directive';
 import { HoverClassDirective } from '@shared/directives/hover-class.directive';
 import { ClickClassDirective } from '@shared/directives/click-class.directive';
 
-import { BackgroundComponent } from '@shared/layout/background-map/background.component';
-import { NavigationBarComponent } from '@shared/layout/navigation-bar/navigation-bar.component';
-import { ControlBarComponent } from '@shared/layout/control-bar/control-bar.component';
+import { BackgroundComponent } from '@shared/components/background-map/background.component';
+import { NavigationBarComponent } from '@shared/components/navigation-bar/navigation-bar.component';
+import { ControlBarComponent } from '@shared/components/control-bar/control-bar.component';
 
-import { MainViewComponent } from '@shared/layout/main-view/main-view.component';
+import { LayoutComponent } from '@shared/components/layout/layout.component';
 
 
 registerLocaleData(localeFr);
@@ -32,7 +32,7 @@ registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     AppComponent,
-    MainViewComponent,
+    LayoutComponent,
     BackgroundComponent,
     NavigationBarComponent,
     ControlBarComponent,
