@@ -1,5 +1,3 @@
-@import '~src/styles';
-
 .active {
   color: grey
 }
@@ -18,12 +16,6 @@
   display: inline-block;
   transform: rotate(-90deg);
 }
-
-
-#skills {
-  @include fade-in;
-}
-
 
 
 .grid-container {

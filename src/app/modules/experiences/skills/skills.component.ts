@@ -1,18 +1,14 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
-import { Subscription } from 'rxjs';
-
 import { skillIcon, arrowDownIcon, expandIcon } from '@core/inputs';
-
-import { ResumeService } from '@services/resume.service';
 
 
 @Component({
-  selector: 'app-rightbar-skills',
-  templateUrl: './rightbar-skills.component.html',
-  styleUrls: ['./rightbar-skills.component.scss']
+  selector: 'app-skills',
+  templateUrl: './skills.component.html',
+  styleUrls: ['./skills.component.scss']
 })
-export class RightbarSkillsComponent implements OnInit, OnDestroy {
+export class SkillsComponent implements OnInit, OnDestroy {
   @Input() skillsData: any;
   @Input() isActivitiesDataAvailable: any;
 
@@ -26,8 +22,6 @@ export class RightbarSkillsComponent implements OnInit, OnDestroy {
   skillIcon = skillIcon;
   expandIcon = expandIcon;
   arrowDownIcon = arrowDownIcon;
-
-  skillsDataSubscription!: Subscription;
 
 
   constructor(

@@ -39,7 +39,6 @@
               <div class="tab-container" [ngSwitch]="tabView">
 
                 <div class="tab" id="companies-widget" *ngSwitchCase="'companies'" [@fadeInOut]>
-
                   <ng-container *ngTemplateOutlet="activityTimeLine; context:{activitiesData: jobsData}"></ng-container>
                 </div>
 

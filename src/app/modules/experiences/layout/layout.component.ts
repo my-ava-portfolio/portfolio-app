@@ -40,6 +40,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   apiImgUrl = apiLogoUrl;
   activityIdFromActivityComponents!: string;
 
+  tabView = 'companies';
+
   // resume top bar
   profilData: any;
   contactData: any;
@@ -154,17 +156,24 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   checkAndScrollToAnchorIfNeeded(): void {
 
     this.isAnchorExistsCheckerSubscription = this.isAnchorExistsChecker.pipe(startWith(0)).subscribe(() => {
-      try {
+
         if (this.fragment !== null) {
-          const element: any = window.document.getElementById(this.fragment);
-          element.scrollIntoView();
+          var fragment: string = this.fragment;
+          ["companies", "personal_project"].forEach((activityType) => {
+
+            if (this.tabView !== activityType) {
+              this.tabView = activityType;
+            }
+            const element: any = window.document.getElementById(fragment);
+            if (element !== null) {
+              element.scrollIntoView();
+            }
+        });
         } else {
           console.log('no anchor defined');
         }
         this.isAnchorExistsCheckerSubscription.unsubscribe();
-      } catch (e) {
-        console.log('anchor not found yet');
-      }
+
     });
   }
 

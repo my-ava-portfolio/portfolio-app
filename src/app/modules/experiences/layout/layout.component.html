@@ -10,9 +10,9 @@
         ></app-graph-bar>
       </div>
 
-
       <div class="p-2">
         <app-activity-bar
+          [tabView]="tabView"
           [fragment]="fragment"
           [jobsData]="jobsData"
           [personalProjectsData]="personalProjectsData"
@@ -22,20 +22,15 @@
 
     </div>
 
-
     <div class="col-12 col-xl-4 p-2">
 
-      <app-rightbar-skills
+      <app-skills
         [skillsData]="skillsData"
         [isActivitiesDataAvailable]="isActivitiesDataAvailable"
-      ></app-rightbar-skills>
-
+      ></app-skills>
 
     </div>
 
   </div>
-
-
-
 
 </div>

@@ -30,6 +30,7 @@ import { arrowsDownIcon, expandIcon, resumeIcon, galleryIcon, locationIcon, filt
 export class ActivityBarComponent implements OnInit, OnChanges {
   @Output() notePathEmit = new EventEmitter<string>();
 
+  @Input() tabView: any;
   @Input() fragment: any;
   @Input() jobsData: any;
   @Input() personalProjectsData: any;
@@ -54,7 +55,7 @@ export class ActivityBarComponent implements OnInit, OnChanges {
   trainingTitle = "Formations";
   detailsTitle = "Détails";
 
-  tabView = 'companies';
+  // tabView = 'companies';
   availabled_topics = ["companies", "personal_projects"]
   defaultTabView = this.availabled_topics[0];
 
