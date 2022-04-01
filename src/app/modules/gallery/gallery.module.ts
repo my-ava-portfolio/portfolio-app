@@ -8,6 +8,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GalleryRoutingModule } from '@modules/gallery/gallery-routing.module';
 
 import { GalleryViewComponent } from '@modules/gallery/gallery-view/gallery-view.component';
+
+import { GalleryService } from '@services/gallery.service';
+
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 
@@ -20,6 +23,9 @@ import { PipesModule } from '@shared/pipes/pipes.module';
     GalleryRoutingModule,
     FontAwesomeModule,
     PipesModule
+  ],
+  providers: [
+    GalleryService
   ]
 })
 export class GalleryModule { }

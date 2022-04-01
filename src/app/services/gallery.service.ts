@@ -4,9 +4,9 @@ import { HttpClient } from '@angular/common/http';
 
 import { apiUrl } from '@core/inputs';
 
-@Injectable({
-  providedIn: 'root'
-})
+import { GalleryModule } from '@modules/gallery/gallery.module';
+
+@Injectable()
 export class GalleryService {
 
   private apiUrlActivitiesGallery = apiUrl + 'gallery_activities?';

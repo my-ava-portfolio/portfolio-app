@@ -12,7 +12,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ResumeService } from '@services/resume.service';
-import { GalleryService } from '@services/gallery.service';
 import { MapService } from '@services/map.service';
 import { MainService } from '@services/main.service';
 
@@ -51,7 +50,6 @@ registerLocaleData(localeFr);
   providers: [
     MainService,
     ResumeService,
-    GalleryService,
     MapService,
     {provide: LOCALE_ID, useValue: 'fr'}
   ],
