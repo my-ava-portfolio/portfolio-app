@@ -33,6 +33,8 @@ export class MapService {
 
   newCoords: Subject<number[]> = new Subject<number[]>();
 
+  zoomEvent: Subject<boolean> = new Subject<boolean>();
+
   constructor(
     private http: HttpClient
   ) { }
@@ -96,7 +98,12 @@ export class MapService {
 
   pullMapCoords(coordinates: any): void {
     this.newCoords.next(coordinates);
+  }
 
+  sendZoomAction(): void {
+    this.zoomEvent.next(true);
   }
 
 }
+
+

@@ -76,7 +76,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
   pullActivitiesGeoDataToMapSubscription!: Subscription;
   pullTripsGeoDataToMapSubscription!: Subscription;
   pullPageContentWidthSubscription!: Subscription;
-
+  zoomEventSubscription!: Subscription;
   generalDataSubscription!: Subscription;
   generalData!: any;
 
@@ -86,6 +86,12 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
     private titleService: Title,
     private controlerService: ControlerService,
   ) {
+
+    this.zoomEventSubscription = this.mapService.zoomEvent.subscribe(
+      (_: boolean) => {
+        this.zoomFromDataBounds(this.geoFeaturesData)
+      }
+    );
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (mapContainer: any) => {
@@ -174,6 +180,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
     this.mapContainerSubscription.unsubscribe();
     this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
     this.pullTripsGeoDataToMapSubscription.unsubscribe();
+    this.zoomEventSubscription.unsubscribe();
 
     d3.select('#' + this.svgActivitiesLayerId).remove();
     d3.selectAll('[id^=' + this.svgTripIdPrefix + ']').remove();

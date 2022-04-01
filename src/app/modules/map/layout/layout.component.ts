@@ -29,7 +29,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private router: Router,
-
   ) {
 
     this.ScaleFeaturesSubscription = this.mapService.mapContainerScale.subscribe(
@@ -66,7 +65,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   zoomOnData(): void {
-
+    this.mapService.sendZoomAction();
   }
 
 }
