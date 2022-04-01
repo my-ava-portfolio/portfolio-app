@@ -21,6 +21,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   isLegendDisplayed: boolean = true;
 
   ScaleFeaturesSubscription!: Subscription;
+  routerSubscription!: Subscription;
 
   currentMapTool!: string;
 
@@ -40,7 +41,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
 
-    this.router.events.subscribe(route => {
+    this.routerSubscription = this.router.events.subscribe(route => {
       this.currentMapTool = router.url;
     });
 
@@ -55,7 +56,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.ScaleFeaturesSubscription.unsubscribe()
+    this.ScaleFeaturesSubscription.unsubscribe();
+    this.routerSubscription.unsubscribe()
   }
 
   showHideLegend(): void {

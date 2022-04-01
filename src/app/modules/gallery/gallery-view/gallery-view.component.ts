@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { apiMapsUrl, minWidthLandscape } from '@core/inputs';
 
 import { GalleryService } from '@services/gallery.service';
-import { ResumeService } from '@services/resume.service';
+import { MainService } from '@services/main.service';
 
 import { Subscription } from 'rxjs';
 
@@ -68,7 +68,7 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private galleryService: GalleryService,
-    private resumeService: ResumeService,
+    private mainService: MainService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
@@ -136,14 +136,14 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     this.currentCategory = this.defaultCategory;
     this.currentType = this.defaultType;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
-    this.resumeService.scrollToTopAction()
+    this.mainService.scrollToTopAction()
   }
 
   getGalleryDataByActivity(activityName: string | null): any {
     this.currentActivity = activityName;
     this.currentType = this.defaultType;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
-    this.resumeService.scrollToTopAction()
+    this.mainService.scrollToTopAction()
   }
 
   getGalleryDataByCategory(categoryName: string | null): any {
@@ -151,13 +151,13 @@ export class GalleryViewComponent implements OnInit, OnDestroy {
     this.currentActivity = this.defaultActivity;
     this.currentType = this.defaultType;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
-    this.resumeService.scrollToTopAction()
+    this.mainService.scrollToTopAction()
   }
 
   getGalleryDataByType(typeName: string | null): any {
     this.currentType = typeName;
     this.galleryService.pullExistingActivitiesGallery(this.currentActivity, this.currentCategory, this.currentType);
-    this.resumeService.scrollToTopAction()
+    this.mainService.scrollToTopAction()
   }
 
 

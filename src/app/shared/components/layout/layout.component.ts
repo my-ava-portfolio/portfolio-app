@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener, ElementRef, ViewChild  } from '@angula
 
 import { arrowUpIcon } from '@core/inputs';
 
-import { ResumeService } from '@services/resume.service';
+import { MainService } from '@services/main.service';
 import { ControlerService } from 'src/app/services/controler.service';
 
 import { navBarIcon } from '@core/inputs';
@@ -24,18 +24,18 @@ export class LayoutComponent implements OnInit {
 
   navBarIcon = navBarIcon;
   arrowUpIcon = arrowUpIcon;
-  
+
   isNavBarDisplayed!: boolean;
   scrolltoTopActivated!: boolean;
   scrolltoTopDisabledForced: boolean = false;
 
   constructor(
-    private resumeService: ResumeService,
+    private mainService: MainService,
     private controlerService: ControlerService,
     private router: Router,
   ) {
 
-    this.resumeService.scrollToTop.subscribe(_ => {
+    this.mainService.scrollToTop.subscribe(_ => {
       this.scrollToTop()
     })
 

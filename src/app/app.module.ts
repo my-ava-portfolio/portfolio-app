@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ResumeService } from '@services/resume.service';
 import { GalleryService } from '@services/gallery.service';
 import { MapService } from '@services/map.service';
+import { MainService } from '@services/main.service';
 
 
 import { SwipeDirective } from '@shared/directives/swipe.directive';
@@ -48,6 +49,7 @@ registerLocaleData(localeFr);
     NgbModule
   ],
   providers: [
+    MainService,
     ResumeService,
     GalleryService,
     MapService,

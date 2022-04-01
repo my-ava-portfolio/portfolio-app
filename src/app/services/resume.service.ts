@@ -38,7 +38,6 @@ export class ResumeService {
 
   activitiesAvailable: Subject<any> = new Subject<any>();
 
-  scrollToTop: Subject<boolean> = new Subject<boolean>();
 
   constructor(
       private http: HttpClient
@@ -179,7 +178,4 @@ export class ResumeService {
     });
   }
 
-  scrollToTopAction(): void {
-    this.scrollToTop.next(true);
-  }
 }
