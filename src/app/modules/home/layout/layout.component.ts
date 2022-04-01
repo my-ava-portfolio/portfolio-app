@@ -36,8 +36,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private controlerService: ControlerService,
-    private resumeService: ResumeService,
-    private mapService: MapService
+    private resumeService: ResumeService
   ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -69,21 +68,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.generalDataSubscription.unsubscribe();
     this.fullSkillsDataSubscription.unsubscribe();
-
-    // clean all layers
-    this.mapService.pullRemovePointsSvgLayerName("homePoints")
-
   }
-
-  updatePage(outlet: any): any {
-    this.controlerService.pullTitlePage(outlet.activatedRouteData.title)
-    if (outlet.activatedRouteData.page === "sandbox") {
-      this.legendEnabled = true
-    } else {
-      this.legendEnabled = false
-    };
-  }
-
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus(this.homeTopics)
@@ -91,24 +76,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   showHideWelcomeCard(): void {
     this.isWelcomeCardDisplayed = !this.isWelcomeCardDisplayed;
-  }
-
-  createPointsSvgLayer(enabled: boolean): void {
-    console.log(enabled)
-    if (enabled) {
-      this.mapService.pullPointsSvgLayerName("homePoints")
-    } else {
-      this.mapService.pullRemovePointsSvgLayerName("homePoints")
-    }
-  }
-
-  createLinesSvgLayer(enabled: boolean): void {
-    console.log(enabled)
-    if (enabled) {
-      this.mapService.pullLinesSvgLayerName("homeLines")
-    } else {
-      this.mapService.pullRemoveLinesSvgLayerName("homeLines")
-    }
   }
 
 }
