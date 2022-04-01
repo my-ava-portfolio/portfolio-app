@@ -20,15 +20,19 @@
 }
 
 .legend-content {
-  color: "#FFFFF";
-  background-color: #f5f5f5;
   box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
+
+  &.disable {
+    height: 2em;
+
+    & .d-flex {  // TODO improve it ? d-flex because the child object should be a div with d-flex class...
+      visibility: hidden;
+    }
+  }
+
 }
 
 
-.legend-content-disable {
-  min-height : 2em;
-}
 
 
 
