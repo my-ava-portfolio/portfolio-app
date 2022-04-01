@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ColorPickerModule } from 'ngx-color-picker';
+
 import { FormsModule } from '@angular/forms';
 
 import { HomeRoutingModule } from '@modules/home/home-routing.module';
@@ -21,8 +21,7 @@ import { ProfilCardComponent } from '@modules/home/profil-card/profil-card.compo
     CommonModule,
     FormsModule,
     HomeRoutingModule,
-    FontAwesomeModule,
-    ColorPickerModule
+    FontAwesomeModule
   ]
 })
 export class HomeModule { }
