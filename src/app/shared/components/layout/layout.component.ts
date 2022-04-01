@@ -6,6 +6,7 @@ import { ResumeService } from '@services/resume.service';
 import { ControlerService } from 'src/app/services/controler.service';
 
 import { navBarIcon } from '@core/inputs';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,22 +20,28 @@ export class LayoutComponent implements OnInit {
   // Here to set the default status of the bar
   // TODO check the orientation to collapse or not the bar
   sideBarCollapsed: boolean = true;
+  routeWhereScrollingIsDisabled: string[] = ["/map/activities", "/map/sandox"];
 
   navBarIcon = navBarIcon;
-
-  scrolltoTopActivated!: boolean;
   arrowUpIcon = arrowUpIcon;
+  
   isNavBarDisplayed!: boolean;
-
+  scrolltoTopActivated!: boolean;
+  scrolltoTopDisabledForced: boolean = false;
 
   constructor(
     private resumeService: ResumeService,
     private controlerService: ControlerService,
+    private router: Router,
   ) {
 
     this.resumeService.scrollToTop.subscribe(_ => {
       this.scrollToTop()
     })
+
+    this.router.events.subscribe(_ => {
+      this.disactivateForcedScrollButton()
+    });
 
   }
 
@@ -75,6 +82,13 @@ export class LayoutComponent implements OnInit {
   collaspedSideBarIfNeeded(): void {
     console.log(this.sideBarCollapsed)
     this.sideBarCollapsed = !this.sideBarCollapsed;
+  }
+
+  disactivateForcedScrollButton(): void {
+
+    if ( this.routeWhereScrollingIsDisabled.includes(this.router.url) ) {
+      this.scrolltoTopDisabledForced = true;
+    };
   }
 
 }

@@ -37,13 +37,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         const divAttribution: any = window.document.getElementById('attribution')
         divScale.appendChild(scaleFeatures.scale.getContainer())
         divAttribution.appendChild(scaleFeatures.attribution.getContainer())
-        console.log('booum')
       }
     );
 
     this.router.events.subscribe(route => {
       this.currentMapTool = router.url;
-      console.log('aaaaaa', router)
     });
 
   }
