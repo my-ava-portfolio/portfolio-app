@@ -42,7 +42,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
 
-    this.routerSubscription = this.router.events.subscribe(route => {
+    this.routerSubscription = this.router.events.subscribe(_ => {
       this.currentMapTool = router.url;
     });
 

@@ -87,21 +87,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
     private controlerService: ControlerService,
   ) {
 
-    // to get the data properties from routes (app.module.ts)
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
-
-    // this.ScaleFeaturesSubscription = this.mapService.mapContainerScale.subscribe(
-    //   (scaleFeatures: any) => {
-
-    //     const divScale: any = window.document.getElementById('legend-scale');
-    //     const divAttribution: any = window.document.getElementById('attribution')
-    //     divScale.appendChild(scaleFeatures.scale.getContainer())
-    //     divAttribution.appendChild(scaleFeatures.attribution.getContainer())
-    //     console.log('booum')
-    //   }
-    // );
-
-
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (mapContainer: any) => {
         this.mapContainer = mapContainer;
@@ -141,7 +126,9 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
   }
 
   ngOnInit(): void {
-    this.sendResumeSubMenus()
+    this.mapService.getMapContainer();
+
+    this.sendResumeSubMenus();
 
     this.zoomInitDone = false;
     this.innerWidth = window.innerWidth;
@@ -163,12 +150,13 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
   }
 
   ngAfterViewInit(): void {
-    // this.mapService.getMapContainerForLegend()
   }
 
   sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus([])
-    this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title)
+    this.controlerService.pullSubMenus([]);
+    this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
+    // to get the data properties from routes (app.module.ts)
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
   }
 
@@ -186,7 +174,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
     this.mapContainerSubscription.unsubscribe();
     this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
     this.pullTripsGeoDataToMapSubscription.unsubscribe();
-    // this.ScaleFeaturesSubscription.unsubscribe();
 
     d3.select('#' + this.svgActivitiesLayerId).remove();
     d3.selectAll('[id^=' + this.svgTripIdPrefix + ']').remove();
