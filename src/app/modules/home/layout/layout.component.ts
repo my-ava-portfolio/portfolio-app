@@ -5,9 +5,8 @@ import { Subscription } from 'rxjs';
 import { homePages } from '@core/inputs';
 
 
-import { ControlerService } from 'src/app/services/controler.service';
-import { MapService } from 'src/app/services/map.service';
-import { ResumeService } from 'src/app/services/resume.service';
+import { ControlerService } from '@services/controler.service';
+import { ResumeService } from '@services/resume.service';
 
 
 @Component({
@@ -18,9 +17,6 @@ import { ResumeService } from 'src/app/services/resume.service';
 export class LayoutComponent implements OnInit, OnDestroy {
 
   homeTopics: any[] = homePages;
-
-  pointsSvGLayerId = "HomePoints";
-  linesSvGLayerId = "HomeLiness";
 
   isWelcomeCardDisplayed = true;
 
@@ -38,8 +34,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private controlerService: ControlerService,
     private resumeService: ResumeService
   ) {
-
-    // to get the data properties from routes (app.module.ts)
 
     this.generalDataSubscription = this.resumeService.generalData.subscribe(
       (data) => {

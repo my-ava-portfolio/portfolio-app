@@ -2,11 +2,12 @@ import { Component, OnInit, OnDestroy, HostListener, ViewEncapsulation, AfterVie
 
 import { Subscription } from 'rxjs';
 
+// TODO use it
 import { checkIfScreenPortraitOrientation } from '@core/inputs';
-import { locationIcon, tagIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape, imageProfile } from '@core/inputs';
+import { tagIcon, centerIcon} from '@core/inputs';
 
 import { MapService } from '@services/map.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({

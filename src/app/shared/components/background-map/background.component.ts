@@ -40,7 +40,6 @@ export class BackgroundComponent implements OnInit {
     this.mapContainerLegendCalledSubscription = this.mapService.mapContainerLegendCalled.subscribe(
       (_) => {
 
-
         // to add scale
         const scaleLeaflet: any = L.control.scale(
           {
@@ -96,8 +95,6 @@ export class BackgroundComponent implements OnInit {
       zoom: this.zoomValue,
       zoomControl: false,
     }).addLayer(this.osmLayer);
-
-    // this.map.on('click', this.setCoordsOnMap.bind(this));
 
     // to add scale
     // L.control.scale(
