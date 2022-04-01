@@ -99,20 +99,7 @@ export const homePages: any = {
   route: '/home/about_me',
   title: 'A propos...',
   icon: homeIcon,
-  sub_menus: [
-    {
-      id: "about_me",
-      title: "A propos...",
-      route: "/home/about_me",
-      icon: resumeIcon
-    },
-    {
-      id: "sandbox",
-      title: "Bac à sable",
-      route: "/map/sandbox",
-      icon: toolsIcon
-    }
-  ]
+  sub_menus: []
 };
 
 export const educationPages: any = {

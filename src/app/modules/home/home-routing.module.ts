@@ -8,17 +8,11 @@ import { ProfilCardComponent } from '@modules/home/profil-card/profil-card.compo
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'about_me',
     component: LayoutComponent,
-    children: [
-      {
-        path: 'about_me',
-        component: ProfilCardComponent,
-        data: { title: 'Bienvenue', page: 'about_me' }
-      }
-    ]
-  }
-];
+    data: { title: 'Bienvenue', page: 'about_me' }
+  },
+]
 
 
 @NgModule({

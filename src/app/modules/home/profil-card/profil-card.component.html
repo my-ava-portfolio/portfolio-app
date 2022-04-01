@@ -55,7 +55,7 @@
                         {{ page.title }}
                     </a>
                   </ng-container>
-                  <ng-container *ngIf="page.url ">
+                  <ng-container *ngIf="page.url">
                     <a class="btn btn-primary btn-sm m-1" [href]="page.route " target="_blank " rel="noopener noreferrer ">
                         <fa-icon [icon]="page.icon "></fa-icon>
                         {{ page.title }}
@@ -81,39 +81,6 @@
               </li>
             </ul>
           </div>
-
-
-          <div id="" class="d-flex flex-column">
-
-            <h3 class="section-title mb-2">Bac à sable</h3>
-
-            <div class="d-flex flex-column flex-lg-row justify-content-aroun mt-1">
-
-              <ul class="list-unstyled d-flex flex-row">
-
-                <li class="">
-                  <div class="form-check mb-2 ps-5 small">
-                    <input class="form-check-input" type="checkbox" (change)="pointsEditorAction($event)" id="PointsEditor">
-                    <label class="form-check-label" for="PointsEditor">
-                      Créer des points
-                    </label>
-                  </div>
-                </li>
-
-                <li class="">
-                  <div class="form-check mb-2 ps-5 small">
-                    <input class="form-check-input" type="checkbox" (change)="linesEditorAction($event)" id="LinesEditor">
-                    <label class="form-check-label" for="LinesEditor">
-                      Créer une ligne
-                    </label>
-                  </div>
-                </li>
-              </ul>
-
-            </div>
-
-          </div>
-
 
         </div>
 
