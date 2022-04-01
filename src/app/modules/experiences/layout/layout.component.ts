@@ -128,7 +128,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
         }
 
         if (this.fragment !== null) {
-          this.checkAndScrollToAnchorIfNeeded();
+          // this.checkAndScrollToAnchorIfNeeded();
         }
       }
     );
@@ -147,6 +147,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.resumeDataSubscription.unsubscribe();
     this.activitiesFilteredSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
+    // this.isAnchorExistsCheckerSubscription.unsubscribe()
   }
 
   sendResumeSubMenus(): void {
@@ -172,7 +173,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
         } else {
           console.log('no anchor defined');
         }
-        this.isAnchorExistsCheckerSubscription.unsubscribe();
 
     });
   }
