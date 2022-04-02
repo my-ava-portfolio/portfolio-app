@@ -166,6 +166,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   }
 
+  // TODO rework it and refactor
   @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
     this.isGeodataCanBeDisplayed = checkIfScreenPortraitOrientation();
 
