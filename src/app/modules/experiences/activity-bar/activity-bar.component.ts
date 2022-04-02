@@ -29,7 +29,7 @@ import { ActivatedRoute } from '@angular/router';
   ]),
   ]
 })
-export class ActivityBarComponent implements OnInit, OnChanges, AfterViewInit {
+export class ActivityBarComponent implements OnInit, OnChanges {
   @Output() notePathEmit = new EventEmitter<string>();
 
   @Input() fragment: any;
