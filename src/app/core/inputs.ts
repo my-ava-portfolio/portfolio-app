@@ -2,7 +2,7 @@ import { faTrashCan, faSquarePlus, faWaveSquare, faDrawPolygon, faGear, faPenSqu
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
 
-import { apiBaseUrl } from '../../app/core/constants';
+import { apiBaseUrl } from './constants';
 
 
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
@@ -13,7 +13,7 @@ export const githubUrl = 'https://github.com/amauryval/';
 export const githubBugIssueUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';
 export const githubQuestionUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=question&template=question-.md&title=';
 export const githubEnhancementUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=enhancement&template=feature_request.md&title=';
-export const imageProfile = 'https://fakeimg.pl/250x250/';
+export const imageProfile = 'https://avatars.githubusercontent.com/u/36413727?v=4';
 
 export const minWidthLandscape = 1024;
 export const minHeightLandscape = 768;
@@ -97,29 +97,9 @@ export const currentDate = now();
 export const homePages: any = {
   id: 'home',
   route: '/home/about_me',
-  title: 'Accueil',
-  icon: homeIcon,
-  sub_menus: [
-    {
-      id: "about_me",
-      title: "A propos...",
-      route: "/home/about_me",
-      icon: resumeIcon
-    },
-    {
-      id: "sandbox",
-      title: "Bac à sable",
-      route: "/home/sandbox",
-      icon: toolsIcon
-    }
-  ]
-};
-
-export const aboutMePage: any = {
-  id: 'about',
-  route: '/',
   title: 'A propos...',
-  icon: resumeIcon
+  icon: homeIcon,
+  sub_menus: []
 };
 
 export const educationPages: any = {
@@ -166,15 +146,15 @@ export const experiencesPages: any = {
       icon: printIcon
     },
     {
-      id: "companies",
+      id: "job",
       title: "Entreprises",
-      fragment: "companies",
+      fragment: "job",
       icon: navIcon
     },
     {
-      id: "personal_projects",
+      id: "personal_project",
       title: "Projets personnels",
-      fragment: "personal_projects",
+      fragment: "personal_project",
       icon: projectIcon
     },
     {
@@ -186,12 +166,28 @@ export const experiencesPages: any = {
   ]
 };
 
-export const mapPages: any = {
+export const mapActivitiesPages: any = {
   id: 'map',
   route: '/map',
-  title: 'Carte',
-  verbose_title: 'Accès à la carte',
-  icon: mapIcon
+  title: 'Cartes',
+  verbose_title: 'Accès aux carte',
+  icon: mapIcon,
+  sub_menus: [
+    {
+      id: "activities",
+      title: "Carte des activités",
+      route: "app/activities",
+      icon: mapIcon,  // TODO improve icon
+      details: "Cartographie de mon parcours universitaire et professionnel."
+    },
+    {
+      id: "sandbox",
+      title: "Bac à sable",
+      route: "app/sandbox",
+      icon: mapIcon,  // TODO improve icon
+      details: "Un bac à sable pour créer des données (outils de saisie développés avec D3sjs)."
+    }
+  ]
 };
 
 export const galleryPages: any = {
@@ -220,8 +216,8 @@ export const projectPages: any = [
   }
 ];
 
-export const resumeTopicsPages = [...[educationPages], ...[experiencesPages], ...[mapPages], ...[galleryPages]]
-export const mainTopicsPages = [...[aboutMePage], ...resumeTopicsPages, ...projectPages]
+export const resumeTopicsPages = [...[educationPages], ...[experiencesPages], ...[mapActivitiesPages], ...[galleryPages]]
+export const mainTopicsPages = [...[homePages], ...resumeTopicsPages, ...projectPages]
 export const pagesObject: any = mainTopicsPages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
 
 

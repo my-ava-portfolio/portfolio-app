@@ -1,0 +1,37 @@
+.active {
+  color: grey
+}
+
+.text-grey,
+.skills .collapsed {
+  color: grey!important;
+}
+
+
+.pointer {
+  cursor: pointer
+}
+
+.collapsed .rotation {
+  display: inline-block;
+  transform: rotate(-90deg);
+}
+
+
+.grid-container {
+  // columns: 200px;
+  -webkit-column-count: 2;
+  -webkit-column-gap: 3%; // Saf3, Chrome
+  -moz-column-count: 2;
+  -moz-column-gap: 3%; // FF3.5+
+  column-count: 2;
+  column-gap: 3%; // Opera 11+
+}
+
+.feat-skill {
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  // margin-bottom: 10px;
+  break-inside: avoid;
+}

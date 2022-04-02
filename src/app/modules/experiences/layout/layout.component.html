@@ -1,0 +1,36 @@
+<div class="container-fluid" *ngIf="isDataAvailable" [@fadeInOut]>
+
+  <div class="d-flex flex-column flex-lg-row">
+
+    <div class="d-flex flex-column flex-grow-1">
+
+      <div class="p-2">
+        <app-navigate
+          [graphInputData]="generalData"
+        ></app-navigate>
+      </div>
+
+      <div class="p-2">
+        <app-activities
+          [fragment]="fragment"
+          [jobsData]="jobsData"
+          [personalProjectsData]="personalProjectsData"
+          [volunteersData]="volunteersData"
+          (notePathEmit)="sendPathNotesLink($event)"
+        ></app-activities>
+      </div>
+
+    </div>
+
+    <div class="col-12 col-xl-4 p-2">
+
+      <app-skills
+        [skillsData]="skillsData"
+        [isActivitiesDataAvailable]="isActivitiesDataAvailable"
+      ></app-skills>
+
+    </div>
+
+  </div>
+
+</div>

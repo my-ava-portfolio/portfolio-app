@@ -1,0 +1,26 @@
+<div class="container-fluid" *ngIf="isDataAvailable">
+
+  <div class="d-flex flex-row">
+
+    <div class="d-flex flex-column">
+
+      <div class="p-2">
+        <app-degrees-bar
+          [fragment]="fragment"
+          [degreesData]="degreesData"
+          [languagesData]="languagesData"
+        ></app-degrees-bar>
+      </div>
+
+      <div class="p-2">
+        <app-trainings-bar
+          [fragment]="fragment"
+          [trainingsData]="trainingsData"
+        ></app-trainings-bar>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

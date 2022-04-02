@@ -1,0 +1,15 @@
+.label {
+  text-anchor: start;
+  dominant-baseline: middle;
+}
+
+svg {
+  width: 9em;
+}
+
+
+@media (max-width: 576px){
+  svg {
+    width: 6em;
+  }
+}

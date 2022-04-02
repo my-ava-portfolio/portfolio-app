@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 
-import { apiUrl } from '../core/inputs';
+import { apiUrl } from '@core/inputs';
 
 
 @Injectable({
@@ -12,6 +12,7 @@ import { apiUrl } from '../core/inputs';
 export class MapService {
 
   mapContainer: Subject<any> = new Subject<any>();
+  mapContainerScale: Subject<any> = new Subject<any>();
 
   private apiUrlActivitiesGeoData = apiUrl + 'activities_geodata';
   ErrorapiUrlActivitiesGeoDataApiFound: Subject<string> = new Subject<string>();
@@ -21,6 +22,7 @@ export class MapService {
   tripsGeoDataToMap: Subject<any[]> = new Subject<any[]>();
 
   mapContainerCalled: Subject<boolean> = new Subject<boolean>();
+  mapContainerLegendCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 
   newPointsSvgLayerName: Subject<string> = new Subject<string>();
@@ -31,6 +33,8 @@ export class MapService {
 
   newCoords: Subject<number[]> = new Subject<number[]>();
 
+  zoomEvent: Subject<boolean> = new Subject<boolean>();
+
   constructor(
     private http: HttpClient
   ) { }
@@ -39,12 +43,20 @@ export class MapService {
     this.mapContainerCalled.next(true);
   }
 
+  getMapContainerForLegend(): void {
+    this.mapContainerLegendCalled.next(true);
+  }
+
   resetMapView(): void {
     this.isMapViewReset.next(true)
   }
 
   sendMapContainer(mapContainer: any): void {
     this.mapContainer.next(mapContainer);
+  }
+
+  sendMapScale(scaleFeatures: any): void {
+    this.mapContainerScale.next(scaleFeatures);
   }
 
   pullActivitiesGeoData(): void {
@@ -86,7 +98,12 @@ export class MapService {
 
   pullMapCoords(coordinates: any): void {
     this.newCoords.next(coordinates);
+  }
 
+  sendZoomAction(): void {
+    this.zoomEvent.next(true);
   }
 
 }
+
+

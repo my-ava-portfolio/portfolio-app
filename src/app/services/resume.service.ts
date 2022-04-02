@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { apiUrl } from '../core/inputs';
+import { apiUrl } from '@core/inputs';
 
 
 @Injectable({
@@ -38,7 +38,6 @@ export class ResumeService {
 
   activitiesAvailable: Subject<any> = new Subject<any>();
 
-  scrollToTop: Subject<boolean> = new Subject<boolean>();
 
   constructor(
       private http: HttpClient
@@ -179,7 +178,4 @@ export class ResumeService {
     });
   }
 
-  scrollToTopAction(): void {
-    this.scrollToTop.next(true);
-  }
 }

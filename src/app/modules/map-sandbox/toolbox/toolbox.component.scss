@@ -1,0 +1,106 @@
+
+$max-height: 50vh;
+
+
+#toolbox-sidebar{
+  pointer-events: all;
+  right: 0;
+  position: fixed;
+  max-height: 70vh;
+  min-width: 275px;
+  // max-width: 250px;
+  transition: all 0.3s;
+  overflow: unset;
+  //top: 0; // sticky behavior
+  //position: sticky; // sticky behavior
+  border-bottom-left-radius: 2em !important;
+}
+
+#sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+#toolbox-sidebar.collapsed{
+  min-width: 80px;
+  max-width: 80px;
+  text-align: center;
+}
+
+#menus ul li:hover{
+  background-color: lightgrey!important; // if updated, check color mouseMoveCircle() on point_svg_layer.ts
+}
+
+#toolbox-sidebar ul li a {
+  text-align: left;
+}
+
+
+
+@media (max-width: 768px){
+  /* 80px and its content aligned to centre. Pushing it off the screen with the
+     negative left margin
+  */
+
+  #toolbox-sidebar{
+    // margin-top: 3rem !important;
+    // position: relative;
+    // height: 100%;
+    //height: 100vh;
+    min-width: 225px;
+    max-width: 225px;
+    transition: all 0.3s;
+    overflow-y: auto;
+    //top: 0; // sticky behavior
+    //position: sticky; // sticky behavior
+  }
+
+  #toolbox-sidebar.collapsed{
+      min-width: 80px;
+      max-width: 80px;
+      text-align: center;
+      // margin-left: -80px !important;
+  }
+
+
+  #toolbox-sidebar {
+      margin-left: 0;
+  }
+
+}
+
+
+
+
+
+
+#menus{
+
+  a {
+
+    border-top-left-radius: 50rem !important;
+    border-bottom-left-radius: 50rem !important;
+
+    &:hover {
+      background-color: rgb(92, 92, 92);
+    }
+
+    &.active {
+      color: black!important;
+      background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
+
+    }
+
+  }
+
+  ul{
+    overflow: hidden;
+    overflow-y: scroll;
+    height: $max-height;
+  }
+
+}
+
+.geom-color{
+  width: 5px;
+}
+

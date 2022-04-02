@@ -1,0 +1,48 @@
+.map-popup {
+  position: fixed;
+  display: none;
+  background-color: ghostwhite;
+  max-width: 400px;
+}
+
+#map-title {
+  background-color: #f1f1f1c9 !important;
+  padding: 10px;
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
+}
+
+#map-title:after {
+  left: -30px;
+  border-top: 30px solid salmon;
+  border-left: 30px solid transparent;
+  z-index: -10;
+}
+
+.mini-img-thumbnail {
+  width: 15vw;
+}
+
+
+// used on map-view.component & theme-legend.component
+.train-line {
+  stroke: black;
+  stroke-width: 3px;
+}
+
+.train-marker {
+  fill: yellow;
+  stroke: black;
+  stroke-width: 3px;
+  color: black;
+}
+
+.train-marker-text {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  color: black;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+// used on map-view.component & theme-legend.component

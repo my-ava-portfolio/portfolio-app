@@ -1,0 +1,54 @@
+.map-content {
+  min-height: 100vh;
+  pointer-events: none;
+}
+
+
+.legend-container {
+  position: sticky;
+  bottom: 0;
+  transition: all 0.1s;
+}
+
+@media (max-width: 576px){
+
+  .legend-container {
+    position: fixed;
+    width: 100%;
+  }
+
+}
+
+.legend-content {
+  box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
+
+  &.disable {
+    height: 2em;
+
+    & .d-flex {  // TODO improve it ? d-flex because the child object should be a div with d-flex class...
+      visibility: hidden;
+    }
+  }
+
+}
+
+
+
+
+
+.leaflet-control-scale {
+  visibility: visible!important;
+}
+
+.leaflet-control-scale-line {
+  background: rgb(255 255 255 / 83%)!important;
+}
+
+
+#attribution, #legend-scale {
+  font-size: 12px!important;
+  background-color: #f1f1f1c9!important;
+  margin: 3px!important;
+  padding: 5px;
+  border-radius: 5px;
+}
