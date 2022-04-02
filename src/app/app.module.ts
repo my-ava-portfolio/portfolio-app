@@ -18,7 +18,6 @@ import { MainService } from '@services/main.service';
 
 import { SwipeDirective } from '@shared/directives/swipe.directive';
 import { HoverClassDirective } from '@shared/directives/hover-class.directive';
-import { ClickClassDirective } from '@shared/directives/click-class.directive';
 
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { BackgroundComponent } from '@shared/components/background-map/background.component';
@@ -37,7 +36,6 @@ registerLocaleData(localeFr);
     ControlBarComponent,
     SwipeDirective,
     HoverClassDirective,
-    ClickClassDirective,
    ],
   imports: [
     BrowserModule,

@@ -14,6 +14,8 @@ import { ProfilBarComponent } from '@modules/experiences/profil-bar/profil-bar.c
 import { ActivitiesComponent } from '@modules/experiences/activities/activities.component';
 import { SkillsComponent } from '@modules/experiences/skills/skills.component';
 
+import { ClickClassDirective } from '@shared/directives/click-class.directive';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { SkillsComponent } from '@modules/experiences/skills/skills.component';
     ProfilBarComponent,
     ActivitiesComponent,
     SkillsComponent,
-    ActivitiesComponent
+    ActivitiesComponent,
+    ClickClassDirective
   ],
   imports: [
     CommonModule,
