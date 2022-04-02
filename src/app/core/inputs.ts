@@ -148,7 +148,7 @@ export const experiencesPages: any = {
     {
       id: "job",
       title: "Entreprises",
-      fragment: "jobs",
+      fragment: "job",
       icon: navIcon
     },
     {
@@ -160,7 +160,7 @@ export const experiencesPages: any = {
     {
       id: "volunteers",
       title: "Bénévolat",
-      fragment: "volunteers",
+      fragment: "volunteer",
       icon: volunteerIcon
     },
   ]

@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { state, trigger, transition, animate, style } from '@angular/animations'
 
-import { apiLogoUrl, mapActivitiesPages } from '@core/inputs';
+import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, projectIcon, projectPages, websiteIcon } from '@core/inputs';
 
 import { ResumeService } from '@services/resume.service';
 
@@ -35,9 +35,12 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   @Input() fragment: any;
   @Input() jobsData: any;
   @Input() personalProjectsData: any;
+  @Input() volunteersData: any;
 
   apiImgUrl = apiLogoUrl;
   mapPages: any = mapActivitiesPages;
+  galleryPagesRoute: string = galleryPages;
+  blogPagesRoute: string = projectPages[0].route;
 
   // icons
   locationIcon = locationIcon;
@@ -47,18 +50,23 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   trophyIcon = trophyIcon;
   expandIcon = expandIcon;
   arrowsDownIcon = arrowsDownIcon;
+  projectIcon = projectIcon;
+  githubIcon = githubIcon;
+  notesIcon = notesIcon;
+  websiteIcon = websiteIcon;
 
 
   activityTitle = "Bénévolat";
   themesTitle = "Thèmes";
   contextTitle = "Contexte";
   missionTitle = "Missions";
+  describeTitle = "Description";
   envTitle = "Environnement";
   trainingTitle = "Formations";
   detailsTitle = "Détails";
 
   // tabView = 'companies';
-  availabled_topics = ["job", "personal_project"]
+  availabled_topics = ["job", "personal_project", "volunteer"]
   tabView = this.availabled_topics[0];
 
   pageLoadingTimeOut: number = 500;
