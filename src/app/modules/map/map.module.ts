@@ -10,9 +10,6 @@ import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
-    // MapViewComponent,
-    // ThemeLegendComponent,
-    // TimeLegendComponent,
     LayoutComponent
   ],
   imports: [
