@@ -31,8 +31,8 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
   fragment!: any;
   fragmentValue!: string;
 
-  experiencesPages: any = experiencesPages;
-  educationPages: any = educationPages;
+  experiencesRoute: string = experiencesPages.route;
+  educationRoute: string = educationPages.route;
 
   svgTripIdPrefix = svgTripIdPrefix;
   legendActivities = legendActivities;
@@ -248,9 +248,9 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
       .append('a') // add hyper link and the svg circle
       .attr('xlink:href', (d: any) => {
         if (d.properties.type === 'education') {
-          return '#' + this.educationPages.route + '#' + d.properties.id;
+          return '#' + this.educationRoute + '#' + d.properties.id;
         } else if (d.properties.type == "job") {
-          return '#' + this.experiencesPages.route + '#' + d.properties.id;
+          return '#' + this.experiencesRoute + '#' + d.properties.id;
         }
         return '#none';
       })

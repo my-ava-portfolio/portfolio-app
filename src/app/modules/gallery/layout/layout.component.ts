@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { apiMapsUrl, minWidthLandscape } from '@core/inputs';
+import { apiMapsUrl, experiencesPages, minWidthLandscape } from '@core/inputs';
 
 import { GalleryService } from '@services/gallery.service';
 import { MainService } from '@services/main.service';
@@ -21,6 +21,8 @@ import { ControlerService } from '@services/controler.service';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit, OnDestroy {
+  experiencesRoute: string = experiencesPages.route;
+
   // TODO create a route to get all activities titles
   currentDate: number = new Date().getFullYear();
   defaultActivity: string | null = null;
