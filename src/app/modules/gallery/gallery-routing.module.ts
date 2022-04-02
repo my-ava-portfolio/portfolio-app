@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { GalleryViewComponent } from '@modules/gallery/gallery-view/gallery-view.component';
+import { LayoutComponent } from '@modules/gallery/layout/layout.component';
 
 
 const routes: Routes = [
-  { path: '', component: GalleryViewComponent, data: { title: 'Galerie', page: 'gallery' } },
+  { path: '', component: LayoutComponent, data: { title: 'Galerie', page: 'gallery' } },
 ];
 
 

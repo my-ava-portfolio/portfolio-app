@@ -7,7 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { GalleryRoutingModule } from '@modules/gallery/gallery-routing.module';
 
-import { GalleryViewComponent } from '@modules/gallery/gallery-view/gallery-view.component';
+import { LayoutComponent } from './layout/layout.component';
 
 import { GalleryService } from '@services/gallery.service';
 
@@ -16,7 +16,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [
-    GalleryViewComponent
+    LayoutComponent
   ],
   imports: [
     CommonModule,

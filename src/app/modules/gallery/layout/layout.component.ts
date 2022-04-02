@@ -12,15 +12,15 @@ import { Title } from '@angular/platform-browser';
 import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '@core/inputs';
 
 import { checkIfScreenPortraitOrientation } from '@core/inputs';
-import { ControlerService } from 'src/app/services/controler.service';
+import { ControlerService } from '@services/controler.service';
 
 
 @Component({
-  selector: 'app-gallery-view',
-  templateUrl: './gallery-view.component.html',
-  styleUrls: ['./gallery-view.component.scss']
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss']
 })
-export class GalleryViewComponent implements OnInit, OnDestroy {
+export class LayoutComponent implements OnInit, OnDestroy {
   // TODO create a route to get all activities titles
   currentDate: number = new Date().getFullYear();
   defaultActivity: string | null = null;
