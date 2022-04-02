@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 

@@ -176,14 +176,16 @@ export const mapActivitiesPages: any = {
     {
       id: "activities",
       title: "Carte des activités",
-      route: "activities",
-      icon: mapIcon
+      route: "app/activities",
+      icon: mapIcon,  // TODO improve icon
+      details: "Cartographie de mon parcours universitaire et professionnel."
     },
     {
       id: "sandbox",
       title: "Bac à sable",
-      route: "sandbox",
-      icon: mapIcon
+      route: "app/sandbox",
+      icon: mapIcon,  // TODO improve icon
+      details: "Un bac à sable pour créer des données (outils de saisie développés avec D3sjs)."
     }
   ]
 };
