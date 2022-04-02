@@ -11,7 +11,7 @@ import { ExperiencesRoutingModule } from '@modules/experiences/experiences-routi
 import { LayoutComponent } from '@modules/experiences/layout/layout.component';
 import { GraphBarComponent } from '@modules/experiences/graph-bar/graph-bar.component';
 import { ProfilBarComponent } from '@modules/experiences/profil-bar/profil-bar.component';
-import { ActivityBarComponent } from '@modules/experiences/activity-bar/activity-bar.component';
+import { ActivitiesComponent } from '@modules/experiences/activities/activities.component';
 import { SkillsComponent } from '@modules/experiences/skills/skills.component';
 
 
@@ -20,8 +20,9 @@ import { SkillsComponent } from '@modules/experiences/skills/skills.component';
     LayoutComponent,
     GraphBarComponent,
     ProfilBarComponent,
-    ActivityBarComponent,
-    SkillsComponent
+    ActivitiesComponent,
+    SkillsComponent,
+    ActivitiesComponent
   ],
   imports: [
     CommonModule,

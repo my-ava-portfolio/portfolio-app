@@ -11,9 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
-  selector: 'app-activity-bar',
-  templateUrl: './activity-bar.component.html',
-  styleUrls: ['./activity-bar.component.scss'],
+  selector: 'app-activities',
+  templateUrl: './activities.component.html',
+  styleUrls: ['./activities.component.scss'],
   animations: [
     trigger('fadeInOut', [
       state('in', style({opacity: 0})),
@@ -29,7 +29,7 @@ import { ActivatedRoute } from '@angular/router';
   ]),
   ]
 })
-export class ActivityBarComponent implements OnInit, OnChanges {
+export class ActivitiesComponent implements OnInit, OnChanges {
   @Output() notePathEmit = new EventEmitter<string>();
 
   @Input() fragment: any;
