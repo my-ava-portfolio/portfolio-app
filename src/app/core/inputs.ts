@@ -13,7 +13,7 @@ export const githubUrl = 'https://github.com/amauryval/';
 export const githubBugIssueUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';
 export const githubQuestionUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=question&template=question-.md&title=';
 export const githubEnhancementUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=enhancement&template=feature_request.md&title=';
-export const imageProfile = 'https://fakeimg.pl/250x250/';
+export const imageProfile = 'https://avatars.githubusercontent.com/u/36413727?v=4';
 
 export const minWidthLandscape = 1024;
 export const minHeightLandscape = 768;
