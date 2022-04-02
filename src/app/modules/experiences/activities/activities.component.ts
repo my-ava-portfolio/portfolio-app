@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { state, trigger, transition, animate, style } from '@angular/animations'
 
-import { apiLogoUrl } from '@core/inputs';
+import { apiLogoUrl, mapActivitiesPages } from '@core/inputs';
 
 import { ResumeService } from '@services/resume.service';
 
@@ -37,6 +37,7 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   @Input() personalProjectsData: any;
 
   apiImgUrl = apiLogoUrl;
+  mapPages: any = mapActivitiesPages;
 
   // icons
   locationIcon = locationIcon;

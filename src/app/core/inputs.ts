@@ -166,12 +166,26 @@ export const experiencesPages: any = {
   ]
 };
 
-export const mapActivitiesPage: any = {
+export const mapActivitiesPages: any = {
   id: 'map',
-  route: '/map/activities',
-  title: 'Carte',
-  verbose_title: 'Accès à la carte',
-  icon: mapIcon
+  route: '/map',
+  title: 'Cartes',
+  verbose_title: 'Accès aux carte',
+  icon: mapIcon,
+  sub_menus: [
+    {
+      id: "activities",
+      title: "Carte des activités",
+      route: "activities",
+      icon: mapIcon
+    },
+    {
+      id: "sandbox",
+      title: "Bac à sable",
+      route: "sandbox",
+      icon: mapIcon
+    }
+  ]
 };
 
 export const galleryPages: any = {
@@ -200,7 +214,7 @@ export const projectPages: any = [
   }
 ];
 
-export const resumeTopicsPages = [...[educationPages], ...[experiencesPages], ...[mapActivitiesPage], ...[galleryPages]]
+export const resumeTopicsPages = [...[educationPages], ...[experiencesPages], ...[mapActivitiesPages], ...[galleryPages]]
 export const mainTopicsPages = [...[homePages], ...resumeTopicsPages, ...projectPages]
 export const pagesObject: any = mainTopicsPages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});
 
