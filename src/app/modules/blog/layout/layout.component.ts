@@ -7,15 +7,15 @@ import { personalBlogUrl } from '@core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { ControlerService } from 'src/app/services/controler.service';
+import { ControlerService } from '@services/controler.service';
 
 
 @Component({
-  selector: 'app-notes-view',
-  templateUrl: './notes-view.component.html',
-  styleUrls: ['./notes-view.component.scss']
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss']
 })
-export class NotesViewComponent implements OnDestroy {
+export class LayoutComponent implements OnDestroy {
   pageTitle!: string;
   pageUrlToLoad = personalBlogUrl;
   notesDataSubscription!: Subscription;

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { NotesViewComponent } from '@modules/blog/notes-view/notes-view.component';
+import { LayoutComponent } from '@modules/blog/layout/layout.component';
 
 
 const routes: Routes = [
-  { path: '', component: NotesViewComponent, data: { title: 'Blog', page: 'blog' } },
+  { path: '', component: LayoutComponent, data: { title: 'Blog', page: 'blog' } },
 ];
 
 @NgModule({
