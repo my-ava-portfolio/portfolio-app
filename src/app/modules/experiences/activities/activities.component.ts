@@ -135,6 +135,31 @@ export class ActivitiesComponent implements OnInit, OnChanges {
       }
     }
 
+    this.clickOnTheFirstActivityTypeContainingActivities()
+  }
+
+  private clickOnTheFirstActivityTypeContainingActivities(): void {
+      // to switch on an activity containing at least 1 activity
+      let activitiesCount: any = this.countActivities()
+      var currentActivities: string[] = [];
+      Object.keys(activitiesCount).filter((item: string) => {
+        if (activitiesCount[item]) {
+          activitiesCount[item] !== 0
+          currentActivities.push(item);
+        }
+      })
+      console.log(currentActivities)
+      if (currentActivities.length > 0 && !currentActivities.includes(this.tabView)) {
+        this.tabView = currentActivities[0];
+      }
+  }
+
+  private countActivities(): any {
+    return {
+      'job': this.jobsData?.length,
+      'personal_project': this.personalProjectsData?.length,
+      'volunteer': this.volunteersData?.length
+    }
   }
 
   trackByMethod(index:number, el:any): number {
@@ -142,3 +167,5 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   }
 
 }
+
+
