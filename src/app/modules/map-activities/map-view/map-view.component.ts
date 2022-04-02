@@ -253,6 +253,8 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
           return '#' + this.educationRoute + '#' + d.properties.id;
         } else if (d.properties.type == "job") {
           return '#' + this.experiencesRoute + '#' + d.properties.id;
+        } else if (d.properties.type == "volunteer") {
+          return '#' + this.experiencesRoute + '#' + d.properties.id;
         }
         return '#none';
       })

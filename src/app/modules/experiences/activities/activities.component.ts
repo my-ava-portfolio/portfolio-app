@@ -130,6 +130,7 @@ export class ActivitiesComponent implements OnInit, OnChanges {
 
     if (changes.fragment !== undefined) {
       let fragmentCurrentValue: string = changes.fragment.currentValue
+      // TODO detect the activity linked to the fragment
       if (this.availabled_topics.includes(fragmentCurrentValue)) {
         this.tabView = changes.fragment.currentValue;
       }
