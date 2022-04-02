@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
+import { ViewportScroller } from "@angular/common";
 
 import { ResumeService } from '@services/resume.service';
 import { NotesService } from '@services/notes.service';
@@ -10,7 +11,7 @@ import { experiencesPages } from '@core/inputs';
 import { interval, Subscription } from 'rxjs';
 import { startWith  } from 'rxjs/operators';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { trigger, state, animate, transition, style } from '@angular/animations';
 
@@ -36,25 +37,10 @@ import { trigger, state, animate, transition, style } from '@angular/animations'
   ]
 })
 export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
-  fragment!: string | null;
+  fragment: string = '';
+
   apiImgUrl = apiLogoUrl;
   activityIdFromActivityComponents!: string;
-
-  tabView = 'companies';
-
-  // resume top bar
-  profilData: any;
-  contactData: any;
-
-  // resume left sidebar
-  degreesData: any;
-  languagesData: any;
-  trainingsData: any;
-
-  // resume center bar
-  summaryData!: any;
-  qualitiesData!: any;
-  publicationsData!: any;
 
   // resume center bar
   generalData: any;
@@ -83,7 +69,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
     private resumeService: ResumeService,
     private notesService: NotesService,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title
+    private titleService: Title,
   ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -119,23 +105,18 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
       }
     );
 
+
     this.routeSubscription = this.activatedRoute.fragment.subscribe(
       (fragment) => {
-        if (fragment === undefined) {
-          this.fragment = null;
-        } else {
-          this.fragment = fragment;
-        }
-
-        if (this.fragment !== null) {
-          // this.checkAndScrollToAnchorIfNeeded();
+        if (fragment) {
+          this.fragment = fragment
         }
       }
     );
+
    }
 
   ngOnInit(): void {
-    // this.fragment = null
     this.resumeService.pullResumeGeneralData();
     this.sendResumeSubMenus()
   }
@@ -147,34 +128,10 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.resumeDataSubscription.unsubscribe();
     this.activitiesFilteredSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
-    // this.isAnchorExistsCheckerSubscription.unsubscribe()
   }
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus(this.experiencesTopics)
-  }
-
-  checkAndScrollToAnchorIfNeeded(): void {
-
-    this.isAnchorExistsCheckerSubscription = this.isAnchorExistsChecker.pipe(startWith(0)).subscribe(() => {
-
-        if (this.fragment !== null) {
-          var fragment: string = this.fragment;
-          ["companies", "personal_project"].forEach((activityType) => {
-
-            if (this.tabView !== activityType) {
-              this.tabView = activityType;
-            }
-            const element: any = window.document.getElementById(fragment);
-            if (element !== null) {
-              element.scrollIntoView();
-            }
-        });
-        } else {
-          console.log('no anchor defined');
-        }
-
-    });
   }
 
   sendPathNotesLink(notePath: string): void {

@@ -146,15 +146,15 @@ export const experiencesPages: any = {
       icon: printIcon
     },
     {
-      id: "companies",
+      id: "job",
       title: "Entreprises",
-      fragment: "companies",
+      fragment: "jobs",
       icon: navIcon
     },
     {
-      id: "personal_projects",
+      id: "personal_project",
       title: "Projets personnels",
-      fragment: "personal_projects",
+      fragment: "personal_project",
       icon: projectIcon
     },
     {

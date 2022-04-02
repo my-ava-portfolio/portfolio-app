@@ -18,16 +18,16 @@
 
               <div class="col-lg-8 mx-auto border mb-2">
                 <ul class="nav nav-pills nav-justified" role="tablist">
-                  <li *ngIf="jobsData" class="nav-item" role="presentation" id="companies" [ngClass]="jobsData.length === 0 ? 'disabled' : ''">
+                  <li *ngIf="jobsData" class="nav-item" role="presentation" id="job" [ngClass]="jobsData.length === 0 ? 'disabled' : ''">
 
-                    <a class="nav-link fw-bold active" [class.active]="tabView == 'companies'" rel="companies" (click)="tabView = 'companies'">
+                    <a class="nav-link fw-bold active" [class.active]="tabView == 'job'" rel="job" (click)="tabView = 'job'">
                       <fa-icon class="me-2" [icon]="resumeIcon"></fa-icon>Entreprises
                       <span class="badge bg-danger">{{ jobsData.length }}</span>
                     </a>
                   </li>
 
-                  <li *ngIf="personalProjectsData" class="nav-item" role="presentation" id="personal_projects"  [ngClass]="personalProjectsData.length === 0 ? 'disabled' : ''">
-                    <a class="nav-link fw-bold" [class.active]="tabView == 'personal_projects'" rel="personal_projects" (click)="tabView = 'personal_projects'">
+                  <li *ngIf="personalProjectsData" class="nav-item" role="presentation" id="personal_project"  [ngClass]="personalProjectsData.length === 0 ? 'disabled' : ''">
+                    <a class="nav-link fw-bold" [class.active]="tabView == 'personal_project'" rel="personal_project" (click)="tabView = 'personal_project'">
                       <fa-icon class="me-2" [icon]="resumeIcon"></fa-icon>Projets personnels
                       <span class="badge bg-danger" >{{ personalProjectsData.length }}</span>
                     </a>
@@ -38,11 +38,11 @@
 
               <div class="tab-container" [ngSwitch]="tabView">
 
-                <div class="tab" id="companies-widget" *ngSwitchCase="'companies'" [@fadeInOut]>
+                <div class="tab" id="job-widget" *ngSwitchCase="'job'" [@fadeInOut]>
                   <ng-container *ngTemplateOutlet="activityTimeLine; context:{activitiesData: jobsData}"></ng-container>
                 </div>
 
-                <div class="tab" id="personal_projects-widget" *ngSwitchCase="'personal_projects'" [@fadeInOut]>
+                <div class="tab" id="personal_project-widget" *ngSwitchCase="'personal_project'" [@fadeInOut]>
                   <ng-container *ngTemplateOutlet="activityTimeLine; context:{activitiesData: personalProjectsData}"></ng-container>
                 </div>
 

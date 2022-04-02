@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { state, trigger, transition, animate, style } from '@angular/animations'
 
 import { apiLogoUrl } from '@core/inputs';
@@ -6,6 +7,7 @@ import { apiLogoUrl } from '@core/inputs';
 import { ResumeService } from '@services/resume.service';
 
 import { arrowsDownIcon, expandIcon, resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '@core/inputs';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -27,10 +29,9 @@ import { arrowsDownIcon, expandIcon, resumeIcon, galleryIcon, locationIcon, filt
   ]),
   ]
 })
-export class ActivityBarComponent implements OnInit, OnChanges {
+export class ActivityBarComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() notePathEmit = new EventEmitter<string>();
 
-  @Input() tabView: any;
   @Input() fragment: any;
   @Input() jobsData: any;
   @Input() personalProjectsData: any;
@@ -56,12 +57,32 @@ export class ActivityBarComponent implements OnInit, OnChanges {
   detailsTitle = "Détails";
 
   // tabView = 'companies';
-  availabled_topics = ["companies", "personal_projects"]
-  defaultTabView = this.availabled_topics[0];
+  availabled_topics = ["job", "personal_project"]
+  tabView = this.availabled_topics[0];
+
+  pageLoadingTimeOut: number = 500;
+
+  routeSubscription!: Subscription;
 
   constructor(
-    private resumeService: ResumeService
+    private resumeService: ResumeService,
+    private activatedRoute: ActivatedRoute,
   ) {
+
+    this.routeSubscription = this.activatedRoute.queryParams.subscribe((params) => {
+      if (params.tab) {
+        this.tabView = params.tab;
+      };
+      setTimeout(() => {
+        if ( this.fragment ) {
+          const targetElement: any = document.getElementById(this.fragment);
+          if (targetElement) {
+            targetElement.scrollIntoView();
+          }
+        }},
+        this.pageLoadingTimeOut
+      )
+    });
 
   }
 
@@ -69,7 +90,9 @@ export class ActivityBarComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe()
   }
+
 
   emitNotePath(notePath: string): void {
     this.notePathEmit.emit(notePath);
