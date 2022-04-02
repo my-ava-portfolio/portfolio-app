@@ -160,7 +160,7 @@ export const experiencesPages: any = {
     {
       id: "volunteers",
       title: "Bénévolat",
-      fragment: "volunteer",
+      fragment: "volunteers",
       icon: volunteerIcon
     },
   ]
