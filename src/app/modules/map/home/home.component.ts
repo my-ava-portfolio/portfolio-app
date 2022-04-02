@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { mapActivitiesPages } from '@core/inputs';
+import { ControlerService } from '@services/controler.service';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { mapActivitiesPages } from '@core/inputs';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  mapPagesMenus: any[] = mapActivitiesPages.sub_menus;
+  mapPagesMenus: any = mapActivitiesPages;
 
   constructor() { }
 
