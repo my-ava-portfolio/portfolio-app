@@ -9,7 +9,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { ExperiencesRoutingModule } from '@modules/experiences/experiences-routing.module';
 
 import { LayoutComponent } from '@modules/experiences/layout/layout.component';
-import { GraphBarComponent } from '@modules/experiences/graph-bar/graph-bar.component';
+import { NavigateComponent } from '@modules/experiences/navigate/navigate.component';
 import { ProfilBarComponent } from '@modules/experiences/profil-bar/profil-bar.component';
 import { ActivitiesComponent } from '@modules/experiences/activities/activities.component';
 import { SkillsComponent } from '@modules/experiences/skills/skills.component';
@@ -18,7 +18,7 @@ import { SkillsComponent } from '@modules/experiences/skills/skills.component';
 @NgModule({
   declarations: [
     LayoutComponent,
-    GraphBarComponent,
+    NavigateComponent,
     ProfilBarComponent,
     ActivitiesComponent,
     SkillsComponent,

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GraphBarComponent } from './graph-bar.component';
+import { NavigateComponent } from './navigate.component';
 
-describe('GraphBarComponent', () => {
-  let component: GraphBarComponent;
-  let fixture: ComponentFixture<GraphBarComponent>;
+describe('NavigateComponent', () => {
+  let component: NavigateComponent;
+  let fixture: ComponentFixture<NavigateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GraphBarComponent ]
+      declarations: [ NavigateComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GraphBarComponent);
+    fixture = TestBed.createComponent(NavigateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

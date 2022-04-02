@@ -8,11 +8,11 @@ import { ResumeService } from '@services/resume.service';
 import { expandIcon, navIcon, helpIcon, ungroupIconUnicode, nextIcon } from '@core/inputs';
 
 @Component({
-  selector: 'app-graph-bar',
-  templateUrl: './graph-bar.component.html',
-  styleUrls: ['./graph-bar.component.scss']
+  selector: 'app-navigate',
+  templateUrl: './navigate.component.html',
+  styleUrls: ['./navigate.component.scss']
 })
-export class GraphBarComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() graphInputData!: any;
 
   @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
