@@ -113,8 +113,18 @@
 
               <div class="">
 
-                <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
                 <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
+
+                <ng-container *ngIf="countDictObject(activity.recommendations) > 0">
+                  <span class="btn btn-sm btn-success m-1" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <fa-icon [icon]="trophyIcon"></fa-icon>
+                  </span>
+                  <div class="dropdown-menu" aria-labelledby="dropdownRecomButton" *ngFor="let recommendation of activity.recommendations | keyvalue">
+                    <a class="dropdown-item" [href]="recommendation.value" target="_blank" rel="noopener noreferrer">{{ recommendation.key }}</a>
+                  </div>
+                </ng-container>
+
+                <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
 
               </div>
             </div>
@@ -267,11 +277,11 @@
         </div>
 
         <div class="">
-          <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
           <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
           <a *ngIf="activity.url_github" class="btn btn-sm btn-secondary m-1" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
           <a *ngIf="activity.url_blog" class="btn btn-sm btn-info m-1" [routerLink]="[blogPagesRoute]" (click)="emitNotePath(activity.url_blog)" title="Accès aux notes"><fa-icon [icon]="notesIcon"></fa-icon></a>
           <a *ngIf="activity.url_website" class="btn btn-sm btn-primary m-1" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
+          <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
         </div>
       </div>
 

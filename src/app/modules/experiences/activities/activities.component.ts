@@ -135,7 +135,7 @@ export class ActivitiesComponent implements OnInit, OnChanges {
         this.tabView = changes.fragment.currentValue;
       }
     }
-
+    console.log(this.personalProjectsData)
     this.clickOnTheFirstActivityTypeContainingActivities()
   }
 
