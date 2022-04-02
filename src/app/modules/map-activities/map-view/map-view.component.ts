@@ -69,16 +69,14 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
   circleOpacity = 0.7;
   circleStroke = 'ghostwhite';
   circleWidth = '2.5px';
+  generalData!: any;
 
   mapContainerSubscription!: Subscription;
-  ScaleFeaturesSubscription!: Subscription;
 
   pullActivitiesGeoDataToMapSubscription!: Subscription;
   pullTripsGeoDataToMapSubscription!: Subscription;
-  pullPageContentWidthSubscription!: Subscription;
   zoomEventSubscription!: Subscription;
-  generalDataSubscription!: Subscription;
-  generalData!: any;
+  routeSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -129,6 +127,18 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
       }
     );
 
+    this.routeSubscription = this.activatedRoute.fragment.subscribe(
+      (fragment) => {
+        if (fragment === null) {
+          this.fragment = null;
+        } else {
+          this.fragment = fragment;
+          this.fragmentValue = this.fragment;
+
+        }
+      }
+    );
+
   }
 
   ngOnInit(): void {
@@ -141,17 +151,7 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
     this.innerHeight = window.innerHeight;
 
     this.displayContentRegardingDeviceScreen();
-    this.activatedRoute.fragment.subscribe(
-      (fragment) => {
-        if (fragment === null) {
-          this.fragment = null;
-        } else {
-          this.fragment = fragment;
-          this.fragmentValue = this.fragment;
 
-        }
-      }
-    );
 
   }
 
@@ -182,6 +182,8 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
     this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
     this.pullTripsGeoDataToMapSubscription.unsubscribe();
     this.zoomEventSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
+
 
     d3.select('#' + this.svgActivitiesLayerId).remove();
     d3.selectAll('[id^=' + this.svgTripIdPrefix + ']').remove();
