@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   bugIcon = bugIcon;
 
   orientationDisclaimerPages: string[] = [
+    '/map',
     '/map/app/activities',
     '/map/app/sandbox',
     '/gallery'
