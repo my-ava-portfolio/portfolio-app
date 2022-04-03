@@ -11,7 +11,6 @@ import { Title } from '@angular/platform-browser';
 
 import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '@core/inputs';
 
-import { checkIfScreenPortraitOrientation } from '@core/inputs';
 import { ControlerService } from '@services/controler.service';
 
 
@@ -31,7 +30,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   defaultCategory: string | null = null;
   currentCategory: string | null = null;
 
-  isGalleryDataCanBeDisplayed = false;
   isLegendDisplayed = true;
   tagsIcon = tagsIcon;
   tagIcon = tagIcon;
@@ -105,13 +103,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sendResumeSubMenus()
+    this.resetGallery();
+    this.filterFromAnchor();
 
-    this.displayContentRegardingDeviceScreen();
-
-    if (this.isGalleryDataCanBeDisplayed) {
-      this.resetGallery();
-      this.filterFromAnchor();
-    }
   }
 
   ngOnDestroy(): void {
@@ -165,8 +159,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   @HostListener('window:orientationchange', ['$event'])
   displayContentRegardingDeviceScreen(): void {
-    this.isGalleryDataCanBeDisplayed = checkIfScreenPortraitOrientation();
-
     // if mode portrait and width screen <= 1024...
     if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
       this.isLegendDisplayed = false;

@@ -1,15 +1,15 @@
-<div class="container-fluid" *ngIf="isGalleryDataCanBeDisplayed">
+<div class="container-fluid">
   <div class="row">
 
 
-    <div class="col-lg-12 mt-4 gallery-content mb-5 px-5">
+    <div class="col-12 mt-4 gallery-content">
       <div class="grid-container">
           <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
       </div>
     </div>
 
-    <div class="col-lg-12 legend-container">
-      <div class="row">
+    <div class="col-12 legend-container">
+      <div class="row justfiy-content-center">
 
         <div class="col-9">
           <button class="btn btn-dark me-2" type="button" checked autocomplete="off" (click)="showHideLegend()">
@@ -31,41 +31,45 @@
 
 
 <ng-template #imgProject let-medias=medias>
-  <div class="mb-4 feat-gallery bg-white p-2" *ngFor="let media_feature of medias; let idx = index">
-    <div class="card rounded border bg-white p-2">
+  <div class="mb-4 feat-gallery" *ngFor="let media_feature of medias; let idx = index">
+    <div class="card rounded shadow bg-light">
 
+      <div class="card-header">
 
-      <ng-container [ngSwitch]="media_feature.source">
+        <ng-container [ngSwitch]="media_feature.source">
 
-        <ng-container *ngSwitchCase="'youtube'">
-          <div class="ratio ratio-16x9">
-            <iframe [src]="media_feature.media | safeUrl" class="" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
-          </div>
+          <ng-container *ngSwitchCase="'youtube'">
+            <div class="ratio ratio-16x9">
+              <iframe [src]="media_feature.media | safeUrl" class="" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'url_img'">
+            <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
+              <img [src]="media_feature.media | safeUrl" class="card-img-top pointer" data-bs-toggle="modal" data-bs-target="'#modal-' + media_feature.identifier + idx">
+            </a>
+            <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'url_app'">
+            <a [href]="media_feature.media | safeUrl" target="_blank" rel="noopener noreferrer">
+              <img [src]="media_feature.media_splash" class="card-img-top pointer">
+            </a>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'api_img'">
+            <img [src]="apiMapsUrl + media_feature.media" class="card-img-top pointer" data-bs-toggle="modal" [attr.data-bs-target]="'#modal-' + media_feature.identifier + idx">
+            <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiMapsUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
+          </ng-container>
+
         </ng-container>
 
-        <ng-container *ngSwitchCase="'url_img'">
-          <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
-            <img [src]="media_feature.media | safeUrl" class="card-img-top pointer" data-bs-toggle="modal" data-bs-target="'#modal-' + media_feature.identifier + idx">
-          </a>
-          <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
-        </ng-container>
+        <h6 class="card-title mt-2">{{ media_feature.title }}</h6>
+      </div>
 
-        <ng-container *ngSwitchCase="'url_app'">
-          <a [href]="media_feature.media | safeUrl" target="_blank" rel="noopener noreferrer">
-            <img [src]="media_feature.media_splash" class="card-img-top pointer">
-          </a>
-        </ng-container>
 
-        <ng-container *ngSwitchCase="'api_img'">
-          <img [src]="apiMapsUrl + media_feature.media" class="card-img-top pointer" data-bs-toggle="modal" [attr.data-bs-target]="'#modal-' + media_feature.identifier + idx">
-          <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiMapsUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
-        </ng-container>
-
-      </ng-container>
-
-      <div class="card-body">
-        <h6 class="card-title">{{ media_feature.title }}</h6>
-        <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
+      <div class="card-body px-2">
+        <span [class]="'badge rounded-pill mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
         <a [routerLink]="[experiencesRoute]" [fragment]="media_feature.identifier"><span class="badge rounded-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
         <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + media_feature.type">
           <fa-icon class="me-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
@@ -73,6 +77,9 @@
         <p class="card-text mt-2 small">{{media_feature.description}}</p>
         <p class="card-text small" *ngIf="media_feature.data">Données: {{media_feature.data}}</p>
         <p class="card-text small" *ngIf="media_feature.tools">Outils: {{media_feature.tools}}</p>
+      </div>
+
+      <div class="card-footer">
       </div>
 
     </div>

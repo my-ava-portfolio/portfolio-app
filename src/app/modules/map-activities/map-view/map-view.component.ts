@@ -13,8 +13,6 @@ import { locationIcon, tagsIcon, centerIcon, trainIconUnicode, helpIcon, minWidt
 import { apiLogoUrl, currentYear } from '@core/inputs';
 import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '@core/inputs';
 
-import { checkIfScreenPortraitOrientation } from '@core/inputs';
-
 import { MapService } from '@services/map.service';
 import { ControlerService } from 'src/app/services/controler.service';
 
@@ -41,7 +39,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   currentDate = currentYear;
 
-  isGeodataCanBeDisplayed = false;
   isLegendDisplayed = true;
 
   innerWidth!: any;
@@ -168,8 +165,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   // TODO rework it and refactor
   @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
-    this.isGeodataCanBeDisplayed = checkIfScreenPortraitOrientation();
-
     // if mode portrait and width screen <= 1024...
     if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
       this.isLegendDisplayed = false;

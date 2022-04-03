@@ -145,24 +145,6 @@ export const experiencesPages: any = {
       route: '../short_resume',
       icon: printIcon
     },
-    {
-      id: "job",
-      title: "Entreprises",
-      fragment: "job",
-      icon: navIcon
-    },
-    {
-      id: "personal_project",
-      title: "Projets personnels",
-      fragment: "personal_project",
-      icon: projectIcon
-    },
-    {
-      id: "volunteers",
-      title: "Bénévolat",
-      fragment: "volunteers",
-      icon: volunteerIcon
-    },
   ]
 };
 

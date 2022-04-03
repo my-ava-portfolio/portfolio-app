@@ -16,19 +16,25 @@ export class AppComponent implements OnInit {
 
   mapBlurred: boolean = false;
   mapInteractionEnabled: boolean = false;
-  mapInteractionPages: string[] = ['/home/about_me', '/home/sandbox', '/map']
+
+  mapInteractionEnabledPages: string[] = [
+    '/home/about_me',
+    '/map/app/activities',
+    '/map/app/sandbox',
+  ]
 
   mobileIcon = mobileIcon;
   loadingIcon = loadingIcon;
   bugIcon = bugIcon;
 
-  orientationDisclaimerPages: string[] = ['/map', '/gallery']
+  orientationDisclaimerPages: string[] = [
+    '/map',
+    '/map/app/activities',
+    '/map/app/sandbox',
+  ];
   orientationErrorMessage!: string;
   isLandscapeDeviceMode = false;
   currentPage!: string;
-
-  countDown = 60;
-  countDownStreamSubscription!: Subscription;
 
   apiStatus!: string;
   apiOff!: boolean;
@@ -42,15 +48,13 @@ export class AppComponent implements OnInit {
   ) {
 
     this.router.events.subscribe(_ => {
-      // TODO find /map route string value from app.ts ?
-      if ( this.mapInteractionPages.includes(this.location.path()) || this.location.path().includes('/map') ) {
+      if ( this.mapInteractionEnabledPages.includes(this.location.path()) ) {
         this.mapBlurred = false;
         this.mapInteractionEnabled = true;
       } else {
         this.mapBlurred = true;
         this.mapInteractionEnabled = false;
       }
-      console.log(this.location.path(), this.mapInteractionEnabled)
     });
 
     // to get the current page opened and adapt content regarding orientation
