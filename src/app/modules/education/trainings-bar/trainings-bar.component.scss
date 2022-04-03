@@ -10,7 +10,7 @@
 
 .nav-link.active {
   @extend .nav-link;
-  --bs-bg-opacity: 1;
+  --bs-bg-opacity: 0.5;
   background-color: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity))!important;
 
 }

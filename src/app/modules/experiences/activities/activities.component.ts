@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { state, trigger, transition, animate, style } from '@angular/animations'
 
-import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, projectIcon, projectPages, websiteIcon } from '@core/inputs';
+import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, projectIcon, projectPages, stringToColor, websiteIcon } from '@core/inputs';
 
 import { ResumeService } from '@services/resume.service';
 
@@ -165,6 +165,11 @@ export class ActivitiesComponent implements OnInit, OnChanges {
 
   trackByMethod(index:number, el:any): number {
     return el.identifier;
+  }
+
+  buildColorStyle(color: string) {
+   return {'background': 'linear-gradient(to left, ' + color +', white)'}
+
   }
 
 }

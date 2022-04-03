@@ -105,7 +105,7 @@
       <div class="card rounded shadow bg-light">
 
 
-            <div class="card-header title d-flex flex-row justify-content-between align-items-center"  [ngStyle]="{'background': 'linear-gradient(to left, ' + activity.color +', white)'}">
+            <div class="card-header title d-flex flex-row justify-content-between align-items-center"  [ngStyle]="buildColorStyle(activity.color)">
 
               <div class="me-auto">
                 <span class="fw-bolder fs-6">{{activity.title}}</span>
@@ -115,7 +115,7 @@
 
                 <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
 
-                <ng-container *ngIf="countDictObject(activity.recommendations) > 0">
+                <ng-container *ngIf="activity.recommendations && countDictObject(activity.recommendations) > 0">
                   <span class="btn btn-sm btn-success m-1" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <fa-icon [icon]="trophyIcon"></fa-icon>
                   </span>
@@ -270,7 +270,7 @@
     <div class="card rounded shadow bg-light">
 
 
-      <div class="card-header title d-flex flex-row justify-content-between align-items-center" [ngStyle]="{'background': 'linear-gradient(to left, ' + activity.color +', white)'}">
+      <div class="card-header title d-flex flex-row justify-content-between align-items-center" [ngStyle]="buildColorStyle(activity.color)">
 
         <div class="me-auto">
           <span class="fw-bolder fs-6">{{activity.title}}</span>
