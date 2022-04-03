@@ -7,7 +7,7 @@ import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, pr
 import { ResumeService } from '@services/resume.service';
 
 import { arrowsDownIcon, expandIcon, resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '@core/inputs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -69,29 +69,36 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   availabled_topics = ["job", "personal_project", "volunteer"]
   tabView = this.availabled_topics[0];
 
-  pageLoadingTimeOut: number = 500;
+  pageLoadingTimeOut: number = 750;
 
-  routeSubscription!: Subscription;
+  routeQueryParamsSubscription!: Subscription;
+  routeFragmentSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
   ) {
 
-    this.routeSubscription = this.activatedRoute.queryParams.subscribe((params) => {
-      if (params.tab) {
-        this.tabView = params.tab;
-      };
+    this.routeFragmentSubscription = this.activatedRoute.fragment.subscribe((fragment) => {
+      // from the activities map & gallery. we wait the page loading
       setTimeout(() => {
-        if ( this.fragment ) {
-          const targetElement: any = document.getElementById(this.fragment);
-          if (targetElement) {
-            targetElement.scrollIntoView();
-          }
-        }},
-        this.pageLoadingTimeOut
+
+        if (fragment !== null) {
+          this.tabView = this.findActitivityTypeFromId(fragment)
+
+          // scrolling to the anchor (fragment)
+          setTimeout(() => {
+            const targetElement: any = document.getElementById(fragment);
+            if (targetElement) {
+              targetElement.scrollIntoView();
+            }
+          },this.pageLoadingTimeOut / 2)
+        }
+
+      }, this.pageLoadingTimeOut
       )
-    });
+
+    })
 
   }
 
@@ -99,7 +106,8 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.routeSubscription.unsubscribe()
+    // this.routeQueryParamsSubscription.unsubscribe();
+    this.routeFragmentSubscription.unsubscribe()
   }
 
 
@@ -127,19 +135,11 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
-    if (changes.fragment !== undefined) {
-      let fragmentCurrentValue: string = changes.fragment.currentValue
-      // TODO detect the activity linked to the fragment
-      if (this.availabled_topics.includes(fragmentCurrentValue)) {
-        this.tabView = changes.fragment.currentValue;
-      }
-    }
-    console.log(this.personalProjectsData)
-    this.clickOnTheFirstActivityTypeContainingActivities()
+    // run only if a change occured on the page (like the time slider...)
+    this.switchOnTheFirstActivityTypeContainingActivities()
   }
 
-  private clickOnTheFirstActivityTypeContainingActivities(): void {
+  private switchOnTheFirstActivityTypeContainingActivities(): void {
       // to switch on an activity containing at least 1 activity
       let activitiesCount: any = this.countActivities()
       var currentActivities: string[] = [];
@@ -161,6 +161,24 @@ export class ActivitiesComponent implements OnInit, OnChanges {
       'personal_project': this.personalProjectsData?.length,
       'volunteer': this.volunteersData?.length
     }
+  }
+
+  private findActitivityTypeFromId(activityId: string): string {
+    let activityType: string = '';
+
+    [this.jobsData, this.personalProjectsData, this.volunteersData].forEach((activities: any) => {
+      if (activities !== undefined) {
+        for (let item of activities) {
+          if (item.identifier === activityId) {
+            activityType = item.type;
+            break
+          }
+        }
+      }
+    })
+
+    return activityType
+
   }
 
   trackByMethod(index:number, el:any): number {
