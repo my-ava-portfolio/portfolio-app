@@ -1,0 +1,19 @@
+#center-bar {
+  border-radius: 25px
+}
+
+
+
+// in order to fixed the profil bar, don't forget the offset-xl-2 on id="center-bar"
+@media (max-width:1199px), (min-height:400px){
+  #topbar_bar {
+    position: sticky;
+
+  }
+}
+@media (min-width:1200px){
+  #topbar_bar {
+    position: fixed;
+
+  }
+}

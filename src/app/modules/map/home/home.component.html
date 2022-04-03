@@ -1,0 +1,28 @@
+<div class="container h-100">
+
+  <div class="d-flex flex-row justify-content-center align-items-stretch">
+
+    <div id="cards-container" class="d-flex flex-column flex-lg-row justify-content-around">
+
+      <div *ngFor="let app of mapPagesMenus.sub_menus">
+
+
+        <div class="card text-white m-3 shadow">
+          <div class="card-header bg-dark bg-gradient">{{ app.title }}</div>
+
+          <div class="card-body text-black">
+            <h5 class="card-title">{{ app.title }}</h5>
+            <p class="card-text">{{ app.details }}</p>
+            <a [routerLink]="[app.route]" class="btn btn-warning mt-auto fw-bold">Accéder</a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>

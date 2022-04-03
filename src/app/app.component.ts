@@ -13,10 +13,16 @@ import { startWith, map, delay  } from 'rxjs/operators';
   encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit {
+
+  mapBlurred: boolean = false;
+  mapInteractionEnabled: boolean = false;
+  mapInteractionPages: string[] = ['/home/about_me', '/home/sandbox', '/map']
+
   mobileIcon = mobileIcon;
   loadingIcon = loadingIcon;
   bugIcon = bugIcon;
 
+  orientationDisclaimerPages: string[] = ['/map', '/gallery']
   orientationErrorMessage!: string;
   isLandscapeDeviceMode = false;
   currentPage!: string;
@@ -35,7 +41,17 @@ export class AppComponent implements OnInit {
     private location: Location,
   ) {
 
-
+    this.router.events.subscribe(_ => {
+      // TODO find /map route string value from app.ts ?
+      if ( this.mapInteractionPages.includes(this.location.path()) || this.location.path().includes('/map') ) {
+        this.mapBlurred = false;
+        this.mapInteractionEnabled = true;
+      } else {
+        this.mapBlurred = true;
+        this.mapInteractionEnabled = false;
+      }
+      console.log(this.location.path(), this.mapInteractionEnabled)
+    });
 
     // to get the current page opened and adapt content regarding orientation
     this.router.events.subscribe(_ => {
@@ -54,13 +70,13 @@ export class AppComponent implements OnInit {
   }
 
   displayOrientationAlert(): void {
+    this.isLandscapeDeviceMode = false;
+
     if (window.screen.orientation.angle === 90 && window.screen.width < minWidthLandscape && window.screen.height < minHeightLandscape ) {
-      if (['/map', '/gallery'].includes(this.currentPage)) {
+      if (this.orientationDisclaimerPages.includes(this.currentPage)) {
         this.isLandscapeDeviceMode = true;
         this.orientationErrorMessage = "Page disponible uniquement en mode portrait"
       }
-    } else {
-      this.isLandscapeDeviceMode = false;
     }
   }
 

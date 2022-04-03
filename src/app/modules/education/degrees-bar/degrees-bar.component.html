@@ -1,0 +1,95 @@
+<section class="border bg-light rounded-3 p-4">
+
+  <div class="row">
+
+    <div class="col-lg-12 mx-auto">
+      <h5 class="fw-bolder mb-3">
+        <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Parcours universitaire
+        <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#education-cards" aria-hidden="true"></fa-icon>
+      </h5>
+    </div>
+    <div class="col-lg-12 mx-auto">
+
+      <div class="row">
+
+        <div class="col-lg-12">
+          <div id="education-cards" class="collapse show item card">
+            <div class="card-body">
+
+              <div class="col-lg-8 mx-auto border mb-2">
+                <ul class="nav nav-pills nav-justified" id="education-tab" role="tablist">
+
+                  <li class="nav-item" role="presentation" id="degrees">
+                    <a class="nav-link fw-bold" [class.active]="tabView === 'degrees'" rel="degrees-tab" (click)="tabView = 'degrees'">
+                      <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Diplômes
+                    </a>
+                  </li>
+
+
+                  <li class="nav-item" role="presentation" id="languages">
+                    <a class="nav-link fw-bold" [class.active]="tabView === 'languages'" rel="languages-tab" (click)="tabView = 'languages'">
+                      <fa-icon class="me-2" [icon]="languageIcon"></fa-icon>Langues
+                    </a>
+                  </li>
+
+                </ul>
+              </div>
+
+              <div class="tab-container" [ngSwitch]="tabView">
+
+                <div class="tab" id="degrees-tab" *ngSwitchCase="'degrees'" [@fadeInOut]>
+                  <div  class="row justify-content-center">
+
+                    <div [id]="degree.identifier" class="col-sm-12 col-md-4 col-lg-3" *ngFor="let degree of inputDegreesData">
+                      <div  class="educ-feature text-center small p-4 m-2 border shadog-light">
+
+                        <div class="title-date col-sm-8 col-md-10 col-lg-12 mx-auto">
+                          <p class="fw-bolder mb-0">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }}</p>
+                        </div>
+
+                        <div *ngIf="degree.img_school !== 'null';then schoolImgContent"></div>
+                        <ng-template #schoolImgContent>
+                          <div class="col-sm-3 col-md-10 col-lg-8 mx-auto">
+                            <img class="img-fluid rounded mx-auto d-block shadow mb-2 __img-thumbnail" [src]="apiLogoUrl + degree.img_school"/>
+                          </div>
+                        </ng-template>
+
+                        <div class="col-sm-12 col-md-10 col-lg-12 mx-auto">
+                          <p class="fw-bolder mb-2">{{ degree.degree }}</p>
+                          <a [id]="'location_' + degree.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="degree.identifier">
+                            <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
+                          </a>{{ degree.school }} - {{degree.location}}
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="tab" id="languages-tab" *ngSwitchCase="'languages'" [@fadeInOut]>
+                  <div class="row justify-content-center my-auto">
+
+                    <ul class="list-unstyled justify-content-around text-center">
+                      <li *ngFor="let language of inputLanguagesData">
+                        <span class="fw-bolder">{{language.language}} </span>
+                        <span>({{language.level}})</span>
+                      </li>
+                    </ul>
+
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</section>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { apiUrl } from '../core/inputs';
+import { apiUrl } from '@core/inputs';
 
 
 @Injectable({
@@ -10,9 +10,16 @@ import { apiUrl } from '../core/inputs';
 })
 export class ResumeService {
 
-  private apiUrlResumeData = apiUrl + 'resume_static_data';
   ErrorResumeDataApiFound: Subject<string> = new Subject<string>();
+
+  private apiUrlResumeData = apiUrl + 'resume_static_data';
   resumeData: Subject<any> = new Subject<any>();
+  private apiUrlContactData = apiUrl + 'contact_data';
+  contactData: Subject<any> = new Subject<any>();
+  private apiUrlGeneralData = apiUrl + 'general_data';
+  generalData: Subject<any> = new Subject<any>();
+  private apiUrlFullSkillsData = apiUrl + 'full_skills_data';
+  fullSkillsData: Subject<any> = new Subject<any>();
 
   private apiUrlGraphData = apiUrl + 'activities_graph_data?';
   errorActivitiesChartApiFound: Subject<string> = new Subject<string>();
@@ -31,7 +38,6 @@ export class ResumeService {
 
   activitiesAvailable: Subject<any> = new Subject<any>();
 
-  scrollToTop: Subject<boolean> = new Subject<boolean>();
 
   constructor(
       private http: HttpClient
@@ -62,6 +68,63 @@ export class ResumeService {
       },
     });
   }
+
+  pullContactData(): void {
+
+    this.http.get<any>(`${this.apiUrlContactData}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.contactData.next(response);
+        }
+      },
+    });
+  }
+
+  pullGeneralData(): void {
+
+    this.http.get<any>(`${this.apiUrlGeneralData}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.generalData.next(response);
+        }
+      },
+    });
+  }
+
+
+  pullFullSkillsData(): void {
+
+    this.http.get<any>(`${this.apiUrlFullSkillsData}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.fullSkillsData.next(response);
+        }
+      },
+    });
+  }
+
+
 
   pullActivitiesGraphData(
     isTechnics: boolean | string,
@@ -115,7 +178,4 @@ export class ResumeService {
     });
   }
 
-  scrollToTopAction(): void {
-    this.scrollToTop.next(true);
-  }
 }

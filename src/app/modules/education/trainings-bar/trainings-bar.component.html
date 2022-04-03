@@ -1,0 +1,72 @@
+<section class="border bg-light rounded-3 p-4">
+
+  <div class="row">
+
+    <div class="col-lg-12 mx-auto">
+      <h5 class="fw-bolder mb-3">
+        <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Formations professionnelles
+        <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#trainings-cards" aria-hidden="true"></fa-icon>
+      </h5>
+    </div>
+    <div class="col-lg-12 mx-auto">
+
+      <div class="row">
+
+        <div class="col-lg-12">
+          <div id="trainings-cards" class="collapse show item card">
+            <div class="card-body">
+
+              <div class="col-lg-8 mx-auto border mb-2">
+                <ul class="nav nav-pills nav-justified" id="training-tab" role="tablist">
+
+                  <li class="nav-item" role="presentation" id="trainings">
+                    <a class="nav-link fw-bold" [class.active]="tabView === 'trainings'" rel="trainings-tab" (click)="tabView = 'trainings'">
+                      <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Formations
+                    </a>
+                  </li>
+
+                </ul>
+              </div>
+
+              <div class="tab-container" [ngSwitch]="tabView">
+
+                <div class="tab" id="trainings-tab" *ngSwitchCase="'trainings'" [@fadeInOut]>
+                  <div class="row justify-content-center">
+
+                    <div [id]="training.identifier" class="col-sm-12 col-md-4 col-lg-2" *ngFor="let training of inputTrainingsData">
+                      <div  class="educ-feature text-center small p-4 m-2 border shadow bg-light">
+
+                        <div class="title-date col-sm-8 col-md-10 col-lg-12 mx-auto">
+                          <p class="fw-bolder mb-0">{{ training.year }}</p>
+                        </div>
+
+                        <div *ngIf="training.img_tool !== 'null';then trainingImgContent"></div>
+                        <ng-template #trainingImgContent>
+                          <div class="col-sm-3 col-md-10 col-lg-8 mx-auto">
+                            <img class="img-fluid rounded mx-auto d-block mb-2 shadow __img-thumbnail" [src]="training.img_tool"/>
+                          </div>
+                        </ng-template>
+
+                        <div class="col-sm-12 col-md-10 col-lg-12 mx-auto">
+                          <p class="fw-bolder mb-2">{{ training.year }} - {{ training.name }}</p>
+                          <p class="fw-bolder mb-2">par {{ training.trainer }}</p>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</section>

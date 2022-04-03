@@ -1,0 +1,249 @@
+body {
+  overflow: hidden!important;
+}
+
+.fixed {
+  position: fixed;
+  z-index: 10;
+  margin-top: 50px;
+}
+
+.margin-top {
+  margin-top: 6%;
+}
+
+#content {
+  max-width: 1450px;
+}
+
+.project-item {
+  overflow: hidden;
+  display: inline-block;
+  opacity: 1;
+}
+
+.project-item .project-detail h2 {
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0 0 10px 0;
+  display: block;
+}
+
+.project-item .project-detail h2 a {
+  color: #2c2c2c;
+}
+
+.project-item:hover .overlay-b {
+  opacity: 1;
+  visibility: visible;
+  cursor: pointer;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.overlay-b {
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  -webkit-transition: all 250ms ease-in-out;
+  -moz-transition: all 250ms ease-in-out;
+  transition: all 250ms ease-in-out;
+  bottom: 0;
+  left: 0;
+}
+.overlay-b .overlay-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.overlay-b .overlay-inner a {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -18px;
+  margin-top: -18px;
+  border: 1px solid #d5d5d5;
+  width: 36px;
+  height: 36px;
+  display: block;
+  text-align: center;
+  line-height: 36px;
+  color: white;
+}
+
+
+.project-thumb {
+  overflow: hidden;
+  position: relative;
+  -webkit-backface-visibility: hidden;
+  /* Chrome, Safari, Opera */
+  backface-visibility: hidden;
+}
+.project-thumb img {
+  width: 100%;
+}
+
+.active {
+}
+
+.projects-bar {
+  background-color: #f5f5f5;
+  box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
+}
+
+footer {
+  box-shadow: unset;
+}
+
+.btn {
+  opacity: 1!important;
+}
+
+/* to disabled scroll display */
+.y-scroll {
+  /* height: 82vh; */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  overflow-y: scroll;
+}
+
+.y-scroll::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+.embed-fixed-size {
+  height: 150px
+}
+
+// variables
+$map-color: teal;
+$app-color: blue;
+$video-color: brown;
+$chart-color: grey;
+$tool-color: black;
+$library-color: blue;
+$methodo-color: cyan;
+
+
+.map {
+  background-color: $map-color;
+}
+
+.app {
+  background-color: $app-color;
+}
+
+.video {
+  background-color: $video-color;
+}
+
+.chart {
+  background-color: $chart-color;
+}
+
+.tool {
+  background-color: $tool-color;
+}
+
+.library {
+  background-color: $library-color;
+}
+
+.methodo {
+  background-color: $methodo-color;
+}
+
+.modal-dialog {
+  max-height: 100vh;
+  max-width: 100vh;
+
+}
+
+.card-columns .card {
+  /* box-shadow: 0px 9px 20px rgb(0 0 0 / 50%); */
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal {
+  background-color: rgba(0,0,0,0.7);
+}
+
+@media (orientation: portrait) {
+  .img-size {
+      width: -webkit-fill-available;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+  }
+}
+
+@media (orientation: landscape) {
+  .img-size {
+      height: -webkit-fill-available;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+  }
+
+}
+
+.y-scroll {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+
+.legend-container {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+
+
+.legend-content {
+  color: "#FFFFF";
+  background-color: #f5f5f5;
+  box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
+}
+
+
+.gallery-content {
+  min-height: 100vh;
+}
+
+
+.activities-container {
+  // min-height: 88px; // increase if new activities added in the gallery...
+}
+
+.grid-container {
+  columns: 200px;
+  -webkit-column-count: 3;
+  -webkit-column-gap: 3%; // Saf3, Chrome
+  -moz-column-count: 3;
+  -moz-column-gap: 3%; // FF3.5+
+  column-count: 3;
+  column-gap: 3%; // Opera 11+
+}
+
+.feat-gallery {
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  // margin-bottom: 10px;
+  break-inside: avoid;
+}
