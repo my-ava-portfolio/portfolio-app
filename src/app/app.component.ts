@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
     '/map',
     '/map/app/activities',
     '/map/app/sandbox',
-    '/gallery'
   ];
   orientationErrorMessage!: string;
   isLandscapeDeviceMode = false;

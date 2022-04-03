@@ -30,7 +30,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   defaultCategory: string | null = null;
   currentCategory: string | null = null;
 
-  isGalleryDataCanBeDisplayed = false;
   isLegendDisplayed = true;
   tagsIcon = tagsIcon;
   tagIcon = tagIcon;
@@ -104,13 +103,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sendResumeSubMenus()
+    this.resetGallery();
+    this.filterFromAnchor();
 
-    this.displayContentRegardingDeviceScreen();
-
-    if (this.isGalleryDataCanBeDisplayed) {
-      this.resetGallery();
-      this.filterFromAnchor();
-    }
   }
 
   ngOnDestroy(): void {
