@@ -65,7 +65,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // here to control topic graph... TODO improve it !
   legendInput = [
-    { id: this.job_identifier, status: 'unabled-topic', label: 'Expériences', cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.job_identifier, status: 'unabled-topic', label: 'Entreprises', cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
     { id: this.personal_project_identifier, status: 'unabled-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
     { id: this.volunteer_identifier, status: 'unabled-topic', label: 'Bénévolat', cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
     { id: 'themes', status: 'enabled-topic', label: 'Thématiques', cx: 175, cy: 42, text_cx: 190, r: 5, rOver: 10 },
@@ -448,7 +448,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .force('y', d3.forceY(this.chartHeight / 2))
       .force('center', d3.forceCenter(this.chartWidth / 2, this.chartHeight / 2))
       .force('link', d3.forceLink(this.graphData.links).id( (d: any) => {
-          return d.properties.name;
+          return d.name;
       }).distance(60).strength(1))
       .nodes(this.graphData.nodes)
       .on('tick', this._ticked.bind(this));
@@ -497,14 +497,26 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
        })
       ;
 
-
     const labelNode = svgElements.append('g').attr('class', 'nodeLabels')
       .selectAll('text')
       .data(this.label.nodes)
       .enter()
       .append('text')
-      .text( (d: any, i: number) => {
-          return i % 2 === 0 ? '' : d.node.properties.name;
+      .text((d: any, i: number) => {
+        // TODO tricky part: review it : duplicate label text
+        if (i % 2 !== 0) {
+          let label!: string;
+          this.legendInput.filter((item: any) => {
+            if (item.id == d.node.properties.id) {
+              label = item.label
+            }
+          })
+          if (label === undefined) {
+            return d.node.properties.name;
+          }
+          return label
+        }
+        return ''
       })
       .attr('id', (d: any) => {
         return 'label-' + d.node.properties.id;
@@ -512,6 +524,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('class', (d: any) => {
           return d.node.properties.type;
       });
+
 
     node.on('click', (e: any, d: any, i: any, n: any) => {
       const nodeIsPreselected = d3.select('#skillsGraphElements .nodes .selected');
