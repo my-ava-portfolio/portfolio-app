@@ -17,7 +17,7 @@
             <div class="card-body">
 
               <div class="col-8 mx-auto border mb-3">
-                <ul class="nav nav-pills nav-justified bg-light " role="tablist">
+                <ul class="nav nav-pills nav-justified bg-light" role="tablist">
 
                   <li *ngIf="jobsData" class="nav-item" role="presentation" id="job" [ngClass]="jobsData.length === 0 ? 'disabled' : ''">
                     <a class="nav-link fw-bold active" [class.active]="tabView == 'job'" rel="job" (click)="tabView = 'job'">
@@ -186,7 +186,7 @@
                       </ul>
                     </div>
 
-                    <div class="col-10 mx-auto tab-content" id="myTabContent">
+                    <div class="col-12 mx-auto tab-content" id="tabContent">
 
                       <div class="row tab-pane fade active show" [id]="'context-' + activity.identifier" role="tabpanel">
                         <div class="col-12 ps-3">
@@ -316,7 +316,7 @@
                 </ul>
               </div>
 
-              <div class="col-10 mx-auto tab-content" id="myTabContent">
+              <div class="col-10 mx-auto tab-content" id="tabContent">
 
                 <div class="row tab-pane fade active show" [id]="'mission-' + activity.identifier" role="tabpanel">
                   <div class="col-12 ps-3" *ngFor="let task of activity.description | keyvalue">
