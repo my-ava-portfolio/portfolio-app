@@ -11,7 +11,6 @@ import { Title } from '@angular/platform-browser';
 
 import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '@core/inputs';
 
-import { checkIfScreenPortraitOrientation } from '@core/inputs';
 import { ControlerService } from '@services/controler.service';
 
 
@@ -165,8 +164,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   @HostListener('window:orientationchange', ['$event'])
   displayContentRegardingDeviceScreen(): void {
-    this.isGalleryDataCanBeDisplayed = checkIfScreenPortraitOrientation();
-
     // if mode portrait and width screen <= 1024...
     if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
       this.isLegendDisplayed = false;

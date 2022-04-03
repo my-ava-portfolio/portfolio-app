@@ -18,7 +18,6 @@ import * as d3 from 'd3';
 })
 export class TimeLegendComponent implements OnInit, OnDestroy {
   @Input() currentActivityIdSelected: any;
-  @Input() isGeodataCanBeDisplayed: any;
   @Input() mapContainer: any;
 
   // mapContainer: any;
@@ -87,11 +86,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-    if ( this.isGeodataCanBeDisplayed ) {
-      this.mapService.pullActivitiesGeoData();
-    }
-
+    this.mapService.pullActivitiesGeoData();
   }
 
 
