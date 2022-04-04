@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { share } from 'rxjs/operators';
 
-import { homePages, infoIcon, pythonIcon } from '@core/inputs';
+import { checkIfScreenPortraitOrientation, homePages, infoIcon, pythonIcon } from '@core/inputs';
 import { githubIcon, linkedinIcon, emailIcon } from '@core/inputs';
 import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '@core/inputs';
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '@core/inputs';
@@ -82,6 +82,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 
   generalData!: any;
   generalDataSubscription!: Subscription;
+  routeSubscription!: Subscription;
 
   constructor(
     private router: Router,
@@ -92,7 +93,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 
     // to get the current page opened and adapt content regarding orientation
     // todo: check if needed
-    this.router.events.subscribe(_ => {
+    this.routeSubscription = this.router.events.subscribe(_ => {
       this.currentPage = this.location.path();
     });
 
@@ -100,9 +101,6 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
       (data) => {
         console.log(data)
         this.contactData = data;
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
@@ -110,9 +108,6 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
       (data) => {
         console.log(data)
         this.generalData = data;
-      },
-      (error) => {
-        console.log('error');
       }
     );
 
@@ -126,9 +121,9 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.contactDataSubscription.unsubscribe()
-    this.generalDataSubscription.unsubscribe()
-
+    this.contactDataSubscription.unsubscribe();
+    this.generalDataSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   reverse(value: string): void {
