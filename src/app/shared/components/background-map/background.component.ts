@@ -13,8 +13,10 @@ import { MapService } from '@services/map.service';
   styleUrls: ['./background.component.scss']
 })
 export class BackgroundComponent implements OnInit {
-  @Input() isBlurred!: boolean;
-  @Input() isMapInteractionEnabled!: boolean;
+  // @Input() isBlurred!: boolean;
+  // @Input() isMapInteractionEnabled!: boolean;
+
+  isMapInteractionEnabled: boolean = false;
 
   private InitialViewCoords: any = [44.896741, 4.932861];
   private zoomValue = 8;
@@ -27,10 +29,8 @@ export class BackgroundComponent implements OnInit {
 
   mapContainerCalledSubscription!: Subscription;
   mapContainerLegendCalledSubscription!: Subscription;
-  mapServiceSubscription!: Subscription;
-
-  // in order to activate map interactions
-  mapInteractionEnabled: boolean = false;
+  mapViewResetSubscription!: Subscription;
+  mapInteractionSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -70,13 +70,17 @@ export class BackgroundComponent implements OnInit {
       }
     );
 
-
-    this.mapServiceSubscription = this.mapService.isMapViewReset.subscribe(
+    this.mapViewResetSubscription = this.mapService.isMapViewReset.subscribe(
       (_) => {
         this.resetView();
       }
     );
 
+    this.mapInteractionSubscription = this.mapService.mapInteraction.subscribe(
+      (status: boolean) => {
+        this.isMapInteractionEnabled = status;
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -84,8 +88,10 @@ export class BackgroundComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this.mapContainerLegendCalledSubscription.unsubscribe();
     this.mapContainerCalledSubscription.unsubscribe();
-    this.mapServiceSubscription.unsubscribe();
+    this.mapViewResetSubscription.unsubscribe();
+    this.mapInteractionSubscription.unsubscribe();
   }
 
 

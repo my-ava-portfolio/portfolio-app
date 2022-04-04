@@ -23,6 +23,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ScaleFeaturesSubscription!: Subscription;
   routerSubscription!: Subscription;
+  interactivityMapSubscription!: Subscription;
 
   currentMapTool!: string;
 
@@ -48,6 +49,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.mapService.MapInteraction(true);
   }
 
   ngAfterViewInit(): void {
@@ -58,6 +60,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.ScaleFeaturesSubscription.unsubscribe();
     this.routerSubscription.unsubscribe()
+
+    this.mapService.MapInteraction(false);
   }
 
   showHideLegend(): void {

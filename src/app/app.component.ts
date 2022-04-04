@@ -14,24 +14,17 @@ import { startWith, map, delay  } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
 
-  mapBlurred: boolean = false;
-  mapInteractionEnabled: boolean = false;
-
-  mapInteractionEnabledPages: string[] = [
-    '/home/about_me',
-    '/map/app/activities',
-    '/map/app/sandbox',
-  ]
-
   mobileIcon = mobileIcon;
   loadingIcon = loadingIcon;
   bugIcon = bugIcon;
 
+  // TODO move to map module?
   orientationDisclaimerPages: string[] = [
     '/map',
     '/map/app/activities',
     '/map/app/sandbox',
   ];
+
   orientationErrorMessage!: string;
   isLandscapeDeviceMode = false;
   currentPage!: string;
@@ -46,16 +39,6 @@ export class AppComponent implements OnInit {
     private router: Router,
     private location: Location,
   ) {
-
-    this.router.events.subscribe(_ => {
-      if ( this.mapInteractionEnabledPages.includes(this.location.path()) ) {
-        this.mapBlurred = false;
-        this.mapInteractionEnabled = true;
-      } else {
-        this.mapBlurred = true;
-        this.mapInteractionEnabled = false;
-      }
-    });
 
     // to get the current page opened and adapt content regarding orientation
     this.router.events.subscribe(_ => {

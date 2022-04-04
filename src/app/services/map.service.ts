@@ -35,6 +35,8 @@ export class MapService {
 
   zoomEvent: Subject<boolean> = new Subject<boolean>();
 
+  mapInteraction: Subject<boolean> = new Subject<boolean>();
+
   constructor(
     private http: HttpClient
   ) { }
@@ -102,6 +104,10 @@ export class MapService {
 
   sendZoomAction(): void {
     this.zoomEvent.next(true);
+  }
+
+  MapInteraction(status: boolean): void {
+    this.mapInteraction.next(status);
   }
 
 }
