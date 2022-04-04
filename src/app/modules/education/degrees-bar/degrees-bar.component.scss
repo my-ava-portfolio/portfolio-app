@@ -4,15 +4,14 @@
 }
 
 .nav-item a:hover {
-  --bs-bg-opacity: 0.25;
+  --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity))!important;
 }
 
 .nav-link.active {
   @extend .nav-link;
-  --bs-bg-opacity: 0.5;
+  --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity))!important;
-
 }
 
 img{
@@ -21,7 +20,7 @@ img{
 
 .title-date {
   text-align: center;
-  background: url("http://i.imgur.com/Kkw7rPC.png?1") center center repeat-x rgba(var(--bs-white-rgb), var(--bs-bg-opacity));
+  background: url("http://i.imgur.com/Kkw7rPC.png?1") center center repeat-x rgba(var(--bs-light-rgb), var(--bs-bg-opacity));
 }
 .title-date p {
   background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
