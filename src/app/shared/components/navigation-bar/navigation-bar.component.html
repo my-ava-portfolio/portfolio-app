@@ -41,9 +41,6 @@
 
       <ul class="list-group list-inline justify-content-center" id="contact-buttons" [ngClass]="sideBarCollapsed ? 'list-group-horizontal' : ''">
 
-
-
-
         <li>
           <a class="text-white cursor" data-bs-toggle="modal" data-bs-target="#websiteInfos">
             <fa-icon class="m-1" [icon]="infoIcon" size="1x"></fa-icon>
@@ -70,7 +67,18 @@
 
       </ul>
 
+
+      <div id="profil-name" class="my-2" *ngIf="sideBarCollapsed">
+        © {{currentYear}} {{ generalData.first_name }} {{ generalData.last_name }}
+      </div>
+
+      <div id="profil-shortname" class="my-3" *ngIf="!sideBarCollapsed">
+        © {{currentYear}} {{ generalData.first_name[0] }}{{ generalData.last_name[0] }}
+      </div>
+
     </div>
+
+
   </div>
 </nav>
 
@@ -113,7 +121,7 @@
       </div>
       <div class="modal-body">
         <a class="mb-3 text-dark" [href]="authorRepoUrl" target="_blank" rel="noopener noreferrer">
-          By amauryval - {{currentYear}} <fa-icon class="ms-2" [icon]="githubIcon"></fa-icon>
+          © {{currentYear}} amauryval <fa-icon class="ms-2" [icon]="githubIcon"></fa-icon>
         </a>
 
         <ul class="list-unstyled">
