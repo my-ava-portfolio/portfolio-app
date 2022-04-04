@@ -50,7 +50,7 @@
 
           <ng-container *ngSwitchCase="'url_img'">
             <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
-              <img [src]="media_feature.media | safeUrl" class="card-img-top pointer" data-bs-toggle="modal" data-bs-target="'#modal-' + media_feature.identifier + idx">
+              <img [src]="media_feature.media | safeUrl" class="card-img-top pointer">
             </a>
             <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
           </ng-container>
@@ -62,7 +62,9 @@
           </ng-container>
 
           <ng-container *ngSwitchCase="'api_img'">
-            <img [src]="apiMapsUrl + media_feature.media" class="card-img-top pointer" data-bs-toggle="modal" [attr.data-bs-target]="'#modal-' + media_feature.identifier + idx">
+            <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
+              <img [src]="apiMapsUrl + media_feature.media" class="card-img-top pointer">
+            </a>
             <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiMapsUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
           </ng-container>
 
