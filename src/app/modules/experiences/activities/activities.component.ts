@@ -39,7 +39,7 @@ export class ActivitiesComponent implements OnInit, OnChanges {
 
   apiImgUrl = apiLogoUrl;
   mapPages: any = mapActivitiesPages;
-  galleryPagesRoute: string = galleryPages;
+  galleryPagesRoute: string = galleryPages.route;
   blogPagesRoute: string = projectPages[0].route;
 
   // icons
