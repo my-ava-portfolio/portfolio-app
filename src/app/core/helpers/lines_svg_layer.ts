@@ -32,7 +32,6 @@ export class LinesSvgLayerOnLeaflet {
   };
 
   addPoints(coordinates: CoordinatesType): void {
-    console.log(this.lines)
     // TODO only 1 !
     let currentLineEdited = this.getLineCurrentlyEdited()[0]
 
@@ -85,7 +84,6 @@ export class LinesSvgLayerOnLeaflet {
     let toLine: any = d3.line()
       // .interpolate("linear")
       .x((d: any): number => {
-        console.log(d)
         return this.mapContainer.latLngToLayerPoint([d.x, d.y]).x
       })
       .y((d: any): number => this.mapContainer.latLngToLayerPoint([d.x, d.y]).y);

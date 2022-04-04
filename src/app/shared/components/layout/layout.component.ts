@@ -80,7 +80,6 @@ export class LayoutComponent implements OnInit {
   }
 
   collaspedSideBarIfNeeded(): void {
-    console.log(this.sideBarCollapsed)
     this.sideBarCollapsed = !this.sideBarCollapsed;
   }
 

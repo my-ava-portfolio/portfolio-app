@@ -95,7 +95,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
       },
       (error) => {
-        console.log('error');
       }
     );
 

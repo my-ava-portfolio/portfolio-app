@@ -32,20 +32,16 @@ export class ControlBarComponent implements OnInit, OnDestroy {
       (data) => {
         this.topicPages = data;
         this.topicPagesSubMenus = data.sub_menus;
-        console.log(this.topicPages, this.topicPagesSubMenus)
       },
       (error) => {
-        console.log('error');
       }
     );
 
     this.controlerPageTitleSubscription = this.controlerService.titlePageFeature.subscribe(
       (data) => {
         this.pageTitle = data;
-        console.log(this.pageTitle)
       },
       (error) => {
-        console.log('error');
       }
     );
 

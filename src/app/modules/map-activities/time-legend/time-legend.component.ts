@@ -396,7 +396,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
           .style('display', 'block')
           .style('right', '1em')
           .style('top', '5em');
-        console.log("aaa")
       })
       .on('mouseout', (e: any, d: any) => {
 

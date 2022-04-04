@@ -38,8 +38,6 @@ export class ProfilBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.inputProfilData = this.profilData;
-    console.log(this.profilData)
-    console.log(this.experiencesTopics);
   }
 
   reverse(value: string): void {

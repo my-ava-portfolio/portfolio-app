@@ -105,10 +105,8 @@ export class PointsSvgLayerOnLeaflet {
   };
 
   private updateMapLayer(): void {
-    console.log("haha")
     d3.selectAll('.feature')
       .attr('transform', (d: any) => {
-        console.log(d)
         return 'translate(' +
           this.mapContainer.latLngToLayerPoint([d.x, d.y]).x + ',' +
           this.mapContainer.latLngToLayerPoint([d.x, d.y]).y + ')';
@@ -165,7 +163,6 @@ export class PointsSvgLayerOnLeaflet {
     this.points.forEach((element: any, index: number) => {
       // element is a Point...
       if (element[filterPropertyName] === filterPropertyValue) {
-        console.log(element[updatedPropertyName], updatedPropertyValue)
         element[updatedPropertyName] = updatedPropertyValue;
       }
     });

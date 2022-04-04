@@ -149,7 +149,6 @@ export class ActivitiesComponent implements OnInit, OnChanges {
           currentActivities.push(item);
         }
       })
-      console.log(currentActivities)
       if (currentActivities.length > 0 && !currentActivities.includes(this.tabView)) {
         this.tabView = currentActivities[0];
       }

@@ -74,7 +74,6 @@ export class LayoutComponent implements OnInit {
         this.isDataAvailable = true;
       },
       (error) => {
-        console.log('error');
       }
     );
 
@@ -118,11 +117,9 @@ export class LayoutComponent implements OnInit {
           const element: any = window.document.getElementById(this.fragment);
           element.scrollIntoView();
         } else {
-          console.log('no anchor defined');
         }
         this.isAnchorExistsCheckerSubscription.unsubscribe();
       } catch (e) {
-        console.log('anchor not found yet');
       }
     });
   }

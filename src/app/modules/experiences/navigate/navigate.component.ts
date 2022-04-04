@@ -97,7 +97,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
       },
       (error) => {
-        console.log('error');
       }
     );
 
@@ -171,7 +170,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       // this.nodehighlighter()
     } else {
-      console.log("graph hightlighting error")
     }
   }
 

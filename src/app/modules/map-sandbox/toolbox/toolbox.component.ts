@@ -201,7 +201,6 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
 
     } else {
       // so go to activate
-      console.log("edit on")
       this._startEditing(currentMenu.name)
     }
 

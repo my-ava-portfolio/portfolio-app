@@ -99,14 +99,12 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 
     this.contactDataSubscription = this.resumeService.contactData.subscribe(
       (data) => {
-        console.log(data)
         this.contactData = data;
       }
     );
 
     this.generalDataSubscription = this.resumeService.generalData.subscribe(
       (data) => {
-        console.log(data)
         this.generalData = data;
       }
     );
