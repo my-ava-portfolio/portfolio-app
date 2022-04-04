@@ -1,14 +1,14 @@
-<section id="skills" class="border bg-light rounded-3 p-4">
+<section id="skills" class="p-2">
 
   <section class="row">
 
     <div class="col-12 mx-auto">
       <h5 class="fw-bolder mb-3">
         <fa-icon class="me-2" [icon]="skillIcon"></fa-icon>Compétences
-        <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#skills-cards" aria-hidden="true"></fa-icon>
+        <!-- <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#skills-cards" aria-hidden="true"></fa-icon> -->
       </h5>
     </div>
-    <div id="skills-cards" class="col-12 collapse show item card">
+    <div id="skills-cards" class="col-12 collapse show item card bg-light">
       <div class="row">
 
         <ng-container *ngTemplateOutlet="skillDetails; context:{title:'Thématique', category:'themes'}"></ng-container>
