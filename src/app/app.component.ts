@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // to return to the home page on refresh
-    this.router.navigate([''])
+    // this.router.navigate([''])
   }
 
   ngOnDestroy(): void {

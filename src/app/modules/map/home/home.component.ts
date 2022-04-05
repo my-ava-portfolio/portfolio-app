@@ -12,9 +12,16 @@ import { ControlerService } from '@services/controler.service';
 export class HomeComponent implements OnInit {
   mapPagesMenus: any = mapActivitiesPages;
 
-  constructor() { }
+  constructor(
+    private controlerService: ControlerService,
+  ) { }
 
   ngOnInit(): void {
+    this.sendResumeSubMenus()
+  }
+
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus([])
   }
 
 }

@@ -8,6 +8,7 @@ import { tagIcon, centerIcon} from '@core/inputs';
 
 import { MapService } from '@services/map.service';
 import { Router } from '@angular/router';
+import { ControlerService } from '@services/controler.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private router: Router,
+    private controlerService: ControlerService,
   ) {
 
     this.ScaleFeaturesSubscription = this.mapService.mapContainerScale.subscribe(
@@ -50,6 +52,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.mapService.MapInteraction(true);
+    this.sendResumeSubMenus()
   }
 
   ngAfterViewInit(): void {
@@ -63,6 +66,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.mapService.MapInteraction(false);
   }
+
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus([])
+  }
+
 
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
