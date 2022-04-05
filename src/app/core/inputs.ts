@@ -167,7 +167,7 @@ export const mapActivitiesPages: any = {
       title: "Bac à sable",
       route: "app/sandbox",
       icon: mapIcon,  // TODO improve icon
-      details: "Un bac à sable pour créer des données (outils de saisie développés avec D3sjs)."
+      details: "Un bac à sable pour créer des données (outil de saisie développés avec D3js). En cours de développement..."
     }
   ]
 };
