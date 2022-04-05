@@ -1,59 +1,59 @@
 
-      <div  class="row">
+<div  class="row">
 
-        <div class="col-12">
-          <div id="navigation-card" class="collapse show item">
-            <div class="card-body">
+  <div class="col-12">
+    <div id="navigation-card" class="collapse show item">
+      <div class="card-body">
 
-              <div class="row justify-content-around text-center mb-4">
-                <div class="col-6">
-                  <span class="graph_title">Graphe d'activités</span>
-                  <span class="rounded-pill text-info cursor p-1" [ngbPopover]="helpPopup" popoverTitle="Graphe d'activités" placement="top"><fa-icon [icon]="helpIcon"></fa-icon></span>
+        <div class="row justify-content-around text-center mb-4">
+          <div class="col-6">
+            <span class="graph_title">Graphe d'activités</span>
+            <span class="rounded-pill text-info cursor p-1" [ngbPopover]="helpPopup" popoverTitle="Graphe d'activités" placement="top"><fa-icon [icon]="helpIcon"></fa-icon></span>
 
-                </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-around text-center">
+
+          <div #svgGraphChart class="col-12 col-xxl-7 graph-content"></div>
+
+          <div class="col-12 col-xxl-5">
+
+            <div class="row justify-content-around text-center">
+              <div class="col-12">
+                <div class="graph-legend"></div>
               </div>
 
-              <div class="row justify-content-around text-center">
+              <div class="col-12">
+                <span class="legend_graph_title">Barre temporelle</span>
 
-                <div #svgGraphChart class="col-12 col-xl-8 graph-content"></div>
+                <div class="row justify-content-center my-2">
 
-                <div class="col-12 col-xl-4">
+                  <div class="col-3 text-end fw-bold">
+                    {{ graphInputData.start_date_graph_slider }}
+                  </div>
 
-                  <div class="row justify-content-around text-center">
-                    <div class="col-12">
-                      <div class="graph-legend"></div>
-                    </div>
+                  <div class="col-6">
+                    <input class="w-100 my-1 border-0" type="range" steps="1" [min]="graphInputData.start_date_graph_slider" [max]="graphInputData.end_date_graph_slider" [value]="currentDate"  (change)="updateDate($event)"/>
+                  </div>
 
-                    <div class="col-12">
-                      <span class="legend_graph_title">Barre temporelle</span>
-
-                      <div class="row justify-content-center my-2">
-
-                        <div class="col-3 text-end fw-bold">
-                          {{ graphInputData.start_date_graph_slider }}
-                        </div>
-
-                        <div class="col-6">
-                          <input class="w-100 my-1 border-0" type="range" steps="1" [min]="graphInputData.start_date_graph_slider" [max]="graphInputData.end_date_graph_slider" [value]="currentDate"  (change)="updateDate($event)"/>
-                        </div>
-
-                        <div class="col-3 text-start fw-bold">
-                          {{ graphInputData.end_date_graph_slider }}
-                        </div>
-
-                      </div>
-                      <button id="reset-graph mx-1" class="btn btn-primary" (click)="resetChart()"><span></span>Reset</button>
-
-                    </div>
+                  <div class="col-3 text-start fw-bold">
+                    {{ graphInputData.end_date_graph_slider }}
                   </div>
 
                 </div>
+                <button id="reset-graph mx-1" class="btn btn-primary" (click)="resetChart()"><span></span>Reset</button>
 
               </div>
             </div>
+
           </div>
+
         </div>
       </div>
+    </div>
+  </div>
+</div>
 
 
 
