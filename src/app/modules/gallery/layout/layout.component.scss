@@ -60,7 +60,7 @@ $methodo-color: cyan;
 
 @media (orientation: portrait) {
   .img-size {
-      width: -webkit-fill-available;
+      max-width: 100%;
       position: fixed;
       top: 0;
       left: 0;
@@ -71,7 +71,7 @@ $methodo-color: cyan;
 
 @media (orientation: landscape) {
   .img-size {
-      height: -webkit-fill-available;
+      max-height: 80%;
       position: fixed;
       top: 0;
       left: 0;
