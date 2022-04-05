@@ -20,7 +20,7 @@ export class LayoutComponent implements OnInit {
   // Here to set the default status of the bar
   // TODO check the orientation to collapse or not the bar
   sideBarCollapsed: boolean = true;
-  routeWhereScrollingIsDisabled: string[] = ["/map/activities", "/map/sandox"];
+  routeWhereScrollingIsDisabled: string[] = ["/map/app/activities", "/map/app/sandox"];
 
   navBarIcon = navBarIcon;
   arrowUpIcon = arrowUpIcon;
@@ -84,7 +84,6 @@ export class LayoutComponent implements OnInit {
   }
 
   disactivateForcedScrollButton(): void {
-
     if ( this.routeWhereScrollingIsDisabled.includes(this.router.url) ) {
       this.scrolltoTopDisabledForced = true;
     };
