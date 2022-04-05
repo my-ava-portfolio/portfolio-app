@@ -15,6 +15,8 @@ import { ActivatedRoute, NavigationEnd, NavigationError, NavigationStart, Router
 import { Title } from '@angular/platform-browser';
 import { trigger, state, animate, transition, style } from '@angular/animations';
 
+import { navIcon } from '@core/inputs';
+
 
 @Component({
   selector: 'app-layout',
@@ -37,6 +39,9 @@ import { trigger, state, animate, transition, style } from '@angular/animations'
   ]
 })
 export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
+
+  navIcon = navIcon;
+  
   fragment: string = '';
 
   apiImgUrl = apiLogoUrl;
