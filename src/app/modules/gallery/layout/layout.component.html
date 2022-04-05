@@ -74,7 +74,7 @@
       </div>
 
 
-      <div class="card-body px-2">
+      <div class="card-body px-3">
         <span [class]="'badge rounded-pill mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
         <a [routerLink]="[experiencesRoute]" [fragment]="media_feature.identifier"><span class="badge rounded-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
         <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + media_feature.type">
