@@ -168,6 +168,12 @@
                           </a>
                         </li>
 
+                        <li class="nav-item" role="presentation" *ngIf="activity.publications !== null">
+                          <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#publications-' + activity.identifier" type="button" role="tab">
+                            {{ this.publicationsTitle }}
+                          </a>
+                        </li>
+
                       </ul>
                     </div>
 
@@ -208,7 +214,21 @@
                     <div class="row tab-pane fade" [id]="'training-' + activity.identifier" role="tabpanel" *ngIf="activity.trainings">
                       <div class="col-10 mx-auto">
                         <ul class="list-unstyled text-justified small">
-                          <li *ngFor="let training of activity.trainings"><span class="fw-bolder">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span></li>
+                          <li *ngFor="let training of activity.trainings">
+                            <span class="fw-bolder">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="row tab-pane fade" [id]="'publications-' + activity.identifier" role="tabpanel" *ngIf="activity.publications !== null">
+                      <div class="col-10 mx-auto">
+                        <ul class="list-unstyled text-justified small">
+                          <li *ngFor="let publication of activity.publications">
+                            <span class="fw-bolder">{{ publication.year }} - </span>
+                            <span>{{ publication.editor }} par {{ publication.publication }}</span>
+                            <a class="ms-1" data-bs-toggle="tab" [href]="publication.link" type="button" role="tab">Accès</a>
+                          </li>
                         </ul>
                       </div>
                     </div>

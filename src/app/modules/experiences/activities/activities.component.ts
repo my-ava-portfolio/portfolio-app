@@ -1,13 +1,13 @@
 import { Subscription } from 'rxjs';
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { state, trigger, transition, animate, style } from '@angular/animations'
 
-import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, projectIcon, projectPages, stringToColor, websiteIcon } from '@core/inputs';
+import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, projectIcon, projectPages, websiteIcon } from '@core/inputs';
 
 import { ResumeService } from '@services/resume.service';
 
 import { arrowsDownIcon, expandIcon, resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '@core/inputs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -64,6 +64,7 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   envTitle = "Environnement";
   trainingTitle = "Formations";
   detailsTitle = "Détails";
+  publicationsTitle = "Publications";
 
   // tabView = 'companies';
   availabled_topics = ["job", "personal_project", "volunteer"]
