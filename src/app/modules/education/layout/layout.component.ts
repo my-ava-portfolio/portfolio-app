@@ -25,14 +25,11 @@ export class LayoutComponent implements OnInit {
 
   activityIdFromActivityComponents!: string;
 
-  // resume top bar
-  profilData: any;
-  contactData: any;
-
   // resume left sidebar
   degreesData: any;
   languagesData: any;
   trainingsData: any;
+  publicationsData: any = []
 
   // resume center bar
   generalData: any;
@@ -61,15 +58,18 @@ export class LayoutComponent implements OnInit {
     // TODO get linked publications
     this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
       (data) => {
-        this.contactData = data.contact;
         this.degreesData = data.education;
         // this.generalData = data.general;
         this.languagesData = data.languages;
-        this.profilData = data.profil;
+        // this.profilData = data.profil;
         this.trainingsData = data.trainings;
         // this.summaryData = data.profil.carrier_summary;
         // this.qualitiesData = data.profil.qualities;
-        // this.publicationsData = data.research_work;
+        data.education.forEach((element: { publications: null; }) => {
+          if (element.publications !== null) {
+            this.publicationsData = [ ...this.publicationsData, ...element.publications]
+          }
+        });
 
         this.isDataAvailable = true;
       },

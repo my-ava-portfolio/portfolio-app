@@ -65,6 +65,8 @@
 
                   </div>
 
+                  <ng-container *ngTemplateOutlet="publications"></ng-container>
+
                 </div>
               </div>
 
@@ -93,9 +95,76 @@
             </div>
 
           </div>
+
         </div>
       </div>
 
   </div>
 
 </section>
+
+
+
+<ng-template #publications>
+  <div  class="row justify-content-center">
+
+    <div class="col-11 mx-auto m-2">
+      <span class="fs-6 fw-bolder px-2">
+        <fa-icon class="me-2" [icon]="publishIcon"></fa-icon>
+        Travaux/publications universitaires
+      </span>
+    </div>
+
+  <div class="col-11 mx-auto">
+    <div class="item card m-3 publi_card collapse show" *ngFor="let publication of publicationsData">
+        <div class="card-body">
+            <div class="row header mb-3">
+
+                <div class="col-9">
+                    <h6>{{publication.year}} - {{publication.editor}}</h6>
+                </div>
+
+                <div class="col-3">
+                  <div *ngIf="publication.link; then publicationShorcutLink"></div>
+                    <ng-template #publicationShorcutLink>
+                      <a class="btn btn-sm btn-danger me-2 float-end"  href="{{publication.link}}" target="_blank" rel="noopener noreferrer" title="Documents"><fa-icon [icon]="pdfFileIcon"></fa-icon></a>
+                    </ng-template>
+
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-12">
+                  <div class="col-sm-12 ps-3">
+                    <p class="text-justify small">{{publication.publication}}</p>
+                  </div>
+                </div>
+
+                <div *ngIf="publication.keywords; then publicationThemes"></div>
+                  <ng-template #publicationThemes>
+                    <div class="col-lg-12 mb-3">
+                      <h6>Thèmes</h6>
+                      <div class="col-lg-12 ps-3">
+                        <span class="badge me-2" [style]="'background-color:' + item.value"
+                          *ngFor="let item of publication.keywords | keyvalue"
+                        >{{ item.key }}</span>
+                      </div>
+                    </div>
+                  </ng-template>
+
+
+                <div class="col-sm-12">
+                    <h6>Description</h6>
+                    <div class="col-sm-12 ps-3">
+                      <p class="text-justify small">{{publication.description}}</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+</ng-template>

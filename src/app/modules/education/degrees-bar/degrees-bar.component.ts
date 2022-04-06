@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { apiLogoUrl } from '@core/inputs';
+import { apiLogoUrl, pdfFileIcon, publishIcon } from '@core/inputs';
 
 import { degreeIcon, locationIcon } from '@core/inputs';
 import { presIcon, expandIcon, languageIcon } from '@core/inputs';
@@ -32,6 +32,8 @@ export class DegreesBarComponent implements OnInit, OnChanges {
   @Input() fragment: any;
   @Input() degreesData: any;
   @Input() languagesData: any;
+  @Input() publicationsData: any;
+
 
   mapPages: any = mapActivitiesPages;
 
@@ -46,6 +48,8 @@ export class DegreesBarComponent implements OnInit, OnChanges {
   languageIcon = languageIcon;
   presIcon = presIcon;
   expandIcon = expandIcon;
+  publishIcon = publishIcon;
+  pdfFileIcon = pdfFileIcon;
 
   availabled_topics = ["degrees", "languages"]
   defaultTabView = this.availabled_topics[0];
