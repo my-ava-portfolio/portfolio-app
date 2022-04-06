@@ -49,7 +49,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   chartWidth!: number;
 
   legendWidth = 300; // try to not change
-  legendHeight = 150;
+  legendHeight = 120;
 
   // circle
   strokeWidth = '0px';
