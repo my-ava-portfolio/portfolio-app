@@ -499,19 +499,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .append('text')
       .text((d: any, i: number) => {
         // TODO tricky part: review it : duplicate label text
-        if (i % 2 !== 0) {
-          let label!: string;
-          this.legendInput.filter((item: any) => {
-            if (item.id == d.node.properties.id) {
-              label = item.label
-            }
-          })
-          if (label === undefined) {
-            return d.node.properties.name;
-          }
-          return label
-        }
-        return ''
+        return i % 2 !== 0 ? '' : d.node.properties.name;
       })
       .attr('id', (d: any) => {
         return 'label-' + d.node.properties.id;
