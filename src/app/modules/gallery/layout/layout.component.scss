@@ -109,11 +109,11 @@ $methodo-color: cyan;
 .grid-container {
   columns: 200px;
   -webkit-column-count: 3;
-  -webkit-column-gap: 1%; // Saf3, Chrome
+  -webkit-column-gap: 3%; // Saf3, Chrome
   -moz-column-count: 3;
-  -moz-column-gap: 1%; // FF3.5+
+  -moz-column-gap: 3%; // FF3.5+
   column-count: 3;
-  column-gap: 1%; // Opera 11+
+  column-gap: 3%; // Opera 11+
 }
 
 .feat-gallery {
