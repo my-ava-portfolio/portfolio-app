@@ -49,7 +49,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   chartWidth!: number;
 
   legendWidth = 270; // try to not change
-  legendHeight = 120;
+  legendHeight = 150;
 
   // circle
   strokeWidth = '0px';
@@ -484,11 +484,19 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       })
       .on('mouseover', (e: any, d: any) => {
         const element = this.legendInput.filter(e => e.id === d.properties.type);
-        d3.select(e.currentTarget).attr('r', element[0].rOver);
+        d3.select(e.currentTarget)
+        .transition()
+        .duration(1000)
+        .ease(d3.easeElastic)
+          .attr("r", element[0].rOver)
       })
       .on('mouseout', (e: any, d: any) => {
         const element = this.legendInput.filter(e => e.id === d.properties.type);
-        d3.select(e.currentTarget).attr('r', element[0].r);
+        d3.select(e.currentTarget)
+        .transition()
+        .duration(1000)
+        .ease(d3.easeElastic)
+          .attr("r", element[0].r)
        })
       ;
 
