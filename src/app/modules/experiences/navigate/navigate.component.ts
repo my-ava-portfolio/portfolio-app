@@ -498,7 +498,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .enter()
       .append('text')
       .text((d: any, i: number) => {
-        // TODO tricky part: review it : duplicate label text
         return i % 2 !== 0 ? '' : d.node.properties.name;
       })
       .attr('id', (d: any) => {
