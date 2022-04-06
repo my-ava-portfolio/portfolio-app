@@ -41,7 +41,7 @@ import { navIcon } from '@core/inputs';
 export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   navIcon = navIcon;
-  
+
   fragment: string = '';
 
   apiImgUrl = apiLogoUrl;
@@ -65,7 +65,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   isAnchorExistsChecker = interval(1000); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
 
-  resumeDataSubscription!: Subscription;
+  generalDataSubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
   routeSubscription!: Subscription;
 
@@ -80,19 +80,11 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
-    this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
+    this.generalDataSubscription = this.resumeService.generalData.subscribe(
       (data) => {
-        // this.contactData = data.contact;
-        // this.degreesData = data.education;
-        this.generalData = data.general;
-        // this.languagesData = data.languages;
-        // this.profilData = data.profil;
-        // this.trainingsData = data.trainings;
-        // this.summaryData = data.profil.carrier_summary;
-        // this.qualitiesData = data.profil.qualities;
-        // this.publicationsData = data.research_work;
-
+        this.generalData = data.resume_validity_range;
         this.isDataAvailable = true;
+
       }
     );
 
@@ -122,15 +114,16 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
    }
 
   ngOnInit(): void {
-    this.resumeService.pullResumeGeneralData();
+    this.resumeService.pullGeneralData();
     this.sendResumeSubMenus()
+
   }
 
   ngAfterViewInit(): void {
   }
 
   ngOnDestroy(): void {
-    this.resumeDataSubscription.unsubscribe();
+    this.generalDataSubscription.unsubscribe();
     this.activitiesFilteredSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
   }

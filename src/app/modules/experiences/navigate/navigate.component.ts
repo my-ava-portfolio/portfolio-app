@@ -95,11 +95,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         // current_activities
         this._generateGraph(this.currentNodeIdSelected);
 
-      },
-      (error) => {
       }
     );
-
 
     this.activitiesIdSubscription = this.resumeService.activityId.subscribe(
       (activityId) => {
@@ -194,7 +191,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   // here to control default topic graph.
   resetChart(): void {
     this.currentNodeIdSelected = this.defaultNodeIdSelected;
-    this.currentDate = this.graphInputData.end_date_graph_slider;
+    this.currentDate = this.graphInputData.end_date;
     this.isThemesEnabled = true;
     this.isTechnicsEnabled = true;
     this.isToolsEnabled = false;
@@ -219,7 +216,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   rebuildActivitiesChartWithAPreselection(nodeToSelect: string): void {
     this.currentNodeIdSelected = nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
-    this.currentDate = this.graphInputData.end_date_graph_slider;
+    this.currentDate = this.graphInputData.end_date;
     this.isThemesEnabled = true;
     this.isTechnicsEnabled = true;
     this.isToolsEnabled = false;
