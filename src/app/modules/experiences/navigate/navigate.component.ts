@@ -48,7 +48,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   chartHeight = 250;
   chartWidth!: number;
 
-  legendWidth = 270; // try to not change
+  legendWidth = 300; // try to not change
   legendHeight = 150;
 
   // circle
