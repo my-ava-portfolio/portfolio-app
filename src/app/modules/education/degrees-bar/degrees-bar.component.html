@@ -36,7 +36,7 @@
 
             <div class="tab-container" [ngSwitch]="tabView">
 
-              <div class="tab" id="degrees-tab" *ngSwitchCase="'degrees'" [@fadeInOut]>
+              <div class="tab" id="degrees-tab" *ngSwitchCase="'degrees'">
                 <div  class="row justify-content-center">
 
                   <div [id]="degree.identifier" class="col-sm-12 col-md-4 col-lg-3" *ngFor="let degree of inputDegreesData">
@@ -70,7 +70,7 @@
                 </div>
               </div>
 
-              <div class="tab" id="languages-tab" *ngSwitchCase="'languages'" [@fadeInOut]>
+              <div class="tab" id="languages-tab" *ngSwitchCase="'languages'">
                 <div class="row justify-content-center">
 
                   <div class="col-12 col-lg-3">

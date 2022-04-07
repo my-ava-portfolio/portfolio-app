@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ColorPickerModule } from 'ngx-color-picker';
 
-import { MapSandboxRoutingModule } from './map-sandbox-routing.module';
+import { MapSandboxRoutingModule } from '@modules/map-sandbox/map-sandbox-routing.module';
 
 import { ToolboxComponent } from '@modules/map-sandbox/toolbox/toolbox.component';
 

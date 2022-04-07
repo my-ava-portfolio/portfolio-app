@@ -13,30 +13,17 @@ import { startWith  } from 'rxjs/operators';
 
 import { ActivatedRoute, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { trigger, state, animate, transition, style } from '@angular/animations';
 
 import { navIcon } from '@core/inputs';
+import { fadeInOutAnimation } from '@core/animation_routes';
 
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
-  animations: [
-    // TODO refactor!
-    trigger('fadeInOut', [
-      state('in', style({opacity: 0})),
-      transition(':enter', [
-        style({opacity: '0'}),
-        animate('600ms ease-in-out', style({opacity: '1'}))
-      ]),
-    ]),
-    trigger('expandCollapse', [
-      state('open', style({height: '100%', opacity: 1})),
-      state('closed', style({height: 0, opacity: 0})),
-      transition('* => *', [animate('1000ms')])
-  ]),
-  ]
+  animations: [fadeInOutAnimation]
+
 })
 export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 

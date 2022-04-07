@@ -142,7 +142,7 @@ export const experiencesPages: any = {
     {
       id: "print",
       title: "",
-      route: '../short_resume',
+      route: '/short_resume',
       icon: printIcon
     },
   ]

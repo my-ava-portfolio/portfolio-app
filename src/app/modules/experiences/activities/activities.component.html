@@ -33,15 +33,15 @@
 
         <div class="tab-container" [ngSwitch]="tabView">
 
-          <div class="tab" id="job-widget" *ngSwitchCase="'job'" [@fadeInOut]>
+          <div class="tab" id="job-widget" *ngSwitchCase="'job'">
             <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'job', activitiesData: jobsData}"></ng-container>
           </div>
 
-          <div class="tab" id="personal_project-widget" *ngSwitchCase="'personal_project'" [@fadeInOut]>
+          <div class="tab" id="personal_project-widget" *ngSwitchCase="'personal_project'">
             <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'personal_project', activitiesData: personalProjectsData}"></ng-container>
           </div>
 
-          <div class="tab" id="volunteer-widget" *ngSwitchCase="'volunteer'" [@fadeInOut]>
+          <div class="tab" id="volunteer-widget" *ngSwitchCase="'volunteer'">
             <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'volunteer', activitiesData: volunteersData}"></ng-container>
           </div>
 
@@ -130,7 +130,7 @@
 
 
                     <div class="col-lg-12 mt-2" *ngIf="activity.keywords">
-                        <span class="badge rounded-pill m-1" [style]="'background-color:' + item.value"
+                        <span class="badge rounded-pill m-1" [style.border]="'1px solid ' + item.value" [style.color]="item.value"
                           *ngFor="let item of activity.keywords | keyvalue"
                         >{{ item.key }}</span>
                     </div>

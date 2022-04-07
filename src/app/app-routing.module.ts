@@ -1,3 +1,4 @@
+import { ResumeLegacyModule } from './modules/resume-legacy/resume-legacy.module';
 import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 
@@ -15,7 +16,6 @@ export class CustomPreloadingStrategy implements PreloadingStrategy {
 
 
 const appRoutes: Routes = [
-
   {
     path: '',
     component: LayoutComponent,
@@ -28,6 +28,10 @@ const appRoutes: Routes = [
       {
         path: 'experiences',
         loadChildren: () => import('@modules/experiences/experiences.module').then(m => m.ExperiencesModule),
+      },
+      {
+        path: 'short_resume',
+        loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
       },
       {
         path: 'education',

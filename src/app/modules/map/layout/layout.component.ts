@@ -9,6 +9,7 @@ import { tagIcon, centerIcon} from '@core/inputs';
 import { MapService } from '@services/map.service';
 import { Router } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
+import { fadeInOutAnimation } from '@core/animation_routes';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { ControlerService } from '@services/controler.service';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  animations: [fadeInOutAnimation]
 })
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   tagIcon = tagIcon;

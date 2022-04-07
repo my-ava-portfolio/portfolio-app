@@ -202,18 +202,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.buildGraphElements();
   }
 
-  // scrollToActivity(activityId: string): void {
-  //   const nodeSelected = d3.selectAll('#svgSkillsChart .nodes .selected');
-  //   if (nodeSelected.size() === 1) {
-  //     nodeSelected.dispatch('click');
-  //   }
-  //   const nodeSelected_1 = d3.selectAll('#svgSkillsChart .nodes .selected');
-  //   if (nodeSelected_1.size() === 0) {
-  //     const element: any = window.document.getElementById(activityId);
-  //     element.scrollIntoView();
-  //   }
-  // }
-
   rebuildActivitiesChartWithAPreselection(nodeToSelect: string): void {
     this.currentNodeIdSelected = nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
     this.currentDate = this.graphInputData.end_date;
@@ -528,6 +516,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         // unclick we want to unselect the node, only on the original node !
         this.currentNodeIdSelected = this.defaultNodeIdSelected;
         this._defaultDisplayingByDate();
+
 
       } else {
           // nothing here : to avoid unfocused action on an other node than the origin node, else it will disable the graph interactivity

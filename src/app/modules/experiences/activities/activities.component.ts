@@ -1,6 +1,5 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { state, trigger, transition, animate, style } from '@angular/animations'
 
 import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, projectIcon, projectPages, websiteIcon } from '@core/inputs';
 
@@ -14,20 +13,6 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-activities',
   templateUrl: './activities.component.html',
   styleUrls: ['./activities.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      state('in', style({opacity: 0})),
-      transition(':enter', [
-        style({opacity: '0'}),
-        animate('700ms ease-in-out', style({opacity: '1'}))
-      ]),
-    ]),
-    trigger('expandCollapse', [
-      state('open', style({height: '100%', opacity: 1})),
-      state('closed', style({height: 0, opacity: 0})),
-      transition('* => *', [animate('1000ms')])
-  ]),
-  ]
 })
 export class ActivitiesComponent implements OnInit, OnChanges {
   @Output() notePathEmit = new EventEmitter<string>();

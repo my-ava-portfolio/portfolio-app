@@ -12,12 +12,15 @@ import { Title } from '@angular/platform-browser';
 import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '@core/inputs';
 
 import { ControlerService } from '@services/controler.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { fadeInOutAnimation } from '@core/animation_routes';
 
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
+  animations: [fadeInOutAnimation]
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   experiencesRoute: string = experiencesPages.route;
@@ -83,7 +86,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
           this.fragment = fragment;
         }
       }
-  );
+    );
 
     this.activitiesGallerySubscription = this.galleryService.activitiesGalleryData.subscribe(
       (data) => {
@@ -92,9 +95,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.activities = data.activities;
         this.currentCategory = data.current_category;
         this.isDataAvailable = true;
-
-      },
-      (error) => {
       }
     );
 

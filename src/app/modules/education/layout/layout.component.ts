@@ -12,11 +12,13 @@ import { startWith  } from 'rxjs/operators';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { fadeInOutAnimation } from '@core/animation_routes';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
+  animations: [fadeInOutAnimation]
 })
 export class LayoutComponent implements OnInit {
   fragment!: string | null;
