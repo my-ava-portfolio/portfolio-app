@@ -30,10 +30,6 @@ const appRoutes: Routes = [
         loadChildren: () => import('@modules/experiences/experiences.module').then(m => m.ExperiencesModule),
       },
       {
-        path: 'short_resume',
-        loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
-      },
-      {
         path: 'education',
         loadChildren: () => import('@modules/education/education.module').then(m => m.EducationModule),
       },
