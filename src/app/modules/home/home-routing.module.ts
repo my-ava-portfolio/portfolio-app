@@ -10,7 +10,7 @@ const routes: Routes = [
   {
     path: 'about_me',
     component: LayoutComponent,
-    data: { title: 'Bienvenue', page: 'about_me' }
+    data: { title: 'Amaury Valorge - Portfolio', page: 'about_me' }
   },
 ]
 

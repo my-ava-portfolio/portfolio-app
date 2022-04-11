@@ -48,7 +48,7 @@ const appRoutes: Routes = [
         path: 'blog',
         loadChildren: () => import('@modules/blog/blog.module').then(m => m.BlogModule),
       },
-      { path: '**', redirectTo: '/short_resume', pathMatch : 'full' }, // in order to redirect to the home page if the main url is called
+      { path: '**', redirectTo: '/home/about_me', pathMatch : 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },
   // no layout routes
