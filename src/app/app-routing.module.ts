@@ -51,10 +51,6 @@ const appRoutes: Routes = [
       { path: '**', redirectTo: '/home/about_me', pathMatch : 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },
-  // no layout routes
-  // { path: 'map', component: MapViewComponent, pathMatch: 'full'  },
-  // { path: 'short_resume', component: ShortViewComponent, data: { title: 'Profil', page: 'short_resume' } },
-  // { path: 'home', component: HomeViewComponent, data: { title: 'Amaury Valorge Portfolio' } },
 ];
 
 @NgModule({

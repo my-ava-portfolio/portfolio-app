@@ -29,12 +29,6 @@ export class AppComponent implements OnInit {
   isLandscapeDeviceMode = false;
   currentPage!: string;
 
-  apiStatus!: string;
-  apiOff!: boolean;
-  apiStatusMessage = 'Le serveur Heroku va démarrer dans ';
-  apiStatusSubMessage = 'Un problème ?';
-  apiStatusIssueLink = githubBugIssueUrl;
-
   constructor(
     private router: Router,
     private location: Location,
