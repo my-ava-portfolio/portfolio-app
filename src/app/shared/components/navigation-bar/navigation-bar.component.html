@@ -1,10 +1,10 @@
 <nav id="sidebar" class="bg-dark sticky-top overflow-auto vh-100" [ngClass]="sideBarCollapsed ? 'inactive' : 'active'">
-  <div class="p-3">
-    <div class="sidebar-header text-white text-center m-1" *ngIf="generalData">
-      <img class="rounded mx-auto rounded-circle img-fluid p-1" [src]="imageProfile">
+  <div class="">
+    <div class="sidebar-header text-white text-center m-3" *ngIf="generalData">
+      <img class="rounded mx-auto rounded-circle img-fluid px-3" [src]="imageProfile">
 
-      <div id="profil-name" class="mb-2" *ngIf="sideBarCollapsed">
-        <h3>{{ generalData.first_name }} {{ generalData.last_name }}</h3>
+      <div id="profil-name" class="my-2" *ngIf="sideBarCollapsed">
+        <h4>{{ generalData.first_name }} {{ generalData.last_name }}</h4>
         <h6 class="mt-2 bg-white rounded-pill text-black profil-badge small">{{ generalData.job }}</h6>
 
         <h6 class="mt-2 bg-warning rounded-pill text-black profil-badge small">
@@ -15,7 +15,7 @@
 
       </div>
 
-      <div id="profil-shortname" class="mb-2" *ngIf="!sideBarCollapsed">
+      <div id="profil-shortname" class="mb-1" *ngIf="!sideBarCollapsed">
         <strong>{{ generalData.first_name[0] }}{{ generalData.last_name[0] }}</strong>
       </div>
 
