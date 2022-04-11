@@ -10,9 +10,9 @@
 
     <div class="page bg-white my-2 mx-auto" size="A4" layout="" *ngIf="dataAvailable">
 
-      <div class="container d-flex flex-column">
+      <div class="container d-flex flex-column py-3">
 
-        <div id="header" class="d-flex flex-row align-items-center justify-content-between px-5 pt-4">
+        <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3 pt-4">
 
           <div class="">
             <h4 class="fw-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h4>
@@ -42,7 +42,7 @@
 
         </div>
 
-        <div id="resume_summary" class="d-flex flex-row mx-4 pt-3">
+        <div id="resume_summary" class="d-flex flex-row mx-5 pt-3">
           <div class="text-justify small">{{ summaryData }} </div>
         </div>
 
@@ -108,7 +108,7 @@
           </div>
         </div>
 
-        <div class="mt-auto mb-5 d-flex flex-row justify-content-center">
+        <div class="mt-5 d-flex flex-row justify-content-center">
           <span class="small">Page 1</span>
         </div>
 
@@ -119,9 +119,9 @@
 
     <br clear="all" style="page-break-before:always" />
 
-    <div class="page visible-print-block bg-white my-2 mx-auto" size="A4" layout="" *ngIf="dataAvailable">
+    <div class="page bg-white my-2 mx-auto" size="A4" layout="" *ngIf="dataAvailable">
 
-      <div class="container d-flex flex-column">
+      <div class="container d-flex flex-column py-3">
 
 
         <div id="jobs" class="d-flex flex-column mx-4 pt-3">
@@ -145,16 +145,16 @@
                 </div>
 
                 <div class="small">
-                  <span class="fw-bold"> {{job.company}} à {{job.location}}</span>
+                  <span class=""> {{job.company}} à {{job.location}}</span>
                 </div>
 
                 <div class="small">
                   <div *ngIf="job.status === 'InProgress'; then currentJob else pastJob"></div>
                     <ng-template #pastJob>
-                      <span class="fw-bold">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.contract}} - {{job.duration}})</span>
+                      <span class="">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.contract}} - {{job.duration}})</span>
                     </ng-template>
                     <ng-template #currentJob>
-                      <span class="fw-bold"> Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.contract}} - {{job.duration}})</span>
+                      <span class=""> Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.contract}} - {{job.duration}})</span>
                     </ng-template>
                 </div>
 
@@ -174,7 +174,7 @@
 
         </div>
 
-        <div class="mt-auto mb-5 d-flex flex-row justify-content-center">
+        <div class="mt-5 d-flex flex-row justify-content-center">
           <span class="small">Page 2</span>
         </div>
 
@@ -184,9 +184,9 @@
 
     <br clear="all" style="page-break-before:always" />
 
-    <div class="page visible-print-block bg-white my-2 mx-auto" size="A4" layout="" *ngIf="dataAvailable">
+    <div class="page bg-white my-2 mx-auto" size="A4" layout="" *ngIf="dataAvailable">
 
-      <div class="container d-flex flex-column">
+      <div class="container d-flex flex-column py-3">
 
 
         <div id="projects" class="d-flex flex-column mx-4 pt-3">
@@ -250,7 +250,7 @@
         </div>
 
 
-        <div class="mt-auto mb-5 d-flex flex-row justify-content-center">
+        <div class="mt-5 d-flex flex-row justify-content-center">
           <span class="small">Page 3</span>
         </div>
 
