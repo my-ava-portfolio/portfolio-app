@@ -1,0 +1,285 @@
+<div #content class="container-fluid">
+
+
+  <div class="d-flex flex-row align-items-center justify-content-center mt-3">
+    <button type="button" class="btn btn-lg btn-warning fw-bold" type="button" (click)="printDiv('legacy_resume')">Imprimer/export en pdf</button>
+  </div>
+
+
+  <div id="legacy_resume"  class="d-flex flex-column justify-content-center d-none d-sm-block">
+
+    <div class="page bg-white my-2 mx-auto" size="A4" layout="" *ngIf="dataAvailable">
+
+      <div class="container d-flex flex-column">
+
+        <div id="header" class="d-flex flex-row align-items-center justify-content-between px-5 pt-4">
+
+          <div class="">
+            <h4 class="fw-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h4>
+            <h5 class="">{{ profilData.job }}</h5>
+            <h6 class="">{{ profilData.experience_duration }}</h6>
+          </div>
+
+          <div class="my-auto">
+            <ul class="list-unstyled">
+              <ng-container *ngIf="contactData.mail">
+                <ng-container *ngTemplateOutlet="contactListElement; context: {icon: emailIcon, data: contactData.mail}"></ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="contactData.phone">
+                <ng-container *ngTemplateOutlet="contactListElement; context: {icon: phoneIcon, data: contactData.phone}"></ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="contactData.website">
+                <ng-container *ngTemplateOutlet="contactListElement; context: {icon: websiteIcon, data: contactData.website}"></ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="contactData.github">
+                <ng-container *ngTemplateOutlet="contactListElement; context: {icon: githubIcon, data: contactData.github}"></ng-container>
+              </ng-container>
+            </ul>
+          </div>
+
+        </div>
+
+        <div id="resume_summary" class="d-flex flex-row mx-4 pt-3">
+          <div class="text-justify small">{{ summaryData }} </div>
+        </div>
+
+
+        <div id="degrees" class="d-flex flex-column mx-4 pt-3">
+          <div class="">
+            <h5 class="">Diplômes</h5>
+          </div>
+
+          <div class="d-flex flex-column mx-4">
+            <div class="" *ngFor="let degree of degreesData">
+              <div class="fw-bold small">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy' }} - {{ degree.degree }}</div>
+              <div class="fw-light ms-3 small">{{ degree.school }} à {{ degree.location }}</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="d-flex flex-row mx-4 pt-3">
+
+          <div id="degrees" class="d-flex flex-column">
+            <div class="">
+              <h5 class="">Formations</h5>
+            </div>
+
+            <div class="d-flex flex-column mx-4">
+              <div class="small" *ngFor="let training of trainingsData">
+                <div class="fw-bold">{{ training.year }} - {{ training.name }}</div>
+                <div class="fw-light ms-3"> par {{ training.trainer }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="languages" class="d-flex flex-column">
+            <div class="">
+              <h5 class="">Langues</h5>
+            </div>
+
+            <div class="d-flex flex-column mx-4">
+              <div class="" *ngFor="let language of languagesData">
+                <div class="small">
+                  <span class="fw-bold">{{language.language}} : </span> {{language.level}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div id="publication" class="d-flex flex-column mx-4 pt-3">
+          <div class="">
+            <h5 class="">Recherches et publications</h5>
+          </div>
+
+          <div class="d-flex flex-column mx-4">
+            <div class="small mb-2" *ngFor="let publication of publicationsData">
+              <div class="fw-bold">{{ publication.year }} - {{ publication.editor }}</div>
+              <div class="fw-light ms-3 text-justify">
+                {{publication.publication}} <a class="text-dark ms-2" href="{{ publication.link }}" target="_blank" rel="noopener noreferrer">Accès <fa-icon class="me-2" [icon]="pdfFileIcon"></fa-icon></a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="mt-auto mb-5 d-flex flex-row justify-content-center">
+          <span class="small">Page 1</span>
+        </div>
+
+
+      </div>
+
+    </div>
+
+    <br clear="all" style="page-break-before:always" />
+
+    <div class="page visible-print-block bg-white my-2 mx-auto" size="A4" layout="" *ngIf="dataAvailable">
+
+      <div class="container d-flex flex-column">
+
+
+        <div id="jobs" class="d-flex flex-column mx-4 pt-3">
+
+          <div class="">
+            <h5 class="">Expériences</h5>
+          </div>
+
+          <div class="d-flex flex-column mt-1" *ngFor="let job of jobsData">
+
+            <div class="d-flex flex-row align-items-center justify-content-start mb-2 mx-4" [ngClass]="job.status === 'InProgress' ? 'border rounded border-danger': 'border rounded'">
+
+              <div class="m-1">
+                <img class="rounded img-thumbnail shadow img_company" [src]="apiImgUrl + job.img_company"/>
+              </div>
+
+              <div class="d-flex flex-column ms-2">
+
+                <div class="fw-bold" [ngClass]="job.status === 'InProgress' ? 'text-danger': 'text-dark'">
+                  <span>{{job.title}}</span>
+                </div>
+
+                <div class="small">
+                  <span class="fw-bold"> {{job.company}} à {{job.location}}</span>
+                </div>
+
+                <div class="small">
+                  <div *ngIf="job.status === 'InProgress'; then currentJob else pastJob"></div>
+                    <ng-template #pastJob>
+                      <span class="fw-bold">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.contract}} - {{job.duration}})</span>
+                    </ng-template>
+                    <ng-template #currentJob>
+                      <span class="fw-bold"> Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.contract}} - {{job.duration}})</span>
+                    </ng-template>
+                </div>
+
+                <div class="" *ngIf="job.keywords">
+                  <span class="badge rounded-pill m-1" [style.border]="'1px solid ' + item.value" [style.color]="item.value" *ngFor="let item of job.keywords | keyvalue">{{ item.key }}</span>
+                </div>
+              </div>
+
+
+            </div>
+
+            <div class="small text-justify ">
+              <p class="">{{job.__}}</p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="mt-auto mb-5 d-flex flex-row justify-content-center">
+          <span class="small">Page 2</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <br clear="all" style="page-break-before:always" />
+
+    <div class="page visible-print-block bg-white my-2 mx-auto" size="A4" layout="" *ngIf="dataAvailable">
+
+      <div class="container d-flex flex-column">
+
+
+        <div id="projects" class="d-flex flex-column mx-4 pt-3">
+
+          <div class="">
+            <h5 class="">Projets personnels</h5>
+          </div>
+
+
+          <div class="d-flex flex-column mt-2 mx-4"  *ngFor="let project of personalProjectsData">
+            <div class="d-flex flex-row justify-content-between">
+
+              <h6 class="fw-bold">{{project.title}}</h6>
+
+                <div *ngIf="project.url_github; then projectsShorcutGithub"></div>
+                <ng-template #projectsShorcutGithub>
+                  <span><fa-icon class="me-2" [icon]="githubIcon"></fa-icon><a class="small text-dark" href="{{ project.url_github }}" target="_blank" rel="noopener noreferrer">{{ project.url_github }}</a></span>
+                </ng-template>
+
+                <div *ngIf="project.url_website; then projectsShorcutWebsite"></div>
+                <ng-template #projectsShorcutWebsite>
+                  <span><fa-icon class="me-2" [icon]="websiteIcon"></fa-icon><a class="small text-dark" href="{{ project.url_website }}" target="_blank" rel="noopener noreferrer">{{ project.url_website }}</a></span>
+                </ng-template>
+            </div>
+
+            <div class="d-flex flex-row">
+              <div class="mx-4 text-justify small">{{project.presentation}}</div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <div id="skills" class="d-flex flex-column mx-4 pt-3">
+
+          <div class="">
+            <h5 class="">Compétences</h5>
+          </div>
+
+          <ng-container *ngIf="skillsData">
+
+            <div class="d-flex flex-row ms-3 mt-2 mx-4">
+              <ng-container *ngIf="skillsData.themes">
+                <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.themes, title: 'Thématiques'}"></ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="skillsData.technics">
+                <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.technics, title: 'Techniques'}"></ng-container>
+              </ng-container>
+            </div>
+
+            <div class="d-flex flex-column ms-3">
+
+              <ng-container *ngIf="skillsData.tools">
+                <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.tools, title: 'Outils'}"></ng-container>
+              </ng-container>
+            </div>
+
+          </ng-container>
+        </div>
+
+
+        <div class="mt-auto mb-5 d-flex flex-row justify-content-center">
+          <span class="small">Page 3</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+<!-- TEMPLATES -->
+
+<ng-template #contactListElement let-icon=icon let-data=data>
+  <li class="d-flex justify-content-end">
+    <a class="small" [href]="data" target="_blank" rel="noopener noreferrer" [innerHTML]="reverse(data)"></a>
+    <fa-icon class="ms-2" [icon]="icon"></fa-icon>
+  </li>
+</ng-template>
+
+
+<ng-template #skillsFeature let-data=data let-title=title>
+  <div class="d-flex flex-column skills mb-2">
+    <div class="">
+      <h6 class="">{{title}}</h6>
+    </div>
+    <div class="mx-3 small" *ngFor="let feature of data">
+      <span class="fw-bold">{{feature.name}}:</span>
+      <span class="fw-regular ms-1">{{ feature.details | join }}.</span>
+    </div>
+  </div>
+
+</ng-template>

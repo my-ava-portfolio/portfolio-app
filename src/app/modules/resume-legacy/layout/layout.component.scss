@@ -1,0 +1,64 @@
+.page {
+  background: white;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.5cm;
+  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+}
+
+.page[size="A4"] {
+  width: 21cm;
+  height: 29.7cm;
+}
+
+.page[size="A4"][layout="landscape"] {
+  width: 29.7cm;
+  height: 21cm;
+}
+
+.skills {
+  flex: 1;
+}
+
+.page {
+  width: 29.7cm;
+}
+
+
+
+
+// @media screen and (max-width: 768px) {
+//   #legacy_resume {
+//     transform: scale(47%);
+//     transform-origin: 0 0;
+//   }
+// }
+
+// @media screen and (max-width: 320px) {
+//   #legacy_resume {
+//     transform: scale(32%);
+//     transform-origin: 0 0;
+//   }
+// }
+
+
+
+
+
+@media print {
+  @page {
+    // margin-top: 0;
+    // margin-bottom: 0;
+    // size: auto;   /* auto is the current printer page size */
+    // margin: 0mm;  /* this affects the margin in the printer settings */
+  }
+  header,footer {
+    display: none;
+  }
+
+  .page {
+    box-shadow: none;
+    margin-top: unset!important;
+    margin-bottom: unset!important;
+  }
+}
