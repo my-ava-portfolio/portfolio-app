@@ -29,7 +29,7 @@
 
           <div class="tab-container" [ngSwitch]="tabView">
 
-            <div class="tab" id="trainings-tab" *ngSwitchCase="'trainings'" [@fadeInOut]>
+            <div class="tab" id="trainings-tab" *ngSwitchCase="'trainings'">
               <div class="row justify-content-center">
 
                 <div [id]="training.identifier" class="col-sm-12 col-md-4 col-lg-2" *ngFor="let training of inputTrainingsData">
