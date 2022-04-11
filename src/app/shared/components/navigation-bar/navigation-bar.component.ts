@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { share } from 'rxjs/operators';
 
-import { checkIfScreenPortraitOrientation, homePages, infoIcon, pythonIcon } from '@core/inputs';
+import { checkIfScreenPortraitOrientation, homePages, infoIcon, legacyResumePage, pythonIcon } from '@core/inputs';
 import { githubIcon, linkedinIcon, emailIcon } from '@core/inputs';
 import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '@core/inputs';
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '@core/inputs';
@@ -27,7 +27,8 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 
   topicPages: any = mainTopicsPages;
   homePages: any = homePages[0];
-
+  legacyResumePage: any = legacyResumePage;
+  
   bugIcon = bugIcon;
   helpIcon = helpIcon;
   exclamationIcon = exclamationIcon;

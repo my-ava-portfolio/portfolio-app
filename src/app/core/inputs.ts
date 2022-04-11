@@ -131,6 +131,17 @@ export const educationPages: any = {
   ]
 };
 
+export const legacyResumePage: any = {
+  id: 'legacyResume',
+  route: '/resume',
+  title: 'CV',
+  colorType: null,
+  verbose_title: 'Télécharger mon CV',
+  icon: resumeIcon,
+  sub_menus: [
+  ]
+};
+
 export const experiencesPages: any = {
   id: 'experiences',
   route: '/experiences',
@@ -138,14 +149,7 @@ export const experiencesPages: any = {
   colorType: 'job',
   verbose_title: 'Accès au CV',
   icon: resumeIcon,
-  sub_menus: [
-    {
-      id: "print",
-      title: "",
-      route: '/short_resume',
-      icon: printIcon
-    },
-  ]
+  sub_menus: []
 };
 
 export const mapActivitiesPages: any = {

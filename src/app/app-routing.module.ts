@@ -29,7 +29,7 @@ const appRoutes: Routes = [
         loadChildren: () => import('@modules/experiences/experiences.module').then(m => m.ExperiencesModule),
       },
       {
-        path: 'short_resume',
+        path: 'resume',
         loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
       },
       {

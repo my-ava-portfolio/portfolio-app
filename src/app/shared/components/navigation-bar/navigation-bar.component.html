@@ -6,6 +6,13 @@
       <div id="profil-name" class="mb-2" *ngIf="sideBarCollapsed">
         <h3>{{ generalData.first_name }} {{ generalData.last_name }}</h3>
         <h6 class="mt-2 bg-white rounded-pill text-black profil-badge small">{{ generalData.job }}</h6>
+
+        <h6 class="mt-2 bg-warning rounded-pill text-black profil-badge small">
+          <a class="text-decoration-none text-black" [title]="legacyResumePage.title" [routerLink]="legacyResumePage.route">
+            {{legacyResumePage.verbose_title}}
+          </a>
+        </h6>
+
       </div>
 
       <div id="profil-shortname" class="mb-2" *ngIf="!sideBarCollapsed">
