@@ -30,18 +30,18 @@
 
 @media print {
   @page {
-    // margin-top: 0;
-    // margin-bottom: 0;
-    // size: auto;
-    // margin: 1cm;
+    margin-top: 0;
+    margin-bottom: 0;
+    size: auto;
+    margin: 1cm;
   }
-  header,footer {
-    display: none;
-  }
+  // header,footer {
+  //   display: none;
+  // }
 
   .page {
     box-shadow: none;
-    margin-top: unset!important;
-    margin-bottom: unset!important;
+    margin-top: 0!important;
+    margin-bottom: 0!important;
   }
 }
