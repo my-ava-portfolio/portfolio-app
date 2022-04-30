@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { apiLogoUrl, emailIcon, githubIcon, linkedinIcon, pdfFileIcon, phoneIcon, websiteIcon } from '@core/inputs';
 import { ControlerService } from '@services/controler.service';
@@ -10,8 +10,9 @@ import { Subscription } from 'rxjs';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })
-export class LayoutComponent implements OnInit, OnDestroy {
+export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('content') PageContent!: ElementRef;
+  @ViewChild('legacyResume') legacyResume: any;
 
   currentDate: number = new Date().getFullYear();
 
@@ -95,6 +96,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngAfterViewInit(): void {
+    this.adjustZoom();
+  }
+
+
   ngOnDestroy(): void {
     this.generalDataSubscription.unsubscribe();
     this.activitiesFilteredSubscription.unsubscribe();
@@ -123,6 +129,27 @@ export class LayoutComponent implements OnInit, OnDestroy {
       window.location.reload();
     }
 
+  }
+
+  @HostListener('window:resize', ['$event']) adjustZoom(): void {
+    let documentWidth = window.innerWidth;
+    let documentHeight = window.innerHeight;
+    console.log(documentWidth, documentHeight)
+
+    // 1cm = 37.795276px;
+    // 21cm width + 1cm of margins each sides
+    // 29.7cm height + 1cm of margins each sides
+    let zoomWidth = documentWidth / (23 * 37.795276);
+    let zoomHeight = documentHeight / (31.7 * 37.795276);
+    let zoomLevel = Math.min(zoomWidth, zoomHeight);
+    // stop zooming when book fits page
+    if (zoomLevel >= 1 ) {
+      // this.legacyResume.nativeElement.style.transform = "scale(1)"
+      return
+    };
+    // zoomLevel = 0.5
+    this.legacyResume.nativeElement.style.transform = "scale(" + zoomLevel + ")"
+    console.log(zoomLevel)
   }
 
 }

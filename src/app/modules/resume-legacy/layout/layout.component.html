@@ -1,4 +1,4 @@
-<div #content class="container-fluid">
+<div #content class="content">
 
 
   <div class="d-flex flex-row align-items-center justify-content-center mt-3">
@@ -6,9 +6,9 @@
   </div>
 
 
-  <div id="legacy_resume"  class="d-flex flex-column justify-content-center d-none d-sm-block">
+  <div #legacyResume id="legacy_resume"  class="d-flex flex-column justify-content-center">
 
-    <div class="page bg-white px-2 py-4 my-2 mx-auto d-flex flex-column align-items-stretch" size="A4" layout="" *ngIf="dataAvailable">
+    <section class="page bg-white px-2 py-4 my-2 mx-auto d-flex flex-column algn-items-stretch" size="A4" layout="" *ngIf="dataAvailable">
 
       <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3">
 
@@ -110,11 +110,11 @@
         <span class="small">Page 1</span>
       </div>
 
-    </div>
+    </section>
 
     <br clear="all" style="page-break-before:always" />
 
-    <div class="page bg-white px-2 py-4 my-2 mx-auto d-flex flex-column align-items-stretch" size="A4" layout="" *ngIf="dataAvailable">
+    <section class="page bg-white px-2 py-4 my-2 mx-auto d-flex flex-column align-items-strech" size="A4" layout="" *ngIf="dataAvailable">
 
       <div id="jobs" class="d-flex flex-column mx-4">
 
@@ -170,11 +170,11 @@
         <span class="small">Page 2</span>
       </div>
 
-    </div>
+    </section>
 
     <br clear="all" style="page-break-before:always" />
 
-    <div class="page bg-white px-2 py-5 my-2 mx-auto d-flex flex-column align-items-stretch" size="A4" layout="" *ngIf="dataAvailable">
+    <section class="page bg-white px-2 py-4 my-2 mx-auto d-flex flex-column align-items-strech" size="A4" layout="" *ngIf="dataAvailable">
 
       <div id="projects" class="d-flex flex-column mx-4">
 
@@ -238,7 +238,7 @@
         <span class="small">Page 3</span>
       </div>
 
-    </div>
+    </section>
 
   </div>
 
