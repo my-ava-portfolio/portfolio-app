@@ -1,0 +1,24 @@
+<div class="d-flex flex-column">
+
+  <section id="languages-card" class="card my-2">
+
+      <div class="card-header">
+        <span class="fs-5 fw-bolder px-2">
+          <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Langues
+          <!-- <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#education-cards" aria-hidden="true"></fa-icon> -->
+        </span>
+      </div>
+
+      <div class="card-body">
+
+        <div class="d-flex flex-row justify-content-center">
+          <div class="text-center small p-4 m-2 border shadow bg-light rounded-3" *ngFor="let language of inputLanguagesData">
+            <h6 class="fw-bolder">{{language.language}} </h6>
+            <span>Niveau: {{language.level}}</span>
+          </div>
+        </div>
+      </div>
+
+  </section>
+
+</div>

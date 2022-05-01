@@ -8,6 +8,7 @@ import { EducationRoutingModule } from '@modules/education/education-routing.mod
 import { LayoutComponent } from '@modules/education/layout/layout.component';
 import { DegreesBarComponent } from '@modules/education/degrees-bar/degrees-bar.component';
 import { TrainingsBarComponent } from '@modules/education/trainings-bar/trainings-bar.component';
+import { LanguagesBarComponent } from './languages-bar/languages-bar.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { TrainingsBarComponent } from '@modules/education/trainings-bar/training
     DegreesBarComponent,
     TrainingsBarComponent,
     LayoutComponent,
+    LanguagesBarComponent,
   ],
   imports: [
     CommonModule,
