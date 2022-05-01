@@ -37,37 +37,34 @@
             <div class="tab-container" [ngSwitch]="tabView">
 
               <div class="tab" id="degrees-tab" *ngSwitchCase="'degrees'">
-                <div  class="row justify-content-center">
+                <div class="d-flex flex-column flex-md-row justify-content-center align-items-stretch">
 
-                  <div [id]="degree.identifier" class="col-sm-12 col-md-4 col-lg-3" *ngFor="let degree of inputDegreesData">
+                  <div  [id]="degree.identifier" class="educ-feature text-center small p-4 m-2 border shadow bg-light" *ngFor="let degree of inputDegreesData">
 
-                    <div  class="educ-feature text-center small p-4 m-2 border shadow bg-light">
+                    <div class="title-date mx-auto">
+                      <p class="fw-bolder mb-0">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }}</p>
+                    </div>
 
-                      <div class="title-date col-sm-8 col-md-10 col-lg-12 mx-auto">
-                        <p class="fw-bolder mb-0">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }}</p>
+                    <div *ngIf="degree.img_school !== 'null';then schoolImgContent"></div>
+                    <ng-template #schoolImgContent>
+                      <div class="mx-auto">
+                        <img class="img-fluid rounded mx-auto d-block shadow mb-2 __img-thumbnail" [src]="apiLogoUrl + degree.img_school"/>
                       </div>
+                    </ng-template>
 
-                      <div *ngIf="degree.img_school !== 'null';then schoolImgContent"></div>
-                      <ng-template #schoolImgContent>
-                        <div class="col-sm-3 col-md-10 col-lg-8 mx-auto">
-                          <img class="img-fluid rounded mx-auto d-block shadow mb-2 __img-thumbnail" [src]="apiLogoUrl + degree.img_school"/>
-                        </div>
-                      </ng-template>
-
-                      <div class="col-sm-12 col-md-10 col-lg-12 mx-auto">
-                        <p class="fw-bolder mb-2">{{ degree.degree }}</p>
-                        <a [id]="'location_' + degree.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="degree.identifier">
-                          <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
-                        </a>{{ degree.school }} - {{degree.location}}
-                      </div>
-
+                    <div class="d-flex flex-column mx-auto">
+                      <p class="fw-bolder mb-2">{{ degree.degree }}</p>
+                      <a [id]="'location_' + degree.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="degree.identifier">
+                        <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
+                      </a>{{ degree.school }} - {{degree.location}}
                     </div>
 
                   </div>
 
-                  <ng-container *ngTemplateOutlet="publications"></ng-container>
-
                 </div>
+
+                <ng-container *ngTemplateOutlet="publications"></ng-container>
+
               </div>
 
               <div class="tab" id="languages-tab" *ngSwitchCase="'languages'">
