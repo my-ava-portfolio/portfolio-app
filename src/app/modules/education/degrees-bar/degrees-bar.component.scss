@@ -19,11 +19,16 @@ img{
 }
 
 .title-date {
-  text-align: center;
-  background: url("http://i.imgur.com/Kkw7rPC.png?1") center center repeat-x rgba(var(--bs-light-rgb), var(--bs-bg-opacity));
+  background: linear-gradient(to right, rgba(var(--bs-warning-rgb), var(--bs-bg-opacity)), white);
+  border: unset!important;
 }
-.title-date p {
-  background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
-  padding: 10px;
-  display: inline-block;
+
+// .title-date p {
+//   background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
+//   padding: 10px;
+//   display: inline-block;
+// }
+
+.educ-feature {
+  box-shadow: -5px 0rem 0rem rgba(var(--bs-warning-rgb), var(--bs-bg-opacity)), 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;;
 }
