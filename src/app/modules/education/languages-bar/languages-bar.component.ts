@@ -14,7 +14,7 @@ import { mapActivitiesPages } from '@core/inputs';
 export class LanguagesBarComponent implements OnInit {
   @Input() fragment: any;
   @Input() languagesData: any;
-
+  @Input() profilData: any;
 
   mapPages: any = mapActivitiesPages;
 
@@ -22,20 +22,16 @@ export class LanguagesBarComponent implements OnInit {
   cardTitle!: string;
   inputDegreesData: any;
   inputLanguagesData: any;
-
+  inputProfilData: any;
   // icons
-  degreeIcon = degreeIcon;
-  locationIcon = locationIcon;
   languageIcon = languageIcon;
-  presIcon = presIcon;
-  expandIcon = expandIcon;
-  publishIcon = publishIcon;
-  pdfFileIcon = pdfFileIcon;
+
 
   constructor() { }
 
   ngOnInit(): void {
     this.inputLanguagesData = this.languagesData;
+    this.inputProfilData = this.profilData
   }
 
 }

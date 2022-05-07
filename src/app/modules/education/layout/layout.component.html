@@ -5,6 +5,14 @@
     <div class="d-flex flex-column flex-grow-1">
 
       <div class="p-2">
+        <app-languages-bar
+          [fragment]="fragment"
+          [profilData]="profilData"
+          [languagesData]="languagesData"
+        ></app-languages-bar>
+      </div>
+
+      <div class="p-2">
         <app-degrees-bar
           [fragment]="fragment"
           [degreesData]="degreesData"
@@ -12,22 +20,11 @@
         ></app-degrees-bar>
       </div>
 
-      <div class="d-flex flex-column flex-xl-row flex-grow-1 align-items-stretch">
-
-        <div class="p-2">
-          <app-languages-bar
-            [fragment]="fragment"
-            [languagesData]="languagesData"
-          ></app-languages-bar>
-        </div>
-
-        <div class="p-2">
-          <app-trainings-bar
-            [fragment]="fragment"
-            [trainingsData]="trainingsData"
-          ></app-trainings-bar>
-        </div>
-
+      <div class="p-2">
+        <app-trainings-bar
+          [fragment]="fragment"
+          [trainingsData]="trainingsData"
+        ></app-trainings-bar>
       </div>
 
     </div>

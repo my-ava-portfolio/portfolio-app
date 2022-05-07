@@ -2,7 +2,7 @@
 
   <section id="degrees-card" class="card">
 
-    <div class="card-header">
+    <div class="card-header bg-white">
       <span class="fs-5 fw-bolder px-2">
         <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Parcours universitaire
       </span>
@@ -76,7 +76,7 @@
 
                 <ng-container *ngIf="publication.keywords">
                   <div class="">
-                    <span class="badge me-2" [style]="'background-color:' + item.value"
+                    <span class="badge m-2" [style]="'background-color:' + item.value"
                       *ngFor="let item of publication.keywords | keyvalue"
                     >{{ item.key }}</span>
                   </div>
@@ -84,7 +84,7 @@
 
                 <ng-container *ngIf="publication.link">
                   <div class="">
-                    <a class="btn btn-sm btn-danger me-2"  href="{{publication.link}}" target="_blank" rel="noopener noreferrer" title="Documents"><fa-icon [icon]="pdfFileIcon"></fa-icon></a>
+                    <a class="btn btn-sm btn-danger m-2"  href="{{publication.link}}" target="_blank" rel="noopener noreferrer" title="Documents"><fa-icon [icon]="pdfFileIcon"></fa-icon></a>
                   </div>
                 </ng-container>
 

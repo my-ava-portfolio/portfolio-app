@@ -118,7 +118,7 @@ export const educationPages: any = {
     },
     {
       id: "languages",
-      title: "langues",
+      title: "Langues",
       fragment: "languages",
       icon: languageIcon
     },
