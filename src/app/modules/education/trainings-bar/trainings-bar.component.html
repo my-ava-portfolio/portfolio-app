@@ -1,11 +1,10 @@
 <div class="d-flex flex-column">
 
-  <section id="trainings-card" class="card">
+  <section id="trainings-card" class="">
 
-    <div class="card-header">
+    <div class="card-header bg-white">
       <span class="fs-5 fw-bolder px-2">
         <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Formations professionnelles
-        <!-- <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#education-cards" aria-hidden="true"></fa-icon> -->
       </span>
     </div>
 
@@ -15,7 +14,7 @@
 
         <div class="row justify-content-center align-items-stretch">
 
-          <div [id]="training.identifier" class="training-feature text-center small m-3 rounded-3 col-11 col-md-4 col-lg-2" *ngFor="let training of inputTrainingsData">
+          <div [id]="training.identifier" class="training-feature text-center small m-3 rounded-3 col-11 col-md-4 col-lg-3" *ngFor="let training of inputTrainingsData">
 
             <div class="row card-header title-date">
               <div class="mx-auto">

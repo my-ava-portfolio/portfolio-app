@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LanguagesBarComponent } from './languages-bar.component';
+import { GeneralInfoComponent } from './general-info.component';
 
-describe('LanguagesBarComponent', () => {
-  let component: LanguagesBarComponent;
-  let fixture: ComponentFixture<LanguagesBarComponent>;
+describe('GeneralInfoComponent', () => {
+  let component: GeneralInfoComponent;
+  let fixture: ComponentFixture<GeneralInfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LanguagesBarComponent ]
+      declarations: [ GeneralInfoComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LanguagesBarComponent);
+    fixture = TestBed.createComponent(GeneralInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

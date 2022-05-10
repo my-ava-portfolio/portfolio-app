@@ -1,15 +1,15 @@
-<div class="container-fluid bg-white h-100" *ngIf="isDataAvailable" [@fadeInOut]>
+<div class="container-fluid h-100" *ngIf="isDataAvailable" [@fadeInOut]>
 
   <div class="d-flex flex-row">
 
-    <div class="d-flex flex-column flex-grow-1">
+    <div class="d-flex flex-column flex-grow-1 bg-white my-2 rounded-3">
 
       <div class="p-2">
-        <app-languages-bar
+        <app-general-info
           [fragment]="fragment"
           [profilData]="profilData"
           [languagesData]="languagesData"
-        ></app-languages-bar>
+        ></app-general-info>
       </div>
 
       <div class="p-2">

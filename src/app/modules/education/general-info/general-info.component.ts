@@ -7,11 +7,11 @@ import { presIcon, expandIcon, languageIcon } from '@core/inputs';
 import { mapActivitiesPages } from '@core/inputs';
 
 @Component({
-  selector: 'app-languages-bar',
-  templateUrl: './languages-bar.component.html',
-  styleUrls: ['./languages-bar.component.scss']
+  selector: 'app-general-info',
+  templateUrl: './general-info.component.html',
+  styleUrls: ['./general-info.component.scss']
 })
-export class LanguagesBarComponent implements OnInit {
+export class GeneralInfoComponent implements OnInit {
   @Input() fragment: any;
   @Input() languagesData: any;
   @Input() profilData: any;
