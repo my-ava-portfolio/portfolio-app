@@ -1,11 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { imageProfile, projectPages, resumeTopicsPages } from '@core/inputs';
-import { ResumeService } from 'src/app/services/resume.service';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { apiMapsUrl, arrowLeftIcon, arrowRightIcon, chunkArray, galleryPages, imageProfile, projectPages, resumeTopicsPages } from '@core/inputs';
 
-import { FormBuilder, FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+
+import { GalleryService } from '@services/gallery.service';
+import { Subscription } from 'rxjs';
+import { ResumeService } from '@services/resume.service';
 
 
 @Component({
@@ -13,26 +14,43 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './profil-card.component.html',
   styleUrls: ['./profil-card.component.scss']
 })
-export class ProfilCardComponent implements OnInit {
+export class ProfilCardComponent implements OnInit, OnDestroy {
+  generalData!: any;
+  galleryItems!: any[];
+  galleryItemsChunked!: any[];
+
+  arrowRightIcon = arrowRightIcon;
+  arrowLeftIcon = arrowLeftIcon;
+
+  apiMapsUrl = apiMapsUrl;
+  galleryPagesRoute: string = galleryPages.route;
 
   resumePages: any[] = resumeTopicsPages;
   projectPages: any[] = projectPages;
   imageProfile: string = imageProfile;
 
-  generalData!: any;
-
-  generalDataSubscription!: Subscription;
-
   cardClosed: boolean = false;
 
+  activitiesGallerySubscription!: Subscription;
+  generalDataSubscription!: Subscription;
 
   constructor(
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
-    private resumeService: ResumeService
+    private galleryService: GalleryService,
+    private resumeService: ResumeService,
   ) {
 
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
+
+    this.activitiesGallerySubscription = this.galleryService.activitiesGalleryData.subscribe(
+      (data) => {
+        this.galleryItems = data.items;
+        console.log(this.galleryItems)
+        this.galleryItemsChunked = chunkArray(this.galleryItems, 3)
+
+      }
+    )
 
     this.generalDataSubscription = this.resumeService.generalData.subscribe(
       (data) => {
@@ -44,6 +62,12 @@ export class ProfilCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.resumeService.pullGeneralData();
+    this.galleryService.pullExistingActivitiesGallery(null, null, null);
+  }
+
+  ngOnDestroy(): void {
+    this.activitiesGallerySubscription.unsubscribe();
+    this.generalDataSubscription.unsubscribe();
   }
 
 }

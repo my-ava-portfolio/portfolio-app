@@ -28,3 +28,38 @@
   background-color: #f5f5f5;
   box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
 }
+
+
+
+
+
+
+
+
+.carousel-indicators {
+  bottom:-50px;
+  height: 36px;
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+
+.carousel-indicators li {
+  text-indent: 0;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 0;
+}
+
+.carousel-indicators li img {
+  width: 32px;
+  height: 32px;
+  opacity: 0.5;
+}
+
+.carousel-indicators li:hover img, .carousel-indicators li.active img {
+  opacity: 1;
+}
+
+.carousel-indicators .active {
+  border-color: #337ab7;
+}
