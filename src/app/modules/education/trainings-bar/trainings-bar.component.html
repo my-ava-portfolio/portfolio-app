@@ -1,68 +1,49 @@
-<section class="p-2">
+<div class="d-flex flex-column">
 
-  <div class="row">
+  <section id="trainings-card" class="">
 
-    <div class="col-12">
-      <div id="trainings-cards" class="card collapse show item">
+    <div class="card-header bg-white">
+      <span class="fs-5 fw-bolder px-2">
+        <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Formations professionnelles
+      </span>
+    </div>
 
-        <div class="card-header">
-          <span class="fs-5 fw-bolder px-2">
-            <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Formations professionnelles
-            <!-- <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#education-cards" aria-hidden="true"></fa-icon> -->
-          </span>
-        </div>
+    <div class="card-body">
 
-        <div class="card-body">
+      <div class="d-flex flex-column flex-lg-row justify-content-center">
 
-          <div class="col-lg-8 mx-auto mb-2">
+        <div class="row justify-content-center align-items-stretch">
 
-            <ul class="nav nav-pills list-inline mx-auto justify-content-center" id="training-tab" role="tablist">
+          <div [id]="training.identifier" class="training-feature text-center small m-3 rounded-3 col-11 col-md-2" *ngFor="let training of inputTrainingsData">
 
-              <li class="nav-item" role="presentation" id="trainings">
-                <a class="nav-link fw-bold border bg-light m-1" [class.active]="tabView === 'trainings'" rel="trainings-tab" (click)="tabView = 'trainings'">
-                  <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Formations
-                </a>
-              </li>
-
-            </ul>
-          </div>
-
-          <div class="tab-container" [ngSwitch]="tabView">
-
-            <div class="tab" id="trainings-tab" *ngSwitchCase="'trainings'">
-              <div class="row justify-content-center">
-
-                <div [id]="training.identifier" class="col-sm-12 col-md-4 col-lg-2" *ngFor="let training of inputTrainingsData">
-                  <div  class="educ-feature text-center small p-4 m-2 border shadow bg-light">
-
-                    <div class="title-date col-sm-8 col-md-10 col-lg-12 mx-auto">
-                      <p class="fw-bolder mb-0">{{ training.year }}</p>
-                    </div>
-
-                    <div *ngIf="training.img_tool !== 'null';then trainingImgContent"></div>
-                    <ng-template #trainingImgContent>
-                      <div class="col-sm-3 col-md-10 col-lg-8 mx-auto">
-                        <img class="img-fluid rounded mx-auto d-block mb-2 shadow __img-thumbnail" [src]="training.img_tool"/>
-                      </div>
-                    </ng-template>
-
-                    <div class="col-sm-12 col-md-10 col-lg-12 mx-auto">
-                      <p class="fw-bolder mb-2">{{ training.year }} - {{ training.name }}</p>
-                      <p class="fw-bolder mb-2">par {{ training.trainer }}</p>
-                    </div>
-                  </div>
-
-                </div>
-
+            <div class="row card-header title-date">
+              <div class="mx-auto">
+                <p class="fw-bolder mb-0">{{ training.year }}</p>
               </div>
             </div>
 
-          </div>
+            <div class="card-body">
 
+              <div *ngIf="training.img_tool !== 'null';then trainingImgContent"></div>
+              <ng-template #trainingImgContent>
+                <div class="col-sm-3 col-md-10 col-lg-8 mx-auto">
+                  <img class="img-fluid rounded mx-auto d-block mb-2 shadow __img-thumbnail" [src]="training.img_tool"/>
+                </div>
+              </ng-template>
+
+              <div class="col-sm-12 col-md-10 col-lg-12 mx-auto">
+                <p class="fw-bolder mb-2">{{ training.year }} - {{ training.name }}</p>
+                <p class="fw-bolder mb-2">par {{ training.trainer }}</p>
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
+
+
     </div>
 
-  </div>
 
-</section>
+  </section>
+</div>

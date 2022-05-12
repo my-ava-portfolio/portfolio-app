@@ -46,7 +46,7 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   contextTitle = "Contexte";
   missionTitle = "Missions";
   describeTitle = "Description";
-  envTitle = "Environnement";
+  envTitle = "Stack technique";
   trainingTitle = "Formations";
   detailsTitle = "Détails";
   publicationsTitle = "Publications";

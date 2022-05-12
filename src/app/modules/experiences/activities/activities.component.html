@@ -107,11 +107,11 @@
             <div class="card-body pb-0">
               <div class="row justify-content-around align-items-center bg-light">
 
-                <div class="col-6 mt-2 mb-3 col-lg-2 my-lg-0 justify-content-around text-center">
+                <div class="col-6 mt-2 mb-3 col-md-2 my-lg-0 justify-content-around text-center">
                   <img class="img-fluid rounded mx-auto d-block shadow" [src]="apiImgUrl + activity.img_company"/>
                 </div>
 
-                <div class="col-12 col-lg-8 align-self-center">
+                <div class="col-12 col-md-8 align-self-center">
                   <h6 class="fw-bolder">{{activity.company}}</h6>
                   <div>
                     <a [id]="'location_' + activity.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="activity.identifier">
@@ -197,17 +197,9 @@
 
                     <div class="row tab-pane fade" [id]="'env-' + activity.identifier" role="tabpanel">
                       <div class="col-10 mx-auto">
-                        <ul class="small">
-                            <li class="" *ngFor="let tool of activity.tools">
-                              {{ tool }}
-                            </li>
-                        </ul>
-                      </div>
-                      <div class="col-10 mx-auto" *ngIf="activity.subelements_tools">
-                        <span><u>{{ this.detailsTitle }}</u></span>
-                        <ul class="small">
-                          <li *ngFor="let feat of activity.subelements_tools">{{ feat.sub_skill }}: <em>{{ feat.details }}</em></li>
-                        </ul>
+                        <div class="row">
+                          <ng-container *ngTemplateOutlet="skillDetails; context:{data: activity.tools}"></ng-container>
+                        </div>
                       </div>
                     </div>
 
@@ -333,20 +325,13 @@
                 </div>
 
                 <div class="row tab-pane fade" [id]="'env-' + activity.identifier" role="tabpanel">
-                  <div class="col-12 ps-3">
-                    <ul class="small">
-                        <li class="col-sm-4" *ngFor="let tool of activity.tools">
-                          {{ tool }}
-                        </li>
-                    </ul>
-                  </div>
-                    <div class="col-12 ps-3" *ngIf="activity.subelements_tools">
-                      <span><u>{{ this.detailsTitle }}</u></span>
-                      <ul class="small">
-                        <li *ngFor="let feat of activity.subelements_tools">{{ feat.sub_skill }}: <em>{{ feat.details }}</em></li>
-                      </ul>
+                  <div class="col-10 mx-auto">
+                    <div class="row">
+                      <ng-container *ngTemplateOutlet="skillDetails; context:{data: activity.tools}"></ng-container>
                     </div>
+                  </div>
                 </div>
+
               </div>
 
 
@@ -366,3 +351,41 @@
 
 </ng-template>
 <!-- PERSONAL PROJECT ACTIVITY CARD TEMPLATE -->
+
+
+
+
+
+
+<!-- SKILLS TEMPLATE -->
+<ng-template #skillDetails let-data='data'>
+
+  <div class="col-12 col-md-3" *ngFor="let tool of data">
+
+    <div class="row justify-content-around grid-container">
+
+      <div class="skills feat-skill" >
+        <h6 class="">{{ tool.skill }}</h6>
+
+
+        <div class="col-12">
+          <ul>
+            <li class="small" *ngFor="let item of tool.features">
+              <div class="row">
+                <div class="col-12">
+                  <span>{{ item.sub_skill }}</span>
+                </div>
+                <div class="col-10" *ngIf="item.details">
+                  <span class="fst-italic small">{{ item.details }}</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</ng-template>
+<!-- SKILLS TEMPLATE -->

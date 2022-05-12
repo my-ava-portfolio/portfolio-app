@@ -6,38 +6,32 @@ import { degreeIcon, locationIcon } from '@core/inputs';
 import { presIcon, expandIcon, languageIcon } from '@core/inputs';
 import { mapActivitiesPages } from '@core/inputs';
 
-
 @Component({
-  selector: 'app-degrees-bar',
-  templateUrl: './degrees-bar.component.html',
-  styleUrls: ['./degrees-bar.component.scss'],
+  selector: 'app-general-info',
+  templateUrl: './general-info.component.html',
+  styleUrls: ['./general-info.component.scss']
 })
-export class DegreesBarComponent implements OnInit {
+export class GeneralInfoComponent implements OnInit {
   @Input() fragment: any;
-  @Input() degreesData: any;
-  @Input() publicationsData: any;
-
+  @Input() languagesData: any;
+  @Input() profilData: any;
 
   mapPages: any = mapActivitiesPages;
 
   apiLogoUrl = apiLogoUrl;
   cardTitle!: string;
   inputDegreesData: any;
-
+  inputLanguagesData: any;
+  inputProfilData: any;
   // icons
-  degreeIcon = degreeIcon;
-  locationIcon = locationIcon;
   languageIcon = languageIcon;
-  presIcon = presIcon;
-  expandIcon = expandIcon;
-  publishIcon = publishIcon;
-  pdfFileIcon = pdfFileIcon;
+
 
   constructor() { }
 
   ngOnInit(): void {
-
-    this.inputDegreesData = this.degreesData;
+    this.inputLanguagesData = this.languagesData;
+    this.inputProfilData = this.profilData
   }
 
 }

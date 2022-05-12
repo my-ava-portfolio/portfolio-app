@@ -11,6 +11,9 @@ import { LayoutComponent } from '@modules/home/layout/layout.component';
 
 import { ProfilCardComponent } from '@modules/home/profil-card/profil-card.component';
 
+import { GalleryService } from '@services/gallery.service';
+
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,11 @@ import { ProfilCardComponent } from '@modules/home/profil-card/profil-card.compo
     CommonModule,
     FormsModule,
     HomeRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    PipesModule
+  ],
+  providers: [
+    GalleryService
   ]
 })
 export class HomeModule { }

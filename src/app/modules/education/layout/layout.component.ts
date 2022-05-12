@@ -28,6 +28,7 @@ export class LayoutComponent implements OnInit {
   activityIdFromActivityComponents!: string;
 
   // resume left sidebar
+  profilData: any;
   degreesData: any;
   languagesData: any;
   trainingsData: any;
@@ -63,7 +64,7 @@ export class LayoutComponent implements OnInit {
         this.degreesData = data.education;
         // this.generalData = data.general;
         this.languagesData = data.languages;
-        // this.profilData = data.profil;
+        this.profilData = data.profil;
         this.trainingsData = data.trainings;
         // this.summaryData = data.profil.carrier_summary;
         // this.qualitiesData = data.profil.qualities;
