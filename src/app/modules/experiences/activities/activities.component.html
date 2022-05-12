@@ -107,11 +107,11 @@
             <div class="card-body pb-0">
               <div class="row justify-content-around align-items-center bg-light">
 
-                <div class="col-6 mt-2 mb-3 col-lg-2 my-lg-0 justify-content-around text-center">
+                <div class="col-6 mt-2 mb-3 col-md-2 my-lg-0 justify-content-around text-center">
                   <img class="img-fluid rounded mx-auto d-block shadow" [src]="apiImgUrl + activity.img_company"/>
                 </div>
 
-                <div class="col-12 col-lg-8 align-self-center">
+                <div class="col-12 col-md-8 align-self-center">
                   <h6 class="fw-bolder">{{activity.company}}</h6>
                   <div>
                     <a [id]="'location_' + activity.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="activity.identifier">
@@ -360,7 +360,7 @@
 <!-- SKILLS TEMPLATE -->
 <ng-template #skillDetails let-data='data'>
 
-  <div class="col-3" *ngFor="let tool of data">
+  <div class="col-12 col-md-3" *ngFor="let tool of data">
 
     <div class="row justify-content-around grid-container">
 
