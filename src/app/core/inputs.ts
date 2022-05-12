@@ -1,4 +1,4 @@
-import { faTrashCan, faSquarePlus, faWaveSquare, faDrawPolygon, faGear, faPenSquare, faMicrochip, faTerminal, faChartLine, faDatabase, faAngleDoubleDown, faAlignJustify, faAlignLeft, faBars, faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faChevronLeft, faTrashCan, faSquarePlus, faWaveSquare, faDrawPolygon, faGear, faPenSquare, faMicrochip, faTerminal, faChartLine, faDatabase, faAngleDoubleDown, faAlignJustify, faAlignLeft, faBars, faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
 
@@ -80,6 +80,8 @@ export const lineIcon = faWaveSquare;
 export const PolygonIcon = faDrawPolygon;
 export const addIcon = faSquarePlus;
 export const removeIcon = faTrashCan;
+export const arrowRightIcon = faChevronRight;
+export const arrowLeftIcon = faChevronLeft;
 
 // font awesome unicode
 export const trainIconUnicode = '\uf238';
@@ -238,3 +240,10 @@ export function stringToColor(inputText: string, seed: number): string {
 }
 
 
+export function chunkArray(array: any[], size: number) {
+  var outputArray = [];
+  for(var i = 0; i < array.length; i += size) {
+    outputArray.push(array.slice(i, i+size));
+  }
+  return outputArray;
+}

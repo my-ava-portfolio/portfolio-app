@@ -1,10 +1,10 @@
 
 <div class="d-flex flex-column flex-xxl-row mt-2">
 
-  <div class="card-box d-flex flex-column flex-xxl-row bg-dark bg-gradient text-center rounded-3 shadow align-content-between align-items-center justify-content-between">
+  <div class="card-box d-flex flex-column flex-xxl-row bg-dark bg-gradient text-center rounded-3 align-content-between align-items-center justify-content-between">
 
     <div class="d-flex flex-column">
-      <h3 class="fw-bolder text-white ">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
+      <h3 class="fw-bolder text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
       <div class="">
         <h5 class="bg-white rounded-pill text-black profil-badge">{{ inputProfilData.job }}</h5>
       </div>
@@ -17,7 +17,7 @@
   </div>
 
   <div id="languages" class="d-flex flex-sm-row flex-column align-items-stretch justify-content-around flex-shrink-1">
-      <div class="card-box mx-2 mt-3 my-xxl-0 bg-warning rounded-3 shadow align-self-center" *ngFor="let language of inputLanguagesData">
+      <div class="card-box mx-2 mt-3 my-xxl-0 bg-warning rounded-3 align-self-center" *ngFor="let language of inputLanguagesData">
         <div class="">
 
           <h4>{{language.language}}</h4>
