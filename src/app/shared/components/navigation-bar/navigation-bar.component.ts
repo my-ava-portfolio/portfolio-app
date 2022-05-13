@@ -28,7 +28,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   topicPages: any = mainTopicsPages;
   homePages: any = homePages[0];
   legacyResumePage: any = legacyResumePage;
-  
+
   bugIcon = bugIcon;
   helpIcon = helpIcon;
   exclamationIcon = exclamationIcon;
@@ -132,6 +132,5 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
     }
     this.linkBuilt = output;
   }
-
 
 }

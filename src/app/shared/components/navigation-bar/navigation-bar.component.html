@@ -104,7 +104,7 @@
 
       <li class="border-bottom text-warning" hoverClass="fw-bold">
         <ng-container *ngIf="page.route">
-          <a class="text-warning text-decoration-none p-2 d-flex d-block" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['fw-bolder']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="text-warning text-decoration-none p-2 d-flex d-block" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['fw-bolder']">
             <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
           </a>
         </ng-container>
