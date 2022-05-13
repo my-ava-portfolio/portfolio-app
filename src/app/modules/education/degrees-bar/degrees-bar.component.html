@@ -30,13 +30,18 @@
                   </div>
                 </ng-template>
 
-              <div class="d-flex flex-column mx-auto">
+              <div class="d-flex flex-column mx-auto justify-content-around">
                 <p class="fw-bolder mb-2">{{ degree.degree }}</p>
-                <span>
-                  <a [id]="'location_' + degree.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="degree.identifier">
-                    <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
-                  </a>{{ degree.school }} - {{degree.location}}
-                </span>
+
+                <div class="d-flex flex-row justify-content-center align-item-center">
+                  <div class="bounce">
+                    <a [id]="'location_' + degree.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="degree.identifier">
+                      <fa-icon class="me-2 text-danger" [pulse]="true" [icon]="locationIcon"></fa-icon>
+                    </a>
+                  </div>
+                  <div class="small">{{ degree.school }} - {{degree.location}}</div>
+                </div>
+
               </div>
             </div>
           </div>
