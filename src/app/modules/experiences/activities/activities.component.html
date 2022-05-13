@@ -113,10 +113,13 @@
 
                 <div class="col-12 col-md-8 align-self-center">
                   <h6 class="fw-bolder">{{activity.company}}</h6>
-                  <div>
-                    <a [id]="'location_' + activity.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="activity.identifier">
-                      <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
-                    </a>{{activity.location}}
+                  <div class="d-flex flex-row">
+                    <div class="bounce">
+                      <a [id]="'location_' + activity.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="activity.identifier">
+                        <fa-icon class="me-2 text-danger" [pulse]="true" [icon]="locationIcon"></fa-icon>
+                      </a>
+                    </div>
+                    <div>{{activity.location}}</div>
                   </div>
 
                   <div *ngIf="activity.status === 'InProgress'; then currentJob else pastJob"></div>
