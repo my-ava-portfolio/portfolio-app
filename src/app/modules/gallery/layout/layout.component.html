@@ -70,19 +70,28 @@
 
         </ng-container>
 
-        <h6 class="card-title mt-2">{{ media_feature.title }}</h6>
+        <h6 class="card-title pt-3">{{ media_feature.title }}</h6>
       </div>
 
 
-      <div class="card-body px-3">
+      <div class="card-body px-3 pt-1">
         <span [class]="'badge rounded-pill mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
         <a [routerLink]="[experiencesRoute]" [fragment]="media_feature.identifier"><span class="badge rounded-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
         <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + media_feature.type">
           <fa-icon class="me-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
         </span>
         <p class="card-text mt-2 small">{{media_feature.description}}</p>
-        <p class="card-text small" *ngIf="media_feature.data">Données: {{media_feature.data}}</p>
-        <p class="card-text small" *ngIf="media_feature.tools">Outils: {{media_feature.tools}}</p>
+        <ul class="mb-0">
+          <li class="card-text small" *ngIf="media_feature.data">
+            <span>Données: </span>
+            <span class="fst-italic">{{media_feature.data}}</span>
+          </li>
+          <li class="card-text small" *ngIf="media_feature.data">
+            <span>Outils: </span>
+            <span class="fst-italic">{{media_feature.tools}}</span>
+          </li>
+        </ul>
+
       </div>
 
       <div class="card-footer">
