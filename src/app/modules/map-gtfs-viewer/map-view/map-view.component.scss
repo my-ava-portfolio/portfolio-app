@@ -1,0 +1,27 @@
+.legend-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.legend-content {
+  color: "#FFFFF";
+  background-color: #f5f5f5;
+  box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.legend-title {
+  color: "#FFFFF";
+  background-color: #f5f5f5;
+
+}
+
+
+.map-popup {
+  position: absolute;
+  visibility: hidden;
+  background-color: ghostwhite;
+  width: 350px;
+}
+
+

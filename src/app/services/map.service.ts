@@ -31,6 +31,10 @@ export class MapService {
   newLinesSvgLayerName: Subject<string> = new Subject<string>();
   removeLinesSvgLayerName: Subject<string> = new Subject<string>();
 
+  screenMapBound: Subject<any> = new Subject<any>();
+
+  zoomMapFromBounds: Subject<any> = new Subject<any>();
+
   newCoords: Subject<number[]> = new Subject<number[]>();
 
   zoomEvent: Subject<boolean> = new Subject<boolean>();
@@ -55,6 +59,14 @@ export class MapService {
 
   sendMapContainer(mapContainer: any): void {
     this.mapContainer.next(mapContainer);
+  }
+
+  sendScreenMapBounds(coordsBound: number[]): void {
+    this.screenMapBound.next(coordsBound);
+  }
+
+  sendZoomMapFromBounds(coordsBound: number[]): void {
+    this.zoomMapFromBounds.next(coordsBound);
   }
 
   sendMapScale(scaleFeatures: any): void {
