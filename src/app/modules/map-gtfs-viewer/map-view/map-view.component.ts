@@ -96,9 +96,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.geoFeaturesData = geoFeaturesData;
         console.log(this.mapContainer.getZoom())
         if (this.mapContainer.getZoom() <= this.zoomCanvasLimit) {
+          // build canvas layer and replace svg layer
           this.clearSvgNodesMapping();
           this.canvasNodesMapping(this.geoFeaturesData);
         } else {
+          // build svg layer and replace canvas laver
           this.clearCanvasNodesMapping()
           this.svgNodesMapping(geoFeaturesData);
         }

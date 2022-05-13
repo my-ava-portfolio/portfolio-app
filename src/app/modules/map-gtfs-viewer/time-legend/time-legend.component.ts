@@ -97,6 +97,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     this.pullRangeDateDataSubscription = this.dataService.rangeDateData.subscribe(
       (element) => {
+        // TODO split data into 2 routes (check map-view l.110)
         this.startDate = this.parseTime(element.start_date);
         this.endDate = this.parseTime(element.end_date);
         this.currentDate = element.start_date
