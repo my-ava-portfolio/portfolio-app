@@ -1,0 +1,29 @@
+<div class="d-flex flex-column flex-lg-row mt-auto py-2 justify-content-center" id="theme-legend">
+
+  <div class="">
+    <h6>Barre Temporelle</h6>
+
+      <svg
+        [attr.viewBox]="'0 0 ' + width + ' ' + height"
+        id="slider-bar"
+      >
+      </svg>
+
+  </div>
+
+  <div class="text-center px-5">
+    <div class="d-flex flex-column justify-content-center">
+      <div class="">
+        <h5 id="slider-value">{{ sliderDate | date:'MMMM y' }}</h5>
+      </div>
+
+      <div class="">
+        <a id="start-button" class="btn btn-dark btn-sm" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
+        <a id="play-button" class="btn btn-dark mx-2" role="button" (click)="startTimeLine()">Play</a>
+        <a id="end-button" class="btn btn-dark btn-sm" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
+      </div>
+    </div>
+
+  </div>
+
+</div>

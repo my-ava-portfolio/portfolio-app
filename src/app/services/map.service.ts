@@ -18,6 +18,10 @@ export class MapService {
   ErrorapiUrlActivitiesGeoDataApiFound: Subject<string> = new Subject<string>();
   activitiesGeoData: Subject<any> = new Subject<any>();
 
+  dataToMap: Subject<any[]> = new Subject<any[]>();
+  dateNotified: Subject<string> = new Subject<string>();
+  timelineBuild: Subject<any> = new Subject<any>();
+
   activitiesGeoDataToMap: Subject<any[]> = new Subject<any[]>();
   tripsGeoDataToMap: Subject<any[]> = new Subject<any[]>();
 
@@ -86,6 +90,11 @@ export class MapService {
         this.activitiesGeoData.next(response);
       },
     });
+  }
+
+  pullDataToMap(dataToMap: any): void {
+    // NOT USED (TODO must be a generic func)
+    this.dataToMap.next(dataToMap);
   }
 
   pullActivitiesGeoDataToMap(dataToMap: any[]): void {

@@ -28,8 +28,8 @@ export class DataService {
 
 
 
-  pullGeoData(currentData: string, current_date: string, bounds: number[]): void {
-    this.http.get<any>(this.apiUrl + currentData.toLowerCase() + '/moving_nodes_by_date?current_date=' + current_date + "&bounds=" + bounds).subscribe({
+  pullGeoData(area: string, current_date: string, bounds: number[]): void {
+    this.http.get<any>(this.apiUrl + area.toLowerCase() + '/moving_nodes_by_date?current_date=' + current_date + "&bounds=" + bounds).subscribe({
       complete: () => {
       },
       error: error => {

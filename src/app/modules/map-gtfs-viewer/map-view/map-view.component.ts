@@ -14,6 +14,19 @@ import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.servi
 import { locationIcon, tagsIcon, centerIcon } from '@modules/map-gtfs-viewer/shared/inputs';
 import { MapService } from '@services/map.service';
 import { ControlerService } from '@services/controler.service';
+import { currentDate } from '@core/inputs';
+import { TimelineService } from '@shared/services/timeline.service';
+
+
+export class App {
+  constructor() {}
+
+  private print = (str: string) => console.log(str);
+
+  init = () => {
+      this.print('test');
+  }
+}
 
 
 @Component({
@@ -31,7 +44,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
   available_data = ["TER", "Toulouse", "Lyon"];
   currentData = this.available_data[0];
 
-  currentDate!: number;
+  endDate: Date | null = currentDate;
+  startDate: Date | null = currentDate;
+  currentDate!: string;
 
   isGeodataCanBeDisplayed = false;
   isLegendDisplayed = true;
@@ -66,9 +81,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
   defaultColor = 'brown';
 
+  geoData!: any;
+
   mapContainerSubscription!: Subscription;
   pullGeoDataToMapSubscription!: Subscription;
   pullBoundingBoxDataSubscription!: Subscription;
+  pullGeoDataSubscription!: Subscription;
 
   constructor(
     private dataService: DataService,
@@ -76,6 +94,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
+    private timelineService: TimelineService,
   ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -94,7 +113,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
       (geoFeaturesData: any[]) => {
 
         this.geoFeaturesData = geoFeaturesData;
-        console.log(this.mapContainer.getZoom())
         if (this.mapContainer.getZoom() <= this.zoomCanvasLimit) {
           // build canvas layer and replace svg layer
           this.clearSvgNodesMapping();
@@ -111,18 +129,53 @@ export class MapViewComponent implements OnInit, OnDestroy {
       (element) => {
         this.dataBoundingBox = element.data_bounds;
         this.mapService.sendZoomMapFromBounds(this.dataBoundingBox);
+
+        this.startDate = this.parseTime(element.start_date);
+        if (this.startDate !== null) {
+          this.endDate = this.parseTime(element.end_date);
+          this.currentDate = element.start_date
+          this.timelineService.pushTimeLineInputs(this.startDate, this.endDate, String(this.currentDate))
+
+        }
       }
     );
+
+    this.timelineService.dateUpdated.subscribe(
+      (date) => {
+        this.currentDate = date
+        this.dataService.pullGeoData(this.currentData, this.currentDate, this.dataBoundingBox)
+
+      }
+    )
+
+    this.pullGeoDataSubscription = this.dataService.GeoData.subscribe(
+      (element) => {
+        // this.dataService.pullStartEvent()
+        this.geoData = element.data_geojson;
+        if (this.geoData !== null && this.currentDate !== null) {
+          this.dataService.pullGeoDataToMap(this.geoData);
+        }
+
+      }
+    );
+
+
   }
 
   ngOnInit(): void {
-    this.sendResumeSubMenus();
 
+    this.sendResumeSubMenus();
+    // let's go to get map container and init layer(s)
+    this.mapService.getMapContainer()
+
+    // the begining of the process
+    this.dataService.pullRangeDateData(this.currentData)
 
     this.innerWidth = window.screen.width;
     this.innerHeight = window.screen.height;
 
   }
+
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
@@ -140,6 +193,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
     d3.select('#' + this.canvasLayerId).remove();
 
     this.mapService.resetMapView()
+  }
+
+  private parseTime(time: string): Date | null {
+    return d3.timeParse('%Y-%m-%d %H:%M:%S')(time);
   }
 
   updateTimeline(data: string): void {
