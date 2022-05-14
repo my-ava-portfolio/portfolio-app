@@ -70,6 +70,7 @@ export class TimelineComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.mapService.getMapContainer()
   }
 
   ngOnDestroy(): void {
