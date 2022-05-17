@@ -53,11 +53,22 @@ svg #trace {
 }
 
 #play-button {
-  width: 90px;
+  width: 90px; // mandatory to avoid div size change caused by text value changing
 }
 
 
 circle.preselected {
   stroke: black!important;
   stroke-width: 2px!important;
+}
+
+#slider-bar {
+  width: 33em;
+}
+
+
+@media (max-width: 576px){
+  #slider-bar {
+    width: 20em;
+  }
 }

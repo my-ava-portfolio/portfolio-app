@@ -6,18 +6,23 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MapGtfsViewerRoutingModule } from './map-gtfs-viewer-routing.module';
 
 import { MapViewComponent } from '@modules/map-gtfs-viewer/map-view/map-view.component';
-import { TimeLegendComponent } from '@modules/map-gtfs-viewer/time-legend/time-legend.component';
 
+import { TimelineService } from '@shared/services/timeline.service';
+
+import { SharedModule } from '@shared/modules/shared/shared.module';
 
 @NgModule({
   declarations: [
     MapViewComponent,
-    TimeLegendComponent,
   ],
   imports: [
     CommonModule,
     MapGtfsViewerRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    SharedModule
+  ],
+  providers: [
+    TimelineService,
   ]
 })
 export class MapGtfsViewerModule { }

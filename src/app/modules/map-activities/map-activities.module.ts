@@ -8,6 +8,7 @@ import { MapViewComponent } from '@modules/map-activities/map-view/map-view.comp
 import { ThemeLegendComponent } from '@modules/map-activities/theme-legend/theme-legend.component';
 import { TimeLegendComponent } from '@modules/map-activities/time-legend/time-legend.component';
 
+import { SharedModule } from '@shared/modules/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TimeLegendComponent } from '@modules/map-activities/time-legend/time-le
   imports: [
     CommonModule,
     MapActivitiesRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    SharedModule
   ]
 })
 export class MapActivitiesModule { }
