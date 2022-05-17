@@ -87,6 +87,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   pullGeoDataToMapSubscription!: Subscription;
   pullBoundingBoxDataSubscription!: Subscription;
   pullGeoDataSubscription!: Subscription;
+  zoomEventSubscription!: Subscription;
 
   constructor(
     private dataService: DataService,
@@ -99,6 +100,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
+
+    this.zoomEventSubscription = this.mapService.zoomEvent.subscribe(
+      (_: boolean) => {
+        this.mapService.sendZoomMapFromBounds(this.dataBoundingBox);
+      }
+    );
+
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element: any) => {
@@ -188,7 +196,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
     this.pullGeoDataToMapSubscription.unsubscribe();
-
+    this.zoomEventSubscription.unsubscribe();
+    
     d3.select('#' + this.svgLayerId).remove();
     d3.select('#' + this.canvasLayerId).remove();
 
