@@ -174,6 +174,13 @@ export const mapActivitiesPages: any = {
       route: "app/sandbox",
       icon: mapIcon,  // TODO improve icon
       details: "Un bac à sable pour créer des données (outil de saisie développés avec D3js). En cours de développement..."
+    },
+    {
+      id: "gtfs-viewer",
+      title: "Visualisation de GTFS",
+      route: "app/gtfs-viewer",
+      icon: mapIcon,  // TODO improve icon
+      details: "Application pour visualiser des GTFS. En cours de développement..."
     }
   ]
 };

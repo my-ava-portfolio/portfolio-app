@@ -18,10 +18,13 @@ export class BackgroundComponent implements OnInit {
 
   isMapInteractionEnabled: boolean = false;
 
+  private maxZoomValue = 20;
+
+
   private InitialViewCoords: any = [44.896741, 4.932861];
   private zoomValue = 8;
   private osmLayer: any = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {
-    maxZoom: 20,
+    maxZoom: this.maxZoomValue,
     minZoom: 1
   });
 
@@ -31,6 +34,7 @@ export class BackgroundComponent implements OnInit {
   mapContainerLegendCalledSubscription!: Subscription;
   mapViewResetSubscription!: Subscription;
   mapInteractionSubscription!: Subscription;
+  zoomMapFromBoundsSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -81,6 +85,13 @@ export class BackgroundComponent implements OnInit {
         this.isMapInteractionEnabled = status;
       }
     );
+
+    this.zoomMapFromBoundsSubscription = this.mapService.zoomMapFromBounds.subscribe(
+      (bounds: any) => {
+        this.zoomFromDataBounds(bounds)
+      }
+    )
+
   }
 
   ngOnInit(): void {
@@ -92,6 +103,7 @@ export class BackgroundComponent implements OnInit {
     this.mapContainerCalledSubscription.unsubscribe();
     this.mapViewResetSubscription.unsubscribe();
     this.mapInteractionSubscription.unsubscribe();
+    this.zoomMapFromBoundsSubscription.unsubscribe();
   }
 
 
@@ -102,13 +114,11 @@ export class BackgroundComponent implements OnInit {
       zoomControl: false,
     }).addLayer(this.osmLayer);
 
-    // to add scale
-    // L.control.scale(
-    //   {
-    //     imperial: false,
-    //     position: 'bottomright'
-    //   }
-    // ).addTo(this.map);
+    this.map.on(
+      'moveend',
+      this.getMapScreenBounds.bind(this)
+    );
+
   }
 
   resetView(): void {
@@ -116,6 +126,27 @@ export class BackgroundComponent implements OnInit {
       this.InitialViewCoords,
       this.zoomValue
     )
+  }
+
+  getMapScreenBounds(): void {
+    this.mapService.sendScreenMapBounds([
+      this.map.getBounds().getWest(),
+      this.map.getBounds().getSouth(),
+      this.map.getBounds().getEast(),
+      this.map.getBounds().getNorth()
+    ]);
+  }
+
+  zoomFromDataBounds(bounds: number[]): void {
+    const ne = { lng: bounds[2], lat: bounds[3] };
+    const sw = { lng: bounds[0], lat: bounds[1] };
+
+    this.map.fitBounds(
+      L.latLngBounds(L.latLng(sw), L.latLng(ne)),
+      {
+        maxZoom: this.maxZoomValue
+      }
+    );
   }
 
 }
