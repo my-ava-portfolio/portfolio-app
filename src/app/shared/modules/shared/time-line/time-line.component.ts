@@ -7,14 +7,13 @@ import { Subscription } from 'rxjs';
 import { backwardIcon, forwardIcon, tagsIcon } from '@modules/map-gtfs-viewer/shared/inputs';
 import { TimelineService } from '@shared/services/timeline.service';
 
-
 @Component({
-  selector: 'app-timeline',
-  templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.scss'],
+  selector: 'app-time-line',
+  templateUrl: './time-line.component.html',
+  styleUrls: ['./time-line.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TimelineComponent implements OnInit {
+export class TimeLineComponent implements OnInit {
   @Input() timeLineId!: string;
 
   startDate!: Date | null;
