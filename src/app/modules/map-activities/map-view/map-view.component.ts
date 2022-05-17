@@ -147,9 +147,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
 
-    this.displayContentRegardingDeviceScreen();
-
-
   }
 
   ngAfterViewInit(): void {
@@ -162,15 +159,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
   }
-
-  // TODO rework it and refactor
-  @HostListener('window:orientationchange', ['$event']) displayContentRegardingDeviceScreen(): void {
-    // if mode portrait and width screen <= 1024...
-    if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
-      this.isLegendDisplayed = false;
-    }
-  }
-
 
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
@@ -333,7 +321,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
   }
 
   adaptActivityPopup(popupId: string, event: any): void {
-    // TODO improve popup display
     d3.select('#popup-feature-' + popupId)
       .style('display', 'block')
       .style('z-index', '1')
@@ -368,12 +355,10 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
       .duration(1000)
       .ease(d3.easeElastic)
       .attr('r', (d: any) => d.properties.months * 4)
-      // .style("opacity", 1)
       .transition()
       .duration(500)
       .ease(d3.easeLinear)
       .attr('r', (d: any) => d.properties.months)
-      // .style("opacity", 0)
       .on('end', this.bounceRepeat.bind(this, activityPointId));
   }
 

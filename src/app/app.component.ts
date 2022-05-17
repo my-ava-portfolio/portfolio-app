@@ -54,13 +54,13 @@ export class AppComponent implements OnInit {
     this.isLandscapeDeviceMode = false;
 
     if (window.screen.orientation.angle === 90 && window.screen.width < minWidthLandscape && window.screen.height < minHeightLandscape ) {
-      if (this.orientationDisclaimerPages.includes(this.currentPage)) {
+      const pageFound = this.orientationDisclaimerPages.filter(element => element <= this.currentPage )
+      if (pageFound.includes(this.currentPage)) {
         this.isLandscapeDeviceMode = true;
         this.orientationErrorMessage = "Page disponible uniquement en mode portrait"
       }
     }
   }
-
 
   // to display an alert message about device orientation
   @HostListener('window:orientationchange', ['$event']) onOrientationChange(event: any): void {
