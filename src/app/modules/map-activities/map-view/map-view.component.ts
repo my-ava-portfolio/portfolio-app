@@ -23,7 +23,7 @@ import { ControlerService } from 'src/app/services/controler.service';
   styleUrls: ['./map-view.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
+export class MapViewComponent implements OnInit, OnDestroy  {
   imageProfile: string = imageProfile;
 
   fragment!: any;
@@ -147,9 +147,6 @@ export class MapViewComponent implements OnInit, AfterViewInit, OnDestroy  {
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
 
-  }
-
-  ngAfterViewInit(): void {
   }
 
   sendResumeSubMenus(): void {
