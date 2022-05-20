@@ -115,9 +115,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       (geoFeaturesData: any[]) => {
         geoFeaturesData.forEach((item: any) => {
           // create forward and backward trip
-          const tripDataReverted: any = Object.create(item.geojson_data);
-          const tripDataRevertedFeatures: any = tripDataReverted.features.slice().reverse();
-          tripDataReverted.features = tripDataRevertedFeatures;
+          let tripDataReverted: any = Object.create(item.geojson_data);
+          let tripDataRevertedFeatures: any = tripDataReverted.slice().reverse();
+          tripDataReverted = tripDataRevertedFeatures;
           this.computeAnimatePointsOnLine(item.geojson_data, item.name);
           this.computeAnimatePointsOnLine(tripDataReverted, item.name + '_reverted');
         });
@@ -361,11 +361,11 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   // animation on line
 
-  computeAnimatePointsOnLine(nodesPathData: any, layerId: string): void {
+  computeAnimatePointsOnLine(nodesPathData: any[], layerId: string): void {
     // this.removeFeaturesMapFromLayerId(layerId);
 
     // input Data contains nodes
-    const inputData: any = nodesPathData.features;
+    const inputData: any = nodesPathData;
     const convertLatLngToLayerCoords = (d: any): any => {
         return this.mapContainer.latLngToLayerPoint(
             new L.LatLng(
