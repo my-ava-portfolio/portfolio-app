@@ -64,7 +64,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.profilData = data.profil;
         this.trainingsData = data.trainings;
         this.summaryData = data.profil.carrier_summary;
-        this.publicationsData = data.research_work;
+        this.publicationsData = data.publications;
 
         this.dataAvailable = true;
         console.log(data)
