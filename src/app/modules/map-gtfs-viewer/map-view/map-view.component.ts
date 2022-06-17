@@ -41,7 +41,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   centerIcon = centerIcon;
 
   // TODO improve API to return the areas list
-  available_data = ["TER", "Toulouse", "Lyon"];
+  available_data = ["Lyon", "TER", "Toulouse"];
   currentData = this.available_data[0];
 
   endDate: Date | null = currentDate;
@@ -88,6 +88,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   pullBoundingBoxDataSubscription!: Subscription;
   pullGeoDataSubscription!: Subscription;
   zoomEventSubscription!: Subscription;
+  screenMapBoundSubscription!: Subscription;
 
   constructor(
     private dataService: DataService,
@@ -104,6 +105,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.zoomEventSubscription = this.mapService.zoomEvent.subscribe(
       (_: boolean) => {
         this.mapService.sendZoomMapFromBounds(this.dataBoundingBox);
+        // not working when I click on the center button on legend
       }
     );
 
@@ -114,6 +116,14 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
         this.initnodesSvgLayer();
         this.initCircleCanvasLayer();
+      }
+    );
+
+    this.screenMapBoundSubscription = this.mapService.screenMapBound.subscribe(
+      (data: any) => {
+        this.dataBoundingBox = data;
+        // redraw data when zoom patn event occurs on map
+        this.dataService.pullGeoData(this.currentData, this.currentDate, this.dataBoundingBox)
       }
     );
 
@@ -137,7 +147,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
       (element) => {
         this.dataBoundingBox = element.data_bounds;
         this.mapService.sendZoomMapFromBounds(this.dataBoundingBox);
-
         this.startDate = this.parseTime(element.start_date);
         if (this.startDate !== null) {
           this.endDate = this.parseTime(element.end_date);
@@ -159,7 +168,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.pullGeoDataSubscription = this.dataService.GeoData.subscribe(
       (element) => {
         // this.dataService.pullStartEvent()
-        this.geoData = element.data_geojson;
+        this.geoData = element;
         if (this.geoData !== null && this.currentDate !== null) {
           this.dataService.pullGeoDataToMap(this.geoData);
         }
@@ -197,7 +206,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapContainerSubscription.unsubscribe();
     this.pullGeoDataToMapSubscription.unsubscribe();
     this.zoomEventSubscription.unsubscribe();
-    
+
     d3.select('#' + this.svgLayerId).remove();
     d3.select('#' + this.canvasLayerId).remove();
 
