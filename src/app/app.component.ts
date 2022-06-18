@@ -18,11 +18,10 @@ export class AppComponent implements OnInit {
   loadingIcon = loadingIcon;
   bugIcon = bugIcon;
 
-  // TODO move to map module?
   orientationDisclaimerPages: string[] = [
-    '/map',
     '/map/app/activities',
     '/map/app/sandbox',
+    '/map/app/gtfs-viewer'
   ];
 
   orientationErrorMessage!: string;
