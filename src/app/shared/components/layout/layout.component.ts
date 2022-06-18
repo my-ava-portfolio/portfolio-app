@@ -20,7 +20,11 @@ export class LayoutComponent implements OnInit {
   // Here to set the default status of the bar
   // TODO check the orientation to collapse or not the bar
   sideBarCollapsed: boolean = true;
-  routesWhereScrollingIsDisabled: string[] = ["/map/app/activities", "/map/app/sandox"];
+  routesWhereScrollingIsDisabled: string[] = [
+    "/map/app/activities",
+    "/map/app/sandox",
+    "/map/app/gtfs-viewer"
+  ];
 
   navBarIcon = navBarIcon;
   arrowUpIcon = arrowUpIcon;
