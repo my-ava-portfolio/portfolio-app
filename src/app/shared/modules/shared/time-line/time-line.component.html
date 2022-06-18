@@ -1,6 +1,6 @@
 <div class="d-flex flex-column flex-lg-row mt-auto justify-content-center" id="theme-legend">
 
-  <div class="">
+  <div class="d-flex flex-column justify-content-center align-items-center">
     <h6>Barre Temporelle</h6>
 
       <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" [id]="timeLineId">
@@ -15,21 +15,24 @@
         <span class="fw-bold" id="slider-value">{{ sliderDate | date:'dd MMMM y HH:mm' }}</span>
       </div>
 
-      <div class="d-flex flex-row align-items-center">
-        <a id="start-button" class="btn btn-dark btn-sm" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
-        <a id="play-button" class="btn btn-dark mx-2" role="button" (click)="startTimeLine()">Play</a>
-        <a id="end-button" class="btn btn-dark btn-sm" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
-      </div>
+      <div class="d-flex flex-row flex-lg-column justify-content-center align-items-center mt-auto">
 
-
-      <div class="row justify-content-center mt-2" *ngIf="timeLineSpeedSliderEnabled">
-        <span class="fw-bold">Vitesse</span>
-
-        <div class="col-1">-</div>
-        <div class="col-8 px-0">
-          <input id="speed-slider" class="form-range" type="range" [min]="minStepValue" [max]="maxStepValue" [step]="minStepValue" [value]="stepValue" (change)="updateStepValue($event)"/>
+        <div class="d-flex flex-row align-items-center">
+          <a id="start-button" class="btn btn-dark btn-sm" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
+          <a id="play-button" class="btn btn-dark mx-2" role="button" (click)="startTimeLine()">Play</a>
+          <a id="end-button" class="btn btn-dark btn-sm" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
         </div>
-        <div class="col-1">+</div>
+
+
+        <div class="row justify-content-center mt-2" *ngIf="timeLineSpeedSliderEnabled">
+          <span class="fw-bold">Vitesse</span>
+
+          <div class="col-1">-</div>
+          <div class="col-8 px-0">
+            <input id="speed-slider" class="form-range" type="range" [min]="minStepValue" [max]="maxStepValue" [step]="minStepValue" [value]="stepValue" (change)="updateStepValue($event)"/>
+          </div>
+          <div class="col-1">+</div>
+        </div>
       </div>
 
     </div>

@@ -37,8 +37,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
     { "area": "toulouse", "default_step_value": 4000 }
   ]
 
-  currentArea = this.input_data[0].area;
-  currentstepValue = this.input_data[0].default_step_value;
+  currentArea = this.input_data[1].area;
+  currentstepValue = this.input_data[1].default_step_value;
 
   endDate: Date | null = currentDate;
   startDate: Date | null = currentDate;

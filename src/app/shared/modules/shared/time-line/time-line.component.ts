@@ -27,6 +27,7 @@ export class TimeLineComponent implements OnInit {
   forwardIcon = forwardIcon;
   tagIcon = tagsIcon;
 
+  timelineMarkerFontSize = "35"
   sliderHandleTimeStyle = [
     {
       "from": 0,
@@ -65,15 +66,17 @@ export class TimeLineComponent implements OnInit {
       "from": 19,
       "to": 24,
       "font_unicode": '\uf186',
-      "color": "#f1b6da",
+      "color": "#4575b4",
       "stroke": "white",
       "description": "Le soir"
 
     }
   ]
+  brightnessValuesAtEachHours = [0.40, 0.40, 0.40, 0.40, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.40, 0.40]
+
 
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
-  width = 600;
+  width = 500;
   height = 90;
   private dateRange!: any;
   private selectedDatePosition = 0;  // TODO check type
@@ -247,7 +250,7 @@ export class TimeLineComponent implements OnInit {
       const handle = slider.insert('text', '.track-overlay')
       .attr('id', 'handle-timeline')
       .attr('class', "marker-fontawesome fa-solid")
-      .style("font-size", "30")
+      .style("font-size", this.timelineMarkerFontSize)
     } else {
       const handle = slider.insert('circle', '.track-overlay')
       .attr('id', 'handle-timeline')
@@ -278,8 +281,7 @@ export class TimeLineComponent implements OnInit {
       .text(style.font_unicode);
 
     const mapDiv = d3.select("#map")
-    const brightnessValues = [0.39, 0.42, 0.46, 0.51, 0.57, 0.65, 0.74, 0.83, 0.93, 1.02, 1.09, 1.13, 1.15, 1.13, 1.09, 1.02, 0.93, 0.83, 0.74, 0.65, 0.57, 0.51, 0.46, 0.42]
-    mapDiv.style("filter", "brightness(" + brightnessValues[hour] + ")")
+    mapDiv.style("filter", "brightness(" + this.brightnessValuesAtEachHours[hour] + ")")
 
   }
 
