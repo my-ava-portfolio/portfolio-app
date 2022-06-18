@@ -8,6 +8,8 @@ export class TimelineService {
 
   timeLineInputs: Subject<any> = new Subject<any>();
   dateUpdated: Subject<string> = new Subject<string>();
+  defaultSpeedValue: Subject<number> = new Subject<number>();
+  updatedSpeedValue: Subject<number> = new Subject<number>();
 
   constructor() { }
 
@@ -23,6 +25,13 @@ export class TimelineService {
     this.dateUpdated.next(date);
   }
 
+  pushDefaultSpeedValue(value: number): void {
+    this.defaultSpeedValue.next(value);
+  }
+
+  pushUpdatedSpeedValue(value: number): void {
+    this.updatedSpeedValue.next(value);
+  }
 }
 
 

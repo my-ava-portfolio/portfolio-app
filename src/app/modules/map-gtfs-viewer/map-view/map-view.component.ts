@@ -18,17 +18,6 @@ import { currentDate } from '@core/inputs';
 import { TimelineService } from '@shared/services/timeline.service';
 
 
-export class App {
-  constructor() {}
-
-  private print = (str: string) => console.log(str);
-
-  init = () => {
-      this.print('test');
-  }
-}
-
-
 @Component({
   selector: 'app-map-view',
   templateUrl: './map-view.component.html',
@@ -41,8 +30,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
   centerIcon = centerIcon;
 
   // TODO improve API to return the areas list
-  available_data = ["Lyon", "TER", "Toulouse"];
-  currentData = this.available_data[0];
+  availableArea!: string[];
+  input_data: any[] = [
+    { "area": "lyon", "default_step_value": 4000 },
+    { "area": "ter", "default_step_value": 1500 },
+    { "area": "toulouse", "default_step_value": 4000 }
+  ]
+
+  currentArea = this.input_data[0].area;
+  currentstepValue = this.input_data[0].default_step_value;
 
   endDate: Date | null = currentDate;
   startDate: Date | null = currentDate;
@@ -89,6 +85,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   pullGeoDataSubscription!: Subscription;
   zoomEventSubscription!: Subscription;
   screenMapBoundSubscription!: Subscription;
+  pullAvailableAreasSubscription!: Subscription;
 
   constructor(
     private dataService: DataService,
@@ -123,7 +120,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.dataBoundingBox = data;
         // redraw data when zoom patn event occurs on map
-        this.dataService.pullGeoData(this.currentData, this.currentDate, this.dataBoundingBox)
+        console.log(this.currentDate)
+
+        this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
       }
     );
 
@@ -146,13 +145,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.pullBoundingBoxDataSubscription = this.dataService.rangeDateData.subscribe(
       (element) => {
         this.dataBoundingBox = element.data_bounds;
-        this.mapService.sendZoomMapFromBounds(this.dataBoundingBox);
         this.startDate = this.parseTime(element.start_date);
         if (this.startDate !== null) {
           this.endDate = this.parseTime(element.end_date);
           this.currentDate = element.start_date
           this.timelineService.pushTimeLineInputs(this.startDate, this.endDate, String(this.currentDate))
-
+          this.mapService.sendZoomMapFromBounds(this.dataBoundingBox);
         }
       }
     );
@@ -160,14 +158,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.timelineService.dateUpdated.subscribe(
       (date) => {
         this.currentDate = date
-        this.dataService.pullGeoData(this.currentData, this.currentDate, this.dataBoundingBox)
+        this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
 
       }
     )
 
     this.pullGeoDataSubscription = this.dataService.GeoData.subscribe(
       (element) => {
-        // this.dataService.pullStartEvent()
         this.geoData = element;
         if (this.geoData !== null && this.currentDate !== null) {
           this.dataService.pullGeoDataToMap(this.geoData);
@@ -176,6 +173,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.pullAvailableAreasSubscription = this.dataService.availableAreas.subscribe(
+      (element) => {
+        this.availableArea = element;
+      }
+    );
 
   }
 
@@ -183,11 +185,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.sendResumeSubMenus();
     // let's go to get map container and init layer(s)
-    this.mapService.getMapContainer()
+    this.mapService.getMapContainer();
 
     // the begining of the process
-    this.dataService.pullRangeDateData(this.currentData)
+    this.dataService.pullAvailableAreas();
 
+    this.updateData(this.currentArea)
     this.innerWidth = window.screen.width;
     this.innerHeight = window.screen.height;
 
@@ -217,9 +220,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
     return d3.timeParse('%Y-%m-%d %H:%M:%S')(time);
   }
 
-  updateTimeline(data: string): void {
-    this.currentData = data
-    this.dataService.pullRangeDateData(this.currentData);
+  updateData(data: string): void {
+    const data_found = this.input_data.filter((e) => {
+      return e.area === data;
+    });
+    this.currentArea = data
+    this.currentstepValue = data_found[0]["default_step_value"]
+
+    this.dataService.pullRangeDateData(this.currentArea);
+    this.timelineService.pushDefaultSpeedValue(this.currentstepValue)
   }
 
   showHideLegend(): void {

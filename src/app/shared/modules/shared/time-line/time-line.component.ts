@@ -15,7 +15,7 @@ import { TimelineService } from '@shared/services/timeline.service';
 })
 export class TimeLineComponent implements OnInit {
   @Input() timeLineId!: string;
-  @Input() timeLineSpeeSliderEnabled!: Boolean;
+  @Input() timeLineSpeedSliderEnabled!: Boolean;
 
   startDate!: Date | null;
   endDate!: Date | null;
@@ -36,7 +36,9 @@ export class TimeLineComponent implements OnInit {
   sliderDate!: Date | null;
   private movingCursor = false;
   private timer!: any;
-  stepValue = 1000; // 4000 ok with parq ; 1500 for ter ; 4k for others // reduce to get more details
+  stepValue = 4000; // 4000 ok with parq ; 1500 for ter ; 4k for others // reduce to get more details
+  minStepValue = 500;
+  maxStepValue!: number
   private timerStep = 25; // 25 ok with parq
 
   private mapContainer!: any;
@@ -44,6 +46,8 @@ export class TimeLineComponent implements OnInit {
   mapContainerSubscription!: Subscription;
   pullRangeDateDataSubscription!: Subscription;
   notifyTimelineSubscription!: Subscription;
+  defaultSpeedValueSubscription!: Subscription;
+  updatedSpeedValueSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -55,6 +59,21 @@ export class TimeLineComponent implements OnInit {
         this.mapContainer = element;
       }
     );
+
+    this.defaultSpeedValueSubscription = this.timelineService.defaultSpeedValue.subscribe(
+      (defaultSpeedValue: number) => {
+        this.stepValue = defaultSpeedValue
+        this.maxStepValue = defaultSpeedValue * 2 - this.minStepValue
+
+      }
+    )
+
+    this.updatedSpeedValueSubscription = this.timelineService.updatedSpeedValue.subscribe(
+      (speedValueUpdated: number) => {
+        this.stepValue = speedValueUpdated
+      }
+    )
+
     // MANDATORY, we need these 3 variables to init the timeline
     this.notifyTimelineSubscription = this.timelineService.timeLineInputs.subscribe(
       (element: any) => {
@@ -97,8 +116,8 @@ export class TimeLineComponent implements OnInit {
     const slider = svg.append('g')
       .attr('class', 'slider-bar')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.height / 2 + ')');
-    console.log(this.dateRange.range())
-    // slider bar creation
+
+      // slider bar creation
     slider.append('line')
       .attr('class', 'track')
       .attr('x1', this.dateRange.range()[0])
