@@ -62,13 +62,22 @@ circle.preselected {
   stroke-width: 2px!important;
 }
 
-#slider-bar {
+#timeline-slider {
   width: 33em;
 }
 
 
 @media (max-width: 576px){
-  #slider-bar {
+  #timeline-slider {
     width: 20em;
   }
 }
+
+
+#speed-slider {
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+

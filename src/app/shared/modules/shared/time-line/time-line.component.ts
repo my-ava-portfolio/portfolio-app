@@ -15,6 +15,7 @@ import { TimelineService } from '@shared/services/timeline.service';
 })
 export class TimeLineComponent implements OnInit {
   @Input() timeLineId!: string;
+  @Input() timeLineSpeeSliderEnabled!: Boolean;
 
   startDate!: Date | null;
   endDate!: Date | null;
@@ -35,7 +36,7 @@ export class TimeLineComponent implements OnInit {
   sliderDate!: Date | null;
   private movingCursor = false;
   private timer!: any;
-  private stepValue = 4000; // 4000 ok with parq
+  stepValue = 1000; // 4000 ok with parq ; 1500 for ter ; 4k for others // reduce to get more details
   private timerStep = 25; // 25 ok with parq
 
   private mapContainer!: any;
@@ -78,12 +79,16 @@ export class TimeLineComponent implements OnInit {
 
   }
 
+  updateStepValue(event: any): void {
+    this.stepValue = event.target.value;
+  }
+
   buildTimeline(): void {
 
     // clean existing slide bar
     d3.selectAll('.slider-bar').remove()
 
-    const svg = d3.select(this.timeLineId);
+    const svg = d3.select('#'+this.timeLineId);
 
     const playButton: any = d3.select('#play-button');
 
@@ -113,7 +118,7 @@ export class TimeLineComponent implements OnInit {
           this.update(this.dateRange.invert(this.selectedDatePosition));
 
           // disable timeline node selection
-          d3.select('#slider-bar .events')
+          d3.select('#timeline-slider .events')
             .selectAll('circle')
             .style('pointer-events', 'none');
         })
@@ -122,7 +127,7 @@ export class TimeLineComponent implements OnInit {
           this.mapContainer.dragging.enable();
 
           // enable timeline node selection
-          d3.select('#slider-bar .events')
+          d3.select('#timeline-slider .events')
             .selectAll('circle')
             .style('pointer-events', 'all');
 
