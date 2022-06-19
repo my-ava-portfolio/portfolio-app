@@ -1,8 +1,7 @@
 <div class="container-fluid">
-  <div class="row justify-content-center" [@fadeInOut]>
+  <div class="row justify-content-center" *ngIf="blogTopics" [@fadeInOut]>
 
-
-    <div class="col-11 mt-4 blog-content">
+    <div class="col-11 my-4 blog-content">
       <div class="grid-container">
 
         <div class="mb-4 feat-topic bg-white" *ngFor="let topic of blogTopics">
