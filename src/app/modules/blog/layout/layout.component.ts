@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { BlogService } from '@services/blog.service';
 
-import { personalBlogUrl, stringToColor, tagIcon, tagsIcon } from '@core/inputs';
+import { minWidthLandscape, personalBlogUrl, stringToColor, tagIcon, tagsIcon } from '@core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -110,6 +110,14 @@ export class LayoutComponent implements OnDestroy {
     this.selectedblogTopics = topicsFound;
   }
 
+
+  @HostListener('window:orientationchange', ['$event'])
+  displayContentRegardingDeviceScreen(): void {
+    // if mode portrait and width screen <= 1024...
+    if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
+      this.isLegendDisplayed = false;
+    }
+  }
 
 }
 
