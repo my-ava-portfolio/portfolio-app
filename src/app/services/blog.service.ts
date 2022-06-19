@@ -26,8 +26,7 @@ export class BlogService {
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
-        this.ErrorTopicsDataApiFound.next(error.error.message);
+        this.ErrorTopicsDataApiFound.next(error.message);
       },
       next: response => {
         this.topicsData.next(response);
@@ -35,18 +34,4 @@ export class BlogService {
     });
   }
 
-  pullNotesData(path: string): void {
-    this.http.get<any>(`${this.apiUrlNotesData}notes${path}`).subscribe({
-      complete: () => {
-      },
-      error: error => {
-        // TODO improve error message, but API need improvments
-        this.ErrorTopicsDataApiFound.next(error.error.message);
-      },
-      next: response => {
-        this.topicData.next(response);
-      },
-    });
-
-  }
 }
