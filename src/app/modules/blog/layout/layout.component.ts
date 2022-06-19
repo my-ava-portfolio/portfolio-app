@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { NotesService } from '@services/notes.service';
+import { BlogService } from '@services/blog.service';
 
 import { personalBlogUrl } from '@core/inputs';
 
@@ -9,19 +9,24 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ControlerService } from '@services/controler.service';
 
+import { fadeInOutAnimation } from '@core/animation_routes';
+
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
+  animations: [fadeInOutAnimation]
 })
 export class LayoutComponent implements OnDestroy {
   pageTitle!: string;
   pageUrlToLoad = personalBlogUrl;
   notesDataSubscription!: Subscription;
 
+  blogTopics!: any[];
+
   constructor(
-    private notesService: NotesService,
+    private blogService: BlogService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
@@ -30,12 +35,9 @@ export class LayoutComponent implements OnDestroy {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
-    this.notesDataSubscription = this.notesService.notesData.subscribe(
+    this.notesDataSubscription = this.blogService.topicsData.subscribe(
       (data) => {
-        this.pageTitle = data.page_title;
-        this.pageUrlToLoad = data.url_to_display;
-        this.titleService.setTitle(this.activatedRoute.snapshot.data.title + ' - ' + this.pageTitle)
-
+        this.blogTopics = data
       }
     )
 
@@ -43,7 +45,9 @@ export class LayoutComponent implements OnDestroy {
 
   ngOnInit(): void {
     this.sendResumeSubMenus()
+    this.blogService.pulltopicsData()
   }
+
 
   ngOnDestroy(): void {
     this.notesDataSubscription.unsubscribe()
