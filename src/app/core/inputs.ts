@@ -8,7 +8,7 @@ import { apiBaseUrl } from './constants';
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
 export const apiLogoUrl = `./assets/logo/`;
 export const apiMapsUrl = `./assets/maps/`;
-export const personalBlogUrl = 'https://blog.amaury-valorge.com/';
+export const personalBlogUrl = 'https://blog.amaury-valorge.com';
 export const githubUrl = 'https://github.com/amauryval/';
 export const githubBugIssueUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';
 export const githubQuestionUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=question&template=question-.md&title=';
