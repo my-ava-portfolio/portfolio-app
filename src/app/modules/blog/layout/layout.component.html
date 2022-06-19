@@ -7,25 +7,43 @@
         <div class="mb-4 feat-topic bg-white" *ngFor="let topic of blogTopics">
 
           <div class="card-header bg-dark bg-gradient text-white">
-            <h4 class="card-title">{{ topic.title }}</h4>
+            <h4 class="fs-6">{{ topic.title }}</h4>
           </div>
 
           <div class="card-body">
 
             <div class="d-flex flex-column py-2">
+              <img [src]="topic.image | safeUrl"  class="card-img">
+            </div>
 
-              <p class="card-text">{{ topic.date | date: 'dd-MM-yyyy'}}</p>
-              <p class="card-text">{{ topic.categories }}</p>
-              <p class="card-text">{{ topic.tags }}</p>
+            <div class="d-flex flex-row justify-content-end">
+              <div class="fst-italic">{{ topic.date | date: 'dd MMMM y'}}</div>
+            </div>
+
+            <div class="d-flex flex-column py-2">
+
+              <div class="py-1">
+                <span class="fw-bold small me-2">Catégorie(s):</span>
+                <ng-container *ngFor="let category of topic.categories">
+                  <span class="badge rounded-pill mx-1" [style]="'background-color:' + this.getTagColor(category, 5) + ';color: white'">{{category}}</span>
+                </ng-container>
+              </div>
+
+              <div class="py-1">
+                <span class="fw-bold small me-2">Tag(s):</span>
+                  <ng-container *ngFor="let tag of topic.tags">
+                      <span class="badge rounded-pill mx-1" [style]="'background-color:' + this.getTagColor(tag, 7) + ';color: white'">{{tag}}</span>
+                  </ng-container>
+              </div>
 
               <p class="card-text">{{ topic.resume }}</p>
-              <img [src]="topic.image | safeUrl"  class="card-img">
-
             </div>
 
             <a [href]="topic.url" target="_blank" rel="noopener noreferrer" class="btn btn-warning mt-auto fw-bold">Accéder</a>
 
           </div>
+
+
 
           <div class="card-footer">
           </div>

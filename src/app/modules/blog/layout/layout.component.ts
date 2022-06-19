@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { BlogService } from '@services/blog.service';
 
-import { personalBlogUrl } from '@core/inputs';
+import { personalBlogUrl, stringToColor } from '@core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -55,6 +55,10 @@ export class LayoutComponent implements OnDestroy {
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([])
+  }
+
+  getTagColor(value: string, seed: number): string {
+    return stringToColor(value, seed)
   }
 
 }
