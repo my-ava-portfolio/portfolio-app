@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
 
 import { ResumeService } from '@services/resume.service';
-import { BlogService } from '@services/blog.service';
 import { ControlerService } from '@services/controler.service';
 
 import { apiLogoUrl } from '@core/inputs';
@@ -56,7 +55,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   constructor(
     private controlerService: ControlerService,
     private resumeService: ResumeService,
-    private blogService: BlogService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
   ) {
