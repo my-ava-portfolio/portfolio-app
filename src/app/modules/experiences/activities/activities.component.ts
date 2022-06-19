@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, projectIcon, projectPages, websiteIcon } from '@core/inputs';
+import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, personalBlogUrl, projectIcon, projectPages, websiteIcon } from '@core/inputs';
 
 import { ResumeService } from '@services/resume.service';
 
@@ -15,7 +15,6 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./activities.component.scss'],
 })
 export class ActivitiesComponent implements OnInit, OnChanges {
-  @Output() notePathEmit = new EventEmitter<string>();
 
   @Input() fragment: any;
   @Input() jobsData: any;
@@ -26,6 +25,7 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   mapPages: any = mapActivitiesPages;
   galleryPagesRoute: string = galleryPages.route;
   blogPagesRoute: string = projectPages[0].route;
+  blogUrl = personalBlogUrl;
 
   // icons
   locationIcon = locationIcon;
@@ -94,11 +94,6 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   ngOnDestroy(): void {
     // this.routeQueryParamsSubscription.unsubscribe();
     this.routeFragmentSubscription.unsubscribe()
-  }
-
-
-  emitNotePath(notePath: string): void {
-    this.notePathEmit.emit(notePath);
   }
 
   pushActivityId(activityId: string): void {

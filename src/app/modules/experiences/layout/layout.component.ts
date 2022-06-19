@@ -119,10 +119,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.controlerService.pullSubMenus(this.experiencesTopics)
   }
 
-  sendPathNotesLink(notePath: string): void {
-    this.notesService.pullNotesData(notePath);
-  }
-
   sendActivityId(activityId: string): void {
     this.activityIdFromActivityComponents = activityId;
   }
