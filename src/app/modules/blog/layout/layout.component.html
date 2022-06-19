@@ -20,23 +20,23 @@
               <div class="fst-italic">{{ topic.date | date: 'dd MMMM y'}}</div>
             </div>
 
-            <div class="d-flex flex-column py-2">
+            <div class="d-flex flex-column pb-2">
 
               <div class="py-1">
                 <span class="fw-bold small me-2">Catégorie(s):</span>
                 <ng-container *ngFor="let category of topic.categories">
-                  <span class="badge rounded-pill mx-1" [style]="'background-color:' + this.getTagColor(category, 5) + ';color: white'">{{category}}</span>
+                  <span class="badge rounded-pill mx-1" [style]="'background-color:' + this.getTagColor(category, seedCategory) + ';color: white'">{{category}}</span>
                 </ng-container>
               </div>
 
               <div class="py-1">
                 <span class="fw-bold small me-2">Tag(s):</span>
                   <ng-container *ngFor="let tag of topic.tags">
-                      <span class="badge rounded-pill mx-1" [style]="'background-color:' + this.getTagColor(tag, 7) + ';color: white'">{{tag}}</span>
+                      <span class="badge rounded-pill mx-1" [style]="'background-color:' + this.getTagColor(tag, seedTag) + ';color: white'">{{tag}}</span>
                   </ng-container>
               </div>
 
-              <p class="card-text">{{ topic.resume }}</p>
+              <p class="card-text my-4">{{ topic.resume }}</p>
             </div>
 
             <a [href]="topic.url" target="_blank" rel="noopener noreferrer" class="btn btn-warning mt-auto fw-bold">Accéder</a>
@@ -102,7 +102,7 @@
 
         <div class="btn-group my-1 mx-1" role="group" *ngFor="let category of allCategories">
           <button class="btn btn-secondary btn-sm" [ngClass]="currentCategory === category ? 'fw-bolderer' : 'inactive'" (click)="selectContentByCategory(category)">
-            <fa-icon class="me-2" [icon]="tagIcon"></fa-icon>{{ category }}
+            <fa-icon class="me-2" [icon]="tagIcon" [style]="'color:' + this.getTagColor(category, seedCategory)+ ';'"></fa-icon>{{ category }}
           </button>
         </div>
 
@@ -113,11 +113,11 @@
 
       <h6>Filtrage par tags</h6>
 
-      <div class="btn-toolbar my-2 d-flex" role="toolbar">
+      <div class="btn-toolbar my-2 d-flex justify-content-center" role="toolbar">
 
         <div class="btn-group my-1 mx-1" role="group" *ngFor="let tag of allTags">
           <button class="btn btn-secondary btn-sm" [ngClass]="currentTag === tag ? 'fw-bolderer' : 'inactive'" (click)="selectContentByTag(tag)">
-            <fa-icon class="me-2" [icon]="tagIcon"></fa-icon>{{ tag }}
+            <fa-icon class="me-2" [icon]="tagIcon" [style]="'color:' + this.getTagColor(tag, seedTag)+ ';'"></fa-icon>{{ tag }}
           </button>
         </div>
 
