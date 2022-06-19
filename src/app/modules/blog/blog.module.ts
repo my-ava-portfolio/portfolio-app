@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { BlogRoutingModule } from '@modules/blog/blog-routing.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { LayoutComponent } from './layout/layout.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
@@ -14,7 +15,8 @@ import { PipesModule } from '@shared/pipes/pipes.module';
   imports: [
     CommonModule,
     BlogRoutingModule,
-    PipesModule
+    PipesModule,
+    FontAwesomeModule
   ]
 })
 export class BlogModule { }
