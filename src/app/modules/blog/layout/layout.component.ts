@@ -10,6 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { ControlerService } from '@services/controler.service';
 
 import { fadeInOutAnimation } from '@core/animation_routes';
+import { MainService } from '@services/main.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ import { fadeInOutAnimation } from '@core/animation_routes';
 export class LayoutComponent implements OnDestroy {
   pageTitle!: string;
   pageUrlToLoad = personalBlogUrl;
-  notesDataSubscription!: Subscription;
+  topicsDataSubscription!: Subscription;
   isLegendDisplayed = true;
 
   tagsIcon = tagsIcon;
@@ -38,6 +39,7 @@ export class LayoutComponent implements OnDestroy {
 
   constructor(
     private blogService: BlogService,
+    private mainService: MainService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
@@ -46,7 +48,7 @@ export class LayoutComponent implements OnDestroy {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
-    this.notesDataSubscription = this.blogService.topicsData.subscribe(
+    this.topicsDataSubscription = this.blogService.topicsData.subscribe(
       (data) => {
         this.allBlogTopics = data
         this.selectedblogTopics = data
@@ -74,9 +76,8 @@ export class LayoutComponent implements OnDestroy {
 
   }
 
-
   ngOnDestroy(): void {
-    this.notesDataSubscription.unsubscribe()
+    this.topicsDataSubscription.unsubscribe()
   }
 
   sendResumeSubMenus(): void {
@@ -94,6 +95,7 @@ export class LayoutComponent implements OnDestroy {
 
   resetContent(): void {
     this.selectedblogTopics = this.allBlogTopics;
+    this.mainService.scrollToTopAction()
   }
 
   selectContentByCategory(category_name: string): void {
@@ -101,6 +103,7 @@ export class LayoutComponent implements OnDestroy {
       return e.categories.includes(category_name)
     })
     this.selectedblogTopics = topicsFound;
+    this.mainService.scrollToTopAction()
   }
 
   selectContentByTag(tag_name: string): void {
@@ -108,6 +111,7 @@ export class LayoutComponent implements OnDestroy {
       return e.tags.includes(tag_name)
     })
     this.selectedblogTopics = topicsFound;
+    this.mainService.scrollToTopAction()
   }
 
 
