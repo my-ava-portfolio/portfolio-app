@@ -20,7 +20,7 @@ export class TimeLineComponent implements OnInit {
 
   startDate!: Date | null;
   endDate!: Date | null;
-  currentDate!: string;
+  currentDate!: Date | null;
 
   // icons
   backwardIcon = backwardIcon;
@@ -72,7 +72,7 @@ export class TimeLineComponent implements OnInit {
 
     }
   ]
-  brightnessValuesAtEachHours = [0.40, 0.40, 0.40, 0.40, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.40, 0.40]
+  brightnessValuesAtEachHours = [0.40, 0.40, 0.40, 0.40, 0.40, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.40, 0.40]
 
 
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
@@ -128,7 +128,9 @@ export class TimeLineComponent implements OnInit {
       (element: any) => {
         this.startDate = element.startDate;
         this.endDate = element.endDate;
-        this.currentDate = element.currentDate;
+
+        const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
+        this.currentDate = tParser(element.currentDate);
 
         this.buildTimeline()
       }
@@ -262,9 +264,9 @@ export class TimeLineComponent implements OnInit {
     const events = slider.append('g')
       .attr('class', 'events');
 
-    // update to end date
-    this.sliderDate = this.endDate
-    this.update(this.endDate);
+    // update to current date ; in the past it was the end date (with this.endDate)
+    this.sliderDate = this.currentDate
+    this.update(this.currentDate);
 
   };
 
@@ -286,7 +288,7 @@ export class TimeLineComponent implements OnInit {
   }
 
   private setMapTileBrightness(value?: number) {
-    const mapTilesDiv = d3.selectAll(".leaflet-tile")
+    const mapTilesDiv = d3.selectAll(".leaflet-layer")
 
     if (typeof value !== 'undefined') {
 
@@ -317,13 +319,12 @@ export class TimeLineComponent implements OnInit {
 
   update(h: any): void {
 
-    this.currentDate = this.formatDate(h)
 
     // call api only if last count is different from the current count feature
-    if (this.currentDate !== null) {
+    if (h !== null) {
 
       // return an event to indicate that the date has been updated, so we'll update the data
-      this.timelineService.pushDateUpdated(this.currentDate)
+      this.timelineService.pushDateUpdated(this.formatDate(h))
 
      // update position and text of label according to slider scale
       d3.select('#trace').attr('x2', this.dateRange(h)); // trace

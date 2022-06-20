@@ -119,7 +119,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.screenMapBoundSubscription = this.mapService.screenMapBound.subscribe(
       (data: any) => {
         this.dataBoundingBox = data;
-        // redraw data when zoom patn event occurs on map
+        // redraw data when zoom/pan event occurs on map
         console.log(this.currentDate)
 
         this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
@@ -148,8 +148,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.startDate = this.parseTime(element.start_date);
         if (this.startDate !== null) {
           this.endDate = this.parseTime(element.end_date);
-          this.currentDate = element.start_date
-          this.timelineService.pushTimeLineInputs(this.startDate, this.endDate, String(this.currentDate))
+
+          // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
+          const now = new Date()
+          this.currentDate = element.start_date.split(" ")[0] + " " + now.toLocaleTimeString()
+
+          this.timelineService.pushTimeLineInputs(this.startDate, this.endDate, this.currentDate)
           this.mapService.sendZoomMapFromBounds(this.dataBoundingBox);
         }
       }
