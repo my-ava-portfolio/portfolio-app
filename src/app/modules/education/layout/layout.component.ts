@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
 
 import { ResumeService } from '@services/resume.service';
-import { NotesService } from '@services/notes.service';
 import { ControlerService } from '@services/controler.service';
 
 import { apiLogoUrl } from '@core/inputs';

@@ -1,27 +1,47 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { NotesService } from '@services/notes.service';
+import { BlogService } from '@services/blog.service';
 
-import { personalBlogUrl } from '@core/inputs';
+import { minWidthLandscape, personalBlogUrl, stringToColor, tagIcon, tagsIcon } from '@core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ControlerService } from '@services/controler.service';
 
+import { fadeInOutAnimation } from '@core/animation_routes';
+import { MainService } from '@services/main.service';
+
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
+  animations: [fadeInOutAnimation]
 })
 export class LayoutComponent implements OnDestroy {
   pageTitle!: string;
   pageUrlToLoad = personalBlogUrl;
-  notesDataSubscription!: Subscription;
+  topicsDataSubscription!: Subscription;
+  isLegendDisplayed = true;
+
+  tagsIcon = tagsIcon;
+  tagIcon = tagIcon;
+
+  allCategories!: string[];
+  currentCategory!: string;
+  seedCategory = 50;
+
+  allTags!: string[];
+  currentTag!: string;
+  seedTag = 100;
+
+  selectedblogTopics!: any[];
+  allBlogTopics!: any[];
 
   constructor(
-    private notesService: NotesService,
+    private blogService: BlogService,
+    private mainService: MainService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
@@ -30,12 +50,23 @@ export class LayoutComponent implements OnDestroy {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
-    this.notesDataSubscription = this.notesService.notesData.subscribe(
+    this.topicsDataSubscription = this.blogService.topicsData.subscribe(
       (data) => {
-        this.pageTitle = data.page_title;
-        this.pageUrlToLoad = data.url_to_display;
-        this.titleService.setTitle(this.activatedRoute.snapshot.data.title + ' - ' + this.pageTitle)
+        this.allBlogTopics = data
+        this.selectedblogTopics = data
 
+        // TODO refactor
+        let categoriesValues: string[] = [];
+        this.allBlogTopics.forEach((element: any, index: number) => {
+          categoriesValues = [...categoriesValues, ...element.categories]
+        })
+        this.allCategories = Array.from(new Set(categoriesValues));
+
+        let tagsValues: string[] = [];
+        this.allBlogTopics.forEach((element: any, index: number) => {
+          tagsValues = [...tagsValues, ...element.tags]
+        })
+        this.allTags = Array.from(new Set(tagsValues));
       }
     )
 
@@ -43,14 +74,57 @@ export class LayoutComponent implements OnDestroy {
 
   ngOnInit(): void {
     this.sendResumeSubMenus()
+    this.blogService.pulltopicsData()
+
   }
 
   ngOnDestroy(): void {
-    this.notesDataSubscription.unsubscribe()
+    this.topicsDataSubscription.unsubscribe()
   }
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([])
   }
 
+  getTagColor(value: string, seed: number): string {
+    return stringToColor(value, seed)
+  }
+
+  showHideLegend(): void {
+    this.isLegendDisplayed = !this.isLegendDisplayed;
+  }
+
+
+  resetContent(): void {
+    this.selectedblogTopics = this.allBlogTopics;
+    this.mainService.scrollToTopAction()
+  }
+
+  selectContentByCategory(category_name: string): void {
+    let topicsFound = this.allBlogTopics.filter((e: any) => {
+      return e.categories.includes(category_name)
+    })
+    this.selectedblogTopics = topicsFound;
+    this.mainService.scrollToTopAction()
+  }
+
+  selectContentByTag(tag_name: string): void {
+    let topicsFound = this.allBlogTopics.filter((e: any) => {
+      return e.tags.includes(tag_name)
+    })
+    this.selectedblogTopics = topicsFound;
+    this.mainService.scrollToTopAction()
+  }
+
+
+  @HostListener('window:orientationchange', ['$event'])
+  displayContentRegardingDeviceScreen(): void {
+    // if mode portrait and width screen <= 1024...
+    if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
+      this.isLegendDisplayed = false;
+    }
+  }
+
 }
+
+

@@ -1,17 +1,14 @@
 import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
-import { ViewportScroller } from "@angular/common";
 
 import { ResumeService } from '@services/resume.service';
-import { NotesService } from '@services/notes.service';
 import { ControlerService } from '@services/controler.service';
 
 import { apiLogoUrl } from '@core/inputs';
 import { experiencesPages } from '@core/inputs';
 
 import { interval, Subscription } from 'rxjs';
-import { startWith  } from 'rxjs/operators';
 
-import { ActivatedRoute, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 import { navIcon } from '@core/inputs';
@@ -23,7 +20,6 @@ import { fadeInOutAnimation } from '@core/animation_routes';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
   animations: [fadeInOutAnimation]
-
 })
 export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
@@ -59,7 +55,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   constructor(
     private controlerService: ControlerService,
     private resumeService: ResumeService,
-    private notesService: NotesService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
   ) {
