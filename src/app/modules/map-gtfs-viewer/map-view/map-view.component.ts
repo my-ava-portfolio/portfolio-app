@@ -275,6 +275,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.clearCanvasNodesMapping()
 
+    this.context.lineWidth = 1;
+    this.context.strokeStyle="white";
+
     let i!: number
     for (i = 0; i < data.length; i++) {
 
@@ -282,7 +285,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       const coords: any = this.mapContainer.latLngToLayerPoint(new L.LatLng(data[i].y, data[i].x))
 
-      this.context.moveTo( coords.x + this.radius, coords.y ); // This was the line you were looking for
       this.context.arc(
         coords.x,
         coords.y,
@@ -291,10 +293,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       this.context.fillStyle = this.mappingColors[data[i].route_type]
       this.context.fill();
-      this.context.lineWidth = 1;
-      this.context.strokeStyle="white";
+
       this.context.stroke();
-      this.context.closePath();
     }
   }
 
