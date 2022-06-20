@@ -15,6 +15,8 @@ import { TimelineService } from '@shared/services/timeline.service';
 })
 export class TimeLineComponent implements OnInit {
   @Input() timeLineId!: string;
+  @Input() timeLineSpeedSliderEnabled!: Boolean;
+  @Input() sliderDayStyleEnabled!: Boolean;
 
   startDate!: Date | null;
   endDate!: Date | null;
@@ -25,8 +27,56 @@ export class TimeLineComponent implements OnInit {
   forwardIcon = forwardIcon;
   tagIcon = tagsIcon;
 
+  timelineMarkerFontSize = "35"
+  sliderHandleTimeStyle = [
+    {
+      "from": 0,
+      "to": 7,
+      "font_unicode": '\uf186',
+      "color": "#4575b4",
+      "stroke": "white",
+      "description": "La nuit",
+      "brightness": 60
+    },
+    {
+      "from": 7,
+      "to": 11,
+      "font_unicode": '\uf185',
+      "color": "#fdae61",
+      "stroke": "black",
+      "description": "Le matin"
+    },
+    {
+      "from": 11,
+      "to": 14,
+      "font_unicode": '\uf185',
+      "color": "#d73027",
+      "stroke": "black",
+      "description": "Le milieu de journée"
+    },
+    {
+      "from": 14,
+      "to": 19,
+      "font_unicode": '\uf185',
+      "color": "#fdae61",
+      "stroke": "black",
+      "description": "L'après midi"
+    },
+    {
+      "from": 19,
+      "to": 24,
+      "font_unicode": '\uf186',
+      "color": "#4575b4",
+      "stroke": "white",
+      "description": "Le soir"
+
+    }
+  ]
+  brightnessValuesAtEachHours = [0.40, 0.40, 0.40, 0.40, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.40, 0.40]
+
+
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
-  width = 600;
+  width = 500;
   height = 90;
   private dateRange!: any;
   private selectedDatePosition = 0;  // TODO check type
@@ -35,7 +85,9 @@ export class TimeLineComponent implements OnInit {
   sliderDate!: Date | null;
   private movingCursor = false;
   private timer!: any;
-  private stepValue = 4000; // 4000 ok with parq
+  stepValue = 4000; // 4000 ok with parq ; 1500 for ter ; 4k for others // reduce to get more details
+  minStepValue = 500;
+  maxStepValue!: number
   private timerStep = 25; // 25 ok with parq
 
   private mapContainer!: any;
@@ -43,6 +95,8 @@ export class TimeLineComponent implements OnInit {
   mapContainerSubscription!: Subscription;
   pullRangeDateDataSubscription!: Subscription;
   notifyTimelineSubscription!: Subscription;
+  defaultSpeedValueSubscription!: Subscription;
+  updatedSpeedValueSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -54,6 +108,21 @@ export class TimeLineComponent implements OnInit {
         this.mapContainer = element;
       }
     );
+
+    this.defaultSpeedValueSubscription = this.timelineService.defaultSpeedValue.subscribe(
+      (defaultSpeedValue: number) => {
+        this.stepValue = defaultSpeedValue
+        this.maxStepValue = defaultSpeedValue * 2 - this.minStepValue
+
+      }
+    )
+
+    this.updatedSpeedValueSubscription = this.timelineService.updatedSpeedValue.subscribe(
+      (speedValueUpdated: number) => {
+        this.stepValue = speedValueUpdated
+      }
+    )
+
     // MANDATORY, we need these 3 variables to init the timeline
     this.notifyTimelineSubscription = this.timelineService.timeLineInputs.subscribe(
       (element: any) => {
@@ -62,7 +131,6 @@ export class TimeLineComponent implements OnInit {
         this.currentDate = element.currentDate;
 
         this.buildTimeline()
-
       }
     )
 
@@ -78,12 +146,16 @@ export class TimeLineComponent implements OnInit {
 
   }
 
+  updateStepValue(event: any): void {
+    this.stepValue = event.target.value;
+  }
+
   buildTimeline(): void {
 
     // clean existing slide bar
     d3.selectAll('.slider-bar').remove()
 
-    const svg = d3.select(this.timeLineId);
+    const svg = d3.select('#' + this.timeLineId);
 
     const playButton: any = d3.select('#play-button');
 
@@ -92,8 +164,8 @@ export class TimeLineComponent implements OnInit {
     const slider = svg.append('g')
       .attr('class', 'slider-bar')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.height / 2 + ')');
-    console.log(this.dateRange.range())
-    // slider bar creation
+
+      // slider bar creation
     slider.append('line')
       .attr('class', 'track')
       .attr('x1', this.dateRange.range()[0])
@@ -113,7 +185,7 @@ export class TimeLineComponent implements OnInit {
           this.update(this.dateRange.invert(this.selectedDatePosition));
 
           // disable timeline node selection
-          d3.select('#slider-bar .events')
+          d3.select('#timeline-slider .events')
             .selectAll('circle')
             .style('pointer-events', 'none');
         })
@@ -122,7 +194,7 @@ export class TimeLineComponent implements OnInit {
           this.mapContainer.dragging.enable();
 
           // enable timeline node selection
-          d3.select('#slider-bar .events')
+          d3.select('#timeline-slider .events')
             .selectAll('circle')
             .style('pointer-events', 'all');
 
@@ -174,9 +246,16 @@ export class TimeLineComponent implements OnInit {
       .attr('id', 'trace')
       .attr('x1', this.dateRange(this.startDate));
 
-    const handle = slider.insert('circle', '.track-overlay')
-      .attr('id', 'handle')
+    if ( this.sliderDayStyleEnabled ) {
+      const handle = slider.insert('text', '.track-overlay')
+      .attr('id', 'handle-timeline')
+      .attr('class', "marker-fontawesome fa-solid")
+      .style("font-size", this.timelineMarkerFontSize)
+    } else {
+      const handle = slider.insert('circle', '.track-overlay')
+      .attr('id', 'handle-timeline')
       .attr('r', 10);
+    }
 
     // events
     const events = slider.append('g')
@@ -188,6 +267,23 @@ export class TimeLineComponent implements OnInit {
 
   };
 
+  private updateHandleTimelineStyleFromTime(date: any): void {
+
+    let hour = date.getHours()
+    let style = this.sliderHandleTimeStyle.filter((e) => {
+      return hour >= e.from && hour < e.to;
+    })[0];
+
+    d3.select("#handle-timeline")
+      .style("fill", style.color)
+      .style("stroke", style.stroke)
+      .style("stroke-width", "1px")
+      .text(style.font_unicode);
+
+    const mapDiv = d3.select("#map")
+    mapDiv.style("filter", "brightness(" + this.brightnessValuesAtEachHours[hour] + ")")
+
+  }
 
   private initDateRange(): void {
     if (this.startDate !== null && this.endDate !== null) {
@@ -219,8 +315,17 @@ export class TimeLineComponent implements OnInit {
 
      // update position and text of label according to slider scale
       d3.select('#trace').attr('x2', this.dateRange(h)); // trace
-      d3.select('#handle').attr('cx', this.dateRange(h)); // handle
+
       this.sliderDate = h
+      if (this.sliderDayStyleEnabled) {
+        // we have to use a svg text object
+        d3.select('#handle-timeline').attr('x', this.dateRange(h)); // handle
+        this.updateHandleTimelineStyleFromTime(h)
+      } else {
+        // we have to use a svg circle object
+        d3.select('#handle-timeline').attr('cx', this.dateRange(h)); // handle
+      }
+
     }
   };
 

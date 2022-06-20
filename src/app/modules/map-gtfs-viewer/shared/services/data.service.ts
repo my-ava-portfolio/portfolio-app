@@ -14,7 +14,8 @@ export class DataService {
   private apiUrl = apiBaseUrl + 'api/v1/gtfs_builder/';
 
   mapContainer: Subject<any> = new Subject<any>();
-  screenMapBound: Subject<any> = new Subject<any>();
+  screenMapBound: Subject<number[]> = new Subject<number[]>();
+  availableAreas: Subject<string[]> = new Subject<string[]>();
 
   ErrorapiUrlDataApiFound: Subject<string> = new Subject<string>();
   GeoData: Subject<any> = new Subject<any>();
@@ -53,6 +54,21 @@ export class DataService {
       },
       next: response => {
         this.rangeDateData.next(response);
+      },
+    });
+  }
+
+  pullAvailableAreas(): void {
+    // HERE ADD CURRENT DATE ARG LINKED TO THE timeline !!!!
+    this.http.get<any>(this.apiUrl + '/existing_study_areas').subscribe({
+      complete: () => {
+      },
+      error: error => {
+      // TODO improve error message, but API need improvments
+      this.ErrorapiUrlDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        this.availableAreas.next(response);
       },
     });
   }

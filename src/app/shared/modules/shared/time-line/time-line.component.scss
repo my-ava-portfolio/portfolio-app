@@ -40,7 +40,7 @@
   cursor: pointer;
 }
 
-#handle {
+#handle-timeline {
   fill: #fff;
   stroke: #000;
   stroke-opacity: 0.5;
@@ -62,13 +62,29 @@ circle.preselected {
   stroke-width: 2px!important;
 }
 
-#slider-bar {
+#timeline-slider {
   width: 33em;
 }
 
 
 @media (max-width: 576px){
-  #slider-bar {
+  #timeline-slider {
     width: 20em;
   }
+}
+
+
+#speed-slider {
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+
+
+.marker-fontawesome {
+  font-family: 'Font Awesome 5 Free';
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
 }
