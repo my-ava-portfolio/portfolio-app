@@ -143,6 +143,7 @@ export class TimeLineComponent implements OnInit {
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
     this.notifyTimelineSubscription.unsubscribe();
+    this.setMapTileBrightness()
 
   }
 
@@ -280,10 +281,21 @@ export class TimeLineComponent implements OnInit {
       .style("stroke-width", "1px")
       .text(style.font_unicode);
 
-    const mapDiv = d3.select("#map")
-    mapDiv.style("filter", "brightness(" + this.brightnessValuesAtEachHours[hour] + ")")
+    this.setMapTileBrightness(hour)
 
   }
+
+  private setMapTileBrightness(value?: number) {
+    const mapTilesDiv = d3.selectAll(".leaflet-tile")
+
+    if (typeof value !== 'undefined') {
+
+      mapTilesDiv.style("filter", "brightness(" + this.brightnessValuesAtEachHours[value] + ")");
+    } else {
+      mapTilesDiv.style("filter", "unset");
+    };
+  }
+
 
   private initDateRange(): void {
     if (this.startDate !== null && this.endDate !== null) {
