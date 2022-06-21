@@ -275,7 +275,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     //this.context.lineWidth = 1;
     //this.context.strokeStyle="white";
-    this.context.lineWidth = radius;
+    this.context.lineWidth = this.radius;
     this.context.lineCap = 'round';
 
     let i!: number
