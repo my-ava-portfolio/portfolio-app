@@ -293,6 +293,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.context.fill();
 
       this.context.stroke();
+      this.context.closePath()
     }
   }
 
