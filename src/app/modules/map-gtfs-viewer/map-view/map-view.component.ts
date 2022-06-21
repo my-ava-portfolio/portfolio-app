@@ -273,10 +273,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.clearCanvasNodesMapping()
 
-    //this.context.lineWidth = 1;
-    //this.context.strokeStyle="white";
-    this.context.lineWidth = this.radius;
-    this.context.lineCap = 'round';
+    this.context.lineWidth = 1;
+    this.context.strokeStyle="white";
 
     let i!: number
     for (i = 0; i < data.length; i++) {
@@ -285,13 +283,17 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       const coords: any = this.mapContainer.latLngToLayerPoint(new L.LatLng(data[i].y, data[i].x))
 
-      this.context.moveTo(coords.x, coords.y);
-      this.context.lineTo(coords.x, coords.y);
-      this.context.stroke();
+      this.context.arc(
+        coords.x,
+        coords.y,
+        this.radius, 0, this.pi2
+      );
 
-      this.context.strokeStyle = this.mappingColors[data[i].route_type]
+      this.context.fillStyle = this.mappingColors[data[i].route_type]
+      this.context.fill();
+
+      this.context.stroke();
     }
-    //this.context.stroke();
   }
 
   clearSvgNodesMapping(): void {
