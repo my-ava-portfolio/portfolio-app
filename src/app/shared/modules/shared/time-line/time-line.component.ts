@@ -72,7 +72,7 @@ export class TimeLineComponent implements OnInit {
 
     }
   ]
-  brightnessValuesAtEachHours = [0.40, 0.40, 0.40, 0.40, 0.40, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.40, 0.40]
+  brightnessValuesAtEachHours = [0.50, 0.50, 0.50, 0.50, 0.50, 0.65, 0.74, 0.83, 0.93, "unset", "unset", "unset", "unset", "unset", "unset", "unset", "unset", "unset", "unset", 0.93, 0.83, 0.72, 0.65, 0.50, 0.50]
 
 
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
