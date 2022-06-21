@@ -292,9 +292,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.context.fillStyle = this.mappingColors[data[i].route_type]
       this.context.fill();
 
-      this.context.stroke();
+      
       this.context.closePath()
     }
+    this.context.stroke();
   }
 
   clearSvgNodesMapping(): void {
