@@ -273,8 +273,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.clearCanvasNodesMapping()
 
-    this.context.lineWidth = 1;
-    this.context.strokeStyle="white";
+    //this.context.lineWidth = 1;
+    //this.context.strokeStyle="white";
 
     let i!: number
     for (i = 0; i < data.length; i++) {
@@ -282,6 +282,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.context.beginPath();
 
       const coords: any = this.mapContainer.latLngToLayerPoint(new L.LatLng(data[i].y, data[i].x))
+
+      this.context.arc(
+        coords.x,
+        coords.y,
+        this.radius+1, 0, this.pi2
+      );
+      this.context.fillStyle = "white"
+      this.context.fill();
+      
 
       this.context.arc(
         coords.x,
