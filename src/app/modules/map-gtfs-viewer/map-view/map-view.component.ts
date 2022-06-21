@@ -275,6 +275,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     //this.context.lineWidth = 1;
     //this.context.strokeStyle="white";
+    this.context.lineWidth = radius;
+    this.context.lineCap = 'round';
 
     let i!: number
     for (i = 0; i < data.length; i++) {
@@ -283,26 +285,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       const coords: any = this.mapContainer.latLngToLayerPoint(new L.LatLng(data[i].y, data[i].x))
 
-      this.context.arc(
-        coords.x,
-        coords.y,
-        this.radius+2, 0, this.pi2
-      );
-      this.context.fillStyle = "white"
-      this.context.fill();
-      
+      ctx.moveTo(coords.x, coords.y);
+      ctx.lineTo(coords.x, coords.y);
+      ctx.stroke();
 
-      this.context.arc(
-        coords.x,
-        coords.y,
-        this.radius-1, 0, this.pi2
-      );
-
-      this.context.fillStyle = this.mappingColors[data[i].route_type]
-      this.context.fill();
-
-      
-      this.context.closePath()
+      this.context.strokeStyle = this.mappingColors[data[i].route_type]
     }
     //this.context.stroke();
   }
