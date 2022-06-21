@@ -285,9 +285,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       const coords: any = this.mapContainer.latLngToLayerPoint(new L.LatLng(data[i].y, data[i].x))
 
-      ctx.moveTo(coords.x, coords.y);
-      ctx.lineTo(coords.x, coords.y);
-      ctx.stroke();
+      this.context.moveTo(coords.x, coords.y);
+      this.context.lineTo(coords.x, coords.y);
+      this.context.stroke();
 
       this.context.strokeStyle = this.mappingColors[data[i].route_type]
     }
