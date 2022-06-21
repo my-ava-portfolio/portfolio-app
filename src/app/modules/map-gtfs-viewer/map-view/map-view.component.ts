@@ -56,7 +56,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   canvas!: any;
   context!: any;
   pi2 = Math.PI * 2;
-  radius = 4;
+  radius = 3;
   zoomCanvasLimit = 8;
 
   // check css code related to popup
@@ -286,7 +286,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.context.arc(
         coords.x,
         coords.y,
-        this.radius+1, 0, this.pi2
+        this.radius+2, 0, this.pi2
       );
       this.context.fillStyle = "white"
       this.context.fill();
@@ -295,7 +295,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.context.arc(
         coords.x,
         coords.y,
-        this.radius, 0, this.pi2
+        this.radius-1, 0, this.pi2
       );
 
       this.context.fillStyle = this.mappingColors[data[i].route_type]
@@ -304,7 +304,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       
       this.context.closePath()
     }
-    this.context.stroke();
+    //this.context.stroke();
   }
 
   clearSvgNodesMapping(): void {
