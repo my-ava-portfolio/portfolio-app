@@ -82,7 +82,6 @@ export class TimeLineComponent implements OnInit {
   private selectedDatePosition = 0;  // TODO check type
   private fontSize = '14px';
   private maxDatePosition: number = this.width - this.margin.left - this.margin.right;
-  sliderDate!: Date | null;
   private movingCursor = false;
   private timer!: any;
   stepValue = 4000; // 4000 ok with parq ; 1500 for ter ; 4k for others // reduce to get more details
@@ -247,7 +246,9 @@ export class TimeLineComponent implements OnInit {
 
     const trace = slider.insert('line', '.track-overlay')
       .attr('id', 'trace')
-      .attr('x1', this.dateRange(this.startDate));
+      .attr('x1', this.dateRange(this.startDate))
+      .attr('x2', this.dateRange(this.currentDate));
+
 
     if ( this.sliderDayStyleEnabled ) {
       const handle = slider.insert('text', '.track-overlay')
@@ -265,9 +266,9 @@ export class TimeLineComponent implements OnInit {
       .attr('class', 'events');
 
     // update to current date ; in the past it was the end date (with this.endDate)
-    this.sliderDate = this.currentDate
+    // these 2 lines are mandatory to initialize the slider regarding current date
     this.update(this.currentDate);
-
+    this.selectedDatePosition = parseInt(trace.attr("x2"));  // to set the currendDate pixel value
   };
 
   private updateHandleTimelineStyleFromTime(date: any): void {
@@ -329,7 +330,7 @@ export class TimeLineComponent implements OnInit {
      // update position and text of label according to slider scale
       d3.select('#trace').attr('x2', this.dateRange(h)); // trace
 
-      this.sliderDate = h
+      this.currentDate = h
       if (this.sliderDayStyleEnabled) {
         // we have to use a svg text object
         d3.select('#handle-timeline').attr('x', this.dateRange(h)); // handle
@@ -346,11 +347,7 @@ export class TimeLineComponent implements OnInit {
     this.update(this.dateRange.invert(this.selectedDatePosition));
     this.selectedDatePosition = this.selectedDatePosition + (this.maxDatePosition / this.stepValue);
     if (this.selectedDatePosition > this.maxDatePosition) {
-      this.movingCursor = false;
-      this.selectedDatePosition = 0;
-      clearInterval(this.timer);
-      // timer = 0;
-      d3.select('#play-button').text('Play');
+      this.forwardTimeLine()
     }
   };
 
@@ -381,7 +378,7 @@ export class TimeLineComponent implements OnInit {
     // reset action
     d3.select('#play-button').html('Start');
     // update to start date
-    this.sliderDate = this.startDate
+    this.currentDate = this.startDate
     // d3.select('#slider-value').html(this.formatDate(this.startDate));
     this.update(this.startDate);
     this.selectedDatePosition = 0;
@@ -392,7 +389,7 @@ export class TimeLineComponent implements OnInit {
   forwardTimeLine(): void {
     d3.select('#play-button').html('Play');
     // update to start date
-    this.sliderDate = this.startDate
+    this.currentDate = this.startDate
     // d3.select('#slider-value').html(this.formatDate(this.endDate));
     this.update(this.endDate);
     this.selectedDatePosition = 0;
