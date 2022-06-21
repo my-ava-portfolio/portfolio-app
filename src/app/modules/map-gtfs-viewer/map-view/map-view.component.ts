@@ -120,8 +120,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.dataBoundingBox = data;
         // redraw data when zoom/pan event occurs on map
-        console.log(this.currentDate)
-
         this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
       }
     );
