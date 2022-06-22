@@ -72,7 +72,7 @@ export class TimeLineComponent implements OnInit {
 
     }
   ]
-  brightnessValuesAtEachHours = [0.50, 0.50, 0.50, 0.50, 0.50, 0.65, 0.74, 0.83, 0.93, "unset", "unset", "unset", "unset", "unset", "unset", "unset", "unset", "unset", "unset", 0.93, 0.83, 0.72, 0.65, 0.50, 0.50]
+  brightnessValuesAtEachHours = [0.50, 0.50, 0.50, 0.50, 0.50, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.50, 0.50]
 
 
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
@@ -105,8 +105,7 @@ export class TimeLineComponent implements OnInit {
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (element: any) => {
         this.mapContainer = element;
-      }
-    );
+      }    );
 
     this.defaultSpeedValueSubscription = this.timelineService.defaultSpeedValue.subscribe(
       (defaultSpeedValue: number) => {
@@ -294,8 +293,11 @@ export class TimeLineComponent implements OnInit {
     if (typeof value !== 'undefined') {
 
       mapTilesDiv.style("filter", "brightness(" + this.brightnessValuesAtEachHours[value] + ")");
+      console.log(this.brightnessValuesAtEachHours[value])
     } else {
       mapTilesDiv.style("filter", "unset");
+      console.log("nada")
+
     };
   }
 
