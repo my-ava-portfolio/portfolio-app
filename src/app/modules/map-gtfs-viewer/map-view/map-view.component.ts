@@ -283,13 +283,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
       const coords: any = this.mapContainer.latLngToLayerPoint(new L.LatLng(feature.y, feature.x))
 
       // where are using line whereas arc (faster...)
-      this.context.lineWidth = this.radius * 2;
+      this.context.lineWidth = this.radius * 2.7;
       this.context.strokeStyle="white";
       this.context.moveTo(coords.x, coords.y);
       this.context.lineTo(coords.x, coords.y);
       this.context.stroke();
 
-      this.context.lineWidth = this.radius * 1.7;
+      this.context.lineWidth = this.radius * 2.1;
       this.context.strokeStyle=this.mappingColors[feature.route_type];
       this.context.moveTo(coords.x, coords.y);
       this.context.lineTo(coords.x, coords.y);
