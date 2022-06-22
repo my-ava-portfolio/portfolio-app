@@ -46,7 +46,6 @@ export class ProfilCardComponent implements OnInit, OnDestroy {
     this.activitiesGallerySubscription = this.galleryService.activitiesGalleryData.subscribe(
       (data) => {
         this.galleryItems = data.items;
-        console.log(this.galleryItems)
         this.galleryItemsChunked = chunkArray(this.galleryItems, 3)
 
       }
