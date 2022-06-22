@@ -56,7 +56,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   canvas!: any;
   context!: any;
   pi2 = Math.PI * 2;
-  radius = 4;
+  radius = 3;
   zoomCanvasLimit = 8;
 
   // check css code related to popup
