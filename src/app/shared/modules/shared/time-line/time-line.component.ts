@@ -254,7 +254,7 @@ export class TimeLineComponent implements OnInit {
       const handle = slider.insert('text', '.track-overlay')
       .attr('id', 'handle-timeline')
       .attr('class', "marker-fontawesome fa-solid")
-      .style("font-size", this.timelineMarkerFontSize)
+      .attr("font-size", this.timelineMarkerFontSize)
     } else {
       const handle = slider.insert('circle', '.track-overlay')
       .attr('id', 'handle-timeline')
