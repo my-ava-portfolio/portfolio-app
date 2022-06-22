@@ -273,26 +273,28 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.clearCanvasNodesMapping()
 
-    this.context.lineWidth = 1;
-    this.context.strokeStyle="white";
+    this.context.lineCap = 'round';
 
     let i!: number
     for (i = 0; i < data.length; i++) {
 
       this.context.beginPath();
+      const feature = data[i]
+      const coords: any = this.mapContainer.latLngToLayerPoint(new L.LatLng(feature.y, feature.x))
 
-      const coords: any = this.mapContainer.latLngToLayerPoint(new L.LatLng(data[i].y, data[i].x))
-
-      this.context.arc(
-        coords.x,
-        coords.y,
-        this.radius, 0, this.pi2
-      );
-
-      this.context.fillStyle = this.mappingColors[data[i].route_type]
-      this.context.fill();
-
+      // where are using line whereas arc (faster...)
+      this.context.lineWidth = this.radius * 2;
+      this.context.strokeStyle="white";
+      this.context.moveTo(coords.x, coords.y);
+      this.context.lineTo(coords.x, coords.y);
       this.context.stroke();
+
+      this.context.lineWidth = this.radius * 1.7;
+      this.context.strokeStyle=this.mappingColors[feature.route_type];
+      this.context.moveTo(coords.x, coords.y);
+      this.context.lineTo(coords.x, coords.y);
+      this.context.stroke();
+
     }
   }
 
