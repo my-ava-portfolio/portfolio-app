@@ -46,7 +46,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   selectedDatePosition = 0;  // TODO check type
   maxDatePosition: number = this.width - this.margin.left - this.margin.right;
   dateRange!: any;
-  movingCursor = false;
   timer!: any;
   currentCountNodes = 0;
 
@@ -117,19 +116,16 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   startTimeLine(): void {
     const button = d3.select('#play-button');
     if (button.html() === 'Pause') {
-      this.movingCursor = false;
       clearInterval(this.timer);
       // var timer = 0;
       button.text('Continue');
 
     } else if (button.html() === 'Continue') {
-      this.movingCursor = true;
       this.timer = setInterval(this.step.bind(this), 100);
       button.html('Pause');
 
     } else {
       // start run
-      this.movingCursor = true;
       this.timer = setInterval(this.step.bind(this), 100);
       button.html('Pause');
     }
@@ -143,7 +139,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     // d3.select('#slider-value').html(this.formatDate(this.startDate));
     this.update(this.startDate);
     this.selectedDatePosition = 0;
-    this.movingCursor = false;
     clearInterval(this.timer);
   }
 
@@ -154,7 +149,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     // d3.select('#slider-value').html(this.formatDate(this.endDate));
     this.update(this.endDate);
     this.selectedDatePosition = 0;
-    this.movingCursor = false;
     clearInterval(this.timer);
   }
 
@@ -214,7 +208,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     this.update(this.dateRange.invert(this.selectedDatePosition));
     this.selectedDatePosition = this.selectedDatePosition + (this.maxDatePosition / 151);
     if (this.selectedDatePosition > this.maxDatePosition) {
-      this.movingCursor = false;
       this.selectedDatePosition = 0;
       clearInterval(this.timer);
       // timer = 0;
