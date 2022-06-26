@@ -86,6 +86,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   zoomEventSubscription!: Subscription;
   screenMapBoundSubscription!: Subscription;
   pullAvailableAreasSubscription!: Subscription;
+  dateUpdatedSubscription!: Subscription;
 
   constructor(
     private dataService: DataService,
@@ -149,7 +150,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
           // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
           const now = new Date()
-          this.currentDate = element.start_date.split(" ")[0] + " " + now.toLocaleTimeString()
+          this.currentDate = `${element.start_date.split(" ")[0]} ${now.toISOString().split('T')[1].split(".")[0]}`
 
           this.timelineService.pushTimeLineInputs(this.startDate, this.endDate, this.currentDate)
           this.mapService.sendZoomMapFromBounds(this.dataBoundingBox);
@@ -157,7 +158,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.timelineService.dateUpdated.subscribe(
+    this.dateUpdatedSubscription = this.timelineService.dateUpdated.subscribe(
       (date) => {
         this.currentDate = date
         this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
@@ -210,7 +211,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
     this.pullGeoDataToMapSubscription.unsubscribe();
+    this.pullBoundingBoxDataSubscription.unsubscribe();
+    this.pullGeoDataSubscription.unsubscribe();
     this.zoomEventSubscription.unsubscribe();
+    this.screenMapBoundSubscription.unsubscribe();
+    this.pullAvailableAreasSubscription.unsubscribe();
+    this.dateUpdatedSubscription.unsubscribe();
 
     d3.select('#' + this.svgLayerId).remove();
     d3.select('#' + this.canvasLayerId).remove();
