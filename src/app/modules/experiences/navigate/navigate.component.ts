@@ -102,7 +102,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       (activityId) => {
         if (this.currentNodeIdSelected === null) {
           // in order to filter graph from components job and personal project
-          const elementId: string = 'node-' + activityId;
+          const elementId: string = `node-${activityId}`;
           this.rebuildActivitiesChartWithAPreselection(elementId);
         } else {
           this.resetChart();
@@ -134,8 +134,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resetChart();
 
     this.initSvgGraph();
-    //TODO seems useless... DEPRECATED ?
-    // this._buildLegendGraphActivities();
   }
 
   ngAfterViewInit(): void {
@@ -149,10 +147,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   graphHightligthing(activityIdentifier: string, activityType: string): void {
 
-    const nodeToPreselected = d3.selectAll('#skillsGraphElements #node-' + activityIdentifier);
+    const nodeToPreselected = d3.selectAll(`#skillsGraphElements #node-${activityIdentifier}`);
 
     if ( nodeToPreselected.size() === 1 ) {
-      this._graphSelectedFiltering('#skillsGraphElements #node-' + activityIdentifier, false);
+      this._graphSelectedFiltering(`#skillsGraphElements #node-${activityIdentifier}`, false);
     } else if ( nodeToPreselected.size() === 0 ) {
       // means that activities are grouped
       if ( activityType === this.job_identifier ) {
@@ -213,7 +211,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isVolunteersGrouped = false
     this.resetLegend();
     this.buildGraphElements();
-    d3.select('#svgSkillsChart .nodes #node-' + nodeToSelect).dispatch('click');
+    d3.select(`#svgSkillsChart .nodes #node-${nodeToSelect}`).dispatch('click');
   }
 
   resetLegend(): void {
@@ -236,7 +234,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .append('g')
       .attr('class', (d) => {
         // in order to control the display or node, check header variables
-        let classesValue = d.id + ' ' + d.status;
+        let classesValue = `${d.id} ${d.status}`;
         if (d.id === 'themes' && !this.isThemesEnabled) {
           classesValue = classesValue + ' disabled-node';
         } else if (d.id === 'technics' && !this.isTechnicsEnabled) {
@@ -260,30 +258,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
         d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
 
-        const nodeSelectedOnGraph = d3.select('#skillsGraphElements .nodes .selected');
+        this.buildGraphElements();
 
-        if (nodeSelectedOnGraph.size() === 0) {
-          // if none node is selected
-          this.buildGraphElements();
-
-        } else if (nodeSelectedOnGraph.size() === 1) {
-          // if a node is selected
-          const elementSelectedInGraph = nodeSelectedOnGraph.attr('class').split(/\s+/);
-
-          if (
-            elementSelectedInGraph.includes('themes')
-            || elementSelectedInGraph.includes('technics')
-            || elementSelectedInGraph.includes('tools')
-          ) {
-            // it's a skill node
-            // unselect (so it's like a reset but on the current date)
-            this.buildGraphElements();
-          } else {
-            // it's a job/project node
-            // click on the expected node
-            this.buildGraphElements();
-          }
-        }
       });
 
     svgContainer.selectAll()
@@ -294,7 +270,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('height', 18)
       .attr('class', (d: any) => {
         // in order to control the display or node, check header variables
-        let classesValue = d.id + ' fw-bolder';
+        let classesValue = `${d.id} fw-bolder`;
         if (d.id === 'grouper_jobs' && !this.isJobsGrouped) {
           classesValue = classesValue + ' disabled-group';
         } else if (d.id === 'grouper_projects' && !this.isProjectsGrouped) {
@@ -349,9 +325,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         .attr('x', (d: any) => d.text_cx)
         .attr('y', (d: any) => d.cy)
         .text((d: any) => d.label);
-
-    // TODO seems regenerate graph twice: DEPRECATED ?
-    // this.buildGraphElements('');
 
   }
 
@@ -461,7 +434,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .enter()
       .append('circle')
       .attr('class', (d: any) => {
-          return d.properties.type + ' unselected'; // to filter from job/project card
+          return `${d.properties.type} unselected`; // to filter from job/project card
       })
       .attr('id', (d: any) => {
           return 'node-' + d.properties.id;
@@ -516,7 +489,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         // unclick we want to unselect the node, only on the original node !
         this.currentNodeIdSelected = this.defaultNodeIdSelected;
         this._defaultDisplayingByDate();
-
 
       } else {
           // nothing here : to avoid unfocused action on an other node than the origin node, else it will disable the graph interactivity
@@ -685,7 +657,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         d.y = d.node.y;
       } else {
         // TODO maybe not working
-        d3.select('#label-' + d.id).attr('transform', 'translate(' + d.x + ',' + d.y + ')');
+        d3.select('#label-' + d.id).attr('transform', `translate(${d.x},${d.y})`);
       }
     });
     // REFACTOR

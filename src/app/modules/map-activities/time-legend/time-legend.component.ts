@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { currentYear, currentDate, backwardIcon, forwardIcon, tagsIcon } from '@core/inputs';
 import { svgTripIdPrefix, sliderBarId, legendActivities } from '@core/inputs';
 
-import { MapService } from '@services/map.service';
+import { DataService } from '@modules/map-activities/shared/services/data.service';
 
 import * as d3 from 'd3';
 
@@ -46,7 +46,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   selectedDatePosition = 0;  // TODO check type
   maxDatePosition: number = this.width - this.margin.left - this.margin.right;
   dateRange!: any;
-  movingCursor = false;
   timer!: any;
   currentCountNodes = 0;
 
@@ -56,16 +55,16 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   mapContainerSubscription!: Subscription;
 
   constructor(
-    private mapService: MapService,
+    private dataService: DataService,
   ) {
 
-    this.pullGeoDataSubscription = this.mapService.activitiesGeoData.subscribe(
+    this.pullGeoDataSubscription = this.dataService.activitiesGeoData.subscribe(
       (element) => {
 
         // build trip layers
         // get all trips and display them
         this.geoTripsData = element.trips_data; // to filter by date
-        this.mapService.pullTripsGeoDataToMap(element.trips_data);
+        this.dataService.pullTripsGeoDataToMap(element.trips_data);
 
         this.geoActivitiesData = element.activities_geojson;
         const startDate: Date = new Date(element.start_date);
@@ -83,10 +82,13 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
       }
     );
+
+
+
   }
 
   ngOnInit(): void {
-    this.mapService.pullActivitiesGeoData();
+    this.dataService.pullActivitiesGeoData();
   }
 
 
@@ -114,19 +116,16 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   startTimeLine(): void {
     const button = d3.select('#play-button');
     if (button.html() === 'Pause') {
-      this.movingCursor = false;
       clearInterval(this.timer);
       // var timer = 0;
       button.text('Continue');
 
     } else if (button.html() === 'Continue') {
-      this.movingCursor = true;
       this.timer = setInterval(this.step.bind(this), 100);
       button.html('Pause');
 
     } else {
       // start run
-      this.movingCursor = true;
       this.timer = setInterval(this.step.bind(this), 100);
       button.html('Pause');
     }
@@ -140,7 +139,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     // d3.select('#slider-value').html(this.formatDate(this.startDate));
     this.update(this.startDate);
     this.selectedDatePosition = 0;
-    this.movingCursor = false;
     clearInterval(this.timer);
   }
 
@@ -151,7 +149,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     // d3.select('#slider-value').html(this.formatDate(this.endDate));
     this.update(this.endDate);
     this.selectedDatePosition = 0;
-    this.movingCursor = false;
     clearInterval(this.timer);
   }
 
@@ -192,7 +189,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     // call api only if last count is different from the current count feature
     if (newData.length !== this.currentCountNodes) {
-      this.mapService.pullActivitiesGeoDataToMap(newData);
+      this.dataService.pullActivitiesGeoDataToMap(newData);
       this.displaySliderNodes(newData);
     }
 
@@ -211,7 +208,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     this.update(this.dateRange.invert(this.selectedDatePosition));
     this.selectedDatePosition = this.selectedDatePosition + (this.maxDatePosition / 151);
     if (this.selectedDatePosition > this.maxDatePosition) {
-      this.movingCursor = false;
       this.selectedDatePosition = 0;
       clearInterval(this.timer);
       // timer = 0;

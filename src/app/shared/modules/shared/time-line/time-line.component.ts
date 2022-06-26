@@ -82,7 +82,6 @@ export class TimeLineComponent implements OnInit {
   private selectedDatePosition = 0;  // TODO check type
   private fontSize = '14px';
   private maxDatePosition: number = this.width - this.margin.left - this.margin.right;
-  private movingCursor = false;
   private timer!: any;
   stepValue = 4000; // 4000 ok with parq ; 1500 for ter ; 4k for others // reduce to get more details
   minStepValue = 500;
@@ -164,7 +163,7 @@ export class TimeLineComponent implements OnInit {
 
     const slider = svg.append('g')
       .attr('class', 'slider-bar')
-      .attr('transform', 'translate(' + this.margin.left + ',' + this.height / 2 + ')');
+      .attr('transform', `translate(${this.margin.left},${this.height / 2})`);
 
       // slider bar creation
     slider.append('line')
@@ -214,7 +213,7 @@ export class TimeLineComponent implements OnInit {
 
     slider.insert('g', '.track-overlay')
       .attr('class', 'ticks')
-      .attr('transform', 'translate(0,' + 21 + ')')
+      .attr('transform', 'translate(0,21)')
       .selectAll('text')
       .data(this.dateRange.ticks(10)) // number of label on the slider
       .enter()
@@ -227,7 +226,7 @@ export class TimeLineComponent implements OnInit {
 
     slider.insert('g', '.track-overlay')
       .attr('class', 'ticks-line')
-      .attr('transform', 'translate(0,' + -6 + ')')
+      .attr('transform', 'translate(0,-6)')
       .selectAll('line')
       .data(this.dateRange.ticks(10)) // number of label on the slider
       .enter()
@@ -292,7 +291,7 @@ export class TimeLineComponent implements OnInit {
 
     if (typeof value !== 'undefined') {
 
-      mapTilesDiv.style("filter", "brightness(" + this.brightnessValuesAtEachHours[value] + ")");
+      mapTilesDiv.style("filter", `brightness(${this.brightnessValuesAtEachHours[value]})`);
       console.log(this.brightnessValuesAtEachHours[value])
     } else {
       mapTilesDiv.style("filter", "unset");
@@ -357,19 +356,16 @@ export class TimeLineComponent implements OnInit {
   startTimeLine(): void {
     const button = d3.select('#play-button');
     if (button.html() === 'Pause') {
-      this.movingCursor = false;
       clearInterval(this.timer);
       // var timer = 0;
       button.text('Continue');
 
     } else if (button.html() === 'Continue') {
-      this.movingCursor = true;
       this.timer = setInterval(this.step.bind(this), this.timerStep);
       button.html('Pause');
 
     } else {
       // start run
-      this.movingCursor = true;
       this.timer = setInterval(this.step.bind(this), this.timerStep);
       button.html('Pause');
 
@@ -381,10 +377,9 @@ export class TimeLineComponent implements OnInit {
     d3.select('#play-button').html('Start');
     // update to start date
     this.currentDate = this.startDate
-    // d3.select('#slider-value').html(this.formatDate(this.startDate));
     this.update(this.startDate);
+
     this.selectedDatePosition = 0;
-    this.movingCursor = false;
     clearInterval(this.timer);
   }
 
@@ -392,10 +387,9 @@ export class TimeLineComponent implements OnInit {
     d3.select('#play-button').html('Play');
     // update to start date
     this.currentDate = this.startDate
-    // d3.select('#slider-value').html(this.formatDate(this.endDate));
     this.update(this.endDate);
+
     this.selectedDatePosition = 0;
-    this.movingCursor = false;
     clearInterval(this.timer);
   }
 

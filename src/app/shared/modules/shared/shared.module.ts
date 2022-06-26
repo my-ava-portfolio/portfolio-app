@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { TimeLineComponent } from './time-line/time-line.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { TimelineService } from '@shared/services/timeline.service';
+
 
 
 @NgModule({
@@ -15,6 +17,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   ],
   exports: [
     TimeLineComponent
+  ],
+  providers: [
+    TimelineService
   ]
 })
 export class SharedModule { }

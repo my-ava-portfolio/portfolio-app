@@ -13,8 +13,9 @@ import { locationIcon, tagsIcon, centerIcon, trainIconUnicode, helpIcon, minWidt
 import { apiLogoUrl, currentYear } from '@core/inputs';
 import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '@core/inputs';
 
-import { MapService } from '@services/map.service';
+import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
+import { MapService } from '@services/map.service';
 
 
 @Component({
@@ -69,7 +70,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   generalData!: any;
 
   mapContainerSubscription!: Subscription;
-
   pullActivitiesGeoDataToMapSubscription!: Subscription;
   pullTripsGeoDataToMapSubscription!: Subscription;
   zoomEventSubscription!: Subscription;
@@ -77,6 +77,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   constructor(
     private mapService: MapService,
+    private dataService: DataService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
@@ -96,7 +97,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       }
     );
 
-    this.pullActivitiesGeoDataToMapSubscription = this.mapService.activitiesGeoDataToMap.subscribe(
+    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
         this.geoFeaturesData = geoFeaturesData;
         this.activitiesMapping(geoFeaturesData);
@@ -111,7 +112,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       }
     );
 
-    this.pullTripsGeoDataToMapSubscription = this.mapService.tripsGeoDataToMap.subscribe(
+    this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
         geoFeaturesData.forEach((item: any) => {
           // create forward and backward trip
@@ -119,7 +120,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           let tripDataRevertedFeatures: any = tripDataReverted.slice().reverse();
           tripDataReverted = tripDataRevertedFeatures;
           this.computeAnimatePointsOnLine(item.geojson_data, item.name);
-          this.computeAnimatePointsOnLine(tripDataReverted, item.name + '_reverted');
+          this.computeAnimatePointsOnLine(tripDataReverted,`${item.name}_reverted`);
         });
       }
     );
@@ -164,12 +165,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.zoomEventSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
 
+    d3.select(`#${this.svgActivitiesLayerId}`).remove();
+    d3.selectAll(`[id^=${this.svgTripIdPrefix}]`).remove();
 
-    d3.select('#' + this.svgActivitiesLayerId).remove();
-    d3.selectAll('[id^=' + this.svgTripIdPrefix + ']').remove();
-
-    d3.select(".leaflet-control-scale").remove();
-    d3.select(".leaflet-control-attribution").remove();
     this.mapService.resetMapView()
   }
 
@@ -201,7 +199,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         [dataFiltered[0].geometry.coordinates[1], dataFiltered[0].geometry.coordinates[0]],
         this.ZoomActivityValue
       );
-      this.bounceRepeat('#node_location_' + activityId + ' circle')
+      this.bounceRepeat(`#node_location_${activityId} circle`)
 
     }
     // else mean that the geom related is not display
@@ -229,22 +227,24 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       .enter()
       .append('a') // add hyper link and the svg circle
       .attr('xlink:href', (d: any) => {
-        if (d.properties.type === 'education') {
-          return '#' + this.educationRoute + '#' + d.properties.id;
-        } else if (d.properties.type == "job") {
-          return '#' + this.experiencesRoute + '#' + d.properties.id;
-        } else if (d.properties.type == "volunteer") {
-          return '#' + this.experiencesRoute + '#' + d.properties.id;
+        const idValue = d.properties.id;
+        const typeValue = d.properties.type;
+        if (typeValue === 'education') {
+          return `#${this.educationRoute}#${idValue}`;
+        } else if (typeValue == "job") {
+          return `#${this.experiencesRoute}#${idValue}`;
+        } else if (typeValue == "volunteer") {
+          return `#${this.experiencesRoute}#${idValue}`;
         }
         return '#none';
       })
       .attr('id', (d: any) => 'node_location_' + d.properties.id)
       .attr('class', (d: any) => {
         // in order to match with legend status
-        const relatedLegendElement = d3.selectAll('#' + this.legendActivities + ' circle.' + d.properties.type);
+        const relatedLegendElement = d3.selectAll(`#${this.legendActivities} circle.${d.properties.type}`);
         if (relatedLegendElement.size() > 0) {
           if (relatedLegendElement.classed('disabled')) {
-            return 'invisible activityPoint ' + d.properties.type;
+            return `invisible activityPoint ${d.properties.type}`;
           }
         }
         return 'activityPoint ' + d.properties.type;
@@ -261,9 +261,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
         // legends
         // timeline highlight
-        const sliderNode: any = d3.select('#slider-bar #location_' + d.properties.id);
+        const sliderNode: any = d3.select(`#slider-bar #location_${d.properties.id}`);
         sliderNode.classed('selected', !sliderNode.classed('selected')); // toggle class
-        const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
+        const typeNodeLegend: any = d3.select(`#theme-legend .${d.properties.type}`);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
 
       })
@@ -280,9 +280,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
         // legends
         // timeline highlight
-        const sliderNode: any = d3.select('#slider-bar #location_' + d.properties.id);
+        const sliderNode: any = d3.select(`#slider-bar #location_${d.properties.id}`);
         sliderNode.classed('selected', !sliderNode.classed('selected')); // toggle class
-        const typeNodeLegend: any = d3.select('#theme-legend .' + d.properties.type);
+        const typeNodeLegend: any = d3.select(`#theme-legend .${d.properties.id}`);
         typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
 
       });
@@ -305,10 +305,11 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     d3.select('#' + this.svgActivitiesLayerId)
       .selectAll('circle')
       .attr('transform', (d: any) => {
-        return 'translate(' +
-          this.applyLatLngToLayer(d).x + ',' +
-          this.applyLatLngToLayer(d).y + ')';
-      });
+        const y: number = d.geometry.coordinates[1];
+        const x: number = d.geometry.coordinates[0];
+        const coords = this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x));
+        return `translate(${coords.x},${coords.y})`;
+      })
   }
 
   applyLatLngToLayer(d: any): any {
@@ -338,8 +339,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   }
 
   disableActivityPopup(popupId: string): void {
-    d3
-      .select('#popup-feature-' + popupId)
+    d3.select(`#popup-feature-${popupId}`)
       .style('z-index', 'unset')
       .style('display', 'none')
       .style('left', 'unset') // reset position to avoid conflict with popup from timeline
@@ -384,7 +384,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     const svgMapContainer: any = L.svg().addTo(this.mapContainer);
     const svg: any = d3.select(svgMapContainer._container).attr('id', this.svgTripIdPrefix + layerId);
     // leaflet-zoom-hide needed to avoid the phantom original SVG
-    const g: any = svg.append('g').attr('class', 'leaflet-zoom-hide path_' + layerId);
+    const g: any = svg.append('g').attr('class', `leaflet-zoom-hide path_${layerId}`);
 
     // function to generate a line
     const toLine: any = d3.line()
@@ -399,11 +399,11 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     // single line. For now these are basically points
     // but below we set the "d" attribute using the
     // line creator function from above.
-    const linePath: any  = g.selectAll('.lineConnect_' + layerId)
+    const linePath: any  = g.selectAll(`.lineConnect_${layerId}`)
       .data([inputData])
       .enter()
       .append('path')
-      .attr('class', 'train-line lineConnect_' + layerId)  // TODO add a property type into data linked to a scss class
+      .attr('class', `train-line lineConnect_${layerId}`)  // TODO add a property type into data linked to a scss class
       .style('fill', 'none')
       .style('opacity', 'unset') // add 0 to hide the path
       .style('stroke', 'black')
@@ -414,8 +414,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     // TODO improve style : refactoring
     const marker: any = g.append('circle')
       .attr('r', 11)
-      .attr('id', 'marker_' + layerId)
-      .attr('class', 'train-marker travelMarker_' + layerId);
+      .attr('id', `marker_${layerId}`)
+      .attr('class', `train-marker travelMarker_${layerId}`);
       // .style('fill', 'yellow')
       // .style('stroke', 'black')
       // .style('stroke-width', '3px');
@@ -425,8 +425,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       // .attr('font-weight', 900)
       // .style('color', 'black')
       .text(this.trainIconUnicode)
-      .attr('id', 'markerText_' + layerId)
-      .attr('class', 'train-marker-text travelMarkerText_' + layerId)
+      .attr('id', `markerText_${layerId}`)
+      .attr('class', `train-marker-text travelMarkerText_${layerId}`)
 
     // points that make the path, we'll be used to display them with the line chart
     // we make them transparent
@@ -434,7 +434,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       .data(inputData)
       .enter()
       .append('circle')
-      .attr('class', 'waypoints_' + layerId)
+      .attr('class', `waypoints_${layerId}`)
       .style('opacity', '0');
 
     // Reposition the SVG to cover the features.
@@ -444,28 +444,25 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       marker.attr('transform', (): string => {
         const y: number = inputData[0].geometry.coordinates[1];
         const x: number = inputData[0].geometry.coordinates[0];
-        return 'translate(' +
-          this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).x + ',' +
-          this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).y +
-        ')';
+        const coords = this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x))
+        return `translate(${coords.x},${coords.y})`;
       });
 
       textmarker.attr('transform', (): string => {
         const y: number = inputData[0].geometry.coordinates[1];
         const x: number = inputData[0].geometry.coordinates[0];
-        return 'translate(' +
-          this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).x + ',' +
-          this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x)).y +
-        ')';
+        const coords = this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x))
+        return `translate(${coords.x},${coords.y})`;
       });
 
       linePath.attr('d', toLine);
 
-      ptFeatures.attr('transform', (d: any): string => 'translate(' +
-          convertLatLngToLayerCoords(d).x + ',' +
-          convertLatLngToLayerCoords(d).y +
-        ')'
-      );
+      ptFeatures.attr('transform', (d: any): string =>{
+        const y: number = inputData[0].geometry.coordinates[1];
+        const x: number = inputData[0].geometry.coordinates[0];
+        const coords = this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x))
+        return `translate(${coords.x},${coords.y})`;
+      });
 
     };
 
@@ -485,18 +482,19 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     function tweenDash(): any {
       return (t: any): any => {
         // total length of path (single value)
-        const l: any = linePath.node().getTotalLength();
+        const lenght: any = linePath.node().getTotalLength();
         // t is the time converted from 0 to 1
-        const interpolate: any = d3.interpolateString('0,' + l, l + ',' + l);
+        const interpolate: any = d3.interpolateString(`0,${lenght}`, `${lenght},${lenght}`);
         // t is fraction of time 0-1 since transition began
         const markerSelected: any = d3.select('#marker_' + layerId);
         const textmarkerSelect: any = d3.select('#markerText_' + layerId);
 
-        const p = linePath.node().getPointAtLength(t * l);
+        const pointAtLength = linePath.node().getPointAtLength(t * lenght);
 
-        // Move the marker to that point
-        markerSelected.attr('transform', 'translate(' + p.x + ',' + p.y + ')'); // move marker
-        textmarkerSelect.attr('transform', 'translate(' + p.x + ',' + p.y + ')'); // move marker
+        // Move the marker to that point computed
+        const translateValue = `translate(${pointAtLength.x},${pointAtLength.y})`;
+        markerSelected.attr('transform', translateValue);
+        textmarkerSelect.attr('transform', translateValue);
 
         return interpolate(t);
       };

@@ -14,26 +14,16 @@ export class MapService {
   mapContainer: Subject<any> = new Subject<any>();
   mapContainerScale: Subject<any> = new Subject<any>();
 
-  private apiUrlActivitiesGeoData = apiUrl + 'activities_geodata';
-  ErrorapiUrlActivitiesGeoDataApiFound: Subject<string> = new Subject<string>();
-  activitiesGeoData: Subject<any> = new Subject<any>();
-
-  dataToMap: Subject<any[]> = new Subject<any[]>();
-  dateNotified: Subject<string> = new Subject<string>();
-  timelineBuild: Subject<any> = new Subject<any>();
-
-  activitiesGeoDataToMap: Subject<any[]> = new Subject<any[]>();
-  tripsGeoDataToMap: Subject<any[]> = new Subject<any[]>();
-
   mapContainerCalled: Subject<boolean> = new Subject<boolean>();
   mapContainerLegendCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 
+  // TODO create a dedicated service
   newPointsSvgLayerName: Subject<string> = new Subject<string>();
   removePointsSvgLayerName: Subject<string> = new Subject<string>();
-
   newLinesSvgLayerName: Subject<string> = new Subject<string>();
   removeLinesSvgLayerName: Subject<string> = new Subject<string>();
+  //
 
   screenMapBound: Subject<any> = new Subject<any>();
 
@@ -77,47 +67,20 @@ export class MapService {
     this.mapContainerScale.next(scaleFeatures);
   }
 
-  pullActivitiesGeoData(): void {
-
-    this.http.get<any>(this.apiUrlActivitiesGeoData).subscribe({
-      complete: () => {
-      },
-      error: error => {
-      // TODO improve error message, but API need improvments
-      this.ErrorapiUrlActivitiesGeoDataApiFound.next(error.error.message);
-      },
-      next: response => {
-        this.activitiesGeoData.next(response);
-      },
-    });
-  }
-
-  pullDataToMap(dataToMap: any): void {
-    // NOT USED (TODO must be a generic func)
-    this.dataToMap.next(dataToMap);
-  }
-
-  pullActivitiesGeoDataToMap(dataToMap: any[]): void {
-    this.activitiesGeoDataToMap.next(dataToMap);
-  }
-
-  pullTripsGeoDataToMap(dataToMap: any[]): void {
-    this.tripsGeoDataToMap.next(dataToMap);
-  }
-
+  // TODO create a dedicated service
   pullPointsSvgLayerName(layerName: string): void {
     this.newPointsSvgLayerName.next(layerName);
   }
   pullRemovePointsSvgLayerName(layerName: string): void {
     this.removePointsSvgLayerName.next(layerName);
   }
-
   pullLinesSvgLayerName(layerName: string): void {
     this.newLinesSvgLayerName.next(layerName);
   }
   pullRemoveLinesSvgLayerName(layerName: string): void {
     this.removeLinesSvgLayerName.next(layerName);
   }
+  //
 
   pullMapCoords(coordinates: any): void {
     this.newCoords.next(coordinates);
