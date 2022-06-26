@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import * as L from 'leaflet';
+import * as d3 from 'd3';
 
 import { MapService } from '@services/map.service';
 
@@ -126,6 +127,8 @@ export class BackgroundComponent implements OnInit {
       this.InitialViewCoords,
       this.zoomValue
     )
+    d3.select(".leaflet-control-scale").remove();
+    d3.select(".leaflet-control-attribution").remove();
   }
 
   getMapScreenBounds(): void {
