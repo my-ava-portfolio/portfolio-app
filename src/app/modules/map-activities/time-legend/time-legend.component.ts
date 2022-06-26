@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { currentYear, currentDate, backwardIcon, forwardIcon, tagsIcon } from '@core/inputs';
 import { svgTripIdPrefix, sliderBarId, legendActivities } from '@core/inputs';
 
-import { MapService } from '@services/map.service';
+import { DataService } from '@modules/map-activities/shared/services/data.service';
 
 import * as d3 from 'd3';
 
@@ -56,16 +56,16 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   mapContainerSubscription!: Subscription;
 
   constructor(
-    private mapService: MapService,
+    private dataService: DataService,
   ) {
 
-    this.pullGeoDataSubscription = this.mapService.activitiesGeoData.subscribe(
+    this.pullGeoDataSubscription = this.dataService.activitiesGeoData.subscribe(
       (element) => {
 
         // build trip layers
         // get all trips and display them
         this.geoTripsData = element.trips_data; // to filter by date
-        this.mapService.pullTripsGeoDataToMap(element.trips_data);
+        this.dataService.pullTripsGeoDataToMap(element.trips_data);
 
         this.geoActivitiesData = element.activities_geojson;
         const startDate: Date = new Date(element.start_date);
@@ -83,10 +83,13 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
       }
     );
+
+
+
   }
 
   ngOnInit(): void {
-    this.mapService.pullActivitiesGeoData();
+    this.dataService.pullActivitiesGeoData();
   }
 
 
@@ -192,7 +195,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     // call api only if last count is different from the current count feature
     if (newData.length !== this.currentCountNodes) {
-      this.mapService.pullActivitiesGeoDataToMap(newData);
+      this.dataService.pullActivitiesGeoDataToMap(newData);
       this.displaySliderNodes(newData);
     }
 

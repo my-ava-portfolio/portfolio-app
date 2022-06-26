@@ -13,8 +13,9 @@ import { locationIcon, tagsIcon, centerIcon, trainIconUnicode, helpIcon, minWidt
 import { apiLogoUrl, currentYear } from '@core/inputs';
 import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '@core/inputs';
 
-import { MapService } from '@services/map.service';
+import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
+import { MapService } from '@services/map.service';
 
 
 @Component({
@@ -77,6 +78,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   constructor(
     private mapService: MapService,
+    private dataService: DataService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
@@ -96,7 +98,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       }
     );
 
-    this.pullActivitiesGeoDataToMapSubscription = this.mapService.activitiesGeoDataToMap.subscribe(
+    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
         this.geoFeaturesData = geoFeaturesData;
         this.activitiesMapping(geoFeaturesData);
@@ -111,7 +113,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       }
     );
 
-    this.pullTripsGeoDataToMapSubscription = this.mapService.tripsGeoDataToMap.subscribe(
+    this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
         geoFeaturesData.forEach((item: any) => {
           // create forward and backward trip
