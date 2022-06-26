@@ -8,6 +8,8 @@ import { MapViewComponent } from '@modules/map-activities/map-view/map-view.comp
 import { ThemeLegendComponent } from '@modules/map-activities/theme-legend/theme-legend.component';
 import { TimeLegendComponent } from '@modules/map-activities/time-legend/time-legend.component';
 
+import { DataService } from '@modules/map-activities/shared/services/data.service';
+
 import { SharedModule } from '@shared/modules/shared/shared.module';
 
 @NgModule({
@@ -21,6 +23,9 @@ import { SharedModule } from '@shared/modules/shared/shared.module';
     MapActivitiesRoutingModule,
     FontAwesomeModule,
     SharedModule
-  ]
+  ],
+  providers: [
+    DataService
+  ],
 })
 export class MapActivitiesModule { }
