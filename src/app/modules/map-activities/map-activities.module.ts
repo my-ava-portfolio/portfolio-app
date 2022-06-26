@@ -10,7 +10,6 @@ import { TimeLegendComponent } from '@modules/map-activities/time-legend/time-le
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 
-import { SharedModule } from '@shared/modules/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,8 +20,7 @@ import { SharedModule } from '@shared/modules/shared/shared.module';
   imports: [
     CommonModule,
     MapActivitiesRoutingModule,
-    FontAwesomeModule,
-    SharedModule
+    FontAwesomeModule
   ],
   providers: [
     DataService
