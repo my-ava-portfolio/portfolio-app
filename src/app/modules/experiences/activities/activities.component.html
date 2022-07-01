@@ -52,7 +52,7 @@
 <ng-template #activityFeature let-activitiesType='activitiesType' let-activitiesData='activitiesData'>
   <div  class="row justify-content-center">
 
-      <div [id]="activity.identifier" class="mb-3 mb-lg-0" *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod">
+      <div [id]="activity.identifier" class="mb-0" *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod">
 
         <ng-container *ngIf="['job', 'volunteer'].includes(activitiesType)">
           <ng-container *ngTemplateOutlet="jobActivityCard; context:{activity: activity}"></ng-container>
@@ -74,10 +74,10 @@
 <ng-template #jobActivityCard let-activity='activity'>
   <div class="p-3">
 
-      <div class="card rounded shadow bg-light">
+      <div class="card rounded bg-light">
 
 
-            <div class="card-header title d-flex flex-row justify-content-between align-items-center"  [ngStyle]="buildColorStyle(activity.color)">
+            <div class="card-header py-1 title d-flex flex-row justify-content-between align-items-center"  [ngStyle]="buildColorStyle(activity.color)">
 
               <div class="me-auto">
                 <span class="fw-bolder fs-6">{{activity.title}}</span>
@@ -85,18 +85,18 @@
 
               <div class="">
 
-                <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
+                <a *ngIf="activity.medias_found" class="rounded-circle btn btn-sm btn-warning mx-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
 
                 <ng-container *ngIf="activity.recommendations && countDictObject(activity.recommendations) > 0">
-                  <span class="btn btn-sm btn-success m-1" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="rounded-circle btn btn-sm btn-success mx-1" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <fa-icon [icon]="trophyIcon"></fa-icon>
                   </span>
                   <div class="dropdown-menu" aria-labelledby="dropdownRecomButton" *ngFor="let recommendation of activity.recommendations | keyvalue">
-                    <a class="dropdown-item" [href]="recommendation.value" target="_blank" rel="noopener noreferrer">{{ recommendation.key }}</a>
+                    <a class="dropdown-item small" [href]="recommendation.value" target="_blank" rel="noopener noreferrer">{{ recommendation.key }}</a>
                   </div>
                 </ng-container>
 
-                <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
+                <a class="rounded-circle btn btn-sm btn-dark mx-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
 
               </div>
             </div>
@@ -129,7 +129,7 @@
                     </ng-template>
 
 
-                    <div class="col-lg-12 mt-2" *ngIf="activity.keywords">
+                    <div class="mt-1" *ngIf="activity.keywords">
                         <span class="badge rounded-pill m-1" [style.border]="'1px solid ' + item.value" [style.color]="item.value"
                           *ngFor="let item of activity.keywords | keyvalue"
                         >{{ item.key }}</span>
@@ -251,23 +251,23 @@
 
 <!-- PERSONAL PROJECT ACTIVITY CARD TEMPLATE -->
 <ng-template #personalProjectActivityCard let-activity='activity'>
-  <div class="timeline-content p-3">
+  <div class="p-3">
 
-    <div class="card rounded shadow bg-light">
+    <div class="card rounded bg-light">
 
 
-      <div class="card-header title d-flex flex-row justify-content-between align-items-center" [ngStyle]="buildColorStyle(activity.color)">
+      <div class="card-header py-1 title d-flex flex-row justify-content-between align-items-center" [ngStyle]="buildColorStyle(activity.color)">
 
         <div class="me-auto">
           <span class="fw-bolder fs-6">{{activity.title}}</span>
         </div>
 
         <div class="">
-          <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
-          <a *ngIf="activity.url_github" class="btn btn-sm btn-secondary m-1" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
-          <a *ngIf="activity.url_blog != 'nan'" class="btn btn-sm btn-info m-1" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
-          <a *ngIf="activity.url_website" class="btn btn-sm btn-primary m-1" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
-          <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
+          <a *ngIf="activity.medias_found" class="rounded-circle btn btn-sm btn-warning mx-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
+          <a *ngIf="activity.url_github" class="rounded-circle btn btn-sm btn-secondary mx-1" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
+          <a *ngIf="activity.url_blog != 'nan'" class="rounded-circle btn btn-sm btn-info mx-1" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
+          <a *ngIf="activity.url_website" class="rounded-circle btn btn-sm btn-primary mx-1" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
+          <a class="rounded-circle btn btn-sm btn-dark mx-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
         </div>
       </div>
 
@@ -279,12 +279,12 @@
             <div *ngIf="activity.status !== 'InProgress'" class="fst-italic">Depuis le {{ activity.start_date | date: 'MM-yyyy' }} ({{activity.duration}}) ...</div>
           </div>
 
-          <div class="col-12 ps-3 mb-1">
+          <div class="col-10 ps-3 mb-1">
             <p class="text-justify">{{activity.presentation}}</p>
           </div>
 
-          <div class="col-12" *ngIf="activity.keywords">
-            <span class="badge rounded-pill m-1" [style]="'background-color:' + item.value"
+          <div class="" *ngIf="activity.keywords">
+            <span class="badge rounded-pill m-1" [style.border]="'1px solid ' + item.value" [style.color]="item.value"
               *ngFor="let item of activity.keywords | keyvalue"
             >{{ item.key }}</span>
           </div>

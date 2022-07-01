@@ -45,7 +45,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   labelLayout!: any;
   label!: any;
 
-  chartHeight = 200;
+  chartHeight = 250;
   chartWidth!: number;
 
   legendWidth = 300; // try to not change
@@ -131,6 +131,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
    }
 
   ngOnInit(): void {
+
     this.resetChart();
 
     this.initSvgGraph();
@@ -138,6 +139,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.chartWidth = this.svgGraphChart.nativeElement.offsetWidth;
+    if (this.chartWidth === 0) {
+      // if modile device used
+      this.chartWidth = window.innerWidth
+    }
   }
 
   ngOnDestroy(): void {

@@ -1,13 +1,6 @@
 
 
-    <section id="skills" class="col-12">
-
-      <div class="card-header bg-white mx-3">
-        <span class="fs-5 fw-bolder">
-          <fa-icon class="me-2" [icon]="skillIcon"></fa-icon>Compétences
-          <!-- <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#education-cards" aria-hidden="true"></fa-icon> -->
-        </span>
-      </div>
+    <section id="skills" class="col-12 mb-3">
 
       <div class="row">
 
@@ -22,18 +15,20 @@
 
 <ng-template #skillDetails let-title='title' let-category='category'>
 
-  <div class="col-12 mb-2" *ngIf="isActivitiesDataAvailable">
-    <div class="card-body pb-0">
+  <div class="col-12 mb-1" *ngIf="isActivitiesDataAvailable">
+    <div class="card-body mx-3 pb-0">
 
       <h5 [class]="'border p-2 pointer text-center text-white mb-4 ' + 'bg-color-' + category" data-bs-toggle="collapse" [attr.data-bs-target]="'.' + category + '-multi-collapse'">
         <fa-icon class="me-2" [icon]="skillIcon"></fa-icon>
         {{ title }}
       </h5>
 
-      <div class="justify-content-around grid-container">
+      <div class="justify-content-center grid-container">
 
-        <div class="skills feat-skill" *ngFor="let skill of skillsData[category]; let idx = index; trackBy: trackByMethod">
-          <h6 [ngClass]="{ 'collapsed':!skill.active || !skill.enabled, 'pointer':skill.active }" class="" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + category + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapse' + category + idx"><a><fa-icon class="me-2"  clickClass="rotation" [icon]="arrowDownIcon"></fa-icon>{{ skill.name }}</a></h6>
+        <div class="skills feat-skill mx-3" *ngFor="let skill of skillsData[category]; let idx = index; trackBy: trackByMethod">
+          <h6 [ngClass]="{ 'collapsed':!skill.active || !skill.enabled, 'pointer':skill.active }" class="" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + category + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapse' + category + idx"><a>
+            <!-- <fa-icon class="me-2"  clickClass="rotation" [icon]="arrowDownIcon"></fa-icon> -->
+            {{ skill.name }}</a></h6>
 
           <div *ngIf="skill.enabled; then skillDetails"></div>
           <ng-template #skillDetails>

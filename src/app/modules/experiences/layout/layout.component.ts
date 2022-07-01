@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, HostListener  } from '@angular/core';
 
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
 
-import { apiLogoUrl, tagsIcon } from '@core/inputs';
+import { apiLogoUrl, minWidthLandscape, tagsIcon } from '@core/inputs';
 import { experiencesPages } from '@core/inputs';
 
 import { interval, Subscription } from 'rxjs';
@@ -30,7 +30,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   apiImgUrl = apiLogoUrl;
   activityIdFromActivityComponents!: string;
   isLegendDisplayed = true;
-  
+
   tagsIcon = tagsIcon;
 
   // resume center bar
@@ -111,6 +111,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   }
 
   ngAfterViewInit(): void {
+    this.displayContentRegardingDeviceScreen()
+
   }
 
   ngOnDestroy(): void {
@@ -133,6 +135,14 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
+  }
+
+  @HostListener('window:orientationchange', ['$event'])
+  displayContentRegardingDeviceScreen(): void {
+    // if mode portrait and width screen <= 1024...
+    if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
+      this.isLegendDisplayed = false;
+    }
   }
 
 }
