@@ -11,35 +11,31 @@
       </div>
 
 
-      <div class="col-12">
+      <div class="d-flex flex-row">
 
-        <div class="card-header bg-white mx-3">
-          <span class="fs-5 fw-bolder">
-            <fa-icon class="me-2" [icon]="navIcon"></fa-icon>Expériences
-            <!-- <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#education-cards" aria-hidden="true"></fa-icon> -->
-          </span>
+        <div class="col-8">
+          <app-activities
+            [fragment]="fragment"
+            [jobsData]="jobsData"
+            [personalProjectsData]="personalProjectsData"
+            [volunteersData]="volunteersData"
+          ></app-activities>
+        </div>
+
+        <div class="col-4">
+          <app-skills
+            [skillsData]="skillsData"
+            [isActivitiesDataAvailable]="isActivitiesDataAvailable"
+          ></app-skills>
         </div>
 
 
-        <app-activities
-          [fragment]="fragment"
-          [jobsData]="jobsData"
-          [personalProjectsData]="personalProjectsData"
-          [volunteersData]="volunteersData"
-        ></app-activities>
       </div>
 
 
     </div>
 
-    <!-- <div class="col-12 col-xl-4">
 
-      <app-skills
-        [skillsData]="skillsData"
-        [isActivitiesDataAvailable]="isActivitiesDataAvailable"
-      ></app-skills>
-
-    </div> -->
 
   </div>
 
@@ -54,15 +50,18 @@
         </button>
       </div>
 
-      <div class="col-12 bg-white legend-content text-center py-3" *ngIf="isLegendDisplayed">
-        <app-navigate
-        [graphInputData]="generalData"
-      ></app-navigate>
+      <div class="col-12 bg-white legend-content text-center py-3">
+        <div [ngClass]="isLegendDisplayed ? 'd-block' : 'd-none'">
+
+          <app-navigate
+            [graphInputData]="generalData"
+          ></app-navigate>
+        </div>
 
       </div>
 
-      <div class="col-12 bg-white legend-content text-center py-3" *ngIf="!isLegendDisplayed">
-      </div>
+      <!-- <div class="col-12 bg-white legend-content text-center py-3" *ngIf="!isLegendDisplayed">
+      </div> -->
 
     </div>
 
