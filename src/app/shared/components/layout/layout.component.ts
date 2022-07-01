@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, ElementRef, ViewChild  } from '@angular/core';
 
-import { arrowUpIcon } from '@core/inputs';
+import { arrowUpIcon, minWidthLandscape } from '@core/inputs';
 
 import { MainService } from '@services/main.service';
 import { ControlerService } from 'src/app/services/controler.service';
@@ -51,7 +51,17 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.scrolltoTopActivated = false;
+    // the place to control the navbar
+    this.displayContentRegardingDeviceScreen();
+  }
 
+  @HostListener('window:orientationchange', ['$event'])
+  displayContentRegardingDeviceScreen(): void {
+    // if mode portrait and width screen <= 1024...
+    if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
+      this.sideBarCollapsed = false;
+
+    }
   }
 
   @HostListener('window:scroll', [])
