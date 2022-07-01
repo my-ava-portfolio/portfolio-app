@@ -20,9 +20,6 @@
           </span>
         </div>
 
-        <app-navigate
-          [graphInputData]="generalData"
-        ></app-navigate>
 
         <app-activities
           [fragment]="fragment"
@@ -45,6 +42,30 @@
     </div> -->
 
   </div>
+
+
+  <div class="col-12 legend-container">
+    <div class="row justfiy-content-center">
+
+      <div class="col-9">
+        <button class="btn btn-dark me-2" type="button" checked autocomplete="off" (click)="showHideLegend()">
+          <fa-icon class="" [icon]="tagsIcon"></fa-icon>
+          Légende
+        </button>
+      </div>
+
+      <div class="col-12 bg-white legend-content text-center py-3" *ngIf="isLegendDisplayed">
+        <app-navigate
+        [graphInputData]="generalData"
+      ></app-navigate>
+
+      </div>
+
+      <div class="col-12 bg-white legend-content text-center py-3" *ngIf="!isLegendDisplayed">
+      </div>
+
+    </div>
+
 
 </div>
 

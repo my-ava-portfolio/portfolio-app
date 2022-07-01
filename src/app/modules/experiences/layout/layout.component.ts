@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
 
-import { apiLogoUrl } from '@core/inputs';
+import { apiLogoUrl, tagsIcon } from '@core/inputs';
 import { experiencesPages } from '@core/inputs';
 
 import { interval, Subscription } from 'rxjs';
@@ -29,11 +29,14 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   apiImgUrl = apiLogoUrl;
   activityIdFromActivityComponents!: string;
+  isLegendDisplayed = true;
+  
+  tagsIcon = tagsIcon;
 
   // resume center bar
   generalData: any;
   profilData!: any;
-  
+
   jobsData!: any;
   personalProjectsData!: any;
   volunteersData!: any;
@@ -126,6 +129,10 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   pushActivitiesAvailable(activities: any[]): void {
     this.resumeService.pullActivitiesAvailable(activities);
+  }
+
+  showHideLegend(): void {
+    this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
 }
