@@ -1,0 +1,24 @@
+
+<div class="d-flex flex-column flex-xxl-row mt-2 align-content-center">
+
+  <div class="card-box d-flex flex-column my-2 flex-xxl-row flex-grow-1 bg-dark bg-gradient text-center rounded-3 align-content-between align-items-center justify-content-between">
+
+    <div class="d-flex w-100 flex-column">
+      <h3 class="fw-bolder text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
+      <div class="">
+        <h5 class="bg-white rounded-pill text-black profil-badge">{{ inputProfilData.job }}</h5>
+      </div>
+    </div>
+
+    <div id="" class="col-sm-12 col-md-12 col-lg-4 mt-1 order-lg-0">
+      <h6 class="mt-2 text-black bg-warning rounded-pill profil-badge">{{ inputProfilData.experience_duration }}</h6>
+    </div>
+
+  </div>
+
+  <div id="activities" class="card-box  d-flex flex-sm-row flex-column justify-content-around">
+    <button type="button" class="btn btn-warning m-2" *ngFor="let type of activityTypes">{{type}}</button>
+
+  </div>
+
+</div>

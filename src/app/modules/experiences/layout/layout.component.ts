@@ -32,7 +32,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   // resume center bar
   generalData: any;
-
+  profilData!: any;
+  
   jobsData!: any;
   personalProjectsData!: any;
   volunteersData!: any;
@@ -50,6 +51,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   generalDataSubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
+ // resumeDataSubscription
   routeSubscription!: Subscription;
 
   constructor(
@@ -64,6 +66,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
     this.generalDataSubscription = this.resumeService.generalData.subscribe(
       (data) => {
+        console.log(data)
+        this.profilData = data
         this.generalData = data.resume_validity_range;
         this.isDataAvailable = true;
 
@@ -83,6 +87,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
       }
     );
+
+
 
 
     this.routeSubscription = this.activatedRoute.fragment.subscribe(

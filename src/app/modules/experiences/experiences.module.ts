@@ -15,6 +15,7 @@ import { ActivitiesComponent } from '@modules/experiences/activities/activities.
 import { SkillsComponent } from '@modules/experiences/skills/skills.component';
 
 import { ClickClassDirective } from '@shared/directives/click-class.directive';
+import { GeneralInfoComponent } from './general-info/general-info.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ClickClassDirective } from '@shared/directives/click-class.directive';
     ActivitiesComponent,
     SkillsComponent,
     ActivitiesComponent,
-    ClickClassDirective
+    ClickClassDirective,
+    GeneralInfoComponent
   ],
   imports: [
     CommonModule,
