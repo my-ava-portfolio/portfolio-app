@@ -1,36 +1,38 @@
 <nav id="control-bar" class="navbar navbar-expand-xl navbar-light bg-light shadow border rounded sticky-top">
   <div class="container-fluid">
 
+    <div class="d-flex flex-row w-100 justify-content-center align-items-around">
+
       <button type="button" id="sidebarCollapse" class="btn btn-warning" (click)="sideBarCollapseUpdated()">
         <fa-icon [icon]="navBarIcon"></fa-icon>
       </button>
 
-      <h4 class="d-xl-none ms-auto fw-bold">{{this.pageTitle}}</h4>
-
+      <span class="fs-4 ms-auto d-xl-none fw-bold">{{this.pageTitle}}</span>
 
       <button class="btn btn-dark d-inline-block d-xl-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSubMenus" aria-controls="navbarSubMenus" aria-expanded="false" aria-label="Toggle navigation">
         <fa-icon [icon]="subMenuIcon"></fa-icon>
       </button>
+    </div>
 
 
-      <div class="collapse navbar-collapse" id="navbarSubMenus">
+    <div class="collapse navbar-collapse" id="navbarSubMenus">
 
-        <ul class="navbar-nav ms-auto align-items-center">
-          <h3 class="fw-bold mx-3 d-none d-xl-block">{{this.pageTitle}}</h3>
+      <ul class="navbar-nav ms-auto align-items-center">
+        <h3 class="fw-bold mx-3 d-none d-xl-block">{{this.pageTitle}}</h3>
 
-          <li *ngFor="let page of topicPagesSubMenus" class="nav-item">
+        <li *ngFor="let page of topicPagesSubMenus" class="nav-item">
 
-            <a *ngIf="page.fragment" class="nav-link text-dark float-end" [routerLink]="topicPages.route" [fragment]="page.fragment" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-              <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
-            </a>
+          <a *ngIf="page.fragment" class="nav-link text-dark float-end" [routerLink]="topicPages.route" [fragment]="page.fragment" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+            <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
+          </a>
 
-            <a *ngIf="page.route" class="nav-link text-dark float-end" [routerLink]="page.route" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-              <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
-            </a>
-          </li>
+          <a *ngIf="page.route" class="nav-link text-dark float-end" [routerLink]="page.route" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+            <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
+          </a>
+        </li>
 
-        </ul>
-      </div>
+      </ul>
+    </div>
 
 
 
