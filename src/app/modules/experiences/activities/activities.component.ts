@@ -103,8 +103,8 @@ export class ActivitiesComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy(): void {
-    // this.routeQueryParamsSubscription.unsubscribe();
     this.routeFragmentSubscription.unsubscribe()
+    this.activityEnablingSubscription.unsubscribe()
   }
 
   pushActivityId(activityId: string): void {
