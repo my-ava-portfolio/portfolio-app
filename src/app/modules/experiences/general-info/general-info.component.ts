@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivityActionsService } from '../services/activity-actions.service';
+
+
 
 @Component({
   selector: 'app-general-info',
@@ -8,16 +11,24 @@ import { Component, Input, OnInit } from '@angular/core';
 export class GeneralInfoComponent implements OnInit {
 
   @Input() profilData: any;
-  
+  @Input() activityTypesMetadata: any;
+
+
   inputProfilData: any;
+  tabView = "job";
 
-  activityTypes = ["Entreprises", "Projets personnels", "Bénévolat"]
-
-  constructor() { }
+  constructor(
+    private activityActionsService: ActivityActionsService
+  ) { }
 
   ngOnInit(): void {
     this.inputProfilData = this.profilData
 
+  }
+
+  enableActivity(idName: string): void {
+    this.activityActionsService.setActivity(idName)
+    this.tabView = idName
   }
 
 }

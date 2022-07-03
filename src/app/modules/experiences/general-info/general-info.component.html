@@ -16,9 +16,14 @@
 
   </div>
 
-  <div id="activities" class="card-box  d-flex flex-sm-row flex-column justify-content-around">
-    <button type="button" class="btn btn-warning m-2" *ngFor="let type of activityTypes">{{type}}</button>
-
+  <div id="activities-buttons" class="card-box d-flex flex-sm-row flex-column justify-content-around align-items-center">
+    <ng-container *ngFor="let type of activityTypesMetadata">
+      <a class="activity-button nav-link fw-bold p-4 m-2 border active" [class.active]="tabView == type.id" [rel]="type.id" (click)="enableActivity(type.id)">
+        {{type.title}}
+        <span [ngClass]="type.id !== 'volunteer' ? 'text-black' : 'text-white'" [class]="'badge bg-color-' + type.id">{{ type.count }}</span>
+      </a>
+    </ng-container>
   </div>
+
 
 </div>

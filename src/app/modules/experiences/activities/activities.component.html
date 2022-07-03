@@ -1,49 +1,17 @@
 
   <div id="experiences-cards" class="collapse show item">
 
-      <div class="col-10 mx-auto m-3">
+    <div id="job-widget" *ngIf="tabView == 'job'">
+      <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'job', activitiesData: jobsData}"></ng-container>
+    </div>
 
-        <ul class="nav nav-pills list-inline mx-auto justify-content-center" role="tablist">
+    <div id="personal_project-widget" *ngIf="tabView == 'personal_project'">
+      <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'personal_project', activitiesData: personalProjectsData}"></ng-container>
+    </div>
 
-          <li *ngIf="jobsData" class="nav-item" role="presentation" id="job" [ngClass]="jobsData.length === 0 ? 'disabled' : ''">
-            <a class="nav-link fw-bold border bg-light m-1 active" [class.active]="tabView == 'job'" rel="job" (click)="tabView = 'job'">
-              <fa-icon class="me-2" [icon]="resumeIcon"></fa-icon>Entreprises
-              <span class="badge bg-color-job text-black">{{ jobsData.length }}</span>
-            </a>
-          </li>
-
-          <li *ngIf="personalProjectsData" class="nav-item" role="presentation" id="personal_project"  [ngClass]="personalProjectsData.length === 0 ? 'disabled' : ''">
-            <a class="nav-link fw-bold border bg-light m-1" [class.active]="tabView == 'personal_project'" rel="personal_project" (click)="tabView = 'personal_project'">
-              <fa-icon class="me-2" [icon]="resumeIcon"></fa-icon>Projets personnels
-              <span class="badge bg-color-personal_project text-black" >{{ personalProjectsData.length }}</span>
-            </a>
-          </li>
-
-          <li *ngIf="volunteersData" class="nav-item" role="presentation" id="volunteer" [ngClass]="volunteersData.length === 0 ? 'disabled' : ''">
-            <a class="nav-link fw-bold border bg-light m-1" [class.active]="tabView == 'volunteer'" rel="volunteer" (click)="tabView = 'volunteer'">
-              <fa-icon class="me-2" [icon]="resumeIcon"></fa-icon>Bénévolat
-              <span class="badge bg-color-volunteer text-white" >{{ volunteersData.length }}</span>
-            </a>
-          </li>
-
-        </ul>
-      </div>
-
-      <div class="tab-container" [ngSwitch]="tabView">
-
-        <div class="tab" id="job-widget" *ngSwitchCase="'job'">
-          <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'job', activitiesData: jobsData}"></ng-container>
-        </div>
-
-        <div class="tab" id="personal_project-widget" *ngSwitchCase="'personal_project'">
-          <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'personal_project', activitiesData: personalProjectsData}"></ng-container>
-        </div>
-
-        <div class="tab" id="volunteer-widget" *ngSwitchCase="'volunteer'">
-          <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'volunteer', activitiesData: volunteersData}"></ng-container>
-        </div>
-
-      </div>
+    <div id="volunteer-widget" *ngIf="tabView == 'volunteer'">
+      <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'volunteer', activitiesData: volunteersData}"></ng-container>
+    </div>
 
   </div>
 

@@ -41,6 +41,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   personalProjectsData!: any;
   volunteersData!: any;
 
+  activityTypesMetadata!: any[];
+
   skillsData!: any;
   isActivitiesDataAvailable = false;
 
@@ -86,8 +88,26 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
         this.skillsData = data.skills_data;
         this.isActivitiesDataAvailable = true;
 
-        this.pushActivitiesAvailable(data.activities_data)
+        this.activityTypesMetadata = [
+          {
+            id: "job",
+            title: "Entreprises",
+            count: this.jobsData.length
+          },
+          {
+            id: "personal_project",
+            title: "Projets personnels",
+            count: this.personalProjectsData.length
+          },
+          {
+            id: "volunteer",
+            title: "Bénévolat",
+            count: this.volunteersData.length
+          }
+        ]
 
+
+        this.pushActivitiesAvailable(data.activities_data)
       }
     );
 

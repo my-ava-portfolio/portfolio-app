@@ -7,6 +7,7 @@ import { ResumeService } from '@services/resume.service';
 
 import { arrowsDownIcon, expandIcon, resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '@core/inputs';
 import { ActivatedRoute } from '@angular/router';
+import { ActivityActionsService } from '../services/activity-actions.service';
 
 
 @Component({
@@ -59,11 +60,21 @@ export class ActivitiesComponent implements OnInit, OnChanges {
 
   routeQueryParamsSubscription!: Subscription;
   routeFragmentSubscription!: Subscription;
+  activityEnablingSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
+    private activityActionsService: ActivityActionsService
+
   ) {
+
+    this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
+      (activityId) => {
+        this.tabView = activityId
+        console.log(this.tabView)
+      }
+    )
 
     this.routeFragmentSubscription = this.activatedRoute.fragment.subscribe((fragment) => {
       // from the activities map & gallery. we wait the page loading

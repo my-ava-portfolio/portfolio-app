@@ -8,6 +8,8 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { ExperiencesRoutingModule } from '@modules/experiences/experiences-routing.module';
 
+import { ActivityActionsService } from '@modules/experiences/services/activity-actions.service';
+
 import { LayoutComponent } from '@modules/experiences/layout/layout.component';
 import { NavigateComponent } from '@modules/experiences/navigate/navigate.component';
 import { ProfilBarComponent } from '@modules/experiences/profil-bar/profil-bar.component';
@@ -35,6 +37,9 @@ import { GeneralInfoComponent } from './general-info/general-info.component';
     FontAwesomeModule,
     PipesModule,
     ExperiencesRoutingModule
+  ],
+  providers: [
+    ActivityActionsService
   ]
 })
 export class ExperiencesModule { }
