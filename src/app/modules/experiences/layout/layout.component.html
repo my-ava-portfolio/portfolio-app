@@ -1,22 +1,24 @@
-<div class="container-fluid h-100">
+<div class="container-fluid h-100" *ngIf="isDataAvailable" [@fadeInOut]>
 
-  <div class="d-flex flex-column flex-xl-row bg-white my-2 rounded-3" *ngIf="isDataAvailable" [@fadeInOut]>
 
-    <div class="d-flex flex-column flex-grow-1 ">
+  <div class="content d-flex flex-column flex-grow-1 bg-white my-2 rounded-top">
 
-      <div class="col-12">
+    <div class="">
+      <app-general-info
+        [profilData]="profilData"
+        [activityTypesMetadata]="activityTypesMetadata"
+      ></app-general-info>
+    </div>
 
-        <div class="card-header bg-white mx-3">
-          <span class="fs-5 fw-bolder">
-            <fa-icon class="me-2" [icon]="navIcon"></fa-icon>Expériences
-            <!-- <fa-icon class="cursor float-end me-2" [icon]="expandIcon" data-bs-toggle="collapse" data-bs-target="#education-cards" aria-hidden="true"></fa-icon> -->
-          </span>
-        </div>
+    <div class="p-3">
+      <app-navigate
+        [graphInputData]="generalData"
+      ></app-navigate>
+    </div>
 
-        <app-navigate
-          [graphInputData]="generalData"
-        ></app-navigate>
+    <div class="d-flex flex-column flex-xl-row">
 
+      <div class="col-12 col-xl-7">
         <app-activities
           [fragment]="fragment"
           [jobsData]="jobsData"
@@ -25,18 +27,17 @@
         ></app-activities>
       </div>
 
-
-    </div>
-
-    <div class="col-12 col-xl-4">
-
-      <app-skills
-        [skillsData]="skillsData"
-        [isActivitiesDataAvailable]="isActivitiesDataAvailable"
-      ></app-skills>
+      <div class="col-12 col-xl-5">
+        <app-skills
+          [skillsData]="skillsData"
+          [isActivitiesDataAvailable]="isActivitiesDataAvailable"
+        ></app-skills>
+      </div>
 
     </div>
 
   </div>
 
 </div>
+
+

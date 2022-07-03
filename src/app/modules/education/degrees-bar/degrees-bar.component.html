@@ -38,12 +38,16 @@
               </div>
 
               <div class="d-flex flex-row justify-content-center align-item-center">
+                <div class="small">{{ degree.school }}</div>
+              </div>
+
+              <div class="d-flex flex-row justify-content-center align-item-center">
                 <div class="bounce">
                   <a [id]="'location_' + degree.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="degree.identifier">
                     <fa-icon class="me-2 text-danger" [pulse]="true" [icon]="locationIcon"></fa-icon>
                   </a>
                 </div>
-                <div class="small">{{ degree.school }} - {{degree.location}}</div>
+                <div class="small">{{degree.location}}</div>
 
               </div>
 

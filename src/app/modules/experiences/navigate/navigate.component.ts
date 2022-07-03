@@ -131,6 +131,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
    }
 
   ngOnInit(): void {
+
     this.resetChart();
 
     this.initSvgGraph();
@@ -138,6 +139,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.chartWidth = this.svgGraphChart.nativeElement.offsetWidth;
+    if (this.chartWidth === 0) {
+      // if modile device used
+      this.chartWidth = window.innerWidth
+    }
   }
 
   ngOnDestroy(): void {
@@ -397,18 +402,17 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .text(this.currentDate);
 
     this._buildLabelLayout();
-
+    // https://observablehq.com/@ben-tanen/a-tutorial-to-using-d3-force-from-someone-who-just-learned-ho
     const graphLayout = d3.forceSimulation(this.graphData.nodes)
-      .force('charge', d3.forceManyBody().strength(-600))
+      .force('charge', d3.forceManyBody().strength(-900))
       .force('x', d3.forceX(this.chartWidth / 2))
       .force('y', d3.forceY(this.chartHeight / 2))
       .force('center', d3.forceCenter(this.chartWidth / 2, this.chartHeight / 2))
-      .force('link', d3.forceLink(this.graphData.links).id( (d: any) => {
-          return d.name;
-      }).distance(60).strength(1))
+      .force('link', d3.forceLink(this.graphData.links).id((d: any) => d.name).distance(40).strength(1))
+      .force('collision', d3.forceCollide(15))
       .nodes(this.graphData.nodes)
       .on('tick', this._ticked.bind(this));
-
+    console.log(this.graphData)
     this.adjlist = {};
     this.graphData.links.forEach( (d: any): any => {
       this.adjlist[d.source.index + '-' + d.target.index] = true;
