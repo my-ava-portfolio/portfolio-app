@@ -50,7 +50,7 @@
           <span class="fw-bolder fs-6">{{activity.title}}</span>
         </div>
 
-        <div class="">
+        <div class="d-flex flex-row justify-content-end align-items-center">
 
           <a *ngIf="activity.medias_found" class="rounded-circle btn btn-sm btn-warning mx-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
 
@@ -229,7 +229,7 @@
           <span class="fw-bolder fs-6">{{activity.title}}</span>
         </div>
 
-        <div class="">
+        <div class="d-flex flex-row justify-content-end align-items-center">
           <a *ngIf="activity.medias_found" class="rounded-circle btn btn-sm btn-warning mx-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
           <a *ngIf="activity.url_github" class="rounded-circle btn btn-sm btn-secondary mx-1" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
           <a *ngIf="activity.url_blog != 'nan'" class="rounded-circle btn btn-sm btn-info mx-1" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
