@@ -72,7 +72,6 @@ export class ActivitiesComponent implements OnInit, OnChanges {
     this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
       (activityId) => {
         this.tabView = activityId
-        console.log(this.tabView)
       }
     )
 

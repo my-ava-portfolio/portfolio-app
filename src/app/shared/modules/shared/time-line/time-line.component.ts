@@ -292,10 +292,10 @@ export class TimeLineComponent implements OnInit {
     if (typeof value !== 'undefined') {
 
       mapTilesDiv.style("filter", `brightness(${this.brightnessValuesAtEachHours[value]})`);
-      console.log(this.brightnessValuesAtEachHours[value])
+      // console.log(this.brightnessValuesAtEachHours[value])
     } else {
       mapTilesDiv.style("filter", "unset");
-      console.log("nada")
+      // console.log("aa")
 
     };
   }

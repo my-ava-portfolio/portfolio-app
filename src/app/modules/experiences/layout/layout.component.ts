@@ -71,7 +71,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
     this.generalDataSubscription = this.resumeService.generalData.subscribe(
       (data) => {
-        console.log(data)
         this.profilData = data
         this.generalData = data.resume_validity_range;
         this.isDataAvailable = true;

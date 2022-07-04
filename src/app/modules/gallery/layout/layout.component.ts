@@ -121,7 +121,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.getGalleryDataByActivity(this.fragment.replace('#', ''));
       }
     } catch (e) {
-      console.log('anchor scrolling error');
+      // console.log('anchor scrolling error');
     }
   }
 

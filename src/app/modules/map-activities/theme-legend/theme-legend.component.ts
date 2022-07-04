@@ -90,7 +90,7 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
           currentSliderMarkersOnTimeline.classed('invisible', !currentSliderMarkersOnTimeline.classed('invisible')); // toggle class
 
         } else {
-          console.log('error')
+          // console.log('error')
         }
       });
   }

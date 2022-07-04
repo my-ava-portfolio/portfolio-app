@@ -67,8 +67,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.publicationsData = data.publications;
 
         this.dataAvailable = true;
-        console.log(data)
-        console.log(this.PageContent.nativeElement.clientWidth)
+        // console.log(data)
+        // console.log(this.PageContent.nativeElement.clientWidth)
       }
     );
 
@@ -134,7 +134,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   @HostListener('window:resize', ['$event']) adjustZoom(): void {
     let documentWidth = window.innerWidth;
     let documentHeight = window.innerHeight;
-    console.log(documentWidth, documentHeight)
+    // console.log(documentWidth, documentHeight)
 
     // 1cm = 37.795276px;
     // 21cm width + 1cm of margins each sides
@@ -149,7 +149,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     // zoomLevel = 0.5
     this.legacyResume.nativeElement.style.transform = "scale(" + zoomLevel + ")"
-    console.log(zoomLevel)
+    // console.log(zoomLevel)
   }
 
 }
