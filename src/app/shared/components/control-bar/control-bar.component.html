@@ -12,26 +12,26 @@
       <button class="btn btn-dark d-inline-block d-xl-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSubMenus" aria-controls="navbarSubMenus" aria-expanded="false" aria-label="Toggle navigation">
         <fa-icon [icon]="subMenuIcon"></fa-icon>
       </button>
-    </div>
 
 
-    <div class="collapse navbar-collapse" id="navbarSubMenus">
+      <div class="collapse navbar-collapse" id="navbarSubMenus">
 
-      <ul class="navbar-nav ms-auto align-items-center">
-        <h3 class="fw-bold mx-3 d-none d-xl-block">{{this.pageTitle}}</h3>
+        <ul class="navbar-nav ms-auto align-items-center">
+          <h3 class="fw-bold mx-3 d-none d-xl-block">{{this.pageTitle}}</h3>
 
-        <li *ngFor="let page of topicPagesSubMenus" class="nav-item">
+          <li *ngFor="let page of topicPagesSubMenus" class="nav-item">
 
-          <a *ngIf="page.fragment" class="nav-link text-dark float-end" [routerLink]="topicPages.route" [fragment]="page.fragment" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-            <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
-          </a>
+            <a *ngIf="page.fragment" class="nav-link text-dark float-end" [routerLink]="topicPages.route" [fragment]="page.fragment" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+              <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
+            </a>
 
-          <a *ngIf="page.route" class="nav-link text-dark float-end" [routerLink]="page.route" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-            <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
-          </a>
-        </li>
+            <a *ngIf="page.route" class="nav-link text-dark float-end" [routerLink]="page.route" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+              <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
+            </a>
+          </li>
 
-      </ul>
+        </ul>
+      </div>
     </div>
 
 
