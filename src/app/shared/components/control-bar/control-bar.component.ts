@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { navBarIcon, subMenuIcon } from '@core/inputs';
 
 import { ControlerService } from '@services/controler.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { ControlerService } from '@services/controler.service';
 export class ControlBarComponent implements OnInit, OnDestroy {
   @Output() sideBarCollapsedEmit = new EventEmitter<boolean>();
   @Input() sideBarCollapsed!: boolean;
+  @Input() subMenuBarEnabled!: boolean;
 
   navBarIcon = navBarIcon;
   subMenuIcon = subMenuIcon;
@@ -26,7 +28,12 @@ export class ControlBarComponent implements OnInit, OnDestroy {
 
   constructor(
     private controlerService: ControlerService,
+    private router: Router,
   ) {
+
+    this.router.events.subscribe(_ => {
+      this.subMenuBarEnabled = false;
+    });
 
     this.controlerSubMenusSubscription = this.controlerService.subMenuFeatures.subscribe(
       (data) => {
@@ -58,6 +65,10 @@ export class ControlBarComponent implements OnInit, OnDestroy {
   sideBarCollapseUpdated(): void {
     this.sideBarCollapsed = !this.sideBarCollapsed
     this.sideBarCollapsedEmit.emit(this.sideBarCollapsed);
+  }
+
+  showHideSubMenuBar(): void {
+    this.subMenuBarEnabled = !this.subMenuBarEnabled
   }
 
 }

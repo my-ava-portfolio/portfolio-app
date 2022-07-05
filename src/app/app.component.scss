@@ -264,3 +264,12 @@ body::-webkit-scrollbar {
   @extend .img-thumbnail ;
   max-width: 130px;
 }
+
+#scroll-top-button {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  cursor: pointer;
+  pointer-events: all;
+  opacity: 1;
+ }
