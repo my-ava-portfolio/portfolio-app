@@ -1,41 +1,42 @@
-<nav id="control-bar" class="navbar navbar-expand-xl navbar-light bg-light shadow border sticky-top">
-  <div class="container-fluid">
+<div id="control-bar" class="p-2 d-flex flex-column flex-xl-row justify-content-between navbar-light bg-light shadow border sticky-top">
 
-    <div class="d-flex flex-row w-100 justify-content-between align-items-around">
+  <div class="d-flex flex-row flex-fill justify-content-between">
+    <button type="button" id="sidebarCollapse" class="btn btn-warning" (click)="sideBarCollapseUpdated()">
+      <fa-icon [icon]="navBarIcon"></fa-icon>
+    </button>
 
+    <span class="fs-4 fw-bold text-center">{{this.pageTitle}}</span>
 
-        <button type="button" id="sidebarCollapse" class="btn btn-warning" (click)="sideBarCollapseUpdated()">
-          <fa-icon [icon]="navBarIcon"></fa-icon>
-        </button>
+    <div class="d-flex flex-row justify-content-end d-none d-xl-block">
+      <ng-container *ngFor="let page of topicPagesSubMenus" class="nav-item">
 
-      <span class="fs-4 ms-auto d-xl-none fw-bold">{{this.pageTitle}}</span>
+        <a *ngIf="page.fragment" class="nav-link text-dark float-end" [routerLink]="topicPages.route" [fragment]="page.fragment" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+          <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
+        </a>
 
-      <button class="btn btn-dark d-inline-block d-xl-none ms-auto" type="button" (click)="showHideSubMenuBar()">
-        <fa-icon [icon]="subMenuIcon"></fa-icon>
-      </button>
-
+        <a *ngIf="page.route" class="nav-link text-dark float-end" [routerLink]="page.route" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+          <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
+        </a>
+      </ng-container>
     </div>
 
+    <button class="btn btn-dark d-inline-block d-xl-none" type="button" (click)="showHideSubMenuBar()">
+      <fa-icon [icon]="subMenuIcon"></fa-icon>
+    </button>
+  </div>
 
+  <div class="d-flex flex-row justify-content-center d-block d-xl-none" *ngIf="subMenuBarEnabled">
 
-    <div class="navbar-collapse" id="navbarSubMenus">
-      <h3 class="fw-bold mx-3 d-none d-xl-block">{{this.pageTitle}}</h3>
+    <ng-container *ngFor="let page of topicPagesSubMenus" class="nav-item">
 
-      <ul class="navbar-nav ms-auto align-items-center" *ngIf="!subMenuBarEnabled">
+      <a *ngIf="page.fragment" class="nav-link text-dark float-end" [routerLink]="topicPages.route" [fragment]="page.fragment" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+        <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
+      </a>
 
-        <li *ngFor="let page of topicPagesSubMenus" class="nav-item">
-
-          <a *ngIf="page.fragment" class="nav-link text-dark float-end" [routerLink]="topicPages.route" [fragment]="page.fragment" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-            <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
-          </a>
-
-          <a *ngIf="page.route" class="nav-link text-dark float-end" [routerLink]="page.route" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-            <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
-          </a>
-        </li>
-
-      </ul>
-    </div>
+      <a *ngIf="page.route" class="nav-link text-dark float-end" [routerLink]="page.route" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
+        <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
+      </a>
+    </ng-container>
 
   </div>
-</nav>
+</div>
