@@ -1,26 +1,27 @@
-<nav id="control-bar" class="navbar navbar-expand-xl navbar-light bg-light shadow border rounded sticky-top">
+<nav id="control-bar" class="navbar navbar-expand-xl navbar-light bg-light shadow border sticky-top">
   <div class="container-fluid">
 
-    <div class="d-flex flex-row w-100 justify-content-center align-items-around">
+    <div class="d-flex flex-row w-100 justify-content-between align-items-around">
 
-      <button type="button" id="sidebarCollapse" class="btn btn-warning" (click)="sideBarCollapseUpdated()">
-        <fa-icon [icon]="navBarIcon"></fa-icon>
-      </button>
+
+        <button type="button" id="sidebarCollapse" class="btn btn-warning" (click)="sideBarCollapseUpdated()">
+          <fa-icon [icon]="navBarIcon"></fa-icon>
+        </button>
 
       <span class="fs-4 ms-auto d-xl-none fw-bold">{{this.pageTitle}}</span>
 
-      <button class="btn btn-dark d-inline-block d-xl-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSubMenus" aria-controls="navbarSubMenus" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="btn btn-dark d-inline-block d-xl-none ms-auto" type="button" (click)="showHideSubMenuBar()">
         <fa-icon [icon]="subMenuIcon"></fa-icon>
       </button>
 
-
-
     </div>
 
-    <div class="collapse navbar-collapse" id="navbarSubMenus">
 
-      <ul class="navbar-nav ms-auto align-items-center">
-        <h3 class="fw-bold mx-3 d-none d-xl-block">{{this.pageTitle}}</h3>
+
+    <div class="navbar-collapse" id="navbarSubMenus">
+      <h3 class="fw-bold mx-3 d-none d-xl-block">{{this.pageTitle}}</h3>
+
+      <ul class="navbar-nav ms-auto align-items-center" *ngIf="!subMenuBarEnabled">
 
         <li *ngFor="let page of topicPagesSubMenus" class="nav-item">
 
