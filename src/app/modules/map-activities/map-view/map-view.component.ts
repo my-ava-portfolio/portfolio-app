@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { count, map } from 'rxjs/operators';
 
 import { Subscription } from 'rxjs';
 
@@ -108,16 +109,20 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       }
     );
 
-    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.subscribe(
+    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.pipe(map((val, index) => [val, index]) // here we transform event to array (call it tuple if you like)
+     ).subscribe(
       (geoFeaturesData: any[]) => {
-        this.geoFeaturesData = geoFeaturesData;
+
+        this.mapService.removeLayerByName(this.activityLayerName)
+        this.geoFeaturesData = geoFeaturesData[0];
         let activitiesLayer = this.buildLayerFromFeatures(this.activityLayerName, this.geoFeaturesData, this.BuildActivitiesStyle)
-        var extent = this.mapContainer.getView().calculateExtent(this.mapContainer.getSize());
 
         this.mapContainer.addLayer(activitiesLayer)
-        this.mapService.zoomToLayerName(this.activityLayerName)
 
-
+        // check if the zoom is needed, it means only at the start !
+        if (geoFeaturesData[1] === 0) {
+          this.mapService.zoomToLayerName(this.activityLayerName)
+        }
       });
 
     this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
