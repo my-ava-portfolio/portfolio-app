@@ -275,6 +275,10 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       .on('mouseout', (e: any, d: any) => {
         this.disableActivityPopup(d.properties.id);
 
+        // remove (reset!) the selected class added
+        d3.selectAll(`#theme-legend .selected`)
+          .classed('selected', false);
+
         // hightlight map point
         const currentElement: any = d3.select(e.currentTarget);
         currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
@@ -283,7 +287,10 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         const sliderNode: any = d3.select(`#slider-bar #location_${d.properties.id}`);
         sliderNode.classed('selected', !sliderNode.classed('selected')); // toggle class
         const typeNodeLegend: any = d3.select(`#theme-legend .${d.properties.id}`);
-        typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
+        if (typeNodeLegend.size() !== 0) {
+          typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
+
+        }
 
       });
 
