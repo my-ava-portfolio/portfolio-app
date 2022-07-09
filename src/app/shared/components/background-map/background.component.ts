@@ -78,8 +78,8 @@ export class BackgroundComponent implements OnInit {
     );
 
     this.layerNameToZoomSubscription = this.mapService.layerNameToZoom.subscribe(
-      (bounds: any) => {
-        this.zoomToLayerName(bounds)
+      (layerName: any[]) => {
+        this.zoomToLayerName(layerName[0], layerName[1])
       }
     )
 
@@ -164,12 +164,12 @@ export class BackgroundComponent implements OnInit {
     ]);
   }
 
-  zoomToLayerName(layerName: string): void {
+  zoomToLayerName(layerName: string, zoom: number): void {
     this.map.getLayers().getArray()
       .filter((layer: any) => layer.get('name') === layerName)
       .forEach((layer: any) => {
         const extent = layer.getSource().getExtent();
-        this.map.getView().fit(extent, { duration: 1000 })
+        this.map.getView().fit(extent, { duration: 1000, maxZoom: zoom })
       });
 
 

@@ -12,7 +12,7 @@ export class MapService {
   mapContainerScale: Subject<any> = new Subject<any>();
   interactionsEnabled: Subject<boolean> = new Subject<boolean>();
   layerNameToRemove: Subject<string> = new Subject<string>();
-  layerNameToZoom: Subject<string> = new Subject<string>();
+  layerNameToZoom: Subject<any[]> = new Subject<any[]>();
 
   mapContainerCalled: Subject<boolean> = new Subject<boolean>();
   mapContainerLegendCalled: Subject<boolean> = new Subject<boolean>();
@@ -65,8 +65,8 @@ export class MapService {
     this.screenMapBound.next(coordsBound);
   }
 
-  zoomToLayerName(layerName: string): void {
-    this.layerNameToZoom.next(layerName);
+  zoomToLayerName(layerName: string, zoom: number): void {
+    this.layerNameToZoom.next([layerName, zoom]);
   }
 
   sendMapScale(scaleFeatures: any): void {
