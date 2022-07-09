@@ -4,6 +4,12 @@ import { Subscription } from 'rxjs';
 
 import * as L from 'leaflet';
 import * as d3 from 'd3';
+import {transformExtent} from 'ol/proj';
+
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
 
 import { MapService } from '@services/map.service';
 
@@ -22,12 +28,12 @@ export class BackgroundComponent implements OnInit {
   private maxZoomValue = 20;
 
 
-  private InitialViewCoords: any = [44.896741, 4.932861];
-  private zoomValue = 8;
-  private osmLayer: any = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {
-    maxZoom: this.maxZoomValue,
-    minZoom: 1
-  });
+  private InitialViewCoords: any = [496076.3136,5681717.1865];
+  private zoomValue = 7;
+  // private osmLayer: any = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {
+  //   maxZoom: this.maxZoomValue,
+  //   minZoom: 1
+  // });
 
   map: any;
 
@@ -45,26 +51,26 @@ export class BackgroundComponent implements OnInit {
     this.mapContainerLegendCalledSubscription = this.mapService.mapContainerLegendCalled.subscribe(
       (_) => {
 
-        // to add scale
-        const scaleLeaflet: any = L.control.scale(
-          {
-            imperial: false,
-            position: 'bottomright'
-          }
-        );
-        const AttributionLeaflet: any = L.control.attribution(
-          {
-            position: 'bottomright'
-          }
-        );
+        // // to add scale
+        // const scaleLeaflet: any = L.control.scale(
+        //   {
+        //     imperial: false,
+        //     position: 'bottomright'
+        //   }
+        // );
+        // const AttributionLeaflet: any = L.control.attribution(
+        //   {
+        //     position: 'bottomright'
+        //   }
+        // );
 
-        scaleLeaflet.addTo(this.map);
-        AttributionLeaflet.addTo(this.map);
+        // scaleLeaflet.addTo(this.map);
+        // AttributionLeaflet.addTo(this.map);
 
-        this.mapService.sendMapScale({
-          scale: scaleLeaflet,
-          attribution: AttributionLeaflet
-        });
+        // this.mapService.sendMapScale({
+        //   scale: scaleLeaflet,
+        //   attribution: AttributionLeaflet
+        // });
 
       }
     );
@@ -109,11 +115,26 @@ export class BackgroundComponent implements OnInit {
 
 
   initMap(): void {
-    this.map = L.map('map', {
-      center: this.InitialViewCoords,
-      zoom: this.zoomValue,
-      zoomControl: false,
-    }).addLayer(this.osmLayer);
+
+    this.map = new Map({
+      view: new View({
+        center: this.InitialViewCoords,
+        zoom: this.zoomValue,
+      }),
+      layers: [
+        new TileLayer({
+          source: new OSM(),
+        }),
+      ],
+      target: 'map'
+    });
+
+
+    // this.map = L.map('map', {
+    //   center: this.InitialViewCoords,
+    //   zoom: this.zoomValue,
+    //   zoomControl: false,
+    // }).addLayer(this.osmLayer);
 
     this.map.on(
       'moveend',
@@ -127,29 +148,37 @@ export class BackgroundComponent implements OnInit {
       this.InitialViewCoords,
       this.zoomValue
     )
-    d3.select(".leaflet-control-scale").remove();
-    d3.select(".leaflet-control-attribution").remove();
+    // TODO remove legend
+    // d3.select(".leaflet-control-scale").remove();
+    // d3.select(".leaflet-control-attribution").remove();
   }
 
   getMapScreenBounds(): void {
+    let extent = this.map.getView().calculateExtent(this.map.getSize());
     this.mapService.sendScreenMapBounds([
-      this.map.getBounds().getWest(),
-      this.map.getBounds().getSouth(),
-      this.map.getBounds().getEast(),
-      this.map.getBounds().getNorth()
+      extent[0], // west
+      extent[1], // south
+      extent[2], // east
+      extent[3], // North
     ]);
   }
 
   zoomFromDataBounds(bounds: number[]): void {
-    const ne = { lng: bounds[2], lat: bounds[3] };
-    const sw = { lng: bounds[0], lat: bounds[1] };
 
-    this.map.fitBounds(
-      L.latLngBounds(L.latLng(sw), L.latLng(ne)),
-      {
-        maxZoom: this.maxZoomValue
-      }
+    this.map.getView().fit(
+      transformExtent(bounds, 'EPSG:4326', 'EPSG:3859'),
+      this.map.getSize()
     );
+
+    // const ne = { lng: bounds[2], lat: bounds[3] };
+    // const sw = { lng: bounds[0], lat: bounds[1] };
+
+    // this.map.fitBounds(
+    //   L.latLngBounds(L.latLng(sw), L.latLng(ne)),
+    //   {
+    //     maxZoom: this.maxZoomValue
+    //   }
+    // );
   }
 
 }
