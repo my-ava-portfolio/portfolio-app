@@ -248,10 +248,25 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       }),
     });
 
+    const volunteer = new Style({
+      image: new CircleStyle({
+        radius: properties.months * 2,
+        fill: new Fill({
+          color: 'rgba(98, 0, 255, 0.6)',
+        }),
+        stroke: new Stroke({
+          color: 'white',
+          width: 2,
+        }),
+      }),
+    });
+
     if (properties.type === "job") {
       return job
-    } else {
+    } else if ( properties.type === "education") {
       return education
+    } else {
+      return volunteer
     }
 
 
