@@ -111,7 +111,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
         this.geoFeaturesData = geoFeaturesData;
-        let activitiesLayer = this.buildLayerFromFeatures(this.activityLayerName, this.geoFeaturesData, this.activitiesStyle)
+        let activitiesLayer = this.buildLayerFromFeatures(this.activityLayerName, this.geoFeaturesData, this.BuildActivitiesStyle)
         var extent = this.mapContainer.getView().calculateExtent(this.mapContainer.getSize());
 
         this.mapContainer.addLayer(activitiesLayer)
@@ -142,7 +142,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
     this.mapService.setMapInteraction(true)
-    this.activitiesStyle = this.BuildActivitiesStyle()
+    // this.activitiesStyle = this.BuildActivitiesStyle.bind(this)
     this.mapService.getMapContainer();
 
     this.sendResumeSubMenus();
@@ -197,7 +197,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   };
 
 
-  buildLayerFromFeatures(layerName: string, features: any[], style: Style): any {
+  buildLayerFromFeatures(layerName: string, features: any[], style: Function): any {
 
     let vectorSource = new VectorSource({
       features: []
@@ -212,7 +212,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         name: data.name
       })
 
-      iconFeature.setStyle(style)
+      iconFeature.setStyle(style(data.properties))
       vectorSource.addFeature(iconFeature)
     })
     vectorLayer.set("name", layerName)
@@ -220,23 +220,41 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   };
 
-  BuildActivitiesStyle(): any {
+  BuildActivitiesStyle(properties: any): Style {
 
-
-    return new Style({
-
-
+    const education = new Style({
       image: new CircleStyle({
-        radius: 10,
+        radius: properties.months * 2,
         fill: new Fill({
-          color: 'red',
+          color: 'rgba(0, 144, 29, 0.6)',
         }),
         stroke: new Stroke({
           color: 'white',
-          width: 1,
+          width: 2,
         }),
       }),
     });
+
+    const job = new Style({
+      image: new CircleStyle({
+        radius: properties.months * 2,
+        fill: new Fill({
+          color: 'rgba(225, 0, 116, 0.6)',
+        }),
+        stroke: new Stroke({
+          color: 'white',
+          width: 2,
+        }),
+      }),
+    });
+
+    if (properties.type === "job") {
+      return job
+    } else {
+      return education
+    }
+
+
   }
 
 
