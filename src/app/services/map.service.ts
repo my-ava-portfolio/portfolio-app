@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
-
-import { apiUrl } from '@core/inputs';
 
 
 @Injectable({
@@ -14,6 +11,7 @@ export class MapService {
   mapContainer: Subject<any> = new Subject<any>();
   mapContainerScale: Subject<any> = new Subject<any>();
   interactionsEnabled: Subject<boolean> = new Subject<boolean>();
+  layerNameToRemove: Subject<string> = new Subject<string>();
 
   mapContainerCalled: Subject<boolean> = new Subject<boolean>();
   mapContainerLegendCalled: Subject<boolean> = new Subject<boolean>();
@@ -37,7 +35,6 @@ export class MapService {
   mapInteraction: Subject<boolean> = new Subject<boolean>();
 
   constructor(
-    private http: HttpClient
   ) { }
 
   getMapContainer(): void {
@@ -51,6 +48,10 @@ export class MapService {
   resetMapView(): void {
     // TODO add argument to control it
     this.isMapViewReset.next(true)
+  }
+
+  removeLayerByName(layerName: string): void {
+    this.layerNameToRemove.next(layerName)
   }
 
   sendMapContainer(mapContainer: any): void {

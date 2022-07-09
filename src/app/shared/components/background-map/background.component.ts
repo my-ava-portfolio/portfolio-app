@@ -44,6 +44,7 @@ export class BackgroundComponent implements OnInit {
   mapInteractionSubscription!: Subscription;
   zoomMapFromBoundsSubscription!: Subscription;
   interactionsSetterSubscription!: Subscription;
+  layerRemovingSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -53,26 +54,7 @@ export class BackgroundComponent implements OnInit {
     this.mapContainerLegendCalledSubscription = this.mapService.mapContainerLegendCalled.subscribe(
       (_) => {
 
-        // // to add scale
-        // const scaleLeaflet: any = L.control.scale(
-        //   {
-        //     imperial: false,
-        //     position: 'bottomright'
-        //   }
-        // );
-        // const AttributionLeaflet: any = L.control.attribution(
-        //   {
-        //     position: 'bottomright'
-        //   }
-        // );
-
-        // scaleLeaflet.addTo(this.map);
-        // AttributionLeaflet.addTo(this.map);
-
-        // this.mapService.sendMapScale({
-        //   scale: scaleLeaflet,
-        //   attribution: AttributionLeaflet
-        // });
+       // TODO used for attributions
 
       }
     );
@@ -105,8 +87,13 @@ export class BackgroundComponent implements OnInit {
       (enabled: boolean) => {
           this.interationsSetter(enabled)
         }
-      )
+    )
 
+    this.layerRemovingSubscription = this.mapService.layerNameToRemove.subscribe(
+      (layerName: string) => {
+          this.removeLayerByName(layerName)
+        }
+      )
 
   }
 
@@ -194,5 +181,10 @@ export class BackgroundComponent implements OnInit {
     // );
   }
 
+  removeLayerByName(layerName: string): void {
+    this.map.getLayers().getArray()
+      .filter((layer: any) => layer.get('name') === layerName)
+      .forEach((layer: any) => this.map.removeLayer(layer));
+  }
 }
 

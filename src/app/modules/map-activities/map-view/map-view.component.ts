@@ -40,6 +40,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   educationRoute: string = educationPages.route;
 
   activitiesStyle!: Style;
+  activityLayerName = "activities_layer"
   //////
 
   svgTripIdPrefix = svgTripIdPrefix;
@@ -109,7 +110,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
         this.geoFeaturesData = geoFeaturesData;
-        let activitiesLayer = this.buildLayerFromFeatures(this.geoFeaturesData, this.activitiesStyle)
+        let activitiesLayer = this.buildLayerFromFeatures(this.activityLayerName, this.geoFeaturesData, this.activitiesStyle)
 
 
         this.mapContainer.addLayer(activitiesLayer)
@@ -166,9 +167,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.zoomEventSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
 
-    d3.select(`#${this.svgActivitiesLayerId}`).remove();
-    d3.selectAll(`[id^=${this.svgTripIdPrefix}]`).remove();
 
+
+    this.mapService.removeLayerByName(this.activityLayerName)
     this.mapService.resetMapView()
   }
 
@@ -195,13 +196,13 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   };
 
 
-  buildLayerFromFeatures(features: any[], style: Style): any {
+  buildLayerFromFeatures(layerName: string, features: any[], style: Style): any {
 
     let vectorSource = new VectorSource({
       features: []
     });
     let vectorLayer = new VectorLayer({
-      source: vectorSource
+      source: vectorSource,
     });
 
     features.forEach((data: any, index: number) => {
@@ -213,7 +214,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       iconFeature.setStyle(style)
       vectorSource.addFeature(iconFeature)
     })
-
+    vectorLayer.set("name", layerName)
     return vectorLayer
 
   };
