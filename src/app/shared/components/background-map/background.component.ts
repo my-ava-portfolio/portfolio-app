@@ -42,7 +42,7 @@ export class BackgroundComponent implements OnInit {
   mapContainerLegendCalledSubscription!: Subscription;
   mapViewResetSubscription!: Subscription;
   mapInteractionSubscription!: Subscription;
-  zoomMapFromBoundsSubscription!: Subscription;
+  layerNameToZoomSubscription!: Subscription;
   interactionsSetterSubscription!: Subscription;
   layerRemovingSubscription!: Subscription;
 
@@ -77,9 +77,9 @@ export class BackgroundComponent implements OnInit {
       }
     );
 
-    this.zoomMapFromBoundsSubscription = this.mapService.zoomMapFromBounds.subscribe(
+    this.layerNameToZoomSubscription = this.mapService.layerNameToZoom.subscribe(
       (bounds: any) => {
-        this.zoomFromDataBounds(bounds)
+        this.zoomToLayerName(bounds)
       }
     )
 
@@ -106,7 +106,7 @@ export class BackgroundComponent implements OnInit {
     this.mapContainerCalledSubscription.unsubscribe();
     this.mapViewResetSubscription.unsubscribe();
     this.mapInteractionSubscription.unsubscribe();
-    this.zoomMapFromBoundsSubscription.unsubscribe();
+    this.layerNameToZoomSubscription.unsubscribe();
     this.interactionsSetterSubscription.unsubscribe();
   }
 
@@ -143,14 +143,15 @@ export class BackgroundComponent implements OnInit {
   }
 
   resetView(): void {
-    this.map.setView(new View({
+    // TODO animate ? use extend, not 1 coordinates
+    const view = new View({
       center: this.InitialViewCoords,
       zoom: this.zoomValue,
-    }));
+    })
+    this.map.setView(view)
 
-    // TODO remove legend
-    // d3.select(".leaflet-control-scale").remove();
-    // d3.select(".leaflet-control-attribution").remove();
+    // TODO remove legend ?
+
   }
 
   getMapScreenBounds(): void {
@@ -163,12 +164,16 @@ export class BackgroundComponent implements OnInit {
     ]);
   }
 
-  zoomFromDataBounds(bounds: number[]): void {
+  zoomToLayerName(layerName: string): void {
+    this.map.getLayers().getArray()
+      .filter((layer: any) => layer.get('name') === layerName)
+      .forEach((layer: any) => {
+        const extent = layer.getSource().getExtent();
+        this.map.getView().fit(extent, { duration: 1000 })
+      });
 
-    this.map.getView().fit(
-      transformExtent(bounds, 'EPSG:4326', 'EPSG:3859'),
-      this.map.getSize()
-    );
+
+
 
     // const ne = { lng: bounds[2], lat: bounds[3] };
     // const sw = { lng: bounds[0], lat: bounds[1] };

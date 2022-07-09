@@ -9,6 +9,7 @@ import VectorSource from 'ol/source/Vector';
 
 import Point from 'ol/geom/Point';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
+import {extend} from 'ol/extent';
 
 import * as d3 from 'd3';
 
@@ -111,9 +112,12 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       (geoFeaturesData: any[]) => {
         this.geoFeaturesData = geoFeaturesData;
         let activitiesLayer = this.buildLayerFromFeatures(this.activityLayerName, this.geoFeaturesData, this.activitiesStyle)
-
+        var extent = this.mapContainer.getView().calculateExtent(this.mapContainer.getSize());
 
         this.mapContainer.addLayer(activitiesLayer)
+        this.mapService.zoomToLayerName(this.activityLayerName)
+
+
       });
 
     this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
@@ -139,9 +143,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   ngOnInit(): void {
     this.mapService.setMapInteraction(true)
     this.activitiesStyle = this.BuildActivitiesStyle()
-
-
-
     this.mapService.getMapContainer();
 
     this.sendResumeSubMenus();
@@ -220,18 +221,19 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   };
 
   BuildActivitiesStyle(): any {
+
+
     return new Style({
-      fill: new Fill({
-        color: 'rgba(255, 255, 255, 0.2)',
-      }),
-      stroke: new Stroke({
-        color: 'black',
-        width: 2,
-      }),
+
+
       image: new CircleStyle({
-        radius: 7,
+        radius: 10,
         fill: new Fill({
           color: 'red',
+        }),
+        stroke: new Stroke({
+          color: 'white',
+          width: 1,
         }),
       }),
     });
