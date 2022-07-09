@@ -13,6 +13,7 @@ export class MapService {
 
   mapContainer: Subject<any> = new Subject<any>();
   mapContainerScale: Subject<any> = new Subject<any>();
+  interactionsEnabled: Subject<boolean> = new Subject<boolean>();
 
   mapContainerCalled: Subject<boolean> = new Subject<boolean>();
   mapContainerLegendCalled: Subject<boolean> = new Subject<boolean>();
@@ -48,11 +49,16 @@ export class MapService {
   }
 
   resetMapView(): void {
+    // TODO add argument to control it
     this.isMapViewReset.next(true)
   }
 
   sendMapContainer(mapContainer: any): void {
     this.mapContainer.next(mapContainer);
+  }
+
+  setMapInteraction(enabled: boolean): void {
+    this.interactionsEnabled.next(enabled);
   }
 
   sendScreenMapBounds(coordsBound: number[]): void {

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
 import * as d3 from 'd3';
 import {transformExtent} from 'ol/proj';
+import Collection from 'ol/Collection'
 
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -42,6 +43,7 @@ export class BackgroundComponent implements OnInit {
   mapViewResetSubscription!: Subscription;
   mapInteractionSubscription!: Subscription;
   zoomMapFromBoundsSubscription!: Subscription;
+  interactionsSetterSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -99,6 +101,13 @@ export class BackgroundComponent implements OnInit {
       }
     )
 
+    this.interactionsSetterSubscription = this.mapService.interactionsEnabled.subscribe(
+      (enabled: boolean) => {
+          this.interationsSetter(enabled)
+        }
+      )
+
+
   }
 
   ngOnInit(): void {
@@ -111,43 +120,47 @@ export class BackgroundComponent implements OnInit {
     this.mapViewResetSubscription.unsubscribe();
     this.mapInteractionSubscription.unsubscribe();
     this.zoomMapFromBoundsSubscription.unsubscribe();
+    this.interactionsSetterSubscription.unsubscribe();
   }
 
 
   initMap(): void {
 
     this.map = new Map({
-      view: new View({
-        center: this.InitialViewCoords,
-        zoom: this.zoomValue,
-      }),
       layers: [
         new TileLayer({
           source: new OSM(),
         }),
       ],
-      target: 'map'
+      target: 'map',
     });
-
-
-    // this.map = L.map('map', {
-    //   center: this.InitialViewCoords,
-    //   zoom: this.zoomValue,
-    //   zoomControl: false,
-    // }).addLayer(this.osmLayer);
-
-    this.map.on(
-      'moveend',
-      this.getMapScreenBounds.bind(this)
-    );
+    this.resetView()
+    this.interationsSetter(false)
+    // this.map.on(
+    //   'moveend',
+    //   this.getMapScreenBounds.bind(this)
+    // );
 
   }
 
+  interationsSetter(enabled: boolean): void {
+    if ( !enabled ) {
+      this.map.getInteractions().forEach((interaction: any) => {
+        interaction.setActive(false);
+      });
+    } else {
+      this.map.getInteractions().forEach((interaction: any) => {
+        interaction.setActive(true);
+      });
+    }
+  }
+
   resetView(): void {
-    this.map.setView(
-      this.InitialViewCoords,
-      this.zoomValue
-    )
+    this.map.setView(new View({
+      center: this.InitialViewCoords,
+      zoom: this.zoomValue,
+    }));
+
     // TODO remove legend
     // d3.select(".leaflet-control-scale").remove();
     // d3.select(".leaflet-control-attribution").remove();
