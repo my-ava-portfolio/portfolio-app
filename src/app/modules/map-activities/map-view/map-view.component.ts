@@ -50,6 +50,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   activitiesStyle!: Style;
   activityLayerName = "activities_layer"
+  mousePosition!: number[];
   //////
 
   svgTripIdPrefix = svgTripIdPrefix;
@@ -172,13 +173,27 @@ export class MapViewComponent implements OnInit, OnDestroy  {
             timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
 
           }
-          if (selected.length > 0) {
+          if (selected.length === 1) {
             let selectedFeature = selected[0]
-
+            let pos = evt.mapBrowserEvent.pixel
             d3.select('#popup-feature-' + selectedFeature.get("id"))
-            .style('display', 'block')
-            .style('right', '1em')
-            .style('top', '5em');
+              .style('display', 'block')
+              .style('z-index', '1')
+              .style('left', () => {
+                if (pos[0] + this.popupWidth + 20 > this.innerWidth) {
+                  return pos[0] - this.popupWidth - 15 + 'px';
+                } else {
+                  return pos[0] + 15 + 'px';
+                }
+              })
+              .style('top', () => {
+
+                if (pos[1] + this.popupHeight + 20 > this.innerHeight) {
+                  return pos[1] - this.popupHeight - 15 + 'px';
+                } else {
+                  return pos[1] + 15 + 'px';
+                }
+              });
 
             const currentElement: any = d3.select("#legendActivity ." + selectedFeature.get("type"));
             currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
