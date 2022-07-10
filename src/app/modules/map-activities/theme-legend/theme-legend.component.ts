@@ -66,49 +66,6 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.interactWithActivitiesLegend()
-    this.interactWithMovesLegend()
-  }
-
-  interactWithActivitiesLegend(): void {
-    d3.selectAll('#' + this.legendActivities + ' circle')
-      .style('cursor', 'pointer')
-      .on('click', (e: any, d: any) => {
-        const currentElement = d3.select(e.currentTarget)
-        currentElement.classed('disabled', !currentElement.classed('disabled')); // toggle class
-
-        const currentElementTypes = this.activityTypesLegendData.circleJobs.filter(
-          (element: any) => currentElement.classed(element.class)
-        );
-
-        if (currentElementTypes.length === 1) {
-          // TODO svg id to constants!
-          const currentActivitiesMapCircles = d3.selectAll('#' + this.svgActivitiesPointsLayerId + ' .' + currentElementTypes[0].class)
-          currentActivitiesMapCircles.classed('invisible', !currentActivitiesMapCircles.classed('invisible')); // toggle class
-
-          const currentSliderMarkersOnTimeline = d3.selectAll('#' + this.sliderBarId + ' .' + currentElementTypes[0].class)
-          currentSliderMarkersOnTimeline.classed('invisible', !currentSliderMarkersOnTimeline.classed('invisible')); // toggle class
-
-        } else {
-          // console.log('error')
-        }
-      });
-  }
-
-  interactWithMovesLegend(): void {
-    this.movesLineLegendData.moves.forEach((element: any) => {
-      d3.selectAll('.' + element.classMarker)
-      .style('cursor', 'pointer')
-      .on('click', (e: any, d: any) => {
-        const currentElement = d3.select(e.currentTarget)
-        currentElement.classed('disabled', !currentElement.classed('disabled')); // toggle class
-
-        const currentMovesMapLines = d3.selectAll('[id^=' + this.svgTripIdPrefix + ']')
-        currentMovesMapLines.classed('invisible', !currentMovesMapLines.classed('invisible')); // toggle class
-
-      })
-    });
-
   }
 
 }

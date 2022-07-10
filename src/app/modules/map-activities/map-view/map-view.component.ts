@@ -10,10 +10,13 @@ import VectorSource from 'ol/source/Vector';
 
 import Point from 'ol/geom/Point';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
-import {extend} from 'ol/extent';
 import Select from 'ol/interaction/Select';
 import {pointerMove} from 'ol/events/condition';
+import {Tile as TileLayer} from 'ol/layer';
+import {easeOut} from 'ol/easing';
+import {getVectorContext} from 'ol/render';
 
+import {unByKey} from 'ol/Observable';
 
 
 import * as d3 from 'd3';
@@ -123,47 +126,32 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
         this.mapContainer.addLayer(activitiesLayer)
 
-
-        // this.mapContainer.on('click', (event: any) => {
-        //   if (this.mapContainer.forEachFeatureAtPixel(event.pixel,
-        //     (feature: any) => {
-        //       return feature === marker;
-        //     })
-        //   ) {
-        //     alert('click');
-        //   }
-        // });
-
-        var selectedStyle = new Style({
-          image: new CircleStyle({
-            radius: 180,
-            fill: new Fill({
-              color: 'rgba(98, 0, 255, 0.6)',
-            }),
-            stroke: new Stroke({
-              color: 'white',
-              width: 2,
-            }),
-          }),
-        });
-
         var select = new Select({
           condition: pointerMove,
           multi: false,
           layers: [activitiesLayer],
-          style: selectedStyle
+          style: (feature: any) => {
+
+            let radius = feature.get("radius")
+
+            var selectedStyle = new Style({
+              image: new CircleStyle({
+                radius: radius,
+                fill: new Fill({
+                  color: 'rgba(255, 215, 0, 0.6)',
+                }),
+                stroke: new Stroke({
+                  color: 'black',
+                  width: 2,
+                }),
+              }),
+            });
+
+            return selectedStyle;
+
+          }
         });
-
         this.mapContainer.addInteraction(select);
-
-        // this.mapContainer.on('pointermove', (evt: any) => {
-        //   const feature = this.mapContainer.forEachFeatureAtPixel(evt.pixel, (feature: any) => {
-        //     feature.getStyle().getImage().setRadius(150)
-        //     feature.changed()
-        //     // return feature;
-        //   });
-        // });
-
 
         // check if the zoom is needed, it means only at the start !
         if (geoFeaturesData[1] === 0) {
@@ -226,8 +214,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.mapService.resetMapView()
   }
 
-
-  zoomOnData(): void {
+   zoomOnData(): void {
     // TODO REWORK
     if (this.geoFeaturesData !== undefined) {
       this.zoomFromDataBounds(this.geoFeaturesData);
@@ -261,13 +248,16 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     features.forEach((data: any, index: number) => {
       let iconFeature = new Feature({
         geometry: new Point(data.geometry.coordinates).transform('EPSG:4326', 'EPSG:3857'),
-        name: data.name
+        type: data.properties.type,
+        name: data.properties.name,
+        radius: data.properties.months * 2,
       })
 
       iconFeature.setStyle(style(data.properties))
       vectorSource.addFeature(iconFeature)
     })
     vectorLayer.set("name", layerName)
+
     return vectorLayer
 
   };
