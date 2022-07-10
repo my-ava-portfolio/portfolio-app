@@ -66,7 +66,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         // build trip layers
         // get all trips and display them
         this.geoTripsData = element.trips_data; // to filter by date
-        this.dataService.pullTripsGeoDataToMap(element.trips_data);
 
         this.geoActivitiesData = element.activities_geojson;
         const startDate: Date = new Date(element.start_date);
@@ -78,8 +77,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
         // if a circle is preselected
         if ( this.currentActivityIdSelected !== undefined ) {
-          const currentElement: any = d3.select('#slider-bar #location_' + this.currentActivityIdSelected);
-          this.sliderEventCircleBounceRepeat(currentElement)
         }
 
       }
@@ -156,6 +153,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
 
   updateTrips(h: Date): void {
+    let tripFound: any[] = []
     this.geoTripsData.forEach((item: any) => {
       const startDate: string = item.start_date;
       const endDate: string = item.end_date;
@@ -164,14 +162,16 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
       const svgTrip = d3.selectAll('[id^=' + this.svgTripIdPrefix + item.name + ']');
       if (tripStartDate !== null && tripEndDate !== null) {
-
         if (h >= tripStartDate && h < tripEndDate) {
-          svgTrip.style('visibility', 'visible');
-        } else {
-          svgTrip.style('visibility', 'hidden');
+          tripFound.push(item)
         }
       }
     });
+    if (tripFound.length === 1) {
+      this.dataService.pullTripsGeoDataToMap(tripFound);
+    } else {
+      this.dataService.pullTripsGeoDataToMap([]);
+    }
   }
 
   update(h: any): void {
@@ -384,9 +384,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('cursor', 'pointer')
       .attr('cx', (d: any) => this.dateRange(this.parseTime(d.properties.start_date)))
       .on('mouseover', (e: any, d: any) => {
-        if (d.properties.id !== this.currentActivityIdSelected) {
-          this.BounceMapActivityCircle(d, 4);
-        }
 
         this.interactionWithEventNode(e.currentTarget, d);
         // to link with popup
@@ -396,10 +393,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
           .style('top', '5em');
       })
       .on('mouseout', (e: any, d: any) => {
-
-        if (d.properties.id !== this.currentActivityIdSelected) {
-          this.BounceMapActivityCircle(d, 2);
-        }
 
         this.interactionWithEventNode(e.currentTarget, d);
         // link with popup
@@ -422,32 +415,5 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     //TODO select circle
   }
 
-  BounceMapActivityCircle(data: any, scaleR: number): void {
-    const currentActivityCircle = d3.select('#svgActivitiesLayer #node_location_' + data.properties.id + ' circle');
-    this.circleBouncer(currentActivityCircle, scaleR);
-  }
-
-  circleBouncer(object: any, rScale: number): void {
-    object
-      .transition()
-      .duration(1000)
-      .ease(d3.easeElastic)
-      .attr('r', (d: any) => d.properties.months * rScale);
-  }
-
-  sliderEventCircleBounceRepeat(d3Object: any): void {
-    d3Object
-      .transition()
-      .duration(1000)
-      .ease(d3.easeElastic)
-      .attr('r', this.sliderNodesSize * 2)
-      // .style("opacity", 1)
-      .transition()
-      .duration(500)
-      .ease(d3.easeLinear)
-      .attr('r', this.sliderNodesSize)
-      // .style("opacity", 0)
-      .on('end', this.sliderEventCircleBounceRepeat.bind(this, d3Object));
-  }
 
 }

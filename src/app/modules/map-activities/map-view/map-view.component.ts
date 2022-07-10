@@ -1,3 +1,4 @@
+import { dataVizIcon } from './../../../core/inputs';
 import { Component, OnInit, OnDestroy, HostListener, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { count, map } from 'rxjs/operators';
 
@@ -14,7 +15,8 @@ import Select from 'ol/interaction/Select';
 import {pointerMove} from 'ol/events/condition';
 import {Tile as TileLayer} from 'ol/layer';
 import {easeOut} from 'ol/easing';
-import {getVectorContext} from 'ol/render';
+import { getVectorContext } from 'ol/render';
+import {LineString} from 'ol/geom';
 
 import {unByKey} from 'ol/Observable';
 
@@ -31,6 +33,7 @@ import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '@
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from '@services/map.service';
+import { transform } from 'ol/proj';
 
 
 @Component({
@@ -217,9 +220,111 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
+        this.mapService.removeLayerByName('travel')
+
+        if (geoFeaturesData.length === 1) {
+          geoFeaturesData.forEach((item: any) => {
+
+            let points: any[] = []
+            item.geojson_data.forEach((element: any) => {
+              points.push(transform(element.geometry.coordinates, 'EPSG:4326', 'EPSG:3857'))
+            });;
+            let travelLine = new LineString(points)//.transform('EPSG:4326', 'EPSG:3857')
+            var travel = new Feature({
+              type: 'route',
+              geometry: travelLine
+            })
+            const startMarker = new Feature({
+              type: 'icon',
+              geometry: new Point(travelLine.getFirstCoordinate()),
+            });
+            const endMarker = new Feature({
+              type: 'icon',
+              geometry: new Point(travelLine.getLastCoordinate()),
+            });
+            const position = new Point(travelLine.getFirstCoordinate())
+            const geoMarker = new Feature({
+              type: 'geoMarker',
+              geometry: position,
+            });
+
+            const styles = (featureType: string) => {
+
+              if (featureType === "route") {
+                return new Style({
+                  stroke: new Stroke({
+                    width: 6,
+                    color: 'black',
+                  }),
+                })
+              } else if (featureType === "icon") {
+                return new Style({
+                  image: new CircleStyle({
+                    radius: 7,
+                    fill: new Fill({ color: 'red' }),
+                    stroke: new Stroke({
+                      color: 'white',
+                      width: 2,
+                    }),
+                  })
+                })
+              } else {
+                return new Style({
+                  image: new CircleStyle({
+                    radius: 7,
+                    fill: new Fill({ color: 'black' }),
+                    stroke: new Stroke({
+                      color: 'white',
+                      width: 2,
+                    }),
+                  }),
+                })
+              }
+            }
+
+            let vectorSource = new VectorSource({
+              features: []
+            });
+            let vectorLayer = new VectorLayer({
+              source: vectorSource,
+            });
+            const features = [travel, geoMarker, startMarker, endMarker]
+            features.forEach((feature: any, index: number) => {
+              feature.setStyle(styles(feature.get("type")))
+              vectorSource.addFeature(feature)
+            })
+            vectorLayer.set("name", "travel")
+
+            let lastTime = Date.now();
+            let distance  = 0;
+
+            this.mapContainer.addLayer(vectorLayer);
+
+            vectorLayer.on('postrender', (event: any) => {
+              const speed = 100;
+              const time = event.frameState.time;
+              const elapsedTime = time - lastTime;
+              distance = (distance + (speed * elapsedTime) / 1e6) % 2;
+              lastTime = time;
+
+              const currentCoordinate = travelLine.getCoordinateAt(
+                distance > 1 ? 2 - distance : distance
+              );
+              position.setCoordinates(currentCoordinate);
+              const vectorContext = getVectorContext(event);
+              vectorContext.setStyle(styles('geoMarker'));
+              vectorContext.drawGeometry(position);
+              // tell OpenLayers to continue the postrender animation
+              this.mapContainer.render();
+            });
+            console.log("aaa")
+
+          });
+        }
 
       }
     );
+
 
     this.routeSubscription = this.activatedRoute.fragment.subscribe(
       (fragment) => {
