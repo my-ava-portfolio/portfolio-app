@@ -375,7 +375,18 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
 
 
+  // displayTravel(): void {
+  //   const vectorLayer = new VectorLayer({
+  //     source: new VectorSource({
+  //       features: [routeFeature, geoMarker, startMarker, endMarker],
+  //     }),
+  //     style: function (feature) {
+  //       return styles[feature.get('type')];
+  //     },
+  //   });
+  //   vectorLayer.on('postrender', moveFeature);
 
+  // }
 
 
 }
