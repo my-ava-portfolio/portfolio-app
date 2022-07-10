@@ -126,7 +126,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
         this.mapContainer.addLayer(activitiesLayer)
 
-        var select = new Select({
+        let select = new Select({
           condition: pointerMove,
           multi: false,
           layers: [activitiesLayer],
@@ -146,12 +146,52 @@ export class MapViewComponent implements OnInit, OnDestroy  {
                 }),
               }),
             });
-
             return selectedStyle;
 
           }
         });
+        select.on('select', (evt: any) => {
+
+          const selected = evt.selected
+          const deSelected = evt.deselected
+
+          // WARNING not refactoring needed ! because we can have both selected and deselected
+          if (deSelected.length === 1) {
+            let deSelectedFeature = deSelected[0]
+
+            d3.select('#popup-feature-' + deSelectedFeature.get("id"))
+            .style('display', 'none')
+            .style('right', 'unset')
+            .style('top', 'unset');
+
+
+            const currentElement: any = d3.select("#legendActivity ." + deSelectedFeature.get("type"));
+            currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
+
+            const timeLineEvent: any = d3.select('circle#location_' + deSelectedFeature.get("id"));
+            timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
+
+          }
+          if (selected.length > 0) {
+            let selectedFeature = selected[0]
+
+            d3.select('#popup-feature-' + selectedFeature.get("id"))
+            .style('display', 'block')
+            .style('right', '1em')
+            .style('top', '5em');
+
+            const currentElement: any = d3.select("#legendActivity ." + selectedFeature.get("type"));
+            currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
+
+            const timeLineEvent: any = d3.select('circle#location_' + selectedFeature.get("id"));
+            timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
+          }
+
+        });
+
         this.mapContainer.addInteraction(select);
+
+
 
         // check if the zoom is needed, it means only at the start !
         if (geoFeaturesData[1] === 0) {
@@ -248,6 +288,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     features.forEach((data: any, index: number) => {
       let iconFeature = new Feature({
         geometry: new Point(data.geometry.coordinates).transform('EPSG:4326', 'EPSG:3857'),
+        id: data.properties.id,
         type: data.properties.type,
         name: data.properties.name,
         radius: data.properties.months * 2,
@@ -302,6 +343,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         }),
       }),
     });
+
+
+
 
     if (properties.type === "job") {
       return job

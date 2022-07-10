@@ -8,6 +8,7 @@ import { svgTripIdPrefix, sliderBarId, legendActivities } from '@core/inputs';
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 
 import * as d3 from 'd3';
+import { MapService } from '@services/map.service';
 
 
 @Component({
@@ -56,6 +57,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   constructor(
     private dataService: DataService,
+    private mapService: MapService,
   ) {
 
     this.pullGeoDataSubscription = this.dataService.activitiesGeoData.subscribe(
@@ -260,7 +262,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         })
         .on('end', () => {
           // at the drag end we enable the drap map
-          this.mapContainer.dragging.enable();
+          this.mapService.setMapInteraction(true)
 
           // enable timeline node selection
           d3.select('#slider-bar .events')
@@ -404,7 +406,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         d3.select('#popup-feature-' + d.properties.id)
         .style('display', 'none')
         .style('right', 'unset')
-          .style('right', 'unset');
+        .style('top', 'unset');
 
       });
     sliderNodes.exit().remove();
@@ -417,10 +419,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
     const legendElement: any = d3.select('#theme-legend .' + data.properties.type);
     legendElement.classed('selected', !legendElement.classed('selected'));
-
-    const currentActivityCircle = d3.select('#svgActivitiesLayer #node_location_' + data.properties.id + ' circle');
-    currentActivityCircle.classed('selected', !currentActivityCircle.classed('selected')); // toggle class
-
+    //TODO select circle
   }
 
   BounceMapActivityCircle(data: any, scaleR: number): void {
