@@ -26,7 +26,7 @@ import { apiLogoUrl } from '@core/inputs';
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from '@services/map.service';
-import { activitiesStyle, activitySelectedStyle, legendActivitiesId, travelNodespeed, travelStyles } from '../shared/core';
+import { activitiesStyle, activityLayerName, activitySelectedStyle, legendActivitiesId, travelLayerName, travelNodespeed, travelStyles } from '../shared/core';
 
 
 @Component({
@@ -47,8 +47,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   mapContainer!: any;
 
   activitiesStyle!: Style;
-  activityLayerName = "activities"
-  travelLayerName = "travel"
 
   geoFeaturesData!: any[];
 
@@ -92,7 +90,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.zoomEventSubscription = this.mapService.zoomEvent.subscribe(
       (_: boolean) => {
-        this.mapService.zoomToLayerName(this.activityLayerName, this.maxZoomValue)
+        this.mapService.zoomToLayerName(activityLayerName, this.maxZoomValue)
       }
     );
 
@@ -107,21 +105,21 @@ export class MapViewComponent implements OnInit, OnDestroy  {
      .subscribe(
       (geoFeaturesData: any[]) => {
 
-        this.mapService.removeLayerByName(this.activityLayerName)
+        this.mapService.removeLayerByName(activityLayerName)
         this.geoFeaturesData = geoFeaturesData[0];
 
         this.buildActivityLayer(this.geoFeaturesData)
 
         // check if the zoom is needed, it means only at the start !
         if (geoFeaturesData[1] === 0) {
-          this.mapService.zoomToLayerName(this.activityLayerName, 9)
+          this.mapService.zoomToLayerName(activityLayerName, 9)
 
         }
       });
 
     this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
-        this.mapService.removeLayerByName(this.travelLayerName)
+        this.mapService.removeLayerByName(travelLayerName)
 
         if (geoFeaturesData.length === 1) {
 
@@ -176,8 +174,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.routeSubscription.unsubscribe();
 
 
-    this.mapService.removeLayerByName(this.activityLayerName)
-    this.mapService.removeLayerByName(this.travelLayerName)
+    this.mapService.removeLayerByName(activityLayerName)
+    this.mapService.removeLayerByName(travelLayerName)
 
     this.mapService.resetMapView()
   }
@@ -215,7 +213,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
 
   buildActivityLayer(data: any): void {
-    let activitiesLayer = this.buildLayerFromFeatures(this.activityLayerName, data, activitiesStyle)
+    let activitiesLayer = this.buildLayerFromFeatures(activityLayerName, data, activitiesStyle)
 
     this.mapContainer.addLayer(activitiesLayer)
 
@@ -329,7 +327,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       feature.setStyle(travelStyles(feature.get("type")))
       vectorSource.addFeature(feature)
     })
-    vectorLayer.set("name", this.travelLayerName)
+    vectorLayer.set("name", travelLayerName)
 
     this.mapContainer.addLayer(vectorLayer);
 

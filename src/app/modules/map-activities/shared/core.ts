@@ -1,12 +1,14 @@
+import Feature from "ol/Feature";
 import { Style } from "ol/style";
 import CircleStyle from "ol/style/Circle";
 import Fill from "ol/style/Fill";
 import Stroke from "ol/style/Stroke";
 
+export const activityLayerName = "activities"
+export const travelLayerName = "travel"
 
 export const legendActivitiesId = 'legendActivity';
 export const sliderBarId = 'slider-bar';
-
 export const travelNodespeed = 100;
 
 
@@ -129,4 +131,13 @@ export const travelStyles = (featureType: string) => {
       }),
     })
   }
+}
+
+
+export function getFeatureFromLayer(map: any, layerName: string, featureName: string, attribute: string): Feature {
+  const layers = map.getLayers().getArray()
+  const layersFound = layers.filter((layer: any) => layer.get('name') === layerName)
+  const features = layersFound[0].getSource().getFeatures()
+  const featuresFound = features.filter((layer: any) => layer.get(attribute) === featureName)
+  return featuresFound[0]
 }

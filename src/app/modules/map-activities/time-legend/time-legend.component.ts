@@ -1,3 +1,4 @@
+import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer } from './../shared/core';
 import { Component, OnInit, ViewEncapsulation, OnDestroy, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';
@@ -8,7 +9,7 @@ import { DataService } from '@modules/map-activities/shared/services/data.servic
 import { MapService } from '@services/map.service';
 
 import * as d3 from 'd3';
-import { legendActivitiesId, sliderBarId } from '@modules/map-activities/shared/core';
+import { legendActivitiesId, sliderBarId, travelLayerName } from '@modules/map-activities/shared/core';
 
 
 @Component({
@@ -56,6 +57,13 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     private mapService: MapService,
   ) {
 
+    this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
+      (mapContainer: any) => {
+        this.mapContainer = mapContainer;
+
+      }
+    );
+
     this.pullGeoDataSubscription = this.dataService.activitiesGeoData.subscribe(
       (element) => {
 
@@ -87,6 +95,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.pullGeoDataSubscription.unsubscribe();
+    this.mapContainerSubscription.unsubscribe();
   }
 
   parseTime(time: string): Date | null {
@@ -384,6 +393,10 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
           .style('display', 'block')
           .style('right', '1em')
           .style('top', '5em');
+
+        const feature = getFeatureFromLayer(this.mapContainer, activityLayerName, d.properties.id, 'id')
+        feature.setStyle(activitySelectedStyle(feature.get('radius')))
+
       })
       .on('mouseout', (e: any, d: any) => {
 
@@ -392,7 +405,10 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         d3.select('#popup-feature-' + d.properties.id)
         .style('display', 'none')
         .style('right', 'unset')
-        .style('top', 'unset');
+          .style('top', 'unset');
+
+        const feature = getFeatureFromLayer(this.mapContainer, activityLayerName, d.properties.id, 'id')
+        feature.setStyle(activitiesStyle(d.properties))
 
       });
     sliderNodes.exit().remove();
