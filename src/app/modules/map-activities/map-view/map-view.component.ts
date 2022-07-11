@@ -15,8 +15,6 @@ import {LineString} from 'ol/geom';
 import { Style } from 'ol/style';
 import { transform } from 'ol/proj';
 
-
-
 import * as d3 from 'd3';
 
 import { ActivatedRoute } from '@angular/router';
@@ -94,20 +92,19 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.zoomEventSubscription = this.mapService.zoomEvent.subscribe(
       (_: boolean) => {
-        // this.zoomFromDataBounds(this.geoFeaturesData)
+        this.mapService.zoomToLayerName(this.activityLayerName, this.maxZoomValue)
       }
     );
 
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (mapContainer: any) => {
         this.mapContainer = mapContainer;
-        // this.initActivitiesSvgLayer();
 
       }
     );
 
-    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.pipe(map((val, index) => [val, index]) // here we transform event to array (call it tuple if you like)
-     ).subscribe(
+    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.pipe(map((val, index) => [val, index])) // here we transform event to array (call it tuple if you like)
+     .subscribe(
       (geoFeaturesData: any[]) => {
 
         this.mapService.removeLayerByName(this.activityLayerName)
@@ -185,27 +182,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.mapService.resetMapView()
   }
 
-   zoomOnData(): void {
-    // TODO REWORK
-    if (this.geoFeaturesData !== undefined) {
-      this.zoomFromDataBounds(this.geoFeaturesData);
-    }
-  }
-
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
-
-  zoomFromDataBounds(geojsonData: any): void {
-    // TODO REWORK
-    this.mapContainer.fitBounds(
-      L.geoJSON(geojsonData).getBounds(),
-      {
-        maxZoom: this.maxZoomValue
-      }
-    );
-  };
-
 
   buildLayerFromFeatures(layerName: string, features: any[], style: Function): any {
 

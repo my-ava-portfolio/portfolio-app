@@ -21,8 +21,6 @@ import { MapService } from '@services/map.service';
   styleUrls: ['./background.component.scss']
 })
 export class BackgroundComponent implements OnInit {
-  // @Input() isBlurred!: boolean;
-  // @Input() isMapInteractionEnabled!: boolean;
 
   isMapInteractionEnabled: boolean = false;
 
@@ -31,10 +29,6 @@ export class BackgroundComponent implements OnInit {
 
   private InitialViewCoords: any = [496076.3136,5681717.1865];
   private zoomValue = 7;
-  // private osmLayer: any = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {
-  //   maxZoom: this.maxZoomValue,
-  //   minZoom: 1
-  // });
 
   map: any;
 
@@ -172,18 +166,6 @@ export class BackgroundComponent implements OnInit {
         this.map.getView().fit(extent, { duration: 1000, maxZoom: zoom })
       });
 
-
-
-
-    // const ne = { lng: bounds[2], lat: bounds[3] };
-    // const sw = { lng: bounds[0], lat: bounds[1] };
-
-    // this.map.fitBounds(
-    //   L.latLngBounds(L.latLng(sw), L.latLng(ne)),
-    //   {
-    //     maxZoom: this.maxZoomValue
-    //   }
-    // );
   }
 
   removeLayerByName(layerName: string): void {
