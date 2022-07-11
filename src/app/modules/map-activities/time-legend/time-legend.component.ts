@@ -8,7 +8,7 @@ import { DataService } from '@modules/map-activities/shared/services/data.servic
 
 import * as d3 from 'd3';
 import { MapService } from '@services/map.service';
-import { legendActivities, sliderBarId } from '@modules/map-activities/shared/core';
+import { legendActivitiesId, sliderBarId } from '@modules/map-activities/shared/core';
 
 
 @Component({
@@ -368,7 +368,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('id', (d: any) => 'location_' + d.properties.id)
       .attr('class', (d: any) => {
         // in order to match with legend status
-        const relatedLegendElement = d3.selectAll('#' + legendActivities + ' circle.' + d.properties.type);
+        const relatedLegendElement = d3.selectAll('#' + legendActivitiesId + ' circle.' + d.properties.type);
         if (relatedLegendElement.size() > 0) {
           if (relatedLegendElement.classed('disabled')) {
             return 'invisible activityPoint ' + d.properties.type;
@@ -406,7 +406,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     const currentElement: any = d3.select(svgObject);
     currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
 
-    const legendElement: any = d3.select('#theme-legend .' + data.properties.type);
+    const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + data.properties.type);
     legendElement.classed('selected', !legendElement.classed('selected'));
     //TODO select circle
   }

@@ -4,7 +4,7 @@ import Fill from "ol/style/Fill";
 import Stroke from "ol/style/Stroke";
 
 
-export const legendActivities = 'legendActivity';
+export const legendActivitiesId = 'legendActivity';
 export const sliderBarId = 'slider-bar';
 
 

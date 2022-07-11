@@ -1,6 +1,5 @@
-import { dataVizIcon } from './../../../core/inputs';
-import { Component, OnInit, OnDestroy, HostListener, ViewEncapsulation, AfterViewInit } from '@angular/core';
-import { count, map } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 import { Subscription } from 'rxjs';
 
@@ -10,15 +9,11 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 
 import Point from 'ol/geom/Point';
-import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 import Select from 'ol/interaction/Select';
 import {pointerMove} from 'ol/events/condition';
-import {Tile as TileLayer} from 'ol/layer';
-import {easeOut} from 'ol/easing';
 import { getVectorContext } from 'ol/render';
 import {LineString} from 'ol/geom';
 
-import {unByKey} from 'ol/Observable';
 
 
 import * as d3 from 'd3';
@@ -33,7 +28,8 @@ import { DataService } from '@modules/map-activities/shared/services/data.servic
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from '@services/map.service';
 import { transform } from 'ol/proj';
-import { activitiesStyle, activitySelectedStyle, travelStyles } from '../shared/core';
+import { activitiesStyle, activitySelectedStyle, legendActivitiesId, travelStyles } from '../shared/core';
+import { Style } from 'ol/style';
 
 
 @Component({
@@ -245,7 +241,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.routeSubscription.unsubscribe();
 
 
-
     this.mapService.removeLayerByName(this.activityLayerName)
     this.mapService.removeLayerByName(this.travelLayerName)
 
@@ -307,7 +302,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.mapContainer.addLayer(activitiesLayer)
 
-    let select = new Select({
+    let activityLayerSelector = new Select({
       condition: pointerMove,
       multi: false,
       layers: [activitiesLayer],
@@ -317,7 +312,10 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         return selectedStyle;
       }
     });
-    select.on('select', (evt: any) => {
+
+    activityLayerSelector.on('select', (evt: any) => {
+      const popupPixelPadding = 20;
+      const positionPixelPadding = 15;
 
       const selected = evt.selected
       const deSelected = evt.deselected
@@ -331,12 +329,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         .style('right', 'unset')
         .style('top', 'unset');
 
+        this._handleActivityCircleOnLegend(deSelectedFeature)
 
-        const currentElement: any = d3.select("#legendActivity ." + deSelectedFeature.get("type"));
-        currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
-
-        const timeLineEvent: any = d3.select('circle#location_' + deSelectedFeature.get("id"));
-        timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
 
       }
       if (selected.length === 1) {
@@ -346,32 +340,36 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           .style('display', 'block')
           .style('z-index', '1')
           .style('left', () => {
-            if (pos[0] + this.popupWidth + 20 > this.innerWidth) {
-              return pos[0] - this.popupWidth - 15 + 'px';
+            if (pos[0] + this.popupWidth + popupPixelPadding > this.innerWidth) {
+              return pos[0] - this.popupWidth - positionPixelPadding + 'px';
             } else {
-              return pos[0] + 15 + 'px';
+              return pos[0] + positionPixelPadding + 'px';
             }
           })
           .style('top', () => {
 
-            if (pos[1] + this.popupHeight + 20 > this.innerHeight) {
-              return pos[1] - this.popupHeight - 15 + 'px';
+            if (pos[1] + this.popupHeight + popupPixelPadding > this.innerHeight) {
+              return pos[1] - this.popupHeight - positionPixelPadding + 'px';
             } else {
-              return pos[1] + 15 + 'px';
+              return pos[1] + positionPixelPadding + 'px';
             }
           });
 
-        const currentElement: any = d3.select("#legendActivity ." + selectedFeature.get("type"));
-        currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
-
-        const timeLineEvent: any = d3.select('circle#location_' + selectedFeature.get("id"));
-        timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
+        this._handleActivityCircleOnLegend(selectedFeature)
       }
 
     });
 
-    this.mapContainer.addInteraction(select);
+    this.mapContainer.addInteraction(activityLayerSelector);
 
+  }
+
+  _handleActivityCircleOnLegend(feature: Feature): void {
+    const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + feature.get("type"));
+    legendElement.classed('selected', !legendElement.classed('selected')); // toggle class
+
+    const timeLineEvent: any = d3.select('circle#location_' + feature.get("id"));
+    timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
   }
 
 

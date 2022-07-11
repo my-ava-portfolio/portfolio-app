@@ -4,7 +4,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { tagsIcon } from '@core/inputs';
 
 import * as d3 from 'd3';
-import { legendActivities, sliderBarId } from '@modules/map-activities/shared/core';
+import { legendActivitiesId, sliderBarId } from '@modules/map-activities/shared/core';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { legendActivities, sliderBarId } from '@modules/map-activities/shared/co
 export class ThemeLegendComponent implements OnInit, AfterViewInit {
 
   sliderBarId = sliderBarId;
-  legendActivities = legendActivities;
+  legendActivitiesId = legendActivitiesId;
 
   widthLegendElement = 200;
   heightLegendElement = 140;
