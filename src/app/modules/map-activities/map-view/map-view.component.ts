@@ -7,12 +7,13 @@ import * as L from 'leaflet';
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-
 import Point from 'ol/geom/Point';
 import Select from 'ol/interaction/Select';
 import {pointerMove} from 'ol/events/condition';
 import { getVectorContext } from 'ol/render';
 import {LineString} from 'ol/geom';
+import { Style } from 'ol/style';
+import { transform } from 'ol/proj';
 
 
 
@@ -22,14 +23,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 import { locationIcon, tagsIcon, centerIcon, helpIcon, imageProfile, experiencesPages, educationPages } from '@core/inputs';
-import { apiLogoUrl, currentYear } from '@core/inputs';
+import { apiLogoUrl } from '@core/inputs';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from '@services/map.service';
-import { transform } from 'ol/proj';
 import { activitiesStyle, activitySelectedStyle, legendActivitiesId, travelNodespeed, travelStyles } from '../shared/core';
-import { Style } from 'ol/style';
 
 
 @Component({
@@ -47,6 +46,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   experiencesRoute: string = experiencesPages.route;
   educationRoute: string = educationPages.route;
 
+  mapContainer!: any;
+
   activitiesStyle!: Style;
   activityLayerName = "activities"
   travelLayerName = "travel"
@@ -55,14 +56,11 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   //////
 
-  currentDate = currentYear;
-
   isLegendDisplayed = true;
 
   innerWidth!: any;
   innerHeight!: any;
 
-  mapContainer!: any;
   zoomInitDone!: boolean;
   maxZoomValue = 9;
   ZoomActivityValue = 12;
