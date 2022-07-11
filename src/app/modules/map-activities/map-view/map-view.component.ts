@@ -242,10 +242,10 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         let deSelectedFeature = deSelected[0]
 
         d3.select('#popup-feature-' + deSelectedFeature.get("id"))
-        .style('display', 'none')
-        .style('right', 'unset')
-        .style('top', 'unset');
-
+          .style('display', 'none')
+          .style('right', 'unset')
+          .style('top', 'unset')
+          .style('left', 'unset');
         this._handleActivityCircleOnLegend(deSelectedFeature)
 
 
