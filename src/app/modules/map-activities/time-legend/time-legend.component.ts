@@ -3,12 +3,12 @@ import { Component, OnInit, ViewEncapsulation, OnDestroy, Input } from '@angular
 import { Subscription } from 'rxjs';
 
 import { currentYear, currentDate, backwardIcon, forwardIcon, tagsIcon } from '@core/inputs';
-import { svgTripIdPrefix, sliderBarId, legendActivities } from '@core/inputs';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 
 import * as d3 from 'd3';
 import { MapService } from '@services/map.service';
+import { legendActivities, sliderBarId } from '@modules/map-activities/shared/core';
 
 
 @Component({
@@ -32,7 +32,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   forwardIcon = forwardIcon;
   tagIcon = tagsIcon;
 
-  legendActivities = legendActivities;
   sliderBarId = '#' + sliderBarId;
 
   margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
@@ -49,8 +48,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   dateRange!: any;
   timer!: any;
   currentCountNodes = 0;
-
-  svgTripIdPrefix = svgTripIdPrefix;
 
   pullGeoDataSubscription!: Subscription;
   mapContainerSubscription!: Subscription;
@@ -160,7 +157,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       const tripStartDate: Date | null = this.parseTime(startDate);
       const tripEndDate: Date | null = this.parseTime(endDate);
 
-      const svgTrip = d3.selectAll('[id^=' + this.svgTripIdPrefix + item.name + ']');
       if (tripStartDate !== null && tripEndDate !== null) {
         if (h >= tripStartDate && h < tripEndDate) {
           tripFound.push(item)
@@ -270,8 +266,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
             .style('pointer-events', 'all');
 
           // reset button play if animation is done and play button == continue
-          if (this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.endDate.toTimeString()
-            || this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.startDate.toTimeString()
+          const sliderDate = this.dateRange.invert(this.selectedDatePosition).toTimeString()
+          if (sliderDate === this.endDate.toTimeString() || sliderDate === this.startDate.toTimeString()
           ) {
             playButton.text('Play');
           } else {
@@ -372,7 +368,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('id', (d: any) => 'location_' + d.properties.id)
       .attr('class', (d: any) => {
         // in order to match with legend status
-        const relatedLegendElement = d3.selectAll('#' + this.legendActivities + ' circle.' + d.properties.type);
+        const relatedLegendElement = d3.selectAll('#' + legendActivities + ' circle.' + d.properties.type);
         if (relatedLegendElement.size() > 0) {
           if (relatedLegendElement.classed('disabled')) {
             return 'invisible activityPoint ' + d.properties.type;

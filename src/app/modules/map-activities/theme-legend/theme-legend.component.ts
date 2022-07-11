@@ -1,10 +1,10 @@
+import { MapActivitiesModule } from './../map-activities.module';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
-import { trainIconUnicode, tagsIcon } from '@core/inputs';
-import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities, sliderBarId } from '@core/inputs';
-
+import { tagsIcon } from '@core/inputs';
 
 import * as d3 from 'd3';
+import { legendActivities, sliderBarId } from '@modules/map-activities/shared/core';
 
 
 @Component({
@@ -13,10 +13,9 @@ import * as d3 from 'd3';
   styleUrls: ['./theme-legend.component.scss']
 })
 export class ThemeLegendComponent implements OnInit, AfterViewInit {
-  svgActivitiesPointsLayerId = svgActivitiesPointsLayerId;
-  svgTripIdPrefix = svgTripIdPrefix;
-  legendActivities = legendActivities;
+
   sliderBarId = sliderBarId;
+  legendActivities = legendActivities;
 
   widthLegendElement = 200;
   heightLegendElement = 140;
@@ -53,7 +52,6 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
         classLine: 'train-line',
         classMarker: 'train-marker',
         classMarkerText: 'train-marker-text',
-        markerIcon: trainIconUnicode,
         label: 'Train'
       },
     ]

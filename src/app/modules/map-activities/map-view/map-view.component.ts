@@ -26,14 +26,14 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagsIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape, imageProfile, experiencesPages, educationPages } from '@core/inputs';
+import { locationIcon, tagsIcon, centerIcon, helpIcon, imageProfile, experiencesPages, educationPages } from '@core/inputs';
 import { apiLogoUrl, currentYear } from '@core/inputs';
-import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '@core/inputs';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from '@services/map.service';
 import { transform } from 'ol/proj';
+import { activitiesStyle, activitySelectedStyle, travelStyles } from '../shared/core';
 
 
 @Component({
@@ -52,14 +52,12 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   educationRoute: string = educationPages.route;
 
   activitiesStyle!: Style;
-  activityLayerName = "activities_layer"
-  mousePosition!: number[];
+  activityLayerName = "activities"
+  travelLayerName = "travel"
+
+  geoFeaturesData!: any[];
+
   //////
-
-  svgTripIdPrefix = svgTripIdPrefix;
-  legendActivities = legendActivities;
-
-  trainIconUnicode = trainIconUnicode;
 
   currentDate = currentYear;
 
@@ -85,12 +83,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   // check css code related to popup
   popupWidth = 330;
   popupHeight = 190;
-  geoFeaturesData!: any[];
-  svgActivitiesLayerId = svgActivitiesPointsLayerId;
-  circleOpacity = 0.7;
-  circleStroke = 'ghostwhite';
-  circleWidth = '2.5px';
-  generalData!: any;
 
   mapContainerSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
@@ -126,90 +118,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
         this.mapService.removeLayerByName(this.activityLayerName)
         this.geoFeaturesData = geoFeaturesData[0];
-        let activitiesLayer = this.buildLayerFromFeatures(this.activityLayerName, this.geoFeaturesData, this.BuildActivitiesStyle)
 
-        this.mapContainer.addLayer(activitiesLayer)
-
-        let select = new Select({
-          condition: pointerMove,
-          multi: false,
-          layers: [activitiesLayer],
-          style: (feature: any) => {
-
-            let radius = feature.get("radius")
-
-            var selectedStyle = new Style({
-              image: new CircleStyle({
-                radius: radius,
-                fill: new Fill({
-                  color: 'rgba(255, 215, 0, 0.6)',
-                }),
-                stroke: new Stroke({
-                  color: 'black',
-                  width: 2,
-                }),
-              }),
-            });
-            return selectedStyle;
-
-          }
-        });
-        select.on('select', (evt: any) => {
-
-          const selected = evt.selected
-          const deSelected = evt.deselected
-
-          // WARNING not refactoring needed ! because we can have both selected and deselected
-          if (deSelected.length === 1) {
-            let deSelectedFeature = deSelected[0]
-
-            d3.select('#popup-feature-' + deSelectedFeature.get("id"))
-            .style('display', 'none')
-            .style('right', 'unset')
-            .style('top', 'unset');
-
-
-            const currentElement: any = d3.select("#legendActivity ." + deSelectedFeature.get("type"));
-            currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
-
-            const timeLineEvent: any = d3.select('circle#location_' + deSelectedFeature.get("id"));
-            timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
-
-          }
-          if (selected.length === 1) {
-            let selectedFeature = selected[0]
-            let pos = evt.mapBrowserEvent.pixel
-            d3.select('#popup-feature-' + selectedFeature.get("id"))
-              .style('display', 'block')
-              .style('z-index', '1')
-              .style('left', () => {
-                if (pos[0] + this.popupWidth + 20 > this.innerWidth) {
-                  return pos[0] - this.popupWidth - 15 + 'px';
-                } else {
-                  return pos[0] + 15 + 'px';
-                }
-              })
-              .style('top', () => {
-
-                if (pos[1] + this.popupHeight + 20 > this.innerHeight) {
-                  return pos[1] - this.popupHeight - 15 + 'px';
-                } else {
-                  return pos[1] + 15 + 'px';
-                }
-              });
-
-            const currentElement: any = d3.select("#legendActivity ." + selectedFeature.get("type"));
-            currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
-
-            const timeLineEvent: any = d3.select('circle#location_' + selectedFeature.get("id"));
-            timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
-          }
-
-        });
-
-        this.mapContainer.addInteraction(select);
-
-
+        this.buildActivityLayer(this.geoFeaturesData)
 
         // check if the zoom is needed, it means only at the start !
         if (geoFeaturesData[1] === 0) {
@@ -220,7 +130,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
-        this.mapService.removeLayerByName('travel')
+        this.mapService.removeLayerByName(this.travelLayerName)
 
         if (geoFeaturesData.length === 1) {
           geoFeaturesData.forEach((item: any) => {
@@ -235,11 +145,11 @@ export class MapViewComponent implements OnInit, OnDestroy  {
               geometry: travelLine
             })
             const startMarker = new Feature({
-              type: 'icon',
+              type: 'limit',
               geometry: new Point(travelLine.getFirstCoordinate()),
             });
             const endMarker = new Feature({
-              type: 'icon',
+              type: 'limit',
               geometry: new Point(travelLine.getLastCoordinate()),
             });
             const position = new Point(travelLine.getFirstCoordinate())
@@ -247,40 +157,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
               type: 'geoMarker',
               geometry: position,
             });
-
-            const styles = (featureType: string) => {
-
-              if (featureType === "route") {
-                return new Style({
-                  stroke: new Stroke({
-                    width: 6,
-                    color: 'black',
-                  }),
-                })
-              } else if (featureType === "icon") {
-                return new Style({
-                  image: new CircleStyle({
-                    radius: 7,
-                    fill: new Fill({ color: 'red' }),
-                    stroke: new Stroke({
-                      color: 'white',
-                      width: 2,
-                    }),
-                  })
-                })
-              } else {
-                return new Style({
-                  image: new CircleStyle({
-                    radius: 7,
-                    fill: new Fill({ color: 'black' }),
-                    stroke: new Stroke({
-                      color: 'white',
-                      width: 2,
-                    }),
-                  }),
-                })
-              }
-            }
 
             let vectorSource = new VectorSource({
               features: []
@@ -290,10 +166,10 @@ export class MapViewComponent implements OnInit, OnDestroy  {
             });
             const features = [travel, geoMarker, startMarker, endMarker]
             features.forEach((feature: any, index: number) => {
-              feature.setStyle(styles(feature.get("type")))
+              feature.setStyle(travelStyles(feature.get("type")))
               vectorSource.addFeature(feature)
             })
-            vectorLayer.set("name", "travel")
+            vectorLayer.set("name", this.travelLayerName)
 
             let lastTime = Date.now();
             let distance  = 0;
@@ -312,7 +188,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
               );
               position.setCoordinates(currentCoordinate);
               const vectorContext = getVectorContext(event);
-              vectorContext.setStyle(styles('geoMarker'));
+              vectorContext.setStyle(travelStyles('geoMarker'));
               vectorContext.drawGeometry(position);
               // tell OpenLayers to continue the postrender animation
               this.mapContainer.render();
@@ -371,6 +247,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
 
     this.mapService.removeLayerByName(this.activityLayerName)
+    this.mapService.removeLayerByName(this.travelLayerName)
+
     this.mapService.resetMapView()
   }
 
@@ -423,75 +301,78 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   };
 
-  BuildActivitiesStyle(properties: any): Style {
 
-    const education = new Style({
-      image: new CircleStyle({
-        radius: properties.months * 2,
-        fill: new Fill({
-          color: 'rgba(0, 144, 29, 0.6)',
-        }),
-        stroke: new Stroke({
-          color: 'white',
-          width: 2,
-        }),
-      }),
+  buildActivityLayer(data: any): void {
+    let activitiesLayer = this.buildLayerFromFeatures(this.activityLayerName, data, activitiesStyle)
+
+    this.mapContainer.addLayer(activitiesLayer)
+
+    let select = new Select({
+      condition: pointerMove,
+      multi: false,
+      layers: [activitiesLayer],
+      style: (feature: any) => {
+        let radius = feature.get("radius")
+        var selectedStyle = activitySelectedStyle(radius)
+        return selectedStyle;
+      }
+    });
+    select.on('select', (evt: any) => {
+
+      const selected = evt.selected
+      const deSelected = evt.deselected
+
+      // WARNING not refactoring needed ! because we can have both selected and deselected
+      if (deSelected.length === 1) {
+        let deSelectedFeature = deSelected[0]
+
+        d3.select('#popup-feature-' + deSelectedFeature.get("id"))
+        .style('display', 'none')
+        .style('right', 'unset')
+        .style('top', 'unset');
+
+
+        const currentElement: any = d3.select("#legendActivity ." + deSelectedFeature.get("type"));
+        currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
+
+        const timeLineEvent: any = d3.select('circle#location_' + deSelectedFeature.get("id"));
+        timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
+
+      }
+      if (selected.length === 1) {
+        let selectedFeature = selected[0]
+        let pos = evt.mapBrowserEvent.pixel
+        d3.select('#popup-feature-' + selectedFeature.get("id"))
+          .style('display', 'block')
+          .style('z-index', '1')
+          .style('left', () => {
+            if (pos[0] + this.popupWidth + 20 > this.innerWidth) {
+              return pos[0] - this.popupWidth - 15 + 'px';
+            } else {
+              return pos[0] + 15 + 'px';
+            }
+          })
+          .style('top', () => {
+
+            if (pos[1] + this.popupHeight + 20 > this.innerHeight) {
+              return pos[1] - this.popupHeight - 15 + 'px';
+            } else {
+              return pos[1] + 15 + 'px';
+            }
+          });
+
+        const currentElement: any = d3.select("#legendActivity ." + selectedFeature.get("type"));
+        currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
+
+        const timeLineEvent: any = d3.select('circle#location_' + selectedFeature.get("id"));
+        timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
+      }
+
     });
 
-    const job = new Style({
-      image: new CircleStyle({
-        radius: properties.months * 2,
-        fill: new Fill({
-          color: 'rgba(225, 0, 116, 0.6)',
-        }),
-        stroke: new Stroke({
-          color: 'white',
-          width: 2,
-        }),
-      }),
-    });
-
-    const volunteer = new Style({
-      image: new CircleStyle({
-        radius: properties.months * 2,
-        fill: new Fill({
-          color: 'rgba(98, 0, 255, 0.6)',
-        }),
-        stroke: new Stroke({
-          color: 'white',
-          width: 2,
-        }),
-      }),
-    });
-
-
-
-
-    if (properties.type === "job") {
-      return job
-    } else if ( properties.type === "education") {
-      return education
-    } else {
-      return volunteer
-    }
-
+    this.mapContainer.addInteraction(select);
 
   }
-
-
-
-  // displayTravel(): void {
-  //   const vectorLayer = new VectorLayer({
-  //     source: new VectorSource({
-  //       features: [routeFeature, geoMarker, startMarker, endMarker],
-  //     }),
-  //     style: function (feature) {
-  //       return styles[feature.get('type')];
-  //     },
-  //   });
-  //   vectorLayer.on('postrender', moveFeature);
-
-  // }
 
 
 }

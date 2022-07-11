@@ -81,8 +81,7 @@
         <text *ngFor="let move_feature of movesLineLegendData.moves"
             [attr.x]="move_feature.y2 / 2"
             [attr.y]="move_feature.y2 / 2"
-            [attr.font-size]="movesLineLegendData.markerFontSize"
-            [class]="move_feature.classMarkerText">{{ move_feature.markerIcon }}
+            [attr.font-size]="movesLineLegendData.markerFontSize">
         </text>
 
         <text *ngFor="let move_feature of movesLineLegendData.moves"

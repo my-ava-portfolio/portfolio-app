@@ -84,13 +84,8 @@ export const arrowRightIcon = faChevronRight;
 export const arrowLeftIcon = faChevronLeft;
 
 // font awesome unicode
-export const trainIconUnicode = '\uf238';
 export const ungroupIconUnicode = '\uf247';
 
-export const svgActivitiesPointsLayerId = 'svgActivitiesLayer';
-export const svgTripIdPrefix = 'svg_trip_';
-export const legendActivities = 'legendActivity';
-export const sliderBarId = 'slider-bar';
 
 
 export const currentYear: number = new Date().getFullYear();
