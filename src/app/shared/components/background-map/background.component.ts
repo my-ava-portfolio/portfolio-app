@@ -117,10 +117,11 @@ export class BackgroundComponent implements OnInit {
     });
     this.resetView()
     this.interationsSetter(false)
-    // this.map.on(
-    //   'moveend',
-    //   this.getMapScreenBounds.bind(this)
-    // );
+
+
+    this.map.on('pointermove', (evt: any) => {
+      this.mapService.pullMapCoords([evt.coordinate, evt.pixel])
+    })
 
   }
 

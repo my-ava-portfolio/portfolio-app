@@ -403,8 +403,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         this.interactionWithEventNode(e.currentTarget, d);
         // link with popup
         d3.select('#popup-feature-' + d.properties.id)
-        .style('display', 'none')
-        .style('right', 'unset')
+          .style('display', 'none')
+          .style('right', 'unset')
           .style('top', 'unset');
 
         const feature = getFeatureFromLayer(this.mapContainer, activityLayerName, d.properties.id, 'id')

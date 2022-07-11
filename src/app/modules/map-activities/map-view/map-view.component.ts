@@ -45,11 +45,12 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   educationRoute: string = educationPages.route;
 
   mapContainer!: any;
+  currentFeatureSelectedId!: string | null;
 
   activitiesStyle!: Style;
 
   geoFeaturesData!: any[];
-
+  mouseMapCoords!: number[];
   //////
 
   isLegendDisplayed = true;
@@ -79,6 +80,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   pullTripsGeoDataToMapSubscription!: Subscription;
   zoomEventSubscription!: Subscription;
   routeSubscription!: Subscription;
+  newCoordsSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -94,10 +96,20 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       }
     );
 
+    this.newCoordsSubscription = this.mapService.newCoords.subscribe(
+      (coordinates: any) => {
+        const pixelCoords = coordinates[1];
+
+        if (this.currentFeatureSelectedId !== null) {
+          this.popupMoving(pixelCoords)
+
+        }
+      }
+    )
+
     this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
       (mapContainer: any) => {
         this.mapContainer = mapContainer;
-
       }
     );
 
@@ -172,7 +184,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.pullTripsGeoDataToMapSubscription.unsubscribe();
     this.zoomEventSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
-
+    this.newCoordsSubscription.unsubscribe();
 
     this.mapService.removeLayerByName(activityLayerName)
     this.mapService.removeLayerByName(travelLayerName)
@@ -238,6 +250,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       // WARNING not refactoring needed ! because we can have both selected and deselected
       if (deSelected.length === 1) {
         let deSelectedFeature = deSelected[0]
+        this.currentFeatureSelectedId = null
 
         d3.select('#popup-feature-' + deSelectedFeature.get("id"))
           .style('display', 'none')
@@ -250,25 +263,10 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       }
       if (selected.length === 1) {
         let selectedFeature = selected[0]
-        let pos = evt.mapBrowserEvent.pixel
+        this.currentFeatureSelectedId = selectedFeature.get("id")
         d3.select('#popup-feature-' + selectedFeature.get("id"))
           .style('display', 'block')
           .style('z-index', '1')
-          .style('left', () => {
-            if (pos[0] + this.popupWidth + popupPixelPadding > this.innerWidth) {
-              return pos[0] - this.popupWidth - positionPixelPadding + 'px';
-            } else {
-              return pos[0] + positionPixelPadding + 'px';
-            }
-          })
-          .style('top', () => {
-
-            if (pos[1] + this.popupHeight + popupPixelPadding > this.innerHeight) {
-              return pos[1] - this.popupHeight - positionPixelPadding + 'px';
-            } else {
-              return pos[1] + positionPixelPadding + 'px';
-            }
-          });
 
         this._handleActivityCircleOnLegend(selectedFeature)
       }
@@ -350,7 +348,29 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       this.mapContainer.render();
     });
 
-
   }
+
+  popupMoving(pixelCoords: number[]): void {
+    const popupPixelPadding = 20;
+    const positionPixelPadding = 15;
+    d3.select('#popup-feature-' + this.currentFeatureSelectedId)
+    .style('left', () => {
+      console.log(this.mouseMapCoords)
+      if (pixelCoords[0] + this.popupWidth + popupPixelPadding > this.innerWidth) {
+        return pixelCoords[0] - this.popupWidth - positionPixelPadding + 'px';
+      } else {
+        return pixelCoords[0] + positionPixelPadding + 'px';
+      }
+    })
+    .style('top', () => {
+
+      if (pixelCoords[1] + this.popupHeight + popupPixelPadding > this.innerHeight) {
+        return pixelCoords[1] - this.popupHeight - positionPixelPadding + 'px';
+      } else {
+        return pixelCoords[1] + positionPixelPadding + 'px';
+      }
+    });
+  }
+
 
 }

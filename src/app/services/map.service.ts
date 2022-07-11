@@ -88,7 +88,7 @@ export class MapService {
   }
   //
 
-  pullMapCoords(coordinates: any): void {
+  pullMapCoords(coordinates: number[]): void {
     this.newCoords.next(coordinates);
   }
 
