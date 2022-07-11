@@ -13,6 +13,7 @@ import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 
 import { MapService } from '@services/map.service';
+import { unByKey } from 'ol/Observable';
 
 
 @Component({
@@ -26,12 +27,15 @@ export class BackgroundComponent implements OnInit {
 
   private maxZoomValue = 20;
 
+  private mapEvents: any = {};
 
   private InitialViewCoords: any = [496076.3136,5681717.1865];
   private zoomValue = 7;
 
   map: any;
 
+  setmapEventSubscription!: Subscription;
+  unsetmapEventSubscription!: Subscription;
   mapContainerCalledSubscription!: Subscription;
   mapContainerLegendCalledSubscription!: Subscription;
   mapViewResetSubscription!: Subscription;
@@ -43,6 +47,22 @@ export class BackgroundComponent implements OnInit {
   constructor(
     private mapService: MapService,
   ) {
+
+    this.setmapEventSubscription = this.mapService.setmapEvent.subscribe(
+      (event: string) => {
+
+        if (event === "mapCoords") {
+          this.mapCoordinates()
+        }
+
+      }
+    )
+
+    this.unsetmapEventSubscription = this.mapService.unsetmapEvent.subscribe(
+      (event: string) => {
+        this.disableMapEvent(event)
+      }
+    )
 
 
     this.mapContainerLegendCalledSubscription = this.mapService.mapContainerLegendCalled.subscribe(
@@ -118,11 +138,18 @@ export class BackgroundComponent implements OnInit {
     this.resetView()
     this.interationsSetter(false)
 
+  }
 
-    this.map.on('pointermove', (evt: any) => {
+  mapCoordinates(): void {
+    const mapCoords = this.map.on('pointermove', (evt: any) => {
       this.mapService.pullMapCoords([evt.coordinate, evt.pixel])
     })
+    this.mapEvents["mapCoords"] = mapCoords
 
+  }
+
+  disableMapEvent(event: string): void {
+    unByKey(this.mapEvents[event])
   }
 
   interationsSetter(enabled: boolean): void {

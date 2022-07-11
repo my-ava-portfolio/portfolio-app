@@ -50,7 +50,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   activitiesStyle!: Style;
 
   geoFeaturesData!: any[];
-  mouseMapCoords!: number[];
   //////
 
   isLegendDisplayed = true;
@@ -100,10 +99,10 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       (coordinates: any) => {
         const pixelCoords = coordinates[1];
 
-        if (this.currentFeatureSelectedId !== null) {
+        // if (this.currentFeatureSelectedId !== null) {
           this.popupMoving(pixelCoords)
 
-        }
+        // }
       }
     )
 
@@ -251,7 +250,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       if (deSelected.length === 1) {
         let deSelectedFeature = deSelected[0]
         this.currentFeatureSelectedId = null
-
+        this.mapService.unsetMapEvent("mapCoords")
         d3.select('#popup-feature-' + deSelectedFeature.get("id"))
           .style('display', 'none')
           .style('right', 'unset')
@@ -264,6 +263,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       if (selected.length === 1) {
         let selectedFeature = selected[0]
         this.currentFeatureSelectedId = selectedFeature.get("id")
+        this.mapService.setMapEvent("mapCoords")
+
         d3.select('#popup-feature-' + selectedFeature.get("id"))
           .style('display', 'block')
           .style('z-index', '1')
@@ -355,7 +356,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     const positionPixelPadding = 15;
     d3.select('#popup-feature-' + this.currentFeatureSelectedId)
     .style('left', () => {
-      console.log(this.mouseMapCoords)
       if (pixelCoords[0] + this.popupWidth + popupPixelPadding > this.innerWidth) {
         return pixelCoords[0] - this.popupWidth - positionPixelPadding + 'px';
       } else {

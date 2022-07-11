@@ -8,6 +8,9 @@ import { Subject } from 'rxjs';
 })
 export class MapService {
 
+  setmapEvent: Subject<string> = new Subject<string>();
+  unsetmapEvent: Subject<string> = new Subject<string>();
+
   mapContainer: Subject<any> = new Subject<any>();
   mapContainerScale: Subject<any> = new Subject<any>();
   interactionsEnabled: Subject<boolean> = new Subject<boolean>();
@@ -35,6 +38,14 @@ export class MapService {
 
   constructor(
   ) { }
+
+  setMapEvent(event: string): void {
+    this.setmapEvent.next(event);
+  }
+
+  unsetMapEvent(event: string): void {
+    this.unsetmapEvent.next(event);
+  }
 
   getMapContainer(): void {
     this.mapContainerCalled.next(true);
