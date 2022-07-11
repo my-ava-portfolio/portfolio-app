@@ -1,9 +1,5 @@
-import { MapActivitiesModule } from './../map-activities.module';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { tagsIcon } from '@core/inputs';
-
-import * as d3 from 'd3';
 import { legendActivitiesId, sliderBarId } from '@modules/map-activities/shared/core';
 
 
@@ -12,7 +8,7 @@ import { legendActivitiesId, sliderBarId } from '@modules/map-activities/shared/
   templateUrl: './theme-legend.component.html',
   styleUrls: ['./theme-legend.component.scss']
 })
-export class ThemeLegendComponent implements OnInit, AfterViewInit {
+export class ThemeLegendComponent implements OnInit {
 
   sliderBarId = sliderBarId;
   legendActivitiesId = legendActivitiesId;
@@ -20,8 +16,6 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
   widthLegendElement = 200;
   heightLegendElement = 140;
   heightMoveLegendElement = 60;
-
-  tagIcon = tagsIcon;
 
   fontSize = '19px';
   // activity month legend data
@@ -61,9 +55,6 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-  }
-
-  ngAfterViewInit(): void {
   }
 
 }
