@@ -7,6 +7,8 @@ import Stroke from "ol/style/Stroke";
 export const legendActivitiesId = 'legendActivity';
 export const sliderBarId = 'slider-bar';
 
+export const travelNodespeed = 100;
+
 
 const jobColor = 'rgba(225, 0, 116, 0.6)';
 const educationColor = 'rgba(0, 144, 29, 0.6)';
