@@ -36,11 +36,18 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapScaleDivSubscription = this.mapService.setMapScaleDiv.subscribe(
       (_: boolean) => {
         // TODO clean observable
+
+        const divOverview: any = window.document.getElementById('overview-map');
+        divOverview.appendChild(
+          window.document.getElementsByClassName("ol-overviewmap ol-custom-overviewmap")[0]
+        )
+
         const divScale: any = window.document.getElementById('legend-scale');
-        const divAttribution: any = window.document.getElementById('attribution')
         divScale.appendChild(
           window.document.getElementsByClassName("ol-scale-line ol-unselectable")[0]
         )
+
+        const divAttribution: any = window.document.getElementById('attribution')
         divAttribution.appendChild(
           window.document.getElementsByClassName("ol-attribution ol-unselectable ol-control ol-uncollapsible")[0]
         )
@@ -59,6 +66,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.mapService.setControlToMap("scale")
     this.mapService.setControlToMap("attribution")
+    this.mapService.setControlToMap("miniMap")
 
     this.mapService.buildMapScaleDiv()
   }

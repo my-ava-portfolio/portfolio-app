@@ -13,7 +13,7 @@ import { MapService } from '@services/map.service';
 import { unByKey } from 'ol/Observable';
 import Point from 'ol/geom/Point';
 
-import {ScaleLine, defaults as defaultControls, Control, Attribution} from 'ol/control';
+import {ScaleLine, defaults as defaultControls, Control, Attribution, OverviewMap} from 'ol/control';
 
 
 @Component({
@@ -31,6 +31,8 @@ export class BackgroundComponent implements OnInit {
   private InitialViewCoords: number[] = [496076.3136,5681717.1865];
   private defaultZoomValue = 7;
   private mainView!: View;
+
+  private basemap = new OSM()
 
   map!: Map;
 
@@ -129,6 +131,8 @@ export class BackgroundComponent implements OnInit {
 
     this.mapControlers['scale'] = this.controlerScale()
     this.mapControlers['attribution'] = this.controlerAttribution()
+    this.mapControlers['miniMap'] = this.controlerMiniMap()
+
     this.initMap();
   }
 
@@ -153,7 +157,7 @@ export class BackgroundComponent implements OnInit {
     this.map = new Map({
       layers: [
         new TileLayer({
-          source: new OSM(),
+          source: this.basemap,
         }),
       ],
       target: 'map',
@@ -171,12 +175,24 @@ export class BackgroundComponent implements OnInit {
       units: "metric",
     });
   }
-
   controlerAttribution(): Attribution {
     return new Attribution({
       collapsible: false,
     })
   }
+  controlerMiniMap(): OverviewMap {
+    return new OverviewMap({
+      // see in overviewmap-custom.html to see the custom CSS used
+      className: 'ol-overviewmap ol-custom-overviewmap',
+      layers: [
+        new TileLayer({
+          source: this.basemap
+        }),
+      ],
+      collapsible: false,
+    });
+  }
+
 
   mapCoordinatesEvent(): void {
     const mapCoords = this.map.on('pointermove', (evt: any) => {
