@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { legendActivitiesId, sliderBarId } from '@modules/map-activities/shared/core';
+import { educationColor, jobColor, legendActivitiesId, sliderBarId, strokeColor, travelMovingNodeColor, travelNodeStrokeColor, volunteerColor } from '@modules/map-activities/shared/core';
 
 
 @Component({
@@ -25,15 +25,18 @@ export class ThemeLegendComponent implements OnInit {
     textXPos: 120
   };
 
+
+
+
   // activity types legend data
   activityTypesLegendData: any = {
     circleR: 18,
     circleCxPos: 20,
     textXPos: 50,
     circleJobs: [
-      { cy: 25, class: 'education', label: 'Formations' },
-      { cy: 70, class: 'job', label: 'Entreprises' },
-      { cy: 115, class: 'volunteer', label: 'Bénévolat' },
+      { cy: 25, class: 'education', label: 'Formations', color: educationColor, strokeColor: strokeColor },
+      { cy: 70, class: 'job', label: 'Entreprises', color: jobColor, strokeColor: strokeColor },
+      { cy: 115, class: 'volunteer', label: 'Bénévolat', color: volunteerColor, strokeColor: strokeColor },
     ]
   };
 
@@ -46,7 +49,9 @@ export class ThemeLegendComponent implements OnInit {
         classLine: 'train-line',
         classMarker: 'train-marker',
         classMarkerText: 'train-marker-text',
-        label: 'Train'
+        label: 'Train',
+        circleColor: travelMovingNodeColor,
+        strokeColor: travelNodeStrokeColor
       },
     ]
   };

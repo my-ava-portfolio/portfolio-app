@@ -3,7 +3,6 @@ import { map } from 'rxjs/operators';
 
 import { Subscription } from 'rxjs';
 
-import * as L from 'leaflet';
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -248,9 +247,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     });
 
     activityLayerSelector.on('select', (evt: any) => {
-      const popupPixelPadding = 20;
-      const positionPixelPadding = 15;
-
       const selected = evt.selected
       const deSelected = evt.deselected
 

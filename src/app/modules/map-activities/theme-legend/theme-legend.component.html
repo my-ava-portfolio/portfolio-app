@@ -12,7 +12,9 @@
           [attr.r]="activityTypesLegendData.circleR"
           [attr.cx]="activityTypesLegendData.circleCxPos"
           [attr.cy]="feature.cy"
-          [class]="feature.class">
+          [class]="feature.class"
+          [attr.fill]="feature.color"
+          [attr.stroke]="feature.strokeColor">
         </circle>
 
         <text *ngFor="let feature of activityTypesLegendData.circleJobs"
@@ -60,24 +62,26 @@
   <div class="col-4 col-lg-4">
     <h6>Déplacements</h6>
     <div class="col-lg-12">
-      <svg
-        [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightMoveLegendElement"
-      >
+      <svg [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightMoveLegendElement">
 
         <line *ngFor="let move_feature of movesLineLegendData.moves"
           [attr.x1]="move_feature.x1"
           [attr.x2]="move_feature.x2"
           [attr.y1]="move_feature.y1"
           [attr.y2]="move_feature.y2"
-          [class]="move_feature.classLine">
+          [class]="move_feature.classLine"
+          [attr.strokeColor]="move_feature.strokeColor">
         </line>
 
         <circle *ngFor="let move_feature of movesLineLegendData.moves"
           [attr.r]="move_feature.r"
           [attr.cx]="move_feature.y2 / 2"
           [attr.cy]="move_feature.y2 / 2"
-          [class]="move_feature.classMarker">>
+          [class]="move_feature.classMarker"
+          [attr.color]="move_feature.circleColor"
+          [attr.strokeColor]="move_feature.strokeColor">
         </circle>
+        
         <text *ngFor="let move_feature of movesLineLegendData.moves"
             [attr.x]="move_feature.y2 / 2"
             [attr.y]="move_feature.y2 / 2"

@@ -4,6 +4,7 @@ import CircleStyle from "ol/style/Circle";
 import Fill from "ol/style/Fill";
 import Stroke from "ol/style/Stroke";
 
+
 export const activityLayerName = "activities"
 export const travelLayerName = "travel"
 
@@ -12,10 +13,10 @@ export const sliderBarId = 'slider-bar';
 export const travelNodespeed = 100;
 
 
-const jobColor = 'rgba(225, 0, 116, 0.6)';
-const educationColor = 'rgba(0, 144, 29, 0.6)';
-const volunteerColor = 'rgba(98, 0, 255, 0.6)';
-const strokeColor = 'white';
+export const jobColor = 'rgba(225, 0, 116, 0.6)';
+export const educationColor = 'rgba(0, 144, 29, 0.6)';
+export const volunteerColor = 'rgba(98, 0, 255, 0.6)';
+export const strokeColor = 'white';
 const strokeWidth = 2;
 const radiusMultiplier = 2;
 
@@ -92,11 +93,11 @@ const travelLineStrokeColor = 'black'
 
 const travelNodeStrokeWidth = 1
 const travelNodeStrokeRadius = 2
-const travelNodeStrokeColor = 'black'
+export const travelNodeStrokeColor = 'black'
 const travelNodeColor = 'black'
 
 const travelMovingNodeWidth = 3
-const travelMovingNodeColor = 'yellow'
+export const travelMovingNodeColor = 'yellow'
 const travelMovingNodeRadius = 7
 
 export const travelStyles = (featureType: string) => {
