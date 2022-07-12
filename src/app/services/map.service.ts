@@ -17,7 +17,7 @@ export class MapService {
   unsetMapControl: Subject<string> = new Subject<string>();
 
   map: Subject<Map> = new Subject<Map>();
-  setMapScaleDiv: Subject<any> = new Subject<any>();
+  setMapControler: Subject<boolean> = new Subject<boolean>();
   rmvMapScale: Subject<any> = new Subject<any>();
   interactionsEnabled: Subject<boolean> = new Subject<boolean>();
   layerNameToRemove: Subject<string> = new Subject<string>();
@@ -94,8 +94,8 @@ export class MapService {
     this.extentToZoom.next([extent, zoom]);
   }
 
-  buildMapScaleDiv(): void {
-    this.setMapScaleDiv.next(true);
+  buildMapMapControlers(): void {
+    this.setMapControler.next(true);
   }
 
   removeMapScale(): void {

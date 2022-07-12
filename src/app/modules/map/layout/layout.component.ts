@@ -33,7 +33,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private controlerService: ControlerService,
   ) {
 
-    this.mapScaleDivSubscription = this.mapService.setMapScaleDiv.subscribe(
+    this.mapScaleDivSubscription = this.mapService.setMapControler.subscribe(
       (_: boolean) => {
         // TODO clean observable
 
@@ -67,7 +67,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapService.mapInteraction(true);
     this.sendResumeSubMenus()
 
-    this.mapService.buildMapScaleDiv()
+    this.mapService.buildMapMapControlers()
   }
 
   ngAfterViewInit(): void {
