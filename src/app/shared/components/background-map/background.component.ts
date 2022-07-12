@@ -1,19 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import * as L from 'leaflet';
-import * as d3 from 'd3';
-import {transformExtent} from 'ol/proj';
-import Collection from 'ol/Collection'
-
 import Map from 'ol/Map';
 import View from 'ol/View';
+import {Extent, getCenter} from 'ol/extent';
+
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 
 import { MapService } from '@services/map.service';
 import { unByKey } from 'ol/Observable';
+import Point from 'ol/geom/Point';
 
 
 @Component({
@@ -25,12 +23,11 @@ export class BackgroundComponent implements OnInit {
 
   isMapInteractionEnabled: boolean = false;
 
-  private maxZoomValue = 20;
-
   private mapEvents: any = {};
 
-  private InitialViewCoords: any = [496076.3136,5681717.1865];
-  private zoomValue = 7;
+  private InitialViewCoords: number[] = [496076.3136,5681717.1865];
+  private defaultZoomValue = 7;
+  private mainView!: View;
 
   map: any;
 
@@ -43,6 +40,7 @@ export class BackgroundComponent implements OnInit {
   layerNameToZoomSubscription!: Subscription;
   interactionsSetterSubscription!: Subscription;
   layerRemovingSubscription!: Subscription;
+  extentToZoomSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -97,6 +95,15 @@ export class BackgroundComponent implements OnInit {
       }
     )
 
+    this.extentToZoomSubscription = this.mapService.extentToZoom.subscribe(
+      (layerName: any[]) => {
+        this.zoomToExtent(layerName[0], layerName[1])
+      }
+    )
+
+
+
+
     this.interactionsSetterSubscription = this.mapService.interactionsEnabled.subscribe(
       (enabled: boolean) => {
           this.interationsSetter(enabled)
@@ -112,6 +119,13 @@ export class BackgroundComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.mainView = new View({
+      center: this.InitialViewCoords,
+      zoom: this.defaultZoomValue,
+    });
+
+
     this.initMap();
   }
 
@@ -122,6 +136,7 @@ export class BackgroundComponent implements OnInit {
     this.mapInteractionSubscription.unsubscribe();
     this.layerNameToZoomSubscription.unsubscribe();
     this.interactionsSetterSubscription.unsubscribe();
+    this.extentToZoomSubscription.unsubscribe();
   }
 
 
@@ -134,8 +149,8 @@ export class BackgroundComponent implements OnInit {
         }),
       ],
       target: 'map',
+      view: this.mainView
     });
-    this.resetView()
     this.interationsSetter(false)
 
   }
@@ -165,12 +180,10 @@ export class BackgroundComponent implements OnInit {
   }
 
   resetView(): void {
-    // TODO animate ? use extend, not 1 coordinates
-    const view = new View({
-      center: this.InitialViewCoords,
-      zoom: this.zoomValue,
-    })
-    this.map.setView(view)
+    const startLocation = new Point(this.InitialViewCoords)
+
+    this.zoomToExtent(startLocation.getExtent(), this.defaultZoomValue)
+
 
     // TODO remove legend ?
 
@@ -193,6 +206,26 @@ export class BackgroundComponent implements OnInit {
         const extent = layer.getSource().getExtent();
         this.map.getView().fit(extent, { duration: 1000, maxZoom: zoom })
       });
+
+  }
+
+  zoomToExtent(extentValue: Extent, zoom: number): void {
+    const duration = 2000
+
+    const mapExtent = this.map.getView().calculateExtent()
+    const resolution = this.mainView.getResolutionForExtent(mapExtent);
+    const currentZoom = this.mainView.getZoomForResolution(resolution);
+    const center = getCenter(extentValue);
+    if (currentZoom !== undefined) {
+      this.mainView.animate({
+        zoom: currentZoom - 1,
+        duration: duration / 3
+      }, {
+        center: center,
+        zoom: zoom,
+        duration: duration / 1.5
+      });
+    }
 
   }
 

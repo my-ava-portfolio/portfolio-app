@@ -26,7 +26,7 @@ import { apiLogoUrl } from '@core/inputs';
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from '@services/map.service';
-import { activitiesStyle, activityLayerName, activitySelectedStyle, legendActivitiesId, travelLayerName, travelNodespeed, travelStyles } from '../shared/core';
+import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer, legendActivitiesId, travelLayerName, travelNodespeed, travelStyles } from '../shared/core';
 
 
 @Component({
@@ -39,7 +39,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   imageProfile: string = imageProfile;
 
   fragment!: any;
-  fragmentValue!: string;
+  fragmentValue: string | null = null;
 
   experiencesRoute: string = experiencesPages.route;
   educationRoute: string = educationPages.route;
@@ -59,8 +59,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   innerHeight!: any;
 
   zoomInitDone!: boolean;
-  maxZoomValue = 9;
-  ZoomActivityValue = 12;
+  defaultActivitieLayerZoom = 9;
 
   apiImgUrl = apiLogoUrl;
 
@@ -92,18 +91,15 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.zoomEventSubscription = this.mapService.zoomEvent.subscribe(
       (_: boolean) => {
-        this.mapService.zoomToLayerName(activityLayerName, this.maxZoomValue)
+        this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
       }
     );
 
     this.newCoordsSubscription = this.mapService.newCoords.subscribe(
       (coordinates: any) => {
         const pixelCoords = coordinates[1];
+        this.popupMoving(pixelCoords)
 
-        // if (this.currentFeatureSelectedId !== null) {
-          this.popupMoving(pixelCoords)
-
-        // }
       }
     )
 
@@ -122,11 +118,18 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
         this.buildActivityLayer(this.geoFeaturesData)
 
-        // check if the zoom is needed, it means only at the start !
-        if (geoFeaturesData[1] === 0) {
-          this.mapService.zoomToLayerName(activityLayerName, 9)
+        // if a click is done on experience location icon
+        if (this.fragmentValue !== null) {
+        const feature: Feature = getFeatureFromLayer(this.mapContainer, activityLayerName, this.fragment, 'id')
+        const featureGeom = feature.getGeometry()
+          if (featureGeom !== undefined ) {
+            this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
+          }
+        } else if (geoFeaturesData[1] === 0) {
+           // check if the zoom is needed, it means only at the start !
+          this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
+         }
 
-        }
       });
 
     this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
@@ -155,7 +158,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         } else {
           this.fragment = fragment;
           this.fragmentValue = this.fragment;
-
         }
       }
     );

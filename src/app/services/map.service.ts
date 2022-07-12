@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Extent } from 'ol/extent';
+import Feature from 'ol/Feature';
 
 import { Subject } from 'rxjs';
 
@@ -16,6 +18,7 @@ export class MapService {
   interactionsEnabled: Subject<boolean> = new Subject<boolean>();
   layerNameToRemove: Subject<string> = new Subject<string>();
   layerNameToZoom: Subject<any[]> = new Subject<any[]>();
+  extentToZoom: Subject<any[]> = new Subject<any[]>();
 
   mapContainerCalled: Subject<boolean> = new Subject<boolean>();
   mapContainerLegendCalled: Subject<boolean> = new Subject<boolean>();
@@ -78,6 +81,10 @@ export class MapService {
 
   zoomToLayerName(layerName: string, zoom: number): void {
     this.layerNameToZoom.next([layerName, zoom]);
+  }
+
+  zoomToExtent(extent: Extent, zoom: number): void {
+    this.extentToZoom.next([extent, zoom]);
   }
 
   sendMapScale(scaleFeatures: any): void {

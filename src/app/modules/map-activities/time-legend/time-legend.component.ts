@@ -10,6 +10,7 @@ import { MapService } from '@services/map.service';
 
 import * as d3 from 'd3';
 import { legendActivitiesId, sliderBarId, travelLayerName } from '@modules/map-activities/shared/core';
+import Feature from 'ol/Feature';
 
 
 @Component({
@@ -385,6 +386,14 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('r', this.sliderNodesSize)
       .attr('cursor', 'pointer')
       .attr('cx', (d: any) => this.dateRange(this.parseTime(d.properties.start_date)))
+      .on('click', (e: any, d: any) => {
+        const feature: Feature = getFeatureFromLayer(this.mapContainer, activityLayerName, d.properties.id, 'id')
+        const featureGeom = feature.getGeometry()
+        if (featureGeom !== undefined ) {
+          this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
+        }
+
+      })
       .on('mouseover', (e: any, d: any) => {
 
         this.interactionWithEventNode(e.currentTarget, d);
