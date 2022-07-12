@@ -38,8 +38,7 @@ import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFr
 export class MapViewComponent implements OnInit, OnDestroy  {
   imageProfile: string = imageProfile;
 
-  fragment!: any;
-  fragmentValue: string | null = null;
+  fragment: string | null = null;
 
   experiencesRoute: string = experiencesPages.route;
   educationRoute: string = educationPages.route;
@@ -119,7 +118,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         this.buildActivityLayer(this.geoFeaturesData)
 
         // if a click is done on experience location icon
-        if (this.fragmentValue !== null) {
+        if (this.fragment !== null) {
         const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, this.fragment, 'id')
         const featureGeom = feature.getGeometry()
           if (featureGeom !== undefined ) {
@@ -157,7 +156,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           this.fragment = null;
         } else {
           this.fragment = fragment;
-          this.fragmentValue = this.fragment;
         }
       }
     );
