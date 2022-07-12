@@ -80,6 +80,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.mapService.unsetControlToMap("scale")
     this.mapService.unsetControlToMap("attribution")
+    this.mapService.unsetControlToMap("miniMap")
 
     this.mapScaleDivSubscription.unsubscribe();
     this.routerSubscription.unsubscribe()
