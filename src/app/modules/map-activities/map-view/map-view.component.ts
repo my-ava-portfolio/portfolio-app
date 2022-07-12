@@ -50,6 +50,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   activitiesStyle!: Style;
 
   geoFeaturesData!: any[];
+  travelId: string | null = null;
   //////
 
   isLegendDisplayed = true;
@@ -130,13 +131,18 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
-        this.mapService.removeLayerByName(travelLayerName)
 
-        if (geoFeaturesData.length === 1) {
-
+        if (geoFeaturesData.length === 1 && this.travelId !== geoFeaturesData[0].name) {
+          this.mapService.removeLayerByName(travelLayerName)
+          this.travelId = geoFeaturesData[0].name
           this.buildTravelLayer(geoFeaturesData[0])
 
-        }
+          }
+        if (geoFeaturesData.length === 0) {
+          this.travelId = null
+          this.mapService.removeLayerByName(travelLayerName)
+
+          }
 
       }
     );
@@ -326,6 +332,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       feature.setStyle(travelStyles(feature.get("type")))
       vectorSource.addFeature(feature)
     })
+
+
     vectorLayer.set("name", travelLayerName)
 
     this.mapContainer.addLayer(vectorLayer);
@@ -333,6 +341,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     // init these value to compute the animation
     let initTime = Date.now();
     let distance = 0;
+
     vectorLayer.on('postrender', (event: any) => {
       const time = event.frameState.time;
       const elapsedTime = time - initTime;
