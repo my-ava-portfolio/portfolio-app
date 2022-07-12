@@ -253,7 +253,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
           // to avoid cursor running if a click is done on the slider bar...
           playButton.text('Pause');
-          playButton.dispatch('click')
+          // playButton.dispatch('click') // TODO seems useless ?
 
           this.selectedDatePosition = e.x;
           this.update(this.dateRange.invert(this.selectedDatePosition));

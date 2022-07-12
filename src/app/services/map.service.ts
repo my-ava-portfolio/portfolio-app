@@ -13,15 +13,18 @@ export class MapService {
   setmapEvent: Subject<string> = new Subject<string>();
   unsetmapEvent: Subject<string> = new Subject<string>();
 
+  setMapControl: Subject<string> = new Subject<string>();
+  unsetMapControl: Subject<string> = new Subject<string>();
+
   mapContainer: Subject<any> = new Subject<any>();
-  mapContainerScale: Subject<any> = new Subject<any>();
+  setMapScaleDiv: Subject<any> = new Subject<any>();
+  rmvMapScale: Subject<any> = new Subject<any>();
   interactionsEnabled: Subject<boolean> = new Subject<boolean>();
   layerNameToRemove: Subject<string> = new Subject<string>();
   layerNameToZoom: Subject<any[]> = new Subject<any[]>();
   extentToZoom: Subject<any[]> = new Subject<any[]>();
 
   mapContainerCalled: Subject<boolean> = new Subject<boolean>();
-  mapContainerLegendCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 
   // TODO create a dedicated service
@@ -37,7 +40,7 @@ export class MapService {
 
   zoomEvent: Subject<boolean> = new Subject<boolean>();
 
-  mapInteraction: Subject<boolean> = new Subject<boolean>();
+  mapInteractionStatus: Subject<boolean> = new Subject<boolean>();
 
   constructor(
   ) { }
@@ -52,10 +55,6 @@ export class MapService {
 
   getMapContainer(): void {
     this.mapContainerCalled.next(true);
-  }
-
-  getMapContainerForLegend(): void {
-    this.mapContainerLegendCalled.next(true);
   }
 
   resetMapView(): void {
@@ -75,6 +74,14 @@ export class MapService {
     this.interactionsEnabled.next(enabled);
   }
 
+  setControlToMap(controlName: string): void {
+    this.setMapControl.next(controlName);
+  }
+  unsetControlToMap(controlName: string): void {
+    this.unsetMapControl.next(controlName);
+  }
+
+
   sendScreenMapBounds(coordsBound: number[]): void {
     this.screenMapBound.next(coordsBound);
   }
@@ -87,8 +94,12 @@ export class MapService {
     this.extentToZoom.next([extent, zoom]);
   }
 
-  sendMapScale(scaleFeatures: any): void {
-    this.mapContainerScale.next(scaleFeatures);
+  buildMapScaleDiv(): void {
+    this.setMapScaleDiv.next(true);
+  }
+
+  removeMapScale(): void {
+    this.rmvMapScale.next(true);
   }
 
   // TODO create a dedicated service
@@ -114,8 +125,8 @@ export class MapService {
     this.zoomEvent.next(true);
   }
 
-  MapInteraction(status: boolean): void {
-    this.mapInteraction.next(status);
+  mapInteraction(status: boolean): void {
+    this.mapInteractionStatus.next(status);
   }
 
 }

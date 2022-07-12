@@ -2,8 +2,6 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation, AfterViewInit } from '
 
 import { Subscription } from 'rxjs';
 
-// TODO use it
-import { checkIfScreenPortraitOrientation } from '@core/inputs';
 import { tagIcon, centerIcon} from '@core/inputs';
 
 import { MapService } from '@services/map.service';
@@ -24,9 +22,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   centerIcon = centerIcon;
   isLegendDisplayed: boolean = true;
 
-  ScaleFeaturesSubscription!: Subscription;
+  mapScaleDivSubscription!: Subscription;
   routerSubscription!: Subscription;
-  interactivityMapSubscription!: Subscription;
 
   currentMapTool!: string;
 
@@ -36,13 +33,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private controlerService: ControlerService,
   ) {
 
-    this.ScaleFeaturesSubscription = this.mapService.mapContainerScale.subscribe(
-      (scaleFeatures: any) => {
-
+    this.mapScaleDivSubscription = this.mapService.setMapScaleDiv.subscribe(
+      (_: boolean) => {
+        // TODO clean observable
         const divScale: any = window.document.getElementById('legend-scale');
         const divAttribution: any = window.document.getElementById('attribution')
-        divScale.appendChild(scaleFeatures.scale.getContainer())
-        divAttribution.appendChild(scaleFeatures.attribution.getContainer())
+        divScale.appendChild(
+          window.document.getElementsByClassName("ol-scale-line ol-unselectable")[0]
+        )
+        divAttribution.appendChild(
+          window.document.getElementsByClassName("ol-attribution ol-unselectable ol-control ol-uncollapsible")[0]
+        )
       }
     );
 
@@ -53,20 +54,28 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.mapService.MapInteraction(true);
+    this.mapService.mapInteraction(true);
     this.sendResumeSubMenus()
+
+    this.mapService.setControlToMap("scale")
+    this.mapService.setControlToMap("attribution")
+
+    this.mapService.buildMapScaleDiv()
   }
 
   ngAfterViewInit(): void {
-    this.mapService.getMapContainerForLegend()
 
   }
 
   ngOnDestroy(): void {
-    this.ScaleFeaturesSubscription.unsubscribe();
+    this.mapService.mapInteraction(false);
+
+    this.mapService.unsetControlToMap("scale")
+    this.mapService.unsetControlToMap("attribution")
+
+    this.mapScaleDivSubscription.unsubscribe();
     this.routerSubscription.unsubscribe()
 
-    this.mapService.MapInteraction(false);
   }
 
   sendResumeSubMenus(): void {

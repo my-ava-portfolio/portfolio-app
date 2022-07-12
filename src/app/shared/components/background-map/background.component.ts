@@ -13,6 +13,8 @@ import { MapService } from '@services/map.service';
 import { unByKey } from 'ol/Observable';
 import Point from 'ol/geom/Point';
 
+import {ScaleLine, defaults as defaultControls, Control, Attribution} from 'ol/control';
+
 
 @Component({
   selector: 'app-background-map',
@@ -24,10 +26,13 @@ export class BackgroundComponent implements OnInit {
   isMapInteractionEnabled: boolean = false;
 
   private mapEvents: any = {};
+  private mapControlers: any = {};
 
   private InitialViewCoords: number[] = [496076.3136,5681717.1865];
   private defaultZoomValue = 7;
   private mainView!: View;
+
+  private scaleControler!: Control;
 
   map: any;
 
@@ -42,34 +47,36 @@ export class BackgroundComponent implements OnInit {
   layerRemovingSubscription!: Subscription;
   extentToZoomSubscription!: Subscription;
 
+  setControlOnMapSubscription!: Subscription;
+  unsetControlOnMapSubscription!: Subscription;
+
   constructor(
     private mapService: MapService,
   ) {
 
     this.setmapEventSubscription = this.mapService.setmapEvent.subscribe(
       (event: string) => {
-
         if (event === "mapCoords") {
           this.mapCoordinates()
         }
-
       }
     )
-
     this.unsetmapEventSubscription = this.mapService.unsetmapEvent.subscribe(
       (event: string) => {
         this.disableMapEvent(event)
       }
     )
 
-
-    this.mapContainerLegendCalledSubscription = this.mapService.mapContainerLegendCalled.subscribe(
-      (_) => {
-
-       // TODO used for attributions
-
+    this.setControlOnMapSubscription = this.mapService.setMapControl.subscribe(
+      (controlName: string) => {
+        this.map.addControl(this.mapControlers[controlName]);
       }
-    );
+    )
+    this.unsetControlOnMapSubscription = this.mapService.unsetMapControl.subscribe(
+      (controlName: string) => {
+        this.map.removeControl(this.mapControlers[controlName]);
+      }
+    )
 
     this.mapContainerCalledSubscription = this.mapService.mapContainerCalled.subscribe(
       (_) => {
@@ -83,7 +90,7 @@ export class BackgroundComponent implements OnInit {
       }
     );
 
-    this.mapInteractionSubscription = this.mapService.mapInteraction.subscribe(
+    this.mapInteractionSubscription = this.mapService.mapInteractionStatus.subscribe(
       (status: boolean) => {
         this.isMapInteractionEnabled = status;
       }
@@ -98,11 +105,9 @@ export class BackgroundComponent implements OnInit {
     this.extentToZoomSubscription = this.mapService.extentToZoom.subscribe(
       (layerName: any[]) => {
         this.zoomToExtent(layerName[0], layerName[1])
+
       }
     )
-
-
-
 
     this.interactionsSetterSubscription = this.mapService.interactionsEnabled.subscribe(
       (enabled: boolean) => {
@@ -125,18 +130,25 @@ export class BackgroundComponent implements OnInit {
       zoom: this.defaultZoomValue,
     });
 
-
+    this.mapControlers['scale'] = this.controlerScale()
+    this.mapControlers['attribution'] = this.controlerAttribution()
     this.initMap();
   }
 
   ngOnDestroy(): void {
-    this.mapContainerLegendCalledSubscription.unsubscribe();
+    this.setmapEventSubscription.unsubscribe();
+    this.unsetmapEventSubscription.unsubscribe();
     this.mapContainerCalledSubscription.unsubscribe();
+    this.mapContainerLegendCalledSubscription.unsubscribe();
     this.mapViewResetSubscription.unsubscribe();
     this.mapInteractionSubscription.unsubscribe();
     this.layerNameToZoomSubscription.unsubscribe();
     this.interactionsSetterSubscription.unsubscribe();
+    this.layerRemovingSubscription.unsubscribe();
     this.extentToZoomSubscription.unsubscribe();
+    this.setControlOnMapSubscription.unsubscribe();
+    this.unsetControlOnMapSubscription.unsubscribe();
+
   }
 
 
@@ -149,10 +161,25 @@ export class BackgroundComponent implements OnInit {
         }),
       ],
       target: 'map',
-      view: this.mainView
+      view: this.mainView,
+      controls: defaultControls({
+        zoom : false,
+      })
     });
     this.interationsSetter(false)
 
+  }
+
+  controlerScale(): ScaleLine {
+    return new ScaleLine({
+      units: "metric",
+    });
+  }
+
+  controlerAttribution(): Attribution {
+    return new Attribution({
+      collapsible: false,
+    })
   }
 
   mapCoordinates(): void {

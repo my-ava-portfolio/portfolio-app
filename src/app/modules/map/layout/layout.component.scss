@@ -36,16 +36,12 @@
 
 
 
-.leaflet-control-scale {
-  visibility: visible!important;
-}
-
-.leaflet-control-scale-line {
-  background: rgb(255 255 255 / 83%)!important;
+.ol-scale-line {
+  position: unset!important;
 }
 
 
-#attribution, #legend-scale {
+#legend-scale {
   font-size: 12px!important;
   background-color: #f1f1f1c9!important;
   margin: 3px!important;
