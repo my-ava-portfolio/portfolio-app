@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { MapService } from '@services/map.service';
+import Map from 'ol/Map';
 
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
@@ -101,9 +102,9 @@ export class TimeLineComponent implements OnInit {
     private timelineService: TimelineService,
   ) {
 
-    this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
-      (element: any) => {
-        this.mapContainer = element;
+    this.mapContainerSubscription = this.mapService.map.subscribe(
+      (map: Map) => {
+        this.mapContainer = map;
       }    );
 
     this.defaultSpeedValueSubscription = this.timelineService.defaultSpeedValue.subscribe(

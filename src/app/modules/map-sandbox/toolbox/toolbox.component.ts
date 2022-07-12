@@ -80,7 +80,7 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
 
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
-    this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
+    this.mapContainerSubscription = this.mapService.map.subscribe(
       (map: any) => {
         this.mapContainer = map;
 
@@ -105,7 +105,7 @@ export class ToolboxComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
     // init all the map container
-    this.mapService.getMapContainer();
+    this.mapService.getMap();
 
     this.sendResumeSubMenus()
 

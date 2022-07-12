@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Extent } from 'ol/extent';
-import Feature from 'ol/Feature';
+import Map from 'ol/Map';
 
 import { Subject } from 'rxjs';
 
@@ -16,7 +16,7 @@ export class MapService {
   setMapControl: Subject<string> = new Subject<string>();
   unsetMapControl: Subject<string> = new Subject<string>();
 
-  mapContainer: Subject<any> = new Subject<any>();
+  map: Subject<Map> = new Subject<Map>();
   setMapScaleDiv: Subject<any> = new Subject<any>();
   rmvMapScale: Subject<any> = new Subject<any>();
   interactionsEnabled: Subject<boolean> = new Subject<boolean>();
@@ -24,7 +24,7 @@ export class MapService {
   layerNameToZoom: Subject<any[]> = new Subject<any[]>();
   extentToZoom: Subject<any[]> = new Subject<any[]>();
 
-  mapContainerCalled: Subject<boolean> = new Subject<boolean>();
+  mapCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 
   // TODO create a dedicated service
@@ -53,8 +53,8 @@ export class MapService {
     this.unsetmapEvent.next(event);
   }
 
-  getMapContainer(): void {
-    this.mapContainerCalled.next(true);
+  getMap(): void {
+    this.mapCalled.next(true);
   }
 
   resetMapView(): void {
@@ -66,8 +66,8 @@ export class MapService {
     this.layerNameToRemove.next(layerName)
   }
 
-  sendMapContainer(mapContainer: any): void {
-    this.mapContainer.next(mapContainer);
+  sendMap(map: Map): void {
+    this.map.next(map);
   }
 
   setMapInteraction(enabled: boolean): void {

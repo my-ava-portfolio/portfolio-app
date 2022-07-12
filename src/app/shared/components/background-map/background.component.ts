@@ -32,14 +32,11 @@ export class BackgroundComponent implements OnInit {
   private defaultZoomValue = 7;
   private mainView!: View;
 
-  private scaleControler!: Control;
-
-  map: any;
+  map!: Map;
 
   setmapEventSubscription!: Subscription;
   unsetmapEventSubscription!: Subscription;
-  mapContainerCalledSubscription!: Subscription;
-  mapContainerLegendCalledSubscription!: Subscription;
+  mapCalledSubscription!: Subscription;
   mapViewResetSubscription!: Subscription;
   mapInteractionSubscription!: Subscription;
   layerNameToZoomSubscription!: Subscription;
@@ -57,7 +54,7 @@ export class BackgroundComponent implements OnInit {
     this.setmapEventSubscription = this.mapService.setmapEvent.subscribe(
       (event: string) => {
         if (event === "mapCoords") {
-          this.mapCoordinates()
+          this.mapCoordinatesEvent()
         }
       }
     )
@@ -78,9 +75,9 @@ export class BackgroundComponent implements OnInit {
       }
     )
 
-    this.mapContainerCalledSubscription = this.mapService.mapContainerCalled.subscribe(
+    this.mapCalledSubscription = this.mapService.mapCalled.subscribe(
       (_) => {
-        this.mapService.sendMapContainer(this.map);
+        this.mapService.sendMap(this.map);
       }
     );
 
@@ -138,8 +135,7 @@ export class BackgroundComponent implements OnInit {
   ngOnDestroy(): void {
     this.setmapEventSubscription.unsubscribe();
     this.unsetmapEventSubscription.unsubscribe();
-    this.mapContainerCalledSubscription.unsubscribe();
-    this.mapContainerLegendCalledSubscription.unsubscribe();
+    this.mapCalledSubscription.unsubscribe();
     this.mapViewResetSubscription.unsubscribe();
     this.mapInteractionSubscription.unsubscribe();
     this.layerNameToZoomSubscription.unsubscribe();
@@ -182,7 +178,7 @@ export class BackgroundComponent implements OnInit {
     })
   }
 
-  mapCoordinates(): void {
+  mapCoordinatesEvent(): void {
     const mapCoords = this.map.on('pointermove', (evt: any) => {
       this.mapService.pullMapCoords([evt.coordinate, evt.pixel])
     })

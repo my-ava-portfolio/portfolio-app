@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 
 import { Subscription } from 'rxjs';
 
+import Map from 'ol/Map';
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -43,7 +44,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   experiencesRoute: string = experiencesPages.route;
   educationRoute: string = educationPages.route;
 
-  mapContainer!: any;
+  map!: Map;
   currentFeatureSelectedId!: string | null;
 
   activitiesStyle!: Style;
@@ -73,7 +74,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   popupWidth = 330;
   popupHeight = 190;
 
-  mapContainerSubscription!: Subscription;
+  mapSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
   pullTripsGeoDataToMapSubscription!: Subscription;
   zoomEventSubscription!: Subscription;
@@ -102,9 +103,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       }
     )
 
-    this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
-      (mapContainer: any) => {
-        this.mapContainer = mapContainer;
+    this.mapSubscription = this.mapService.map.subscribe(
+      (map: Map) => {
+        this.map = map;
       }
     );
 
@@ -119,7 +120,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
         // if a click is done on experience location icon
         if (this.fragmentValue !== null) {
-        const feature: Feature = getFeatureFromLayer(this.mapContainer, activityLayerName, this.fragment, 'id')
+        const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, this.fragment, 'id')
         const featureGeom = feature.getGeometry()
           if (featureGeom !== undefined ) {
             this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
@@ -165,8 +166,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
     this.mapService.setMapInteraction(true)
-    // this.activitiesStyle = this.BuildActivitiesStyle.bind(this)
-    this.mapService.getMapContainer();
+    this.mapService.getMap();
 
     this.sendResumeSubMenus();
 
@@ -185,7 +185,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   }
 
   ngOnDestroy(): void {
-    this.mapContainerSubscription.unsubscribe();
+    this.mapSubscription.unsubscribe();
     this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
     this.pullTripsGeoDataToMapSubscription.unsubscribe();
     this.zoomEventSubscription.unsubscribe();
@@ -233,7 +233,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   buildActivityLayer(data: any): void {
     let activitiesLayer = this.buildLayerFromFeatures(activityLayerName, data, activitiesStyle)
 
-    this.mapContainer.addLayer(activitiesLayer)
+    this.map.addLayer(activitiesLayer)
 
     let activityLayerSelector = new Select({
       condition: pointerMove,
@@ -278,7 +278,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     });
 
-    this.mapContainer.addInteraction(activityLayerSelector);
+    this.map.addInteraction(activityLayerSelector);
 
   }
 
@@ -334,7 +334,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     vectorLayer.set("name", travelLayerName)
 
-    this.mapContainer.addLayer(vectorLayer);
+    this.map.addLayer(vectorLayer);
 
     // init these value to compute the animation
     let initTime = Date.now();
@@ -353,7 +353,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       vectorContext.setStyle(travelStyles('movingNode'));
       vectorContext.drawGeometry(movingNodeGeom);
       // to continue the postrender animation
-      this.mapContainer.render();
+      this.map.render();
     });
 
   }

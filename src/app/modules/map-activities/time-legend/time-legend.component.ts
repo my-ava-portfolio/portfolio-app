@@ -9,8 +9,10 @@ import { DataService } from '@modules/map-activities/shared/services/data.servic
 import { MapService } from '@services/map.service';
 
 import * as d3 from 'd3';
-import { legendActivitiesId, sliderBarId, travelLayerName } from '@modules/map-activities/shared/core';
+import { legendActivitiesId, sliderBarId } from '@modules/map-activities/shared/core';
+
 import Feature from 'ol/Feature';
+import Map from 'ol/Map';
 
 
 @Component({
@@ -21,9 +23,9 @@ import Feature from 'ol/Feature';
 })
 export class TimeLegendComponent implements OnInit, OnDestroy {
   @Input() currentActivityIdSelected: any;
-  @Input() mapContainer: any;
+  @Input() map: any;
 
-  // mapContainer: any;
+  // map: any;
   sliderDate!: Date;
 
   geoActivitiesData!: any;
@@ -51,16 +53,16 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   currentCountNodes = 0;
 
   pullGeoDataSubscription!: Subscription;
-  mapContainerSubscription!: Subscription;
+  mapSubscription!: Subscription;
 
   constructor(
     private dataService: DataService,
     private mapService: MapService,
   ) {
 
-    this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
-      (mapContainer: any) => {
-        this.mapContainer = mapContainer;
+    this.mapSubscription = this.mapService.map.subscribe(
+      (map: Map) => {
+        this.map = map;
 
       }
     );
@@ -96,7 +98,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.pullGeoDataSubscription.unsubscribe();
-    this.mapContainerSubscription.unsubscribe();
+    this.mapSubscription.unsubscribe();
   }
 
   parseTime(time: string): Date | null {
@@ -265,7 +267,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         })
         .on('end', () => {
           // at the drag end we enable the drap map
-          this.mapService.setMapInteraction(true)
+          //this.mapService.setMapInteraction(true) // TODO useless ?
 
           // enable timeline node selection
           d3.select('#slider-bar .events')
@@ -387,7 +389,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('cursor', 'pointer')
       .attr('cx', (d: any) => this.dateRange(this.parseTime(d.properties.start_date)))
       .on('click', (e: any, d: any) => {
-        const feature: Feature = getFeatureFromLayer(this.mapContainer, activityLayerName, d.properties.id, 'id')
+        const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, d.properties.id, 'id')
         const featureGeom = feature.getGeometry()
         if (featureGeom !== undefined ) {
           this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
@@ -403,7 +405,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
           .style('right', '1em')
           .style('top', '5em');
 
-        const feature = getFeatureFromLayer(this.mapContainer, activityLayerName, d.properties.id, 'id')
+        const feature = getFeatureFromLayer(this.map, activityLayerName, d.properties.id, 'id')
         feature.setStyle(activitySelectedStyle(feature.get('radius')))
 
       })
@@ -416,7 +418,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
           .style('right', 'unset')
           .style('top', 'unset');
 
-        const feature = getFeatureFromLayer(this.mapContainer, activityLayerName, d.properties.id, 'id')
+        const feature = getFeatureFromLayer(this.map, activityLayerName, d.properties.id, 'id')
         feature.setStyle(activitiesStyle(d.properties))
 
       });
