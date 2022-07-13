@@ -16,6 +16,9 @@ export class MapService {
   setMapControl: Subject<string> = new Subject<string>();
   unsetMapControl: Subject<string> = new Subject<string>();
 
+  setMapInteraction: Subject<string> = new Subject<string>();
+  unsetMapInteraction: Subject<string> = new Subject<string>();
+
   map: Subject<Map> = new Subject<Map>();
   setMapControler: Subject<boolean> = new Subject<boolean>();
   rmvMapScale: Subject<any> = new Subject<any>();
@@ -70,7 +73,7 @@ export class MapService {
     this.map.next(map);
   }
 
-  setMapInteraction(enabled: boolean): void {
+  changeMapInteractionStatus(enabled: boolean): void {
     this.interactionsEnabled.next(enabled);
   }
 
@@ -81,6 +84,12 @@ export class MapService {
     this.unsetMapControl.next(controlName);
   }
 
+  setInteractionToMap(interactionName: string): void {
+    this.setMapInteraction.next(interactionName);
+  }
+  unsetInteractionToMap(interactionName: string): void {
+    this.unsetMapInteraction.next(interactionName);
+  }
 
   sendScreenMapBounds(coordsBound: number[]): void {
     this.screenMapBound.next(coordsBound);

@@ -19,10 +19,10 @@ const routes: Routes = [
         path: 'sandbox',
         loadChildren: () => import('@modules/map-sandbox/map-sandbox.module').then(m => m.MapSandboxModule),
       },
-      // {
-      //   path: 'gtfs-viewer',
-      //   loadChildren: () => import('@modules/map-gtfs-viewer/map-gtfs-viewer.module').then(m => m.MapGtfsViewerModule),
-      // },
+      {
+        path: 'gtfs-viewer',
+        loadChildren: () => import('@modules/map-gtfs-viewer/map-gtfs-viewer.module').then(m => m.MapGtfsViewerModule),
+      },
       { path: '', redirectTo: '', pathMatch : 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },

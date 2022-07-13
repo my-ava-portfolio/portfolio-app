@@ -163,7 +163,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit(): void {
-    this.mapService.setMapInteraction(true)
+    this.mapService.changeMapInteractionStatus(true)
+
     this.mapService.getMap();
 
     this.sendResumeSubMenus();
@@ -171,14 +172,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.zoomInitDone = false;
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
-
-  }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus([]);
-    this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
-    // to get the data properties from routes (app.module.ts)
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
   }
 
@@ -192,8 +185,16 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.mapService.removeLayerByName(activityLayerName)
     this.mapService.removeLayerByName(travelLayerName)
+    this.mapService.changeMapInteractionStatus(false)
 
     this.mapService.resetMapView()
+  }
+
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus([]);
+    this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
+    // to get the data properties from routes (app.module.ts)
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
   }
 
   showHideLegend(): void {

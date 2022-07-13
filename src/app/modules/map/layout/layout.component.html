@@ -1,4 +1,3 @@
-<router-outlet name="map-sandbox"></router-outlet>
 
 
 <div class="container-fluid g-0" [@fadeInOut]>
@@ -25,20 +24,20 @@
             </button>
           </div>
 
+
           <div class="map-sources d-flex flex-column mb-3">
 
-            <div class="col-12">
+            <div class="mb-1">
               <div id="legend-scale" class="float-end shadow"></div>
             </div>
 
-            <div class="col-12 d-none d-sm-block">
-              <div id="overview-map" class="float-end shadow"></div>
+            <div class="mb-1">
+              <div id="overview-map" class="float-end shadow d-none d-sm-block"></div>
             </div>
 
-            <div class="col-12">
+            <div class="d-flex flex-column">
               <div id="attribution" class="float-end"></div>
             </div>
-
 
           </div>
 
@@ -47,6 +46,7 @@
         <div class="bg-white legend-content text-center py-3 justify-content-center" [ngClass]="isLegendDisplayed ? 'd-block' : 'd-none'">
           <router-outlet name="map-activities"></router-outlet>
           <router-outlet name="map-gtfs-viewer"></router-outlet>
+          <router-outlet name="map-sandbox"></router-outlet>
 
         </div>
 

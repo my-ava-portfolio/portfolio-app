@@ -20,55 +20,59 @@ export const strokeColor = 'white';
 const strokeWidth = 2;
 const radiusMultiplier = 2;
 
+const jobCircleStyle = new CircleStyle({
+  radius: 0,
+  fill: new Fill({
+    color: jobColor,
+  }),
+  stroke: new Stroke({
+    color: strokeColor,
+    width: strokeWidth,
+  })
+})
 
-export function activitiesStyle(properties: any): Style {
-
-  const education = new Style({
-    image: new CircleStyle({
-      radius: properties.months * radiusMultiplier,
-      fill: new Fill({
-        color: educationColor,
-      }),
-      stroke: new Stroke({
-        color: strokeColor,
-        width: strokeWidth,
-      })
-    })
-  });
-
-  const job = new Style({
-    image: new CircleStyle({
-      radius: properties.months * radiusMultiplier,
-      fill: new Fill({
-        color: jobColor,
-      }),
-      stroke: new Stroke({
-        color: strokeColor,
-        width: strokeWidth,
-      })
-    })
-  });
-
-  const volunteer = new Style({
-    image: new CircleStyle({
-      radius: properties.months * radiusMultiplier,
-      fill: new Fill({
-        color: volunteerColor,
-      }),
-      stroke: new Stroke({
-        color: strokeColor,
-        width: strokeWidth,
-      })
+const educationCircleStyle = new CircleStyle({
+    radius: 0,
+    fill: new Fill({
+      color: educationColor,
+    }),
+    stroke: new Stroke({
+      color: strokeColor,
+      width: strokeWidth,
     })
   })
 
+
+
+
+const volunteerCircleStyle = new CircleStyle({
+  radius: 0,
+  fill: new Fill({
+    color: volunteerColor,
+  }),
+  stroke: new Stroke({
+    color: strokeColor,
+    width: strokeWidth,
+  })
+})
+
+export function activitiesStyle(properties: any): Style {
+  let styleBuilt!: CircleStyle;
+
   if (properties.type === "job") {
-    return job
+    styleBuilt = jobCircleStyle.clone()
   } else if (properties.type === "education") {
-    return education
+    styleBuilt = educationCircleStyle.clone()
   } else {
-    return volunteer
+    styleBuilt = volunteerCircleStyle.clone()
   }
+
+  let radius = properties.months * radiusMultiplier
+  styleBuilt.setRadius(radius)
+
+  return new Style({
+    image: styleBuilt
+  })
 };
 
 
@@ -100,37 +104,46 @@ const travelMovingNodeWidth = 3
 export const travelMovingNodeColor = 'yellow'
 const travelMovingNodeRadius = 7
 
+
+const routeStyle = new Style({
+  stroke: new Stroke({
+    width: travelLineStrokeWidth,
+    color: travelLineStrokeColor,
+  }),
+})
+
+const limitNodeStyle = new Style({
+  image: new CircleStyle({
+    radius: travelNodeStrokeRadius,
+    fill: new Fill({ color: travelNodeColor }),
+    stroke: new Stroke({
+      color: travelNodeStrokeColor,
+      width: travelNodeStrokeWidth,
+    }),
+  })
+})
+
+const movingNodeStyle = new Style({
+  image: new CircleStyle({
+    radius: travelMovingNodeRadius ,
+    fill: new Fill({ color: travelMovingNodeColor }),
+    stroke: new Stroke({
+      color: travelNodeStrokeColor,
+      width: travelMovingNodeWidth,
+    }),
+  }),
+})
+
 export const travelStyles = (featureType: string) => {
 
   if (featureType === "route") {
-    return new Style({
-      stroke: new Stroke({
-        width: travelLineStrokeWidth,
-        color: travelLineStrokeColor,
-      }),
-    })
+    return routeStyle
   } else if (featureType === "limit") {
-    return new Style({
-      image: new CircleStyle({
-        radius: travelNodeStrokeRadius,
-        fill: new Fill({ color: travelNodeColor }),
-        stroke: new Stroke({
-          color: travelNodeStrokeColor,
-          width: travelNodeStrokeWidth,
-        }),
-      })
-    })
+    return limitNodeStyle
+  } else if ( featureType === "movingNode") {
+    return movingNodeStyle
   } else {
-    return new Style({
-      image: new CircleStyle({
-        radius: travelMovingNodeRadius ,
-        fill: new Fill({ color: travelMovingNodeColor }),
-        stroke: new Stroke({
-          color: travelNodeStrokeColor,
-          width: travelMovingNodeWidth,
-        }),
-      }),
-    })
+    return movingNodeStyle
   }
 }
 

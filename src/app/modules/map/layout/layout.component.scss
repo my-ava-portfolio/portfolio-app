@@ -33,11 +33,18 @@
 }
 
 
+.map-sources {
+  position: absolute;
+  right: 1em;
+}
 
 
-
-.ol-scale-line, #overview-map .ol-control {
+.ol-scale-line, .ol-control {
   position: unset!important;
+}
+
+.ol-attribution {
+  max-width: unset;
 }
 
 

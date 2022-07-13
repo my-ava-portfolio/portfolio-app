@@ -13,8 +13,11 @@ import { MapService } from '@services/map.service';
 import { unByKey } from 'ol/Observable';
 import Point from 'ol/geom/Point';
 
-import {ScaleLine, defaults as defaultControls, Control, Attribution, OverviewMap} from 'ol/control';
-
+import {ScaleLine, defaults as defaultControls, Attribution, OverviewMap} from 'ol/control';
+import {
+  DragRotateAndZoom,
+  defaults as defaultInteractions,
+} from 'ol/interaction';
 
 @Component({
   selector: 'app-background-map',
@@ -27,6 +30,7 @@ export class BackgroundComponent implements OnInit {
 
   private mapEvents: any = {};
   private mapControlers: any = {};
+  private mapInteractions: any = {};
 
   private InitialViewCoords: number[] = [496076.3136,5681717.1865];
   private defaultZoomValue = 7;
@@ -38,9 +42,11 @@ export class BackgroundComponent implements OnInit {
 
   setmapEventSubscription!: Subscription;
   unsetmapEventSubscription!: Subscription;
+  setInteractionOnMapSubscription!: Subscription;
+  unsetInteractionOnMapSubscription!: Subscription;
   mapCalledSubscription!: Subscription;
   mapViewResetSubscription!: Subscription;
-  mapInteractionSubscription!: Subscription;
+  mapInteractionStatusSubscription!: Subscription;
   layerNameToZoomSubscription!: Subscription;
   interactionsSetterSubscription!: Subscription;
   layerRemovingSubscription!: Subscription;
@@ -77,6 +83,17 @@ export class BackgroundComponent implements OnInit {
       }
     )
 
+    this.setInteractionOnMapSubscription = this.mapService.setMapInteraction.subscribe(
+      (interactionName: string) => {
+        this.map.addInteraction(this.mapInteractions[interactionName]);
+      }
+    )
+    this.unsetInteractionOnMapSubscription = this.mapService.unsetMapInteraction.subscribe(
+      (interactionName: string) => {
+        this.map.removeInteraction(this.mapInteractions[interactionName]);
+      }
+    )
+
     this.mapCalledSubscription = this.mapService.mapCalled.subscribe(
       (_) => {
         this.mapService.sendMap(this.map);
@@ -89,7 +106,7 @@ export class BackgroundComponent implements OnInit {
       }
     );
 
-    this.mapInteractionSubscription = this.mapService.mapInteractionStatus.subscribe(
+    this.mapInteractionStatusSubscription = this.mapService.mapInteractionStatus.subscribe(
       (status: boolean) => {
         this.isMapInteractionEnabled = status;
       }
@@ -133,15 +150,19 @@ export class BackgroundComponent implements OnInit {
     this.mapControlers['attribution'] = this.controlerAttribution()
     this.mapControlers['miniMap'] = this.controlerMiniMap()
 
+    this.mapInteractions['rotation'] = this.interactionsRotation()
+
     this.initMap();
   }
 
   ngOnDestroy(): void {
     this.setmapEventSubscription.unsubscribe();
     this.unsetmapEventSubscription.unsubscribe();
+    this.setInteractionOnMapSubscription.unsubscribe();
+    this.unsetInteractionOnMapSubscription.unsubscribe();
     this.mapCalledSubscription.unsubscribe();
     this.mapViewResetSubscription.unsubscribe();
-    this.mapInteractionSubscription.unsubscribe();
+    this.mapInteractionStatusSubscription.unsubscribe();
     this.layerNameToZoomSubscription.unsubscribe();
     this.interactionsSetterSubscription.unsubscribe();
     this.layerRemovingSubscription.unsubscribe();
@@ -193,6 +214,10 @@ export class BackgroundComponent implements OnInit {
     });
   }
 
+  interactionsRotation(): DragRotateAndZoom {
+    // Warning: take care about "ol-rotate ol-unselectable ol-control" to reset the north
+    return new DragRotateAndZoom()
+  }
 
   mapCoordinatesEvent(): void {
     const mapCoords = this.map.on('pointermove', (evt: any) => {
