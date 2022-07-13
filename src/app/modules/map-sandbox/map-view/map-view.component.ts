@@ -102,16 +102,20 @@ export class MapViewComponent implements OnInit, OnDestroy {
       source: this.sourceFeatures,
       style: new Style({
         fill: new Fill({
-          color: 'rgba(255, 255, 255, 0.2)',
+          color: '#ffcc33',
         }),
         stroke: new Stroke({
-          color: '#ffcc33',
+          color: 'black',
           width: 2,
         }),
         image: new CircleStyle({
           radius: 7,
           fill: new Fill({
             color: '#ffcc33',
+          }),
+          stroke: new Stroke({
+            color: "black",
+            width: 2,
           }),
         }),
       }),
@@ -132,9 +136,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
     });
 
     this.draw.on('drawend', (e) => {
-
+      const featureCount = this.layerFeatures.getSource().getFeatures().length
       e.feature.setProperties({
         'id': uuidv4(),
+        'name': 'feature_' + featureCount,
         'geom_type': e.feature.getGeometry()?.getType(),
         'created_at': new Date().toISOString()
       })
