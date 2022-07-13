@@ -84,13 +84,8 @@ export const arrowRightIcon = faChevronRight;
 export const arrowLeftIcon = faChevronLeft;
 
 // font awesome unicode
-export const trainIconUnicode = '\uf238';
 export const ungroupIconUnicode = '\uf247';
 
-export const svgActivitiesPointsLayerId = 'svgActivitiesLayer';
-export const svgTripIdPrefix = 'svg_trip_';
-export const legendActivities = 'legendActivity';
-export const sliderBarId = 'slider-bar';
 
 
 export const currentYear: number = new Date().getFullYear();
@@ -173,7 +168,7 @@ export const mapActivitiesPages: any = {
       title: "Bac à sable",
       route: "app/sandbox",
       icon: mapIcon,  // TODO improve icon
-      details: "Un bac à sable pour créer des données (outil de saisie développés avec D3js). En cours de développement..."
+      details: "Un bac à sable pour saisir des données géographiques. En cours de développement..."
     },
     {
       id: "gtfs-viewer",

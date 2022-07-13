@@ -1,12 +1,24 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import * as L from 'leaflet';
-import * as d3 from 'd3';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import {Extent, getCenter} from 'ol/extent';
+
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import Stamen from 'ol/source/Stamen';
 
 import { MapService } from '@services/map.service';
+import { unByKey } from 'ol/Observable';
+import Point from 'ol/geom/Point';
 
+import {ScaleLine, defaults as defaultControls, Attribution, OverviewMap} from 'ol/control';
+import {
+  DragRotateAndZoom,
+  defaults as defaultInteractions,
+} from 'ol/interaction';
 
 @Component({
   selector: 'app-background-map',
@@ -14,64 +26,80 @@ import { MapService } from '@services/map.service';
   styleUrls: ['./background.component.scss']
 })
 export class BackgroundComponent implements OnInit {
-  // @Input() isBlurred!: boolean;
-  // @Input() isMapInteractionEnabled!: boolean;
 
   isMapInteractionEnabled: boolean = false;
 
-  private maxZoomValue = 20;
+  private mapEvents: any = {};
+  private mapControlers: any = {};
+  private mapInteractions: any = {};
 
+  private InitialViewCoords: number[] = [496076.3136,5681717.1865];
+  private defaultZoomValue = 7;
+  private mainView!: View;
 
-  private InitialViewCoords: any = [44.896741, 4.932861];
-  private zoomValue = 8;
-  private osmLayer: any = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {
-    maxZoom: this.maxZoomValue,
-    minZoom: 1
-  });
+  private basemap = new Stamen({
+    layer: 'terrain'
+  })
 
-  map: any;
+  map!: Map;
 
-  mapContainerCalledSubscription!: Subscription;
-  mapContainerLegendCalledSubscription!: Subscription;
+  setmapEventSubscription!: Subscription;
+  unsetmapEventSubscription!: Subscription;
+  setInteractionOnMapSubscription!: Subscription;
+  unsetInteractionOnMapSubscription!: Subscription;
+  mapCalledSubscription!: Subscription;
   mapViewResetSubscription!: Subscription;
-  mapInteractionSubscription!: Subscription;
-  zoomMapFromBoundsSubscription!: Subscription;
+  mapInteractionStatusSubscription!: Subscription;
+  layerNameToZoomSubscription!: Subscription;
+  interactionsSetterSubscription!: Subscription;
+  layerRemovingSubscription!: Subscription;
+  extentToZoomSubscription!: Subscription;
+
+  setControlOnMapSubscription!: Subscription;
+  unsetControlOnMapSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
   ) {
 
-
-    this.mapContainerLegendCalledSubscription = this.mapService.mapContainerLegendCalled.subscribe(
-      (_) => {
-
-        // to add scale
-        const scaleLeaflet: any = L.control.scale(
-          {
-            imperial: false,
-            position: 'bottomright'
-          }
-        );
-        const AttributionLeaflet: any = L.control.attribution(
-          {
-            position: 'bottomright'
-          }
-        );
-
-        scaleLeaflet.addTo(this.map);
-        AttributionLeaflet.addTo(this.map);
-
-        this.mapService.sendMapScale({
-          scale: scaleLeaflet,
-          attribution: AttributionLeaflet
-        });
-
+    this.setmapEventSubscription = this.mapService.setmapEvent.subscribe(
+      (event: string) => {
+        if (event === "mapCoords") {
+          this.mapCoordinatesEvent()
+        }
       }
-    );
+    )
+    this.unsetmapEventSubscription = this.mapService.unsetmapEvent.subscribe(
+      (event: string) => {
+        this.disableMapEvent(event)
+      }
+    )
 
-    this.mapContainerCalledSubscription = this.mapService.mapContainerCalled.subscribe(
+    this.setControlOnMapSubscription = this.mapService.setMapControl.subscribe(
+      (controlName: string) => {
+        this.map.addControl(this.mapControlers[controlName]);
+      }
+    )
+    this.unsetControlOnMapSubscription = this.mapService.unsetMapControl.subscribe(
+      (controlName: string) => {
+        this.map.removeControl(this.mapControlers[controlName]);
+      }
+    )
+
+    this.setInteractionOnMapSubscription = this.mapService.setMapInteraction.subscribe(
+      (interactionName: string) => {
+        this.map.addInteraction(this.mapInteractions[interactionName]);
+      }
+    )
+    this.unsetInteractionOnMapSubscription = this.mapService.unsetMapInteraction.subscribe(
+      (interactionName: string) => {
+        this.map.removeInteraction(this.mapInteractions[interactionName]);
+      }
+    )
+
+    this.mapCalledSubscription = this.mapService.mapCalled.subscribe(
       (_) => {
-        this.mapService.sendMapContainer(this.map);
+        this.mapService.sendMap(this.map);
       }
     );
 
@@ -81,76 +109,197 @@ export class BackgroundComponent implements OnInit {
       }
     );
 
-    this.mapInteractionSubscription = this.mapService.mapInteraction.subscribe(
+    this.mapInteractionStatusSubscription = this.mapService.mapInteractionStatus.subscribe(
       (status: boolean) => {
         this.isMapInteractionEnabled = status;
       }
     );
 
-    this.zoomMapFromBoundsSubscription = this.mapService.zoomMapFromBounds.subscribe(
-      (bounds: any) => {
-        this.zoomFromDataBounds(bounds)
+    this.layerNameToZoomSubscription = this.mapService.layerNameToZoom.subscribe(
+      (layerName: any[]) => {
+        this.zoomToLayerName(layerName[0], layerName[1])
       }
     )
+
+    this.extentToZoomSubscription = this.mapService.extentToZoom.subscribe(
+      (layerName: any[]) => {
+        this.zoomToExtent(layerName[0], layerName[1])
+
+      }
+    )
+
+    this.interactionsSetterSubscription = this.mapService.interactionsEnabled.subscribe(
+      (enabled: boolean) => {
+          this.interationsSetter(enabled)
+        }
+    )
+
+    this.layerRemovingSubscription = this.mapService.layerNameToRemove.subscribe(
+      (layerName: string) => {
+          this.removeLayerByName(layerName)
+        }
+      )
 
   }
 
   ngOnInit(): void {
+
+    this.mainView = new View({
+      center: this.InitialViewCoords,
+      zoom: this.defaultZoomValue,
+    });
+
+    this.mapControlers['scale'] = this.controlerScale()
+    this.mapControlers['attribution'] = this.controlerAttribution()
+    this.mapControlers['miniMap'] = this.controlerMiniMap()
+
+    this.mapInteractions['rotation'] = this.interactionsRotation()
+
     this.initMap();
   }
 
   ngOnDestroy(): void {
-    this.mapContainerLegendCalledSubscription.unsubscribe();
-    this.mapContainerCalledSubscription.unsubscribe();
+    this.setmapEventSubscription.unsubscribe();
+    this.unsetmapEventSubscription.unsubscribe();
+    this.setInteractionOnMapSubscription.unsubscribe();
+    this.unsetInteractionOnMapSubscription.unsubscribe();
+    this.mapCalledSubscription.unsubscribe();
     this.mapViewResetSubscription.unsubscribe();
-    this.mapInteractionSubscription.unsubscribe();
-    this.zoomMapFromBoundsSubscription.unsubscribe();
+    this.mapInteractionStatusSubscription.unsubscribe();
+    this.layerNameToZoomSubscription.unsubscribe();
+    this.interactionsSetterSubscription.unsubscribe();
+    this.layerRemovingSubscription.unsubscribe();
+    this.extentToZoomSubscription.unsubscribe();
+    this.setControlOnMapSubscription.unsubscribe();
+    this.unsetControlOnMapSubscription.unsubscribe();
+
   }
 
 
   initMap(): void {
-    this.map = L.map('map', {
-      center: this.InitialViewCoords,
-      zoom: this.zoomValue,
-      zoomControl: false,
-    }).addLayer(this.osmLayer);
 
-    this.map.on(
-      'moveend',
-      this.getMapScreenBounds.bind(this)
-    );
+    this.map = new Map({
+      layers: [
+        new TileLayer({
+          source: this.basemap,
+        }),
+      ],
+      target: 'map',
+      view: this.mainView,
+      controls: defaultControls({
+        zoom : false,
+      })
+    });
+    this.interationsSetter(false)
 
+  }
+
+  controlerScale(): ScaleLine {
+    return new ScaleLine({
+      units: "metric",
+    });
+  }
+  controlerAttribution(): Attribution {
+    return new Attribution({
+      collapsible: false,
+    })
+  }
+  controlerMiniMap(): OverviewMap {
+    return new OverviewMap({
+      // see in overviewmap-custom.html to see the custom CSS used
+      className: 'ol-overviewmap ol-custom-overviewmap',
+      layers: [
+        new TileLayer({
+          source: this.basemap
+        }),
+      ],
+      collapsible: false,
+    });
+  }
+
+  interactionsRotation(): DragRotateAndZoom {
+    // Warning: take care about "ol-rotate ol-unselectable ol-control" to reset the north
+    return new DragRotateAndZoom()
+  }
+
+  mapCoordinatesEvent(): void {
+    const mapCoords = this.map.on('pointermove', (evt: any) => {
+      this.mapService.pullMapCoords([evt.coordinate, evt.pixel])
+    })
+    this.mapEvents["mapCoords"] = mapCoords
+
+  }
+
+  disableMapEvent(event: string): void {
+    unByKey(this.mapEvents[event])
+  }
+
+  interationsSetter(enabled: boolean): void {
+    if ( !enabled ) {
+      this.map.getInteractions().forEach((interaction: any) => {
+        interaction.setActive(false);
+      });
+    } else {
+      this.map.getInteractions().forEach((interaction: any) => {
+        interaction.setActive(true);
+      });
+    }
   }
 
   resetView(): void {
-    this.map.setView(
-      this.InitialViewCoords,
-      this.zoomValue
-    )
-    d3.select(".leaflet-control-scale").remove();
-    d3.select(".leaflet-control-attribution").remove();
+    const startLocation = new Point(this.InitialViewCoords)
+
+    this.zoomToExtent(startLocation.getExtent(), this.defaultZoomValue)
+
+
+    // TODO remove legend ?
+
   }
 
   getMapScreenBounds(): void {
+    let extent = this.map.getView().calculateExtent(this.map.getSize());
     this.mapService.sendScreenMapBounds([
-      this.map.getBounds().getWest(),
-      this.map.getBounds().getSouth(),
-      this.map.getBounds().getEast(),
-      this.map.getBounds().getNorth()
+      extent[0], // west
+      extent[1], // south
+      extent[2], // east
+      extent[3], // North
     ]);
   }
 
-  zoomFromDataBounds(bounds: number[]): void {
-    const ne = { lng: bounds[2], lat: bounds[3] };
-    const sw = { lng: bounds[0], lat: bounds[1] };
+  zoomToLayerName(layerName: string, zoom: number): void {
+    this.map.getLayers().getArray()
+      .filter((layer: any) => layer.get('name') === layerName)
+      .forEach((layer: any) => {
+        const extent = layer.getSource().getExtent();
+        this.map.getView().fit(extent, { duration: 1000, maxZoom: zoom })
+      });
 
-    this.map.fitBounds(
-      L.latLngBounds(L.latLng(sw), L.latLng(ne)),
-      {
-        maxZoom: this.maxZoomValue
-      }
-    );
   }
 
+  zoomToExtent(extentValue: Extent, zoom: number): void {
+    const duration = 2000
+
+    const mapExtent = this.map.getView().calculateExtent()
+    const resolution = this.mainView.getResolutionForExtent(mapExtent);
+    const currentZoom = this.mainView.getZoomForResolution(resolution);
+    const center = getCenter(extentValue);
+    if (currentZoom !== undefined) {
+      this.mainView.animate({
+        zoom: currentZoom - 1,
+        duration: duration / 3
+      }, {
+        center: center,
+        zoom: zoom,
+        duration: duration / 1.5
+      });
+    }
+
+  }
+
+  removeLayerByName(layerName: string): void {
+    this.map.getLayers().getArray()
+      .filter((layer: any) => layer.get('name') === layerName)
+      .forEach((layer: any) => this.map.removeLayer(layer));
+  }
 }
 

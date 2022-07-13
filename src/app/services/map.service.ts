@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Extent } from 'ol/extent';
+import Map from 'ol/Map';
 
 import { Subject } from 'rxjs';
-
-import { apiUrl } from '@core/inputs';
 
 
 @Injectable({
@@ -11,11 +10,24 @@ import { apiUrl } from '@core/inputs';
 })
 export class MapService {
 
-  mapContainer: Subject<any> = new Subject<any>();
-  mapContainerScale: Subject<any> = new Subject<any>();
+  setmapEvent: Subject<string> = new Subject<string>();
+  unsetmapEvent: Subject<string> = new Subject<string>();
 
-  mapContainerCalled: Subject<boolean> = new Subject<boolean>();
-  mapContainerLegendCalled: Subject<boolean> = new Subject<boolean>();
+  setMapControl: Subject<string> = new Subject<string>();
+  unsetMapControl: Subject<string> = new Subject<string>();
+
+  setMapInteraction: Subject<string> = new Subject<string>();
+  unsetMapInteraction: Subject<string> = new Subject<string>();
+
+  map: Subject<Map> = new Subject<Map>();
+  setMapControler: Subject<boolean> = new Subject<boolean>();
+  rmvMapScale: Subject<any> = new Subject<any>();
+  interactionsEnabled: Subject<boolean> = new Subject<boolean>();
+  layerNameToRemove: Subject<string> = new Subject<string>();
+  layerNameToZoom: Subject<any[]> = new Subject<any[]>();
+  extentToZoom: Subject<any[]> = new Subject<any[]>();
+
+  mapCalled: Subject<boolean> = new Subject<boolean>();
   isMapViewReset: Subject<boolean> = new Subject<boolean>();
 
   // TODO create a dedicated service
@@ -27,44 +39,76 @@ export class MapService {
 
   screenMapBound: Subject<any> = new Subject<any>();
 
-  zoomMapFromBounds: Subject<any> = new Subject<any>();
-
   newCoords: Subject<number[]> = new Subject<number[]>();
 
   zoomEvent: Subject<boolean> = new Subject<boolean>();
 
-  mapInteraction: Subject<boolean> = new Subject<boolean>();
+  mapInteractionStatus: Subject<boolean> = new Subject<boolean>();
 
   constructor(
-    private http: HttpClient
   ) { }
 
-  getMapContainer(): void {
-    this.mapContainerCalled.next(true);
+  setMapEvent(event: string): void {
+    this.setmapEvent.next(event);
   }
 
-  getMapContainerForLegend(): void {
-    this.mapContainerLegendCalled.next(true);
+  unsetMapEvent(event: string): void {
+    this.unsetmapEvent.next(event);
+  }
+
+  getMap(): void {
+    this.mapCalled.next(true);
   }
 
   resetMapView(): void {
+    // TODO add argument to control it
     this.isMapViewReset.next(true)
   }
 
-  sendMapContainer(mapContainer: any): void {
-    this.mapContainer.next(mapContainer);
+  removeLayerByName(layerName: string): void {
+    this.layerNameToRemove.next(layerName)
+  }
+
+  sendMap(map: Map): void {
+    this.map.next(map);
+  }
+
+  changeMapInteractionStatus(enabled: boolean): void {
+    this.interactionsEnabled.next(enabled);
+  }
+
+  setControlToMap(controlName: string): void {
+    this.setMapControl.next(controlName);
+  }
+  unsetControlToMap(controlName: string): void {
+    this.unsetMapControl.next(controlName);
+  }
+
+  setInteractionToMap(interactionName: string): void {
+    this.setMapInteraction.next(interactionName);
+  }
+  unsetInteractionToMap(interactionName: string): void {
+    this.unsetMapInteraction.next(interactionName);
   }
 
   sendScreenMapBounds(coordsBound: number[]): void {
     this.screenMapBound.next(coordsBound);
   }
 
-  sendZoomMapFromBounds(coordsBound: number[]): void {
-    this.zoomMapFromBounds.next(coordsBound);
+  zoomToLayerName(layerName: string, zoom: number): void {
+    this.layerNameToZoom.next([layerName, zoom]);
   }
 
-  sendMapScale(scaleFeatures: any): void {
-    this.mapContainerScale.next(scaleFeatures);
+  zoomToExtent(extent: Extent, zoom: number): void {
+    this.extentToZoom.next([extent, zoom]);
+  }
+
+  buildMapMapControlers(): void {
+    this.setMapControler.next(true);
+  }
+
+  removeMapScale(): void {
+    this.rmvMapScale.next(true);
   }
 
   // TODO create a dedicated service
@@ -82,7 +126,7 @@ export class MapService {
   }
   //
 
-  pullMapCoords(coordinates: any): void {
+  pullMapCoords(coordinates: number[]): void {
     this.newCoords.next(coordinates);
   }
 
@@ -90,8 +134,8 @@ export class MapService {
     this.zoomEvent.next(true);
   }
 
-  MapInteraction(status: boolean): void {
-    this.mapInteraction.next(status);
+  mapInteraction(status: boolean): void {
+    this.mapInteractionStatus.next(status);
   }
 
 }

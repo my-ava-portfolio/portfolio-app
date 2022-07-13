@@ -32,20 +32,22 @@
 
 }
 
-
-
-
-
-.leaflet-control-scale {
-  visibility: visible!important;
-}
-
-.leaflet-control-scale-line {
-  background: rgb(255 255 255 / 83%)!important;
+.map-sources {
+  position: absolute;
+  right: 0em;
 }
 
 
-#attribution, #legend-scale {
+.ol-scale-line, .ol-control {
+  position: unset!important;
+}
+
+.ol-attribution {
+  max-width: unset;
+}
+
+
+#legend-scale {
   font-size: 12px!important;
   background-color: #f1f1f1c9!important;
   margin: 3px!important;

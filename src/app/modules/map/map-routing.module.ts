@@ -1,4 +1,4 @@
-import { MapGtfsViewerModule } from './../map-gtfs-viewer/map-gtfs-viewer.module';
+// import { MapGtfsViewerModule } from './../map-gtfs-viewer/map-gtfs-viewer.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 

@@ -1,13 +1,18 @@
+import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer } from './../shared/core';
 import { Component, OnInit, ViewEncapsulation, OnDestroy, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { currentYear, currentDate, backwardIcon, forwardIcon, tagsIcon } from '@core/inputs';
-import { svgTripIdPrefix, sliderBarId, legendActivities } from '@core/inputs';
+import { currentYear, currentDate, backwardIcon, forwardIcon } from '@core/inputs';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
+import { MapService } from '@services/map.service';
 
 import * as d3 from 'd3';
+import { legendActivitiesId, sliderBarId } from '@modules/map-activities/shared/core';
+
+import Feature from 'ol/Feature';
+import Map from 'ol/Map';
 
 
 @Component({
@@ -18,9 +23,9 @@ import * as d3 from 'd3';
 })
 export class TimeLegendComponent implements OnInit, OnDestroy {
   @Input() currentActivityIdSelected: any;
-  @Input() mapContainer: any;
+  @Input() map: any;
 
-  // mapContainer: any;
+  // map: any;
   sliderDate!: Date;
 
   geoActivitiesData!: any;
@@ -29,9 +34,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   // icons
   backwardIcon = backwardIcon;
   forwardIcon = forwardIcon;
-  tagIcon = tagsIcon;
 
-  legendActivities = legendActivities;
   sliderBarId = '#' + sliderBarId;
 
   margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
@@ -49,14 +52,20 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   timer!: any;
   currentCountNodes = 0;
 
-  svgTripIdPrefix = svgTripIdPrefix;
-
   pullGeoDataSubscription!: Subscription;
-  mapContainerSubscription!: Subscription;
+  mapSubscription!: Subscription;
 
   constructor(
     private dataService: DataService,
+    private mapService: MapService,
   ) {
+
+    this.mapSubscription = this.mapService.map.subscribe(
+      (map: Map) => {
+        this.map = map;
+
+      }
+    );
 
     this.pullGeoDataSubscription = this.dataService.activitiesGeoData.subscribe(
       (element) => {
@@ -64,7 +73,6 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         // build trip layers
         // get all trips and display them
         this.geoTripsData = element.trips_data; // to filter by date
-        this.dataService.pullTripsGeoDataToMap(element.trips_data);
 
         this.geoActivitiesData = element.activities_geojson;
         const startDate: Date = new Date(element.start_date);
@@ -76,14 +84,10 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
         // if a circle is preselected
         if ( this.currentActivityIdSelected !== undefined ) {
-          const currentElement: any = d3.select('#slider-bar #location_' + this.currentActivityIdSelected);
-          this.sliderEventCircleBounceRepeat(currentElement)
         }
 
       }
     );
-
-
 
   }
 
@@ -94,6 +98,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.pullGeoDataSubscription.unsubscribe();
+    this.mapSubscription.unsubscribe();
   }
 
   parseTime(time: string): Date | null {
@@ -154,22 +159,24 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
 
   updateTrips(h: Date): void {
+    let tripFound: any[] = []
     this.geoTripsData.forEach((item: any) => {
       const startDate: string = item.start_date;
       const endDate: string = item.end_date;
       const tripStartDate: Date | null = this.parseTime(startDate);
       const tripEndDate: Date | null = this.parseTime(endDate);
 
-      const svgTrip = d3.selectAll('[id^=' + this.svgTripIdPrefix + item.name + ']');
       if (tripStartDate !== null && tripEndDate !== null) {
-
         if (h >= tripStartDate && h < tripEndDate) {
-          svgTrip.style('visibility', 'visible');
-        } else {
-          svgTrip.style('visibility', 'hidden');
+          tripFound.push(item)
         }
       }
     });
+    if (tripFound.length === 1) {
+      this.dataService.pullTripsGeoDataToMap(tripFound);
+    } else {
+      this.dataService.pullTripsGeoDataToMap([]);
+    }
   }
 
   update(h: any): void {
@@ -248,7 +255,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
           // to avoid cursor running if a click is done on the slider bar...
           playButton.text('Pause');
-          playButton.dispatch('click')
+          // playButton.dispatch('click') // TODO seems useless ?
 
           this.selectedDatePosition = e.x;
           this.update(this.dateRange.invert(this.selectedDatePosition));
@@ -260,7 +267,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
         })
         .on('end', () => {
           // at the drag end we enable the drap map
-          this.mapContainer.dragging.enable();
+          //this.mapService.setMapInteraction(true) // TODO useless ?
 
           // enable timeline node selection
           d3.select('#slider-bar .events')
@@ -268,8 +275,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
             .style('pointer-events', 'all');
 
           // reset button play if animation is done and play button == continue
-          if (this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.endDate.toTimeString()
-            || this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.startDate.toTimeString()
+          const sliderDate = this.dateRange.invert(this.selectedDatePosition).toTimeString()
+          if (sliderDate === this.endDate.toTimeString() || sliderDate === this.startDate.toTimeString()
           ) {
             playButton.text('Play');
           } else {
@@ -370,7 +377,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('id', (d: any) => 'location_' + d.properties.id)
       .attr('class', (d: any) => {
         // in order to match with legend status
-        const relatedLegendElement = d3.selectAll('#' + this.legendActivities + ' circle.' + d.properties.type);
+        const relatedLegendElement = d3.selectAll('#' + legendActivitiesId + ' circle.' + d.properties.type);
         if (relatedLegendElement.size() > 0) {
           if (relatedLegendElement.classed('disabled')) {
             return 'invisible activityPoint ' + d.properties.type;
@@ -381,10 +388,15 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
       .attr('r', this.sliderNodesSize)
       .attr('cursor', 'pointer')
       .attr('cx', (d: any) => this.dateRange(this.parseTime(d.properties.start_date)))
-      .on('mouseover', (e: any, d: any) => {
-        if (d.properties.id !== this.currentActivityIdSelected) {
-          this.BounceMapActivityCircle(d, 4);
+      .on('click', (e: any, d: any) => {
+        const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, d.properties.id, 'id')
+        const featureGeom = feature.getGeometry()
+        if (featureGeom !== undefined ) {
+          this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
         }
+
+      })
+      .on('mouseover', (e: any, d: any) => {
 
         this.interactionWithEventNode(e.currentTarget, d);
         // to link with popup
@@ -392,19 +404,22 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
           .style('display', 'block')
           .style('right', '1em')
           .style('top', '5em');
+
+        const feature = getFeatureFromLayer(this.map, activityLayerName, d.properties.id, 'id')
+        feature.setStyle(activitySelectedStyle(feature.get('radius')))
+
       })
       .on('mouseout', (e: any, d: any) => {
-
-        if (d.properties.id !== this.currentActivityIdSelected) {
-          this.BounceMapActivityCircle(d, 2);
-        }
 
         this.interactionWithEventNode(e.currentTarget, d);
         // link with popup
         d3.select('#popup-feature-' + d.properties.id)
-        .style('display', 'none')
-        .style('right', 'unset')
-          .style('right', 'unset');
+          .style('display', 'none')
+          .style('right', 'unset')
+          .style('top', 'unset');
+
+        const feature = getFeatureFromLayer(this.map, activityLayerName, d.properties.id, 'id')
+        feature.setStyle(activitiesStyle(d.properties))
 
       });
     sliderNodes.exit().remove();
@@ -415,40 +430,10 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
     const currentElement: any = d3.select(svgObject);
     currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
 
-    const legendElement: any = d3.select('#theme-legend .' + data.properties.type);
+    const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + data.properties.type);
     legendElement.classed('selected', !legendElement.classed('selected'));
-
-    const currentActivityCircle = d3.select('#svgActivitiesLayer #node_location_' + data.properties.id + ' circle');
-    currentActivityCircle.classed('selected', !currentActivityCircle.classed('selected')); // toggle class
-
+    //TODO select circle
   }
 
-  BounceMapActivityCircle(data: any, scaleR: number): void {
-    const currentActivityCircle = d3.select('#svgActivitiesLayer #node_location_' + data.properties.id + ' circle');
-    this.circleBouncer(currentActivityCircle, scaleR);
-  }
-
-  circleBouncer(object: any, rScale: number): void {
-    object
-      .transition()
-      .duration(1000)
-      .ease(d3.easeElastic)
-      .attr('r', (d: any) => d.properties.months * rScale);
-  }
-
-  sliderEventCircleBounceRepeat(d3Object: any): void {
-    d3Object
-      .transition()
-      .duration(1000)
-      .ease(d3.easeElastic)
-      .attr('r', this.sliderNodesSize * 2)
-      // .style("opacity", 1)
-      .transition()
-      .duration(500)
-      .ease(d3.easeLinear)
-      .attr('r', this.sliderNodesSize)
-      // .style("opacity", 0)
-      .on('end', this.sliderEventCircleBounceRepeat.bind(this, d3Object));
-  }
 
 }

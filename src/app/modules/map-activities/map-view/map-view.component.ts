@@ -1,21 +1,32 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 import { Subscription } from 'rxjs';
 
-import * as L from 'leaflet';
+import Map from 'ol/Map';
+import Feature from 'ol/Feature';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import Point from 'ol/geom/Point';
+import Select from 'ol/interaction/Select';
+import {pointerMove} from 'ol/events/condition';
+import { getVectorContext } from 'ol/render';
+import {LineString} from 'ol/geom';
+import { Style } from 'ol/style';
+import { transform } from 'ol/proj';
 
 import * as d3 from 'd3';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagsIcon, centerIcon, trainIconUnicode, helpIcon, minWidthLandscape, imageProfile, experiencesPages, educationPages } from '@core/inputs';
-import { apiLogoUrl, currentYear } from '@core/inputs';
-import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities } from '@core/inputs';
+import { locationIcon, tagsIcon, centerIcon, helpIcon, imageProfile, experiencesPages, educationPages } from '@core/inputs';
+import { apiLogoUrl } from '@core/inputs';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from '@services/map.service';
+import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer, legendActivitiesId, travelLayerName, travelNodespeed, travelStyles } from '../shared/core';
 
 
 @Component({
@@ -27,28 +38,27 @@ import { MapService } from '@services/map.service';
 export class MapViewComponent implements OnInit, OnDestroy  {
   imageProfile: string = imageProfile;
 
-  fragment!: any;
-  fragmentValue!: string;
+  fragment: string | null = null;
 
   experiencesRoute: string = experiencesPages.route;
   educationRoute: string = educationPages.route;
 
-  svgTripIdPrefix = svgTripIdPrefix;
-  legendActivities = legendActivities;
+  map!: Map;
+  currentFeatureSelectedId!: string | null;
 
-  trainIconUnicode = trainIconUnicode;
+  activitiesStyle!: Style;
 
-  currentDate = currentYear;
+  geoFeaturesData!: any[];
+  travelId: string | null = null;
+  //////
 
   isLegendDisplayed = true;
 
   innerWidth!: any;
   innerHeight!: any;
 
-  mapContainer!: any;
   zoomInitDone!: boolean;
-  maxZoomValue = 9;
-  ZoomActivityValue = 12;
+  defaultActivitieLayerZoom = 9;
 
   apiImgUrl = apiLogoUrl;
 
@@ -62,18 +72,13 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   // check css code related to popup
   popupWidth = 330;
   popupHeight = 190;
-  geoFeaturesData!: any[];
-  svgActivitiesLayerId = svgActivitiesPointsLayerId;
-  circleOpacity = 0.7;
-  circleStroke = 'ghostwhite';
-  circleWidth = '2.5px';
-  generalData!: any;
 
-  mapContainerSubscription!: Subscription;
+  mapSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
   pullTripsGeoDataToMapSubscription!: Subscription;
   zoomEventSubscription!: Subscription;
   routeSubscription!: Subscription;
+  newCoordsSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -85,45 +90,65 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.zoomEventSubscription = this.mapService.zoomEvent.subscribe(
       (_: boolean) => {
-        this.zoomFromDataBounds(this.geoFeaturesData)
+        this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
       }
     );
 
-    this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
-      (mapContainer: any) => {
-        this.mapContainer = mapContainer;
-        this.initActivitiesSvgLayer();
+    this.newCoordsSubscription = this.mapService.newCoords.subscribe(
+      (coordinates: any) => {
+        const pixelCoords = coordinates[1];
+        this.popupMoving(pixelCoords)
 
+      }
+    )
+
+    this.mapSubscription = this.mapService.map.subscribe(
+      (map: Map) => {
+        this.map = map;
       }
     );
 
-    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.subscribe(
+    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.pipe(map((val, index) => [val, index])) // here we transform event to array (call it tuple if you like)
+     .subscribe(
       (geoFeaturesData: any[]) => {
-        this.geoFeaturesData = geoFeaturesData;
-        this.activitiesMapping(geoFeaturesData);
-        if (!this.zoomInitDone) {
-          if (this.fragment !== null) {
-            this.zoomFromActivityId(this.geoFeaturesData, this.fragment);
-          } else {
-            this.zoomFromDataBounds(geoFeaturesData);
+
+        this.mapService.removeLayerByName(activityLayerName)
+        this.geoFeaturesData = geoFeaturesData[0];
+
+        this.buildActivityLayer(this.geoFeaturesData)
+
+        // if a click is done on experience location icon
+        if (this.fragment !== null) {
+        const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, this.fragment, 'id')
+        const featureGeom = feature.getGeometry()
+          if (featureGeom !== undefined ) {
+            this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
           }
-          this.zoomInitDone = true;
-        }
-      }
-    );
+        } else if (geoFeaturesData[1] === 0) {
+           // check if the zoom is needed, it means only at the start !
+          this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
+         }
+
+      });
 
     this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
-        geoFeaturesData.forEach((item: any) => {
-          // create forward and backward trip
-          let tripDataReverted: any = Object.create(item.geojson_data);
-          let tripDataRevertedFeatures: any = tripDataReverted.slice().reverse();
-          tripDataReverted = tripDataRevertedFeatures;
-          this.computeAnimatePointsOnLine(item.geojson_data, item.name);
-          this.computeAnimatePointsOnLine(tripDataReverted,`${item.name}_reverted`);
-        });
+
+        if (geoFeaturesData.length === 1 && this.travelId !== geoFeaturesData[0].name) {
+          this.mapService.removeLayerByName(travelLayerName)
+          this.travelId = geoFeaturesData[0].name
+          this.buildTravelLayer(geoFeaturesData[0])
+
+          }
+        if (geoFeaturesData.length === 0) {
+          this.travelId = null
+          this.mapService.removeLayerByName(travelLayerName)
+
+          }
+
       }
     );
+
 
     this.routeSubscription = this.activatedRoute.fragment.subscribe(
       (fragment) => {
@@ -131,8 +156,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           this.fragment = null;
         } else {
           this.fragment = fragment;
-          this.fragmentValue = this.fragment;
-
         }
       }
     );
@@ -140,7 +163,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit(): void {
-    this.mapService.getMapContainer();
+    this.mapService.changeMapInteractionStatus(true)
+
+    this.mapService.getMap();
 
     this.sendResumeSubMenus();
 
@@ -150,371 +175,207 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   }
 
+  ngOnDestroy(): void {
+    this.mapSubscription.unsubscribe();
+    this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
+    this.pullTripsGeoDataToMapSubscription.unsubscribe();
+    this.zoomEventSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
+    this.newCoordsSubscription.unsubscribe();
+
+    this.mapService.removeLayerByName(activityLayerName)
+    this.mapService.removeLayerByName(travelLayerName)
+    this.mapService.changeMapInteractionStatus(false)
+
+    this.mapService.resetMapView()
+  }
+
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
-
-  }
-
-  ngOnDestroy(): void {
-    this.mapContainerSubscription.unsubscribe();
-    this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
-    this.pullTripsGeoDataToMapSubscription.unsubscribe();
-    this.zoomEventSubscription.unsubscribe();
-    this.routeSubscription.unsubscribe();
-
-    d3.select(`#${this.svgActivitiesLayerId}`).remove();
-    d3.selectAll(`[id^=${this.svgTripIdPrefix}]`).remove();
-
-    this.mapService.resetMapView()
-  }
-
-
-  zoomOnData(): void {
-    if (this.geoFeaturesData !== undefined) {
-      this.zoomFromDataBounds(this.geoFeaturesData);
-    }
   }
 
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
-  zoomFromDataBounds(geojsonData: any): void {
+  buildLayerFromFeatures(layerName: string, features: any[], style: Function): any {
 
-    this.mapContainer.fitBounds(
-      L.geoJSON(geojsonData).getBounds(),
-      {
-        maxZoom: this.maxZoomValue
-      }
-    );
-  }
-
-  zoomFromActivityId(geoFeaturesData: any[], activityId: string): void {
-    const dataFiltered: any = geoFeaturesData.filter((d: any) => d.properties.id === activityId);
-    if (dataFiltered.length === 1) {
-      this.mapContainer.setView(
-        [dataFiltered[0].geometry.coordinates[1], dataFiltered[0].geometry.coordinates[0]],
-        this.ZoomActivityValue
-      );
-      this.bounceRepeat(`#node_location_${activityId} circle`)
-
-    }
-    // else mean that the geom related is not display
-
-  }
-
-  initActivitiesSvgLayer(): void {
-    const svgLayerContainer: any = L.svg().addTo(this.mapContainer);
-    const svgLayerObject = d3.select(svgLayerContainer._container)
-      .attr('id', this.svgActivitiesLayerId)
-      .attr('pointer-events', 'auto');
-    svgLayerObject.select('g')
-      .attr('class', 'leaflet-zoom-hide')
-      .attr('id', 'activities-container');
-
-  }
-
-
-  activitiesMapping(data: any): void {
-    const group: any = d3.select('#activities-container');
-    const jobs = group.selectAll('.activityPoint')
-      .data(data, (d: any) => d.properties.id); // need to defined an unique id to disordered draw, check doc...
-
-    jobs
-      .enter()
-      .append('a') // add hyper link and the svg circle
-      .attr('xlink:href', (d: any) => {
-        const idValue = d.properties.id;
-        const typeValue = d.properties.type;
-        if (typeValue === 'education') {
-          return `#${this.educationRoute}#${idValue}`;
-        } else if (typeValue == "job") {
-          return `#${this.experiencesRoute}#${idValue}`;
-        } else if (typeValue == "volunteer") {
-          return `#${this.experiencesRoute}#${idValue}`;
-        }
-        return '#none';
-      })
-      .attr('id', (d: any) => 'node_location_' + d.properties.id)
-      .attr('class', (d: any) => {
-        // in order to match with legend status
-        const relatedLegendElement = d3.selectAll(`#${this.legendActivities} circle.${d.properties.type}`);
-        if (relatedLegendElement.size() > 0) {
-          if (relatedLegendElement.classed('disabled')) {
-            return `invisible activityPoint ${d.properties.type}`;
-          }
-        }
-        return 'activityPoint ' + d.properties.type;
-      })
-      .attr('cursor', 'pointer')
-      .append('circle')
-      .style('opacity', this.circleOpacity)
-      .style('stroke', this.circleStroke)
-      .style('stroke-width', this.circleWidth)
-      .attr('class', (d: any) => d.properties.type)
-      .on('mouseover', (e: any, d: any) => {
-        // hightlight map point
-        const currentElement: any = d3.select(e.currentTarget);
-        currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
-        // legends
-        // timeline highlight
-        const sliderNode: any = d3.select(`#slider-bar #location_${d.properties.id}`);
-        sliderNode.classed('selected', !sliderNode.classed('selected')); // toggle class
-        const typeNodeLegend: any = d3.select(`#theme-legend .${d.properties.type}`);
-        typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
-
-      })
-      .on('mousemove', (e: any, d: any) => {
-        // dynamic tooltip position
-        this.adaptActivityPopup(d.properties.id, e);
-
-      })
-      .on('mouseout', (e: any, d: any) => {
-        this.disableActivityPopup(d.properties.id);
-
-        // remove (reset!) the selected class added
-        d3.selectAll(`#theme-legend .selected`)
-          .classed('selected', false);
-
-        // hightlight map point
-        const currentElement: any = d3.select(e.currentTarget);
-        currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
-        // legends
-        // timeline highlight
-        const sliderNode: any = d3.select(`#slider-bar #location_${d.properties.id}`);
-        sliderNode.classed('selected', !sliderNode.classed('selected')); // toggle class
-        const typeNodeLegend: any = d3.select(`#theme-legend .${d.properties.id}`);
-        if (typeNodeLegend.size() !== 0) {
-          typeNodeLegend.classed('selected', !typeNodeLegend.classed('selected')); // toggle class
-
-        }
-
-      });
-
-    d3.selectAll('.activityPoint circle').transition()
-      .attr('r', (d: any) => d.properties.months * 2);
-
-    jobs
-      .exit()
-      // .transition()
-      // .attr('r', 0)
-      .remove();
-
-    this.mapContainer.on('moveend', this.reset.bind(this));
-    this.reset();
-  }
-
-  reset(): void {
-    // for the points we need to convert from latlong to map units
-    d3.select('#' + this.svgActivitiesLayerId)
-      .selectAll('circle')
-      .attr('transform', (d: any) => {
-        const y: number = d.geometry.coordinates[1];
-        const x: number = d.geometry.coordinates[0];
-        const coords = this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x));
-        return `translate(${coords.x},${coords.y})`;
-      })
-  }
-
-  applyLatLngToLayer(d: any): any {
-    const y: number = d.geometry.coordinates[1];
-    const x: number = d.geometry.coordinates[0];
-    return this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x));
-  }
-
-  adaptActivityPopup(popupId: string, event: any): void {
-    d3.select('#popup-feature-' + popupId)
-      .style('display', 'block')
-      .style('z-index', '1')
-      .style('left', () => {
-        if (event.x + this.popupWidth + 20 > this.innerWidth) {
-          return event.x - this.popupWidth - 15 + 'px';
-        } else {
-          return event.x + 15 + 'px';
-        }
-      })
-      .style('top', () => {
-        if (event.y + this.popupHeight + 20 > this.innerHeight) {
-          return event.y - this.popupHeight - 15 + 'px';
-        } else {
-          return event.y + 15 + 'px';
-        }
-      });
-  }
-
-  disableActivityPopup(popupId: string): void {
-    d3.select(`#popup-feature-${popupId}`)
-      .style('z-index', 'unset')
-      .style('display', 'none')
-      .style('left', 'unset') // reset position to avoid conflict with popup from timeline
-      .style('top', 'unset');
-  }
-
-  bounceRepeat(activityPointId: string): void {
-    d3.select(activityPointId)
-      .transition()
-      .duration(1000)
-      .ease(d3.easeElastic)
-      .attr('r', (d: any) => d.properties.months * 4)
-      .transition()
-      .duration(500)
-      .ease(d3.easeLinear)
-      .attr('r', (d: any) => d.properties.months)
-      .on('end', this.bounceRepeat.bind(this, activityPointId));
-  }
-
-  // animation on line
-
-  computeAnimatePointsOnLine(nodesPathData: any[], layerId: string): void {
-    // this.removeFeaturesMapFromLayerId(layerId);
-
-    // input Data contains nodes
-    const inputData: any = nodesPathData;
-    const convertLatLngToLayerCoords = (d: any): any => {
-        return this.mapContainer.latLngToLayerPoint(
-            new L.LatLng(
-                d.geometry.coordinates[1],
-                d.geometry.coordinates[0]
-            )
-        );
-    };
-    inputData.forEach( (feature: any) => {
-        feature.LatLng = new L.LatLng(
-            feature.geometry.coordinates[1],
-            feature.geometry.coordinates[0]
-        );
+    let vectorSource = new VectorSource({
+      features: []
+    });
+    let vectorLayer = new VectorLayer({
+      source: vectorSource,
     });
 
-    const svgMapContainer: any = L.svg().addTo(this.mapContainer);
-    const svg: any = d3.select(svgMapContainer._container).attr('id', this.svgTripIdPrefix + layerId);
-    // leaflet-zoom-hide needed to avoid the phantom original SVG
-    const g: any = svg.append('g').attr('class', `leaflet-zoom-hide path_${layerId}`);
+    features.forEach((data: any, index: number) => {
+      let iconFeature = new Feature({
+        geometry: new Point(data.geometry.coordinates).transform('EPSG:4326', 'EPSG:3857'),
+        id: data.properties.id,
+        type: data.properties.type,
+        name: data.properties.name,
+        radius: data.properties.months * 2,
+      })
 
-    // function to generate a line
-    const toLine: any = d3.line()
-      // .interpolate("linear")
-      .x((d: any): number => convertLatLngToLayerCoords(d).x)
-      .y((d: any): number => convertLatLngToLayerCoords(d).y);
+      iconFeature.setStyle(style(data.properties))
+      vectorSource.addFeature(iconFeature)
+    })
+    vectorLayer.set("name", layerName)
+
+    return vectorLayer
+
+  };
 
 
-    // Here we will make the points into a single
-    // line/path. Note that we surround the input_data
-    // with [] to tell d3 to treat all the points as a
-    // single line. For now these are basically points
-    // but below we set the "d" attribute using the
-    // line creator function from above.
-    const linePath: any  = g.selectAll(`.lineConnect_${layerId}`)
-      .data([inputData])
-      .enter()
-      .append('path')
-      .attr('class', `train-line lineConnect_${layerId}`)  // TODO add a property type into data linked to a scss class
-      .style('fill', 'none')
-      .style('opacity', 'unset') // add 0 to hide the path
-      .style('stroke', 'black')
-      .style('stroke-width', '3px')
-      .style('overflow', 'overlay');
+  buildActivityLayer(data: any): void {
+    let activitiesLayer = this.buildLayerFromFeatures(activityLayerName, data, activitiesStyle)
 
-    // the traveling circle along the path
-    // TODO improve style : refactoring
-    const marker: any = g.append('circle')
-      .attr('r', 11)
-      .attr('id', `marker_${layerId}`)
-      .attr('class', `train-marker travelMarker_${layerId}`);
-      // .style('fill', 'yellow')
-      // .style('stroke', 'black')
-      // .style('stroke-width', '3px');
+    this.map.addLayer(activitiesLayer)
 
-    const textmarker: any = g.append('text') // uncomment line? Firefox issue?
-      // .attr('font-family', '\'Font Awesome 5 Free\'')
-      // .attr('font-weight', 900)
-      // .style('color', 'black')
-      .text(this.trainIconUnicode)
-      .attr('id', `markerText_${layerId}`)
-      .attr('class', `train-marker-text travelMarkerText_${layerId}`)
+    let activityLayerSelector = new Select({
+      condition: pointerMove,
+      multi: false,
+      layers: [activitiesLayer],
+      style: (feature: any) => {
+        let radius = feature.get("radius")
+        var selectedStyle = activitySelectedStyle(radius)
+        return selectedStyle;
+      }
+    });
 
-    // points that make the path, we'll be used to display them with the line chart
-    // we make them transparent
-    const ptFeatures: any = g.selectAll('circle')
-      .data(inputData)
-      .enter()
-      .append('circle')
-      .attr('class', `waypoints_${layerId}`)
-      .style('opacity', '0');
+    activityLayerSelector.on('select', (evt: any) => {
+      const selected = evt.selected
+      const deSelected = evt.deselected
 
-    // Reposition the SVG to cover the features.
-    const reset = (): void => {
+      // WARNING not refactoring needed ! because we can have both selected and deselected
+      if (deSelected.length === 1) {
+        let deSelectedFeature = deSelected[0]
+        this.currentFeatureSelectedId = null
+        this.mapService.unsetMapEvent("mapCoords")
+        d3.select('#popup-feature-' + deSelectedFeature.get("id"))
+          .style('display', 'none')
+          .style('right', 'unset')
+          .style('top', 'unset')
+          .style('left', 'unset');
+        this._handleActivityCircleOnLegend(deSelectedFeature)
 
-      // we get the stating point
-      marker.attr('transform', (): string => {
-        const y: number = inputData[0].geometry.coordinates[1];
-        const x: number = inputData[0].geometry.coordinates[0];
-        const coords = this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x))
-        return `translate(${coords.x},${coords.y})`;
-      });
 
-      textmarker.attr('transform', (): string => {
-        const y: number = inputData[0].geometry.coordinates[1];
-        const x: number = inputData[0].geometry.coordinates[0];
-        const coords = this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x))
-        return `translate(${coords.x},${coords.y})`;
-      });
+      }
+      if (selected.length === 1) {
+        let selectedFeature = selected[0]
+        this.currentFeatureSelectedId = selectedFeature.get("id")
+        this.mapService.setMapEvent("mapCoords")
 
-      linePath.attr('d', toLine);
+        d3.select('#popup-feature-' + selectedFeature.get("id"))
+          .style('display', 'block')
+          .style('z-index', '1')
 
-      ptFeatures.attr('transform', (d: any): string =>{
-        const y: number = inputData[0].geometry.coordinates[1];
-        const x: number = inputData[0].geometry.coordinates[0];
-        const coords = this.mapContainer.latLngToLayerPoint(new L.LatLng(y, x))
-        return `translate(${coords.x},${coords.y})`;
-      });
+        this._handleActivityCircleOnLegend(selectedFeature)
+      }
 
-    };
+    });
 
-    function transition(): void {
-      linePath.transition()
-        .duration(7500)
-        .attrTween('stroke-dasharray', tweenDash)
-        .on('end', (e: any): void => {
-          d3.select(e.currentTarget).call(transition); // infinite loop
-          linePath.style('stroke-dasharray', '0'); // after the first pass, the line will not disappear
-        })
-        ;
-    }
+    this.map.addInteraction(activityLayerSelector);
 
-    // this function feeds the attrTween operator above with the
-    // stroke and dash lengths
-    function tweenDash(): any {
-      return (t: any): any => {
-        // total length of path (single value)
-        const lenght: any = linePath.node().getTotalLength();
-        // t is the time converted from 0 to 1
-        const interpolate: any = d3.interpolateString(`0,${lenght}`, `${lenght},${lenght}`);
-        // t is fraction of time 0-1 since transition began
-        const markerSelected: any = d3.select('#marker_' + layerId);
-        const textmarkerSelect: any = d3.select('#markerText_' + layerId);
+  }
 
-        const pointAtLength = linePath.node().getPointAtLength(t * lenght);
+  _handleActivityCircleOnLegend(feature: Feature): void {
+    const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + feature.get("type"));
+    legendElement.classed('selected', !legendElement.classed('selected')); // toggle class
 
-        // Move the marker to that point computed
-        const translateValue = `translate(${pointAtLength.x},${pointAtLength.y})`;
-        markerSelected.attr('transform', translateValue);
-        textmarkerSelect.attr('transform', translateValue);
+    const timeLineEvent: any = d3.select('circle#location_' + feature.get("id"));
+    timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
+  }
 
-        return interpolate(t);
-      };
-    }
 
-    // when the user zooms in or out you need to reset
-    // the view
-    this.mapContainer.on('moveend', reset);
+  buildTravelLayer(data: any): void {
+    let points: any[] = []
+    data.geojson_data.forEach((element: any) => {
+      points.push(transform(element.geometry.coordinates, 'EPSG:4326', 'EPSG:3857'))
+    });;
+    let travelLine = new LineString(points)
+    var travel = new Feature({
+      type: 'route',
+      geometry: travelLine
+    })
 
-    // this puts stuff on the map!
-    reset();
-    transition();
+    const startMarker = new Feature({
+      type: 'limit',
+      geometry: new Point(travelLine.getFirstCoordinate()),
+    });
 
+    const endMarker = new Feature({
+      type: 'limit',
+      geometry: new Point(travelLine.getLastCoordinate()),
+    });
+
+    const movingNodeGeom = new Point(travelLine.getFirstCoordinate())
+    const movingNode = new Feature({
+      type: 'movingNode',
+      geometry: movingNodeGeom,
+    });
+
+    let vectorSource = new VectorSource({
+      features: []
+    });
+    let vectorLayer = new VectorLayer({
+      source: vectorSource,
+    });
+
+    const features = [travel, movingNode, startMarker, endMarker]
+    features.forEach((feature: any, index: number) => {
+      feature.setStyle(travelStyles(feature.get("type")))
+      vectorSource.addFeature(feature)
+    })
+
+
+    vectorLayer.set("name", travelLayerName)
+
+    this.map.addLayer(vectorLayer);
+
+    // init these value to compute the animation
+    let initTime = Date.now();
+    let distance = 0;
+
+    vectorLayer.on('postrender', (event: any) => {
+      const time = event.frameState.time;
+      const elapsedTime = time - initTime;
+      distance = (distance + (travelNodespeed * elapsedTime) / 1e6) % 2;
+      initTime = time;
+      const currentCoordinate = travelLine.getCoordinateAt(
+        distance > 1 ? 2 - distance : distance
+      );
+      movingNodeGeom.setCoordinates(currentCoordinate);
+      const vectorContext = getVectorContext(event);
+      vectorContext.setStyle(travelStyles('movingNode'));
+      vectorContext.drawGeometry(movingNodeGeom);
+      // to continue the postrender animation
+      this.map.render();
+    });
+
+  }
+
+  popupMoving(pixelCoords: number[]): void {
+    const popupPixelPadding = 20;
+    const positionPixelPadding = 15;
+    d3.select('#popup-feature-' + this.currentFeatureSelectedId)
+    .style('left', () => {
+      if (pixelCoords[0] + this.popupWidth + popupPixelPadding > this.innerWidth) {
+        return pixelCoords[0] - this.popupWidth - positionPixelPadding + 'px';
+      } else {
+        return pixelCoords[0] + positionPixelPadding + 'px';
+      }
+    })
+    .style('top', () => {
+
+      if (pixelCoords[1] + this.popupHeight + popupPixelPadding > this.innerHeight) {
+        return pixelCoords[1] - this.popupHeight - positionPixelPadding + 'px';
+      } else {
+        return pixelCoords[1] + positionPixelPadding + 'px';
+      }
+    });
   }
 
 

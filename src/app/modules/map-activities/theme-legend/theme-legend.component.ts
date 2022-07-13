@@ -1,10 +1,6 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { trainIconUnicode, tagsIcon } from '@core/inputs';
-import { svgActivitiesPointsLayerId, svgTripIdPrefix, legendActivities, sliderBarId } from '@core/inputs';
-
-
-import * as d3 from 'd3';
+import { educationColor, jobColor, legendActivitiesId, sliderBarId, strokeColor, travelMovingNodeColor, travelNodeStrokeColor, volunteerColor } from '@modules/map-activities/shared/core';
 
 
 @Component({
@@ -12,17 +8,14 @@ import * as d3 from 'd3';
   templateUrl: './theme-legend.component.html',
   styleUrls: ['./theme-legend.component.scss']
 })
-export class ThemeLegendComponent implements OnInit, AfterViewInit {
-  svgActivitiesPointsLayerId = svgActivitiesPointsLayerId;
-  svgTripIdPrefix = svgTripIdPrefix;
-  legendActivities = legendActivities;
+export class ThemeLegendComponent implements OnInit {
+
   sliderBarId = sliderBarId;
+  legendActivitiesId = legendActivitiesId;
 
   widthLegendElement = 200;
   heightLegendElement = 140;
   heightMoveLegendElement = 60;
-
-  tagIcon = tagsIcon;
 
   fontSize = '19px';
   // activity month legend data
@@ -32,15 +25,18 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
     textXPos: 120
   };
 
+
+
+
   // activity types legend data
   activityTypesLegendData: any = {
     circleR: 18,
     circleCxPos: 20,
     textXPos: 50,
     circleJobs: [
-      { cy: 25, class: 'education', label: 'Formations' },
-      { cy: 70, class: 'job', label: 'Entreprises' },
-      { cy: 115, class: 'volunteer', label: 'Bénévolat' },
+      { cy: 25, class: 'education', label: 'Formations', color: educationColor, strokeColor: strokeColor },
+      { cy: 70, class: 'job', label: 'Entreprises', color: jobColor, strokeColor: strokeColor },
+      { cy: 115, class: 'volunteer', label: 'Bénévolat', color: volunteerColor, strokeColor: strokeColor },
     ]
   };
 
@@ -53,8 +49,9 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
         classLine: 'train-line',
         classMarker: 'train-marker',
         classMarkerText: 'train-marker-text',
-        markerIcon: trainIconUnicode,
-        label: 'Train'
+        label: 'Train',
+        circleColor: travelMovingNodeColor,
+        strokeColor: travelNodeStrokeColor
       },
     ]
   };
@@ -62,52 +59,6 @@ export class ThemeLegendComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit(): void {
-
-  }
-
-  ngAfterViewInit(): void {
-    this.interactWithActivitiesLegend()
-    this.interactWithMovesLegend()
-  }
-
-  interactWithActivitiesLegend(): void {
-    d3.selectAll('#' + this.legendActivities + ' circle')
-      .style('cursor', 'pointer')
-      .on('click', (e: any, d: any) => {
-        const currentElement = d3.select(e.currentTarget)
-        currentElement.classed('disabled', !currentElement.classed('disabled')); // toggle class
-
-        const currentElementTypes = this.activityTypesLegendData.circleJobs.filter(
-          (element: any) => currentElement.classed(element.class)
-        );
-
-        if (currentElementTypes.length === 1) {
-          // TODO svg id to constants!
-          const currentActivitiesMapCircles = d3.selectAll('#' + this.svgActivitiesPointsLayerId + ' .' + currentElementTypes[0].class)
-          currentActivitiesMapCircles.classed('invisible', !currentActivitiesMapCircles.classed('invisible')); // toggle class
-
-          const currentSliderMarkersOnTimeline = d3.selectAll('#' + this.sliderBarId + ' .' + currentElementTypes[0].class)
-          currentSliderMarkersOnTimeline.classed('invisible', !currentSliderMarkersOnTimeline.classed('invisible')); // toggle class
-
-        } else {
-          // console.log('error')
-        }
-      });
-  }
-
-  interactWithMovesLegend(): void {
-    this.movesLineLegendData.moves.forEach((element: any) => {
-      d3.selectAll('.' + element.classMarker)
-      .style('cursor', 'pointer')
-      .on('click', (e: any, d: any) => {
-        const currentElement = d3.select(e.currentTarget)
-        currentElement.classed('disabled', !currentElement.classed('disabled')); // toggle class
-
-        const currentMovesMapLines = d3.selectAll('[id^=' + this.svgTripIdPrefix + ']')
-        currentMovesMapLines.classed('invisible', !currentMovesMapLines.classed('invisible')); // toggle class
-
-      })
-    });
 
   }
 

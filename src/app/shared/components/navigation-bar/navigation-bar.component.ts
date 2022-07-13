@@ -66,8 +66,8 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   bootstrapVersion!: string;
   bootstrapRepoUrl = 'https://ng-bootstrap.github.io/#/home';
 
-  leafletVersion!: string;
-  leafletRepoUrl = 'https://github.com/Leaflet/Leaflet';
+  openLayersVersion!: string;
+  openLayersRepoUrl = 'https://openlayers.org/';
 
   d3Version!: string;
   d3RepoUrl = 'https://github.com/d3/d3';

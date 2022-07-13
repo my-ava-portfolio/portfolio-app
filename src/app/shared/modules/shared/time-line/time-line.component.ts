@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { MapService } from '@services/map.service';
+import Map from 'ol/Map';
 
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 
-import { backwardIcon, forwardIcon, tagsIcon } from '@modules/map-gtfs-viewer/shared/inputs';
+import { backwardIcon, forwardIcon, tagsIcon } from '@modules/map-gtfs-viewer/shared/core';
 import { TimelineService } from '@shared/services/timeline.service';
 
 @Component({
@@ -83,12 +84,12 @@ export class TimeLineComponent implements OnInit {
   private fontSize = '14px';
   private maxDatePosition: number = this.width - this.margin.left - this.margin.right;
   private timer!: any;
-  stepValue = 4000; // 4000 ok with parq ; 1500 for ter ; 4k for others // reduce to get more details
-  minStepValue = 500;
+  stepValue = 4000;
+  minStepValue = 50;
   maxStepValue!: number
-  private timerStep = 25; // 25 ok with parq
+  private timerStep = 25;
 
-  private mapContainer!: any;
+  private map!: any;
 
   mapContainerSubscription!: Subscription;
   pullRangeDateDataSubscription!: Subscription;
@@ -101,10 +102,11 @@ export class TimeLineComponent implements OnInit {
     private timelineService: TimelineService,
   ) {
 
-    this.mapContainerSubscription = this.mapService.mapContainer.subscribe(
-      (element: any) => {
-        this.mapContainer = element;
-      }    );
+    this.mapContainerSubscription = this.mapService.map.subscribe(
+      (map: Map) => {
+        this.map = map;
+      }
+    );
 
     this.defaultSpeedValueSubscription = this.timelineService.defaultSpeedValue.subscribe(
       (defaultSpeedValue: number) => {
@@ -136,13 +138,13 @@ export class TimeLineComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mapService.getMapContainer()
+    this.mapService.getMap()
   }
 
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
     this.notifyTimelineSubscription.unsubscribe();
-    this.setMapTileBrightness()
+    // this.setMapTileBrightness()
 
   }
 
@@ -191,7 +193,6 @@ export class TimeLineComponent implements OnInit {
         })
         .on('end', (e: any) => {
           // at the drag end we enable the drap map
-          this.mapContainer.dragging.enable();
 
           // enable timeline node selection
           d3.select('#timeline-slider .events')
@@ -287,15 +288,13 @@ export class TimeLineComponent implements OnInit {
   }
 
   private setMapTileBrightness(value?: number) {
-    const mapTilesDiv = d3.selectAll(".leaflet-layer")
+    const mapTilesDiv = d3.selectAll(".ol-viewport")
 
     if (typeof value !== 'undefined') {
 
       mapTilesDiv.style("filter", `brightness(${this.brightnessValuesAtEachHours[value]})`);
-      // console.log(this.brightnessValuesAtEachHours[value])
     } else {
       mapTilesDiv.style("filter", "unset");
-      // console.log("aa")
 
     };
   }
