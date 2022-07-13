@@ -13,30 +13,30 @@
 
         <div class="d-flex flex-row align-items-end justify-content-between px-3">
 
-          <div class="d-flex flex-row">
-            <button class="btn btn-sm btn-dark me-2" type="button" checked autocomplete="off" (click)="showHideLegend()">
+          <div id="legendLabels" class="d-flex flex-row">
+            <button class="rounded-top border-0 bg-dark bg-gradient text-white mx-2 p-2 -1" type="button" checked autocomplete="off" (click)="showHideLegend()">
               <fa-icon class="" [icon]="tagIcon"></fa-icon>
               Légende
             </button>
 
-            <button class="btn btn-sm btn-warning me-2" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
+            <button class="rounded-top border-0 bg-warning bg-gradient text-black mx-2 mt-2 -1" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
               <fa-icon class="" [icon]="centerIcon"></fa-icon>
             </button>
           </div>
 
 
-          <div class="map-sources d-flex flex-column mb-3">
+          <div class="map-sources d-flex flex-column">
 
-            <div class="mb-1">
+            <div class="mb-1 me-1">
               <div id="legend-scale" class="float-end shadow"></div>
             </div>
 
-            <div class="mb-1">
+            <div class="mb-2 me-2">
               <div id="overview-map" class="float-end shadow d-none d-sm-block"></div>
             </div>
 
             <div class="d-flex flex-column">
-              <div id="attribution" class="float-end"></div>
+              <div id="attribution" class="float-end d-none d-sm-block"></div>
             </div>
 
           </div>

@@ -8,6 +8,7 @@ import {Extent, getCenter} from 'ol/extent';
 
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
+import Stamen from 'ol/source/Stamen';
 
 import { MapService } from '@services/map.service';
 import { unByKey } from 'ol/Observable';
@@ -36,7 +37,9 @@ export class BackgroundComponent implements OnInit {
   private defaultZoomValue = 7;
   private mainView!: View;
 
-  private basemap = new OSM()
+  private basemap = new Stamen({
+    layer: 'terrain'
+  })
 
   map!: Map;
 
