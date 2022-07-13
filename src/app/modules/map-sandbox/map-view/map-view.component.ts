@@ -31,26 +31,35 @@ export class MapViewComponent implements OnInit, OnDestroy {
   layerFeatures!: any;
   layerName = "edited_layer";
 
+  _allFeatures: any[] = [];
+  allFeatures: any[] = [];
+  allRawFeatures: any[] = [];
+
   modifier!: Modify;
   draw!: Draw;
   snap!: Snap;
 
+  editDisabledIcon = faXmark;
+  pointIcon = faCircle;
+  lineStringIcon = faWaveSquare;
+  polygonIcon = faDrawPolygon;
+
   geomTypesSupported = [
     {
       "name": 'editDisabled',
-      "icon": faXmark
+      "icon": this.editDisabledIcon
     },
     {
       "name": 'Point',
-      "icon": faCircle
+      "icon": this.pointIcon
     },
     {
       "name": 'LineString',
-      "icon": faWaveSquare
+      "icon": this.lineStringIcon
     },
     {
       "name": 'Polygon',
-      "icon": faDrawPolygon
+      "icon": this.polygonIcon
     }
   ]
 
@@ -146,6 +155,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
         }),
       }),
     });
+
+    this.layerFeatures.getSource().on('addfeature', (event: any) => {
+      this.returnFeatures()
+    });
+    this.layerFeatures.getSource().on('removefeature', (event: any) => {
+      this.returnFeatures()
+    });
+
+
     this.layerFeatures.set("name", this.layerName)
 
     this.map.addLayer(this.layerFeatures)
@@ -173,7 +191,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
           'created_at': new Date().toISOString()
         })
       });
-      
+
       this.map.addInteraction(this.draw);
       this.snap = new Snap({source: this.sourceFeatures});
       this.map.addInteraction(this.snap);
@@ -195,15 +213,39 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   }
 
-  displayFeatures(): void {
-    console.log(this.getFeatureFromLayer(this.map, this.layerName))
+
+  returnFeatures(): void {
+    let featuresFound: any[] = []
+    this.sourceFeatures.getFeatures().forEach((feature: any) => {
+      featuresFound.push(
+        {
+          id: feature.get('id'),
+          name: feature.get('name'),
+          geom_type: feature.get('geom_type')
+        }
+      )
+    })
+    this.allFeatures = this.chunk(featuresFound, 4)
+  }
+
+  chunk(inputArray: any[], size: number): any[] {
+    let outputArray = [];
+    for (let i = 0; i < inputArray.length; i += size) {
+      const chunk = inputArray.slice(i, i + size);
+      outputArray.push(chunk)
+  }
+    return outputArray
+
+  }
+
+  removeFeature(id: string): void {
+    const featureFound = this.layerFeatures.getSource().getFeatures().filter((feat: any) => {
+      return feat.get('id') === id
+    })
+    this.sourceFeatures.removeFeature(featureFound[0]);
   }
 
 
-  getFeatureFromLayer(map: any, layerName: string): Feature[] {
-    const layers = map.getLayers().getArray()
-    const layersFound = layers.filter((layer: any) => layer.get('name') === layerName)
-    const features = layersFound[0].getSource().getFeatures()
-    return features
-  }
 }
+
+
