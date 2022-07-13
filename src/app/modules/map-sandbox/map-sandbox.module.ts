@@ -6,13 +6,13 @@ import { ColorPickerModule } from 'ngx-color-picker';
 
 import { MapSandboxRoutingModule } from '@modules/map-sandbox/map-sandbox-routing.module';
 
-import { ToolboxComponent } from '@modules/map-sandbox/toolbox/toolbox.component';
+import { MapViewComponent } from '@modules/map-sandbox/map-view/map-view.component';
 
 
 
 @NgModule({
   declarations: [
-    ToolboxComponent
+    MapViewComponent
   ],
   imports: [
     CommonModule,

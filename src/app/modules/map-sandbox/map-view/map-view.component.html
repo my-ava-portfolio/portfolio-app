@@ -1,0 +1,18 @@
+<div class="row justify-content-around">
+
+  <div class="dropdown geom-selector">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      {{ geomTypeSelected }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      <li><span class="dropdown-item" *ngFor="let geomType of geomTypesSupported" (click)="addInteractions(geomType)">{{ geomType }}</span></li>
+    </ul>
+  </div>
+
+  <div class="test">
+    <button class="btn btn-secondary" type="button" (click)="displayFeatures()">
+      log
+    </button>
+  </div>
+
+</div>

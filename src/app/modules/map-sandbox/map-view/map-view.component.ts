@@ -13,6 +13,8 @@ import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { Subscription } from 'rxjs';
 
+import {v4 as uuidv4} from 'uuid';
+
 
 @Component({
   selector: 'app-map-view',
@@ -130,13 +132,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
     });
 
     this.draw.on('drawend', (e) => {
-      const features =  this.layerFeatures.getSource().getFeatures()
 
       e.feature.setProperties({
-        'id': e.feature.getId(),
-        'geom_type': e.feature.getGeometry()
+        'id': uuidv4(),
+        'geom_type': e.feature.getGeometry()?.getType(),
+        'created_at': new Date().toISOString()
       })
-      console.log(e.feature, e.feature.getProperties());
     });
 
 
