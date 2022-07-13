@@ -13,7 +13,9 @@ import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { Subscription } from 'rxjs';
 
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
+
+import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -33,8 +35,26 @@ export class MapViewComponent implements OnInit, OnDestroy {
   draw!: Draw;
   snap!: Snap;
 
-  geomTypesSupported = ['Point', 'LineString', 'Polygon']
-  geomTypeSelected!: string
+  geomTypesSupported = [
+    {
+      "name": 'editDisabled',
+      "icon": faXmark
+    },
+    {
+      "name": 'Point',
+      "icon": faCircle
+    },
+    {
+      "name": 'LineString',
+      "icon": faWaveSquare
+    },
+    {
+      "name": 'Polygon',
+      "icon": faDrawPolygon
+    }
+  ]
+
+  geomTypeSelected = "editDisabled";
   isLegendDisplayed = true;
 
   mapSubscription!: Subscription;
@@ -58,12 +78,14 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.sendResumeSubMenus();
     this.mapService.getMap();
 
-    this.initSourceFeatureAndModifier();
+    this.initSourceFeatures();
     this.initVectorLayer();
+    this.initModifier();
+
+    this.mapService.changeMapInteractionStatus(true)
 
     // let's go to get map container and init layer(s)
-    this.addInteractions(this.geomTypesSupported[0])
-    this.mapService.changeMapInteractionStatus(true)
+    this.addInteractions(this.geomTypesSupported[0].name)
 
   }
 
@@ -91,8 +113,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
-  initSourceFeatureAndModifier(): void {
+  initSourceFeatures(): void {
     this.sourceFeatures = new VectorSource();
+
+  }
+
+  initModifier(): void {
     this.modifier = new Modify({source: this.sourceFeatures});
     this.map.addInteraction(this.modifier);
   }
@@ -126,30 +152,37 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   addInteractions(geomType: string): void {
-    this.removeInteractions()
+    if (geomType !== "editDisabled") {
+      this.removeInteractions()
 
-    this.geomTypeSelected = geomType;
+      this.map.addInteraction(this.modifier);
 
-    this.draw = new Draw({
-      source: this.sourceFeatures,
-      type: geomType,
-    });
+      this.geomTypeSelected = geomType;
+      console.log(this.geomTypeSelected)
+      this.draw = new Draw({
+        source: this.sourceFeatures,
+        type: geomType,
+      });
 
-    this.draw.on('drawend', (e) => {
-      const featureCount = this.layerFeatures.getSource().getFeatures().length
-      e.feature.setProperties({
-        'id': uuidv4(),
-        'name': 'feature_' + featureCount,
-        'geom_type': e.feature.getGeometry()?.getType(),
-        'created_at': new Date().toISOString()
-      })
-    });
+      this.draw.on('drawend', (e) => {
+        const featureCount = this.layerFeatures.getSource().getFeatures().length
+        e.feature.setProperties({
+          'id': uuidv4(),
+          'name': 'feature_' + featureCount,
+          'geom_type': e.feature.getGeometry()?.getType(),
+          'created_at': new Date().toISOString()
+        })
+      });
+      
+      this.map.addInteraction(this.draw);
+      this.snap = new Snap({source: this.sourceFeatures});
+      this.map.addInteraction(this.snap);
+
+    } else {
+      this.removeInteractions()
+    }
 
 
-
-    this.map.addInteraction(this.draw);
-    this.snap = new Snap({source: this.sourceFeatures});
-    this.map.addInteraction(this.snap);
   }
 
 
@@ -158,6 +191,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.map.removeInteraction(this.draw);
       this.map.removeInteraction(this.snap);
     }
+    this.map.removeInteraction(this.modifier);
+
   }
 
   displayFeatures(): void {
