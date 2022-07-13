@@ -1,14 +1,20 @@
 <div class="d-flex flex-row justify-content-around">
 
-  <div id="geomSelector" class="btn-group-vertical" role="group" aria-label="Basic radio toggle button group">
+  <div class="d-flex flex-row">
 
-    <ng-container *ngFor="let geomType of geomTypesSupported">
-      <input type="radio" class="btn-check m-0" name="btnradio" [id]="'btnradio-' + geomType.name" [checked]="geomTypeSelected === geomType.name" autocomplete="off">
-      <label class="btn btn-outline-warning p-0" [for]="'btnradio-' + geomType.name" (click)="addInteractions(geomType.name)">
-        <fa-icon class="" [icon]="geomType.icon" class="dropdown-item">{{ geomType.name }}</fa-icon>
-      </label>
-    </ng-container>
+    <button type="button" class="button-title btn btn-warning rounded-start p-2">
+      <span class="fw-bold">EDITER</span>
+    </button>
 
+    <div id="geomSelector" class="btn-group-vertical my-2" role="group" aria-label="">
+      <ng-container *ngFor="let geomType of geomTypesSupported">
+        <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-' + geomType.name" [checked]="geomTypeSelected === geomType.name" autocomplete="off">
+        <label class="w-100 btn border-warning btn-outline-warning p-0" [for]="'btnradio-' + geomType.name" (click)="addInteractions(geomType.name)">
+          <fa-icon class="" [icon]="geomType.icon" class="dropdown-item">{{ geomType.name }}</fa-icon>
+        </label>
+      </ng-container>
+
+    </div>
   </div>
 
   <div class="test">
