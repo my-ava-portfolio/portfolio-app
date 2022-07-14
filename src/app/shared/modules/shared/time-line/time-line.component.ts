@@ -144,7 +144,7 @@ export class TimeLineComponent implements OnInit {
   ngOnDestroy(): void {
     this.mapContainerSubscription.unsubscribe();
     this.notifyTimelineSubscription.unsubscribe();
-    // this.setMapTileBrightness()
+    this.setMapTileBrightness()
 
   }
 
