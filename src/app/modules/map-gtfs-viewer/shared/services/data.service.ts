@@ -16,6 +16,7 @@ export class DataService {
   mapContainer: Subject<any> = new Subject<any>();
   screenMapBound: Subject<number[]> = new Subject<number[]>();
   availableAreas: Subject<string[]> = new Subject<string[]>();
+  avaialbleRouteTypes: Subject<string[]> = new Subject<string[]>();
 
   ErrorapiUrlDataApiFound: Subject<string> = new Subject<string>();
   GeoData: Subject<any> = new Subject<any>();
@@ -44,7 +45,6 @@ export class DataService {
   }
 
   pullRangeDateData(currentData: string): void {
-    // HERE ADD CURRENT DATE ARG LINKED TO THE timeline !!!!
     this.http.get<any>(this.apiUrl + currentData.toLowerCase() + '/range_dates').subscribe({
       complete: () => {
       },
@@ -59,7 +59,6 @@ export class DataService {
   }
 
   pullAvailableAreas(): void {
-    // HERE ADD CURRENT DATE ARG LINKED TO THE timeline !!!!
     this.http.get<any>(this.apiUrl + '/existing_study_areas').subscribe({
       complete: () => {
       },
@@ -69,6 +68,21 @@ export class DataService {
       },
       next: response => {
         this.availableAreas.next(response);
+      },
+    });
+  }
+
+  pullAvailableRouteTypes(currentData: string): void {
+    // HERE ADD CURRENT DATE ARG LINKED TO THE timeline !!!!
+    this.http.get<any>(this.apiUrl + currentData.toLowerCase() + '/route_types').subscribe({
+      complete: () => {
+      },
+      error: error => {
+      // TODO improve error message, but API need improvments
+      this.ErrorapiUrlDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        this.avaialbleRouteTypes.next(response);
       },
     });
   }

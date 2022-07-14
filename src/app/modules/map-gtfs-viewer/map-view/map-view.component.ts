@@ -9,7 +9,7 @@ import { Title } from '@angular/platform-browser';
 
 import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.service';
 
-import { locationIcon, tagsIcon, centerIcon, gtfsLayerName, gtfsStyle } from '@modules/map-gtfs-viewer/shared/core';
+import { locationIcon, tagsIcon, centerIcon, gtfsLayerName, gtfsStyle, circleRadius, metroColor, strokeWidth, trainColor, tramColor, strokeColor } from '@modules/map-gtfs-viewer/shared/core';
 import { MapService } from '@services/map.service';
 import { ControlerService } from '@services/controler.service';
 import { currentDate } from '@core/inputs';
@@ -40,6 +40,26 @@ export class MapViewComponent implements OnInit, OnDestroy {
     { "area": "toulouse", "default_step_value": 4000, "zoom": 12 }
   ]
 
+  widthLegendElement = 100;
+  heightLegendElement = 80;
+  heightMoveLegendElement = 60;
+
+  // TODO improve the SVG build
+  routeTypesLegendData: any = {
+    circleR: circleRadius * 2,
+    circleCxPos: 20,
+    fontSize: '12px',
+    circleStrokeColor: strokeColor,
+    circleStrokeWidth: strokeWidth,
+    textXPos: 35,
+    features: [
+      { dataValue: '0', cy: 22, label: 'Tram', color: tramColor },
+      { dataValue: '1', cy: 44, label: 'Métro', color: metroColor },
+      { dataValue: '2', cy: 66, label: 'Train', color: trainColor },
+    ]
+  };
+
+
   previousArea: string | null = null;
   currentArea = this.input_data[1].area;
   currentstepValue = this.input_data[1].default_step_value;
@@ -53,6 +73,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   isGeodataCanBeDisplayed = false;
   isLegendDisplayed = true;
   currentFeatureSelectedId!: string | null;
+  currentRouteTypes: string[] = [];
   gtfsLayer!: any
   innerWidth!: any;
   innerHeight!: any;
@@ -69,6 +90,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   mapSubscription!: Subscription;
   pullGeoDataToMapSubscription!: Subscription;
+  pullAvailableRouteTypeSubscription!: Subscription;
   pullBoundingBoxDataSubscription!: Subscription;
   pullGeoDataSubscription!: Subscription;
   zoomEventSubscription!: Subscription;
@@ -120,8 +142,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
           this.previousArea = this.currentArea
         }
       }
-
     );
+
+    this.pullAvailableRouteTypeSubscription = this.dataService.avaialbleRouteTypes.subscribe(
+      (routeType: string[]) => {
+
+        this.currentRouteTypes = routeType;
+        console.log(this.currentRouteTypes)
+      }
+    );
+
+
+
 
     this.pullBoundingBoxDataSubscription = this.dataService.rangeDateData.subscribe(
       (element) => {
@@ -202,6 +234,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.screenMapBoundSubscription.unsubscribe();
     this.pullAvailableAreasSubscription.unsubscribe();
     this.dateUpdatedSubscription.unsubscribe();
+    this.pullAvailableRouteTypeSubscription.unsubscribe();
 
 
     this.mapService.removeLayerByName(gtfsLayerName)
@@ -225,8 +258,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.currentZoomValue = data_found[0]["zoom"]
 
     this.dataService.pullRangeDateData(this.currentArea);
-    this.timelineService.pushDefaultSpeedValue(this.currentstepValue)
+    this.dataService.pullAvailableRouteTypes(this.currentArea)
 
+    this.timelineService.pushDefaultSpeedValue(this.currentstepValue)
 
   }
 

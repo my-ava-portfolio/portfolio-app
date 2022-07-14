@@ -25,9 +25,6 @@ export class ThemeLegendComponent implements OnInit {
     textXPos: 120
   };
 
-
-
-
   // activity types legend data
   activityTypesLegendData: any = {
     circleR: 18,

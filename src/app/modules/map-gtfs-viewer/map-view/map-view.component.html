@@ -1,15 +1,21 @@
 <div class="row justify-content-around">
 
 
-  <div class="col-6 col-lg-2 my-2">
+  <div class="col-5 col-lg-2">
     <h6>GTFS</h6>
     <div class="col-lg-12">
 
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-secondary btn-sm" *ngFor="let area of availableArea">
-          <input type="radio" name="options" id="option1" autocomplete="off" (click)="updateData(area)" [checked]="currentArea === area"> {{ area.charAt(0).toUpperCase() + area.slice(1) }}
-        </label>
+
+        <ng-container *ngFor="let area of availableArea">
+          <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-' + area" [checked]="currentArea === area" autocomplete="off" (click)="updateData(area)">
+          <label class="w-100 btn border-warning btn-outline-warning p-0" [for]="'btnradio-' + area">
+            <span class="dropdown-item fw-bold">{{ area.charAt(0).toUpperCase() + area.slice(1) }}</span>
+          </label>
+        </ng-container>
+
       </div>
+
 
     </div>
   </div>
@@ -17,7 +23,29 @@
   <div class="col-6 col-lg-2 my-2">
     <h6>Modes de transport</h6>
     <div class="col-lg-12">
-      <p>[TODO]</p>
+
+      <svg [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement">
+
+        <g *ngFor="let routeType of routeTypesLegendData.features">
+          <circle
+            [attr.r]="routeTypesLegendData.circleR"
+            [attr.cx]="routeTypesLegendData.circleCxPos"
+            [attr.cy]="routeType.cy"
+            [attr.fill]="routeType.color"
+            [attr.stroke]="routeType.strokeColor">
+          </circle>
+
+          <text
+            [attr.x]="routeTypesLegendData.textXPos"
+            [attr.y]="routeType.cy"
+            [attr.font-size]="routeTypesLegendData.fontSize"
+            [attr.font-weight]="currentRouteTypes.includes(routeType.dataType) ? 'bold' : 'normal'"
+            class="label">{{ routeType.label }}
+          </text>
+        </g>
+
+      </svg>
+
     </div>
   </div>
 

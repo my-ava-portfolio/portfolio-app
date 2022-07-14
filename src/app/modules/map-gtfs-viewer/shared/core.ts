@@ -24,12 +24,12 @@ function now(): Date {
 
 export const gtfsLayerName = "gtfs"
 
-const trainColor = 'rgb(255, 0, 0)';
-const tramColor = 'rgb(153, 76, 0)';
-const metroColor = 'rgb(102, 178, 255)';
-const strokeColor = 'white';
-const strokeWidth = 2;
-const circleRadius = 4;
+export const trainColor = 'rgb(255, 0, 0)';
+export const tramColor = 'rgb(153, 76, 0)';
+export const metroColor = 'rgb(102, 178, 255)';
+export const strokeColor = 'white';
+export const strokeWidth = 2;
+export const circleRadius = 4;
 
 const trainStyle = new Style({
   image: new CircleStyle({
@@ -87,11 +87,11 @@ const defaultStyle = new Style({
 
 export function gtfsStyle(feature: any): Style {
   if (feature.get('route_type') === "0") {
-    return trainStyle
+    return tramStyle
   } else if (feature.get('route_type') === "1") {
     return metroStyle
   } else if (feature.get('route_type') === "2") {
-    return tramStyle
+    return trainStyle
   } else {
     return defaultStyle
   }
