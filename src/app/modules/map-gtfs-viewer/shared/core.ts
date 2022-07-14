@@ -28,7 +28,7 @@ export const trainColor = 'rgb(255, 0, 0)';
 export const tramColor = 'rgb(153, 76, 0)';
 export const metroColor = 'rgb(102, 178, 255)';
 export const strokeColor = 'white';
-export const strokeWidth = 2;
+export const strokeWidth = 1.5;
 export const circleRadius = 3;
 
 const trainStyle = new Style({
