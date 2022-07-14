@@ -290,9 +290,6 @@ export class BackgroundComponent implements OnInit {
     const center = getCenter(extentValue);
     if (currentZoom !== undefined) {
       this.mainView.animate({
-        zoom: currentZoom - 1,
-        duration: duration / 3
-      }, {
         center: center,
         zoom: zoom,
         duration: duration / 1.5
