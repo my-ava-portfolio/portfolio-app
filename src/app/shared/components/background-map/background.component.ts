@@ -187,11 +187,16 @@ export class BackgroundComponent implements OnInit {
       target: 'map',
       view: this.mainView,
       controls: defaultControls({
-        zoom : false,
-      })
+        zoom: false,
+        attribution: false,
+        rotate: false
+      }),
+      interactions : defaultInteractions({
+        altShiftDragRotate: false,
+        pinchRotate: false
+      }),
     });
     this.interationsSetter(false)
-
   }
 
   controlerScale(): ScaleLine {
