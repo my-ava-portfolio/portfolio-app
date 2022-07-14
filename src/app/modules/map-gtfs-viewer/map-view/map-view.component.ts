@@ -18,6 +18,7 @@ import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
+import * as d3 from 'd3';
 
 
 
@@ -44,7 +45,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   heightLegendElement = 80;
   heightMoveLegendElement = 60;
 
-  // TODO improve the SVG build
+  // TODO improve the SVG build and linked it with the route about routeType
   routeTypesLegendData: any = {
     circleR: circleRadius * 2,
     circleCxPos: 20,
@@ -144,11 +145,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.pullAvailableRouteTypeSubscription = this.dataService.avaialbleRouteTypes.subscribe(
+    this.pullAvailableRouteTypeSubscription = this.dataService.availableRouteTypes.subscribe(
       (routeType: string[]) => {
 
         this.currentRouteTypes = routeType;
-        console.log(this.currentRouteTypes)
+        // TODO build legend with D3
+
       }
     );
 
@@ -258,7 +260,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.currentZoomValue = data_found[0]["zoom"]
 
     this.dataService.pullRangeDateData(this.currentArea);
-    this.dataService.pullAvailableRouteTypes(this.currentArea)
+    // TODO build dynamic routeType legend with d3
+    // this.dataService.pullAvailableRouteTypes(this.currentArea)
 
     this.timelineService.pushDefaultSpeedValue(this.currentstepValue)
 

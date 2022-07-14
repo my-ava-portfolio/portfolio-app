@@ -24,7 +24,7 @@
     <h6>Modes de transport</h6>
     <div class="col-lg-12">
 
-      <svg [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement">
+      <svg id='routeTypeLegend' [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement">
 
         <g *ngFor="let routeType of routeTypesLegendData.features">
           <circle
@@ -39,7 +39,6 @@
             [attr.x]="routeTypesLegendData.textXPos"
             [attr.y]="routeType.cy"
             [attr.font-size]="routeTypesLegendData.fontSize"
-            [attr.font-weight]="currentRouteTypes.includes(routeType.dataType) ? 'bold' : 'normal'"
             class="label">{{ routeType.label }}
           </text>
         </g>

@@ -16,7 +16,7 @@ export class DataService {
   mapContainer: Subject<any> = new Subject<any>();
   screenMapBound: Subject<number[]> = new Subject<number[]>();
   availableAreas: Subject<string[]> = new Subject<string[]>();
-  avaialbleRouteTypes: Subject<string[]> = new Subject<string[]>();
+  availableRouteTypes: Subject<string[]> = new Subject<string[]>();
 
   ErrorapiUrlDataApiFound: Subject<string> = new Subject<string>();
   GeoData: Subject<any> = new Subject<any>();
@@ -82,7 +82,7 @@ export class DataService {
       this.ErrorapiUrlDataApiFound.next(error.error.message);
       },
       next: response => {
-        this.avaialbleRouteTypes.next(response);
+        this.availableRouteTypes.next(response);
       },
     });
   }
