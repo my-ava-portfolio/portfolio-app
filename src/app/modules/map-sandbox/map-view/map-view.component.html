@@ -1,4 +1,4 @@
-<div id="mapTools" class="d-flex flex-row">
+<div id="mapTools" class="">
 
   <div id="geomSelector" class="d-flex flex-row m-2">
 
@@ -9,7 +9,7 @@
     <div class="btn-group-vertical my-2 align-self-center" role="group" aria-label="">
       <ng-container *ngFor="let geomType of geomTypesSupported">
         <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-seletor-' + geomType.name" [checked]="geomTypeSelected === geomType.name" autocomplete="off">
-        <label class="w-100 btn border-warning btn-outline-warning p-0" [for]="'btnradio-seletor-' + geomType.name" (click)="addInteractions(geomType.name)">
+        <label class="w-100 btn border-warning btn-outline-warning p-0 bg-light" [for]="'btnradio-seletor-' + geomType.name" (click)="addInteractions(geomType.name)">
           <fa-icon class="" [icon]="geomType.icon" class="dropdown-item">{{ geomType.name }}</fa-icon>
         </label>
       </ng-container>
@@ -26,7 +26,7 @@
     <div class="btn-group-vertical my-2 align-self-center" role="group" aria-label="">
       <ng-container *ngFor="let geomType of geomTypesSupported">
         <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-export-' + geomType.name" [checked]="geomTypeSelected === geomType.name" autocomplete="off">
-        <label class="w-100 btn border-dark btn-outline-dark p-0" [for]="'btnradio-export-' + geomType.name">
+        <label class="w-100 btn border-dark btn-outline-dark p-0 bg-light" [for]="'btnradio-export-' + geomType.name">
           <fa-icon class="" [icon]="geomType.icon" [ngClass]="geomTypeSelected === geomType.name ? 'text-white' :  'text-black'" class="dropdown-item">{{ geomType.name }}</fa-icon>
         </label>
       </ng-container>
@@ -34,14 +34,14 @@
 
   </div>
 
-  <div id="featuresContainer" class="d-flex flex-column bg-white rounded-end m-2">
+  <div id="featuresContainer" class="d-flex flex-column rounded-end m-2">
     <div  class="d-flex flex-row ">
 
         <button type="button" class="button-title btn btn-dark p-2">
           <span class="fw-bold">OBJETS</span>
         </button>
 
-      <div id="featuresList" class="position-relative overflow-auto px-2" *ngIf="allFeatures.length > 0">
+      <div id="featuresList" class="position-relative overflow-auto px-2 bg-light" *ngIf="allFeatures.length > 0">
 
         <div class="d-flex flex-row align-items-center me-1" *ngFor="let feature of allFeatures">
           <fa-icon *ngIf="feature.geom_type === 'Point'" class="p-0" [icon]="pointIcon" class="dropdown-item"></fa-icon>
@@ -60,5 +60,3 @@
 
 
 </div>
-
-
