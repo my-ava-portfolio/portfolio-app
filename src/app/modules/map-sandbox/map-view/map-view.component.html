@@ -1,6 +1,6 @@
-<div class="d-flex flex-row justify-content-between mx-4">
+<div id="mapTools" class="d-flex flex-row">
 
-  <div id="geomSelector" class="d-flex flex-row">
+  <div id="geomSelector" class="d-flex flex-row m-2">
 
     <button type="button" class="button-title btn btn-warning rounded-start p-2">
       <span class="fw-bold">EDITER</span>
@@ -17,26 +17,9 @@
 
   </div>
 
-  <div class="d-flex flex-row w-50 overflow-auto overflow-overlay">
-    <div class="d-flex flex-column m-2" *ngFor="let chunk of allFeatures">
-      <div class="" *ngFor="let feature of chunk">
+  <div id="geomExport" class="d-flex flex-row m-2">
 
-        <div class="d-flex flex-row align-items-center">
-          <fa-icon *ngIf="feature.geom_type === 'Point'" class="p-0" [icon]="pointIcon" class="dropdown-item"></fa-icon>
-          <fa-icon *ngIf="feature.geom_type === 'LineString'" class="p-0" [icon]="lineStringIcon" class="dropdown-item"></fa-icon>
-          <fa-icon *ngIf="feature.geom_type === 'Polygon'" class="p-0" [icon]="polygonIcon" class="dropdown-item"></fa-icon>
-          {{ feature.name }}
-          <span (click)="removeFeature(feature.id)"> XX</span>
-
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div id="geomExport" class="d-flex flex-row">
-
-    <button type="button" class="button-title btn btn-dark rounded-start p-2">
+    <button type="button" class="button-title btn btn-dark p-2">
       <span class="fw-bold">EXPORT</span>
     </button>
 
@@ -51,4 +34,31 @@
 
   </div>
 
+  <div id="featuresContainer" class="d-flex flex-column bg-white rounded-end m-2">
+    <div  class="d-flex flex-row ">
+
+        <button type="button" class="button-title btn btn-dark p-2">
+          <span class="fw-bold">OBJETS</span>
+        </button>
+
+      <div id="featuresList" class="position-relative overflow-auto px-2" *ngIf="allFeatures.length > 0">
+
+        <div class="d-flex flex-row align-items-center me-1" *ngFor="let feature of allFeatures">
+          <fa-icon *ngIf="feature.geom_type === 'Point'" class="p-0" [icon]="pointIcon" class="dropdown-item"></fa-icon>
+          <fa-icon *ngIf="feature.geom_type === 'LineString'" class="p-0" [icon]="lineStringIcon" class="dropdown-item"></fa-icon>
+          <fa-icon *ngIf="feature.geom_type === 'Polygon'" class="p-0" [icon]="polygonIcon" class="dropdown-item"></fa-icon>
+          {{ feature.name }}
+          <span (click)="removeFeature(feature.id)"> XX</span>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+
 </div>
+
+

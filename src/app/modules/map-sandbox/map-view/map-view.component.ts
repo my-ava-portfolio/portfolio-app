@@ -225,7 +225,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         }
       )
     })
-    this.allFeatures = this.chunk(featuresFound, 4)
+    this.allFeatures = featuresFound
   }
 
   chunk(inputArray: any[], size: number): any[] {
