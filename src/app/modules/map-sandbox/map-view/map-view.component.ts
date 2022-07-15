@@ -3,7 +3,6 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
 import { MapService } from '@services/map.service';
-import Feature from 'ol/Feature';
 import { Draw, Modify, Snap } from 'ol/interaction';
 import VectorLayer from 'ol/layer/Vector';
 
@@ -13,9 +12,10 @@ import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { Subscription } from 'rxjs';
 
-import { v4 as uuidv4 } from 'uuid';
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
+
+import { DrawInteraction } from '@modules/map-sandbox/shared/core';
 
 
 @Component({
@@ -34,6 +34,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   _allFeatures: any[] = [];
   allFeatures: any[] = [];
   allRawFeatures: any[] = [];
+  drawSession!: any;
 
   modifier!: Modify;
   draw!: Draw;
@@ -89,7 +90,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.initSourceFeatures();
     this.initVectorLayer();
-    this.initModifier();
 
     this.mapService.changeMapInteractionStatus(true)
 
@@ -127,11 +127,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   }
 
-  initModifier(): void {
-    this.modifier = new Modify({source: this.sourceFeatures});
-    this.map.addInteraction(this.modifier);
-  }
-
   initVectorLayer(): any {
     this.layerFeatures = new VectorLayer({
       source: this.sourceFeatures,
@@ -155,94 +150,41 @@ export class MapViewComponent implements OnInit, OnDestroy {
         }),
       }),
     });
-
-    this.layerFeatures.getSource().on('addfeature', (event: any) => {
-      this.returnFeatures()
-    });
-    this.layerFeatures.getSource().on('removefeature', (event: any) => {
-      this.returnFeatures()
-    });
-
-
     this.layerFeatures.set("name", this.layerName)
 
+    this.drawSession = new DrawInteraction(this.map, this.layerFeatures)
+
+    this.drawSession.sourceFeatures.on('addfeature', (event: any) => {
+      this.returnFeatures()
+    });
+    this.drawSession.sourceFeatures.on('removefeature', (event: any) => {
+      this.returnFeatures()
+    });
+
     this.map.addLayer(this.layerFeatures)
+
+
   }
 
   addInteractions(geomType: string): void {
-    if (geomType !== "editDisabled") {
-      this.removeInteractions()
 
-      this.map.addInteraction(this.modifier);
+    if (geomType !== "editDisabled") {
+      this.drawSession.enabledDrawing(geomType)
 
       this.geomTypeSelected = geomType;
-      console.log(this.geomTypeSelected)
-      this.draw = new Draw({
-        source: this.sourceFeatures,
-        type: geomType,
-      });
-
-      this.draw.on('drawend', (e) => {
-        const featureCount = this.layerFeatures.getSource().getFeatures().length
-        e.feature.setProperties({
-          'id': uuidv4(),
-          'name': 'feature_' + featureCount,
-          'geom_type': e.feature.getGeometry()?.getType(),
-          'created_at': new Date().toISOString()
-        })
-      });
-
-      this.map.addInteraction(this.draw);
-      this.snap = new Snap({source: this.sourceFeatures});
-      this.map.addInteraction(this.snap);
-
     } else {
-      this.removeInteractions()
+      this.drawSession.disableDrawing()
     }
 
 
   }
-
-
-  removeInteractions(): void {
-    if (this.draw !== undefined && this.snap !== undefined) {
-      this.map.removeInteraction(this.draw);
-      this.map.removeInteraction(this.snap);
-    }
-    this.map.removeInteraction(this.modifier);
-
-  }
-
 
   returnFeatures(): void {
-    let featuresFound: any[] = []
-    this.sourceFeatures.getFeatures().forEach((feature: any) => {
-      featuresFound.push(
-        {
-          id: feature.get('id'),
-          name: feature.get('name'),
-          geom_type: feature.get('geom_type')
-        }
-      )
-    })
-    this.allFeatures = featuresFound
-  }
-
-  chunk(inputArray: any[], size: number): any[] {
-    let outputArray = [];
-    for (let i = 0; i < inputArray.length; i += size) {
-      const chunk = inputArray.slice(i, i + size);
-      outputArray.push(chunk)
-  }
-    return outputArray
-
+    this.allFeatures = this.drawSession.returnFeatures()
   }
 
   removeFeature(id: string): void {
-    const featureFound = this.layerFeatures.getSource().getFeatures().filter((feat: any) => {
-      return feat.get('id') === id
-    })
-    this.sourceFeatures.removeFeature(featureFound[0]);
+    this.drawSession.removeFeature(id)
   }
 
 
