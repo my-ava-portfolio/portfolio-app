@@ -26,6 +26,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   routerSubscription!: Subscription;
 
   currentMapTool!: string;
+  appsWithLegend = [
+    'gtfs-viewer',
+    'activities'
+  ]
+  appsWithoutLegend = [
+    'sandbox',
+  ]
 
   constructor(
     private mapService: MapService,
@@ -58,7 +65,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     this.routerSubscription = this.router.events.subscribe(_ => {
-      this.currentMapTool = router.url;
+      const urlSplit: string[] =  router.url.split('/')
+      this.currentMapTool = urlSplit[urlSplit.length - 1];
     });
 
   }
