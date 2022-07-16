@@ -1,4 +1,4 @@
-import {Polygon}  from 'ol/geom';
+import {LineString, Polygon}  from 'ol/geom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Draw, Modify, Snap } from 'ol/interaction';
@@ -8,6 +8,8 @@ import Map from 'ol/Map';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import LinearRing from 'ol/geom/LinearRing';
+import Point from 'ol/geom/Point';
+
 
 
 export class DrawInteraction {
@@ -20,6 +22,7 @@ export class DrawInteraction {
   private holePolygonDrawingStatus = false;
   private polygonIntersected!: Feature | undefined;
   private coordsLength!: number;
+  private previousPolygonGeometry!: any;
 
   vectorLayer: VectorLayer<any>;
   sourceFeatures: VectorSource;
@@ -30,9 +33,17 @@ export class DrawInteraction {
     this.vectorLayer = vectorLayer;
     this.sourceFeatures = vectorLayer.getSource();
 
-    this.modifier = new Modify({source: this.sourceFeatures});
 
-    this.snap = new Snap({source: this.sourceFeatures});
+    this.modifier = new Modify({source: this.sourceFeatures});
+    this.modifier.on('modifystart', (e: any) => {
+
+      // to remove hole on polygon (press ctrl + drag left click)
+      if (e.mapBrowserEvent.originalEvent.ctrlKey) {
+        this.removeHoles(e)
+      }
+    })
+
+   this.snap = new Snap({source: this.sourceFeatures});
   }
 
   enabledDrawing(geomType: 'Point' | 'LineString' | 'Polygon'): void {
@@ -51,8 +62,12 @@ export class DrawInteraction {
     this.draw.on('drawstart', this.onDrawStart.bind(this));
     this.draw.on('drawend', this.onDrawEnd.bind(this));
 
-    this.draw.on('drawabort', () => {
-      console.log('draw aborted');
+    this.draw.on('drawabort', (e: any) => {
+
+      // to cancel a drawing hole (shift + left click OR shift + right click for hole )
+      if (this.holePolygonDrawingStatus && this.polygonIntersected !== undefined) {
+        this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
+      }
     });
 
   }
@@ -76,9 +91,10 @@ export class DrawInteraction {
 
       if (this.polygonIntersected !== undefined) {
         this.holePolygonDrawingStatus = true;
+        this.previousPolygonGeometry = this.polygonIntersected.getGeometry()
         const polygonIntersectedGeom: any = this.polygonIntersected.getGeometry()
         this.coordsLength = polygonIntersectedGeom.getCoordinates().length;
-        e.feature.getGeometry().on('change', this.onGeomChange.bind(this));
+        e.feature.getGeometry().on('change', this.onGeomChangeBuildHole.bind(this));
       }
     }
   }
@@ -111,21 +127,20 @@ export class DrawInteraction {
       })
     }
 
-
   }
 
-  onGeomChange(e: any): void {
-    //Get hole coordinates for polygon
-    let linearRing = new LinearRing(e.target.getCoordinates()[0]);
+  onGeomChangeBuildHole(e: any): void {
 
+    //Get hole coordinates for polygon
     if (this.polygonIntersected !== undefined) {
+
       const polygonIntersectedGeom: any = this.polygonIntersected.getGeometry()
       let coordinates = polygonIntersectedGeom.getCoordinates();
       let geom = new Polygon(coordinates.slice(0, this.coordsLength));
 
       //Add hole coordinates to polygon and reset the polygon geometry
+      let linearRing = new LinearRing(e.target.getCoordinates()[0]);
       geom.appendLinearRing(linearRing);
-      console.log(linearRing)
       this.polygonIntersected.setGeometry(geom);
     }
   }
@@ -150,6 +165,43 @@ export class DrawInteraction {
       )
     })
     return featuresFound
+  }
+
+
+  removeHoles(event: any): void {
+
+    // we suppose that we have only one feature!
+    const featureFound: any = event.features.getArray()[0];
+    const mouseCoordinate: number[] = event.mapBrowserEvent.coordinate;
+
+    if (featureFound.getGeometry().getType() == "Polygon") {
+
+      // get the linearing composing the polygon & convert them into LineString to compare them
+      const linearRingsFound = featureFound.getGeometry().getLinearRings()
+
+      if (linearRingsFound.length > 1) {
+        let linearRingVectorSource = new VectorSource();
+        linearRingsFound.forEach((geom: any, index: number) => {
+          const line: LineString = new LineString(geom.getCoordinates())
+          let featureLine: Feature = new Feature({
+            geometry: line
+          });
+          featureLine.setId(index)
+          linearRingVectorSource.addFeature(featureLine);
+        })
+        // get the closest LineString from the mouse coords
+        const closestFeature = linearRingVectorSource.getClosestFeatureToCoordinate(mouseCoordinate);
+        let coordsCleaned: number[] = []
+        linearRingsFound.forEach((ring: any, index: number) => {
+          if (index !== closestFeature.getId()) {
+            coordsCleaned.push(ring.getCoordinates());
+          }
+        })
+        // let go to remove the linearing found
+        featureFound.getGeometry().setCoordinates(coordsCleaned)
+      }
+
+    }
   }
 
 
