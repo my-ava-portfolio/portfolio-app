@@ -42,16 +42,16 @@ export class DrawInteraction {
     this.map.addInteraction(this.select);
 
     this.modifier = new Modify({
-      condition: shiftKeyOnly,
+      // condition: shiftKeyOnly,
       source: this.sourceFeatures
     });
     this.modifier.on('modifyend', (e: any) => {
 
       // to remove hole on polygon (select the polygon, press shift + start to edti a vertice + press ctrl)
       console.log(e.mapBrowserEvent.originalEvent.ctrlKey)
-      if (e.mapBrowserEvent.originalEvent.ctrlKey) {
+      // if (e.mapBrowserEvent.originalEvent.ctrlKey) {
         this.removeHoles(e)
-      }
+      // }
     })
 
    this.snap = new Snap({source: this.sourceFeatures});
@@ -62,7 +62,7 @@ export class DrawInteraction {
     this.disableDrawing();
     this.draw = new Draw({
       type: geomType,
-      stopClick: true,
+      stopClick: false,
       source: this.vectorLayer.getSource(),
     });
 
@@ -78,6 +78,7 @@ export class DrawInteraction {
       // to cancel a drawing hole (shift + left click OR shift + right click for hole )
       if (this.holePolygonDrawingStatus && this.polygonIntersected !== undefined) {
         this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
+        this.polygonIntersected = undefined;
       }
     });
 
@@ -101,6 +102,11 @@ export class DrawInteraction {
         this.vectorLayer.getSource().forEachFeatureIntersectingExtent(e.feature.getGeometry().getExtent(), (feature: Feature | undefined) => {
           this.polygonIntersected = feature;
         });
+
+        if (this.polygonIntersected === undefined) {
+          e.target.abortDrawing();
+          return;
+        }
 
         if (this.polygonIntersected !== undefined) {
           this.previousPolygonGeometry = this.polygonIntersected.getGeometry()
@@ -128,8 +134,8 @@ export class DrawInteraction {
           'updated_at': new Date().toISOString()
         })
       }
-      this.polygonIntersected = undefined;
-      e.feature.getGeometry().on('change', (_: any) => {return });
+      // this.polygonIntersected = undefined;
+      // e.feature.getGeometry().on('change', (_: any) => {return });
 
     }
 
@@ -148,7 +154,6 @@ export class DrawInteraction {
   }
 
   onGeomChangeBuildHole(e: any): void {
-
     //Get hole coordinates for polygon
     if (this.polygonIntersected !== undefined) {
 
