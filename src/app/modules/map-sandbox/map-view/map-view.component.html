@@ -13,7 +13,14 @@
           <fa-icon class="" [icon]="geomType.icon" class="dropdown-item">{{ geomType.name }}</fa-icon>
         </label>
       </ng-container>
+
+      <button type="button" class=" btn btn-warning rounded-start p-2" [ngClass]="holeEnabled ? 'btn-danger' : 'btn-warning'" (click)="enableHole()" *ngIf="geomTypeSelected === 'Polygon'">
+        <span class="fw-bold">hole</span>
+      </button>
+
+
     </div>
+
 
   </div>
 
@@ -48,7 +55,7 @@
           <fa-icon *ngIf="feature.geom_type === 'LineString'" class="p-0" [icon]="lineStringIcon" class="dropdown-item"></fa-icon>
           <fa-icon *ngIf="feature.geom_type === 'Polygon'" class="p-0" [icon]="polygonIcon" class="dropdown-item"></fa-icon>
           {{ feature.name }}
-          <span (click)="removeFeature(feature.id)"> XX</span>
+          <span (click)="removeFeature(feature.id)"> X </span>
 
         </div>
 

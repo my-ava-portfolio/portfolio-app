@@ -30,6 +30,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   sourceFeatures!: any;
   layerFeatures!: any;
   layerName = "edited_layer";
+  holeEnabled = false;
 
   _allFeatures: any[] = [];
   allFeatures: any[] = [];
@@ -169,7 +170,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   addInteractions(geomType: string): void {
 
     if (geomType !== "editDisabled") {
-      this.drawSession.enabledDrawing(geomType)
+      this.drawSession.enabledDrawing(geomType, this.holeEnabled)
 
       this.geomTypeSelected = geomType;
     } else {
@@ -187,6 +188,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.drawSession.removeFeature(id)
   }
 
+  enableHole() {
+    this.holeEnabled = !this.holeEnabled;
+    this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
+
+  }
 
 }
 

@@ -8,7 +8,8 @@ import Map from 'ol/Map';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import LinearRing from 'ol/geom/LinearRing';
-import Point from 'ol/geom/Point';
+import Select from 'ol/interaction/Select';
+import { pointerMove, shiftKeyOnly } from 'ol/events/condition';
 
 
 
@@ -17,6 +18,7 @@ export class DrawInteraction {
   private draw!: Draw;
   private snap!: Snap;
   private modifier!: Modify;
+  private select!: Select;
 
   // var for polygon holes
   private holePolygonDrawingStatus = false;
@@ -33,11 +35,19 @@ export class DrawInteraction {
     this.vectorLayer = vectorLayer;
     this.sourceFeatures = vectorLayer.getSource();
 
+    this.select = new Select({
+      layers: [this.vectorLayer],
+    });
+    this.map.addInteraction(this.select);
 
-    this.modifier = new Modify({source: this.sourceFeatures});
-    this.modifier.on('modifystart', (e: any) => {
+    this.modifier = new Modify({
+      condition: shiftKeyOnly,
+      source: this.sourceFeatures
+    });
+    this.modifier.on('modifyend', (e: any) => {
 
-      // to remove hole on polygon (press ctrl + drag left click)
+      // to remove hole on polygon (select the polygon, press shift + start to edti a vertice + press ctrl)
+      console.log(e.mapBrowserEvent.originalEvent.ctrlKey)
       if (e.mapBrowserEvent.originalEvent.ctrlKey) {
         this.removeHoles(e)
       }
@@ -46,9 +56,9 @@ export class DrawInteraction {
    this.snap = new Snap({source: this.sourceFeatures});
   }
 
-  enabledDrawing(geomType: 'Point' | 'LineString' | 'Polygon'): void {
+  enabledDrawing(geomType: 'Point' | 'LineString' | 'Polygon', holeStatus: boolean): void {
+    this.holePolygonDrawingStatus = holeStatus;
     this.disableDrawing();
-
     this.draw = new Draw({
       type: geomType,
       stopClick: true,
@@ -79,30 +89,36 @@ export class DrawInteraction {
 
     this.map.removeInteraction(this.snap);
     this.map.removeInteraction(this.modifier);
+
   }
 
   onDrawStart(e: any): void {
 
-    // to build hole on polygon
-    if (e.feature.getGeometry()?.getType() === "Polygon") {
-      this.vectorLayer.getSource().forEachFeatureIntersectingExtent(e.feature.getGeometry().getExtent(), (feature: Feature | undefined) => {
-        this.polygonIntersected = feature;
-      });
+    //to build hole on polygon
+    if (this.holePolygonDrawingStatus) {
+      if (e.feature.getGeometry()?.getType() === "Polygon") {
+        this.vectorLayer.getSource().forEachFeatureIntersectingExtent(e.feature.getGeometry().getExtent(), (feature: Feature | undefined) => {
+          this.polygonIntersected = feature;
+        });
 
-      if (this.polygonIntersected !== undefined) {
-        this.holePolygonDrawingStatus = true;
-        this.previousPolygonGeometry = this.polygonIntersected.getGeometry()
-        const polygonIntersectedGeom: any = this.polygonIntersected.getGeometry()
-        this.coordsLength = polygonIntersectedGeom.getCoordinates().length;
-        e.feature.getGeometry().on('change', this.onGeomChangeBuildHole.bind(this));
+        if (this.polygonIntersected !== undefined) {
+          this.previousPolygonGeometry = this.polygonIntersected.getGeometry()
+          const polygonIntersectedGeom: any = this.polygonIntersected.getGeometry()
+          this.coordsLength = polygonIntersectedGeom.getCoordinates().length;
+          e.feature.getGeometry().on('change', this.onGeomChangeBuildHole.bind(this));
+        }
       }
     }
+
   }
 
   onDrawEnd(e: any): void {
 
+    // let's go to finalize
     if (this.holePolygonDrawingStatus) {
+      // disable hole editing
       setTimeout(() => {
+        // we remove the polygon drawn, because it has been used to create the hole on onGeomChangeBuildHole()
         this.sourceFeatures.removeFeature(e.feature);
       }, 5);
 
@@ -112,7 +128,8 @@ export class DrawInteraction {
         })
       }
       this.polygonIntersected = undefined;
-      this.holePolygonDrawingStatus = false
+      e.feature.getGeometry().on('change', (_: any) => {return });
+
     }
 
     if (!this.holePolygonDrawingStatus) {
@@ -168,6 +185,7 @@ export class DrawInteraction {
   }
 
 
+
   removeHoles(event: any): void {
 
     // we suppose that we have only one feature!
@@ -203,6 +221,7 @@ export class DrawInteraction {
 
     }
   }
+
 
 
 }
