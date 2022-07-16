@@ -168,11 +168,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   addInteractions(geomType: string): void {
+    this.geomTypeSelected = geomType;
 
     if (geomType !== "editDisabled") {
+
+      if (geomType !== "Polygon" && this.holeEnabled) {
+        this.holeEnabled = false;
+      }
       this.drawSession.enabledDrawing(geomType, this.holeEnabled)
 
-      this.geomTypeSelected = geomType;
     } else {
       this.drawSession.disableDrawing()
     }

@@ -9,7 +9,7 @@ import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import LinearRing from 'ol/geom/LinearRing';
 import Select from 'ol/interaction/Select';
-import { shiftKeyOnly } from 'ol/events/condition';
+import { altKeyOnly, shiftKeyOnly } from 'ol/events/condition';
 
 
 
@@ -42,16 +42,16 @@ export class DrawInteraction {
     this.map.addInteraction(this.select);
 
     this.modifier = new Modify({
-      // condition: shiftKeyOnly,
+      condition: altKeyOnly,
       source: this.sourceFeatures
     });
     this.modifier.on('modifyend', (e: any) => {
 
       // to remove hole on polygon (select the polygon, press shift + start to edti a vertice + press ctrl)
       console.log(e.mapBrowserEvent.originalEvent.ctrlKey)
-      // if (e.mapBrowserEvent.originalEvent.ctrlKey) {
+      if (e.mapBrowserEvent.originalEvent.ctrlKey) {
         this.removeHoles(e)
-      // }
+      }
     })
 
    this.snap = new Snap({source: this.sourceFeatures});
@@ -99,10 +99,9 @@ export class DrawInteraction {
     //to build hole on polygon
     if (this.holePolygonDrawingStatus) {
       if (e.feature.getGeometry()?.getType() === "Polygon") {
-        this.vectorLayer.getSource().forEachFeatureIntersectingExtent(e.feature.getGeometry().getExtent(), (feature: Feature | undefined) => {
-          this.polygonIntersected = feature;
-        });
 
+        let featureFound: Feature | undefined = this.checkIfCoordIntersectLayer(e.feature)
+        this.polygonIntersected = featureFound
         if (this.polygonIntersected === undefined) {
           e.target.abortDrawing();
           return;
@@ -117,6 +116,15 @@ export class DrawInteraction {
       }
     }
 
+  }
+
+  checkIfCoordIntersectLayer(feature: any): Feature | undefined {
+    let featureFound!: Feature | undefined;
+    this.vectorLayer.getSource().forEachFeatureIntersectingExtent(feature.getGeometry().getExtent(), (feature: Feature | undefined) => {
+      featureFound = feature;
+    });
+
+    return featureFound
   }
 
   onDrawEnd(e: any): void {
@@ -134,12 +142,11 @@ export class DrawInteraction {
           'updated_at': new Date().toISOString()
         })
       }
-      // this.polygonIntersected = undefined;
-      // e.feature.getGeometry().on('change', (_: any) => {return });
-
+      this.polygonIntersected = undefined;
+      e.feature.getGeometry().on('change', (_: any) => {return });
+      return
     }
 
-    if (!this.holePolygonDrawingStatus) {
       const featureCount = this.sourceFeatures.getFeatures().length
       const uuid = uuidv4()
       e.feature.setId(uuid)
@@ -149,7 +156,7 @@ export class DrawInteraction {
         'created_at': new Date().toISOString(),
         'updated_at': new Date().toISOString()
       })
-    }
+    
 
   }
 
