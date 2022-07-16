@@ -9,7 +9,7 @@ import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import LinearRing from 'ol/geom/LinearRing';
 import Select from 'ol/interaction/Select';
-import { pointerMove, shiftKeyOnly } from 'ol/events/condition';
+import { shiftKeyOnly } from 'ol/events/condition';
 
 
 
@@ -37,6 +37,7 @@ export class DrawInteraction {
 
     this.select = new Select({
       layers: [this.vectorLayer],
+      style: null
     });
     this.map.addInteraction(this.select);
 
