@@ -13,14 +13,18 @@
           <fa-icon class="" [icon]="geomType.icon" class="dropdown-item">{{ geomType.name }}</fa-icon>
         </label>
       </ng-container>
+    </div>
 
-      <button type="button" class=" btn btn-warning rounded-start p-2" [ngClass]="holeEnabled ? 'btn-danger' : 'btn-warning'" (click)="enableHole()" *ngIf="geomTypeSelected === 'Polygon'">
-        <span class="fw-bold">hole</span>
-      </button>
+    <div class="btn-group-vertical my-2 align-self-end" role="group" aria-label="">
+      <ng-container *ngIf="geomTypeSelected === 'Polygon'">
+        <input type="radio" class="border btn-check m-0" name="btnradio" id="'btnradio-hole'" [checked]="holeEnabled" autocomplete="off">
+        <label [ngClass]="holeEnabled ? 'bg-danger border-danger' : 'bg-warning border-warning'" class="w-100 btn border-warning btn-outline-warning p-0 "  for="btnradio-hole" (click)="enableHole()">
+          <span class="text-black">Hole</span>
+        </label>
+      </ng-container>
 
 
     </div>
-
 
   </div>
 
