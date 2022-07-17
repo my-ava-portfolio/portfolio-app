@@ -171,11 +171,11 @@ export class DrawInteraction {
 
       }
       this.polygonIntersected = undefined;
-      // no need to recreate the properties because the polygon already exists
+      // TODO: QUESTION: no need to recreate the properties because the polygon already exists?
       // return
     }
 
-      const featureCount = this.sourceFeatures.getFeatures().length
+      const featureCount = this.sourceFeatures.getFeatures().length // TODO: not efficient (if removes happen), create a counter!
       const uuid = uuidv4()
       e.feature.setId(uuid)
       e.feature.setProperties({
@@ -187,9 +187,6 @@ export class DrawInteraction {
           'created_at': new Date().toISOString(),
           'updated_at': new Date().toISOString()
       })
-
-      // this.lastCreatedFeature = e.feature
-
 
   }
 
