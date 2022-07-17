@@ -66,13 +66,14 @@ export class DrawInteraction {
       if (e.mapBrowserEvent.originalEvent.ctrlKey) {
         this.removeHoles(e)
       }
-
-      if (e.features.getArray().length > 0) {
-        e.features.getArray().forEach( (element: Feature) => {
-          this.updateFeature(element)
-        });
-      }
     })
+
+    this.sourceFeatures.on('changefeature', (event: any) => {
+      if (event.feature !== undefined) {
+        this.updateFeature(event.feature)
+      }
+
+    });
 
   }
 
@@ -158,7 +159,7 @@ export class DrawInteraction {
       }, 5);
 
       if (this.polygonIntersected !== undefined) {
-        this.updateFeature(this.polygonIntersected)
+        
       }
       this.polygonIntersected = undefined;
       e.feature.getGeometry().on('change', (_: any) => {return });
