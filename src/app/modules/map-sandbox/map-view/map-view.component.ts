@@ -98,10 +98,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.featureCreatedSubscription = this.featureCreatedObservable.subscribe(
       (feature: Feature) => {
+        // TODO deprecated?
         this.toastsFeatureProperties = []
 
         this.toastsFeatureProperties.push(
-          this.setToastFeature(feature)
+          this.setToastFeature(feature, true)
         )
 
       }
@@ -114,7 +115,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.toastsFeatureProperties = []
         features.forEach((feature: Feature) => {
           let featureProperties: any = {}
-          featureProperties = this.setToastFeature(feature)
+          featureProperties = this.setToastFeature(feature, true)
           this.toastsFeatureProperties.push(featureProperties)
 
         })
@@ -199,26 +200,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.drawSession = new DrawInteraction(this.map, this.layerFeatures)
 
     this.drawSession.sourceFeatures.on('addfeature', (event: any) => {
-      let featureModified: Feature[] = []
-      if (event.feature !== undefined) {
-        featureModified.push(event.feature)
-      } else {
-        featureModified = event.features
-      }
-      this.returnFeaturesModified(featureModified)
 
-      // this.returnFeatureCreated()
+      this.pushChangedFeatures(event)
       this.returnFeatures()
-
     });
+
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
-      let featureModified: Feature[] = []
-      if (event.feature !== undefined) {
-        featureModified.push(event.feature)
-      } else {
-        featureModified = event.features
-      }
-      this.returnFeaturesModified(featureModified)
+      this.pushChangedFeatures(event)
 
     });
 
@@ -259,6 +247,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   returnFeatureCreated(): void {
+    // TODO DEPRECATED
     this.featureCreatedObservable.next(this.drawSession.lastCreatedFeature);
   }
 
@@ -323,6 +312,16 @@ export class MapViewComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  pushChangedFeatures(event: any): void {
+    let featureModified: Feature[] = []
+    if (event.feature !== undefined) {
+      featureModified.push(event.feature)
+    } else {
+      featureModified = event.features
+    }
+    this.returnFeaturesModified(featureModified)
+  }
 
 }
 
