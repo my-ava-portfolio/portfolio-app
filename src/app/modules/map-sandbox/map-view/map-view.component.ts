@@ -10,12 +10,16 @@ import Map from 'ol/Map';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
-import { Subscription } from 'rxjs';
+
 
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { DrawInteraction } from '@modules/map-sandbox/shared/core';
+import Feature from 'ol/Feature';
+import * as d3 from 'd3';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { Subject } from 'rxjs/internal/Subject';
 
 
 @Component({
@@ -35,6 +39,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   _allFeatures: any[] = [];
   allFeatures: any[] = [];
   allRawFeatures: any[] = [];
+  featureCreatedObservable = new Subject<Feature>()
+  featureProperties: any = {}
   drawSession!: any;
 
   modifier!: Modify;
@@ -78,6 +84,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   isLegendDisplayed = true;
 
   mapSubscription!: Subscription;
+  featureCreatedSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -85,6 +92,28 @@ export class MapViewComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
   ) {
+
+    this.featureCreatedSubscription = this.featureCreatedObservable.subscribe(
+      (feature: Feature) => {
+        this.featureProperties = feature.getProperties()
+
+        const geomTypeSupportedFound = this.geomTypesSupported.filter(element => {
+          return this.featureProperties.geometry.getType() === element.geomType
+        });
+        this.featureProperties["icon"] = geomTypeSupportedFound[0].icon
+
+        this.featureProperties["id"] = feature.getId()
+
+        d3.select("#toastFeature")
+        .attr("class", "toast faded")
+        .transition()
+          .duration(5000)
+          .on("end", () => {
+            d3.select("#toastFeature")
+            .attr("class", "toast");
+        })
+      }
+    )
 
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
@@ -111,6 +140,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
 
     this.mapSubscription.unsubscribe();
+    this.featureCreatedSubscription.unsubscribe();
 
     this.map.removeInteraction(this.modifier)
 
@@ -165,7 +195,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.drawSession = new DrawInteraction(this.map, this.layerFeatures)
 
     this.drawSession.sourceFeatures.on('addfeature', (event: any) => {
+      this.returnFeatureCreated()
       this.returnFeatures()
+
     });
     this.drawSession.sourceFeatures.on('removefeature', (event: any) => {
       this.returnFeatures()
@@ -192,17 +224,31 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     } else {
       this.drawSession.disableDrawing()
+      this.geomTypeSelected = geomType;
+
     }
 
 
   }
 
   returnFeatures(): void {
-    this.allFeatures = this.drawSession.returnFeatures()
+    this.allFeatures = this.drawSession.returnFeatures("Properties")
+  }
+
+  returnFeatureCreated(): void {
+    this.featureCreatedObservable.next(this.drawSession.lastCreatedFeature);
   }
 
   removeFeature(id: string): void {
+    // remove from the object panel
+    this.allFeatures = this.allFeatures.filter((feature: any) => {
+      return feature.id !== id;
+    })
+    console.log("after remove", this.allFeatures.length)
     this.drawSession.removeFeature(id)
+
+
+
   }
 
 }

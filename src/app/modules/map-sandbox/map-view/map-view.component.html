@@ -9,7 +9,7 @@
     <div class="btn-group-vertical my-2 align-self-center shadow" role="group" aria-label="">
       <ng-container *ngFor="let feature of geomTypesSupported">
           <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-seletor-' + feature.geomType" [checked]="geomTypeSelected === feature.geomType" autocomplete="off">
-          <label class="w-100 border-warning p-0 bg-light" [for]="'btnradio-seletor-' + feature.geomType" (click)="addInteractions(feature.geomType)">
+          <label class="w-100 border-warning p-0 " [ngClass]="geomTypeSelected === feature.geomType ? 'bg-warning' :  'bg-light'" [for]="'btnradio-seletor-' + feature.geomType" (click)="addInteractions(feature.geomType)">
               <div class="dropdown-item small">
                 <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon>{{ feature.label }}
               </div>
@@ -59,6 +59,20 @@
 
   </div>
 
+</div>
 
 
+
+<div id="mapToasts" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <div id="toastFeature" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <!-- <fa-icon class="me-2" [icon]="this.featureProperties.icon" ></fa-icon> -->
+      <strong class="me-auto">{{ this.featureProperties.geom_type }}</strong>
+      <small>{{ this.featureProperties.created_at }}</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Hello, world! This is a toast message.
+    </div>
+  </div>
 </div>

@@ -46,3 +46,17 @@
   background: black;
   border-radius: 25px;
 }
+
+.toast {
+  opacity: 0;
+  display: unset!important;
+  -webkit-transition: opacity 0.5s;
+	transition: opacity 0.5s;
+  }
+
+#toastFeature.faded {
+  opacity: 1;
+	-webkit-transition: opacity 0.5s;
+	transition: opacity 0.5s;
+}
+

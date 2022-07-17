@@ -26,6 +26,9 @@ export class DrawInteraction {
   private coordsLength!: number;
   private previousPolygonGeometry!: any;
 
+  lastCreatedFeature!: Feature;
+  private lastModifiedFeatures!: Feature[];
+
   vectorLayer: VectorLayer<any>;
   sourceFeatures: VectorSource;
   allFeatures: any[] = [];
@@ -52,6 +55,11 @@ export class DrawInteraction {
       if (e.mapBrowserEvent.originalEvent.ctrlKey) {
         this.removeHoles(e)
       }
+
+      if (e.features.length > 0) {
+        this.lastModifiedFeatures = e.features
+      }
+
     })
 
    this.snap = new Snap({source: this.sourceFeatures});
@@ -144,19 +152,23 @@ export class DrawInteraction {
       }
       this.polygonIntersected = undefined;
       e.feature.getGeometry().on('change', (_: any) => {return });
-      return
+      this.lastModifiedFeatures = e.features
+
     }
 
       const featureCount = this.sourceFeatures.getFeatures().length
       const uuid = uuidv4()
       e.feature.setId(uuid)
       e.feature.setProperties({
-        'name': 'feature_' + featureCount,
-        'geom_type': e.feature.getGeometry()?.getType(),
-        'created_at': new Date().toISOString(),
-        'updated_at': new Date().toISOString()
+          'id': e.feature.getId(),
+          'name': 'feature_' + featureCount,
+          'geom_type': e.feature.getGeometry()?.getType(),
+          'created_at': new Date().toISOString(),
+          'updated_at': new Date().toISOString()
       })
-    
+
+      this.lastCreatedFeature = e.feature
+
 
   }
 
@@ -183,20 +195,29 @@ export class DrawInteraction {
     }
   }
 
-  returnFeatures(): any[] {
-    let featuresFound: any[] = []
-    this.sourceFeatures.getFeatures().forEach((feature: any) => {
-      featuresFound.push(
-        {
-          id: feature.getId(),
-          name: feature.get('name'),
-          geom_type: feature.get('geom_type')
-        }
-      )
-    })
-    return featuresFound
+  returnFeatures(mode: 'Feature' | 'Properties'): any[] {
+    const allFeatures = this.sourceFeatures.getFeatures()
+    if (mode === 'Feature') {
+      return allFeatures
+
+    } else if (mode === 'Properties') {
+      let allFeaturesProperties: any[] = []
+      allFeatures.forEach( (element: Feature) => {
+        allFeaturesProperties.push(element.getProperties())
+      });
+      return allFeaturesProperties
+
+    }
+
+    return allFeatures;
   }
 
+  returnCreatedFeatures(): Feature {
+    const featuresCount = this.sourceFeatures.getFeatures().length
+    const lastFeature: any = this.sourceFeatures.getFeatures()[featuresCount - 1]
+
+    return lastFeature
+  }
 
 
   removeHoles(event: any): void {
