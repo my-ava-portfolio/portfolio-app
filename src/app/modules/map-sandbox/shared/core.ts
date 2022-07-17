@@ -66,9 +66,17 @@ export class DrawInteraction {
       if (e.mapBrowserEvent.originalEvent.ctrlKey) {
         this.removeHoles(e)
       }
+
+      // to update value definitively (especially during hole drawing)
+      if (e.features.getArray().length > 0) {
+        e.features.getArray().forEach((element: Feature) => {
+          this.updateFeature(element)
+        });
+      }
     })
 
     this.sourceFeatures.on('changefeature', (event: any) => {
+      // to display the changed values
       if (event.feature !== undefined) {
         this.updateFeature(event.feature)
       }
@@ -159,11 +167,12 @@ export class DrawInteraction {
       }, 5);
 
       if (this.polygonIntersected !== undefined) {
-        
+        e.feature.setGeometry(this.polygonIntersected.getGeometry())
+
       }
       this.polygonIntersected = undefined;
-      e.feature.getGeometry().on('change', (_: any) => {return });
-
+      // no need to recreate the properties because the polygon already exists
+      return
     }
 
       const featureCount = this.sourceFeatures.getFeatures().length
@@ -179,7 +188,7 @@ export class DrawInteraction {
           'updated_at': new Date().toISOString()
       })
 
-      this.lastCreatedFeature = e.feature
+      // this.lastCreatedFeature = e.feature
 
 
   }
@@ -196,6 +205,7 @@ export class DrawInteraction {
       let linearRing = new LinearRing(e.target.getCoordinates()[0]);
       geom.appendLinearRing(linearRing);
       this.polygonIntersected.setGeometry(geom);
+
     }
   }
 

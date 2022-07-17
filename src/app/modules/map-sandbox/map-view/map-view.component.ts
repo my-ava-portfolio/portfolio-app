@@ -199,7 +199,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.drawSession = new DrawInteraction(this.map, this.layerFeatures)
 
     this.drawSession.sourceFeatures.on('addfeature', (event: any) => {
-      this.returnFeatureCreated()
+      let featureModified: Feature[] = []
+      if (event.feature !== undefined) {
+        featureModified.push(event.feature)
+      } else {
+        featureModified = event.features
+      }
+      this.returnFeaturesModified(featureModified)
+
+      // this.returnFeatureCreated()
       this.returnFeatures()
 
     });
