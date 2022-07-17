@@ -30,7 +30,7 @@
 
         <ng-container *ngFor="let feature of allFeatures">
           <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-feature-' + feature.id" [checked]="featureSelected === feature.name" autocomplete="off">
-          <label class="col-12 border-warning px-0" [ngClass]="featureSelected === feature.name ? 'bg-dark text-white' :  'bg-light text-white'" [for]="'btnradio-feature-' + feature.id">
+          <label class="border-warning px-0" [ngClass]="featureSelected === feature.name ? 'bg-dark text-white' :  'bg-light text-white'" [for]="'btnradio-feature-' + feature.id" (click)="displayToast(feature.id)">
               <div class="dropdown-item small d-flex flex-row">
                 <fa-icon *ngIf="feature.geom_type === 'Point'" class="me-2" [icon]="pointIcon" ></fa-icon>
                 <fa-icon *ngIf="feature.geom_type === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>

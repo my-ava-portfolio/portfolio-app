@@ -238,13 +238,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       }
 
-
     } else {
       this.drawSession.disableDrawing()
       this.geomTypeSelected = geomType;
 
     }
-
 
   }
 
@@ -269,7 +267,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   }
 
-  setToastFeature(feature: Feature): any {
+  setToastFeature(feature: Feature, isNotify: boolean = true): any {
     let featureProperties: any = feature.getProperties()
 
     // get geomType
@@ -281,19 +279,42 @@ export class MapViewComponent implements OnInit, OnDestroy {
     // get id
     featureProperties["id"] = feature.getId()
 
-    // display it with fading
-    d3.select("html")
-    .transition()
-    .delay(2000) // need this delayto wait the toats html building
-    .duration(5000)
-     .on("end", () => {
+    if (isNotify) {
+      // display it with fading
+      d3.select("html")
+      .transition()
+      .delay(2000) // need this delayto wait the toats html building
+      .duration(5000)
+      .on("end", () => {
+        d3.selectAll(".toastFeature")
+        .attr("class", "toast toastFeature");
+      })
+    } else {
       d3.selectAll(".toastFeature")
-      .attr("class", "toast toastFeature");
-    })
-
+      .attr("class", "toast toastFeature faded");
+    }
 
     return featureProperties;
   }
+
+  displayToast(featureId: string): any {
+
+    this.toastsFeatureProperties = []
+
+    let featureFound!: Feature[];
+    featureFound = this.drawSession.returnFeatures("Features").filter((feature: any) => {
+      return feature.getId() === featureId;
+    })
+    if (featureFound.length > 0) {
+      // TODO could be more than 1...
+      this.featureSelected = featureFound[0].get('name')
+
+      this.toastsFeatureProperties.push(
+        this.setToastFeature(featureFound[0], false)
+      )
+    }
+  }
+
 
 }
 
