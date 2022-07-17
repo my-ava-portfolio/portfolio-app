@@ -19,6 +19,6 @@ import { MapViewComponent } from '@modules/map-sandbox/map-view/map-view.compone
     MapSandboxRoutingModule,
     FontAwesomeModule,
     ColorPickerModule
-  ]
+  ],
 })
 export class MapSandboxModule { }

@@ -8,9 +8,10 @@ import Map from 'ol/Map';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import LinearRing from 'ol/geom/LinearRing';
-import Select from 'ol/interaction/Select';
-import { altKeyOnly, shiftKeyOnly } from 'ol/events/condition';
+import WKT from 'ol/format/WKT';
 
+import Select from 'ol/interaction/Select';
+import { altKeyOnly } from 'ol/events/condition';
 
 
 export class DrawInteraction {
@@ -27,13 +28,16 @@ export class DrawInteraction {
   private previousPolygonGeometry!: any;
 
   lastCreatedFeature!: Feature;
-  private lastModifiedFeatures!: Feature[];
+  lastModifiedFeatures: Feature[] = []
 
   vectorLayer: VectorLayer<any>;
   sourceFeatures: VectorSource;
   allFeatures: any[] = [];
 
-  constructor( map: Map, vectorLayer: VectorLayer<any>) {
+  constructor(
+    map: Map,
+    vectorLayer: VectorLayer<any>,
+  ) {
     this.map = map;
     this.vectorLayer = vectorLayer;
     this.sourceFeatures = vectorLayer.getSource();
@@ -44,25 +48,33 @@ export class DrawInteraction {
     });
     this.map.addInteraction(this.select);
 
+    this.prepareModifier()
+
+   this.snap = new Snap({source: this.sourceFeatures});
+  }
+
+  prepareModifier(): void {
+
     this.modifier = new Modify({
       condition: altKeyOnly,
       source: this.sourceFeatures
     });
+
+
     this.modifier.on('modifyend', (e: any) => {
 
       // to remove hole on polygon (select the polygon, press shift + start to edti a vertice + press ctrl)
-      console.log(e.mapBrowserEvent.originalEvent.ctrlKey)
       if (e.mapBrowserEvent.originalEvent.ctrlKey) {
         this.removeHoles(e)
       }
 
-      if (e.features.length > 0) {
-        this.lastModifiedFeatures = e.features
+      if (e.features.getArray().length > 0) {
+        e.features.getArray().forEach( (element: Feature) => {
+          this.updateFeature(element)
+        });
       }
-
     })
 
-   this.snap = new Snap({source: this.sourceFeatures});
   }
 
   enabledDrawing(geomType: 'Point' | 'LineString' | 'Polygon', holeStatus: boolean): void {
@@ -146,9 +158,7 @@ export class DrawInteraction {
       }, 5);
 
       if (this.polygonIntersected !== undefined) {
-        this.polygonIntersected.setProperties({
-          'updated_at': new Date().toISOString()
-        })
+        this.updateFeature(this.polygonIntersected)
       }
       this.polygonIntersected = undefined;
       e.feature.getGeometry().on('change', (_: any) => {return });
@@ -163,6 +173,8 @@ export class DrawInteraction {
           'id': e.feature.getId(),
           'name': 'feature_' + featureCount,
           'geom_type': e.feature.getGeometry()?.getType(),
+          'wkt': this.getWkt(e.feature),
+          "status": "added",
           'created_at': new Date().toISOString(),
           'updated_at': new Date().toISOString()
       })
@@ -256,6 +268,17 @@ export class DrawInteraction {
     }
   }
 
+  updateFeature(feature: Feature): void {
+    feature.setProperties({
+      'updated_at': new Date().toISOString(),
+      "status": "modified",
+      'wkt': this.getWkt(feature),
+    })
+  }
 
+  getWkt(feature: any): string {
+    const wktFormat = new WKT()
+    return wktFormat.writeGeometry(feature.getGeometry());
+  }
 
 }

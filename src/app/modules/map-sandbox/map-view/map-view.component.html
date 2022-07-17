@@ -64,15 +64,20 @@
 
 
 <div id="mapToasts" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-  <div id="toastFeature" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true" *ngFor="let feature of toastsFeatureProperties">
     <div class="toast-header">
-      <!-- <fa-icon class="me-2" [icon]="this.featureProperties.icon" ></fa-icon> -->
-      <strong class="me-auto">{{ this.featureProperties.geom_type }}</strong>
-      <small>{{ this.featureProperties.created_at }}</small>
+      <!-- <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon> -->
+      <strong class="me-auto">{{ feature.geom_type }}</strong>
+      <small>{{ feature.created_at }}</small>
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
-    <div class="toast-body">
-      Hello, world! This is a toast message.
+    <div class="toast-body bg-white">
+      <div class="d-flex flex-column">
+      <span>{{ feature.name }}</span>
+      <span>{{ feature.created_at }}</span>
+      <span>{{ feature.updated_at }}</span>
+      <span>{{ feature.wkt }}</span>
+
     </div>
   </div>
 </div>

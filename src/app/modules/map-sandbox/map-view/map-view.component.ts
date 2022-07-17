@@ -12,7 +12,6 @@ import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 
 
-
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { DrawInteraction } from '@modules/map-sandbox/shared/core';
@@ -40,7 +39,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
   allFeatures: any[] = [];
   allRawFeatures: any[] = [];
   featureCreatedObservable = new Subject<Feature>()
+  featuresModifiedObservable = new Subject<Feature[]>()
+
   featureProperties: any = {}
+  toastsFeatureProperties: any[] = []
+
   drawSession!: any;
 
   modifier!: Modify;
@@ -85,6 +88,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   mapSubscription!: Subscription;
   featureCreatedSubscription!: Subscription;
+  featuresModifiedSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -95,22 +99,41 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.featureCreatedSubscription = this.featureCreatedObservable.subscribe(
       (feature: Feature) => {
-        this.featureProperties = feature.getProperties()
+        this.toastsFeatureProperties = []
 
-        const geomTypeSupportedFound = this.geomTypesSupported.filter(element => {
-          return this.featureProperties.geometry.getType() === element.geomType
-        });
-        this.featureProperties["icon"] = geomTypeSupportedFound[0].icon
+        this.toastsFeatureProperties.push(
+          this.setToastFeature(feature)
+        )
 
-        this.featureProperties["id"] = feature.getId()
-
-        d3.select("#toastFeature")
-        .attr("class", "toast faded")
+        d3.select("html")
         .transition()
-          .duration(5000)
-          .on("end", () => {
-            d3.select("#toastFeature")
-            .attr("class", "toast");
+        .delay(2000) // need this delayto wait the toats html building
+        .duration(5000)
+         .on("end", () => {
+          d3.select(".toastFeature")
+          .attr("class", "toast toastFeature");
+        })
+      }
+    )
+  
+    
+
+    this.featuresModifiedSubscription = this.featuresModifiedObservable.subscribe(
+      (features: Feature[]) => {
+        this.toastsFeatureProperties = []
+        features.forEach((feature: Feature) => {
+          let featureProperties: any = {}
+          featureProperties = this.setToastFeature(feature)
+          this.toastsFeatureProperties.push(featureProperties)
+
+        })
+        d3.select("html")
+        .transition()
+        .delay(2000) // need this delayto wait the toats html building
+        .duration(5000)
+         .on("end", () => {
+          d3.selectAll(".toastFeature")
+          .attr("class", "toast toastFeature");
         })
       }
     )
@@ -199,6 +222,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.returnFeatures()
 
     });
+    this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
+      let featureModified: Feature[] = []
+      if (event.feature !== undefined) {
+        featureModified.push(event.feature)
+      } else {
+        featureModified = event.features
+      }
+      this.returnFeaturesModified_(featureModified)
+      console.log("changefeature")
+
+    });
+
     this.drawSession.sourceFeatures.on('removefeature', (event: any) => {
       this.returnFeatures()
     });
@@ -239,6 +274,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.featureCreatedObservable.next(this.drawSession.lastCreatedFeature);
   }
 
+  returnFeaturesModified(): void {
+    this.featuresModifiedObservable.next(this.drawSession.lastModifiedFeatures);
+  }
+  returnFeaturesModified_(features: Feature[]): void {
+    this.featuresModifiedObservable.next(features);
+  }
+
   removeFeature(id: string): void {
     // remove from the object panel
     this.allFeatures = this.allFeatures.filter((feature: any) => {
@@ -247,8 +289,21 @@ export class MapViewComponent implements OnInit, OnDestroy {
     console.log("after remove", this.allFeatures.length)
     this.drawSession.removeFeature(id)
 
+  }
 
+  setToastFeature(feature: Feature): any {
+    let featureProperties: any = feature.getProperties()
 
+    // get geomType
+    const geomTypeSupportedFound = this.geomTypesSupported.filter(element => {
+      return featureProperties.geometry.getType() === element.geomType
+    });
+    featureProperties["icon"] = geomTypeSupportedFound[0].icon
+
+    // get id
+    featureProperties["id"] = feature.getId()
+
+    return featureProperties;
   }
 
 }
