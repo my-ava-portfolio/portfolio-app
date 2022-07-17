@@ -172,7 +172,7 @@ export class DrawInteraction {
       }
       this.polygonIntersected = undefined;
       // no need to recreate the properties because the polygon already exists
-      return
+      // return
     }
 
       const featureCount = this.sourceFeatures.getFeatures().length
