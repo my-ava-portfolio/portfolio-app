@@ -103,14 +103,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
           this.setToastFeature(feature)
         )
 
-        d3.select("html")
-        .transition()
-        .delay(2000) // need this delayto wait the toats html building
-        .duration(5000)
-         .on("end", () => {
-          d3.select(".toastFeature")
-          .attr("class", "toast toastFeature");
-        })
       }
     )
   
@@ -124,14 +116,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
           featureProperties = this.setToastFeature(feature)
           this.toastsFeatureProperties.push(featureProperties)
 
-        })
-        d3.select("html")
-        .transition()
-        .delay(2000) // need this delayto wait the toats html building
-        .duration(5000)
-         .on("end", () => {
-          d3.selectAll(".toastFeature")
-          .attr("class", "toast toastFeature");
         })
       }
     )
@@ -173,8 +157,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
-    // to get the data properties from routes (app.module.ts)
-    console.log(this.activatedRoute.snapshot.data.title)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
   }
@@ -228,7 +210,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
         featureModified = event.features
       }
       this.returnFeaturesModified(featureModified)
-      console.log("changefeature")
 
     });
 
@@ -283,7 +264,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.allFeatures = this.allFeatures.filter((feature: any) => {
       return feature.id !== id;
     })
-    console.log("after remove", this.allFeatures.length)
     this.drawSession.removeFeature(id)
 
   }
@@ -299,6 +279,17 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     // get id
     featureProperties["id"] = feature.getId()
+
+    // display it with fading
+    d3.select("html")
+    .transition()
+    .delay(2000) // need this delayto wait the toats html building
+    .duration(5000)
+     .on("end", () => {
+      d3.selectAll(".toastFeature")
+      .attr("class", "toast toastFeature");
+    })
+
 
     return featureProperties;
   }
