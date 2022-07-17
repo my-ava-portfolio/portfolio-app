@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
 
   routesWhereScrollingIsDisabled: string[] = [
     "/map/app/activities",
-    "/map/app/sandox",
+    "/map/app/sandbox",
     "/map/app/gtfs-viewer"
   ];
 
@@ -43,7 +43,6 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private location: Location,
-    private mainService: MainService,
   ) {
 
     // to get the current page opened and adapt content regarding orientation
