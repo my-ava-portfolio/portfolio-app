@@ -35,9 +35,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   layerName = "edited_layer";
   holeEnabled = false;
 
-  _allFeatures: any[] = [];
   allFeatures: any[] = [];
-  allRawFeatures: any[] = [];
   featureCreatedObservable = new Subject<Feature>()
   featuresModifiedObservable = new Subject<Feature[]>()
 
@@ -229,7 +227,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       } else {
         featureModified = event.features
       }
-      this.returnFeaturesModified_(featureModified)
+      this.returnFeaturesModified(featureModified)
       console.log("changefeature")
 
     });
@@ -246,16 +244,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
   addInteractions(geomType: string): void {
 
     if (geomType !== "editDisabled") {
+      this.geomTypeSelected = geomType;
 
       if (geomType === "Hole") {
         this.holeEnabled = true;
-        this.geomTypeSelected = "Polygon";
+        this.drawSession.enabledDrawing("Polygon", this.holeEnabled)
+
       } else {
         this.holeEnabled = false;
-        this.geomTypeSelected = geomType;
+        this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
+
       }
 
-      this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
 
     } else {
       this.drawSession.disableDrawing()
@@ -274,10 +274,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.featureCreatedObservable.next(this.drawSession.lastCreatedFeature);
   }
 
-  returnFeaturesModified(): void {
-    this.featuresModifiedObservable.next(this.drawSession.lastModifiedFeatures);
-  }
-  returnFeaturesModified_(features: Feature[]): void {
+  returnFeaturesModified(features: Feature[]): void {
     this.featuresModifiedObservable.next(features);
   }
 

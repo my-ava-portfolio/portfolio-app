@@ -28,7 +28,6 @@ export class DrawInteraction {
   private previousPolygonGeometry!: any;
 
   lastCreatedFeature!: Feature;
-  lastModifiedFeatures: Feature[] = []
 
   vectorLayer: VectorLayer<any>;
   sourceFeatures: VectorSource;
@@ -124,6 +123,7 @@ export class DrawInteraction {
         this.polygonIntersected = featureFound
         if (this.polygonIntersected === undefined) {
           e.target.abortDrawing();
+          alert('An hole is possible only on a polygon!')
           return;
         }
 
@@ -162,7 +162,6 @@ export class DrawInteraction {
       }
       this.polygonIntersected = undefined;
       e.feature.getGeometry().on('change', (_: any) => {return });
-      this.lastModifiedFeatures = e.features
 
     }
 
@@ -171,7 +170,7 @@ export class DrawInteraction {
       e.feature.setId(uuid)
       e.feature.setProperties({
           'id': e.feature.getId(),
-          'name': 'feature_' + featureCount,
+          'name': 'feature ' + featureCount,
           'geom_type': e.feature.getGeometry()?.getType(),
           'wkt': this.getWkt(e.feature),
           "status": "added",
