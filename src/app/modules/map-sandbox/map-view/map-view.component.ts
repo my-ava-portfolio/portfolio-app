@@ -48,19 +48,28 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   geomTypesSupported = [
     {
-      "name": 'editDisabled',
+      "geomType": 'editDisabled',
+      "label": "Annuler/Désactiver l'édition",
       "icon": this.editDisabledIcon
     },
     {
-      "name": 'Point',
+      "geomType": 'Point',
+      "label": 'Point',
       "icon": this.pointIcon
     },
     {
-      "name": 'LineString',
+      "geomType": 'LineString',
+      "label": 'LineString',
       "icon": this.lineStringIcon
     },
     {
-      "name": 'Polygon',
+      "geomType": 'Polygon',
+      "label": 'Polygon',
+      "icon": this.polygonIcon
+    },
+    {
+      "geomType": 'Hole',  // works like a polygon
+      "label": 'Trou',
       "icon": this.polygonIcon
     }
   ]
@@ -95,7 +104,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapService.changeMapInteractionStatus(true)
 
     // let's go to get map container and init layer(s)
-    this.addInteractions(this.geomTypesSupported[0].name)
+    this.addInteractions(this.geomTypesSupported[0].geomType)
 
   }
 
@@ -168,14 +177,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   addInteractions(geomType: string): void {
-    this.geomTypeSelected = geomType;
 
     if (geomType !== "editDisabled") {
 
-      if (geomType !== "Polygon" && this.holeEnabled) {
+      if (geomType === "Hole") {
+        this.holeEnabled = true;
+        this.geomTypeSelected = "Polygon";
+      } else {
         this.holeEnabled = false;
+        this.geomTypeSelected = geomType;
       }
-      this.drawSession.enabledDrawing(geomType, this.holeEnabled)
+
+      this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
 
     } else {
       this.drawSession.disableDrawing()
@@ -190,12 +203,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   removeFeature(id: string): void {
     this.drawSession.removeFeature(id)
-  }
-
-  enableHole() {
-    this.holeEnabled = !this.holeEnabled;
-    this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
-
   }
 
 }

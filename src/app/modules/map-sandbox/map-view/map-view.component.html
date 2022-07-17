@@ -2,28 +2,19 @@
 
   <div id="geomSelector" class="d-flex flex-row m-2">
 
-    <button type="button" class="button-title btn btn-warning rounded-start p-2">
+    <button type="button" class="button-title btn btn-warning rounded p-2 shadow">
       <span class="fw-bold">EDITER</span>
     </button>
 
-    <div class="btn-group-vertical my-2 align-self-center" role="group" aria-label="">
-      <ng-container *ngFor="let geomType of geomTypesSupported">
-        <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-seletor-' + geomType.name" [checked]="geomTypeSelected === geomType.name" autocomplete="off">
-        <label class="w-100 btn border-warning btn-outline-warning p-0 bg-light" [for]="'btnradio-seletor-' + geomType.name" (click)="addInteractions(geomType.name)">
-          <fa-icon class="" [icon]="geomType.icon" class="dropdown-item">{{ geomType.name }}</fa-icon>
-        </label>
+    <div class="btn-group-vertical my-2 align-self-center shadow" role="group" aria-label="">
+      <ng-container *ngFor="let feature of geomTypesSupported">
+          <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-seletor-' + feature.geomType" [checked]="geomTypeSelected === feature.geomType" autocomplete="off">
+          <label class="w-100 border-warning p-0 bg-light" [for]="'btnradio-seletor-' + feature.geomType" (click)="addInteractions(feature.geomType)">
+              <div class="dropdown-item small">
+                <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon>{{ feature.label }}
+              </div>
+          </label>
       </ng-container>
-    </div>
-
-    <div class="btn-group-vertical my-2 align-self-end" role="group" aria-label="">
-      <ng-container *ngIf="geomTypeSelected === 'Polygon'">
-        <input type="radio" class="border btn-check m-0" name="btnradio" id="'btnradio-hole'" [checked]="holeEnabled" autocomplete="off">
-        <label [ngClass]="holeEnabled ? 'bg-danger border-danger' : 'bg-warning border-warning'" class="w-100 btn border-warning btn-outline-warning p-0 "  for="btnradio-hole" (click)="enableHole()">
-          <span class="text-black">Hole</span>
-        </label>
-      </ng-container>
-
-
     </div>
 
   </div>
@@ -34,14 +25,14 @@
       <span class="fw-bold">EXPORT</span>
     </button>
 
-    <div class="btn-group-vertical my-2 align-self-center" role="group" aria-label="">
+    <!-- <div class="btn-group-vertical my-2 align-self-center" role="group" aria-label="">
       <ng-container *ngFor="let geomType of geomTypesSupported">
         <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-export-' + geomType.name" [checked]="geomTypeSelected === geomType.name" autocomplete="off">
         <label class="w-100 btn border-dark btn-outline-dark p-0 bg-light" [for]="'btnradio-export-' + geomType.name">
           <fa-icon class="" [icon]="geomType.icon" [ngClass]="geomTypeSelected === geomType.name ? 'text-white' :  'text-black'" class="dropdown-item">{{ geomType.name }}</fa-icon>
         </label>
       </ng-container>
-    </div>
+    </div> -->
 
   </div>
 
