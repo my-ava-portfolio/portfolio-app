@@ -11,7 +11,8 @@
 }
 
 #mapTools {
-  z-index: 1
+  z-index: 1;
+  position: fixed;
 }
 
 #featuresContainer {
@@ -26,7 +27,7 @@
 
 
 #featuresList {
-  box-shadow: inset 0em -10px 9px 0px #c7c6c6;
+  // box-shadow: inset 0em -10px 9px 0px #c7c6c6;
 }
 
 

@@ -9,7 +9,7 @@
     <div class="btn-group-vertical my-2 align-self-center shadow" role="group" aria-label="">
       <ng-container *ngFor="let feature of geomTypesSupported">
           <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-seletor-' + feature.geomType" [checked]="geomTypeSelected === feature.geomType" autocomplete="off">
-          <label class="w-100 border-warning p-0 " [ngClass]="geomTypeSelected === feature.geomType ? 'bg-warning' :  'bg-light'" [for]="'btnradio-seletor-' + feature.geomType" (click)="addInteractions(feature.geomType)">
+          <label class="w-100 border-warning p-0" [ngClass]="geomTypeSelected === feature.geomType ? 'bg-warning' :  'bg-light'" [for]="'btnradio-seletor-' + feature.geomType" (click)="addInteractions(feature.geomType)">
               <div class="dropdown-item small">
                 <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon>{{ feature.label }}
               </div>
@@ -19,33 +19,34 @@
 
   </div>
 
-  <div id="geomExport" class="d-flex flex-row m-2">
-
-    <button type="button" class="button-title btn btn-dark p-2">
-      <span class="fw-bold">EXPORT</span>
-    </button>
-
-    <!-- <div class="btn-group-vertical my-2 align-self-center" role="group" aria-label="">
-      <ng-container *ngFor="let geomType of geomTypesSupported">
-        <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-export-' + geomType.name" [checked]="geomTypeSelected === geomType.name" autocomplete="off">
-        <label class="w-100 btn border-dark btn-outline-dark p-0 bg-light" [for]="'btnradio-export-' + geomType.name">
-          <fa-icon class="" [icon]="geomType.icon" [ngClass]="geomTypeSelected === geomType.name ? 'text-white' :  'text-black'" class="dropdown-item">{{ geomType.name }}</fa-icon>
-        </label>
-      </ng-container>
-    </div> -->
-
-  </div>
-
   <div id="featuresContainer" class="d-flex flex-column rounded-end m-2">
     <div  class="d-flex flex-row ">
 
-        <button type="button" class="button-title btn btn-dark p-2">
-          <span class="fw-bold">OBJETS</span>
-        </button>
+      <button type="button" class="button-title btn btn-dark rounded p-2 shadow">
+        <span class="fw-bold">OBJETS</span>
+      </button>
 
-      <div id="featuresList" class="position-relative overflow-auto px-2 bg-light" *ngIf="allFeatures.length > 0">
+        <div id="featuresList" class="overflow-auto btn-group-vertical align-self-center my-2 shadow" role="group" aria-label="" *ngIf="allFeatures.length > 0">
 
-        <div class="d-flex flex-row align-items-center me-1" *ngFor="let feature of allFeatures">
+        <ng-container *ngFor="let feature of allFeatures">
+          <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-feature-' + feature.id" [checked]="featureSelected === feature.name" autocomplete="off">
+          <label class="col-12 border-warning px-0" [ngClass]="featureSelected === feature.name ? 'bg-dark text-white' :  'bg-light text-white'" [for]="'btnradio-feature-' + feature.id">
+              <div class="dropdown-item small d-flex flex-row">
+                <fa-icon *ngIf="feature.geom_type === 'Point'" class="me-2" [icon]="pointIcon" ></fa-icon>
+                <fa-icon *ngIf="feature.geom_type === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
+                <fa-icon *ngIf="feature.geom_type === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
+                <span>{{ feature.name }}</span>
+                <span (click)="removeFeature(feature.id)"> X </span>
+              </div>
+          </label>
+        </ng-container>
+
+      </div>
+
+
+      <!-- <div id="featuresList" class="position-relative overflow-auto px-2 bg-light" *ngIf="allFeatures.length > 0">
+
+        <div class="d-flex flex-row justify-content-start align-items-center me-1" *ngFor="let feature of allFeatures">
           <fa-icon *ngIf="feature.geom_type === 'Point'" class="p-0" [icon]="pointIcon" class="dropdown-item"></fa-icon>
           <fa-icon *ngIf="feature.geom_type === 'LineString'" class="p-0" [icon]="lineStringIcon" class="dropdown-item"></fa-icon>
           <fa-icon *ngIf="feature.geom_type === 'Polygon'" class="p-0" [icon]="polygonIcon" class="dropdown-item"></fa-icon>
@@ -54,7 +55,7 @@
 
         </div>
 
-      </div>
+      </div> -->
     </div>
 
   </div>

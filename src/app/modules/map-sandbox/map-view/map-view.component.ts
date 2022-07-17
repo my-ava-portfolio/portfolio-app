@@ -36,6 +36,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   holeEnabled = false;
 
   allFeatures: any[] = [];
+  featureSelected!: string;
   featureCreatedObservable = new Subject<Feature>()
   featuresModifiedObservable = new Subject<Feature[]>()
 
@@ -105,8 +106,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       }
     )
-  
-    
+
+
 
     this.featuresModifiedSubscription = this.featuresModifiedObservable.subscribe(
       (features: Feature[]) => {
