@@ -193,7 +193,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.drawSession = new DrawInteraction(this.map, this.layerFeatures)
 
     this.drawSession.sourceFeatures.on('addfeature', (event: any) => {
-      this.selectAndDisplayFeature(event.feature.getId())
+      // this.selectAndDisplayFeature(event.feature.getId())
       // this.pushChangedFeatures(event)
       this.returnFeatures()
     });
@@ -327,11 +327,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.featureSelectedIdObservable.next(featureFound.get('id'))
 
         // hightlighting on map
-        this.drawSession.selectClick.dispatchEvent({
-          type: 'select',
-          selected: [featureFound],
-          deselected: []
-        });
+        this.drawSession.selectClick.getFeatures().clear()
+        this.drawSession.selectClick.getFeatures().push(featureFound)
+        // this.drawSession.selectClick.dispatchEvent({
+        //   type: 'select',
+        //   selected: [featureFound],
+        //   deselected: []
+        // });
         featureFound.setStyle(highLigthStyle(featureFound))
         // it will push a changefeature event on sourceFeatures object
       }

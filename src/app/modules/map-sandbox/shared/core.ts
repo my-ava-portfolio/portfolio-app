@@ -78,20 +78,6 @@ export class DrawInteraction {
     })
     this.map.addInteraction(this.selectClick);
 
-    // this.selectPointerMove = new Select({
-    //   condition: pointerMove,
-    //   layers: [this.vectorLayer],
-    //   style: (feature: any) => {
-    //     // this.resetFeaturesStyle() // a feature could be selected from the div menu
-    //     const selectedStyle = highLigthStyle(feature)
-    //     if (selectedStyle !== undefined) {
-    //       return selectedStyle;
-    //     }
-    //     return defaultStyleDEPRECATED
-    //   }
-    // })
-    //  this.map.addInteraction(this.selectPointerMove);
-
 
     this.prepareModifier()
 
