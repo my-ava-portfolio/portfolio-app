@@ -36,7 +36,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   holeEnabled = false;
 
   allFeatures: any[] = [];
-  featureSelected!: string;
+  featureSelected: string | null = null;
   featureCreatedObservable = new Subject<Feature>()
   featuresModifiedObservable = new Subject<Feature[]>()
 
@@ -50,7 +50,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   draw!: Draw;
   snap!: Snap;
 
-  editDisabledIcon = faXmark;
+  disabledIcon = faXmark;
   pointIcon = faCircle;
   lineStringIcon = faWaveSquare;
   polygonIcon = faDrawPolygon;
@@ -58,8 +58,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   geomTypesSupported = [
     {
       "geomType": 'editDisabled',
-      "label": "Annuler/Désactiver l'édition",
-      "icon": this.editDisabledIcon
+      "label": "Annuler/Désactiver",
+      "icon": this.disabledIcon
     },
     {
       "geomType": 'Point',
@@ -297,22 +297,27 @@ export class MapViewComponent implements OnInit, OnDestroy {
     return featureProperties;
   }
 
-  displayToast(featureId: string): any {
+  displayToast(featureId: string | null): any {
 
     this.toastsFeatureProperties = []
 
-    let featureFound!: Feature[];
-    featureFound = this.drawSession.returnFeatures("Features").filter((feature: any) => {
-      return feature.getId() === featureId;
-    })
-    if (featureFound.length > 0) {
+    if (featureId !== null) {
+      let featureFound!: Feature[];
+      featureFound = this.drawSession.returnFeatures("Features").filter((feature: any) => {
+        return feature.getId() === featureId;
+      })
+      if (featureFound.length > 0) {
       // TODO could be more than 1...
       this.featureSelected = featureFound[0].get('name')
 
-      this.toastsFeatureProperties.push(
-        this.setToastFeature(featureFound[0], false)
-      )
+        this.toastsFeatureProperties.push(
+          this.setToastFeature(featureFound[0], false)
+        )
+      }
+    } else {
+      this.featureSelected = featureId
     }
+
   }
 
 

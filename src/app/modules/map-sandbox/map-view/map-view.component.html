@@ -1,25 +1,30 @@
 <div id="mapTools" class="">
 
   <div id="geomSelector" class="d-flex flex-row m-2">
+    <div  class="d-flex flex-row ">
 
-    <button type="button" class="button-title btn btn-warning rounded p-2 shadow">
-      <span class="fw-bold title">EDITER</span>
-    </button>
+      <button type="button" class="button-title btn btn-warning rounded p-2 shadow">
+        <span class="fw-bold title">EDITER</span>
+      </button>
 
-    <div class="btn-group-vertical my-2 align-self-center shadow" role="group" aria-label="">
-      <ng-container *ngFor="let feature of geomTypesSupported">
-          <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-seletor-' + feature.geomType" [checked]="geomTypeSelected === feature.geomType" autocomplete="off">
-          <label class="w-100 border-warning p-0" [ngClass]="geomTypeSelected === feature.geomType ? 'bg-warning' :  'bg-light'" [for]="'btnradio-seletor-' + feature.geomType" (click)="addInteractions(feature.geomType)">
-              <div class="dropdown-item small">
-                <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon>{{ feature.label }}
+      <div id="geomList" class="btn-group-vertical my-2 align-self-center bg-white shadow rounded-end" role="group" aria-label="">
+        <ng-container *ngFor="let feature of geomTypesSupported">
+
+            <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + feature.geomType" [checked]="geomTypeSelected === feature.geomType" autocomplete="off">
+            <label class="w-100 border-secondary px-0"  [for]="'btnradio-selector-' + feature.geomType" (click)="addInteractions(feature.geomType)">
+              <div class="dropdown-item small d-flex flex-row" [ngClass]="geomTypeSelected === feature.geomType ? 'bg-warning' :  ''">
+                <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon>
+                <span>{{ feature.label }}</span>
               </div>
-          </label>
-      </ng-container>
+            </label>
+
+        </ng-container>
+      </div>
     </div>
 
   </div>
 
-  <div id="featuresContainer" class="d-flex flex-column rounded-end m-2">
+  <div id="featuresContainer" class="d-flex flex-column m-2">
     <div  class="d-flex flex-row ">
 
       <button type="button" class="button-title btn btn-dark rounded p-2 shadow">
@@ -27,12 +32,20 @@
           <span class="badge bg-danger my-2 counter">{{this.featuresCount}}</span>OBJETS</span>
       </button>
 
-        <div id="featuresList" class="overflow-auto btn-group-vertical align-self-center my-2 shadow" role="group" aria-label="" *ngIf="allFeatures.length > 0">
+      <div id="featuresList" class="overflow-auto btn-group-vertical justify-content-start my-2 bg-white rounded-end shadow" role="group" aria-label="">
+
+        <input type="radio" class="border btn-check m-0" name="btnradio" id="btnradio-feature-cancel" [checked]="featureSelected === null" autocomplete="off">
+        <label class="w-100 border-warning px-0"  for="btnradio-feature-cancel" (click)="displayToast(null)">
+          <div class="dropdown-item small d-flex flex-row" [ngClass]="featureSelected === null ? 'bg-secondary text-white' :  'text-black'">
+            <fa-icon class="me-2" [icon]="disabledIcon" ></fa-icon>
+            <span>Désélectioner</span>
+          </div>
+        </label>
 
         <ng-container *ngFor="let feature of allFeatures">
           <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-feature-' + feature.id" [checked]="featureSelected === feature.name" autocomplete="off">
-          <label class="border-warning px-0"  [for]="'btnradio-feature-' + feature.id" (click)="displayToast(feature.id)">
-              <div class="dropdown-item small d-flex flex-row" [ngClass]="featureSelected === feature.name ? 'bg-dark text-white' :  'bg-light text-black'">
+          <label class="w-100 border-warning px-0"  [for]="'btnradio-feature-' + feature.id" (click)="displayToast(feature.id)">
+              <div class="dropdown-item small d-flex flex-row" [ngClass]="featureSelected === feature.name ? 'bg-secondary text-white' :  'text-black'">
                 <fa-icon *ngIf="feature.geom_type === 'Point'" class="me-2" [icon]="pointIcon" ></fa-icon>
                 <fa-icon *ngIf="feature.geom_type === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
                 <fa-icon *ngIf="feature.geom_type === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
@@ -41,22 +54,6 @@
               </div>
           </label>
         </ng-container>
-
-      </div>
-
-
-      <!-- <div id="featuresList" class="position-relative overflow-auto px-2 bg-light" *ngIf="allFeatures.length > 0">
-
-        <div class="d-flex flex-row justify-content-start align-items-center me-1" *ngFor="let feature of allFeatures">
-          <fa-icon *ngIf="feature.geom_type === 'Point'" class="p-0" [icon]="pointIcon" class="dropdown-item"></fa-icon>
-          <fa-icon *ngIf="feature.geom_type === 'LineString'" class="p-0" [icon]="lineStringIcon" class="dropdown-item"></fa-icon>
-          <fa-icon *ngIf="feature.geom_type === 'Polygon'" class="p-0" [icon]="polygonIcon" class="dropdown-item"></fa-icon>
-          {{ feature.name }}
-          <span (click)="removeFeature(feature.id)"> X </span>
-
-        </div>
-
-      </div> -->
     </div>
 
   </div>
