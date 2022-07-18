@@ -14,7 +14,7 @@ import CircleStyle from 'ol/style/Circle';
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { DrawInteraction } from '@modules/map-sandbox/shared/core';
+import { defaultStyle, DrawInteraction, highLigthStyle } from '@modules/map-sandbox/shared/core';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -36,7 +36,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   holeEnabled = false;
 
   allFeatures: any[] = [];
-  featureSelected: string | null = null;
+  featureSelectedId: string | null = null;
   featureCreatedObservable = new Subject<Feature>()
   featuresModifiedObservable = new Subject<Feature[]>()
 
@@ -176,25 +176,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   initVectorLayer(): any {
     this.layerFeatures = new VectorLayer({
       source: this.sourceFeatures,
-      style: new Style({
-        fill: new Fill({
-          color: '#ffcc33',
-        }),
-        stroke: new Stroke({
-          color: 'black',
-          width: 2,
-        }),
-        image: new CircleStyle({
-          radius: 7,
-          fill: new Fill({
-            color: '#ffcc33',
-          }),
-          stroke: new Stroke({
-            color: "black",
-            width: 2,
-          }),
-        }),
-      }),
+      style: defaultStyle
     });
     this.layerFeatures.set("name", this.layerName)
 
@@ -297,26 +279,63 @@ export class MapViewComponent implements OnInit, OnDestroy {
     return featureProperties;
   }
 
-  displayToast(featureId: string | null): any {
+  selectAndDisplayFeature(featureId: string | null): any {
 
-    this.toastsFeatureProperties = []
+
+
+
 
     if (featureId !== null) {
+
+      // reset step with the last feature selected!
+      if (this.featureSelectedId !== null) {
+        this.resetFeatureDisplaying(this.featureSelectedId)
+      }
+
       let featureFound!: Feature[];
       featureFound = this.drawSession.returnFeatures("Features").filter((feature: any) => {
         return feature.getId() === featureId;
       })
       if (featureFound.length > 0) {
       // TODO could be more than 1...
-      this.featureSelected = featureFound[0].get('name')
+      this.featureSelectedId = featureFound[0].get('id')
 
+        // display toast
         this.toastsFeatureProperties.push(
           this.setToastFeature(featureFound[0], false)
         )
+
+        // hightlighting on map
+        featureFound[0].setStyle(highLigthStyle(featureFound[0]))
+
+
       }
+
+
     } else {
-      this.featureSelected = featureId
+      this.featureSelectedId = featureId
     }
+
+  }
+
+
+  resetFeatureDisplaying(featureId: string): void {
+    // first toast
+    this.toastsFeatureProperties = []
+
+    // next node style
+    let featureFound!: Feature[];
+    featureFound = this.drawSession.returnFeatures("Features").filter((feature: any) => {
+      return feature.getId() === featureId;
+    })
+    if (featureFound.length > 0) {
+    // TODO could be more than 1...
+
+      featureFound[0].setStyle(featureFound[0].get('_style'))
+
+
+    }
+
 
   }
 

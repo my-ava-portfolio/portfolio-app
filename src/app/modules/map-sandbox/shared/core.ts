@@ -1,3 +1,4 @@
+import { strokeWidth } from './../../map-gtfs-viewer/shared/core';
 import {LineString, Polygon}  from 'ol/geom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,6 +13,10 @@ import WKT from 'ol/format/WKT';
 
 import Select from 'ol/interaction/Select';
 import { altKeyOnly } from 'ol/events/condition';
+import { Fill, Style } from 'ol/style';
+import CircleStyle from 'ol/style/Circle';
+import { StyleLike } from 'ol/style/Style';
+import Stroke from 'ol/style/Stroke';
 
 
 export class DrawInteraction {
@@ -177,18 +182,20 @@ export class DrawInteraction {
       // return
     }
 
-      ++this.counter;
-      const uuid = uuidv4()
-      e.feature.setId(uuid)
-      e.feature.setProperties({
-          'id': e.feature.getId(),
-          'name': 'feature ' + this.counter,
-          'geom_type': e.feature.getGeometry()?.getType(),
-          'wkt': this.getWkt(e.feature),
-          "status": "added",
-          'created_at': new Date().toISOString(),
-          'updated_at': new Date().toISOString()
-      })
+    e.feature.setStyle(defaultStyle)
+    ++this.counter;
+    const uuid = uuidv4()
+    e.feature.setId(uuid)
+    e.feature.setProperties({
+      'id': e.feature.getId(),
+      'name': 'feature ' + this.counter,
+      'geom_type': e.feature.getGeometry()?.getType(),
+      'wkt': this.getWkt(e.feature),
+      "status": "added",
+      'created_at': new Date().toISOString(),
+      'updated_at': new Date().toISOString(),
+      '_style': e.feature.getStyle()  // style saved to revert it later
+    })
 
   }
 
@@ -291,3 +298,66 @@ export class DrawInteraction {
   }
 
 }
+
+
+
+export const defaultStyle = new Style({
+  fill: new Fill({
+    color: '#ffcc33',
+  }),
+  stroke: new Stroke({
+    color: 'black',
+    width: 2,
+  }),
+  image: new CircleStyle({
+    radius: 7,
+    fill: new Fill({
+      color: '#ffcc33',
+    }),
+    stroke: new Stroke({
+      color: "black",
+      width: 2,
+    }),
+  }),
+})
+
+export function PointStyle(color: string, strokeWidth: number): Style {
+  return new Style({
+    image: new CircleStyle({
+      radius: 7,
+      fill: new Fill({
+        color: color,
+      }),
+      stroke: new Stroke({
+        color: "black",
+        width: strokeWidth,
+      }),
+    })
+  })
+}
+
+
+export function highLigthStyle(feature: Feature): StyleLike | undefined {
+  let style = feature.getStyle()
+
+  const largerStroke = new Stroke({
+    color: "black",
+    width: 6,
+  })
+
+
+  if (style !== undefined) {
+
+    if (feature.getGeometry()?.getType() === "Point") {
+      // TODO get point fill color
+      const newStyle = PointStyle('#ffcc33', 6);
+      return newStyle
+
+    }
+
+
+  }
+  return
+
+
+};
