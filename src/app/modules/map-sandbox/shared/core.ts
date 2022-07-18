@@ -247,6 +247,7 @@ export class DrawInteraction {
 
   returnFeatures(mode: 'Feature' | 'Properties'): any[] {
     const allFeatures = this.sourceFeatures.getFeatures()
+    // TODO force order!
     if (mode === 'Feature') {
       return allFeatures
 
@@ -255,6 +256,7 @@ export class DrawInteraction {
       allFeatures.forEach( (element: Feature) => {
         allFeaturesProperties.push(element.getProperties())
       });
+
       return allFeaturesProperties
 
     }
