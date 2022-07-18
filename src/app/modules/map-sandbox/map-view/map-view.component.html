@@ -50,7 +50,6 @@
                 <fa-icon *ngIf="feature.geom_type === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
                 <fa-icon *ngIf="feature.geom_type === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
                 <span>{{ feature.name }}</span>
-                <span (click)="removeFeature(feature.id)"> X </span>
               </div>
           </label>
         </ng-container>
@@ -76,6 +75,9 @@
       <span>{{ feature.created_at }}</span>
       <span>{{ feature.updated_at }}</span>
       <span>{{ feature.wkt }}</span>
+      <span (click)="removeFeature(feature.id)">
+        <fa-icon class="me-2" [icon]="disabledIcon" ></fa-icon>
+      </span>
 
     </div>
   </div>

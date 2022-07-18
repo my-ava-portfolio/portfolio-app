@@ -33,7 +33,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   holeEnabled = false;
 
   allFeatures: any[] = [];
-  featureSelectedId: string | null = null;
+  featureSelectedId: string | null = null; // to indicate that a feature is selected
   featureCreatedObservable = new Subject<Feature>()
   featuresModifiedObservable = new Subject<Feature[]>()
 
@@ -185,7 +185,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
     });
 
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
-      this.pushChangedFeatures(event)
+      // if (this.featureSelectedId === null) {
+        this.pushChangedFeatures(event)
+      // }
 
     });
 
@@ -242,10 +244,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
       return feature.id !== id;
     })
     this.drawSession.removeFeature(id)
+    this.resetToast()
+    this.featureSelectedId = null;
 
   }
 
-  setToastFeature(feature: Feature, isNotify: boolean = true): any {
+  setToastFeature(feature: Feature, isNotify: boolean): any {
     let featureProperties: any = feature.getProperties()
 
     // get geomType
@@ -257,7 +261,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     // get id
     featureProperties["id"] = feature.getId()
 
-    if (isNotify) {
+    if (this.featureSelectedId === null) {
       // display it with fading
       d3.select("html")
       .transition()
@@ -268,6 +272,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         .attr("class", "toast toastFeature");
       })
     } else {
+      // happened only if a feature is selected
       d3.selectAll(".toastFeature")
       .attr("class", "toast toastFeature faded");
     }
@@ -277,7 +282,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   selectAndDisplayFeature(featureId: string | null): any {
     // reset toast
-    this.toastsFeatureProperties = []
+    this.resetToast()
     // reset step with the last feature selected!
     if (this.featureSelectedId !== null) {
         this.resetSelectedFeatureStyle(this.featureSelectedId)
@@ -286,16 +291,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
     if (featureId !== null) {
 
       const featureFound = this.sourceFeatures.getFeatureById(featureId)
-      if (featureFound !== undefined ) {
+      if (featureFound !== undefined) {
         this.featureSelectedId = featureFound.get('id')
 
-        // display toast
-        this.toastsFeatureProperties.push(
-          this.setToastFeature(featureFound, false)
-        )
         // hightlighting on map
         featureFound.setStyle(highLigthStyle(featureFound))
-
+        // it will push a changefeature event on sourceFeatures object
       }
 
     } else {
@@ -314,6 +315,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   }
 
+
+  resetToast(): void {
+    this.toastsFeatureProperties = []
+  }
 
   pushChangedFeatures(event: any): void {
     let featureModified: Feature[] = []
