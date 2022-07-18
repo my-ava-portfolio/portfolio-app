@@ -127,6 +127,11 @@ export class DrawInteraction {
 
   }
 
+  enableEditingMode(): void {
+    this.map.addInteraction(this.modifier);
+    this.map.addInteraction(this.snap);
+  }
+
   disableDrawing(): void {
     if (this.draw !== undefined) {
       this.map.removeInteraction(this.draw);

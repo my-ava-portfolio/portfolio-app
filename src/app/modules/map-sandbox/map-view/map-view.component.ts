@@ -48,6 +48,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   snap!: Snap;
 
   disabledIcon = faXmark;
+  EditIcon = faCircle;
   pointIcon = faCircle;
   lineStringIcon = faWaveSquare;
   polygonIcon = faDrawPolygon;
@@ -213,6 +214,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
 
       case "editEnabled": {
+        this.drawSession.enableEditingMode()
          break;
       }
 
@@ -222,9 +224,17 @@ export class MapViewComponent implements OnInit, OnDestroy {
          break;
       }
 
-      default: {
+      case "Point":
+      case "LineString":
+      case "Polygon": {
         this.holeEnabled = false;
         this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
+         break;
+      }
+
+      default: {
+        // this.holeEnabled = false;
+        // this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
          break;
       }
     }
@@ -289,7 +299,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.resetToast()
 
     if (featureId !== null) {
-
+      this.disableCreationMode()
       const featureFound = this.sourceFeatures.getFeatureById(featureId)
       if (featureFound !== undefined) {
         this.featureSelectedId = featureFound.get('id')
