@@ -35,6 +35,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   allFeatures: any[] = [];
   featureSelectedId: string | null = null;
   featuresModifiedObservable = new Subject<Feature[]>()
+  featuresCreatedObservable = new Subject<Feature[]>()
 
   featureProperties: any = {};
   featuresCount: number = 0;
@@ -56,6 +57,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
       "geomType": 'editDisabled',
       "label": "Annuler/Désactiver",
       "icon": this.disabledIcon
+    },
+    {
+      "geomType": 'editEnabled',
+      "label": 'Editer',
+      "icon": this.pointIcon
     },
     {
       "geomType": 'Point',
@@ -84,7 +90,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   mapSubscription!: Subscription;
   featuresModifiedSubscription!: Subscription;
-  featureSelectedIdSubscription!: Subscription;
+  featuresCreatedSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -98,9 +104,21 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.toastsFeatureProperties = []
         features.forEach((feature: Feature) => {
           let featureProperties: any = {}
-          featureProperties = this.setToastFeature(feature, true)
+          featureProperties = this.setToastFeature(feature, false)
           this.toastsFeatureProperties.push(featureProperties)
           this.featureSelectedId = featureProperties.id;
+        })
+      }
+    )
+
+    this.featuresCreatedSubscription = this.featuresCreatedObservable.subscribe(
+      (features: Feature[]) => {
+        this.toastsFeatureProperties = []
+        features.forEach((feature: Feature) => {
+          let featureProperties: any = {}
+          featureProperties = this.setToastFeature(feature, true)
+          this.toastsFeatureProperties.push(featureProperties)
+          this.featureSelectedId = null;  // we don't want to select the feature on the div when creating a new feature
         })
       }
     )
@@ -123,7 +141,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapService.changeMapInteractionStatus(true)
 
     // let's go to get map container and init layer(s)
-    this.activateDrawing(this.geomTypesSupported[0].geomType)
+    this.disableCreationMode()
 
   }
 
@@ -131,7 +149,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.mapSubscription.unsubscribe();
     this.featuresModifiedSubscription.unsubscribe();
-    this.featureSelectedIdSubscription.unsubscribe();
+    this.featuresCreatedSubscription.unsubscribe();
 
     this.map.removeInteraction(this.modifier)
 
@@ -151,9 +169,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
+  disableCreationMode(): void {
+    this.activateDrawing(this.geomTypesSupported[0].geomType)
+  }
+
   initSourceFeatures(): void {
     this.sourceFeatures = new VectorSource();
-
   }
 
   initVectorLayer(): any {
@@ -166,8 +187,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.drawSession.sourceFeatures.on('addfeature', (event: any) => {
       this.returnExistingFeaturesAndProperties()
-      this.pushFeaturesModified([event.feature])
-      this.featureSelectedId = null // we don't want to select the feature on the div when creating a new feature
+      this.pushFeaturesCreated([event.feature])
     });
 
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
@@ -184,23 +204,29 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   activateDrawing(geomType: string): void {
 
-    if (geomType !== "editDisabled") {
-      this.geomTypeSelected = geomType;
+    this.geomTypeSelected = geomType;
 
-      if (geomType === "Hole") {
-        this.holeEnabled = true;
-        this.drawSession.enabledDrawing("Polygon", this.holeEnabled)
-
-      } else {
-        this.holeEnabled = false;
-        this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
-
+    switch (geomType) {
+      case "editDisabled": {
+        this.drawSession.disableDrawing()
+         break;
       }
 
-    } else {
-      this.drawSession.disableDrawing()
-      this.geomTypeSelected = geomType;
+      case "editEnabled": {
+         break;
+      }
 
+      case "Hole": {
+        this.holeEnabled = true;
+        this.drawSession.enabledDrawing("Polygon", this.holeEnabled)
+         break;
+      }
+
+      default: {
+        this.holeEnabled = false;
+        this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
+         break;
+      }
     }
 
   }
@@ -208,6 +234,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
   returnExistingFeaturesAndProperties(): void {
     this.allFeatures = this.drawSession.returnFeatures("Properties")
     this.featuresCount = this.allFeatures.length
+  }
+
+  pushFeaturesCreated(features: Feature[]): void {
+    this.featuresCreatedObservable.next(features);
   }
 
   pushFeaturesModified(features: Feature[]): void {
