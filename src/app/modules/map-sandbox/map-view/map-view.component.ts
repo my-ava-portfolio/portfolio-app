@@ -11,7 +11,7 @@ import VectorSource from 'ol/source/Vector';
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { DrawInteraction, highLigthStyle } from '@modules/map-sandbox/shared/core';
+import { DrawInteraction } from '@modules/map-sandbox/shared/core';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
