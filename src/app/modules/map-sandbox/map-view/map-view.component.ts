@@ -34,8 +34,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   allFeatures: any[] = [];
   featureSelectedId: string | null = null;
-  featureSelectedIdObservable = new Subject<string | null>(); // to indicate that a feature is selected
-  featureCreatedObservable = new Subject<Feature>()
   featuresModifiedObservable = new Subject<Feature[]>()
 
   featureProperties: any = {};
@@ -85,7 +83,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
   isLegendDisplayed = true;
 
   mapSubscription!: Subscription;
-  featureCreatedSubscription!: Subscription;
   featuresModifiedSubscription!: Subscription;
   featureSelectedIdSubscription!: Subscription;
 
@@ -96,20 +93,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     private titleService: Title,
   ) {
 
-    this.featureCreatedSubscription = this.featureCreatedObservable.subscribe(
-      (feature: Feature) => {
-        // TODO deprecated?
-        this.toastsFeatureProperties = []
-
-        this.toastsFeatureProperties.push(
-          this.setToastFeature(feature, true)
-        )
-
-      }
-    )
-
-
-
     this.featuresModifiedSubscription = this.featuresModifiedObservable.subscribe(
       (features: Feature[]) => {
         this.toastsFeatureProperties = []
@@ -117,18 +100,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
           let featureProperties: any = {}
           featureProperties = this.setToastFeature(feature, true)
           this.toastsFeatureProperties.push(featureProperties)
-          this.featureSelectedIdObservable.next(featureProperties.id)
+          this.featureSelectedId = featureProperties.id;
         })
-      }
-    )
-
-    this.featureSelectedIdSubscription = this.featureSelectedIdObservable.subscribe(
-      (featureId: string | null) => {
-        console.log("obs", featureId)
-        if (this.featureSelectedId !== null) {
-          // this.resetSelectedFeatureStyle(this.featureSelectedId)
-        }
-        this.featureSelectedId = featureId;
       }
     )
 
@@ -150,14 +123,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapService.changeMapInteractionStatus(true)
 
     // let's go to get map container and init layer(s)
-    this.addInteractions(this.geomTypesSupported[0].geomType)
+    this.activateDrawing(this.geomTypesSupported[0].geomType)
 
   }
 
   ngOnDestroy(): void {
 
     this.mapSubscription.unsubscribe();
-    this.featureCreatedSubscription.unsubscribe();
     this.featuresModifiedSubscription.unsubscribe();
     this.featureSelectedIdSubscription.unsubscribe();
 
@@ -193,48 +165,24 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.drawSession = new DrawInteraction(this.map, this.layerFeatures)
 
     this.drawSession.sourceFeatures.on('addfeature', (event: any) => {
-      // this.selectAndDisplayFeature(event.feature.getId())
-      // this.pushChangedFeatures(event)
-      this.returnFeatures()
+      this.returnExistingFeaturesAndProperties()
+      this.pushFeaturesModified([event.feature])
+      this.featureSelectedId = null // we don't want to select the feature on the div when creating a new feature
     });
 
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
-      this.pushChangedFeatures(event)
-      // this.selectAndDisplayFeature(event.feature.getId())
-
+      this.pushFeaturesModified([event.feature])
     });
 
     this.drawSession.sourceFeatures.on('removefeature', (event: any) => {
-      this.returnFeatures()
+      this.returnExistingFeaturesAndProperties()
+      // TODO add a remove toast?
     });
 
-    // this.map.on('pointermove', (event: any) => {
-    //   // this.featureSelectedIdObservable.next(null)
-
-    //   this.map.forEachFeatureAtPixel(event.pixel, (feature: any) => {
-    //     if (feature.getId() !== undefined) {
-    //       // for mouseover (select it)
-    //       // this.selectAndDisplayFeature(feature.getId())
-    //       return true;
-
-    //     } else {
-    //       // for mouseout (unselect it)
-    //       // this.selectAndDisplayFeature(null)
-    //     }
-    //     // this.selectAndDisplayFeature(null)
-
-    //     return false
-    //   });
-    // });
-
-
-
     this.map.addLayer(this.layerFeatures)
-
-
   }
 
-  addInteractions(geomType: string): void {
+  activateDrawing(geomType: string): void {
 
     if (geomType !== "editDisabled") {
       this.geomTypeSelected = geomType;
@@ -257,29 +205,21 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   }
 
-  returnFeatures(): void {
+  returnExistingFeaturesAndProperties(): void {
     this.allFeatures = this.drawSession.returnFeatures("Properties")
     this.featuresCount = this.allFeatures.length
-
   }
 
-  returnFeatureCreated(): void {
-    // TODO DEPRECATED
-    this.featureCreatedObservable.next(this.drawSession.lastCreatedFeature);
-  }
-
-  returnFeaturesModified(features: Feature[]): void {
+  pushFeaturesModified(features: Feature[]): void {
     this.featuresModifiedObservable.next(features);
   }
 
   removeFeature(id: string): void {
-    // remove from the object panel
-    this.allFeatures = this.allFeatures.filter((feature: any) => {
-      return feature.id !== id;
-    })
+
     this.drawSession.removeFeature(id)
+    this.returnExistingFeaturesAndProperties() // remove from the object panel
     this.resetToast()
-    this.featureSelectedIdObservable.next(null);
+    this.featureSelectedId = null
 
   }
 
@@ -317,62 +257,27 @@ export class MapViewComponent implements OnInit, OnDestroy {
   selectAndDisplayFeature(featureId: string | null): any {
     // reset toast
     this.resetToast()
-    // reset step with the last feature selected!
-    this.resetSelectedFeatureStyle()
 
     if (featureId !== null) {
 
       const featureFound = this.sourceFeatures.getFeatureById(featureId)
       if (featureFound !== undefined) {
-        this.featureSelectedIdObservable.next(featureFound.get('id'))
+        this.featureSelectedId = featureFound.get('id')
 
-        // hightlighting on map
+        // reset the selection and set it (then the style will be updated)
         this.drawSession.selectClick.getFeatures().clear()
         this.drawSession.selectClick.getFeatures().push(featureFound)
-        // this.drawSession.selectClick.dispatchEvent({
-        //   type: 'select',
-        //   selected: [featureFound],
-        //   deselected: []
-        // });
-        featureFound.setStyle(highLigthStyle(featureFound))
+
+        // featureFound.setStyle(highLigthStyle(featureFound))  // NO NEED ?
         // it will push a changefeature event on sourceFeatures object
       }
 
-    } else {
-      // this.featureSelectedIdObservable.next(featureId)
     }
 
   }
-
-
-  resetSelectedFeatureStyle(): void {
-    // next node style
-    if (this.featureSelectedId !== null) {
-
-      const featureFound = this.sourceFeatures.getFeatureById(this.featureSelectedId)
-
-      if (featureFound !== undefined ) {
-        featureFound.setStyle(featureFound.get('_defaultStyle'))
-      }
-      this.featureSelectedIdObservable.next(null)
-
-    }
-
-  }
-
 
   resetToast(): void {
     this.toastsFeatureProperties = []
-  }
-
-  pushChangedFeatures(event: any): void {
-    let featureModified: Feature[] = []
-    if (event.feature !== undefined) {
-      featureModified.push(event.feature)
-    } else {
-      featureModified = event.features
-    }
-    this.returnFeaturesModified(featureModified)
   }
 
 }

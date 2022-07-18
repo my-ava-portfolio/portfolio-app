@@ -11,7 +11,7 @@
         <ng-container *ngFor="let feature of geomTypesSupported">
 
             <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + feature.geomType" [checked]="geomTypeSelected === feature.geomType" autocomplete="off">
-            <label class="w-100 border-secondary px-0"  [for]="'btnradio-selector-' + feature.geomType" (click)="addInteractions(feature.geomType)">
+            <label class="w-100 border-secondary px-0"  [for]="'btnradio-selector-' + feature.geomType" (click)="activateDrawing(feature.geomType)">
               <div class="dropdown-item small d-flex flex-row" [ngClass]="geomTypeSelected === feature.geomType ? 'bg-warning' :  ''">
                 <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon>
                 <span>{{ feature.label }}</span>
