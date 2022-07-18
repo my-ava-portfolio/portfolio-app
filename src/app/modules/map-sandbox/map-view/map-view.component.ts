@@ -193,35 +193,39 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.drawSession = new DrawInteraction(this.map, this.layerFeatures)
 
     this.drawSession.sourceFeatures.on('addfeature', (event: any) => {
-
-      this.pushChangedFeatures(event)
+      this.selectAndDisplayFeature(event.feature.getId())
+      // this.pushChangedFeatures(event)
       this.returnFeatures()
     });
 
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
       this.pushChangedFeatures(event)
+      // this.selectAndDisplayFeature(event.feature.getId())
+
     });
 
     this.drawSession.sourceFeatures.on('removefeature', (event: any) => {
       this.returnFeatures()
     });
 
-    this.map.on('pointermove', (event: any) => {
-      // this.featureSelectedIdObservable.next(null)
+    // this.map.on('pointermove', (event: any) => {
+    //   // this.featureSelectedIdObservable.next(null)
 
-      this.map.forEachFeatureAtPixel(event.pixel, (feature: any) => {
-        if (feature.getId() !== undefined) {
-          // for mouseover (select it)
-          this.selectAndDisplayFeature(feature.getId())
-          return true;
+    //   this.map.forEachFeatureAtPixel(event.pixel, (feature: any) => {
+    //     if (feature.getId() !== undefined) {
+    //       // for mouseover (select it)
+    //       // this.selectAndDisplayFeature(feature.getId())
+    //       return true;
 
-        } else {
-          // for mouseout (unselect it)
-          this.selectAndDisplayFeature(null)
-        }
-        return false
-      });
-    });
+    //     } else {
+    //       // for mouseout (unselect it)
+    //       // this.selectAndDisplayFeature(null)
+    //     }
+    //     // this.selectAndDisplayFeature(null)
+
+    //     return false
+    //   });
+    // });
 
 
 
@@ -314,9 +318,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     // reset toast
     this.resetToast()
     // reset step with the last feature selected!
-    if (this.featureSelectedId !== null) {
-        this.resetSelectedFeatureStyle(this.featureSelectedId)
-    }
+    this.resetSelectedFeatureStyle()
 
     if (featureId !== null) {
 
@@ -325,22 +327,33 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.featureSelectedIdObservable.next(featureFound.get('id'))
 
         // hightlighting on map
+        this.drawSession.selectClick.dispatchEvent({
+          type: 'select',
+          selected: [featureFound],
+          deselected: []
+        });
         featureFound.setStyle(highLigthStyle(featureFound))
         // it will push a changefeature event on sourceFeatures object
       }
 
     } else {
-      this.featureSelectedIdObservable.next(featureId)
+      // this.featureSelectedIdObservable.next(featureId)
     }
 
   }
 
 
-  resetSelectedFeatureStyle(featureId: string ): void {
+  resetSelectedFeatureStyle(): void {
     // next node style
-    const featureFound = this.sourceFeatures.getFeatureById(featureId)
-    if (featureFound !== undefined ) {
-      featureFound.setStyle(featureFound.get('_defaultStyle'))
+    if (this.featureSelectedId !== null) {
+
+      const featureFound = this.sourceFeatures.getFeatureById(this.featureSelectedId)
+
+      if (featureFound !== undefined ) {
+        featureFound.setStyle(featureFound.get('_defaultStyle'))
+      }
+      this.featureSelectedIdObservable.next(null)
+
     }
 
   }

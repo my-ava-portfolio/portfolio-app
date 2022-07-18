@@ -12,7 +12,7 @@ import LinearRing from 'ol/geom/LinearRing';
 import WKT from 'ol/format/WKT';
 
 import Select from 'ol/interaction/Select';
-import { altKeyOnly, pointerMove } from 'ol/events/condition';
+import { altKeyOnly, click, mouseOnly, pointerMove } from 'ol/events/condition';
 import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
@@ -27,7 +27,8 @@ export class DrawInteraction {
   private draw!: Draw;
   private snap!: Snap;
   private modifier!: Modify;
-  private select!: Select;
+  selectClick!: Select;
+  private selectPointerMove!: Select;
 
   private counter: number = 0
 
@@ -51,21 +52,47 @@ export class DrawInteraction {
     this.vectorLayer = vectorLayer;
     this.sourceFeatures = vectorLayer.getSource();
 
-    this.select = new Select({
+    this.selectClick = new Select({
+      condition: click,
+      layers: [this.vectorLayer],
+      style: (feature: any) => {
+        return highLigthStyle(feature);
+      }
+    })
+    this.selectClick.on("select", (e: any) => {
+      console.log()
+      this.sourceFeatures.getFeatures().forEach((existingFeature: Feature) => {
+        this.resetFeatureStyle(existingFeature)
+      })
+
+      e.selected.forEach((selectedFeature: Feature) => {
+
+        this.sourceFeatures.getFeatures().forEach((existingFeature: Feature) => {
+          if (selectedFeature.getId() === existingFeature.getId()) {
+            highLigthStyle(selectedFeature)
+          } else {
+            // this.resetFeatureStyle(existingFeature)
+          }
+        })
+      })
+    })
+
+    this.selectPointerMove = new Select({
       condition: pointerMove,
       layers: [this.vectorLayer],
       style: (feature: any) => {
+        // this.resetFeaturesStyle() // a feature could be selected from the div menu
         const selectedStyle = highLigthStyle(feature)
         if (selectedStyle !== undefined) {
           return selectedStyle;
         }
         return defaultStyleDEPRECATED
       }
-    });
+    })
+    this.map.addInteraction(this.selectClick);
 
+    //  this.map.addInteraction(this.selectPointerMove);
 
-
-    this.map.addInteraction(this.select);
 
     this.prepareModifier()
 
@@ -75,8 +102,7 @@ export class DrawInteraction {
   prepareModifier(): void {
 
     this.modifier = new Modify({
-      condition: altKeyOnly,
-      source: this.sourceFeatures
+      features: this.selectClick.getFeatures(),
     });
 
 
@@ -196,13 +222,20 @@ export class DrawInteraction {
     }
 
     const geomType = e.feature.getGeometry()?.getType()
+    let defaultStyle!: Style
     if (geomType === "Point") {
-      e.feature.setStyle(PointStyle(defaultFillColor, defaultStrokeWidth))
+      defaultStyle = PointStyle(defaultFillColor, defaultStrokeWidth)
+      e.feature.setStyle(defaultStyle)
+
     } else if (geomType === "LineString") {
-      e.feature.setStyle(LineStyle(defaultFillColor, defaultStrokeWidth))
+      defaultStyle = PointStyle(defaultFillColor, defaultStrokeWidth)
+      e.feature.setStyle(defaultStyle)
+
     } else if (geomType === "Polygon") {
-      e.feature.setStyle(PolygonStyle(defaultFillColor, defaultStrokeWidth))
+      defaultStyle = PolygonStyle(defaultFillColor, defaultStrokeWidth)
+      e.feature.setStyle(defaultStyle)
     }
+
     ++this.counter;
     const uuid = uuidv4()
     e.feature.setId(uuid)
@@ -214,7 +247,7 @@ export class DrawInteraction {
       "status": "added",
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString(),
-      '_defaultStyle': e.feature.getStyle()  // style saved to revert it later
+      '_defaultStyle': defaultStyle  // style saved to revert it later
     })
 
   }
@@ -301,7 +334,13 @@ export class DrawInteraction {
         featureFound.getGeometry().setCoordinates(coordsCleaned)
       }
 
-    }
+    };
+
+  }
+
+  resetFeatureStyle(feature: Feature): void {
+      feature.setStyle(feature.get("_defaultStyle"))
+
   }
 
   updateFeature(feature: Feature): void {
