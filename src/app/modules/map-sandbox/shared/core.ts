@@ -60,22 +60,6 @@ export class DrawInteraction {
         return highLigthStyle(feature)
       }
     })
-    this.selectClick.on("select", (e: any) => {
-      console.log()
-      // this.sourceFeatures.getFeatures().forEach((existingFeature: Feature) => {
-      //   this.resetFeatureStyle(existingFeature)
-      // })
-
-      // e.selected.forEach((selectedFeature: Feature) => {
-      //   this.sourceFeatures.getFeatures().forEach((existingFeature: Feature) => {
-      //     if (selectedFeature.getId() === existingFeature.getId()) {
-      //       selectedFeature.setStyle(highLigthStyle(selectedFeature))
-      //     } else {
-      //       this.resetFeatureStyle(existingFeature)
-      //     }
-      //   })
-      // })
-    })
     this.map.addInteraction(this.selectClick);
 
 
@@ -207,13 +191,13 @@ export class DrawInteraction {
     }
 
     const geomType = e.feature.getGeometry()?.getType()
-    let defaultStyle!: Style
+    let defaultStyle!:StyleLike
     if (geomType === "Point") {
       defaultStyle = PointStyle(defaultFillColor, defaultStrokeWidth)
       e.feature.setStyle(defaultStyle)
 
     } else if (geomType === "LineString") {
-      defaultStyle = PointStyle(defaultFillColor, defaultStrokeWidth)
+      defaultStyle = LineStringStyle(defaultFillColor, defaultStrokeWidth)
       e.feature.setStyle(defaultStyle)
 
     } else if (geomType === "Polygon") {
@@ -381,7 +365,7 @@ export function PointStyle(color: string, strokeWidth: number): Style {
   })
 }
 
-export function LineStyle(color: string, strokeWidth: number): Style[] {
+export function LineStringStyle(color: string, strokeWidth: number): Style[] {
   return [
     new Style({
       fill: new Fill({
@@ -437,7 +421,7 @@ export function highLigthStyle(feature: Feature): Style | Style[] | undefined {
     }
     if (feature.getGeometry()?.getType() === "LineString") {
       // TODO get Linestring fill color
-      const newStyle = LineStyle('#ffcc33', 4);
+      const newStyle = LineStringStyle('#ffcc33', 4);
       return newStyle
 
     }
