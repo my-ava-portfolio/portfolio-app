@@ -54,43 +54,42 @@ export class DrawInteraction {
 
     this.selectClick = new Select({
       condition: click,
+      multi: false,
       layers: [this.vectorLayer],
       style: (feature: any) => {
-        return highLigthStyle(feature);
+        return highLigthStyle(feature)
       }
     })
     this.selectClick.on("select", (e: any) => {
       console.log()
-      this.sourceFeatures.getFeatures().forEach((existingFeature: Feature) => {
-        this.resetFeatureStyle(existingFeature)
-      })
+      // this.sourceFeatures.getFeatures().forEach((existingFeature: Feature) => {
+      //   this.resetFeatureStyle(existingFeature)
+      // })
 
-      e.selected.forEach((selectedFeature: Feature) => {
-
-        this.sourceFeatures.getFeatures().forEach((existingFeature: Feature) => {
-          if (selectedFeature.getId() === existingFeature.getId()) {
-            highLigthStyle(selectedFeature)
-          } else {
-            // this.resetFeatureStyle(existingFeature)
-          }
-        })
-      })
-    })
-
-    this.selectPointerMove = new Select({
-      condition: pointerMove,
-      layers: [this.vectorLayer],
-      style: (feature: any) => {
-        // this.resetFeaturesStyle() // a feature could be selected from the div menu
-        const selectedStyle = highLigthStyle(feature)
-        if (selectedStyle !== undefined) {
-          return selectedStyle;
-        }
-        return defaultStyleDEPRECATED
-      }
+      // e.selected.forEach((selectedFeature: Feature) => {
+      //   this.sourceFeatures.getFeatures().forEach((existingFeature: Feature) => {
+      //     if (selectedFeature.getId() === existingFeature.getId()) {
+      //       selectedFeature.setStyle(highLigthStyle(selectedFeature))
+      //     } else {
+      //       this.resetFeatureStyle(existingFeature)
+      //     }
+      //   })
+      // })
     })
     this.map.addInteraction(this.selectClick);
 
+    // this.selectPointerMove = new Select({
+    //   condition: pointerMove,
+    //   layers: [this.vectorLayer],
+    //   style: (feature: any) => {
+    //     // this.resetFeaturesStyle() // a feature could be selected from the div menu
+    //     const selectedStyle = highLigthStyle(feature)
+    //     if (selectedStyle !== undefined) {
+    //       return selectedStyle;
+    //     }
+    //     return defaultStyleDEPRECATED
+    //   }
+    // })
     //  this.map.addInteraction(this.selectPointerMove);
 
 
