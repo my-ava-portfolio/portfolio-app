@@ -12,7 +12,7 @@ import LinearRing from 'ol/geom/LinearRing';
 import WKT from 'ol/format/WKT';
 
 import Select from 'ol/interaction/Select';
-import { altKeyOnly } from 'ol/events/condition';
+import { altKeyOnly, pointerMove } from 'ol/events/condition';
 import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
@@ -52,9 +52,19 @@ export class DrawInteraction {
     this.sourceFeatures = vectorLayer.getSource();
 
     this.select = new Select({
+      condition: pointerMove,
       layers: [this.vectorLayer],
-      style: null
+      style: (feature: any) => {
+        const selectedStyle = highLigthStyle(feature)
+        if (selectedStyle !== undefined) {
+          return selectedStyle;
+        }
+        return defaultStyleDEPRECATED
+      }
     });
+
+
+
     this.map.addInteraction(this.select);
 
     this.prepareModifier()
@@ -384,7 +394,7 @@ export function PolygonStyle(color: string, strokeWidth: number): Style {
 }
 
 
-export function highLigthStyle(feature: Feature): StyleLike | undefined {
+export function highLigthStyle(feature: Feature): Style | Style[] | undefined {
   let style = feature.getStyle()
 
   const largerStroke = new Stroke({

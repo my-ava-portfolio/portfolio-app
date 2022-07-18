@@ -33,7 +33,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   holeEnabled = false;
 
   allFeatures: any[] = [];
-  featureSelectedId: string | null = null; // to indicate that a feature is selected
+  featureSelectedId: string | null = null;
+  featureSelectedIdObservable = new Subject<string | null>(); // to indicate that a feature is selected
   featureCreatedObservable = new Subject<Feature>()
   featuresModifiedObservable = new Subject<Feature[]>()
 
@@ -86,6 +87,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   mapSubscription!: Subscription;
   featureCreatedSubscription!: Subscription;
   featuresModifiedSubscription!: Subscription;
+  featureSelectedIdSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -115,8 +117,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
           let featureProperties: any = {}
           featureProperties = this.setToastFeature(feature, true)
           this.toastsFeatureProperties.push(featureProperties)
-
+          this.featureSelectedIdObservable.next(featureProperties.id)
         })
+      }
+    )
+
+    this.featureSelectedIdSubscription = this.featureSelectedIdObservable.subscribe(
+      (featureId: string | null) => {
+        console.log("obs", featureId)
+        if (this.featureSelectedId !== null) {
+          // this.resetSelectedFeatureStyle(this.featureSelectedId)
+        }
+        this.featureSelectedId = featureId;
       }
     )
 
@@ -146,6 +158,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.mapSubscription.unsubscribe();
     this.featureCreatedSubscription.unsubscribe();
+    this.featuresModifiedSubscription.unsubscribe();
+    this.featureSelectedIdSubscription.unsubscribe();
 
     this.map.removeInteraction(this.modifier)
 
@@ -185,15 +199,31 @@ export class MapViewComponent implements OnInit, OnDestroy {
     });
 
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
-      // if (this.featureSelectedId === null) {
-        this.pushChangedFeatures(event)
-      // }
-
+      this.pushChangedFeatures(event)
     });
 
     this.drawSession.sourceFeatures.on('removefeature', (event: any) => {
       this.returnFeatures()
     });
+
+    this.map.on('pointermove', (event: any) => {
+      // this.featureSelectedIdObservable.next(null)
+
+      this.map.forEachFeatureAtPixel(event.pixel, (feature: any) => {
+        if (feature.getId() !== undefined) {
+          // for mouseover (select it)
+          this.selectAndDisplayFeature(feature.getId())
+          return true;
+
+        } else {
+          // for mouseout (unselect it)
+          this.selectAndDisplayFeature(null)
+        }
+        return false
+      });
+    });
+
+
 
     this.map.addLayer(this.layerFeatures)
 
@@ -245,7 +275,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     })
     this.drawSession.removeFeature(id)
     this.resetToast()
-    this.featureSelectedId = null;
+    this.featureSelectedIdObservable.next(null);
 
   }
 
@@ -261,7 +291,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     // get id
     featureProperties["id"] = feature.getId()
 
-    if (this.featureSelectedId === null) {
+    if (this.featureSelectedId === null) { // TODO AAA
       // display it with fading
       d3.select("html")
       .transition()
@@ -292,7 +322,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       const featureFound = this.sourceFeatures.getFeatureById(featureId)
       if (featureFound !== undefined) {
-        this.featureSelectedId = featureFound.get('id')
+        this.featureSelectedIdObservable.next(featureFound.get('id'))
 
         // hightlighting on map
         featureFound.setStyle(highLigthStyle(featureFound))
@@ -300,13 +330,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
 
     } else {
-      this.featureSelectedId = featureId
+      this.featureSelectedIdObservable.next(featureId)
     }
 
   }
 
 
-  resetSelectedFeatureStyle(featureId: string): void {
+  resetSelectedFeatureStyle(featureId: string ): void {
     // next node style
     const featureFound = this.sourceFeatures.getFeatureById(featureId)
     if (featureFound !== undefined ) {
