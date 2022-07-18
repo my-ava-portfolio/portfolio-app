@@ -58,7 +58,7 @@ export class DrawInteraction {
       layers: [this.vectorLayer],
       // style: (feature: any) => {
       //   return highLigthStyle(feature)
-      // }
+      // }  // TODO add an edit style (check Qgis)
     })
     this.map.addInteraction(this.selectClick);
 
