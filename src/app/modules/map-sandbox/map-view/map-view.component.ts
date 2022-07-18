@@ -272,6 +272,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
         // it will push a changefeature event on sourceFeatures object
       }
 
+    } else {
+      this.drawSession.selectClick.getFeatures().clear()
+      this.featureSelectedId = featureId;
     }
 
   }

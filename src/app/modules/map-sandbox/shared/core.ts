@@ -56,9 +56,9 @@ export class DrawInteraction {
       condition: click,
       multi: false,
       layers: [this.vectorLayer],
-      style: (feature: any) => {
-        return highLigthStyle(feature)
-      }
+      // style: (feature: any) => {
+      //   return highLigthStyle(feature)
+      // }
     })
     this.map.addInteraction(this.selectClick);
 
