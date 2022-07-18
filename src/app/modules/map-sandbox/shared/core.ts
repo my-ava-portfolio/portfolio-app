@@ -21,6 +21,8 @@ export class DrawInteraction {
   private modifier!: Modify;
   private select!: Select;
 
+  private counter: number = 0
+
   // var for polygon holes
   private holePolygonDrawingStatus = false;
   private polygonIntersected!: Feature | undefined;
@@ -175,12 +177,12 @@ export class DrawInteraction {
       // return
     }
 
-      const featureCount = this.sourceFeatures.getFeatures().length // TODO: not efficient (if removes happen), create a counter!
+      ++this.counter;
       const uuid = uuidv4()
       e.feature.setId(uuid)
       e.feature.setProperties({
           'id': e.feature.getId(),
-          'name': 'feature ' + featureCount,
+          'name': 'feature ' + this.counter,
           'geom_type': e.feature.getGeometry()?.getType(),
           'wkt': this.getWkt(e.feature),
           "status": "added",

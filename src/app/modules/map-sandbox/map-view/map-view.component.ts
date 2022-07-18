@@ -40,8 +40,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
   featureCreatedObservable = new Subject<Feature>()
   featuresModifiedObservable = new Subject<Feature[]>()
 
-  featureProperties: any = {}
-  toastsFeatureProperties: any[] = []
+  featureProperties: any = {};
+  featuresCount: number = 0;
+  toastsFeatureProperties: any[] = [];
 
   drawSession!: any;
 
@@ -244,6 +245,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   returnFeatures(): void {
     this.allFeatures = this.drawSession.returnFeatures("Properties")
+    this.featuresCount = this.allFeatures.length
+
   }
 
   returnFeatureCreated(): void {

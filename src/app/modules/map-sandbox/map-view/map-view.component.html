@@ -3,7 +3,7 @@
   <div id="geomSelector" class="d-flex flex-row m-2">
 
     <button type="button" class="button-title btn btn-warning rounded p-2 shadow">
-      <span class="fw-bold">EDITER</span>
+      <span class="fw-bold title">EDITER</span>
     </button>
 
     <div class="btn-group-vertical my-2 align-self-center shadow" role="group" aria-label="">
@@ -23,7 +23,8 @@
     <div  class="d-flex flex-row ">
 
       <button type="button" class="button-title btn btn-dark rounded p-2 shadow">
-        <span class="fw-bold">OBJETS</span>
+        <span class="fw-bold title">
+          <span class="badge bg-danger my-2 counter">{{this.featuresCount}}</span>OBJETS</span>
       </button>
 
         <div id="featuresList" class="overflow-auto btn-group-vertical align-self-center my-2 shadow" role="group" aria-label="" *ngIf="allFeatures.length > 0">

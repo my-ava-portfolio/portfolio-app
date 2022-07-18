@@ -2,11 +2,14 @@
   border-radius: unset;
   z-index: 1;
 
-  span {
+  .title {
     writing-mode: vertical-rl;
     text-orientation: upright;
   }
 
+  .counter {
+    writing-mode: horizontal-tb;
+  }
 
 }
 
