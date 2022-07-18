@@ -336,6 +336,29 @@ export function PointStyle(color: string, strokeWidth: number): Style {
   })
 }
 
+export function LineStyle(color: string, strokeWidth: number): Style[] {
+  return [
+    new Style({
+      fill: new Fill({
+        color: color,
+      }),
+      stroke: new Stroke({
+        color: 'black',
+        width: strokeWidth,
+      })
+    }),
+    new Style({
+      fill: new Fill({
+        color: color,
+      }),
+      stroke: new Stroke({
+        color: color,
+        width: 2,
+      })
+    })
+  ]
+}
+
 
 export function highLigthStyle(feature: Feature): StyleLike | undefined {
   let style = feature.getStyle()
@@ -354,7 +377,12 @@ export function highLigthStyle(feature: Feature): StyleLike | undefined {
       return newStyle
 
     }
+    if (feature.getGeometry()?.getType() === "LineString") {
+      // TODO get Linestring fill color
+      const newStyle = LineStyle('#ffcc33', 4);
+      return newStyle
 
+    }
 
   }
   return

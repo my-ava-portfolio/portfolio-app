@@ -280,37 +280,27 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   selectAndDisplayFeature(featureId: string | null): any {
-
-
-
-
+    // reset toast
+    this.toastsFeatureProperties = []
+    // reset step with the last feature selected!
+    if (this.featureSelectedId !== null) {
+        this.resetSelectedFeatureStyle(this.featureSelectedId)
+    }
 
     if (featureId !== null) {
 
-      // reset step with the last feature selected!
-      if (this.featureSelectedId !== null) {
-        this.resetFeatureDisplaying(this.featureSelectedId)
-      }
-
-      let featureFound!: Feature[];
-      featureFound = this.drawSession.returnFeatures("Features").filter((feature: any) => {
-        return feature.getId() === featureId;
-      })
-      if (featureFound.length > 0) {
-      // TODO could be more than 1...
-      this.featureSelectedId = featureFound[0].get('id')
+      const featureFound = this.sourceFeatures.getFeatureById(featureId)
+      if (featureFound !== undefined ) {
+        this.featureSelectedId = featureFound.get('id')
 
         // display toast
         this.toastsFeatureProperties.push(
-          this.setToastFeature(featureFound[0], false)
+          this.setToastFeature(featureFound, false)
         )
-
         // hightlighting on map
-        featureFound[0].setStyle(highLigthStyle(featureFound[0]))
-
+        featureFound.setStyle(highLigthStyle(featureFound))
 
       }
-
 
     } else {
       this.featureSelectedId = featureId
@@ -319,23 +309,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
 
-  resetFeatureDisplaying(featureId: string): void {
-    // first toast
-    this.toastsFeatureProperties = []
-
+  resetSelectedFeatureStyle(featureId: string): void {
     // next node style
-    let featureFound!: Feature[];
-    featureFound = this.drawSession.returnFeatures("Features").filter((feature: any) => {
-      return feature.getId() === featureId;
-    })
-    if (featureFound.length > 0) {
-    // TODO could be more than 1...
-
-      featureFound[0].setStyle(featureFound[0].get('_style'))
-
-
+    const featureFound = this.sourceFeatures.getFeatureById(featureId)
+    if (featureFound !== undefined ) {
+      featureFound.setStyle(featureFound.get('_style'))
     }
-
 
   }
 
