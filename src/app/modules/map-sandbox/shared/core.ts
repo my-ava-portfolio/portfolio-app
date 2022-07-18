@@ -19,6 +19,9 @@ import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 
 
+const defaultStrokeWidth: number = 2;
+const defaultFillColor: string = '#ffcc33';
+
 export class DrawInteraction {
   private map: Map;
   private draw!: Draw;
@@ -182,7 +185,14 @@ export class DrawInteraction {
       // return
     }
 
-    e.feature.setStyle(defaultStyle)
+    const geomType = e.feature.getGeometry()?.getType()
+    if (geomType === "Point") {
+      e.feature.setStyle(PointStyle(defaultFillColor, defaultStrokeWidth))
+    } else if (geomType === "LineString") {
+      e.feature.setStyle(LineStyle(defaultFillColor, defaultStrokeWidth))
+    } else if (geomType === "Polygon") {
+      e.feature.setStyle(PolygonStyle(defaultFillColor, defaultStrokeWidth))
+    }
     ++this.counter;
     const uuid = uuidv4()
     e.feature.setId(uuid)
@@ -194,7 +204,7 @@ export class DrawInteraction {
       "status": "added",
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString(),
-      '_style': e.feature.getStyle()  // style saved to revert it later
+      '_defaultStyle': e.feature.getStyle()  // style saved to revert it later
     })
 
   }
@@ -301,7 +311,8 @@ export class DrawInteraction {
 
 
 
-export const defaultStyle = new Style({
+
+export const defaultStyleDEPRECATED = new Style({
   fill: new Fill({
     color: '#ffcc33',
   }),
@@ -344,7 +355,7 @@ export function LineStyle(color: string, strokeWidth: number): Style[] {
       }),
       stroke: new Stroke({
         color: 'black',
-        width: strokeWidth,
+        width: strokeWidth * 2,
       })
     }),
     new Style({
@@ -353,10 +364,23 @@ export function LineStyle(color: string, strokeWidth: number): Style[] {
       }),
       stroke: new Stroke({
         color: color,
-        width: 2,
+        width: strokeWidth,
       })
     })
   ]
+}
+
+
+export function PolygonStyle(color: string, strokeWidth: number): Style {
+  return new Style({
+    fill: new Fill({
+      color: color,
+    }),
+    stroke: new Stroke({
+      color: 'black',
+      width: strokeWidth,
+    })
+  })
 }
 
 
@@ -383,7 +407,12 @@ export function highLigthStyle(feature: Feature): StyleLike | undefined {
       return newStyle
 
     }
+    if (feature.getGeometry()?.getType() === "Polygon") {
+      // TODO get Linestring fill color
+      const newStyle = PolygonStyle('#ffcc33', 4);
+      return newStyle
 
+    }
   }
   return
 

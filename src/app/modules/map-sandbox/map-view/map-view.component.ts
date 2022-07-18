@@ -8,13 +8,10 @@ import VectorLayer from 'ol/layer/Vector';
 
 import Map from 'ol/Map';
 import VectorSource from 'ol/source/Vector';
-import { Fill, Stroke, Style } from 'ol/style';
-import CircleStyle from 'ol/style/Circle';
-
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { defaultStyle, DrawInteraction, highLigthStyle } from '@modules/map-sandbox/shared/core';
+import { DrawInteraction, highLigthStyle } from '@modules/map-sandbox/shared/core';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -176,7 +173,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
   initVectorLayer(): any {
     this.layerFeatures = new VectorLayer({
       source: this.sourceFeatures,
-      style: defaultStyle
     });
     this.layerFeatures.set("name", this.layerName)
 
@@ -313,7 +309,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     // next node style
     const featureFound = this.sourceFeatures.getFeatureById(featureId)
     if (featureFound !== undefined ) {
-      featureFound.setStyle(featureFound.get('_style'))
+      featureFound.setStyle(featureFound.get('_defaultStyle'))
     }
 
   }
