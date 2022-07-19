@@ -16,6 +16,8 @@ import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Subject } from 'rxjs/internal/Subject';
+import MousePosition from 'ol/control/MousePosition';
+import { format } from 'ol/coordinate';
 
 
 @Component({
@@ -26,6 +28,7 @@ import { Subject } from 'rxjs/internal/Subject';
 export class MapViewComponent implements OnInit, OnDestroy {
 
   map!: Map;
+
 
   sourceFeatures!: any;
   layerFeatures!: any;
@@ -52,6 +55,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
   pointIcon = faCircle;
   lineStringIcon = faWaveSquare;
   polygonIcon = faDrawPolygon;
+
+  mousePositionControl!: MousePosition;
+  cursorCoordinates!: any;
+  epsgAvailable = ["EPSG:4326", "EPSG:3857"];
+  // create a service to get the map epsg!
+  epsgSelected!: string;
 
   createModesSupported = [
     {
@@ -144,7 +153,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         features.forEach((feature: Feature) => {
           this.setToastFeature(feature, false)
           this.featureSelectedId = feature.get('id');
-
+          console.log("hah")
         })
       }
     )
@@ -152,6 +161,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
         this.map = map;
+        this.epsgSelected = this.map.getView().getProjection().getCode();;
       }
     );
 
@@ -169,6 +179,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     // let's go to get map container and init layer(s)
     this.disableCreationMode()
 
+    this.initMousePosition()
   }
 
   ngOnDestroy(): void {
@@ -294,7 +305,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   returnExistingFeaturesAndProperties(): void {
-    this.allFeatures = this.drawSession.returnFeatures("Properties")
+    this.allFeatures = this.drawSession.returnFeatures("Properties", this.epsgSelected)
     this.featuresCount = this.allFeatures.length
   }
 
@@ -303,6 +314,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   displayFeaturePopup(features: Feature[]): void {
+    // update displayed features
+    this.returnExistingFeaturesAndProperties()
     this.featuresDisplayedObservable.next(features);
   }
 
@@ -316,36 +329,69 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   setToastFeature(feature: Feature, isNotify: boolean): any {
+    const featuresPropertiesFound = this.allFeatures.filter((featureProperties: any) => {
+      return featureProperties.id == feature.getId()
+    })
+    console.log("haha", featuresPropertiesFound.length)
 
-    let featureProperties: any = feature.getProperties()
+    if (featuresPropertiesFound.length === 1) {
+      let featureProperties = featuresPropertiesFound[0]
+      const modeSupportedFound = this.createModesSupported.filter(mode => {
+        return mode.mode === featureProperties.geom_type
+      });
+      featureProperties["icon"] = modeSupportedFound[0].icon
 
-    // get mode
-    const modeSupportedFound = this.createModesSupported.filter(element => {
-      return featureProperties.geometry.getType() === element.mode
-    });
-    featureProperties["icon"] = modeSupportedFound[0].icon
-
-    // get id
-    featureProperties["id"] = feature.getId()
-
-    this.toastsFeatureProperties.push(featureProperties)
-    console.log(isNotify)
-    if (isNotify) { // TODO AAA
-      // display it with fading
-      d3.select("html")
-      .transition()
-      .delay(2000) // need this delayto wait the toats html building
-      .duration(5000)
-      .on("end", () => {
+      this.toastsFeatureProperties.push(featuresPropertiesFound[0])
+      console.log(isNotify)
+      if (isNotify) { // TODO AAA
+        // display it with fading
+        d3.select("html")
+        .transition()
+        .delay(2000) // need this delayto wait the toats html building
+        .duration(5000)
+        .on("end", () => {
+          d3.selectAll(".toastFeature")
+          .attr("class", "toast toastFeature");
+        })
+      } else {
+        // happened only if a feature is selected
+        // d3.selectAll(".toastFeature").remove()
         d3.selectAll(".toastFeature")
-        .attr("class", "toast toastFeature");
-      })
-    } else {
-      // happened only if a feature is selected
-      d3.selectAll(".toastFeature").remove()
-      d3.selectAll(".toastFeature")
-      .attr("class", "toast toastFeature faded");
+        .attr("class", "toast toastFeature faded");
+      }
     }
+
+
+
+    // let featureProperties: any = feature.getProperties()
+
+    // // get mode
+    // const modeSupportedFound = this.createModesSupported.filter(element => {
+    //   return featureProperties.geometry.getType() === element.mode
+    // });
+    // featureProperties["icon"] = modeSupportedFound[0].icon
+
+    // // get id
+    // featureProperties["id"] = feature.getId()
+
+    // this.toastsFeatureProperties.push(featureProperties)
+    // console.log(isNotify)
+    // if (isNotify) { // TODO AAA
+    //   // display it with fading
+    //   d3.select("html")
+    //   .transition()
+    //   .delay(2000) // need this delayto wait the toats html building
+    //   .duration(5000)
+    //   .on("end", () => {
+    //     d3.selectAll(".toastFeature")
+    //     .attr("class", "toast toastFeature");
+    //   })
+    // } else {
+    //   // happened only if a feature is selected
+    //   d3.selectAll(".toastFeature").remove()
+    //   d3.selectAll(".toastFeature")
+    //   .attr("class", "toast toastFeature faded");
+    // }
 
   }
 
@@ -363,7 +409,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.drawSession.selectClick.getFeatures().clear()
         this.drawSession.selectClick.getFeatures().push(featureFound)
 
-        // this.displayFeaturePopup([featureFound])
+        this.displayFeaturePopup([featureFound])
 
         // featureFound.setStyle(highLigthStyle(featureFound))  // NO NEED ?
         // it will push a changefeature event on sourceFeatures object
@@ -392,6 +438,43 @@ export class MapViewComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+
+  initMousePosition(): void {
+    let mouseCoordinatesDiv!: any;
+    mouseCoordinatesDiv = document.getElementById('mouseCoordinates')
+
+    this.mousePositionControl = new MousePosition({
+      coordinateFormat: this.setPrecisionFunc(4),
+      placeholder: false,
+      projection: this.epsgSelected,
+      className: 'mouse-position',
+      target: mouseCoordinatesDiv,
+    });
+    this.mousePositionControl.on("propertychange", (event: any) => {
+      this.cursorCoordinates = event
+    })
+    this.map.addControl(this.mousePositionControl)
+  }
+  setProjection(epsg: string): void {
+    this.epsgSelected = epsg;
+    this.mousePositionControl.setProjection(epsg)
+
+    // update displayed features
+    this.returnExistingFeaturesAndProperties()
+
+
+  }
+  updatePrecision(event: any): any {
+    return this.mousePositionControl.setCoordinateFormat(this.setPrecisionFunc(event.target.value))
+  }
+  private setPrecisionFunc(precision: any): any {
+    var template = '{x}, {y}';
+    return (
+      function(coordinate: any) {
+          return format(coordinate, template, precision);
+      });
   }
 
 }

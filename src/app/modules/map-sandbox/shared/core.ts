@@ -27,8 +27,9 @@ export class DrawInteraction {
   private draw!: Draw;
   private snap!: Snap;
   private modifier!: Modify;
+  private currentEpsg!: String;
+
   selectClick!: Select;
-  private selectPointerMove!: Select;
 
   private counter: number = 0
 
@@ -51,6 +52,7 @@ export class DrawInteraction {
     this.map = map;
     this.vectorLayer = vectorLayer;
     this.sourceFeatures = vectorLayer.getSource();
+    this.currentEpsg = this.map.getView().getProjection().getCode()
 
     this.selectClick = new Select({
       condition: click,
@@ -116,6 +118,7 @@ export class DrawInteraction {
         this.polygonIntersected = undefined;
       }
     });
+
 
   }
 
@@ -212,7 +215,7 @@ export class DrawInteraction {
       'id': e.feature.getId(),
       'name': 'feature ' + this.counter,
       'geom_type': e.feature.getGeometry()?.getType(),
-      'wkt': this.getWkt(e.feature),
+      'wkt': this.getWkt(e.feature.getGeometry()),
       "status": "added",
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString(),
@@ -245,7 +248,8 @@ export class DrawInteraction {
     }
   }
 
-  returnFeatures(mode: 'Feature' | 'Properties'): any[] {
+  returnFeatures(mode: 'Feature' | 'Properties', toEpsg: string): any[] {
+
     const allFeatures = this.sourceFeatures.getFeatures()
     // TODO force order!
     if (mode === 'Feature') {
@@ -253,8 +257,17 @@ export class DrawInteraction {
 
     } else if (mode === 'Properties') {
       let allFeaturesProperties: any[] = []
-      allFeatures.forEach( (element: Feature) => {
-        allFeaturesProperties.push(element.getProperties())
+
+      allFeatures.forEach((feature: any) => {
+        let properties = feature.getProperties()
+
+        if (this.currentEpsg !== toEpsg) {
+          const geomToReproject = feature.getGeometry().clone()
+          const geomWkt = this.getWkt(geomToReproject.transform(this.currentEpsg, toEpsg))
+          properties.wkt = geomWkt
+        }
+
+        allFeaturesProperties.push(properties)
       });
 
       return allFeaturesProperties
@@ -318,13 +331,13 @@ export class DrawInteraction {
     feature.setProperties({
       'updated_at': new Date().toISOString(),
       "status": "modified",
-      'wkt': this.getWkt(feature),
+      'wkt': this.getWkt(feature.getGeometry()),
     })
   }
 
-  getWkt(feature: any): string {
+  getWkt(geometry: any): string {
     const wktFormat = new WKT()
-    return wktFormat.writeGeometry(feature.getGeometry());
+    return wktFormat.writeGeometry(geometry);
   }
 
 }
