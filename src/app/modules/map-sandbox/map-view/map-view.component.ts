@@ -53,40 +53,46 @@ export class MapViewComponent implements OnInit, OnDestroy {
   lineStringIcon = faWaveSquare;
   polygonIcon = faDrawPolygon;
 
-  geomTypesSupported = [
+  createModesSupported = [
     {
-      "geomType": 'editDisabled',
+      "mode": 'editDisabled',
       "label": "Annuler/Désactiver",
+      "type": "controler",
       "icon": this.disabledIcon
     },
     {
-      "geomType": 'editEnabled',
+      "mode": 'editEnabled',
       "label": 'Editer',
+      "type": "controler",
       "icon": this.pointIcon
     },
     {
-      "geomType": 'Point',
+      "mode": 'Point',
       "label": 'Point',
+      "type": "geometry",  // new feature creating
       "icon": this.pointIcon
     },
     {
-      "geomType": 'LineString',
+      "mode": 'LineString',
       "label": 'LineString',
+      "type": "geometry",  // new feature creating
       "icon": this.lineStringIcon
     },
     {
-      "geomType": 'Polygon',
+      "mode": 'Polygon',
       "label": 'Polygon',
+      "type": "geometry",  // new feature creating
       "icon": this.polygonIcon
     },
     {
-      "geomType": 'Hole',  // works like a polygon
+      "mode": 'Hole',  // works like a polygon
       "label": 'Trou',
+      "type": "enhancement",  // particular case where we have to select And edit the feature
       "icon": this.polygonIcon
     }
   ]
 
-  geomTypeSelected = "editDisabled";
+  modeSelected = "editDisabled";
   isLegendDisplayed = true;
 
   mapSubscription!: Subscription;
@@ -108,6 +114,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
           featureProperties = this.setToastFeature(feature, false)
           this.toastsFeatureProperties.push(featureProperties)
           this.featureSelectedId = featureProperties.id;
+
+          if (this.modeSelected !== "Hole") {
+            // Hole needs to work on a selected feature, so reset the mode is not relevant
+            this.disableCreationMode()
+          }
+
         })
       }
     )
@@ -119,6 +131,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
           let featureProperties: any = {}
           featureProperties = this.setToastFeature(feature, true)
           this.toastsFeatureProperties.push(featureProperties)
+          // this.disableCreationMode()
           this.featureSelectedId = null;  // we don't want to select the feature on the div when creating a new feature
         })
       }
@@ -171,7 +184,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   disableCreationMode(): void {
-    this.activateDrawing(this.geomTypesSupported[0].geomType)
+    this.activateDrawing(this.createModesSupported[0].mode)
   }
 
   initSourceFeatures(): void {
@@ -203,11 +216,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.map.addLayer(this.layerFeatures)
   }
 
-  activateDrawing(geomType: string): void {
+  activateDrawing(mode: string): void {
 
-    this.geomTypeSelected = geomType;
 
-    switch (geomType) {
+    switch (mode) {
       case "editDisabled": {
         this.drawSession.disableDrawing()
          break;
@@ -227,17 +239,17 @@ export class MapViewComponent implements OnInit, OnDestroy {
       case "Point":
       case "LineString":
       case "Polygon": {
+        this.selectAndDisplayFeature(null)  // unselect selected feature on div (objet)
         this.holeEnabled = false;
-        this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
+        this.drawSession.enabledDrawing(mode, this.holeEnabled)
          break;
       }
 
       default: {
-        // this.holeEnabled = false;
-        // this.drawSession.enabledDrawing(this.geomTypeSelected, this.holeEnabled)
          break;
       }
     }
+    this.modeSelected = mode;
 
   }
 
@@ -266,11 +278,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
   setToastFeature(feature: Feature, isNotify: boolean): any {
     let featureProperties: any = feature.getProperties()
 
-    // get geomType
-    const geomTypeSupportedFound = this.geomTypesSupported.filter(element => {
-      return featureProperties.geometry.getType() === element.geomType
+    // get mode
+    const modeSupportedFound = this.createModesSupported.filter(element => {
+      return featureProperties.geometry.getType() === element.mode
     });
-    featureProperties["icon"] = geomTypeSupportedFound[0].icon
+    featureProperties["icon"] = modeSupportedFound[0].icon
 
     // get id
     featureProperties["id"] = feature.getId()
@@ -299,12 +311,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.resetToast()
 
     if (featureId !== null) {
-      this.disableCreationMode()
+      // this.disableCreationMode() // TODO not more useful ?!
       const featureFound = this.sourceFeatures.getFeatureById(featureId)
       if (featureFound !== undefined) {
         this.featureSelectedId = featureFound.get('id')
 
-        // reset the selection and set it (then the style will be updated)
+        // reset the selection and set it (then the style will be updated) + it call the changefeature event !
         this.drawSession.selectClick.getFeatures().clear()
         this.drawSession.selectClick.getFeatures().push(featureFound)
 
