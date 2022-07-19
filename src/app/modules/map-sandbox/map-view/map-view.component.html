@@ -10,9 +10,9 @@
       <div id="geomList" class="btn-group-vertical my-2 align-self-center bg-white shadow rounded-end" role="group" aria-label="">
         <ng-container *ngFor="let feature of createModesSupported">
 
-            <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + feature.mode" [checked]="modeSelected === feature.mode" autocomplete="off">
+            <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + feature.mode" [checked]="drawModeSelected === feature.mode" autocomplete="off">
             <label class="w-100 border-secondary px-0"  [for]="'btnradio-selector-' + feature.mode" (click)="activateDrawing(feature.mode)">
-              <div class="dropdown-item small d-flex flex-row" [ngClass]="modeSelected === feature.mode ? 'bg-warning' :  ''">
+              <div class="dropdown-item small d-flex flex-row" [ngClass]="drawModeSelected === feature.mode ? 'bg-warning' :  ''">
                 <fa-icon [ngClass]="'me-2 ' + feature.mode" [icon]="feature.icon" ></fa-icon>
                 <span>{{ feature.label }}</span>
               </div>
@@ -23,6 +23,32 @@
     </div>
 
   </div>
+
+  <div id="modifySelector" class="d-flex flex-row m-2">
+    <div  class="d-flex flex-row ">
+
+      <button type="button" class="button-title btn btn-danger rounded p-2 shadow">
+        <span class="fw-bold vertical-text">EDITER</span>
+      </button>
+
+      <div id="geomList" class="btn-group-vertical my-2 align-self-center bg-white shadow rounded-end" role="group" aria-label="">
+        <ng-container *ngFor="let feature of modifyModesSupported">
+
+            <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + feature.mode" [checked]="modifyModeSelected === feature.mode" autocomplete="off">
+            <label class="w-100 border-secondary px-0"  [for]="'btnradio-selector-' + feature.mode" (click)="activateModifiying(feature.mode)">
+              <div class="dropdown-item small d-flex flex-row" [ngClass]="modifyModeSelected === feature.mode ? 'bg-danger' :  ''">
+                <fa-icon [ngClass]="'me-2 ' + feature.mode" [icon]="feature.icon" ></fa-icon>
+                <span>{{ feature.label }}</span>
+              </div>
+            </label>
+
+        </ng-container>
+      </div>
+    </div>
+
+  </div>
+
+
 
   <div id="featuresContainer" class="d-flex flex-column m-2">
     <div  class="d-flex flex-row ">

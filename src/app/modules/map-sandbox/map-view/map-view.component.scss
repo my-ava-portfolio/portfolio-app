@@ -5,10 +5,13 @@
   .vertical-text {
     writing-mode: vertical-rl;
     text-orientation: upright;
+    letter-spacing: -5px;
   }
 
   .horizontal-text {
     writing-mode: horizontal-tb;
+    letter-spacing: 0px;
+
   }
 
 }
