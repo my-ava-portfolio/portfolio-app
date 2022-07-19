@@ -19,7 +19,12 @@ import { Subject } from 'rxjs/internal/Subject';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
 import WKT from 'ol/format/WKT';
-
+import {
+  getPointResolution,
+  get as getProjection,
+  transform,
+} from 'ol/proj';
+import View from 'ol/View';
 
 @Component({
   selector: 'app-map-view',
@@ -440,7 +445,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
   setProjection(epsg: string): void {
     this.selectedEpsg = epsg;
-    this.mousePositionControl.setProjection(epsg)
+    // this.mousePositionControl.setProjection(epsg)
+    this.changeProjection(epsg)
   }
   updatePrecision(event: any): any {
     return this.mousePositionControl.setCoordinateFormat(this.setPrecisionFunc(event.target.value))
@@ -454,6 +460,37 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
   /// MOUSE EVENT TO MANAGE PROJECTION ///
 
+
+  changeProjection(epsg: string): void {
+    const currentView = this.map.getView();
+    const currentProjection = currentView.getProjection();
+    const newProjection = getProjection(epsg);
+    const currentResolution = currentView.getResolution();
+    const currentRotation = currentView.getRotation();
+
+    const currentCenter = currentView.getCenter();
+    if (currentCenter !== undefined && newProjection !== null) {
+      const newCenter = transform(currentCenter, currentProjection, newProjection);
+      const currentMPU = currentProjection.getMetersPerUnit();
+      const newMPU = newProjection.getMetersPerUnit();
+      if (currentMPU !== undefined && newMPU !== undefined && currentResolution != undefined) {
+        const currentPointResolution = getPointResolution(
+          currentProjection, 1 / currentMPU, currentCenter, 'm'
+        ) * currentMPU;
+        const newPointResolution = getPointResolution(newProjection, 1 / newMPU, newCenter, 'm') * newMPU;
+        const newResolution =(currentResolution * currentPointResolution) / newPointResolution;
+        const newView = new View({
+          center: newCenter,
+          resolution: newResolution,
+          rotation: currentRotation,
+          projection: newProjection,
+        });
+        this.map.setView(newView);
+      }
+
+    }
+
+  }
 
 
 }
