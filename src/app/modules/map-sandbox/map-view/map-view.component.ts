@@ -34,7 +34,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   allFeatures: any[] = [];
   featureSelectedId: string | null = null;
-  featuresModifiedObservable = new Subject<Feature[]>()
+  featuresDisplayedObservable = new Subject<Feature[]>()
   featuresCreatedObservable = new Subject<Feature[]>()
 
   featureProperties: any = {};
@@ -113,7 +113,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   isLegendDisplayed = true;
 
   mapSubscription!: Subscription;
-  featuresModifiedSubscription!: Subscription;
+  featuresDisplayedSubscription!: Subscription;
   featuresCreatedSubscription!: Subscription;
 
   constructor(
@@ -123,32 +123,28 @@ export class MapViewComponent implements OnInit, OnDestroy {
     private titleService: Title,
   ) {
 
-    this.featuresModifiedSubscription = this.featuresModifiedObservable.subscribe(
-      (features: Feature[]) => {
-        this.toastsFeatureProperties = []
-        features.forEach((feature: Feature) => {
-          let featureProperties: any = {}
-          featureProperties = this.setToastFeature(feature, false)
-          this.toastsFeatureProperties.push(featureProperties)
-          this.featureSelectedId = featureProperties.id;
-
-        })
-      }
-    )
-
     this.featuresCreatedSubscription = this.featuresCreatedObservable.subscribe(
       (features: Feature[]) => {
         this.toastsFeatureProperties = []
         features.forEach((feature: Feature) => {
-          let featureProperties: any = {}
-          featureProperties = this.setToastFeature(feature, true)
-          this.toastsFeatureProperties.push(featureProperties)
-          // this.disableCreationMode()
+          // this.setToastFeature(feature, true)
+          this.featureSelectedId = feature.get('id');
 
           if (this.modifyModeSelected !== "Hole") {
             // Hole needs to work on a selected feature, so reset the mode is not relevant
             this.featureSelectedId = null;  // we don't want to select the feature on the div when creating a new feature
           }
+        })
+      }
+    )
+
+    this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
+      (features: Feature[]) => {
+        this.toastsFeatureProperties = []
+        features.forEach((feature: Feature) => {
+          this.setToastFeature(feature, false)
+          this.featureSelectedId = feature.get('id');
+
         })
       }
     )
@@ -178,7 +174,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
 
     this.mapSubscription.unsubscribe();
-    this.featuresModifiedSubscription.unsubscribe();
+    this.featuresDisplayedSubscription.unsubscribe();
     this.featuresCreatedSubscription.unsubscribe();
 
     this.map.removeInteraction(this.modifier)
@@ -221,7 +217,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     });
 
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
-      this.pushFeaturesModified([event.feature])
+      this.displayFeature([event.feature])
     });
 
     this.drawSession.sourceFeatures.on('removefeature', (event: any) => {
@@ -306,8 +302,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.featuresCreatedObservable.next(features);
   }
 
-  pushFeaturesModified(features: Feature[]): void {
-    this.featuresModifiedObservable.next(features);
+  displayFeature(features: Feature[]): void {
+    this.featuresDisplayedObservable.next(features);
   }
 
   removeFeature(id: string): void {
@@ -320,6 +316,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   setToastFeature(feature: Feature, isNotify: boolean): any {
+
     let featureProperties: any = feature.getProperties()
 
     // get mode
@@ -331,7 +328,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
     // get id
     featureProperties["id"] = feature.getId()
 
-    if (this.featureSelectedId === null) { // TODO AAA
+    this.toastsFeatureProperties.push(featureProperties)
+    console.log(isNotify)
+    if (isNotify) { // TODO AAA
       // display it with fading
       d3.select("html")
       .transition()
@@ -343,11 +342,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
       })
     } else {
       // happened only if a feature is selected
+      d3.selectAll(".toastFeature").remove()
       d3.selectAll(".toastFeature")
       .attr("class", "toast toastFeature faded");
     }
 
-    return featureProperties;
   }
 
   selectAndDisplayFeature(featureId: string | null): any {
@@ -355,7 +354,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.resetToast()
 
     if (featureId !== null) {
-      // this.disableCreationMode() // TODO not more useful ?!
+      this.disableCreationMode()
       const featureFound = this.sourceFeatures.getFeatureById(featureId)
       if (featureFound !== undefined) {
         this.featureSelectedId = featureFound.get('id')
@@ -363,6 +362,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
         // reset the selection and set it (then the style will be updated) + it call the changefeature event !
         this.drawSession.selectClick.getFeatures().clear()
         this.drawSession.selectClick.getFeatures().push(featureFound)
+
+        // this.displayFeature([featureFound])
 
         // featureFound.setStyle(highLigthStyle(featureFound))  // NO NEED ?
         // it will push a changefeature event on sourceFeatures object
