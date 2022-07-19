@@ -196,6 +196,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.mapService.resetMapView()
     this.mapService.changeMapInteractionStatus(false)
+    this.map.removeLayer(this.layerFeatures);
 
   }
 
