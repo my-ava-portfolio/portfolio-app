@@ -60,6 +60,7 @@ export class DrawInteraction {
       //   return highLigthStyle(feature)
       // }  // TODO add an edit style (check Qgis)
     })
+
     this.map.addInteraction(this.selectClick);
 
 
@@ -110,8 +111,7 @@ export class DrawInteraction {
     });
 
     this.map.addInteraction(this.draw);
-    this.map.addInteraction(this.modifier);
-    this.map.addInteraction(this.snap);
+    this.enableEditingMode()
 
     this.draw.on('drawstart', this.onDrawStart.bind(this));
     this.draw.on('drawend', this.onDrawEnd.bind(this));
@@ -128,6 +128,9 @@ export class DrawInteraction {
   }
 
   enableEditingMode(): void {
+    this.map.removeInteraction(this.modifier);
+    this.map.removeInteraction(this.snap);
+
     this.map.addInteraction(this.modifier);
     this.map.addInteraction(this.snap);
   }
