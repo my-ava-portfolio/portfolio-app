@@ -140,6 +140,14 @@ export class DrawInteraction {
 
   }
 
+  destroySession(): void {
+    this.map.removeInteraction(this.draw);
+    this.map.removeInteraction(this.snap);
+    this.map.removeInteraction(this.modifier);
+    this.map.removeInteraction(this.selectClick);
+
+  }
+
   onDrawStart(e: any): void {
 
     //to build hole on polygon
