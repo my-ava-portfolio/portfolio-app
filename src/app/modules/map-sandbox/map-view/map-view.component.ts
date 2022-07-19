@@ -135,7 +135,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.featuresCreatedSubscription = this.featuresCreatedObservable.subscribe(
       (features: Feature[]) => {
-        this.resetToast();
+        this.resetToasts();
         features.forEach((feature: Feature) => {
           // this.setFeatureToasts(feature, true)
           this.featureSelectedId = feature.get('id');
@@ -150,7 +150,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
       (features: Feature[]) => {
-        this.resetToast();
+        this.resetToasts();
         features.forEach((feature: Feature) => {
           this.setFeatureToasts(feature, false)
           this.featureSelectedId = feature.get('id');
@@ -328,7 +328,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   removeFeature(id: string): void {
     this.drawSession.removeFeature(id)
-    this.resetToast()
+    this.resetToasts()
     this.featureSelectedId = null
 
   }
@@ -376,7 +376,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   selectAndDisplayFeature(featureId: string | null): any {
     // reset toast
-    this.resetToast()
+    this.resetToasts()
 
     if (featureId !== null) {
       this.disableCreationMode()
@@ -401,7 +401,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   }
 
-  resetToast(): void {
+  resetToasts(): void {
     this.selectedFeaturesProperties = []
   }
 
