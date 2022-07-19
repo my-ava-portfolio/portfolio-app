@@ -18,13 +18,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { Subject } from 'rxjs/internal/Subject';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
-import WKT from 'ol/format/WKT';
-import {
-  getPointResolution,
-  get as getProjection,
-  transform,
-} from 'ol/proj';
-import View from 'ol/View';
+
 
 @Component({
   selector: 'app-map-view',
@@ -167,9 +161,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
         this.map = map;
+        // this.setMapEpsg();
         this.currentEpsg = this.map.getView().getProjection().getCode();
-        this.selectedEpsg = this.currentEpsg
 
+        this.selectedEpsg = this.currentEpsg
+        console.log("a")
       }
     );
 
@@ -220,6 +216,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   initSourceFeatures(): void {
     this.sourceFeatures = new VectorSource();
+  }
+
+  setMapEpsg(): void {
+    this.currentEpsg = this.map.getView().getProjection().getCode();
   }
 
   initVectorLayer(): any {
@@ -343,14 +343,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     // get wkt regarding selected projection
     const geomFeature = feature.getGeometry();
     if (geomFeature !== undefined) {
-      let geomWkt!: string;
-      if (this.currentEpsg !== this.selectedEpsg) {
-        const geomToReproject = geomFeature.clone()
-        const geomReprojected = geomToReproject.transform(this.currentEpsg, this.selectedEpsg)
-        geomWkt = getWkt(geomReprojected)
-      } else {
-        geomWkt = getWkt(geomFeature)
-      }
 
       this.selectedFeaturesProperties.push({
         'id': feature.getId(),
@@ -359,7 +351,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         'created_at': feature.get('created_at'),
         'updated_at': feature.get('updated_at'),
         'icon': geomIcon,
-        'wkt': geomWkt
+        'wkt': getWkt(geomFeature)
       })
 
       if (isNotify) {
@@ -426,7 +418,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     document.body.removeChild(selBox);
   }
 
-  /// MOUSE EVENT TO MANAGE PROJECTION ///
   initMousePosition(): void {
     let mouseCoordinatesDiv!: any;
     mouseCoordinatesDiv = document.getElementById('mouseCoordinates')
@@ -434,7 +425,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mousePositionControl = new MousePosition({
       coordinateFormat: this.setPrecisionFunc(4),
       placeholder: false,
-      projection: this.selectedEpsg,
       className: 'mouse-position',
       target: mouseCoordinatesDiv,
     });
@@ -443,11 +433,19 @@ export class MapViewComponent implements OnInit, OnDestroy {
     })
     this.map.addControl(this.mousePositionControl)
   }
+
   setProjection(epsg: string): void {
     this.selectedEpsg = epsg;
-    // this.mousePositionControl.setProjection(epsg)
-    this.changeProjection(epsg)
+
+    this.mapService.setProjectionOnMap(epsg)
+
+    this.layerFeatures.getSource().getFeatures().forEach( (feature: any) => {
+      feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, this.selectedEpsg))
+    });
+    this.setMapEpsg();
+
   }
+
   updatePrecision(event: any): any {
     return this.mousePositionControl.setCoordinateFormat(this.setPrecisionFunc(event.target.value))
   }
@@ -458,40 +456,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
           return format(coordinate, template, precision);
       });
   }
-  /// MOUSE EVENT TO MANAGE PROJECTION ///
-
-
-  changeProjection(epsg: string): void {
-    const currentView = this.map.getView();
-    const currentProjection = currentView.getProjection();
-    const newProjection = getProjection(epsg);
-    const currentResolution = currentView.getResolution();
-    const currentRotation = currentView.getRotation();
-
-    const currentCenter = currentView.getCenter();
-    if (currentCenter !== undefined && newProjection !== null) {
-      const newCenter = transform(currentCenter, currentProjection, newProjection);
-      const currentMPU = currentProjection.getMetersPerUnit();
-      const newMPU = newProjection.getMetersPerUnit();
-      if (currentMPU !== undefined && newMPU !== undefined && currentResolution != undefined) {
-        const currentPointResolution = getPointResolution(
-          currentProjection, 1 / currentMPU, currentCenter, 'm'
-        ) * currentMPU;
-        const newPointResolution = getPointResolution(newProjection, 1 / newMPU, newCenter, 'm') * newMPU;
-        const newResolution =(currentResolution * currentPointResolution) / newPointResolution;
-        const newView = new View({
-          center: newCenter,
-          resolution: newResolution,
-          rotation: currentRotation,
-          projection: newProjection,
-        });
-        this.map.setView(newView);
-      }
-
-    }
-
-  }
-
 
 }
 

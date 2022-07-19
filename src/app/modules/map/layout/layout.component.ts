@@ -43,25 +43,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapScaleDivSubscription = this.mapService.setMapControler.subscribe(
       (status: boolean) => {
         if (status) {
-          this.mapService.setControlToMap("miniMap")
-          const divOverview: any = window.document.getElementById('overview-map');
-          divOverview.appendChild(
-            window.document.getElementsByClassName("ol-overviewmap ol-custom-overviewmap")[0]
-          )
+          this.setMapElements()
 
-          this.mapService.setControlToMap("scale")
-          const divScale: any = window.document.getElementById('legend-scale');
-          divScale.appendChild(
-            window.document.getElementsByClassName("ol-scale-line ol-unselectable")[0]
-          )
-
-          this.mapService.setControlToMap("attribution")
-          const divAttribution: any = window.document.getElementById('attribution')
-          divAttribution.appendChild(
-            window.document.getElementsByClassName("ol-attribution ol-unselectable ol-control ol-uncollapsible")[0]
-          )
         }
 
+      }
+    );
+
+    this.mapService.setMapProjectionFromEpsg.subscribe(
+      (_: string) => {
+        this.setMapElements()
       }
     );
 
@@ -106,6 +97,30 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   zoomOnData(): void {
     this.mapService.sendZoomAction();
+  }
+
+  setMapElements(): void {
+    this.mapService.unsetControlToMap("miniMap")
+    this.mapService.unsetControlToMap("scale")
+    this.mapService.unsetControlToMap("attribution")
+
+    this.mapService.setControlToMap("miniMap")
+    const divOverview: any = window.document.getElementById('overview-map');
+    divOverview.appendChild(
+      window.document.getElementsByClassName("ol-overviewmap ol-custom-overviewmap")[0]
+    )
+
+    this.mapService.setControlToMap("scale")
+    const divScale: any = window.document.getElementById('legend-scale');
+    divScale.appendChild(
+      window.document.getElementsByClassName("ol-scale-line ol-unselectable")[0]
+    )
+
+    this.mapService.setControlToMap("attribution")
+    const divAttribution: any = window.document.getElementById('attribution')
+    divAttribution.appendChild(
+      window.document.getElementsByClassName("ol-attribution ol-unselectable ol-control ol-uncollapsible")[0]
+    )
   }
 
 }

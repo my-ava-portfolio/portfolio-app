@@ -19,6 +19,8 @@ export class MapService {
   setMapInteraction: Subject<string> = new Subject<string>();
   unsetMapInteraction: Subject<string> = new Subject<string>();
 
+  setMapProjectionFromEpsg: Subject<string> = new Subject<string>();
+
   map: Subject<Map> = new Subject<Map>();
   setMapControler: Subject<boolean> = new Subject<boolean>();
   rmvMapScale: Subject<any> = new Subject<any>();
@@ -136,6 +138,10 @@ export class MapService {
 
   mapInteraction(status: boolean): void {
     this.mapInteractionStatus.next(status);
+  }
+
+  setProjectionOnMap(epsg: string): void {
+    this.setMapProjectionFromEpsg.next(epsg);
   }
 
 }

@@ -309,11 +309,6 @@ export class DrawInteraction {
     })
   }
 
-  getWkt(geometry: any): string {
-    const wktFormat = new WKT()
-    return wktFormat.writeGeometry(geometry);
-  }
-
 }
 
 
@@ -321,6 +316,7 @@ export function getWkt(geometry: any): string {
   const wktFormat = new WKT()
   return wktFormat.writeGeometry(geometry);
 }
+
 
 
 export const defaultStyleDEPRECATED = new Style({

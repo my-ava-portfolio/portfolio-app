@@ -19,6 +19,12 @@ import {
   DragRotateAndZoom,
   defaults as defaultInteractions,
 } from 'ol/interaction';
+import {
+  getPointResolution,
+  get as getProjection,
+  transform,
+} from 'ol/proj';
+
 
 @Component({
   selector: 'app-background-map',
@@ -54,6 +60,7 @@ export class BackgroundComponent implements OnInit {
   interactionsSetterSubscription!: Subscription;
   layerRemovingSubscription!: Subscription;
   extentToZoomSubscription!: Subscription;
+  changeMapVieWfromEpsgSubscription!: Subscription;
 
   setControlOnMapSubscription!: Subscription;
   unsetControlOnMapSubscription!: Subscription;
@@ -61,6 +68,12 @@ export class BackgroundComponent implements OnInit {
   constructor(
     private mapService: MapService,
   ) {
+
+    this.changeMapVieWfromEpsgSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
+      (epsg: string) => {
+        this.changeMapProjection(epsg)
+      }
+    )
 
     this.setmapEventSubscription = this.mapService.setmapEvent.subscribe(
       (event: string) => {
@@ -172,6 +185,7 @@ export class BackgroundComponent implements OnInit {
     this.extentToZoomSubscription.unsubscribe();
     this.setControlOnMapSubscription.unsubscribe();
     this.unsetControlOnMapSubscription.unsubscribe();
+    this.changeMapVieWfromEpsgSubscription.unsubscribe();
 
   }
 
@@ -303,5 +317,37 @@ export class BackgroundComponent implements OnInit {
       .filter((layer: any) => layer.get('name') === layerName)
       .forEach((layer: any) => this.map.removeLayer(layer));
   }
+
+  changeMapProjection(epsg: string): void {
+    const currentView = this.map.getView();
+    const currentProjection = currentView.getProjection();
+    const newProjection = getProjection(epsg);
+    const currentResolution = currentView.getResolution();
+    const currentRotation = currentView.getRotation();
+
+    const currentCenter = currentView.getCenter();
+    if (currentCenter !== undefined && newProjection !== null) {
+      const newCenter = transform(currentCenter, currentProjection, newProjection);
+      const currentMPU = currentProjection.getMetersPerUnit();
+      const newMPU = newProjection.getMetersPerUnit();
+      if (currentMPU !== undefined && newMPU !== undefined && currentResolution != undefined) {
+        const currentPointResolution = getPointResolution(
+          currentProjection, 1 / currentMPU, currentCenter, 'm'
+        ) * currentMPU;
+        const newPointResolution = getPointResolution(newProjection, 1 / newMPU, newCenter, 'm') * newMPU;
+        const newResolution =(currentResolution * currentPointResolution) / newPointResolution;
+        const newView = new View({
+          center: newCenter,
+          resolution: newResolution,
+          rotation: currentRotation,
+          projection: newProjection,
+        });
+        this.map.setView(newView);
+      }
+
+    }
+
+  }
+
 }
 
