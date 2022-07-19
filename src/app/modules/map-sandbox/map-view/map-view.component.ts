@@ -315,7 +315,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   displayFeaturePopup(features: Feature[]): void {
     // update displayed features
-    this.returnExistingFeaturesAndProperties()
+    this.returnExistingFeaturesAndProperties() // in order to refresh the list of feature and its properties
     this.featuresDisplayedObservable.next(features);
   }
 
