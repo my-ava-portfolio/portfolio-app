@@ -217,7 +217,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     });
 
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
-      this.displayFeature([event.feature])
+      this.displayFeaturePopup([event.feature])
     });
 
     this.drawSession.sourceFeatures.on('removefeature', (event: any) => {
@@ -302,7 +302,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.featuresCreatedObservable.next(features);
   }
 
-  displayFeature(features: Feature[]): void {
+  displayFeaturePopup(features: Feature[]): void {
     this.featuresDisplayedObservable.next(features);
   }
 
@@ -363,7 +363,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.drawSession.selectClick.getFeatures().clear()
         this.drawSession.selectClick.getFeatures().push(featureFound)
 
-        // this.displayFeature([featureFound])
+        // this.displayFeaturePopup([featureFound])
 
         // featureFound.setStyle(highLigthStyle(featureFound))  // NO NEED ?
         // it will push a changefeature event on sourceFeatures object

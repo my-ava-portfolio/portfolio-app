@@ -91,14 +91,6 @@ export class DrawInteraction {
       }
     })
 
-    this.sourceFeatures.on('changefeature', (event: any) => {
-      // to display the changed values
-      if (event.feature !== undefined) {
-        this.updateFeature(event.feature)
-      }
-
-    });
-
   }
 
   enabledDrawing(geomType: 'Point' | 'LineString' | 'Polygon', holeStatus: boolean): void {
