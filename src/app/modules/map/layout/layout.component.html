@@ -32,8 +32,6 @@
     <div class="d-flex flex-row map-content"></div>
 
 
-    <router-outlet name="map-activities"></router-outlet>
-
     <div class="legend-container" *ngIf="appsWithLegend.includes(currentMapTool)">
 
 
@@ -55,8 +53,14 @@
         </div>
 
         <div class="bg-white legend-content text-center py-3 justify-content-center" [ngClass]="isLegendDisplayed ? 'd-block' : 'd-none'">
-          <router-outlet name="map-activities"></router-outlet>
-          <router-outlet name="map-gtfs-viewer"></router-outlet>
+          <ng-container *ngIf="currentMapTool === 'activities'">
+            <router-outlet name="map-activities"></router-outlet>
+          </ng-container>
+
+          <ng-container *ngIf="currentMapTool === 'gtfs-viewer'">
+            <router-outlet name="map-gtfs-viewer"></router-outlet>
+          </ng-container>
+
         </div>
 
         <div class="d-flex flex-column flex-lg-row bg-white legend-content text-center py-3 justify-content-center" [ngClass]="isLegendDisplayed ? 'd-none' : 'd-block'">
