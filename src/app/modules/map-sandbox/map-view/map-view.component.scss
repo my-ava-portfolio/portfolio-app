@@ -24,6 +24,11 @@ label {
   cursor: pointer;
 }
 
+
+#toastActions span {
+  cursor: pointer;
+}
+
 #mapTools {
   z-index: 1;
   position: fixed;
@@ -31,7 +36,6 @@ label {
 
 #featuresContainer {
   scrollbar-width: none;
-
   max-height: 20em;
 
 }
