@@ -165,7 +165,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.currentEpsg = this.map.getView().getProjection().getCode();
 
         this.selectedEpsg = this.currentEpsg
-        console.log("a")
       }
     );
 
@@ -198,6 +197,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapService.changeMapInteractionStatus(false)
     this.map.removeLayer(this.layerFeatures);
     this.drawSession.destroySession()
+    this.setProjection("EPSG:3857")
   }
 
   sendResumeSubMenus(): void {
