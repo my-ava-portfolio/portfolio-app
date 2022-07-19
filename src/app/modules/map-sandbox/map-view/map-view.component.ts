@@ -11,13 +11,14 @@ import VectorSource from 'ol/source/Vector';
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { DrawInteraction } from '@modules/map-sandbox/shared/core';
+import { DrawInteraction, getWkt } from '@modules/map-sandbox/shared/core';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Subject } from 'rxjs/internal/Subject';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
+import WKT from 'ol/format/WKT';
 
 
 @Component({
@@ -42,7 +43,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   featureProperties: any = {};
   featuresCount: number = 0;
-  toastsFeatureProperties: any[] = [];
+  selectedFeaturesProperties: any[] = [];
 
   drawSession!: any;
 
@@ -60,7 +61,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   cursorCoordinates!: any;
   epsgAvailable = ["EPSG:4326", "EPSG:3857"];
   // create a service to get the map epsg!
-  epsgSelected!: string;
+  currentEpsg!: string;
+  selectedEpsg!: string;
 
   createModesSupported = [
     {
@@ -134,9 +136,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.featuresCreatedSubscription = this.featuresCreatedObservable.subscribe(
       (features: Feature[]) => {
-        this.toastsFeatureProperties = []
+        this.resetToast();
         features.forEach((feature: Feature) => {
-          // this.setToastFeature(feature, true)
+          // this.setFeatureToasts(feature, true)
           this.featureSelectedId = feature.get('id');
 
           if (this.modifyModeSelected !== "Hole") {
@@ -149,11 +151,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
       (features: Feature[]) => {
-        this.toastsFeatureProperties = []
+        this.resetToast();
         features.forEach((feature: Feature) => {
-          this.setToastFeature(feature, false)
+          this.setFeatureToasts(feature, false)
           this.featureSelectedId = feature.get('id');
-          console.log("hah")
         })
       }
     )
@@ -161,7 +162,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
         this.map = map;
-        this.epsgSelected = this.map.getView().getProjection().getCode();;
+        this.currentEpsg = this.map.getView().getProjection().getCode();
+        this.selectedEpsg = this.currentEpsg
+
       }
     );
 
@@ -241,7 +244,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   activateDrawing(mode: string): void {
 
-
     switch (mode) {
       case "disabled": {
         this.drawSession.disableDrawing()
@@ -252,7 +254,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.drawSession.enableEditingMode()
          break;
       }
-
 
       case "Point":
       case "LineString":
@@ -305,7 +306,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   returnExistingFeaturesAndProperties(): void {
-    this.allFeatures = this.drawSession.returnFeatures("Properties", this.epsgSelected)
+    this.allFeatures = this.drawSession.returnFeatures()
     this.featuresCount = this.allFeatures.length
   }
 
@@ -315,35 +316,48 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   displayFeaturePopup(features: Feature[]): void {
     // update displayed features
-    this.returnExistingFeaturesAndProperties() // in order to refresh the list of feature and its properties
+    // this.returnExistingFeaturesAndProperties() // in order to refresh the list of feature and its properties
     this.featuresDisplayedObservable.next(features);
   }
 
   removeFeature(id: string): void {
-
     this.drawSession.removeFeature(id)
-    this.returnExistingFeaturesAndProperties() // remove from the object panel
     this.resetToast()
     this.featureSelectedId = null
 
   }
 
-  setToastFeature(feature: Feature, isNotify: boolean): any {
-    const featuresPropertiesFound = this.allFeatures.filter((featureProperties: any) => {
-      return featureProperties.id == feature.getId()
-    })
-    console.log("haha", featuresPropertiesFound.length)
+  setFeatureToasts(feature: Feature, isNotify: boolean): any {
 
-    if (featuresPropertiesFound.length === 1) {
-      let featureProperties = featuresPropertiesFound[0]
-      const modeSupportedFound = this.createModesSupported.filter(mode => {
-        return mode.mode === featureProperties.geom_type
-      });
-      featureProperties["icon"] = modeSupportedFound[0].icon
+    // get the geom Icon // TODO could be improved...
+    const modeSupportedFound = this.createModesSupported.filter(mode => {
+      return mode.mode === feature.get('geom_type')
+    });
+    const geomIcon = modeSupportedFound[0].icon
 
-      this.toastsFeatureProperties.push(featuresPropertiesFound[0])
-      console.log(isNotify)
-      if (isNotify) { // TODO AAA
+    // get wkt regarding selected projection
+    const geomFeature = feature.getGeometry();
+    if (geomFeature !== undefined) {
+      let geomWkt!: string;
+      if (this.currentEpsg !== this.selectedEpsg) {
+        const geomToReproject = geomFeature.clone()
+        const geomReprojected = geomToReproject.transform(this.currentEpsg, this.selectedEpsg)
+        geomWkt = getWkt(geomReprojected)
+      } else {
+        geomWkt = getWkt(geomFeature)
+      }
+
+      this.selectedFeaturesProperties.push({
+        'id': feature.getId(),
+        'name': feature.get('name'),
+        'geom_type': feature.get('geom_type'),
+        'created_at': feature.get('created_at'),
+        'updated_at': feature.get('updated_at'),
+        'icon': geomIcon,
+        'wkt': geomWkt
+      })
+
+      if (isNotify) {
         // display it with fading
         d3.select("html")
         .transition()
@@ -360,39 +374,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
         .attr("class", "toast toastFeature faded");
       }
     }
-
-
-
-    // let featureProperties: any = feature.getProperties()
-
-    // // get mode
-    // const modeSupportedFound = this.createModesSupported.filter(element => {
-    //   return featureProperties.geometry.getType() === element.mode
-    // });
-    // featureProperties["icon"] = modeSupportedFound[0].icon
-
-    // // get id
-    // featureProperties["id"] = feature.getId()
-
-    // this.toastsFeatureProperties.push(featureProperties)
-    // console.log(isNotify)
-    // if (isNotify) { // TODO AAA
-    //   // display it with fading
-    //   d3.select("html")
-    //   .transition()
-    //   .delay(2000) // need this delayto wait the toats html building
-    //   .duration(5000)
-    //   .on("end", () => {
-    //     d3.selectAll(".toastFeature")
-    //     .attr("class", "toast toastFeature");
-    //   })
-    // } else {
-    //   // happened only if a feature is selected
-    //   d3.selectAll(".toastFeature").remove()
-    //   d3.selectAll(".toastFeature")
-    //   .attr("class", "toast toastFeature faded");
-    // }
-
   }
 
   selectAndDisplayFeature(featureId: string | null): any {
@@ -423,7 +404,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   resetToast(): void {
-    this.toastsFeatureProperties = []
+    this.selectedFeaturesProperties = []
   }
 
   copyToClipboard(value: string): void {
@@ -440,7 +421,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     document.body.removeChild(selBox);
   }
 
-
+  /// MOUSE EVENT TO MANAGE PROJECTION ///
   initMousePosition(): void {
     let mouseCoordinatesDiv!: any;
     mouseCoordinatesDiv = document.getElementById('mouseCoordinates')
@@ -448,7 +429,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mousePositionControl = new MousePosition({
       coordinateFormat: this.setPrecisionFunc(4),
       placeholder: false,
-      projection: this.epsgSelected,
+      projection: this.selectedEpsg,
       className: 'mouse-position',
       target: mouseCoordinatesDiv,
     });
@@ -458,13 +439,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.map.addControl(this.mousePositionControl)
   }
   setProjection(epsg: string): void {
-    this.epsgSelected = epsg;
+    this.selectedEpsg = epsg;
     this.mousePositionControl.setProjection(epsg)
-
-    // update displayed features
-    this.returnExistingFeaturesAndProperties()
-
-
   }
   updatePrecision(event: any): any {
     return this.mousePositionControl.setCoordinateFormat(this.setPrecisionFunc(event.target.value))
@@ -476,6 +452,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
           return format(coordinate, template, precision);
       });
   }
+  /// MOUSE EVENT TO MANAGE PROJECTION ///
+
+
 
 }
 

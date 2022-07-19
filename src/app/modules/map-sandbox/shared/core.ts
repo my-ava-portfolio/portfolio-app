@@ -215,7 +215,6 @@ export class DrawInteraction {
       'id': e.feature.getId(),
       'name': 'feature ' + this.counter,
       'geom_type': e.feature.getGeometry()?.getType(),
-      'wkt': this.getWkt(e.feature.getGeometry()),
       "status": "added",
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString(),
@@ -248,36 +247,12 @@ export class DrawInteraction {
     }
   }
 
-  returnFeatures(mode: 'Feature' | 'Properties', toEpsg: string): any[] {
-
-    const allFeatures = this.sourceFeatures.getFeatures()
-    // TODO force order!
-    if (mode === 'Feature') {
-      return allFeatures
-
-    } else if (mode === 'Properties') {
-      let allFeaturesProperties: any[] = []
-
-      allFeatures.forEach((feature: any) => {
-        let properties = feature.getProperties()
-
-        if (this.currentEpsg !== toEpsg) {
-          const geomToReproject = feature.getGeometry().clone()
-          const geomWkt = this.getWkt(geomToReproject.transform(this.currentEpsg, toEpsg))
-          properties.wkt = geomWkt
-        }
-
-        allFeaturesProperties.push(properties)
-      });
-
-      return allFeaturesProperties
-
-    }
-
-    return allFeatures;
+  returnFeatures(): Feature[] {
+    return this.sourceFeatures.getFeatures()
   }
 
   returnCreatedFeatures(): Feature {
+    // WARNING with ordering mecanism we could get issues to catch the last one...
     const featuresCount = this.sourceFeatures.getFeatures().length
     const lastFeature: any = this.sourceFeatures.getFeatures()[featuresCount - 1]
 
@@ -331,7 +306,6 @@ export class DrawInteraction {
     feature.setProperties({
       'updated_at': new Date().toISOString(),
       "status": "modified",
-      'wkt': this.getWkt(feature.getGeometry()),
     })
   }
 
@@ -343,6 +317,10 @@ export class DrawInteraction {
 }
 
 
+export function getWkt(geometry: any): string {
+  const wktFormat = new WKT()
+  return wktFormat.writeGeometry(geometry);
+}
 
 
 export const defaultStyleDEPRECATED = new Style({

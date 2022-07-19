@@ -68,9 +68,9 @@
           <div id="epsgList" class="btn-group-vertical my-2 align-self-center bg-white rounded-3 border" role="group" aria-label="">
             <ng-container *ngFor="let epsg of epsgAvailable; let idx = index">
 
-                <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + idx" [checked]="epsgSelected === epsg" autocomplete="off">
+                <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + idx" [checked]="selectedEpsg === epsg" autocomplete="off">
                 <label class=""  [for]="'btnradio-selector-' + idx" (click)="setProjection(epsg)">
-                  <div class="dropdown-item small d-flex flex-row" [ngClass]="epsgSelected === epsg ? 'bg-info' :  ''">
+                  <div class="dropdown-item small d-flex flex-row" [ngClass]="selectedEpsg === epsg ? 'bg-info' :  ''">
                     <span>{{ epsg }}</span>
                   </div>
                 </label>
@@ -118,13 +118,13 @@
         </label>
 
         <ng-container *ngFor="let feature of allFeatures">
-          <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-feature-' + feature.id" [checked]="featureSelectedId === feature.id" autocomplete="off">
-          <label class="w-100 border-warning px-0"  [for]="'btnradio-feature-' + feature.id" (click)="selectAndDisplayFeature(feature.id)">
-              <div class="dropdown-item small d-flex flex-row" [ngClass]="featureSelectedId === feature.id ? 'bg-secondary text-white' :  'text-black'">
-                <fa-icon *ngIf="feature.geom_type === 'Point'" class="me-2" [icon]="pointIcon" ></fa-icon>
-                <fa-icon *ngIf="feature.geom_type === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
-                <fa-icon *ngIf="feature.geom_type === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
-                <span>{{ feature.name }}</span>
+          <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-feature-' + feature.getId()" [checked]="featureSelectedId === feature.getId()" autocomplete="off">
+          <label class="w-100 border-warning px-0"  [for]="'btnradio-feature-' + feature.getId()" (click)="selectAndDisplayFeature(feature.getId())">
+              <div class="dropdown-item small d-flex flex-row" [ngClass]="featureSelectedId === feature.getId() ? 'bg-secondary text-white' :  'text-black'">
+                <fa-icon *ngIf="feature.get('geom_type') === 'Point'" class="me-2" [icon]="pointIcon" ></fa-icon>
+                <fa-icon *ngIf="feature.get('geom_type') === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
+                <fa-icon *ngIf="feature.get('geom_type') === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
+                <span>{{ feature.get('name') }}</span>
               </div>
           </label>
         </ng-container>
@@ -137,7 +137,7 @@
 
 
 <div id="mapToasts" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row" style="z-index: 11">
-  <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true" *ngFor="let feature of toastsFeatureProperties">
+  <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true" *ngFor="let feature of selectedFeaturesProperties">
     <div class="toast-header justify-content-between">
 
       <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon>
