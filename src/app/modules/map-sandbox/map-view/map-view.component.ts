@@ -140,12 +140,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.resetToasts();
         features.forEach((feature: Feature) => {
           // this.setFeatureToasts(feature, true)
-          this.featureSelectedId = feature.get('id');
+          // this.featureSelectedId = feature.get('id');
 
-          if (this.modifyModeSelected !== "Hole") {
-            // Hole needs to work on a selected feature, so reset the mode is not relevant
-            this.featureSelectedId = null;  // we don't want to select the feature on the div when creating a new feature
-          }
+          // if (this.modifyModeSelected !== "Hole") {
+          //   // Hole needs to work on a selected feature, so reset the mode is not relevant
+          //   this.featureSelectedId = null;  // we don't want to select the feature on the div when creating a new feature
+          // }
         })
       }
     )
@@ -164,7 +164,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
         this.map = map;
-        // this.setMapEpsg();
         this.currentEpsg = this.map.getView().getProjection().getCode();
 
         this.selectedEpsg = this.currentEpsg
@@ -276,7 +275,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       case "Point":
       case "LineString":
       case "Polygon": {
-        this.activateModifiying('disabled')
+        // this.activateModifiying('disabled')
         this.selectAndDisplayFeature(null)  // unselect selected feature on div (objet)
         this.holeEnabled = false;
         this.drawSession.enabledDrawing(mode, this.holeEnabled)
@@ -300,36 +299,36 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
 
-  activateModifiying(mode: string): void {
+  // activateModifiying(mode: string): void {
 
-    switch (mode) {
-      case "disabled": {
-        this.drawSession.disableDrawing()
-        this.activateDrawing(mode)
-         break;
-      }
+  //   switch (mode) {
+  //     case "disabled": {
+  //       this.drawSession.disableDrawing()
+  //       this.activateDrawing(mode)
+  //        break;
+  //     }
 
-      case "edited": {
-        this.activateDrawing('disabled')
-        this.drawSession.enableEditingMode()
-         break;
-      }
+  //     case "edited": {
+  //       this.activateDrawing('disabled')
+  //       this.drawSession.enableEditingMode()
+  //        break;
+  //     }
 
-      case "Hole": {
-        this.holeEnabled = true;
-        this.drawSession.enabledDrawing("Polygon", this.holeEnabled)
-        this.drawModeSelected = 'Polygon';
-        // this.activateDrawing('Hole')
-         break;
-      }
+  //     case "Hole": {
+  //       this.holeEnabled = true;
+  //       this.drawSession.enabledDrawing("Polygon", this.holeEnabled)
+  //       this.drawModeSelected = 'Polygon';
+  //       // this.activateDrawing('Hole')
+  //        break;
+  //     }
 
-      default: {
-         break;
-      }
-    }
-    this.modifyModeSelected = mode;
+  //     default: {
+  //        break;
+  //     }
+  //   }
+  //   this.modifyModeSelected = mode;
 
-  }
+  // }
 
   returnExistingFeaturesAndProperties(): void {
     this.allFeatures = this.drawSession.returnFeatures()
