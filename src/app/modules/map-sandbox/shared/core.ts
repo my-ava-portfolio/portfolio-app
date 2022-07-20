@@ -20,6 +20,7 @@ import Stroke from 'ol/style/Stroke';
 
 
 const defaultStrokeWidth: number = 2;
+const defaultStrokeColor: string = "black";
 const defaultFillColor: string = '#ffcc33';
 
 export class DrawInteraction {
@@ -62,7 +63,16 @@ export class DrawInteraction {
       //   return highLigthStyle(feature)
       // }  // TODO add an edit style (check Qgis)
     })
+    this.selectClick.on("select", (event: any) => {
 
+      if (event.deselected.length === 1) {
+        // when delesected we refresh the style regarding its attribute to avoid conflict.
+        // I need to select the feature to change the color:
+        // when I select it OL change its style due to the selection.unselect will revert the last style but not the new one
+        this.refreshFeatureStyle(event.deselected[0]) // ISSUE IF activated
+      }
+
+    })
     this.map.addInteraction(this.selectClick);
 
 
@@ -201,20 +211,7 @@ export class DrawInteraction {
       // return
     }
 
-    const geomType = e.feature.getGeometry()?.getType()
-    let defaultStyle!:StyleLike
-    if (geomType === "Point") {
-      defaultStyle = PointStyle(defaultFillColor, defaultStrokeWidth)
-      e.feature.setStyle(defaultStyle)
 
-    } else if (geomType === "LineString") {
-      defaultStyle = LineStringStyle(defaultFillColor, defaultStrokeWidth)
-      e.feature.setStyle(defaultStyle)
-
-    } else if (geomType === "Polygon") {
-      defaultStyle = PolygonStyle(defaultFillColor, defaultStrokeWidth)
-      e.feature.setStyle(defaultStyle)
-    }
 
     ++this.counter;
     const uuid = uuidv4()
@@ -226,8 +223,11 @@ export class DrawInteraction {
       "status": "added",
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString(),
-      '_defaultStyle': defaultStyle  // style saved to revert it later
+      'fill_color': defaultFillColor,
+      'stroke_width': defaultStrokeWidth,
+      'stroke_color': defaultStrokeColor
     })
+    this.refreshFeatureStyle(e.feature)
 
   }
 
@@ -247,6 +247,29 @@ export class DrawInteraction {
     }
   }
 
+  refreshFeatureStyle(feature: Feature): void {
+    // style feature is based on feature properties !
+    let defaultStyle!:StyleLike
+    let geom = feature.getGeometry()
+    if (geom !== undefined) {
+      const fillColor = feature.get('fill_color')
+      const strokeWidth = feature.get('stroke_width')
+      const strokeColor = feature.get('stroke_color')
+
+      if (geom.getType() === "Point") {
+        defaultStyle = PointStyle(fillColor, strokeWidth, strokeColor)
+
+      } else if (geom.getType() === "LineString") {
+        defaultStyle = LineStringStyle(fillColor, strokeWidth, strokeColor)
+
+      } else if (geom.getType() === "Polygon") {
+        defaultStyle = PolygonStyle(fillColor, strokeWidth, strokeColor)
+      }
+      feature.setStyle(defaultStyle)
+
+    }
+
+  }
 
   removeFeature(id: string): void {
     const featureFound = this.sourceFeatures.getFeatureById(id)
@@ -305,11 +328,6 @@ export class DrawInteraction {
 
   }
 
-  resetFeatureStyle(feature: Feature): void {
-      feature.setStyle(feature.get("_defaultStyle"))
-
-  }
-
   updateFeature(feature: Feature): void {
     feature.setProperties({
       'updated_at': new Date().toISOString(),
@@ -347,7 +365,7 @@ export const defaultStyleDEPRECATED = new Style({
   }),
 })
 
-export function PointStyle(color: string, strokeWidth: number): Style {
+export function PointStyle(color: string, strokeWidth: number, strokeColor: string): Style {
   return new Style({
     image: new CircleStyle({
       radius: 7,
@@ -355,21 +373,21 @@ export function PointStyle(color: string, strokeWidth: number): Style {
         color: color,
       }),
       stroke: new Stroke({
-        color: "black",
+        color: strokeColor,
         width: strokeWidth,
       }),
     })
   })
 }
 
-export function LineStringStyle(color: string, strokeWidth: number): Style[] {
+export function LineStringStyle(color: string, strokeWidth: number, strokeColor: string): Style[] {
   return [
     new Style({
       fill: new Fill({
         color: color,
       }),
       stroke: new Stroke({
-        color: 'black',
+        color: strokeColor,
         width: strokeWidth * 2,
       })
     }),
@@ -386,50 +404,50 @@ export function LineStringStyle(color: string, strokeWidth: number): Style[] {
 }
 
 
-export function PolygonStyle(color: string, strokeWidth: number): Style {
+export function PolygonStyle(color: string, strokeWidth: number, strokeColor: string): Style {
   return new Style({
     fill: new Fill({
       color: color,
     }),
     stroke: new Stroke({
-      color: 'black',
+      color: strokeColor,
       width: strokeWidth,
     })
   })
 }
 
 
-export function highLigthStyle(feature: Feature): Style | Style[] | undefined {
-  let style = feature.getStyle()
+// export function highLigthStyle(feature: Feature): Style | Style[] | undefined {
+//   let style = feature.getStyle()
 
-  const largerStroke = new Stroke({
-    color: "black",
-    width: 6,
-  })
-
-
-  if (style !== undefined) {
-
-    if (feature.getGeometry()?.getType() === "Point") {
-      // TODO get point fill color
-      const newStyle = PointStyle('#ffcc33', 6);
-      return newStyle
-
-    }
-    if (feature.getGeometry()?.getType() === "LineString") {
-      // TODO get Linestring fill color
-      const newStyle = LineStringStyle('#ffcc33', 4);
-      return newStyle
-
-    }
-    if (feature.getGeometry()?.getType() === "Polygon") {
-      // TODO get Linestring fill color
-      const newStyle = PolygonStyle('#ffcc33', 4);
-      return newStyle
-
-    }
-  }
-  return
+//   const largerStroke = new Stroke({
+//     color: "black",
+//     width: 6,
+//   })
 
 
-};
+//   if (style !== undefined) {
+
+//     if (feature.getGeometry()?.getType() === "Point") {
+//       // TODO get point fill color
+//       const newStyle = PointStyle('#ffcc33', 6);
+//       return newStyle
+
+//     }
+//     if (feature.getGeometry()?.getType() === "LineString") {
+//       // TODO get Linestring fill color
+//       const newStyle = LineStringStyle('#ffcc33', 4);
+//       return newStyle
+
+//     }
+//     if (feature.getGeometry()?.getType() === "Polygon") {
+//       // TODO get Linestring fill color
+//       const newStyle = PolygonStyle('#ffcc33', 4);
+//       return newStyle
+
+//     }
+//   }
+//   return
+
+
+// };

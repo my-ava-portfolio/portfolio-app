@@ -120,14 +120,22 @@
         <ng-container *ngFor="let feature of allFeatures">
           <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-feature-' + feature.getId()" [checked]="featureSelectedId === feature.getId()" autocomplete="off">
           <label class="w-100 border-warning px-0"  [for]="'btnradio-feature-' + feature.getId()" (click)="selectAndDisplayFeature(feature.getId())">
-              <div class="dropdown-item small d-flex flex-row" [ngClass]="featureSelectedId === feature.getId() ? 'bg-secondary text-white' :  'text-black'">
-                <fa-icon *ngIf="feature.get('geom_type') === 'Point'" class="me-2" [icon]="pointIcon" ></fa-icon>
-                <fa-icon *ngIf="feature.get('geom_type') === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
-                <fa-icon *ngIf="feature.get('geom_type') === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
-                <span>{{ feature.get('name') }}</span>
-              </div>
+
+            <div class="dropdown-item small d-flex flex-row align-items-center" [ngClass]="featureSelectedId === feature.getId() ? 'bg-secondary text-white' :  'text-black'">
+              <fa-icon *ngIf="feature.get('geom_type') === 'Point'" class="me-2" [icon]="pointIcon" [style.color]="feature.get('fill_color')"></fa-icon>
+              <fa-icon *ngIf="feature.get('geom_type') === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
+              <fa-icon *ngIf="feature.get('geom_type') === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
+              <span>{{ feature.get('name') }}</span>
+
+              <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="color" [style.background]="feature.get('fill_color')" (colorPickerClose)="updateFillColor(feature, $event)"/>
+              <input class="small strokeWidth" type="number" min="0" max="12" [value]="feature.get('stroke_width')" (change)="updateStrokeWidth(feature, $event)" />
+              <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="color" [style.background]="feature.get('stroke_color')" (colorPickerClose)="updateStrokeColor(feature, $event)"/>
+
+            </div>
+
           </label>
         </ng-container>
+
     </div>
 
   </div>
@@ -169,7 +177,7 @@
           <span>Modifié à {{ feature.updated_at | date: 'HH:mm:ss' }}</span>
         </div>
 
-          <span class=" ext-truncate">{{ feature.wkt }}</span>
+          <span class="text-truncate">{{ feature.wkt }}</span>
 
 
       </div>
@@ -177,3 +185,4 @@
   </ng-container>
 
 </div>
+

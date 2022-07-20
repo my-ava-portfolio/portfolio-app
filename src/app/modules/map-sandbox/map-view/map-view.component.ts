@@ -11,7 +11,7 @@ import VectorSource from 'ol/source/Vector';
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { DrawInteraction, getWkt } from '@modules/map-sandbox/shared/core';
+import { DrawInteraction, getWkt, PointStyle } from '@modules/map-sandbox/shared/core';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -43,6 +43,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   featureProperties: any = {};
   featuresCount: number = 0;
   selectedFeaturesProperties: any[] = [];
+
+  color!: string;
 
   drawSession!: any;
 
@@ -154,6 +156,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         features.forEach((feature: Feature) => {
           this.setFeatureToasts(feature, false)
           this.featureSelectedId = feature.get('id');
+          console.log(feature.get('name'))
         })
       }
     )
@@ -233,10 +236,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.drawSession.sourceFeatures.on('addfeature', (event: any) => {
       this.returnExistingFeaturesAndProperties()
+
       this.pushFeaturesCreated([event.feature])
     });
 
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
+      console.log(event)
       this.displayFeaturePopup([event.feature])
     });
 
@@ -244,6 +249,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.returnExistingFeaturesAndProperties()
       // TODO add a remove toast?
     });
+
+    this.drawSession.selectClick.on("select", (event: any) => {
+      if (event.selected.length === 0) {
+        // all is unselected on the objects div
+        this.selectAndDisplayFeature(null)
+      }
+      if (event.selected.length === 1) {
+        // if a feature is selected on the map, it will be selected on the object div also
+        this.selectAndDisplayFeature(event.selected[0].getId())
+      }
+    })
+
 
     this.map.addLayer(this.layerFeatures)
   }
@@ -379,7 +396,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.resetToasts()
 
     if (featureId !== null) {
-      this.disableCreationMode()
+      // this.disableCreationMode()
       const featureFound = this.sourceFeatures.getFeatureById(featureId)
       if (featureFound !== undefined) {
         this.featureSelectedId = featureFound.get('id')
@@ -387,7 +404,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         // reset the selection and set it (then the style will be updated) + it call the changefeature event !
         this.drawSession.selectClick.getFeatures().clear()
         this.drawSession.selectClick.getFeatures().push(featureFound)
-
+        // this.refreshStyle(featureFound)
         this.displayFeaturePopup([featureFound])
 
         // featureFound.setStyle(highLigthStyle(featureFound))  // NO NEED ?
@@ -400,6 +417,22 @@ export class MapViewComponent implements OnInit, OnDestroy {
     }
 
   }
+
+  refreshStyle(feature: Feature): void {
+    // feature.set("fill_color", color)
+    this.drawSession.refreshFeatureStyle(feature)
+  }
+
+  updateFillColor(feature: Feature, color: string): void {
+    feature.set("fill_color", color, true)
+  }
+  updateStrokeWidth(feature: Feature, event: any): void {
+    feature.set("stroke_width", event.target.value, true)
+  }
+  updateStrokeColor(feature: Feature, color: string): void {
+    feature.set("stroke_color", color, true)
+  }
+
 
   resetToasts(): void {
     this.selectedFeaturesProperties = []
