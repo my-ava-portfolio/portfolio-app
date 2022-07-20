@@ -226,7 +226,7 @@ export class DrawInteraction {
       'fill_color': defaultFillColor,
       'stroke_width': defaultStrokeWidth,
       'stroke_color': defaultStrokeColor
-    })
+    }, false)
     this.refreshFeatureStyle(e.feature)
 
   }

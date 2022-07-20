@@ -90,12 +90,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
       "type": "geometry",  // new feature creating
       "icon": this.polygonIcon
     },
-    // {
-    //   "mode": 'Hole',  // works like a polygon
-    //   "label": 'Trou',
-    //   "type": "enhancement",  // particular case where we have to select And edit the feature
-    //   "icon": this.polygonIcon
-    // }
+    {
+      "mode": 'Hole',  // works like a polygon
+      "label": 'Trou',
+      "type": "enhancement",  // particular case where we have to select And edit the feature
+      "icon": this.polygonIcon
+    }
   ]
 
   modifyModesSupported = [
@@ -111,12 +111,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
       "type": "controler",
       "icon": this.pointIcon
     },
-    {
-      "mode": 'Hole',  // works like a polygon
-      "label": 'Trou',
-      "type": "enhancement",  // particular case where we have to select And edit the feature
-      "icon": this.polygonIcon
-    }
+    // {
+    //   "mode": 'Hole',  // works like a polygon
+    //   "label": 'Trou',
+    //   "type": "enhancement",  // particular case where we have to select And edit the feature
+    //   "icon": this.polygonIcon
+    // }
   ]
 
 
@@ -230,7 +230,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.layerFeatures = new VectorLayer({
       source: this.sourceFeatures,
     });
-    this.layerFeatures.set("name", this.layerName)
+    this.layerFeatures.set("name", this.layerName, true)
 
     this.drawSession = new DrawInteraction(this.map, this.layerFeatures)
 
@@ -242,7 +242,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
       console.log(event)
-      this.displayFeaturePopup([event.feature])
+      // this.displayFeaturePopup([event.feature])
     });
 
     this.drawSession.sourceFeatures.on('removefeature', (event: any) => {
@@ -285,6 +285,14 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.selectAndDisplayFeature(null)  // unselect selected feature on div (objet)
         this.holeEnabled = false;
         this.drawSession.enabledDrawing(mode, this.holeEnabled)
+         break;
+      }
+
+      case "Hole": {
+        this.holeEnabled = true;
+        this.drawSession.enabledDrawing("Polygon", this.holeEnabled)
+        this.drawModeSelected = 'Hole';
+        // this.activateDrawing('Hole')
          break;
       }
 
@@ -404,11 +412,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
         // reset the selection and set it (then the style will be updated) + it call the changefeature event !
         this.drawSession.selectClick.getFeatures().clear()
         this.drawSession.selectClick.getFeatures().push(featureFound)
-        // this.refreshStyle(featureFound)
         this.displayFeaturePopup([featureFound])
 
         // featureFound.setStyle(highLigthStyle(featureFound))  // NO NEED ?
         // it will push a changefeature event on sourceFeatures object
+
       }
 
     } else {
@@ -425,12 +433,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   updateFillColor(feature: Feature, color: string): void {
     feature.set("fill_color", color, true)
+    this.refreshStyle(feature)
   }
   updateStrokeWidth(feature: Feature, event: any): void {
     feature.set("stroke_width", event.target.value, true)
+    this.refreshStyle(feature)
   }
   updateStrokeColor(feature: Feature, color: string): void {
     feature.set("stroke_color", color, true)
+    this.refreshStyle(feature)
   }
 
 
