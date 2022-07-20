@@ -273,11 +273,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
          break;
       }
 
-      case "editEnabled": {
-        this.drawSession.enableEditingMode()
-         break;
-      }
-
       case "Point":
       case "LineString":
       case "Polygon": {

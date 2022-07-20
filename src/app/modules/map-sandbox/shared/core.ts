@@ -134,21 +134,22 @@ export class DrawInteraction {
   }
 
   enableEditingMode(): void {
-    this.map.removeInteraction(this.modifier);
-    this.map.removeInteraction(this.snap);
+    this.disableEditingMode();
 
     this.map.addInteraction(this.modifier);
     this.map.addInteraction(this.snap);
+  }
+
+  disableEditingMode(): void {
+    this.map.removeInteraction(this.modifier);
+    this.map.removeInteraction(this.snap);
   }
 
   disableDrawing(): void {
     if (this.draw !== undefined) {
       this.map.removeInteraction(this.draw);
     }
-
-    this.map.removeInteraction(this.snap);
-    this.map.removeInteraction(this.modifier);
-
+    this.disableEditingMode();
   }
 
   destroySession(): void {
