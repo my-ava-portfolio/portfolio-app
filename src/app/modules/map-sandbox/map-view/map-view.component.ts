@@ -241,7 +241,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     });
 
     this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
-      console.log(event)
+      // in order to get a dynamic popup
       this.displayFeaturePopup([event.feature])
     });
 

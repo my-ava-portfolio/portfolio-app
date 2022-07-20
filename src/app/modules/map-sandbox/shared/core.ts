@@ -205,11 +205,14 @@ export class DrawInteraction {
 
       if (this.polygonIntersected !== undefined) {
         e.feature.setGeometry(this.polygonIntersected.getGeometry())
-
+        this.selectClick.getFeatures().clear()
       }
+
+
       this.polygonIntersected = undefined;
       // TODO: QUESTION: no need to recreate the properties because the polygon already exists?
       // return
+
     }
 
 
