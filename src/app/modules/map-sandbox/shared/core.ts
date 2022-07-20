@@ -17,6 +17,7 @@ import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
+import { TRUE } from 'ol/functions';
 
 
 const defaultStrokeWidth: number = 2;
@@ -226,7 +227,7 @@ export class DrawInteraction {
       'fill_color': defaultFillColor,
       'stroke_width': defaultStrokeWidth,
       'stroke_color': defaultStrokeColor
-    }, false)
+    }, true)
     this.refreshFeatureStyle(e.feature)
 
   }
@@ -332,7 +333,7 @@ export class DrawInteraction {
     feature.setProperties({
       'updated_at': new Date().toISOString(),
       "status": "modified",
-    })
+    }, true)
   }
 
 }
