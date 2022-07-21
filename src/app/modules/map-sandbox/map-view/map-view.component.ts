@@ -85,7 +85,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   mapSubscription!: Subscription;
   featuresDisplayedSubscription!: Subscription;
-  featuresCreatedSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -93,21 +92,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
   ) {
-
-    // this.featuresCreatedSubscription = this.featuresCreatedObservable.subscribe(
-      // (features: Feature[]) => {
-        // this.resetToasts();
-        // features.forEach((feature: Feature) => {
-          // this.setFeatureToasts(feature, true)
-          // this.featureSelectedId = feature.get('id');
-
-          // if (this.modifyModeSelected !== "Hole") {
-          //   // Hole needs to work on a selected feature, so reset the mode is not relevant
-          //   this.featureSelectedId = null;  // we don't want to select the feature on the div when creating a new feature
-          // }
-        // })
-    //   }
-    // )
 
     this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
       (features: Feature[]) => {
@@ -143,10 +127,17 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.mapSubscription.unsubscribe();
     this.featuresDisplayedSubscription.unsubscribe();
-    this.featuresCreatedSubscription.unsubscribe();
 
 
     this.mapService.resetMapView()
+
+    this.allExistingLayers.forEach((layer: layerHandler) => {
+      this.map.removeLayer(layer.vectorLayer)
+    })
+    this.groupsList.forEach((group: GroupHandler) => {
+      this.map.removeLayer(group._group)
+    })
+
     this.mapService.changeMapInteractionStatus(false)
     this.setProjection("EPSG:3857")
   }
