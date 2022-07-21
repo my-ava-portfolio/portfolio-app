@@ -34,7 +34,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   map!: Map;
 
+  featuresDisplayedObservable = new Subject<Feature[]>()
 
+  selectedFeaturesProperties: any[] = [];
 
   disabledIcon = faXmark;
   EditIcon = faCircle;
@@ -50,7 +52,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   selectedEpsg!: string;
 
   layersCount: number = 0;
-  layerIdSelected!: string |null;
+  layerIdSelected!: string | null;
+  layerIdEdited!: string | null
   allLayers: any[] = [];
   layerNamedIncrement: number = 0;
   createModesSupported = [
@@ -71,32 +74,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
     }
   ]
 
-  editMode!: any[] | null
-  editModeSelected!: any[];
-  editModesSupported: any = {
-    "Point": [
-      {
-        "mode": "edit",
-        "label": "Editer"
-      }
-    ],
-    "LineString": [
-      {
-        "mode": "edit",
-        "label": "Editer"
-      }
-    ],
-    "Polygon": [
-      {
-        "mode": "edit",
-        "label": "Editer"
-      },
-      {
-        "mode": "hole",
-        "label": "Ajouter un trou"
-      }
-    ]
-  }
+  layerFeatures: any[] = [];
+  featureSelectedId!: string | null;
+
+  mapInteraction!: DrawInteraction;
 
   isLegendDisplayed = true;
 
@@ -126,16 +107,16 @@ export class MapViewComponent implements OnInit, OnDestroy {
     //   }
     // )
 
-    // this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
-    //   (features: Feature[]) => {
-        // this.resetToasts();
-        // features.forEach((feature: Feature) => {
-        //   this.setFeatureToasts(feature, false)
-        //   this.featureSelectedId = feature.get('id');
-        //   console.log(feature.get('name'))
-        // })
-    //   }
-    // )
+    this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
+      (features: Feature[]) => {
+        this.resetToasts()
+        features.forEach((feature: Feature) => {
+          this.setFeatureToasts(feature, false)
+          this.featureSelectedId = feature.get('id');
+          console.log(feature.get('name'))
+        })
+      }
+    )
 
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
@@ -149,10 +130,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
-    this.sendResumeSubMenus();
 
+    this.sendResumeSubMenus();
+    this.mapService.changeMapInteractionStatus(true)
     this.mapService.getMap();
+
     this.initMousePosition()
+    this.mapInteraction = new DrawInteraction(this.map)
 
   }
 
@@ -195,17 +179,55 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   selectLayer(layerId: string | null): void {
-    this.editMode = null
+    this.disableCurrentEditing()
+
+
     this.map.getLayers().forEach((layer: any) => {
       if (layer instanceof VectorLayer) {
         if (layer.get('id') === layerId) {
           layer = layer
           this.layerIdSelected = layerId
-          this.editMode = this.editModesSupported[layer.get('geomType')] // to activate the edit widget, but it could be useless
+          this.mapInteraction.enableSelecting(layer)
+          this.layerFeatures = layer.getSource().getFeatures()
+
+
+          this.mapInteraction.sourceFeatures.on('addfeature', (event: any) => {
+            this.layerFeatures = layer.getSource().getFeatures()
+
+          });
+
+          this.mapInteraction.sourceFeatures.on('changefeature', (event: any) => {
+            this.featuresDisplayedObservable.next([event.feature]);
+          });
+
+          this.mapInteraction.sourceFeatures.on('removefeature', (event: any) => {
+            this.layerFeatures = layer.getSource().getFeatures()
+
+          });
+
         }
       }
-
     });
+  }
+
+  editLayer(layerId: string): void {
+    this.disableCurrentEditing()
+
+    this.map.getLayers().forEach((layer: any) => {
+      if (layer instanceof VectorLayer) {
+        if (layer.get('id') === layerId) {
+
+          this.layerIdEdited = layerId
+          this.mapInteraction.enabledDrawing(layer, false)
+        }
+      }
+    });
+  }
+
+  disableCurrentEditing(): void {
+    this.layerIdEdited = null
+    this.mapInteraction.disableEditing()
+
   }
 
   removeLayer(layerId: string): void {
@@ -213,8 +235,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       if (layer instanceof VectorLayer) {
         if (layer.get('id') === layerId) {
+          this.disableCurrentEditing()
           this.map.removeLayer(layer)
           this.layerIdSelected = null // deselect by defaultt when removing
+          this.resetToasts()
         }
       }
 
@@ -239,13 +263,49 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
 
+  resetToasts(): void {
+    this.selectedFeaturesProperties = []
+  }
+  setFeatureToasts(feature: Feature, isNotify: boolean): any {
 
+    // get the geom Icon // TODO could be improved...
+    const modeSupportedFound = this.createModesSupported.filter(mode => {
+      return mode.mode === feature.get('geom_type')
+    });
+    const geomIcon = modeSupportedFound[0].icon
 
+    // get wkt regarding selected projection
+    const geomFeature = feature.getGeometry();
+    if (geomFeature !== undefined) {
 
+      this.selectedFeaturesProperties.push({
+        'id': feature.getId(),
+        'name': feature.get('name'),
+        'geom_type': feature.get('geom_type'),
+        'created_at': feature.get('created_at'),
+        'updated_at': feature.get('updated_at'),
+        'icon': geomIcon,
+        'wkt': getWkt(geomFeature)
+      })
 
-
-
-
+      if (isNotify) {
+        // display it with fading
+        d3.select("html")
+        .transition()
+        .delay(2000) // need this delayto wait the toats html building
+        .duration(5000)
+        .on("end", () => {
+          d3.selectAll(".toastFeature")
+          .attr("class", "toast toastFeature");
+        })
+      } else {
+        // happened only if a feature is selected
+        // d3.selectAll(".toastFeature").remove()
+        d3.selectAll(".toastFeature")
+        .attr("class", "toast toastFeature faded");
+      }
+    }
+  }
 
 
 

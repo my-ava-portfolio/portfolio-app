@@ -26,7 +26,7 @@ const defaultFillColor: string = '#ffcc33';
 export class DrawInteraction {
   private map: Map;
   private draw!: Draw;
-  private snap!: Snap;
+  private snaps: Snap[] = []
   private modifier!: Modify;
   private currentEpsg!: String;
 
@@ -42,19 +42,19 @@ export class DrawInteraction {
 
   lastCreatedFeature!: Feature;
 
-  vectorLayer: VectorLayer<any>;
-  sourceFeatures: VectorSource;
+  vectorLayer!: VectorLayer<any>;
+  sourceFeatures!: VectorSource;
   allFeatures: any[] = [];
 
   constructor(
     map: Map,
-    vectorLayer: VectorLayer<any>,
   ) {
     this.map = map;
-    this.vectorLayer = vectorLayer;
-    this.sourceFeatures = vectorLayer.getSource();
     this.currentEpsg = this.map.getView().getProjection().getCode()
 
+  }
+
+  prepareSelect(): void {
     this.selectClick = new Select({
       condition: click,
       multi: false,
@@ -75,10 +75,34 @@ export class DrawInteraction {
     })
     this.map.addInteraction(this.selectClick);
 
+    this.setSnaps();
 
-    this.prepareModifier()
+  }
 
-   this.snap = new Snap({source: this.sourceFeatures});
+  setSnaps(): void {
+    // clean snaps if needed
+    this.unsetSnaps();
+
+    // set snap on all layers
+    this.map.getLayers().forEach((layer) => {
+      if (layer instanceof VectorLayer) {
+        let interaction = new Snap({
+          source: layer.getSource()
+        });
+        this.snaps.push(interaction);
+        this.map.addInteraction(interaction);
+
+      }
+    });
+
+  }
+
+  unsetSnaps(): void {
+    // unset snap on all layers
+    for (let snap of this.snaps ) {
+      this.map.removeInteraction(snap);
+    }
+
   }
 
   prepareModifier(): void {
@@ -105,17 +129,24 @@ export class DrawInteraction {
 
   }
 
-  enabledDrawing(geomType: 'Point' | 'LineString' | 'Polygon', holeStatus: boolean): void {
+  enabledDrawing(vectorLayer: VectorLayer<any>, holeStatus: boolean): void {
+    this.vectorLayer = vectorLayer;
+    this.sourceFeatures = vectorLayer.getSource();
+
     this.holePolygonDrawingStatus = holeStatus;
-    this.disableDrawing();
+
+    this.prepareSelect()
+    this.prepareModifier()
+
+    this.disableEditing();
     this.draw = new Draw({
-      type: geomType,
+      type: this.vectorLayer.get("geomType"),
       stopClick: false,
       source: this.vectorLayer.getSource(),
     });
 
     this.map.addInteraction(this.draw);
-    this.enableEditingMode()
+    this.enableEditing()
 
     this.draw.on('drawstart', this.onDrawStart.bind(this));
     this.draw.on('drawend', this.onDrawEnd.bind(this));
@@ -128,32 +159,36 @@ export class DrawInteraction {
         this.polygonIntersected = undefined;
       }
     });
-
-
   }
 
-  enableEditingMode(): void {
-    this.disableEditingMode();
+
+  enableSelecting(vectorLayer: VectorLayer<any>): void {
+    this.vectorLayer = vectorLayer;
+    this.sourceFeatures = vectorLayer.getSource();
+
+    this.prepareSelect()
+  }
+
+  enableEditing(): void {
+    this.map.removeInteraction(this.modifier);
+
+    this.unsetSnaps;
 
     this.map.addInteraction(this.modifier);
-    this.map.addInteraction(this.snap);
+    this.setSnaps();
   }
 
-  disableEditingMode(): void {
-    this.map.removeInteraction(this.modifier);
-    this.map.removeInteraction(this.snap);
-  }
-
-  disableDrawing(): void {
+  disableEditing(): void {
     if (this.draw !== undefined) {
       this.map.removeInteraction(this.draw);
     }
-    this.disableEditingMode();
+    this.map.removeInteraction(this.modifier);
+    this.unsetSnaps;
   }
 
   destroySession(): void {
     this.map.removeInteraction(this.draw);
-    this.map.removeInteraction(this.snap);
+    this.unsetSnaps();
     this.map.removeInteraction(this.modifier);
     this.map.removeInteraction(this.selectClick);
 
