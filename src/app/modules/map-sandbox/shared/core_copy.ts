@@ -158,6 +158,9 @@ export class layerHandler {
 
     this.vectorLayer = new VectorLayer({
       source: this.sourceFeatures,
+      style: (feature: any, resolution: any): any => {
+        return refreshFeatureStyle(feature)
+      }
     });
 
     this.vectorLayer.set('name', this.layerName, true)
@@ -173,7 +176,6 @@ export class layerHandler {
   private initSelect(): void {
     this.select = new Select({
       condition: click,
-      style: null,
       multi: false,
       layers: [this.vectorLayer],
     })
@@ -327,7 +329,6 @@ export class layerHandler {
       'stroke_width': defaultStrokeWidth,
       'stroke_color': defaultStrokeColor
     }, true)
-    refreshFeatureStyle(e.feature)
 
   }
 
@@ -467,7 +468,7 @@ export function PolygonStyle(color: string, strokeWidth: number, strokeColor: st
   })
 }
 
-export function refreshFeatureStyle(feature: Feature): void {
+export function refreshFeatureStyle(feature: Feature): StyleLike {
   // style feature is based on feature properties !
   let defaultStyle!:StyleLike
   let geom = feature.getGeometry()
@@ -485,8 +486,10 @@ export function refreshFeatureStyle(feature: Feature): void {
     } else if (geom.getType() === "Polygon") {
       defaultStyle = PolygonStyle(fillColor, strokeWidth, strokeColor)
     }
-    feature.setStyle(defaultStyle)
+    return defaultStyle
 
   }
+  return new Style()
+
 
 }

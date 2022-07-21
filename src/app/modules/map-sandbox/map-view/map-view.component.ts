@@ -8,13 +8,14 @@ import Map from 'ol/Map';
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { GroupHandler, layerHandler, getWkt, refreshFeatureStyle } from '@modules/map-sandbox/shared/core_copy';
+import { GroupHandler, layerHandler, getWkt } from '@modules/map-sandbox/shared/core_copy';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Subject } from 'rxjs/internal/Subject';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
+import { asLiteral } from '@angular/compiler/src/render3/view/util';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   map!: Map;
 
-  layersAdded: layerHandler[] = [];
+  allExistingLayers: layerHandler[] = [];
+  layersFromCurrentGroup: layerHandler[] = [];
   layerIdSelected: string | null = null;
   layerIdEdited: string | null = null;
   layerIdDrawn: string | null = null;
@@ -60,8 +62,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   groupsList: GroupHandler[] = []
   groupNameIncrement: number = 0;
-  groupIdSelected!: string;
-  groupNameSelected!: string;
+  groupSelectedId!: string;
+  groupSelectedName!: string;
 
   selectedFeaturesProperties: any[] = [];
   color!: string
@@ -113,7 +115,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
         features.forEach((feature: Feature) => {
           this.setFeatureToasts(feature, false)
           this.featureSelectedId = feature.get('id');
-          console.log(feature.get('name'))
         })
       }
     )
@@ -136,7 +137,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapService.getMap();
 
     this.initMousePosition()
-    this.addGroup()
   }
 
   ngOnDestroy(): void {
@@ -165,19 +165,21 @@ export class MapViewComponent implements OnInit, OnDestroy {
   addGroup(): void {
     let newGroup = new GroupHandler(
       this.map,
-      'grp' + ++this.groupNameIncrement
+      'Groupe ' + ++this.groupNameIncrement
     )
     this.groupsList.push(newGroup)
+    this.resetLayersAndFeaturesFromGroupId(this.groupSelectedId)
+
   }
 
   currentGroup(): void {
-    this.layersAdded.forEach((layer: any) => {
+    this.layersFromCurrentGroup.forEach((layer: any) => {
       if (this.layerIdSelected === layer.getId()) {
-        this.groupIdSelected = layer.groupId;
+        this.groupSelectedId = layer.groupId;
 
         this.groupsList.forEach((group: GroupHandler) => {
           if (group.id === layer.groupId) {
-            this.groupNameSelected = group.groupName;
+            this.groupSelectedName = group.groupName;
             return;
           }
         })
@@ -188,39 +190,56 @@ export class MapViewComponent implements OnInit, OnDestroy {
   selectGroup(groupId: string): void {
     this.groupsList.forEach((group: GroupHandler) => {
       if (group.id === groupId) {
-        this.groupIdSelected = group.id;
-        this.groupNameSelected = group.groupName;
+        this.groupSelectedId = group.id;
+        this.groupSelectedName = group.groupName;
+        this.resetLayersAndFeaturesFromGroupId(this.groupSelectedId)
         return;
       }
     })
   }
 
-  addLayer(geomType: any, groupId: string): void {
+  refreshLayersFromGroupId(groupId: string): void {
+    this.layersFromCurrentGroup = this.allExistingLayers.filter((layer: layerHandler) => {
+      return layer.groupId === groupId;
+    })
+  }
+
+  resetLayersAndFeaturesFromGroupId(groupId: string): void {
+    this.refreshLayersFromGroupId(groupId)
+    this.selectLayer(null) // unselect selected layer
+    this.refreshAllFeatures(null)
+  }
+
+  addLayer(geomType: any): void {
     const groupsFound = this.groupsList.filter((group: GroupHandler) => {
-      return group.groupName == groupId  // TODO use the id but need gui iplementing
+      return group.id == this.groupSelectedId  // TODO use the id but need gui iplementing
     })
 
     if (groupsFound.length === 1) {
-    let newLayer = new layerHandler(
-      this.map,
-      'layer ' + ++this.layerNamedIncrement,
-      geomType,
-      groupsFound[0].id
-    )
+      let newLayer = new layerHandler(
+        this.map,
+        'layer ' + ++this.layerNamedIncrement,
+        geomType,
+        groupsFound[0].id
+      )
 
 
-    groupsFound[0].addLayer(newLayer.vectorLayer)
-    this.layersAdded.push(newLayer)
-
+      groupsFound[0].addLayer(newLayer.vectorLayer)
+      this.allExistingLayers.push(newLayer)
+      this.refreshLayersFromGroupId(this.groupSelectedId)
+      console.log("aa")
+    } else {
+      alert("Create & select a group to add a layer!")
     }
 
 
   }
 
   selectLayer(layerId: string | null): void {
+    this.resetToasts()
 
     if (layerId !== null) {
-      this.layersAdded.forEach((layer: layerHandler) => {
+      this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
         if (layer.id === layerId) {
 
           this.layerIdSelected = layerId
@@ -252,6 +271,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     } else {
       // to disable the draw and edit tools
       this.layerIdSelected = layerId
+
       this.addFeature(null)
       this.editFeature(null)
 
@@ -264,7 +284,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     console.log("add", this.layerIdDrawn, this.layerIdEdited)
 
     if (layerId === this.layerIdDrawn || layerId === null) {
-      this.layersAdded.forEach((layer: layerHandler) => {
+      this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
 
         if (layer.id === this.layerIdDrawn) {
           layer.disableDrawing()
@@ -275,7 +295,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     } else {
 
-      this.layersAdded.forEach((layer: layerHandler) => {
+      this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
 
         if (layer.id === layerId) {
             this.selectLayer(layerId) // draw and edit tool are reset here
@@ -290,7 +310,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     console.log("edit", this.layerIdDrawn, this.layerIdEdited)
 
     if (layerId === this.layerIdEdited || layerId === null) {
-      this.layersAdded.forEach((layer: layerHandler) => {
+      this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
 
         if (layer.id === this.layerIdEdited) {
           layer.disableEditing()
@@ -301,7 +321,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     } else {
 
-      this.layersAdded.forEach((layer: layerHandler) => {
+      this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
 
         if (layer.id === layerId) {
           this.selectLayer(layerId) // draw and edit tool are reset here
@@ -313,7 +333,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   removeLayer(layerId: string): void {
-    this.layersAdded.forEach((layer: layerHandler) => {
+    this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
 
       if (layer.id === layerId) {
         this.addFeature(null)
@@ -329,14 +349,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   refreshAllLayers(): void {
 
-    this.layersAdded = this.layersAdded.filter((layer: layerHandler) => {
+    this.layersFromCurrentGroup = this.layersFromCurrentGroup.filter((layer: layerHandler) => {
       return !layer.deleted
     })
   }
 
 
   refreshAllFeatures(layer: any): void {
-    this.layerFeatures = layer.features()
+    if (layer === null) {
+      this.layerFeatures = []
+    } else {
+      this.layerFeatures = layer.features()
+    }
   }
 
   selectFeature(feature: Feature | null): void {
@@ -344,13 +368,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.resetToasts()
 
     if (feature !== null) {
-      let layersFound: layerHandler[] = this.layersAdded.filter((layer: layerHandler) => {
+      let layersFound: layerHandler[] = this.layersFromCurrentGroup.filter((layer: layerHandler) => {
         return layer.id === this.layerIdSelected
       })
+
       // reset the selection and set it (then the style will be updated) + it call the changefeature event !
       layersFound[0].select.getFeatures().clear()
       layersFound[0].select.getFeatures().push(feature)
-      this.featuresDisplayedObservable.next([feature]);
 
     } else {
       this.resetFeatureSelection()
@@ -361,7 +385,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   resetFeatureSelection(): void {
     if (this.featureSelectedId !== null) {
-      let layersFound: layerHandler[] = this.layersAdded.filter((layer: layerHandler) => {
+      let layersFound: layerHandler[] = this.layersFromCurrentGroup.filter((layer: layerHandler) => {
         return layer.id === this.layerIdSelected
       })
       // reset the selection and set it (then the style will be updated) + it call the changefeature event !
@@ -412,7 +436,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
         })
       } else {
         // happened only if a feature is selected
-        // d3.selectAll(".toastFeature").remove()
         d3.selectAll(".toastFeature")
         .attr("class", "toast toastFeature faded");
       }
@@ -484,7 +507,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     })
     let feature = features[0]
     feature.set("fill_color", color, false)
-    refreshFeatureStyle(feature)
   }
   updateStrokeWidth(featureId: string, event: any): void {
     let features = this.layerFeatures.filter((feature: any) => {
@@ -492,7 +514,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     })
     let feature = features[0]
     feature.set("stroke_width", event.target.value, true)
-    refreshFeatureStyle(feature)
   }
   updateStrokeColor(featureId: string, color: string): void {
     let features = this.layerFeatures.filter((feature: any) => {
@@ -500,7 +521,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     })
     let feature = features[0]
     feature.set("stroke_color", color, true)
-    refreshFeatureStyle(feature)
   }
 
 }
