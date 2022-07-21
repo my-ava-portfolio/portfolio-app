@@ -218,6 +218,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.editFeature(null)
 
     }
+    this.refreshAllLayers()
 
   }
 
@@ -289,8 +290,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   refreshAllLayers(): void {
+
     this.layersAdded = this.layersAdded.filter((layer: layerHandler) => {
-      return layer.deleted
+      return !layer.deleted
     })
   }
 

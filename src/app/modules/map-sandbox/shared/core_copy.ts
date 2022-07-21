@@ -28,7 +28,7 @@ const defaultFillColor: string = '#ffcc33';
 export class layerHandler {
   private map: Map;
   private draw!: Draw;
-  private snap!: Snap;
+  snap!: Snap;
   private modifier!: Modify;
   select!: Select;
 
