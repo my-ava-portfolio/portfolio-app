@@ -8,7 +8,7 @@ import Map from 'ol/Map';
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { GroupHandler, layerHandler, getWkt } from '@modules/map-sandbox/shared/core_copy';
+import { GroupHandler, layerHandler, getWkt, refreshFeatureStyle } from '@modules/map-sandbox/shared/core_copy';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -62,7 +62,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   groupNameIncrement: number = 0;
 
   selectedFeaturesProperties: any[] = [];
-
+  color!: string
 
 
   mousePositionControl!: MousePosition;
@@ -328,6 +328,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     } else {
       this.resetFeatureSelection()
+
     }
 
   }
@@ -447,6 +448,18 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.currentEpsg = this.map.getView().getProjection().getCode();
   }
 
+  updateFillColor(feature: Feature, color: string): void {
+    feature.set("fill_color", color, false)
+    refreshFeatureStyle(feature)
+  }
+  updateStrokeWidth(feature: Feature, event: any): void {
+    feature.set("stroke_width", event.target.value, true)
+    refreshFeatureStyle(feature)
+  }
+  updateStrokeColor(feature: Feature, color: string): void {
+    feature.set("stroke_color", color, true)
+    refreshFeatureStyle(feature)
+  }
 
 }
 

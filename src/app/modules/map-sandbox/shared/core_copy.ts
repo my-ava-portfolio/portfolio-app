@@ -173,20 +173,11 @@ export class layerHandler {
   private initSelect(): void {
     this.select = new Select({
       condition: click,
+      style: null,
       multi: false,
       layers: [this.vectorLayer],
     })
 
-    this.select.on("select", (event: any) => {
-
-      if (event.deselected.length === 1) {
-        // when delesected we refresh the style regarding its attribute to avoid conflict.
-        // I need to select the feature to change the color:
-        // when I select it OL change its style due to the selection.unselect will revert the last style but not the new one
-        // this.refreshFeatureStyle(event.deselected[0]) // ISSUE IF activated
-      }
-
-    })
   }
 
   private initSnap(): void {
@@ -336,7 +327,7 @@ export class layerHandler {
       'stroke_width': defaultStrokeWidth,
       'stroke_color': defaultStrokeColor
     }, true)
-    this.refreshFeatureStyle(e.feature)
+    refreshFeatureStyle(e.feature)
 
   }
 
@@ -354,30 +345,6 @@ export class layerHandler {
       this.polygonIntersected.setGeometry(geom);
 
     }
-  }
-
-  refreshFeatureStyle(feature: Feature): void {
-    // style feature is based on feature properties !
-    let defaultStyle!:StyleLike
-    let geom = feature.getGeometry()
-    if (geom !== undefined) {
-      const fillColor = feature.get('fill_color')
-      const strokeWidth = feature.get('stroke_width')
-      const strokeColor = feature.get('stroke_color')
-
-      if (geom.getType() === "Point") {
-        defaultStyle = PointStyle(fillColor, strokeWidth, strokeColor)
-
-      } else if (geom.getType() === "LineString") {
-        defaultStyle = LineStringStyle(fillColor, strokeWidth, strokeColor)
-
-      } else if (geom.getType() === "Polygon") {
-        defaultStyle = PolygonStyle(fillColor, strokeWidth, strokeColor)
-      }
-      feature.setStyle(defaultStyle)
-
-    }
-
   }
 
   removeFeature(id: string): void {
@@ -498,4 +465,28 @@ export function PolygonStyle(color: string, strokeWidth: number, strokeColor: st
       width: strokeWidth,
     })
   })
+}
+
+export function refreshFeatureStyle(feature: Feature): void {
+  // style feature is based on feature properties !
+  let defaultStyle!:StyleLike
+  let geom = feature.getGeometry()
+  if (geom !== undefined) {
+    const fillColor = feature.get('fill_color')
+    const strokeWidth = feature.get('stroke_width')
+    const strokeColor = feature.get('stroke_color')
+
+    if (geom.getType() === "Point") {
+      defaultStyle = PointStyle(fillColor, strokeWidth, strokeColor)
+
+    } else if (geom.getType() === "LineString") {
+      defaultStyle = LineStringStyle(fillColor, strokeWidth, strokeColor)
+
+    } else if (geom.getType() === "Polygon") {
+      defaultStyle = PolygonStyle(fillColor, strokeWidth, strokeColor)
+    }
+    feature.setStyle(defaultStyle)
+
+  }
+
 }

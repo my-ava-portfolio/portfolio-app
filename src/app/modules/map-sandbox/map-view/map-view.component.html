@@ -162,6 +162,10 @@
               <fa-icon *ngIf="feature.get('geom_type') === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
               <fa-icon *ngIf="feature.get('geom_type') === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
               <span>{{ feature.get('name') }}</span>
+              
+              <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="color" [style.background]="feature.get('fill_color')" (colorPickerClose)="updateFillColor(feature, $event)"/>
+              <input class="small strokeWidth" type="number" min="0" max="12" [value]="feature.get('stroke_width')" (change)="updateStrokeWidth(feature, $event)" />
+              <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="color" [style.background]="feature.get('stroke_color')" (colorPickerClose)="updateStrokeColor(feature, $event)"/>
 
             </div>
 
