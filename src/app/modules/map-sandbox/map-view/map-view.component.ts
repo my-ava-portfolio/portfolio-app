@@ -179,7 +179,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   selectLayer(layerId: string | null): void {
-    this.resetMapSelection()
+    this.selectFeature(null)
 
     if (layerId !== null) {
       this.map.getLayers().forEach((layer: any) => {

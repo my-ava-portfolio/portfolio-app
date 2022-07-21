@@ -54,11 +54,11 @@ export class DrawInteraction {
 
   }
 
-  prepareSelect(): void {
+  prepareSelect(vectorLayer: any): void {
     this.selectClick = new Select({
       condition: click,
       multi: false,
-      layers: [this.vectorLayer],
+      layers: [vectorLayer],
       // style: (feature: any) => {
       //   return highLigthStyle(feature)
       // }  // TODO add an edit style (check Qgis)
@@ -135,7 +135,7 @@ export class DrawInteraction {
 
     this.holePolygonDrawingStatus = holeStatus;
 
-    this.prepareSelect()
+    this.prepareSelect(vectorLayer)
     this.prepareModifier()
 
     this.disableEditing();
@@ -163,10 +163,9 @@ export class DrawInteraction {
 
 
   enableSelecting(vectorLayer: VectorLayer<any>): void {
-    this.vectorLayer = vectorLayer;
     this.sourceFeatures = vectorLayer.getSource();
 
-    this.prepareSelect()
+    this.prepareSelect(vectorLayer)
   }
 
   enableEditing(): void {
