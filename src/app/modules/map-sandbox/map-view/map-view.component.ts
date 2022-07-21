@@ -129,17 +129,19 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.featuresDisplayedSubscription.unsubscribe();
 
 
-    this.mapService.resetMapView()
-
     this.allExistingLayers.forEach((layer: layerHandler) => {
       this.map.removeLayer(layer.vectorLayer)
+      layer.cleanEvents()
     })
     this.groupsList.forEach((group: GroupHandler) => {
       this.map.removeLayer(group._group)
     })
 
     this.mapService.changeMapInteractionStatus(false)
-    this.setProjection("EPSG:3857")
+
+    // this.setProjection("EPSG:3857") // create zoom issue....
+    this.mapService.resetMapView()
+
   }
 
   sendResumeSubMenus(): void {
