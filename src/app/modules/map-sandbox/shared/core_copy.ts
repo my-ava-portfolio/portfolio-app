@@ -64,6 +64,9 @@ export class layerHandler {
     this.initSelect();
     this.initSnap();
     this.initModifier()
+
+    this.map.addLayer(this.vectorLayer)
+
   }
 
   private setLayer(): void {
@@ -76,7 +79,6 @@ export class layerHandler {
     this.vectorLayer.set('name', this.layerName, true)
     this.vectorLayer.set('geomType', this.geomType, true)
 
-    this.map.addLayer(this.vectorLayer)
   }
 
   removeLayer(): void {
@@ -125,8 +127,6 @@ export class layerHandler {
 
   enableDrawing(): void {
 
-    this.enableEditing();
-
     this.draw = new Draw({
       type: this.geomType,
       stopClick: false,
@@ -134,6 +134,7 @@ export class layerHandler {
     });
 
     this.map.addInteraction(this.draw);
+    this.map.addInteraction(this.snap);
 
     this.draw.on('drawstart', this.onDrawStart.bind(this));
     this.draw.on('drawend', this.onDrawEnd.bind(this));
@@ -148,8 +149,8 @@ export class layerHandler {
   }
 
   disableDrawing(): void {
-    this.disableEditing();
     this.map.removeInteraction(this.draw);
+    this.map.removeInteraction(this.snap);
   }
 
   enableEditing(): void {

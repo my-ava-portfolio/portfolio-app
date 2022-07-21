@@ -46,6 +46,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   layersAdded: layerHandler[] = [];
   layerIdSelected: string | null = null;
   layerIdEdited: string | null = null;
+  layerIdDrawn: string | null = null;
   layerNamedIncrement: number = 0;
   createModesSupported = [
     {
@@ -179,7 +180,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   selectLayer(layerId: string | null): void {
-    this.selectFeature(null)
 
     if (layerId !== null) {
       this.layersAdded.forEach((layer: layerHandler) => {
@@ -187,6 +187,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
           this.layerIdSelected = layerId
           this.addFeature(null)
+          this.editFeature(null)
+
           layer.enableSelecting()
 
           this.layerFeatures = layer.features()
@@ -210,19 +212,49 @@ export class MapViewComponent implements OnInit, OnDestroy {
       });
 
     } else {
+      // to disable the draw and edit tools
       this.layerIdSelected = layerId
       this.addFeature(null)
+      this.editFeature(null)
+
     }
 
   }
 
   addFeature(layerId: string | null): void {
+    console.log("add", this.layerIdDrawn, this.layerIdEdited)
+
+    if (layerId === this.layerIdDrawn || layerId === null) {
+      this.layersAdded.forEach((layer: layerHandler) => {
+
+        if (layer.id === this.layerIdDrawn) {
+          layer.disableDrawing()
+          this.layerIdDrawn = null
+          return;
+        }
+      });
+
+    } else {
+
+      this.layersAdded.forEach((layer: layerHandler) => {
+
+        if (layer.id === layerId) {
+            this.selectLayer(layerId) // draw and edit tool are reset here
+            this.layerIdDrawn = layerId
+            layer.enableDrawing()
+          }
+      });
+    }
+  }
+
+  editFeature(layerId: string | null): void {
+    console.log("edit", this.layerIdDrawn, this.layerIdEdited)
 
     if (layerId === this.layerIdEdited || layerId === null) {
       this.layersAdded.forEach((layer: layerHandler) => {
 
         if (layer.id === this.layerIdEdited) {
-          layer.disableDrawing()
+          layer.disableEditing()
           this.layerIdEdited = null
           return;
         }
@@ -233,13 +265,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.layersAdded.forEach((layer: layerHandler) => {
 
         if (layer.id === layerId) {
-            this.selectLayer(layerId)
+            this.selectLayer(layerId) // draw and edit tool are reset here
             this.layerIdEdited = layerId
-            layer.enableDrawing()
+            layer.enableEditing()
           }
       });
     }
-
   }
 
   removeLayer(layerId: string): void {
