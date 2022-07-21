@@ -34,10 +34,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   map!: Map;
 
-  layersCount: number = 0;
-  layerIdSelected!: string |null;
-  allLayers: any[] = [];
-  layerNamedIncrement: number = 0;
+
 
   disabledIcon = faXmark;
   EditIcon = faCircle;
@@ -52,6 +49,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
   currentEpsg!: string;
   selectedEpsg!: string;
 
+  layersCount: number = 0;
+  layerIdSelected!: string |null;
+  allLayers: any[] = [];
+  layerNamedIncrement: number = 0;
   createModesSupported = [
     {
       "mode": 'Point',
@@ -70,7 +71,32 @@ export class MapViewComponent implements OnInit, OnDestroy {
     }
   ]
 
-
+  editMode!: any[] | null
+  editModeSelected!: any[];
+  editModesSupported: any = {
+    "Point": [
+      {
+        "mode": "edit",
+        "label": "Editer"
+      }
+    ],
+    "LineString": [
+      {
+        "mode": "edit",
+        "label": "Editer"
+      }
+    ],
+    "Polygon": [
+      {
+        "mode": "edit",
+        "label": "Editer"
+      },
+      {
+        "mode": "hole",
+        "label": "Ajouter un trou"
+      }
+    ]
+  }
 
   isLegendDisplayed = true;
 
@@ -169,12 +195,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   selectLayer(layerId: string | null): void {
-
+    this.editMode = null
     this.map.getLayers().forEach((layer: any) => {
       if (layer instanceof VectorLayer) {
         if (layer.get('id') === layerId) {
           layer = layer
           this.layerIdSelected = layerId
+          this.editMode = this.editModesSupported[layer.get('geomType')] // to activate the edit widget, but it could be useless
         }
       }
 
