@@ -204,6 +204,12 @@ export class layerHandler {
     });
 
     this.modifier.on('modifyend', (e: any) => {
+
+      // to remove hole on polygon (select the polygon, press ctr + start to edti a vertice + release)
+      if (e.mapBrowserEvent.originalEvent.ctrlKey) {
+        this.removeHoles(e)
+      }
+
       // to update value definitively (especially during hole drawing)
       if (e.features.getArray().length > 0) {
         e.features.getArray().forEach((element: Feature) => {
@@ -213,7 +219,8 @@ export class layerHandler {
     })
   }
 
-  enableDrawing(): void {
+  enableDrawing(holeStatus = false): void {
+    this.holePolygonDrawingStatus = holeStatus;
 
     this.draw = new Draw({
       type: this.geomType,
@@ -233,6 +240,8 @@ export class layerHandler {
         this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
         this.polygonIntersected = undefined;
       }
+      this.disableDrawing()
+
     });
   }
 
@@ -312,7 +321,7 @@ export class layerHandler {
       this.polygonIntersected = undefined;
       // TODO: QUESTION: no need to recreate the properties because the polygon already exists?
       // return
-
+      this.disableDrawing() // disable drawing after each hole
     }
 
     ++this.counter;

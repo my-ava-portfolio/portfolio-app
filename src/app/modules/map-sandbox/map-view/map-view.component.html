@@ -229,6 +229,10 @@
               WKT
             </span>
 
+            <span *ngIf="feature.geom_type === 'Polygon'" class="badge bg-success rounded m-1 small" (click)="addPolygonHole(feature.layer_id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ajouter un trou au polygon sélectionné">
+              Trou
+            </span>
+
           </div>
 
           <div class="d-flex flex-row justify-content-between">

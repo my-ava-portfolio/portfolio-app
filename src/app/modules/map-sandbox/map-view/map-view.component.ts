@@ -280,7 +280,17 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   }
 
-  addFeature(layerId: string | null): void {
+  addPolygonHole(layerIdSelected: string): void {
+    this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
+      if (layer.id === layerIdSelected) {
+          this.layerIdDrawn = layerIdSelected
+          this.selectLayer(this.layerIdDrawn) // draw and edit tool are reset here
+          layer.enableDrawing(true)
+        }
+    });
+  }
+
+  addFeature(layerId: string | null, ): void {
     console.log("add", this.layerIdDrawn, this.layerIdEdited)
 
     if (layerId === this.layerIdDrawn || layerId === null) {
@@ -299,7 +309,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
         if (layer.id === layerId) {
             this.selectLayer(layerId) // draw and edit tool are reset here
-            this.layerIdDrawn = layerId
+          this.layerIdDrawn = layerId
             layer.enableDrawing()
           }
       });
@@ -414,6 +424,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         'id': feature.getId(),
         'name': feature.get('name'),
         'group': "feature.groupId",
+        'layer_id': this.layerIdSelected,
         'geom_type': feature.get('geom_type'),
         'created_at': feature.get('created_at'),
         'updated_at': feature.get('updated_at'),
