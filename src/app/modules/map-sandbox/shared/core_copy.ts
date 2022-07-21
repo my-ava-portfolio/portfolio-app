@@ -79,10 +79,10 @@ export class layerHandler {
     this.map.addLayer(this.vectorLayer)
   }
 
-    removeLayer(): void {
-      this.map.removeLayer(this.vectorLayer)
-      this.deleted = true;
-    }
+  removeLayer(): void {
+    this.map.removeLayer(this.vectorLayer)
+    this.deleted = true;
+  }
 
   private initSelect(): void {
     this.select = new Select({

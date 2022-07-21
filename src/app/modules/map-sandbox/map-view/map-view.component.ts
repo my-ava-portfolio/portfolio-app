@@ -186,7 +186,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         if (layer.id === layerId) {
 
           this.layerIdSelected = layerId
-          this.editLayerAdd(null)
+          this.addFeature(null)
           layer.enableSelecting()
 
           this.layerFeatures = layer.features()
@@ -211,12 +211,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     } else {
       this.layerIdSelected = layerId
-      this.editLayerAdd(null)
+      this.addFeature(null)
     }
 
   }
 
-  editLayerAdd(layerId: string | null): void {
+  addFeature(layerId: string | null): void {
 
     if (layerId === null) {
       this.layersAdded.forEach((layer: layerHandler) => {
@@ -238,10 +238,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
             layer.enableDrawing()
           }
       });
-
     }
-
-
 
   }
 
@@ -249,19 +246,22 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.layersAdded.forEach((layer: layerHandler) => {
 
       if (layer.id === layerId) {
-        this.editLayerAdd(null)
+        this.addFeature(null)
 
         layer.removeLayer()
         this.layerIdSelected = null // deselect by defaultt when removing
         this.resetToasts()
         this.layerFeatures = layer.features()
+        this.refreshAllLayers()
       }
-
-
     });
   }
 
-
+  refreshAllLayers(): void {
+    this.layersAdded = this.layersAdded.filter((layer: layerHandler) => {
+      return !layer.deleted
+    })
+  }
 
 
   refreshAllFeatures(layer: any): void {
