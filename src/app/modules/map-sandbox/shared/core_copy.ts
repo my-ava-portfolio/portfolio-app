@@ -319,7 +319,7 @@ export class layerHandler {
 
       this.polygonIntersected = undefined;
       // TODO: QUESTION: no need to recreate the properties because the polygon already exists?
-      // return
+      return
     }
 
     ++this.counter;

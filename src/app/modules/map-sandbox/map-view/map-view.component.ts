@@ -200,7 +200,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   refreshLayersFromGroupId(groupId: string): void {
     this.layersFromCurrentGroup = this.allExistingLayers.filter((layer: layerHandler) => {
-      return layer.groupId === groupId;
+      return layer.groupId === groupId && !layer.deleted;
     })
   }
 
@@ -281,6 +281,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   addPolygonHole(layerIdSelected: string): void {
+    this.addFeature(null)
     this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
       if (layer.id === layerIdSelected) {
           this.layerIdDrawn = layer.id
@@ -310,7 +311,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         if (layer.id === layerId) {
             this.selectLayer(layerId) // draw and edit tool are reset here
           this.layerIdDrawn = layerId
-            layer.enableDrawing()
+            layer.enableDrawing(false)
           }
       });
     }
