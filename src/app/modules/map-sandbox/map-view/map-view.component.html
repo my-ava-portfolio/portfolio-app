@@ -91,25 +91,25 @@
       </div>
       </label>
 
-      <ng-container *ngFor="let layer of allLayers">
+      <ng-container *ngFor="let layer of layersAdded">
       <div class="d-flex flex-row">
-        <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-layer-' + layer.get('id')" [checked]="layerIdSelected === layer.get('id')" autocomplete="off">
-        <label class="w-100 border-warning px-0"  [for]="'btnradio-layer-' + layer.get('id')" (click)="selectLayer(layer.get('id'))">
-          <div class="dropdown-item small d-flex flex-row align-items-center" [ngClass]="layerIdSelected === layer.get('id') ? 'bg-secondary text-white' :  'text-black'">
-            <fa-icon *ngIf="layer.get('geomType') === 'Point'" class="me-2" [icon]="pointIcon"></fa-icon>
-            <fa-icon *ngIf="layer.get('geomType') === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
-            <fa-icon *ngIf="layer.get('geomType') === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
-            <span>{{ layer.get('name') }}</span>
+        <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-layer-' + layer.id" [checked]="layerIdSelected === layer.id" autocomplete="off">
+        <label class="w-100 border-warning px-0"  [for]="'btnradio-layer-' + layer.id" (click)="selectLayer(layer.id)">
+          <div class="dropdown-item small d-flex flex-row align-items-center" [ngClass]="layerIdSelected === layer.id ? 'bg-secondary text-white' :  'text-black'">
+            <fa-icon *ngIf="layer.geomType === 'Point'" class="me-2" [icon]="pointIcon"></fa-icon>
+            <fa-icon *ngIf="layer.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
+            <fa-icon *ngIf="layer.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
+            <span>{{ layer.layerName }}</span>
           </div>
         </label>
 
         <div>
-          <fa-icon class="me-2" [icon]="disabledIcon" (click)="removeLayer(layer.get('id'))"></fa-icon>
+          <fa-icon class="me-2" [icon]="disabledIcon" (click)="removeLayer(layer.id)"></fa-icon>
         </div>
 
         <div>
 
-          <button class="badge border-0" [ngClass]="layerIdEdited === layer.get('id') ? 'bg-danger' : 'bg-secondary'" type="submit" (click)="editLayerAdd(layer.get('id'))">Add</button>
+          <button class="badge border-0" [ngClass]="layerIdEdited === layer.id ? 'bg-danger' : 'bg-secondary'" type="submit" (click)="editLayerAdd(layer.id)">Add</button>
 
         </div>
 

@@ -11,7 +11,7 @@ import VectorSource from 'ol/source/Vector';
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { DrawInteraction, getWkt, PointStyle } from '@modules/map-sandbox/shared/core';
+import { layerHandler, getWkt, PointStyle } from '@modules/map-sandbox/shared/core_copy';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -32,29 +32,20 @@ import BaseVectorLayer from 'ol/layer/BaseVector';
 })
 export class MapViewComponent implements OnInit, OnDestroy {
 
-  map!: Map;
-
-  featuresDisplayedObservable = new Subject<Feature[]>()
-
-  selectedFeaturesProperties: any[] = [];
-
+  // icons
   disabledIcon = faXmark;
   EditIcon = faCircle;
   pointIcon = faCircle;
   lineStringIcon = faWaveSquare;
   polygonIcon = faDrawPolygon;
 
-  mousePositionControl!: MousePosition;
-  cursorCoordinates!: any;
-  epsgAvailable = ["EPSG:4326", "EPSG:3857"];
-  // create a service to get the map epsg!
-  currentEpsg!: string;
-  selectedEpsg!: string;
+  featuresDisplayedObservable = new Subject<Feature[]>()
 
-  layersCount: number = 0;
-  layerIdSelected!: string | null;
-  layerIdEdited!: string | null
-  allLayers: any[] = [];
+  map!: Map;
+
+  layersAdded: layerHandler[] = [];
+  layerIdSelected: string | null = null;
+  layerIdEdited: string | null = null;
   layerNamedIncrement: number = 0;
   createModesSupported = [
     {
@@ -74,10 +65,23 @@ export class MapViewComponent implements OnInit, OnDestroy {
     }
   ]
 
-  layerFeatures: any[] = [];
-  featureSelectedId!: string | null;
 
-  mapInteraction!: DrawInteraction;
+
+  selectedFeaturesProperties: any[] = [];
+
+
+
+  mousePositionControl!: MousePosition;
+  cursorCoordinates!: any;
+  epsgAvailable = ["EPSG:4326", "EPSG:3857"];
+  // create a service to get the map epsg!
+  currentEpsg!: string;
+  selectedEpsg!: string;
+
+
+
+  layerFeatures: any[] = [];
+  featureSelectedId: string | null = null;
 
   isLegendDisplayed = true;
 
@@ -136,7 +140,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapService.getMap();
 
     this.initMousePosition()
-    this.mapInteraction = new DrawInteraction(this.map)
 
   }
 
@@ -163,58 +166,46 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
-  addLayer(geomType: string): void {
-    let sourceFeatures = new VectorSource();
+  addLayer(geomType: any): void {
 
-    let layerFeatures = new VectorLayer({
-      source: sourceFeatures,
-    });
-    const idValue = uuidv4()
-    layerFeatures.set('id', idValue, true)
-    layerFeatures.set('name', 'layer ' + ++this.layerNamedIncrement, true)
-    layerFeatures.set('geomType', geomType, true)
+    let newLayer = new layerHandler(
+      this.map,
+      'layer ' + ++this.layerNamedIncrement,
+      geomType
+    )
 
-    this.map.addLayer(layerFeatures)
-    this.getAllLayers()
+    this.layersAdded.push(newLayer)
+
   }
 
   selectLayer(layerId: string | null): void {
     this.selectFeature(null)
 
     if (layerId !== null) {
-      this.map.getLayers().forEach((layer: any) => {
-        if (layer instanceof VectorLayer) {
-          if (layer.get('id') === layerId) {
+      this.layersAdded.forEach((layer: layerHandler) => {
+        if (layer.id === layerId) {
 
-            this.layerIdSelected = layerId
-            this.editLayerAdd(null)
-            this.mapInteraction.enableSelecting(layer)
+          this.layerIdSelected = layerId
+          this.editLayerAdd(null)
+          layer.enableSelecting()
 
-            this.layerFeatures = layer.getSource().getFeatures()
-
-
-            this.mapInteraction.sourceFeatures.on('addfeature', (event: any) => {
-              this.refreshAllFeatures(layer)
-
-            });
-
-            // this.mapInteraction.sourceFeatures.on('changefeature', (event: any) => {
-            //   this.featuresDisplayedObservable.next([event.feature]);
-            // });
-
-            this.mapInteraction.sourceFeatures.on('removefeature', (event: any) => {
-              this.refreshAllFeatures(layer)
-
-            });
+          this.layerFeatures = layer.features()
 
 
-            this.mapInteraction.selectClick.on("select", (event: any) => {
-              // action when selecting feature from the map
-              // this.mapInteraction.selectClick.getFeatures().clear()
-            })
+          layer.sourceFeatures.on('addfeature', (event: any) => {
+            this.refreshAllFeatures(layer)
 
+          });
 
-          }
+          // this.mapInteraction.sourceFeatures.on('changefeature', (event: any) => {
+          //   this.featuresDisplayedObservable.next([event.feature]);
+          // });
+
+          layer.sourceFeatures.on('removefeature', (event: any) => {
+            this.refreshAllFeatures(layer)
+
+          });
+
         }
       });
 
@@ -226,88 +217,83 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   editLayerAdd(layerId: string | null): void {
-    if (layerId !== null && this.layerIdEdited !== layerId) {
 
-      this.map.getLayers().forEach((layer: any) => {
-        if (layer instanceof VectorLayer) {
-          if (layer.get('id') === layerId) {
-            this.selectLayer(layerId)
-            this.layerIdEdited = layerId
-            this.mapInteraction.enabledDrawing(layer, false)
-          }
+    if (layerId === null) {
+      this.layersAdded.forEach((layer: layerHandler) => {
+
+        if (layer.id === this.layerIdEdited) {
+          layer.disableDrawing()
+          this.layerIdEdited = null
+          return
         }
       });
-    } else {
-      this.layerIdEdited = null
-      this.mapInteraction.disableEditing()
-    }
-  }
 
-  disableCurrentEditing(): void {
-    this.layerIdEdited = null
-    this.mapInteraction.disableEditing()
+    } else {
+
+      this.layersAdded.forEach((layer: layerHandler) => {
+
+        if (layer.id === layerId) {
+            this.selectLayer(layerId)
+            this.layerIdEdited = layerId
+            layer.enableDrawing()
+          }
+      });
+
+    }
+
+
+
   }
 
   removeLayer(layerId: string): void {
-    this.map.getLayers().forEach((layer: any) => {
+    this.layersAdded.forEach((layer: layerHandler) => {
 
-      if (layer instanceof VectorLayer) {
-        if (layer.get('id') === layerId) {
-          this.disableCurrentEditing()
-          this.map.removeLayer(layer)
-          this.layerIdSelected = null // deselect by defaultt when removing
-          this.resetToasts()
-          this.resetAllFeatures()
-        }
+      if (layer.id === layerId) {
+        this.editLayerAdd(null)
+
+        layer.removeLayer()
+        this.layerIdSelected = null // deselect by defaultt when removing
+        this.resetToasts()
+        this.layerFeatures = layer.features()
       }
 
+
     });
-    this.getAllLayers()
   }
 
 
-  getAllLayers(): void {
-    this.allLayers = [];
-
-    this.map.getLayers().forEach((item: any) => {
-      if (item instanceof BaseVectorLayer) {
-        this.allLayers.push(item);
-      } else if (item instanceof BaseTileLayer) {
-
-      } else {
-        console.log("not supported")
-      }
-    });
-
-  }
 
 
   refreshAllFeatures(layer: any): void {
-    this.layerFeatures = layer.getSource().getFeatures()
+    this.layerFeatures = layer.features()
   }
-  resetAllFeatures(): void {
-    this.layerFeatures = []
-  }
+
   selectFeature(feature: Feature | null): void {
     // reset toast
     this.resetToasts()
 
     if (feature !== null) {
-
+      let layersFound: layerHandler[] = this.layersAdded.filter((layer: layerHandler) => {
+        return layer.id === this.layerIdSelected
+      })
       // reset the selection and set it (then the style will be updated) + it call the changefeature event !
-      this.mapInteraction.selectClick.getFeatures().clear()
-      this.mapInteraction.selectClick.getFeatures().push(feature)
+      layersFound[0].select.getFeatures().clear()
+      layersFound[0].select.getFeatures().push(feature)
       this.featuresDisplayedObservable.next([feature]);
 
     } else {
-      this.resetMapSelection()
+      this.resetFeatureSelection()
     }
 
   }
 
-  resetMapSelection(): void {
-    if (this.mapInteraction.selectClick !== undefined) {
-      this.mapInteraction.selectClick.getFeatures().clear()
+  resetFeatureSelection(): void {
+    if (this.featureSelectedId !== null) {
+      let layersFound: layerHandler[] = this.layersAdded.filter((layer: layerHandler) => {
+        return layer.id === this.layerIdSelected
+      })
+      // reset the selection and set it (then the style will be updated) + it call the changefeature event !
+      layersFound[0].select.getFeatures().clear()
       this.featureSelectedId = null;
     }
 
