@@ -179,14 +179,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   selectLayer(layerId: string | null): void {
+    this.resetMapSelection()
 
     if (layerId !== null) {
       this.map.getLayers().forEach((layer: any) => {
         if (layer instanceof VectorLayer) {
           if (layer.get('id') === layerId) {
-            layer = layer
+
             this.layerIdSelected = layerId
-            this.editLayer(null)
+            this.editLayerAdd(null)
             this.mapInteraction.enableSelecting(layer)
 
             this.layerFeatures = layer.getSource().getFeatures()
@@ -197,14 +198,21 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
             });
 
-            this.mapInteraction.sourceFeatures.on('changefeature', (event: any) => {
-              this.featuresDisplayedObservable.next([event.feature]);
-            });
+            // this.mapInteraction.sourceFeatures.on('changefeature', (event: any) => {
+            //   this.featuresDisplayedObservable.next([event.feature]);
+            // });
 
             this.mapInteraction.sourceFeatures.on('removefeature', (event: any) => {
               this.refreshAllFeatures(layer)
 
             });
+
+
+            this.mapInteraction.selectClick.on("select", (event: any) => {
+              // action when selecting feature from the map
+              // this.mapInteraction.selectClick.getFeatures().clear()
+            })
+
 
           }
         }
@@ -212,12 +220,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     } else {
       this.layerIdSelected = layerId
-      this.editLayer(null)
+      this.editLayerAdd(null)
     }
 
   }
 
-  editLayer(layerId: string | null): void {
+  editLayerAdd(layerId: string | null): void {
     if (layerId !== null && this.layerIdEdited !== layerId) {
 
       this.map.getLayers().forEach((layer: any) => {
@@ -280,7 +288,30 @@ export class MapViewComponent implements OnInit, OnDestroy {
   resetAllFeatures(): void {
     this.layerFeatures = []
   }
+  selectFeature(feature: Feature | null): void {
+    // reset toast
+    this.resetToasts()
 
+    if (feature !== null) {
+
+      // reset the selection and set it (then the style will be updated) + it call the changefeature event !
+      this.mapInteraction.selectClick.getFeatures().clear()
+      this.mapInteraction.selectClick.getFeatures().push(feature)
+      this.featuresDisplayedObservable.next([feature]);
+
+    } else {
+      this.resetMapSelection()
+    }
+
+  }
+
+  resetMapSelection(): void {
+    if (this.mapInteraction.selectClick !== undefined) {
+      this.mapInteraction.selectClick.getFeatures().clear()
+      this.featureSelectedId = null;
+    }
+
+  }
 
   resetToasts(): void {
     this.selectedFeaturesProperties = []

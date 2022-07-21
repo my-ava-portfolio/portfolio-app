@@ -109,7 +109,7 @@
 
         <div>
 
-          <button class="badge border-0" [ngClass]="layerIdEdited === layer.get('id') ? 'bg-danger' : 'bg-secondary'" type="submit" (click)="editLayer(layer.get('id'))">Edit</button>
+          <button class="badge border-0" [ngClass]="layerIdEdited === layer.get('id') ? 'bg-danger' : 'bg-secondary'" type="submit" (click)="editLayerAdd(layer.get('id'))">Add</button>
 
         </div>
 
@@ -143,7 +143,7 @@
 
         <ng-container *ngFor="let feature of layerFeatures">
           <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-feature-' + feature.getId()" [checked]="featureSelectedId === feature.getId()" autocomplete="off">
-          <label class="w-100 border-warning px-0"  [for]="'btnradio-feature-' + feature.getId()">
+          <label class="w-100 border-warning px-0"  [for]="'btnradio-feature-' + feature.getId()" (click)="selectFeature(feature)">
 
             <div class="dropdown-item small d-flex flex-row align-items-center" [ngClass]="featureSelectedId === feature.getId() ? 'bg-secondary text-white' :  'text-black'">
               <fa-icon *ngIf="feature.get('geom_type') === 'Point'" class="me-2" [icon]="pointIcon" [style.color]="feature.get('fill_color')"></fa-icon>

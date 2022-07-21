@@ -12,7 +12,7 @@ import LinearRing from 'ol/geom/LinearRing';
 import WKT from 'ol/format/WKT';
 
 import Select from 'ol/interaction/Select';
-import { altKeyOnly, click, mouseOnly, pointerMove } from 'ol/events/condition';
+import { altKeyOnly, click, doubleClick, mouseOnly, pointerMove, shiftKeyOnly, singleClick } from 'ol/events/condition';
 import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
