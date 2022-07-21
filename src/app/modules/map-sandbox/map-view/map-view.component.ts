@@ -179,55 +179,65 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   selectLayer(layerId: string | null): void {
-    this.disableCurrentEditing()
 
+    if (layerId !== null) {
+      this.map.getLayers().forEach((layer: any) => {
+        if (layer instanceof VectorLayer) {
+          if (layer.get('id') === layerId) {
+            layer = layer
+            this.layerIdSelected = layerId
+            this.editLayer(null)
+            this.mapInteraction.enableSelecting(layer)
 
-    this.map.getLayers().forEach((layer: any) => {
-      if (layer instanceof VectorLayer) {
-        if (layer.get('id') === layerId) {
-          layer = layer
-          this.layerIdSelected = layerId
-          this.mapInteraction.enableSelecting(layer)
-          this.layerFeatures = layer.getSource().getFeatures()
-
-
-          this.mapInteraction.sourceFeatures.on('addfeature', (event: any) => {
             this.layerFeatures = layer.getSource().getFeatures()
 
-          });
 
-          this.mapInteraction.sourceFeatures.on('changefeature', (event: any) => {
-            this.featuresDisplayedObservable.next([event.feature]);
-          });
+            this.mapInteraction.sourceFeatures.on('addfeature', (event: any) => {
+              this.refreshAllFeatures(layer)
 
-          this.mapInteraction.sourceFeatures.on('removefeature', (event: any) => {
-            this.layerFeatures = layer.getSource().getFeatures()
+            });
 
-          });
+            this.mapInteraction.sourceFeatures.on('changefeature', (event: any) => {
+              this.featuresDisplayedObservable.next([event.feature]);
+            });
 
+            this.mapInteraction.sourceFeatures.on('removefeature', (event: any) => {
+              this.refreshAllFeatures(layer)
+
+            });
+
+          }
         }
-      }
-    });
+      });
+
+    } else {
+      this.layerIdSelected = layerId
+      this.editLayer(null)
+    }
+
   }
 
-  editLayer(layerId: string): void {
-    this.disableCurrentEditing()
+  editLayer(layerId: string | null): void {
+    if (layerId !== null && this.layerIdEdited !== layerId) {
 
-    this.map.getLayers().forEach((layer: any) => {
-      if (layer instanceof VectorLayer) {
-        if (layer.get('id') === layerId) {
-
-          this.layerIdEdited = layerId
-          this.mapInteraction.enabledDrawing(layer, false)
+      this.map.getLayers().forEach((layer: any) => {
+        if (layer instanceof VectorLayer) {
+          if (layer.get('id') === layerId) {
+            this.selectLayer(layerId)
+            this.layerIdEdited = layerId
+            this.mapInteraction.enabledDrawing(layer, false)
+          }
         }
-      }
-    });
+      });
+    } else {
+      this.layerIdEdited = null
+      this.mapInteraction.disableEditing()
+    }
   }
 
   disableCurrentEditing(): void {
     this.layerIdEdited = null
     this.mapInteraction.disableEditing()
-
   }
 
   removeLayer(layerId: string): void {
@@ -239,6 +249,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
           this.map.removeLayer(layer)
           this.layerIdSelected = null // deselect by defaultt when removing
           this.resetToasts()
+          this.resetAllFeatures()
         }
       }
 
@@ -260,6 +271,14 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
     });
 
+  }
+
+
+  refreshAllFeatures(layer: any): void {
+    this.layerFeatures = layer.getSource().getFeatures()
+  }
+  resetAllFeatures(): void {
+    this.layerFeatures = []
   }
 
 
