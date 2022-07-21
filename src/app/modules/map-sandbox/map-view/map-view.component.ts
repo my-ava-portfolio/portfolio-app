@@ -60,6 +60,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   groupsList: GroupHandler[] = []
   groupNameIncrement: number = 0;
+  groupIdSelected!: string;
+  groupNameSelected!: string;
 
   selectedFeaturesProperties: any[] = [];
   color!: string
@@ -168,6 +170,30 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.groupsList.push(newGroup)
   }
 
+  currentGroup(): void {
+    this.layersAdded.forEach((layer: any) => {
+      if (this.layerIdSelected === layer.getId()) {
+        this.groupIdSelected = layer.groupId;
+
+        this.groupsList.forEach((group: GroupHandler) => {
+          if (group.id === layer.groupId) {
+            this.groupNameSelected = group.groupName;
+            return;
+          }
+        })
+      }
+    })
+  }
+
+  selectGroup(groupId: string): void {
+    this.groupsList.forEach((group: GroupHandler) => {
+      if (group.id === groupId) {
+        this.groupIdSelected = group.id;
+        this.groupNameSelected = group.groupName;
+        return;
+      }
+    })
+  }
 
   addLayer(geomType: any, groupId: string): void {
     const groupsFound = this.groupsList.filter((group: GroupHandler) => {
@@ -363,9 +389,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.selectedFeaturesProperties.push({
         'id': feature.getId(),
         'name': feature.get('name'),
+        'group': "feature.groupId",
         'geom_type': feature.get('geom_type'),
         'created_at': feature.get('created_at'),
         'updated_at': feature.get('updated_at'),
+        'fill_color': feature.get('fill_color'),
+        'stroke_color': feature.get('stroke_color'),
+        'stroke_width': feature.get('stroke_width'),
         'icon': geomIcon,
         'wkt': getWkt(geomFeature)
       })
@@ -448,15 +478,27 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.currentEpsg = this.map.getView().getProjection().getCode();
   }
 
-  updateFillColor(feature: Feature, color: string): void {
+  updateFillColor(featureId: string, color: string): void {
+    let features = this.layerFeatures.filter((feature: any) => {
+      return feature.getId() === featureId
+    })
+    let feature = features[0]
     feature.set("fill_color", color, false)
     refreshFeatureStyle(feature)
   }
-  updateStrokeWidth(feature: Feature, event: any): void {
+  updateStrokeWidth(featureId: string, event: any): void {
+    let features = this.layerFeatures.filter((feature: any) => {
+      return feature.getId() === featureId
+    })
+    let feature = features[0]
     feature.set("stroke_width", event.target.value, true)
     refreshFeatureStyle(feature)
   }
-  updateStrokeColor(feature: Feature, color: string): void {
+  updateStrokeColor(featureId: string, color: string): void {
+    let features = this.layerFeatures.filter((feature: any) => {
+      return feature.getId() === featureId
+    })
+    let feature = features[0]
     feature.set("stroke_color", color, true)
     refreshFeatureStyle(feature)
   }
