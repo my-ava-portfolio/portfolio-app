@@ -218,13 +218,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   addFeature(layerId: string | null): void {
 
-    if (layerId === null) {
+    if (layerId === this.layerIdEdited || layerId === null) {
       this.layersAdded.forEach((layer: layerHandler) => {
 
         if (layer.id === this.layerIdEdited) {
           layer.disableDrawing()
           this.layerIdEdited = null
-          return
+          return;
         }
       });
 
@@ -259,7 +259,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   refreshAllLayers(): void {
     this.layersAdded = this.layersAdded.filter((layer: layerHandler) => {
-      return !layer.deleted
+      return layer.deleted
     })
   }
 
