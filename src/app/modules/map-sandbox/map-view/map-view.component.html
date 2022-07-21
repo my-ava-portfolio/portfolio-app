@@ -9,10 +9,19 @@
         </button>
 
         <div id="geomList" class="btn-group-vertical my-2 align-self-center bg-white shadow rounded-end" role="group" aria-label="">
+
+          <input type="radio" class="border btn-check m-0" name="btnradio" id="btnradio-group">
+          <label class="w-100 border-secondary px-0"  for="btnradio-group" (click)="addGroup()">
+          <div class="dropdown-item small d-flex flex-row" [ngClass]="layerIdSelected === null ? 'bg-secondary text-white' :  'text-black'">
+              <fa-icon class="me-2" [icon]="disabledIcon" ></fa-icon>
+              <span>Ajouter un groupe</span>
+          </div>
+          </label>
+
           <ng-container *ngFor="let feature of createModesSupported">
 
               <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + feature.mode" autocomplete="off">
-              <label class="w-100 border-secondary px-0"  [for]="'btnradio-selector-' + feature.mode" (click)="addLayer(feature.mode)">
+              <label class="w-100 border-secondary px-0"  [for]="'btnradio-selector-' + feature.mode" (click)="addLayer(feature.mode, 'grp1')">
                 <div class="dropdown-item small d-flex flex-row">
                   <fa-icon [ngClass]="'me-2 ' + feature.mode" [icon]="feature.icon" ></fa-icon>
                   <span>{{ feature.label }}</span>
@@ -100,6 +109,8 @@
             <fa-icon *ngIf="layer.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
             <fa-icon *ngIf="layer.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
             <span>{{ layer.layerName }}</span>
+            <span class="small">{{ (layer.groupId) }}</span>
+
           </div>
         </label>
 

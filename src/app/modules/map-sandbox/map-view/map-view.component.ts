@@ -3,26 +3,18 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
 import { MapService } from '@services/map.service';
-import { Draw, Modify, Snap } from 'ol/interaction';
-import VectorLayer from 'ol/layer/Vector';
 
 import Map from 'ol/Map';
-import VectorSource from 'ol/source/Vector';
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { layerHandler, getWkt, PointStyle } from '@modules/map-sandbox/shared/core_copy';
+import { GroupHandler, layerHandler, getWkt } from '@modules/map-sandbox/shared/core_copy';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Subject } from 'rxjs/internal/Subject';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
-import { v4 as uuidv4 } from 'uuid';
-import Group from 'ol/layer/Group';
-import BaseLayer from 'ol/layer/Base';
-import BaseTileLayer from 'ol/layer/BaseTile';
-import BaseVectorLayer from 'ol/layer/BaseVector';
 
 
 @Component({
@@ -66,7 +58,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
     }
   ]
 
-
+  groupsList: GroupHandler[] = []
+  groupNameIncrement: number = 0;
 
   selectedFeaturesProperties: any[] = [];
 
@@ -141,7 +134,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapService.getMap();
 
     this.initMousePosition()
-
+    this.addGroup()
   }
 
   ngOnDestroy(): void {
@@ -167,15 +160,34 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
-  addLayer(geomType: any): void {
+  addGroup(): void {
+    let newGroup = new GroupHandler(
+      this.map,
+      'grp' + ++this.groupNameIncrement
+    )
+    this.groupsList.push(newGroup)
+  }
 
+
+  addLayer(geomType: any, groupId: string): void {
+    const groupsFound = this.groupsList.filter((group: GroupHandler) => {
+      return group.groupName == groupId  // TODO use the id but need gui iplementing
+    })
+
+    if (groupsFound.length === 1) {
     let newLayer = new layerHandler(
       this.map,
       'layer ' + ++this.layerNamedIncrement,
-      geomType
+      geomType,
+      groupsFound[0].id
     )
 
+
+    groupsFound[0].addLayer(newLayer.vectorLayer)
     this.layersAdded.push(newLayer)
+
+    }
+
 
   }
 
@@ -199,9 +211,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
           });
 
-          // this.mapInteraction.sourceFeatures.on('changefeature', (event: any) => {
-          //   this.featuresDisplayedObservable.next([event.feature]);
-          // });
+          layer.sourceFeatures.on('changefeature', (event: any) => {
+            this.featuresDisplayedObservable.next([event.feature]);  // useful to synchro the map selection and the div... maybe we can use the select event here
+          });
 
           layer.sourceFeatures.on('removefeature', (event: any) => {
             this.refreshAllFeatures(layer)
@@ -266,10 +278,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
       this.layersAdded.forEach((layer: layerHandler) => {
 
         if (layer.id === layerId) {
-            this.selectLayer(layerId) // draw and edit tool are reset here
-            this.layerIdEdited = layerId
-            layer.enableEditing()
-          }
+          this.selectLayer(layerId) // draw and edit tool are reset here
+          this.layerIdEdited = layerId
+          layer.enableEditing()
+        }
       });
     }
   }

@@ -17,11 +17,92 @@ import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
+import Group from 'ol/layer/Group';
+import Collection from 'ol/Collection';
 
 
 const defaultStrokeWidth: number = 2;
 const defaultStrokeColor: string = "black";
 const defaultFillColor: string = '#ffcc33';
+
+
+export class GroupHandler {
+
+  private map: Map;
+  _group!: Group;
+
+  id: string;
+
+  groupName!: string;
+
+  layers: layerHandler[] = []
+
+  constructor(
+    map: Map,
+    groupName: string,
+  ) {
+    this.map = map
+    this.groupName = groupName
+
+    this.id = uuidv4()
+    this.initGroup()
+  }
+
+  initGroup(): void {
+    this._group = new Group({
+      layers: [],
+    });
+
+    this._group.set('id', this.id)
+    this._group.set('name', this.groupName)
+
+    this.map.addLayer(this._group)
+  }
+
+  removeGroup(groupId: string): void {
+
+  }
+
+  addLayer(layer: any): void {
+    let innerLayers = this._group.getLayers().getArray(); // no array!
+
+    if (innerLayers[0] === undefined) {
+      innerLayers = [layer]
+    } else {
+      innerLayers.push(layer.vectorLayer);
+    }
+    if (innerLayers instanceof Collection) {
+      // set the layer collection of the grouplayer
+      this._group.setLayers(innerLayers);
+    }
+  }
+
+
+  setSnaps(): void {
+
+    // set snap on all layers
+    this._group.getLayers().getArray().forEach((layer) => {
+      if (layer instanceof VectorLayer) {
+        let interaction = new Snap({
+          source: layer.getSource()
+        });
+        // this.snaps.push(interaction);
+        this.map.addInteraction(interaction);
+
+      }
+    });
+
+  }
+
+  // unsetSnaps(): void {
+  //   // unset snap on all layers
+  //   for (let snap of this._group.getLayers().getArray() ) {
+  //     this.map.removeInteraction(snap);
+  //   }
+  // }
+
+
+}
 
 
 
@@ -35,7 +116,7 @@ export class layerHandler {
   private counter: number = 0
 
   // var for polygon holes
-  private holePolygonDrawingStatus = false;
+  private holePolygonDrawingStatus = false;  // TODO add GUI option to play with it
   private polygonIntersected!: Feature | undefined;
   private coordsLength!: number;
   private previousPolygonGeometry!: any;
@@ -44,6 +125,7 @@ export class layerHandler {
   sourceFeatures!: VectorSource;
   allFeatures: any[] = [];
 
+  groupId: string
   id: string;
   layerName: string;
   geomType: 'Point' | 'LineString' | 'Polygon';
@@ -52,11 +134,13 @@ export class layerHandler {
   constructor(
     map: Map,
     layerName: string,
-    geomType: 'Point' | 'LineString' | 'Polygon'
+    geomType: 'Point' | 'LineString' | 'Polygon',
+    groupId: string
   ) {
     this.map = map
     this.layerName = layerName
     this.geomType = geomType
+    this.groupId = groupId
 
     this.id = uuidv4()
 
@@ -91,6 +175,17 @@ export class layerHandler {
       condition: click,
       multi: false,
       layers: [this.vectorLayer],
+    })
+
+    this.select.on("select", (event: any) => {
+
+      if (event.deselected.length === 1) {
+        // when delesected we refresh the style regarding its attribute to avoid conflict.
+        // I need to select the feature to change the color:
+        // when I select it OL change its style due to the selection.unselect will revert the last style but not the new one
+        // this.refreshFeatureStyle(event.deselected[0]) // ISSUE IF activated
+      }
+
     })
   }
 
