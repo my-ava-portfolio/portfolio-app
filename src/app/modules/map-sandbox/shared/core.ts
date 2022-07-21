@@ -17,7 +17,6 @@ import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
-import { TRUE } from 'ol/functions';
 
 
 const defaultStrokeWidth: number = 2;

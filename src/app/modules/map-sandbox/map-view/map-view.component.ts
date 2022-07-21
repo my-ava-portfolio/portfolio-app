@@ -18,6 +18,11 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { Subject } from 'rxjs/internal/Subject';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
+import { v4 as uuidv4 } from 'uuid';
+import Group from 'ol/layer/Group';
+import BaseLayer from 'ol/layer/Base';
+import BaseTileLayer from 'ol/layer/BaseTile';
+import BaseVectorLayer from 'ol/layer/BaseVector';
 
 
 @Component({
@@ -29,28 +34,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   map!: Map;
 
-
-  sourceFeatures!: any;
-  layerFeatures!: any;
-  layerName = "edited_layer";
-  holeEnabled = false;
-
-  allFeatures: any[] = [];
-  featureSelectedId: string | null = null;
-  featuresDisplayedObservable = new Subject<Feature[]>()
-  featuresCreatedObservable = new Subject<Feature[]>()
-
-  featureProperties: any = {};
-  featuresCount: number = 0;
-  selectedFeaturesProperties: any[] = [];
-
-  color!: string;
-
-  drawSession!: any;
-
-  modifier!: Modify;
-  draw!: Draw;
-  snap!: Snap;
+  layersCount: number = 0;
+  layerIdSelected!: string |null;
+  allLayers: any[] = [];
+  layerNamedIncrement: number = 0;
 
   disabledIcon = faXmark;
   EditIcon = faCircle;
@@ -67,61 +54,24 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   createModesSupported = [
     {
-      "mode": 'disabled',
-      "label": "Annuler/Désactiver",
-      "type": "controler",
-      "icon": this.disabledIcon
-    },
-    {
       "mode": 'Point',
-      "label": 'Point',
-      "type": "geometry",  // new feature creating
+      "label": 'Couche de Points',
       "icon": this.pointIcon
     },
     {
       "mode": 'LineString',
-      "label": 'LineString',
-      "type": "geometry",  // new feature creating
+      "label": 'Couche de LineString',
       "icon": this.lineStringIcon
     },
     {
       "mode": 'Polygon',
-      "label": 'Polygon',
-      "type": "geometry",  // new feature creating
-      "icon": this.polygonIcon
-    },
-    {
-      "mode": 'Hole',  // works like a polygon
-      "label": 'Trou',
-      "type": "enhancement",  // particular case where we have to select And edit the feature
+      "label": 'Couche de Polygones',
       "icon": this.polygonIcon
     }
   ]
 
-  modifyModesSupported = [
-    {
-      "mode": 'disabled',
-      "label": "Annuler/Désactiver",
-      "type": "controler",
-      "icon": this.disabledIcon
-    },
-    {
-      "mode": 'edited',
-      "label": 'Editer',
-      "type": "controler",
-      "icon": this.pointIcon
-    },
-    // {
-    //   "mode": 'Hole',  // works like a polygon
-    //   "label": 'Trou',
-    //   "type": "enhancement",  // particular case where we have to select And edit the feature
-    //   "icon": this.polygonIcon
-    // }
-  ]
 
 
-  drawModeSelected = "disabled";
-  modifyModeSelected  = "disabled";
   isLegendDisplayed = true;
 
   mapSubscription!: Subscription;
@@ -135,10 +85,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
     private titleService: Title,
   ) {
 
-    this.featuresCreatedSubscription = this.featuresCreatedObservable.subscribe(
-      (features: Feature[]) => {
-        this.resetToasts();
-        features.forEach((feature: Feature) => {
+    // this.featuresCreatedSubscription = this.featuresCreatedObservable.subscribe(
+      // (features: Feature[]) => {
+        // this.resetToasts();
+        // features.forEach((feature: Feature) => {
           // this.setFeatureToasts(feature, true)
           // this.featureSelectedId = feature.get('id');
 
@@ -146,20 +96,20 @@ export class MapViewComponent implements OnInit, OnDestroy {
           //   // Hole needs to work on a selected feature, so reset the mode is not relevant
           //   this.featureSelectedId = null;  // we don't want to select the feature on the div when creating a new feature
           // }
-        })
-      }
-    )
+        // })
+    //   }
+    // )
 
-    this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
-      (features: Feature[]) => {
-        this.resetToasts();
-        features.forEach((feature: Feature) => {
-          this.setFeatureToasts(feature, false)
-          this.featureSelectedId = feature.get('id');
-          console.log(feature.get('name'))
-        })
-      }
-    )
+    // this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
+    //   (features: Feature[]) => {
+        // this.resetToasts();
+        // features.forEach((feature: Feature) => {
+        //   this.setFeatureToasts(feature, false)
+        //   this.featureSelectedId = feature.get('id');
+        //   console.log(feature.get('name'))
+        // })
+    //   }
+    // )
 
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
@@ -174,17 +124,10 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sendResumeSubMenus();
+
     this.mapService.getMap();
-
-    this.initSourceFeatures();
-    this.initVectorLayer();
-
-    this.mapService.changeMapInteractionStatus(true)
-
-    // let's go to get map container and init layer(s)
-    this.disableCreationMode()
-
     this.initMousePosition()
+
   }
 
   ngOnDestroy(): void {
@@ -193,12 +136,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.featuresDisplayedSubscription.unsubscribe();
     this.featuresCreatedSubscription.unsubscribe();
 
-    this.map.removeInteraction(this.modifier)
 
     this.mapService.resetMapView()
     this.mapService.changeMapInteractionStatus(false)
-    this.map.removeLayer(this.layerFeatures);
-    this.drawSession.destroySession()
     this.setProjection("EPSG:3857")
   }
 
@@ -213,235 +153,74 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
-  disableCreationMode(): void {
-    this.activateDrawing(this.createModesSupported[0].mode)
-  }
+  addLayer(geomType: string): void {
+    let sourceFeatures = new VectorSource();
 
-  initSourceFeatures(): void {
-    this.sourceFeatures = new VectorSource();
-  }
-
-  setMapEpsg(): void {
-    this.currentEpsg = this.map.getView().getProjection().getCode();
-  }
-
-  initVectorLayer(): any {
-    this.layerFeatures = new VectorLayer({
-      source: this.sourceFeatures,
+    let layerFeatures = new VectorLayer({
+      source: sourceFeatures,
     });
-    this.layerFeatures.set("name", this.layerName, true)
+    const idValue = uuidv4()
+    layerFeatures.set('id', idValue, true)
+    layerFeatures.set('name', 'layer ' + ++this.layerNamedIncrement, true)
+    layerFeatures.set('geomType', geomType, true)
 
-    this.drawSession = new DrawInteraction(this.map, this.layerFeatures)
+    this.map.addLayer(layerFeatures)
+    this.getAllLayers()
+  }
 
-    this.drawSession.sourceFeatures.on('addfeature', (event: any) => {
-      this.returnExistingFeaturesAndProperties()
+  selectLayer(layerId: string | null): void {
 
-      this.pushFeaturesCreated([event.feature])
+    this.map.getLayers().forEach((layer: any) => {
+      if (layer instanceof VectorLayer) {
+        if (layer.get('id') === layerId) {
+          layer = layer
+          this.layerIdSelected = layerId
+        }
+      }
+
     });
+  }
 
-    this.drawSession.sourceFeatures.on('changefeature', (event: any) => {
-      // in order to get a dynamic popup
-      this.displayFeaturePopup([event.feature])
+  removeLayer(layerId: string): void {
+    this.map.getLayers().forEach((layer: any) => {
+
+      if (layer instanceof VectorLayer) {
+        if (layer.get('id') === layerId) {
+          this.map.removeLayer(layer)
+          this.layerIdSelected = null // deselect by defaultt when removing
+        }
+      }
+
     });
-
-    this.drawSession.sourceFeatures.on('removefeature', (event: any) => {
-      this.returnExistingFeaturesAndProperties()
-      // TODO add a remove toast?
-    });
-
-    this.drawSession.selectClick.on("select", (event: any) => {
-      if (event.selected.length === 0) {
-        // all is unselected on the objects div
-        this.selectAndDisplayFeature(null)
-      }
-      if (event.selected.length === 1) {
-        // if a feature is selected on the map, it will be selected on the object div also
-        this.selectAndDisplayFeature(event.selected[0].getId())
-      }
-    })
-
-
-    this.map.addLayer(this.layerFeatures)
-  }
-
-  activateDrawing(mode: string): void {
-
-    switch (mode) {
-      case "disabled": {
-        this.drawSession.disableDrawing()
-         break;
-      }
-
-      case "Point":
-      case "LineString":
-      case "Polygon": {
-        // this.activateModifiying('disabled')
-        this.selectAndDisplayFeature(null)  // unselect selected feature on div (objet)
-        this.holeEnabled = false;
-        this.drawSession.enabledDrawing(mode, this.holeEnabled)
-         break;
-      }
-
-      case "Hole": {
-        this.holeEnabled = true;
-        this.drawSession.enabledDrawing("Polygon", this.holeEnabled)
-        this.drawModeSelected = 'Hole';
-        // this.activateDrawing('Hole')
-         break;
-      }
-
-      default: {
-         break;
-      }
-    }
-    this.drawModeSelected = mode;
-
+    this.getAllLayers()
   }
 
 
-  // activateModifiying(mode: string): void {
+  getAllLayers(): void {
+    this.allLayers = [];
 
-  //   switch (mode) {
-  //     case "disabled": {
-  //       this.drawSession.disableDrawing()
-  //       this.activateDrawing(mode)
-  //        break;
-  //     }
+    this.map.getLayers().forEach((item: any) => {
+      if (item instanceof BaseVectorLayer) {
+        this.allLayers.push(item);
+      } else if (item instanceof BaseTileLayer) {
 
-  //     case "edited": {
-  //       this.activateDrawing('disabled')
-  //       this.drawSession.enableEditingMode()
-  //        break;
-  //     }
-
-  //     case "Hole": {
-  //       this.holeEnabled = true;
-  //       this.drawSession.enabledDrawing("Polygon", this.holeEnabled)
-  //       this.drawModeSelected = 'Polygon';
-  //       // this.activateDrawing('Hole')
-  //        break;
-  //     }
-
-  //     default: {
-  //        break;
-  //     }
-  //   }
-  //   this.modifyModeSelected = mode;
-
-  // }
-
-  returnExistingFeaturesAndProperties(): void {
-    this.allFeatures = this.drawSession.returnFeatures()
-    this.featuresCount = this.allFeatures.length
-  }
-
-  pushFeaturesCreated(features: Feature[]): void {
-    this.featuresCreatedObservable.next(features);
-  }
-
-  displayFeaturePopup(features: Feature[]): void {
-    // update displayed features
-    // this.returnExistingFeaturesAndProperties() // in order to refresh the list of feature and its properties
-    this.featuresDisplayedObservable.next(features);
-  }
-
-  removeFeature(id: string): void {
-    this.drawSession.removeFeature(id)
-    this.resetToasts()
-    this.featureSelectedId = null
-
-  }
-
-  setFeatureToasts(feature: Feature, isNotify: boolean): any {
-
-    // get the geom Icon // TODO could be improved...
-    const modeSupportedFound = this.createModesSupported.filter(mode => {
-      return mode.mode === feature.get('geom_type')
-    });
-    const geomIcon = modeSupportedFound[0].icon
-
-    // get wkt regarding selected projection
-    const geomFeature = feature.getGeometry();
-    if (geomFeature !== undefined) {
-
-      this.selectedFeaturesProperties.push({
-        'id': feature.getId(),
-        'name': feature.get('name'),
-        'geom_type': feature.get('geom_type'),
-        'created_at': feature.get('created_at'),
-        'updated_at': feature.get('updated_at'),
-        'icon': geomIcon,
-        'wkt': getWkt(geomFeature)
-      })
-
-      if (isNotify) {
-        // display it with fading
-        d3.select("html")
-        .transition()
-        .delay(2000) // need this delayto wait the toats html building
-        .duration(5000)
-        .on("end", () => {
-          d3.selectAll(".toastFeature")
-          .attr("class", "toast toastFeature");
-        })
       } else {
-        // happened only if a feature is selected
-        // d3.selectAll(".toastFeature").remove()
-        d3.selectAll(".toastFeature")
-        .attr("class", "toast toastFeature faded");
+        console.log("not supported")
       }
-    }
-  }
-
-  selectAndDisplayFeature(featureId: string | null): any {
-    // reset toast
-    this.resetToasts()
-
-    if (featureId !== null) {
-      // this.disableCreationMode()
-      const featureFound = this.sourceFeatures.getFeatureById(featureId)
-      if (featureFound !== undefined) {
-        this.featureSelectedId = featureFound.get('id')
-
-        // reset the selection and set it (then the style will be updated) + it call the changefeature event !
-        this.drawSession.selectClick.getFeatures().clear()
-        this.drawSession.selectClick.getFeatures().push(featureFound)
-        this.displayFeaturePopup([featureFound])
-
-        // featureFound.setStyle(highLigthStyle(featureFound))  // NO NEED ?
-        // it will push a changefeature event on sourceFeatures object
-
-      }
-
-    } else {
-      this.drawSession.selectClick.getFeatures().clear()
-      this.featureSelectedId = featureId;
-    }
+    });
 
   }
 
-  refreshStyle(feature: Feature): void {
-    // feature.set("fill_color", color)
-    this.drawSession.refreshFeatureStyle(feature)
-  }
-
-  updateFillColor(feature: Feature, color: string): void {
-    feature.set("fill_color", color, true)
-    this.refreshStyle(feature)
-  }
-  updateStrokeWidth(feature: Feature, event: any): void {
-    feature.set("stroke_width", event.target.value, true)
-    this.refreshStyle(feature)
-  }
-  updateStrokeColor(feature: Feature, color: string): void {
-    feature.set("stroke_color", color, true)
-    this.refreshStyle(feature)
-  }
 
 
-  resetToasts(): void {
-    this.selectedFeaturesProperties = []
-  }
+
+
+
+
+
+
+
+
 
   copyToClipboard(value: string): void {
     const selBox = document.createElement('textarea');
@@ -478,9 +257,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.mapService.setProjectionOnMap(epsg)
 
-    this.layerFeatures.getSource().getFeatures().forEach( (feature: any) => {
-      feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, this.selectedEpsg))
-    });
+    // this.layerFeatures.getSource().getFeatures().forEach( (feature: any) => {
+    //   feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, this.selectedEpsg))
+    // });
     this.setMapEpsg();
 
   }
@@ -495,6 +274,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
           return format(coordinate, template, precision);
       });
   }
+
+  setMapEpsg(): void {
+    this.currentEpsg = this.map.getView().getProjection().getCode();
+  }
+
 
 }
 
