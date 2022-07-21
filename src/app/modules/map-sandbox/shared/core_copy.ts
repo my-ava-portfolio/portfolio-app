@@ -240,7 +240,6 @@ export class layerHandler {
         this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
         this.polygonIntersected = undefined;
       }
-      this.disableDrawing()
 
     });
   }
@@ -321,7 +320,6 @@ export class layerHandler {
       this.polygonIntersected = undefined;
       // TODO: QUESTION: no need to recreate the properties because the polygon already exists?
       // return
-      this.disableDrawing() // disable drawing after each hole
     }
 
     ++this.counter;

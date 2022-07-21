@@ -283,8 +283,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   addPolygonHole(layerIdSelected: string): void {
     this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
       if (layer.id === layerIdSelected) {
-          this.layerIdDrawn = layerIdSelected
-          this.selectLayer(this.layerIdDrawn) // draw and edit tool are reset here
+          this.layerIdDrawn = layer.id
+          // this.selectLayer(this.layerIdDrawn) // draw and edit tool are reset here
           layer.enableDrawing(true)
         }
     });
