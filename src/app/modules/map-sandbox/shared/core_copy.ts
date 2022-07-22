@@ -500,3 +500,48 @@ export function refreshFeatureStyle(feature: Feature): StyleLike {
 
 
 }
+
+
+
+export function findBy(layer: any, property: string, value: string | number | null): any {
+
+  if (layer.get(property) === value) {
+    return layer;
+  }
+
+  // Find recursively if it is a group
+  if (layer.getLayers) {
+    var layers = layer.getLayers().getArray()
+    var len = layers.length
+    var result!: any;
+    for (var i = 0; i < len; i++) {
+      result = findBy(layers[i], property, value);
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  return null;
+}
+
+export function findElementBy(layer: any, attribute: string, value: string | number | null): any {
+  if (attribute in layer) {
+    if (layer[attribute as keyof typeof layer] === value)
+    return layer;
+  }
+
+  if (layer) {
+    var layers = layer
+    var len = layers.length
+    var result!: any;
+    for (var i = 0; i < len; i++) {
+      result = findElementBy(layers[i], attribute, value);
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  return null;
+}

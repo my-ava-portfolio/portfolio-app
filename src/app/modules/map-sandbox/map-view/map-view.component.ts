@@ -8,7 +8,7 @@ import Map from 'ol/Map';
 
 import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { GroupHandler, layerHandler, getWkt } from '@modules/map-sandbox/shared/core_copy';
+import { GroupHandler, layerHandler, getWkt, findBy, findElementBy } from '@modules/map-sandbox/shared/core_copy';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -16,6 +16,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
+import VectorLayer from 'ol/layer/Vector';
 
 
 @Component({
@@ -155,6 +156,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
+
+
   addGroup(): void {
     let newGroup = new GroupHandler(
       this.map,
@@ -165,30 +168,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   }
 
-  currentGroup(): void {
-    this.layersFromCurrentGroup.forEach((layer: any) => {
-      if (this.layerIdSelected === layer.getId()) {
-        this.groupSelectedId = layer.groupId;
-
-        this.groupsList.forEach((group: GroupHandler) => {
-          if (group.id === layer.groupId) {
-            this.groupSelectedName = group.groupName;
-            return;
-          }
-        })
-      }
-    })
-  }
-
   selectGroup(groupId: string): void {
-    this.groupsList.forEach((group: GroupHandler) => {
-      if (group.id === groupId) {
-        this.groupSelectedId = group.id;
-        this.groupSelectedName = group.groupName;
-        this.resetLayersAndFeaturesFromGroupId(this.groupSelectedId)
-        return;
-      }
-    })
+    const groupFound = findBy(this.map.getLayerGroup(), "id", groupId)
+    if (groupFound !== null) {
+      this.groupSelectedId = groupFound.get('id');
+      this.groupSelectedName = groupFound.get('name');
+      this.resetLayersAndFeaturesFromGroupId(this.groupSelectedId)
+    }
   }
 
   refreshLayersFromGroupId(groupId: string): void {
@@ -230,109 +216,88 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   selectLayer(layerId: string | null): void {
     this.resetToasts()
+    this.addFeature(null)
+    this.editFeature(null)
 
-    if (layerId !== null) {
-      this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
-        if (layer.id === layerId) {
+    this.layerIdSelected = layerId
 
-          this.layerIdSelected = layerId
-          this.addFeature(null)
-          this.editFeature(null)
-
-          layer.enableSelecting()
-
-          this.layerFeatures = layer.features()
+    let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', layerId)
+    if (layerFound !== null) {
 
 
-          layer.sourceFeatures.on('addfeature', (event: any) => {
-            this.refreshAllFeatures(layer)
+      layerFound.enableSelecting()
 
-          });
+      this.layerFeatures = layerFound.features()
 
-          layer.sourceFeatures.on('changefeature', (event: any) => {
-            this.featuresDisplayedObservable.next([event.feature]);  // useful to synchro the map selection and the div... maybe we can use the select event here
-          });
 
-          layer.sourceFeatures.on('removefeature', (event: any) => {
-            this.refreshAllFeatures(layer)
+      layerFound.sourceFeatures.on('addfeature', (event: any) => {
+        this.refreshAllFeatures(layerFound)
+      });
 
-          });
+      layerFound.sourceFeatures.on('changefeature', (event: any) => {
+        this.featuresDisplayedObservable.next([event.feature]);  // useful to synchro the map selection and the div... maybe we can use the select event here
+      });
 
-        }
+      layerFound.sourceFeatures.on('removefeature', (event: any) => {
+        this.refreshAllFeatures(layerFound)
       });
 
     } else {
       // to disable the draw and edit tools
       this.layerIdSelected = layerId
-
-      this.addFeature(null)
-      this.editFeature(null)
-
     }
     this.refreshAllLayers()
 
   }
 
-  addPolygonHole(layerIdSelected: string): void {
+  addPolygonHole(layerId: string): void {
     this.addFeature(null)
-    this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
-      if (layer.id === layerIdSelected) {
-          this.layerIdDrawn = layer.id
-          // this.selectLayer(this.layerIdDrawn) // draw and edit tool are reset here
-          layer.enableDrawing(true)
-        }
-    });
+    let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', layerId)
+    if (layerFound !== null) {
+      this.layerIdDrawn = layerFound.id
+      // this.selectLayer(this.layerIdDrawn) // draw and edit tool are reset here
+      layerFound.enableDrawing(true)
+    }
+
   }
 
-  addFeature(layerId: string | null, ): void {
-    console.log("add", this.layerIdDrawn, this.layerIdEdited)
-
+  addFeature(layerId: string | null): void {
     if (layerId === this.layerIdDrawn || layerId === null) {
-      this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
-
-        if (layer.id === this.layerIdDrawn) {
-          layer.disableDrawing()
+      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdDrawn)
+      if (layerFound !== null) {
+          layerFound.disableDrawing()
           this.layerIdDrawn = null
-          return;
-        }
-      });
+      }
 
     } else {
+      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', layerId)
+      if (layerFound !== null) {
+        this.selectLayer(layerId) // draw and edit tool are reset here
+        this.layerIdDrawn = layerId
+        layerFound.enableDrawing(false)
+      }
 
-      this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
-
-        if (layer.id === layerId) {
-            this.selectLayer(layerId) // draw and edit tool are reset here
-          this.layerIdDrawn = layerId
-            layer.enableDrawing(false)
-          }
-      });
-    }
+    }  
   }
 
   editFeature(layerId: string | null): void {
     console.log("edit", this.layerIdDrawn, this.layerIdEdited)
 
     if (layerId === this.layerIdEdited || layerId === null) {
-      this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
-
-        if (layer.id === this.layerIdEdited) {
-          layer.disableEditing()
+      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdEdited)
+      if (layerFound !== null) {
+          layerFound.disableEditing()
           this.layerIdEdited = null
-          return;
-        }
-      });
+      }
 
     } else {
-
-      this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
-
-        if (layer.id === layerId) {
-          this.selectLayer(layerId) // draw and edit tool are reset here
-          this.layerIdEdited = layerId
-          layer.enableEditing()
-        }
-      });
+      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', layerId)
+      if (layerFound !== null) { 
+        this.selectLayer(layerId) // draw and edit tool are reset here
+        this.layerIdEdited = layerId
+        layerFound.enableEditing()
+      }
+      
     }
   }
 
