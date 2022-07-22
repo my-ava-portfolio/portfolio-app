@@ -472,9 +472,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.mapService.setProjectionOnMap(epsg)
 
-    //  reproject each layer
-    this.layerFeatures.forEach((layer: any) => {
-      layer.VectorSource().getFeatures().forEach( (feature: any) => {
+    //  reproject each layer  // TODO create func
+    this.allExistingLayers.forEach((layer: layerHandler) => {
+      layer.features().forEach( (feature: any) => {
         feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, this.selectedEpsg))
       });
     })
