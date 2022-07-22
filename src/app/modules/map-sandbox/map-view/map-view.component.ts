@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { Subject } from 'rxjs/internal/Subject';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
+import { View } from 'ol';
 
 @Component({
   selector: 'app-map-view',
@@ -37,6 +38,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   featuresDisplayedObservable = new Subject<Feature[]>()
 
   map!: Map;
+  defaultMapView!: View;
 
   allExistingLayers: layerHandler[] = [];
   layersFromCurrentGroup: layerHandler[] = [];
@@ -106,7 +108,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       (map: Map) => {
         this.map = map;
         this.currentEpsg = this.map.getView().getProjection().getCode();
-
+        this.defaultMapView = this.map.getView()
         this.selectedEpsg = this.currentEpsg
       }
     );
@@ -123,6 +125,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.map.setView(this.defaultMapView)
 
     this.mapSubscription.unsubscribe();
     this.featuresDisplayedSubscription.unsubscribe();
@@ -138,7 +141,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.mapService.changeMapInteractionStatus(false)
 
-    // this.setProjection("EPSG:3857") // create zoom issue....
     this.mapService.resetMapView()
 
   }
