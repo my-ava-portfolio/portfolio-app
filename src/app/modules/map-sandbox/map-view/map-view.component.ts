@@ -98,7 +98,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.resetToasts()
         features.forEach((feature: Feature) => {
           this.setFeatureToasts(feature, false)
-          this.featureSelectedId = feature.get('id');
         })
       }
     )
@@ -200,7 +199,26 @@ export class MapViewComponent implements OnInit, OnDestroy {
         geomType,
         groupsFound[0].id
       )
+      
+      // add behavior when selecting on map
+      newLayer.select.on("select", (event: any) => {
+        let deselected = event.deselected
+        let selected = event.selected
 
+        if (deselected.length > 0 && selected.length === 0) {
+          deselected.forEach((_: any) => {
+            this.selectFeature(null)
+          })
+        }
+
+        if (selected.length > 0) {
+          selected.forEach((feature: any) => {
+            this.selectFeature(feature.getId())
+          })
+        }
+
+
+    })
 
       groupsFound[0].addLayer(newLayer.vectorLayer)
       this.allExistingLayers.push(newLayer)
@@ -234,7 +252,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       });
 
       layerFound.sourceFeatures.on('changefeature', (event: any) => {
-        this.featuresDisplayedObservable.next([event.feature]);  // useful to synchro the map selection and the div... maybe we can use the select event here
+        // this.featuresDisplayedObservable.next([event.feature]);  // useful to synchro the map selection and the div... maybe we can use the select event here
       });
 
       layerFound.sourceFeatures.on('removefeature', (event: any) => {
@@ -340,8 +358,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
     if (featureId !== null) {
       let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdSelected)
       if (layerFound !== null) {
+
         // reset the selection and set it (then the style will be updated) + it call the changefeature event !
         let feature = this.getFeature(featureId)
+        this.featureSelectedId = feature.get('id');
+
+        this.featuresDisplayedObservable.next([feature]);  // useful to synchro the map selection and the div... maybe we can use the select event here
 
         layerFound.select.getFeatures().clear()
         layerFound.select.getFeatures().push(feature)
@@ -356,7 +378,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   resetFeatureSelection(): void {
     if (this.featureSelectedId !== null) {
-      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdEdited)
+      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdSelected)
       if (layerFound !== null) {
         // reset the selection and set it (then the style will be updated) + it call the changefeature event !
         layerFound.select.getFeatures().clear()
@@ -473,6 +495,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   getFeature(featureId: string): any {
+    // TODO get the layer?!
     let features = this.layerFeatures.filter((feature: any) => {
       return feature.getId() === featureId
     })
