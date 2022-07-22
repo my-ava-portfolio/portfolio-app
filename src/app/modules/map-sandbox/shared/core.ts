@@ -1,4 +1,3 @@
-import { strokeWidth } from './../../map-gtfs-viewer/shared/core';
 import {LineString, Polygon}  from 'ol/geom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,109 +11,180 @@ import LinearRing from 'ol/geom/LinearRing';
 import WKT from 'ol/format/WKT';
 
 import Select from 'ol/interaction/Select';
-import { altKeyOnly, click, doubleClick, mouseOnly, pointerMove, shiftKeyOnly, singleClick } from 'ol/events/condition';
+import { click } from 'ol/events/condition';
 import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
+import Group from 'ol/layer/Group';
+import Collection from 'ol/Collection';
 
 
 const defaultStrokeWidth: number = 2;
 const defaultStrokeColor: string = "black";
 const defaultFillColor: string = '#ffcc33';
 
-export class DrawInteraction {
+
+export class GroupHandler {
+
+  private map: Map;
+  _group!: Group;
+
+  id: string;
+
+  groupName!: string;
+
+  layers: layerHandler[] = []
+
+  constructor(
+    map: Map,
+    groupName: string,
+  ) {
+    this.map = map
+    this.groupName = groupName
+
+    this.id = uuidv4()
+    this.initGroup()
+  }
+
+  initGroup(): void {
+    this._group = new Group({
+      layers: [],
+    });
+
+    this._group.set('id', this.id)
+    this._group.set('name', this.groupName)
+
+    this.map.addLayer(this._group)
+  }
+
+  removeGroup(groupId: string): void {
+
+  }
+
+  addLayer(layer: any): void {
+    let innerLayers = this._group.getLayers().getArray(); // no array!
+
+    if (innerLayers[0] === undefined) {
+      innerLayers = [layer]
+    } else {
+      innerLayers.push(layer.vectorLayer);
+    }
+    if (innerLayers instanceof Collection) {
+      // set the layer collection of the grouplayer
+      this._group.setLayers(innerLayers);
+    }
+  }
+
+  setOpacity(event: any): void {
+    this._group.setOpacity(event.target.valueAsNumber)
+    console.log(this._group.getOpacity())
+  }
+
+}
+
+
+
+export class layerHandler {
   private map: Map;
   private draw!: Draw;
-  private snaps: Snap[] = []
+  snap!: Snap;
   private modifier!: Modify;
-  private currentEpsg!: String;
-
-  selectClick!: Select;
+  select!: Select;
 
   private counter: number = 0
 
   // var for polygon holes
-  private holePolygonDrawingStatus = false;
+  private holePolygonDrawingStatus = false;  // TODO add GUI option to play with it
   private polygonIntersected!: Feature | undefined;
   private coordsLength!: number;
   private previousPolygonGeometry!: any;
-
-  lastCreatedFeature!: Feature;
 
   vectorLayer!: VectorLayer<any>;
   sourceFeatures!: VectorSource;
   allFeatures: any[] = [];
 
+  groupId: string
+  id: string;
+  layerName: string;
+  geomType: 'Point' | 'LineString' | 'Polygon';
+  deleted = false;
+
   constructor(
     map: Map,
+    layerName: string,
+    geomType: 'Point' | 'LineString' | 'Polygon',
+    groupId: string
   ) {
-    this.map = map;
-    this.currentEpsg = this.map.getView().getProjection().getCode()
+    this.map = map
+    this.layerName = layerName
+    this.geomType = geomType
+    this.groupId = groupId
+
+    this.id = uuidv4()
+
+    this.setLayer()
+    this.initSelect();
+    this.initSnap();
+    this.initModifier()
+
+    this.map.addLayer(this.vectorLayer)
 
   }
 
-  prepareSelect(vectorLayer: any): void {
-    this.selectClick = new Select({
+  private setLayer(): void {
+    this.sourceFeatures = new VectorSource();
+
+    this.vectorLayer = new VectorLayer({
+      source: this.sourceFeatures,
+      style: (feature: any, resolution: any): any => {
+        return refreshFeatureStyle(feature)
+      }
+    });
+
+    this.vectorLayer.set('name', this.layerName, true)
+    this.vectorLayer.set('geomType', this.geomType, true)
+
+  }
+
+  removeLayer(): void {
+    this.map.removeLayer(this.vectorLayer)
+    this.deleted = true;
+  }
+
+  private initSelect(): void {
+    this.select = new Select({
       condition: click,
       multi: false,
-      layers: [vectorLayer],
-      // style: (feature: any) => {
-      //   return highLigthStyle(feature)
-      // }  // TODO add an edit style (check Qgis)
+      layers: [this.vectorLayer],
     })
-    this.selectClick.on("select", (event: any) => {
-
-      if (event.deselected.length === 1) {
-        // when delesected we refresh the style regarding its attribute to avoid conflict.
-        // I need to select the feature to change the color:
-        // when I select it OL change its style due to the selection.unselect will revert the last style but not the new one
-        this.refreshFeatureStyle(event.deselected[0]) // ISSUE IF activated
-      }
-
-    })
-    this.map.addInteraction(this.selectClick);
-
-    this.setSnaps();
 
   }
 
-  setSnaps(): void {
-    // clean snaps if needed
-    this.unsetSnaps();
-
-    // set snap on all layers
-    this.map.getLayers().forEach((layer) => {
-      if (layer instanceof VectorLayer) {
-        let interaction = new Snap({
-          source: layer.getSource()
-        });
-        this.snaps.push(interaction);
-        this.map.addInteraction(interaction);
-
-      }
+  private initSnap(): void {
+    this.snap = new Snap({
+      source: this.sourceFeatures
     });
 
   }
 
-  unsetSnaps(): void {
-    // unset snap on all layers
-    for (let snap of this.snaps ) {
-      this.map.removeInteraction(snap);
-    }
-
+  enableSelecting(): void {
+    this.map.addInteraction(this.select)
   }
 
-  prepareModifier(): void {
+  disableSelecting(): void {
+    this.map.removeInteraction(this.select)
+  }
 
+
+  private initModifier(): void {
     this.modifier = new Modify({
-      features: this.selectClick.getFeatures(),
+      features: this.select.getFeatures(),
     });
-
 
     this.modifier.on('modifyend', (e: any) => {
 
-      // to remove hole on polygon (select the polygon, press shift + start to edti a vertice + press ctrl)
+      // to remove hole on polygon (select the polygon, press ctr + start to edti a vertice + release)
       if (e.mapBrowserEvent.originalEvent.ctrlKey) {
         this.removeHoles(e)
       }
@@ -126,74 +196,57 @@ export class DrawInteraction {
         });
       }
     })
-
   }
 
-  enabledDrawing(vectorLayer: VectorLayer<any>, holeStatus: boolean): void {
-    this.vectorLayer = vectorLayer;
-    this.sourceFeatures = vectorLayer.getSource();
-
+  enableDrawing(holeStatus = false): void {
     this.holePolygonDrawingStatus = holeStatus;
 
-    this.prepareSelect(vectorLayer)
-    this.prepareModifier()
-
-    this.disableEditing();
     this.draw = new Draw({
-      type: this.vectorLayer.get("geomType"),
+      type: this.geomType,
       stopClick: false,
       source: this.vectorLayer.getSource(),
     });
 
     this.map.addInteraction(this.draw);
-    this.enableEditing()
+    this.map.addInteraction(this.snap);
 
     this.draw.on('drawstart', this.onDrawStart.bind(this));
     this.draw.on('drawend', this.onDrawEnd.bind(this));
 
     this.draw.on('drawabort', (e: any) => {
-
       // to cancel a drawing hole (shift + left click OR shift + right click for hole )
       if (this.holePolygonDrawingStatus && this.polygonIntersected !== undefined) {
         this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
         this.polygonIntersected = undefined;
       }
+
     });
   }
 
-
-  enableSelecting(vectorLayer: VectorLayer<any>): void {
-    this.sourceFeatures = vectorLayer.getSource();
-
-    this.prepareSelect(vectorLayer)
+  disableDrawing(): void {
+    this.map.removeInteraction(this.draw);
+    this.map.removeInteraction(this.snap);
   }
 
   enableEditing(): void {
-    this.map.removeInteraction(this.modifier);
-
-    this.unsetSnaps;
-
+    this.disableEditing()
     this.map.addInteraction(this.modifier);
-    this.setSnaps();
+    this.map.addInteraction(this.snap);
   }
 
   disableEditing(): void {
-    if (this.draw !== undefined) {
-      this.map.removeInteraction(this.draw);
-    }
     this.map.removeInteraction(this.modifier);
-    this.unsetSnaps;
+    this.map.removeInteraction(this.snap);
   }
 
-  destroySession(): void {
-    this.map.removeInteraction(this.draw);
-    this.unsetSnaps();
-    this.map.removeInteraction(this.modifier);
-    this.map.removeInteraction(this.selectClick);
-
+  cleanEvents(): void {
+    this.disableDrawing();
+    this.disableEditing();
+    this.disableSelecting();
   }
 
-  onDrawStart(e: any): void {
+
+  private onDrawStart(e: any): void {
 
     //to build hole on polygon
     if (this.holePolygonDrawingStatus) {
@@ -218,7 +271,7 @@ export class DrawInteraction {
 
   }
 
-  checkIfCoordIntersectLayer(feature: any): Feature | undefined {
+  private checkIfCoordIntersectLayer(feature: any): Feature | undefined {
     let featureFound!: Feature | undefined;
     this.vectorLayer.getSource().forEachFeatureIntersectingExtent(feature.getGeometry().getExtent(), (feature: Feature | undefined) => {
       featureFound = feature;
@@ -227,7 +280,7 @@ export class DrawInteraction {
     return featureFound
   }
 
-  onDrawEnd(e: any): void {
+  private onDrawEnd(e: any): void {
 
     // let's go to finalize
     if (this.holePolygonDrawingStatus) {
@@ -239,17 +292,14 @@ export class DrawInteraction {
 
       if (this.polygonIntersected !== undefined) {
         e.feature.setGeometry(this.polygonIntersected.getGeometry())
-        this.selectClick.getFeatures().clear()
+        this.select.getFeatures().clear()
       }
 
 
       this.polygonIntersected = undefined;
       // TODO: QUESTION: no need to recreate the properties because the polygon already exists?
-      // return
-
+      return
     }
-
-
 
     ++this.counter;
     const uuid = uuidv4()
@@ -265,7 +315,6 @@ export class DrawInteraction {
       'stroke_width': defaultStrokeWidth,
       'stroke_color': defaultStrokeColor
     }, true)
-    this.refreshFeatureStyle(e.feature)
 
   }
 
@@ -285,30 +334,6 @@ export class DrawInteraction {
     }
   }
 
-  refreshFeatureStyle(feature: Feature): void {
-    // style feature is based on feature properties !
-    let defaultStyle!:StyleLike
-    let geom = feature.getGeometry()
-    if (geom !== undefined) {
-      const fillColor = feature.get('fill_color')
-      const strokeWidth = feature.get('stroke_width')
-      const strokeColor = feature.get('stroke_color')
-
-      if (geom.getType() === "Point") {
-        defaultStyle = PointStyle(fillColor, strokeWidth, strokeColor)
-
-      } else if (geom.getType() === "LineString") {
-        defaultStyle = LineStringStyle(fillColor, strokeWidth, strokeColor)
-
-      } else if (geom.getType() === "Polygon") {
-        defaultStyle = PolygonStyle(fillColor, strokeWidth, strokeColor)
-      }
-      feature.setStyle(defaultStyle)
-
-    }
-
-  }
-
   removeFeature(id: string): void {
     const featureFound = this.sourceFeatures.getFeatureById(id)
     if (featureFound !== null) {
@@ -316,20 +341,15 @@ export class DrawInteraction {
     }
   }
 
-  returnFeatures(): Feature[] {
-    return this.sourceFeatures.getFeatures()
+  features(): Feature[] {
+    if (!this.deleted) {
+      return this.sourceFeatures.getFeatures()
+    } else {
+      return []
+    }
   }
 
-  returnCreatedFeatures(): Feature {
-    // WARNING with ordering mecanism we could get issues to catch the last one...
-    const featuresCount = this.sourceFeatures.getFeatures().length
-    const lastFeature: any = this.sourceFeatures.getFeatures()[featuresCount - 1]
-
-    return lastFeature
-  }
-
-
-  removeHoles(event: any): void {
+  private removeHoles(event: any): void {
 
     // we suppose that we have only one feature!
     const featureFound: any = event.features.getArray()[0];
@@ -372,7 +392,11 @@ export class DrawInteraction {
       "status": "modified",
     }, true)
   }
-
+  
+  setOpacity(event: any): void {
+    this.vectorLayer.setOpacity(event.target.valueAsNumber)
+    console.log(this.vectorLayer.getOpacity())
+  }
 }
 
 
@@ -382,26 +406,6 @@ export function getWkt(geometry: any): string {
 }
 
 
-
-export const defaultStyleDEPRECATED = new Style({
-  fill: new Fill({
-    color: '#ffcc33',
-  }),
-  stroke: new Stroke({
-    color: 'black',
-    width: 2,
-  }),
-  image: new CircleStyle({
-    radius: 7,
-    fill: new Fill({
-      color: '#ffcc33',
-    }),
-    stroke: new Stroke({
-      color: "black",
-      width: 2,
-    }),
-  }),
-})
 
 export function PointStyle(color: string, strokeWidth: number, strokeColor: string): Style {
   return new Style({
@@ -417,6 +421,7 @@ export function PointStyle(color: string, strokeWidth: number, strokeColor: stri
     })
   })
 }
+
 
 export function LineStringStyle(color: string, strokeWidth: number, strokeColor: string): Style[] {
   return [
@@ -454,38 +459,73 @@ export function PolygonStyle(color: string, strokeWidth: number, strokeColor: st
   })
 }
 
+export function refreshFeatureStyle(feature: Feature): StyleLike {
+  // style feature is based on feature properties !
+  let defaultStyle!:StyleLike
+  let geom = feature.getGeometry()
+  if (geom !== undefined) {
+    const fillColor = feature.get('fill_color')
+    const strokeWidth = feature.get('stroke_width')
+    const strokeColor = feature.get('stroke_color')
 
-// export function highLigthStyle(feature: Feature): Style | Style[] | undefined {
-//   let style = feature.getStyle()
+    if (geom.getType() === "Point") {
+      defaultStyle = PointStyle(fillColor, strokeWidth, strokeColor)
 
-//   const largerStroke = new Stroke({
-//     color: "black",
-//     width: 6,
-//   })
+    } else if (geom.getType() === "LineString") {
+      defaultStyle = LineStringStyle(fillColor, strokeWidth, strokeColor)
 
+    } else if (geom.getType() === "Polygon") {
+      defaultStyle = PolygonStyle(fillColor, strokeWidth, strokeColor)
+    }
+    return defaultStyle
 
-//   if (style !== undefined) {
-
-//     if (feature.getGeometry()?.getType() === "Point") {
-//       // TODO get point fill color
-//       const newStyle = PointStyle('#ffcc33', 6);
-//       return newStyle
-
-//     }
-//     if (feature.getGeometry()?.getType() === "LineString") {
-//       // TODO get Linestring fill color
-//       const newStyle = LineStringStyle('#ffcc33', 4);
-//       return newStyle
-
-//     }
-//     if (feature.getGeometry()?.getType() === "Polygon") {
-//       // TODO get Linestring fill color
-//       const newStyle = PolygonStyle('#ffcc33', 4);
-//       return newStyle
-
-//     }
-//   }
-//   return
+  }
+  return new Style()
 
 
-// };
+}
+
+
+
+export function findBy(layer: any, property: string, value: string | number | null): any {
+
+  if (layer.get(property) === value) {
+    return layer;
+  }
+
+  // Find recursively if it is a group
+  if (layer.getLayers) {
+    var layers = layer.getLayers().getArray()
+    var len = layers.length
+    var result!: any;
+    for (var i = 0; i < len; i++) {
+      result = findBy(layers[i], property, value);
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  return null;
+}
+
+export function findElementBy(layer: any, attribute: string, value: string | number | null): any {
+  if (attribute in layer) {
+    if (layer[attribute as keyof typeof layer] === value)
+    return layer;
+  }
+
+  if (layer) {
+    var layers = layer
+    var len = layers.length
+    var result!: any;
+    for (var i = 0; i < len; i++) {
+      result = findElementBy(layers[i], attribute, value);
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  return null;
+}
