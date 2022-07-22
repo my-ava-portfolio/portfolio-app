@@ -1,40 +1,41 @@
 <div id="mapTools" class="">
   <div class="d-flex flex-column">
 
-    <div id="cursorContainer" class="d-flex flex-row m-2">
-      <div class="d-flex flex-row ">
-        <button type="button" class="button-title btn btn-info rounded p-2 shadow">
-          <span class="fw-bold vertical-text">
-            CURSEUR
-          </span>
+    <div id="infosContainer" class="d-flex flex-row m-2">
+      <div class="w-100 d-flex flex-column">
+        <button type="button" class="button-title btn btn-info rounded shadow">
+          <span class="fw-bold">INFOS</span>
         </button>
 
-        <div id="infos" class="d-flex flex-row my-2 bg-white rounded-end shadow" role="group" aria-label="">
+        <div id="infos" class="d-flex flex-row bg-white rounded-bottom shadow mx-2" role="group" aria-label="">
 
           <div class="d-flex flex-column justify-content-evenly mx-2">
 
 
             <div id="epsgList" class="btn-group-vertical my-2 align-self-center bg-white rounded-3 border" role="group" aria-label="">
               <ng-container *ngFor="let epsg of epsgAvailable; let idx = index">
-
-                  <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + idx" [checked]="selectedEpsg === epsg" autocomplete="off">
-                  <label class=""  [for]="'btnradio-selector-' + idx" (click)="setProjection(epsg)">
-                    <div class="dropdown-item small d-flex flex-row" [ngClass]="selectedEpsg === epsg ? 'bg-info' :  ''">
-                      <span>{{ epsg }}</span>
-                    </div>
-                  </label>
-
+                <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + idx" [checked]="selectedEpsg === epsg" autocomplete="off">
+                <label class=""  [for]="'btnradio-selector-' + idx" (click)="setProjection(epsg)">
+                  <div class="dropdown-item small d-flex flex-row" [ngClass]="selectedEpsg === epsg ? 'bg-info' :  ''">
+                    <span>{{ epsg }}</span>
+                  </div>
+                </label>
               </ng-container>
             </div>
 
-            <form id="coordsPrecision" class="m-1">
-              <label for="precision" class="me-1 small">Précision</label>
-              <input class="small" id="precision" type="number" min="0" max="12" value="4" (change)="updatePrecision($event)" />
-            </form>
-
           </div>
 
-          <div class="d-flex flex-column align-items-center justify-content-evenly small mx-2">
+          <div class="d-flex flex-column align-items-center justify-content-center small mx-2">
+            <span class="fw-bold">Précision</span>
+
+            <form id="coordsPrecision" class="">
+              <label for="precision" class=""></label>
+              <input class="small" id="precision" type="number" min="0" max="12" value="4" (change)="updatePrecision($event)" />
+            </form>
+          </div>
+
+          <div class="w-100 d-flex flex-column align-items-center justify-content-center small">
+
             <span class="fw-bold">Coordonnées (x,y)</span>
             <span id="mouseCoordinates"></span>
 
