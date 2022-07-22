@@ -77,30 +77,10 @@ export class GroupHandler {
     }
   }
 
-
-  setSnaps(): void {
-
-    // set snap on all layers
-    this._group.getLayers().getArray().forEach((layer) => {
-      if (layer instanceof VectorLayer) {
-        let interaction = new Snap({
-          source: layer.getSource()
-        });
-        // this.snaps.push(interaction);
-        this.map.addInteraction(interaction);
-
-      }
-    });
-
+  setOpacity(event: any): void {
+    this._group.setOpacity(event.target.valueAsNumber)
+    console.log(this._group.getOpacity())
   }
-
-  // unsetSnaps(): void {
-  //   // unset snap on all layers
-  //   for (let snap of this._group.getLayers().getArray() ) {
-  //     this.map.removeInteraction(snap);
-  //   }
-  // }
-
 
 }
 
@@ -413,7 +393,11 @@ export class layerHandler {
       "status": "modified",
     }, true)
   }
-
+  
+  setOpacity(event: any): void {
+    this.vectorLayer.setOpacity(event.target.valueAsNumber)
+    console.log(this.vectorLayer.getOpacity())
+  }
 }
 
 
@@ -438,6 +422,7 @@ export function PointStyle(color: string, strokeWidth: number, strokeColor: stri
     })
   })
 }
+
 
 export function LineStringStyle(color: string, strokeWidth: number, strokeColor: string): Style[] {
   return [

@@ -30,7 +30,7 @@
 
             <form id="coordsPrecision" class="">
               <label for="precision" class=""></label>
-              <input class="small" id="precision" type="number" min="0" max="12" value="4" (change)="updatePrecision($event)" />
+              <input class="small" id="precision" type="number" min="0" max="12" value="4" (change)="updatePrecision($event)"/>
             </form>
           </div>
 
@@ -129,39 +129,41 @@
           <label class="w-100 border-warning px-0"  for="btnradio-feature-cancel" (click)="selectLayer(null)">
           <div class="dropdown-item small d-flex flex-row" [ngClass]="layerIdSelected === null ? 'bg-secondary text-white' :  'text-black'">
               <fa-icon class="me-2" [icon]="disabledIcon" ></fa-icon>
-              <span>Désélectioner</span>
+              <span>Désélectionner</span>
           </div>
           </label>
 
           <ng-container *ngFor="let layer of layersFromCurrentGroup">
-          <div class="d-flex flex-row">
-            <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-layer-' + layer.id" [checked]="layerIdSelected === layer.id" autocomplete="off">
-            <label class="w-100 border-warning px-0"  [for]="'btnradio-layer-' + layer.id" (click)="selectLayer(layer.id)">
-              <div class="dropdown-item small d-flex flex-row align-items-center" [ngClass]="layerIdSelected === layer.id ? 'bg-secondary text-white' :  'text-black'">
-                <fa-icon *ngIf="layer.geomType === 'Point'" class="me-2" [icon]="pointIcon"></fa-icon>
-                <fa-icon *ngIf="layer.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
-                <fa-icon *ngIf="layer.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
-                <span>{{ layer.layerName }}</span>
-                <span class="small">({{ groupSelectedName }})</span>
+            <div class="dropdown-item d-flex flex-row" [ngClass]="layerIdSelected === layer.id ? 'bg-secondary text-white' :  'text-black'">
+              <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-layer-' + layer.id" [checked]="layerIdSelected === layer.id" autocomplete="off">
+              <label class="border-warning px-0"  [for]="'btnradio-layer-' + layer.id" (click)="selectLayer(layer.id)">
+                <div class=" small d-flex flex-row align-items-center">
+                  <fa-icon *ngIf="layer.geomType === 'Point'" class="me-2" [icon]="pointIcon"></fa-icon>
+                  <fa-icon *ngIf="layer.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
+                  <fa-icon *ngIf="layer.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
+                  <span>{{ layer.layerName }}</span>
+                  <span class="small">({{ groupSelectedName }})</span>
+                </div>
+              </label>
 
-              </div>
-            </label>
+              <div class="ms-auto" [ngClass]="layerIdSelected === layer.id ? 'pe-auto' : 'pe-none'">
+                <button class="badge bg-transparent border-0 me-1 text-danger" (click)="removeLayer(layer.id)">
+                  <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
+                </button>
+                <button class="badge bg-transparent border-0 me-1" [ngClass]="layerIdDrawn === layer.id ? 'text-danger' : 'text-success'" (click)="addFeature(layer.id)">
+                  <fa-icon class="" [icon]="addIcon"></fa-icon>
+                </button>
+                <button class="badge bg-transparent border-0 me-1" [ngClass]="layerIdEdited === layer.id ? 'text-danger' : 'text-warning'" type="submit" (click)="editFeature(layer.id)">
+                  <fa-icon class="" [icon]="editIcon"></fa-icon>
+                </button>
+                <button class="badge bg-transparent border-0 me-1 text-black" data-bs-toggle="modal" data-bs-target="#layerModalStyle">
+                  <fa-icon class="" [icon]="paramIcon"></fa-icon>
+                </button>
+             </div>
 
-            <div>
-              <fa-icon class="me-2" [icon]="disabledIcon" (click)="removeLayer(layer.id)"></fa-icon>
             </div>
-
-            <div>
-
-              <button class="badge border-0" [ngClass]="layerIdDrawn === layer.id ? 'bg-danger' : 'bg-secondary'" type="submit" (click)="addFeature(layer.id)">Add</button>
-              <button class="badge border-0" [ngClass]="layerIdEdited === layer.id ? 'bg-danger' : 'bg-secondary'" type="submit" (click)="editFeature(layer.id)">Edit</button>
-
-            </div>
-
-          </div>
-
-
           </ng-container>
+        </div>
 
         </div>
       </div>
@@ -182,7 +184,7 @@
           <label class="w-100 border-warning px-0"  for="btnradio-feature-cancel"  (click)="selectFeature(null)">
             <div class="dropdown-item small d-flex flex-row" [ngClass]="featureSelectedId === null ? 'bg-secondary text-white' :  'text-black'">
               <fa-icon class="me-2" [icon]="disabledIcon" ></fa-icon>
-              <span>Désélectioner</span>
+              <span>Désélectionner</span>
             </div>
           </label>
 
@@ -206,53 +208,75 @@
   
 </div>
 
-  <div id="mapToasts" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row" style="z-index: 11">
-    <ng-container *ngFor="let feature of selectedFeaturesProperties">
+<div id="mapToasts" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row" style="z-index: 11">
+  <ng-container *ngFor="let feature of selectedFeaturesProperties">
 
-      <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header justify-content-between">
+    <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header justify-content-between">
 
-          <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon>
-          <strong>{{ feature.name }}</strong>
-          <em class="ms-2 me-auto me-auto">({{ feature.geom_type }})</em>
-          <button type="button" class="btn-close" (click)="resetToasts()" aria-label="Close"></button>
+        <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon>
+        <strong>{{ feature.name }}</strong>
+        <em class="ms-2 me-auto me-auto">({{ feature.geom_type }})</em>
+        <button type="button" class="btn-close" (click)="resetToasts()" aria-label="Close"></button>
 
-        </div>
-
-        <div class="toast-body bg-white">
-
-          <div id="toastActions" class="d-flex flex-row justify-content-start align-items-center">
-            <span class="fw-bold">Actions :</span>
-
-            <span class="badge bg-danger rounded m-1"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer">
-              <fa-icon class="m-0" [icon]="disabledIcon" ></fa-icon>
-            </span>
-
-            <span class="badge bg-dark rounded m-1 small" (click)="copyToClipboard(feature.wkt)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
-              WKT
-            </span>
-
-            <span *ngIf="feature.geom_type === 'Polygon'" class="badge bg-success rounded m-1 small" (click)="addPolygonHole(feature.layer_id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ajouter un trou au polygon sélectionné">
-              Trou
-            </span>
-
-          </div>
-
-          <div class="d-flex flex-row justify-content-between">
-            <span>Créé à {{ feature.created_at | date: 'HH:mm:ss' }}</span>
-            <span>Modifié à {{ feature.updated_at | date: 'HH:mm:ss' }}</span>
-          </div>
-
-
-          <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="color" [style.background]="feature.fill_color" (colorPickerClose)="updateFillColor(feature.id, $event)"/>
-          <input class="small strokeWidth" type="number" min="0" max="12" [value]="feature.stroke_width" (change)="updateStrokeWidth(feature.id, $event)"/>
-          <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="color" [style.background]="feature.stroke_color" (colorPickerClose)="updateStrokeColor(feature.id, $event)"/>
-
-            <span class="">{{ feature.wkt }}</span>
-
-
-        </div>
       </div>
-    </ng-container>
 
+      <div class="toast-body bg-white">
+
+        <div id="toastActions" class="d-flex flex-row justify-content-start align-items-center">
+          <span class="fw-bold">Actions :</span>
+
+          <span class="badge bg-danger rounded m-1"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer">
+            <fa-icon class="m-0" [icon]="disabledIcon" ></fa-icon>
+          </span>
+
+          <span class="badge bg-dark rounded m-1 small" (click)="copyToClipboard(feature.wkt)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
+            WKT
+          </span>
+
+          <span *ngIf="feature.geom_type === 'Polygon'" class="badge bg-success rounded m-1 small" (click)="addPolygonHole(feature.layer_id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ajouter un trou au polygon sélectionné">
+            Trou
+          </span>
+
+        </div>
+
+        <div class="d-flex flex-row justify-content-between">
+          <span>Créé à {{ feature.created_at | date: 'HH:mm:ss' }}</span>
+          <span>Modifié à {{ feature.updated_at | date: 'HH:mm:ss' }}</span>
+        </div>
+
+
+        <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="color" [style.background]="feature.fill_color" (colorPickerClose)="updateFillColor(feature.id, $event)"/>
+        <input class="small strokeWidth" type="number" min="0" max="12" [value]="feature.stroke_width" (change)="updateStrokeWidth(feature.id, $event)"/>
+        <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="color" [style.background]="feature.stroke_color" (colorPickerClose)="updateStrokeColor(feature.id, $event)"/>
+
+          <span class="">{{ feature.wkt }}</span>
+
+
+      </div>
+    </div>
+  </ng-container>
+
+</div>
+
+
+<div *ngIf="layerObjectSelected !== null" class="modal modal-layer-params fade" id="layerModalStyle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" >
+        <h5 class="modal-title" id="staticBackdropLabel">{{ layerObjectSelected.layerName}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="">
+          <span>Opacité</span>
+          <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" value="1" (change)="layerObjectSelected.setOpacity($event)"/>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
   </div>
+</div>

@@ -6,7 +6,7 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import {faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {faPencil, faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { GroupHandler, layerHandler, getWkt, findBy, findElementBy } from '@modules/map-sandbox/shared/core_copy';
 import Feature from 'ol/Feature';
@@ -26,6 +26,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   // icons
   helpIcon = faCircleQuestion;
   addIcon = faCirclePlus;
+  editIcon = faPencil;
   paramIcon = faGear;
   disabledIcon = faXmark;
   EditIcon = faCircle;
@@ -81,6 +82,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   layerFeatures: any[] = [];
   featureSelectedId: string | null = null;
+  layerObjectSelected: any | null = null;
 
   isLegendDisplayed = true;
 
@@ -243,8 +245,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
       });
 
     }
+    this.getCurrentLayer(layerId)
     this.refreshAllLayers()
 
+  }
+
+  getCurrentLayer(layerId: string | null): void {
+    this.layerObjectSelected = findElementBy(this.layersFromCurrentGroup, 'id', layerId)
   }
 
   addPolygonHole(layerId: string): void {
