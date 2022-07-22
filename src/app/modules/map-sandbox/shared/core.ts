@@ -34,7 +34,7 @@ export class GroupHandler {
 
   groupName!: string;
 
-  layers: layerHandler[] = []
+  layers: any[] = []
 
   constructor(
     map: Map,
@@ -63,6 +63,8 @@ export class GroupHandler {
   }
 
   addLayer(layer: any): void {
+    this.layers.push(layer)
+
     let innerLayers = this._group.getLayers().getArray(); // no array!
 
     if (innerLayers[0] === undefined) {
@@ -104,7 +106,7 @@ export class layerHandler {
   sourceFeatures!: VectorSource;
   allFeatures: any[] = [];
 
-  groupId: string
+  groupId: string | null;
   id: string;
   layerName: string;
   geomType: 'Point' | 'LineString' | 'Polygon';
@@ -114,7 +116,7 @@ export class layerHandler {
     map: Map,
     layerName: string,
     geomType: 'Point' | 'LineString' | 'Polygon',
-    groupId: string
+    groupId: string | null = null
   ) {
     this.map = map
     this.layerName = layerName
@@ -213,14 +215,7 @@ export class layerHandler {
     this.draw.on('drawstart', this.onDrawStart.bind(this));
     this.draw.on('drawend', this.onDrawEnd.bind(this));
 
-    this.draw.on('drawabort', (e: any) => {
-      // to cancel a drawing hole (shift + left click OR shift + right click for hole )
-      if (this.holePolygonDrawingStatus && this.polygonIntersected !== undefined) {
-        this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
-        this.polygonIntersected = undefined;
-      }
-
-    });
+    this.draw.on('drawabort', this.onDrawAborting.bind(this));
   }
 
   disableDrawing(): void {
@@ -245,6 +240,17 @@ export class layerHandler {
     this.disableSelecting();
   }
 
+  private onDrawAborting(e: any): void {
+      // to cancel a drawing hole (shift + left click OR shift + right click for hole )
+    if (this.holePolygonDrawingStatus) {
+
+      if (this.polygonIntersected !== undefined) {
+        this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
+        this.polygonIntersected = undefined;
+      }
+        this.holePolygonDrawingStatus = false // we set to false to come back to the basic draw tool
+      }
+  }
 
   private onDrawStart(e: any): void {
 
@@ -256,6 +262,7 @@ export class layerHandler {
         this.polygonIntersected = featureFound
         if (this.polygonIntersected === undefined) {
           e.target.abortDrawing();
+          this.onDrawAborting(e)
           alert('An hole is possible only on a polygon!')
           return;
         }
@@ -334,12 +341,19 @@ export class layerHandler {
     }
   }
 
-  removeFeature(id: string): void {
-    const featureFound = this.sourceFeatures.getFeatureById(id)
+  removeFeature(featureId: string): void {
+    const featureFound = this.sourceFeatures.getFeatureById(featureId)
     if (featureFound !== null) {
       this.sourceFeatures.removeFeature(featureFound);
     }
   }
+  getFeatureAttribute(featureId: string, attribute: string): void {
+    const featureFound = this.sourceFeatures.getFeatureById(featureId)
+    if (featureFound !== null) {
+      return featureFound.get(attribute)
+    }
+  }
+
 
   features(): Feature[] {
     if (!this.deleted) {
@@ -392,7 +406,7 @@ export class layerHandler {
       "status": "modified",
     }, true)
   }
-  
+
   setOpacity(event: any): void {
     this.vectorLayer.setOpacity(event.target.valueAsNumber)
     console.log(this.vectorLayer.getOpacity())

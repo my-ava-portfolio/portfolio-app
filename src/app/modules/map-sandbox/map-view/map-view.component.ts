@@ -6,7 +6,7 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import {faPencil, faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {faLayerGroup, faPencil, faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { GroupHandler, layerHandler, getWkt, findBy, findElementBy } from '@modules/map-sandbox/shared/core';
 import Feature from 'ol/Feature';
@@ -25,6 +25,7 @@ import { View } from 'ol';
 export class MapViewComponent implements OnInit, OnDestroy {
 
   // icons
+  groupIcon = faLayerGroup;
   helpIcon = faCircleQuestion;
   addIcon = faCirclePlus;
   editIcon = faPencil;
@@ -40,8 +41,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
   map!: Map;
   defaultMapView!: View;
 
-  allExistingLayers: layerHandler[] = [];
-  layersFromCurrentGroup: layerHandler[] = [];
+  allExistingLayers: any[] = [];
+  existingLayers: any[] = []; // LayerHandler or GroupHandler list
   layerIdSelected: string | null = null;
   layerIdEdited: string | null = null;
   layerIdDrawn: string | null = null;
@@ -80,7 +81,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   selectedEpsg!: string;
 
   layerFeatures: any[] = [];
-  featureSelectedId: string | null = null;
+  featureIdSelected: string | null = null;
   layerObjectSelected: any | null = null;
 
   isLegendDisplayed = true;
@@ -131,7 +132,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.featuresDisplayedSubscription.unsubscribe();
 
 
-    this.allExistingLayers.forEach((layer: layerHandler) => {
+    this.allExistingLayers.forEach((layer: any) => {
       this.map.removeLayer(layer.vectorLayer)
       layer.cleanEvents()
     })
@@ -157,81 +158,48 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
 
+  addLayer(geomType: any, groupId: string | null = null): void {
 
-  addGroup(): void {
-    let newGroup = new GroupHandler(
+    let newLayer = new layerHandler(
       this.map,
-      'Groupe ' + ++this.groupNameIncrement
+      'layer ' + ++this.layerNamedIncrement,
+      geomType,
+      groupId
     )
-    this.groupsList.push(newGroup)
-    this.resetLayersAndFeaturesFromGroupId(this.groupSelectedId)
+
+    // add behavior when selecting on map
+    newLayer.select.on("select", (event: any) => {
+      let deselected = event.deselected
+      let selected = event.selected
+
+      if (deselected.length > 0 && selected.length === 0) {
+        deselected.forEach((_: any) => {
+          this.selectFeature(null)
+          // this.addFeature(null) // to cancel a drawing mode (hole..)
+        })
+      }
+
+      if (selected.length > 0) {
+        selected.forEach((feature: any) => {
+          this.selectLayer(feature.get('_layerId'))
+          this.editFeature(feature.get('_layerId'))
+          this.selectFeature(feature.getId())
+        })
+      }
+    })
+
+    this.allExistingLayers.push(newLayer)
+
+    this.refreshLayers()
 
   }
 
-  selectGroup(groupId: string): void {
-    const groupFound = findBy(this.map.getLayerGroup(), "id", groupId)
-    if (groupFound !== null) {
-      this.groupSelectedId = groupFound.get('id');
-      this.groupSelectedName = groupFound.get('name');
-      this.resetLayersAndFeaturesFromGroupId(this.groupSelectedId)
-    }
-  }
-
-  refreshLayersFromGroupId(groupId: string): void {
-    this.layersFromCurrentGroup = this.allExistingLayers.filter((layer: layerHandler) => {
-      return layer.groupId === groupId && !layer.deleted;
+  refreshLayers(): void {
+    this.existingLayers = this.allExistingLayers.filter((layer: layerHandler) => {
+      return !layer.deleted;
     })
   }
 
-  resetLayersAndFeaturesFromGroupId(groupId: string): void {
-    this.refreshLayersFromGroupId(groupId)
-    this.selectLayer(null) // unselect selected layer
-    this.refreshAllFeatures(null)
-  }
-
-  addLayer(geomType: any): void {
-    const groupsFound = this.groupsList.filter((group: GroupHandler) => {
-      return group.id == this.groupSelectedId  // TODO use the id but need gui iplementing
-    })
-
-    if (groupsFound.length === 1) {
-      let newLayer = new layerHandler(
-        this.map,
-        'layer ' + ++this.layerNamedIncrement,
-        geomType,
-        groupsFound[0].id
-      )
-      
-      // add behavior when selecting on map
-      newLayer.select.on("select", (event: any) => {
-        let deselected = event.deselected
-        let selected = event.selected
-
-        if (deselected.length > 0 && selected.length === 0) {
-          deselected.forEach((_: any) => {
-            this.selectFeature(null)
-          })
-        }
-
-        if (selected.length > 0) {
-          selected.forEach((feature: any) => {
-            this.selectFeature(feature.getId())
-          })
-        }
-
-
-    })
-
-      groupsFound[0].addLayer(newLayer.vectorLayer)
-      this.allExistingLayers.push(newLayer)
-      this.refreshLayersFromGroupId(this.groupSelectedId)
-      console.log("aa")
-    } else {
-      alert("Create & select a group to add a layer!")
-    }
-
-
-  }
 
   selectLayer(layerId: string | null): void {
     this.resetToasts()
@@ -240,7 +208,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.layerIdSelected = layerId
 
-    let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', layerId)
+    let layerFound = findElementBy(this.existingLayers, 'id', layerId)
     if (layerFound !== null) {
 
 
@@ -250,6 +218,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
 
       layerFound.sourceFeatures.on('addfeature', (event: any) => {
+        event.feature.set("_layerId", this.layerIdSelected, true)
         this.refreshAllFeatures(layerFound)
       });
 
@@ -268,62 +237,68 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   getCurrentLayer(layerId: string | null): void {
-    this.layerObjectSelected = findElementBy(this.layersFromCurrentGroup, 'id', layerId)
+    this.layerObjectSelected = findElementBy(this.existingLayers, 'id', layerId)
   }
 
   addPolygonHole(layerId: string): void {
     this.addFeature(null)
-    let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', layerId)
+    let layerFound = findElementBy(this.existingLayers, 'id', layerId)
     if (layerFound !== null) {
-      this.layerIdDrawn = layerFound.id
-      // this.selectLayer(this.layerIdDrawn) // draw and edit tool are reset here
-      layerFound.enableDrawing(true)
+      this.addFeature(layerId, true)
+      // this.layerIdDrawn = layerFound.id
+      // // this.selectLayer(this.layerIdDrawn) // draw and edit tool are reset here
+      // layerFound.enableDrawing(true)
     }
 
   }
 
-  addFeature(layerId: string | null): void {
+  addFeature(layerId: string | null, holeStatus = false): void {
     if (layerId === this.layerIdDrawn || layerId === null) {
-      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdDrawn)
+      let layerFound = findElementBy(this.existingLayers, 'id', this.layerIdDrawn)
       if (layerFound !== null) {
           layerFound.disableDrawing()
           this.layerIdDrawn = null
       }
 
     } else {
-      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', layerId)
+      let layerFound = findElementBy(this.existingLayers, 'id', layerId)
       if (layerFound !== null) {
         this.selectLayer(layerId) // draw and edit tool are reset here
         this.layerIdDrawn = layerId
-        layerFound.enableDrawing(false)
+        layerFound.enableDrawing(holeStatus)
       }
 
-    }  
+    }
   }
 
   editFeature(layerId: string | null): void {
     console.log("edit", this.layerIdDrawn, this.layerIdEdited)
 
     if (layerId === this.layerIdEdited || layerId === null) {
-      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdEdited)
+      let layerFound = findElementBy(this.existingLayers, 'id', this.layerIdEdited)
       if (layerFound !== null) {
           layerFound.disableEditing()
           this.layerIdEdited = null
       }
 
     } else {
-      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', layerId)
-      if (layerFound !== null) { 
-        this.selectLayer(layerId) // draw and edit tool are reset here
-        this.layerIdEdited = layerId
-        layerFound.enableEditing()
+      let layerFound = findElementBy(this.existingLayers, 'id', layerId)
+      if (layerFound !== null) {
+        if (layerFound.features().length > 0) {
+          this.selectLayer(layerId) // draw and edit tool are reset here
+          this.layerIdEdited = layerId
+          layerFound.enableEditing()
+        } else {
+          this.editFeature(null)
+        }
+
       }
 
     }
   }
 
   removeLayer(layerId: string): void {
-    this.layersFromCurrentGroup.forEach((layer: layerHandler) => {
+    this.existingLayers.forEach((layer: layerHandler) => {
 
       if (layer.id === layerId) {
         this.addFeature(null)
@@ -339,7 +314,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   refreshAllLayers(): void {
 
-    this.layersFromCurrentGroup = this.layersFromCurrentGroup.filter((layer: layerHandler) => {
+    this.existingLayers = this.existingLayers.filter((layer: layerHandler) => {
       return !layer.deleted
     })
   }
@@ -358,12 +333,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.resetToasts()
 
     if (featureId !== null) {
-      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdSelected)
+      let layerFound = findElementBy(this.existingLayers, 'id', this.layerIdSelected)
       if (layerFound !== null) {
 
         // reset the selection and set it (then the style will be updated) + it call the changefeature event !
         let feature = this.getFeature(featureId)
-        this.featureSelectedId = feature.get('id');
+        this.featureIdSelected = feature.get('id');
 
         this.featuresDisplayedObservable.next([feature]);  // useful to synchro the map selection and the div... maybe we can use the select event here
 
@@ -379,14 +354,14 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   resetFeatureSelection(): void {
-    if (this.featureSelectedId !== null) {
-      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdSelected)
+    if (this.featureIdSelected !== null) {
+      let layerFound = findElementBy(this.existingLayers, 'id', this.layerIdSelected)
       if (layerFound !== null) {
         // reset the selection and set it (then the style will be updated) + it call the changefeature event !
         layerFound.select.getFeatures().clear()
-        this.featureSelectedId = null;
+        this.featureIdSelected = null;
       }
-    
+
     }
 
   }

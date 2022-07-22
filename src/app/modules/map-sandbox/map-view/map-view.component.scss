@@ -1,28 +1,10 @@
-.button-title {
-  border-radius: unset;
-  z-index: 1;
-
-  .vertical-text {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    letter-spacing: -5px;
-  }
-
-  .horizontal-text {
-    writing-mode: horizontal-tb;
-    letter-spacing: 0px;
-
-  }
-
-}
-
-.editEnabled {
-  color: red
-}
-
-label, .projection {
+.pointer {
   cursor: pointer;
+
 }
+
+
+
 
 
 #toastActions span {
@@ -33,24 +15,6 @@ label, .projection {
   z-index: 1;
   position: fixed;
 }
-
-#featuresContainer {
-  scrollbar-width: none;
-  max-height: 20em;
-
-}
-
-#groupsList {
-  height: 10em;
-}
-#featuresList {
-  height: 20em;
-}
-#geomList {
-  // height: 100%;
-}
-
-
 
 .colorPicker {
   width: 10px;
