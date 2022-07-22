@@ -6,7 +6,7 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import { faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { GroupHandler, layerHandler, getWkt, findBy, findElementBy } from '@modules/map-sandbox/shared/core_copy';
 import Feature from 'ol/Feature';
@@ -15,9 +15,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { Subject } from 'rxjs/internal/Subject';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
-import { asLiteral } from '@angular/compiler/src/render3/view/util';
-import VectorLayer from 'ol/layer/Vector';
-
 
 @Component({
   selector: 'app-map-view',
@@ -27,6 +24,8 @@ import VectorLayer from 'ol/layer/Vector';
 export class MapViewComponent implements OnInit, OnDestroy {
 
   // icons
+  addIcon = faCirclePlus;
+  paramIcon = faGear;
   disabledIcon = faXmark;
   EditIcon = faCircle;
   pointIcon = faCircle;

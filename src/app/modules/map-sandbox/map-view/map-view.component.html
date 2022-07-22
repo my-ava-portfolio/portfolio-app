@@ -59,24 +59,27 @@
         <div id="groupsList" class="overflow-auto btn-group-vertical justify-content-start my-2 bg-white rounded-end shadow" role="group" aria-label="">
 
           <input type="radio" class="border btn-check m-0" name="btnradio" id="btnradio-group">
-          <label class="w-100 border-secondary px-0"  for="btnradio-group" (click)="addGroup()">
-          <div class="dropdown-item small d-flex flex-row bg-secondary text-white">
-              <fa-icon class="me-2" [icon]="disabledIcon" ></fa-icon>
-              <span>Ajouter un groupe</span>
-          </div>
+          <label class="sticky-top w-100 border-success px-0 shadow"  for="btnradio-group" (click)="addGroup()">
+            <div class="dropdown-item small d-flex flex-row bg-success text-white">
+                <fa-icon class="me-2" [icon]="addIcon" ></fa-icon>
+                <span>Ajouter un groupe</span>
+            </div>
           </label>
 
           <ng-container *ngFor="let group of groupsList">
             <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-feature-' + group.id" [checked]="groupSelectedId === group.id" autocomplete="off">
             <label class="w-100 border-warning px-0"  [for]="'btnradio-feature-' + group.id" (click)="selectGroup(group.id)">
 
-              <div class="dropdown-item small d-flex flex-row align-items-center" [ngClass]="groupSelectedId === group.id ? 'bg-secondary text-white' :  'text-black'">
-                <span>{{ group.groupName }}</span>
+            <div class="dropdown-item small d-flex flex-row justify-content-between align-items-between" [ngClass]="groupSelectedId === group.id ? 'bg-secondary text-white' :  'text-black'">
+              <span>{{ group.groupName }}</span>
+              <div class="ms-auto">
+                <fa-icon class="mx-1" [icon]="paramIcon" ></fa-icon>
               </div>
+            </div>
 
             </label>
           </ng-container>
-      </div>
+        </div>
     </div>
 
     <div id="geomSelector" class="d-flex flex-row m-2">
