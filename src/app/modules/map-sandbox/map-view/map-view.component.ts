@@ -242,9 +242,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.refreshAllFeatures(layerFound)
       });
 
-    } else {
-      // to disable the draw and edit tools
-      this.layerIdSelected = layerId
     }
     this.refreshAllLayers()
 
@@ -297,7 +294,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.layerIdEdited = layerId
         layerFound.enableEditing()
       }
-      
+
     }
   }
 
@@ -332,18 +329,19 @@ export class MapViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectFeature(feature: Feature | null): void {
+  selectFeature(featureId: string | null): void {
     // reset toast
     this.resetToasts()
 
-    if (feature !== null) {
-      let layersFound: layerHandler[] = this.layersFromCurrentGroup.filter((layer: layerHandler) => {
-        return layer.id === this.layerIdSelected
-      })
+    if (featureId !== null) {
+      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdSelected)
+      if (layerFound !== null) {
+        // reset the selection and set it (then the style will be updated) + it call the changefeature event !
+        let feature = this.getFeature(featureId)
 
-      // reset the selection and set it (then the style will be updated) + it call the changefeature event !
-      layersFound[0].select.getFeatures().clear()
-      layersFound[0].select.getFeatures().push(feature)
+        layerFound.select.getFeatures().clear()
+        layerFound.select.getFeatures().push(feature)
+      }
 
     } else {
       this.resetFeatureSelection()
@@ -354,12 +352,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   resetFeatureSelection(): void {
     if (this.featureSelectedId !== null) {
-      let layersFound: layerHandler[] = this.layersFromCurrentGroup.filter((layer: layerHandler) => {
-        return layer.id === this.layerIdSelected
-      })
-      // reset the selection and set it (then the style will be updated) + it call the changefeature event !
-      layersFound[0].select.getFeatures().clear()
-      this.featureSelectedId = null;
+      let layerFound = findElementBy(this.layersFromCurrentGroup, 'id', this.layerIdEdited)
+      if (layerFound !== null) {
+        // reset the selection and set it (then the style will be updated) + it call the changefeature event !
+        layerFound.select.getFeatures().clear()
+        this.featureSelectedId = null;
+      }
+    
     }
 
   }
@@ -467,29 +466,30 @@ export class MapViewComponent implements OnInit, OnDestroy {
       });
   }
 
+  getFeature(featureId: string): any {
+    let features = this.layerFeatures.filter((feature: any) => {
+      return feature.getId() === featureId
+    })
+    if (features.length === 1) {
+      return features[0]
+    }
+    return null
+  }
+
   setMapEpsg(): void {
     this.currentEpsg = this.map.getView().getProjection().getCode();
   }
 
   updateFillColor(featureId: string, color: string): void {
-    let features = this.layerFeatures.filter((feature: any) => {
-      return feature.getId() === featureId
-    })
-    let feature = features[0]
+    let feature = this.getFeature(featureId)
     feature.set("fill_color", color, false)
   }
   updateStrokeWidth(featureId: string, event: any): void {
-    let features = this.layerFeatures.filter((feature: any) => {
-      return feature.getId() === featureId
-    })
-    let feature = features[0]
+    let feature = this.getFeature(featureId)
     feature.set("stroke_width", event.target.value, true)
   }
   updateStrokeColor(featureId: string, color: string): void {
-    let features = this.layerFeatures.filter((feature: any) => {
-      return feature.getId() === featureId
-    })
-    let feature = features[0]
+    let feature = this.getFeature(featureId)
     feature.set("stroke_color", color, true)
   }
 
