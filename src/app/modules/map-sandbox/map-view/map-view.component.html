@@ -131,11 +131,13 @@
 
   </div>
 
-  <div class="d-flex flex-row small" *ngIf="layer.features().length > 0 && layerIdDrawn  === layer.id || layerIdEdited === layer.id">
-    <ul class="list-group">
+  <div class="featuresList d-flex flex-row small" *ngIf="layer.features().length > 0 && layerIdDrawn  === layer.id || layerIdEdited === layer.id">
+    <ul class="">
+      
       <li class="list-group-item d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == null ? 'bg-secondary text-white' : 'bg-white text-black'" (click)="selectFeature(null)">
         Déseléctionner
       </li>
+
       <li class="list-group-item d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == feature.getId() ? 'bg-secondary text-white' : 'bg-white - text-black'" (click)="selectFeature(feature.getId())" *ngFor="let feature of layer.features()">
         {{feature.get('name')}}
 
