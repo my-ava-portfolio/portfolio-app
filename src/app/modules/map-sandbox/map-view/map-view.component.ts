@@ -6,7 +6,7 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import {faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { GroupHandler, layerHandler, getWkt, findBy, findElementBy } from '@modules/map-sandbox/shared/core_copy';
 import Feature from 'ol/Feature';
@@ -24,6 +24,7 @@ import { format } from 'ol/coordinate';
 export class MapViewComponent implements OnInit, OnDestroy {
 
   // icons
+  helpIcon = faCircleQuestion;
   addIcon = faCirclePlus;
   paramIcon = faGear;
   disabledIcon = faXmark;

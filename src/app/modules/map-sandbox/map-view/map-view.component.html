@@ -48,15 +48,16 @@
     </div>
 
     <div id="groupsContainer" class="d-flex flex-row m-2">
-      <div class="d-flex flex-row ">
+      <div class="d-flex flex-column">
 
-        <button type="button" class="button-title btn btn-dark rounded p-2 shadow">
-          <span class="fw-bold vertical-text">
+        <button type="button" class="button-title btn btn-dark rounded shadow">
+          <span class="fw-bold">
             GROUPES
           </span>
+          <fa-icon class="p-0" [icon]="helpIcon"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ajouter un groupe pour y créer des couches"></fa-icon>
         </button>
 
-        <div id="groupsList" class="overflow-auto btn-group-vertical justify-content-start my-2 bg-white rounded-end shadow" role="group" aria-label="">
+        <div id="groupsList" class="overflow-auto btn-group-vertical justify-content-start mx-2 bg-white rounded-end shadow" role="group" aria-label="">
 
           <input type="radio" class="border btn-check m-0" name="btnradio" id="btnradio-group">
           <label class="sticky-top w-100 border-success px-0 shadow"  for="btnradio-group" (click)="addGroup()">
