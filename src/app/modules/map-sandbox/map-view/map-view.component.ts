@@ -68,8 +68,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   groupSelectedName!: string;
 
   selectedFeaturesProperties: any[] = [];
-  color!: string
-
+  color!: string  // TODO check if needed
 
   mousePositionControl!: MousePosition;
   cursorCoordinates!: any;
@@ -77,8 +76,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
   // create a service to get the map epsg!
   currentEpsg!: string;
   selectedEpsg!: string;
-
-
 
   layerFeatures: any[] = [];
   featureSelectedId: string | null = null;
@@ -400,7 +397,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         'wkt': getWkt(geomFeature)
       })
 
-      if (isNotify) {
+      if (isNotify) {  // TODO deprecated
         // display it with fading
         d3.select("html")
         .transition()
@@ -417,8 +414,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-
 
   copyToClipboard(value: string): void {
     const selBox = document.createElement('textarea');
@@ -455,9 +450,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.mapService.setProjectionOnMap(epsg)
 
-    // this.layerFeatures.getSource().getFeatures().forEach( (feature: any) => {
-    //   feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, this.selectedEpsg))
-    // });
+    //  reproject each layer
+    this.layerFeatures.forEach((layer: any) => {
+      layer.VectorSource().getFeatures().forEach( (feature: any) => {
+        feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, this.selectedEpsg))
+      });
+    })
+
     this.setMapEpsg();
 
   }
