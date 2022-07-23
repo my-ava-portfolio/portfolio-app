@@ -69,11 +69,11 @@ export class LayerComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
 
-    if (changes.currentLayerIdSelected.currentValue === 'none') {
+    if (changes.currentLayerIdSelected.currentValue !== this.layer.id) {
       this.resetInteractions()
     }
 
-}
+  }
 
 
   removeLayer(): void {
@@ -83,6 +83,7 @@ export class LayerComponent implements OnInit {
 
   editHandler(status: boolean): void {
     if (status) {
+      this.drawHandler(false) // disable draw tool
       this.editFeatureEnable()
     } else {
       this.editFeatureDisable()
@@ -90,9 +91,8 @@ export class LayerComponent implements OnInit {
   }
 
   drawHandler(status: boolean, holeStatus: boolean = false): void {
-    this.isDrawn = status
-    console.log(this.isDrawn)
     if (status) {
+      this.editHandler(false) // disable edit tool
       this.addFeatureEnable(holeStatus)
     } else {
       this.addFeatureDisable()
