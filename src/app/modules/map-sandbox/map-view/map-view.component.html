@@ -132,27 +132,55 @@
   </div>
 
   <div class="featuresList d-flex flex-row small" *ngIf="layer.features().length > 0 && layerIdDrawn  === layer.id || layerIdEdited === layer.id">
-    <ul class="">
+    <ul class="w-100 list-group list-group-flush mx-3 border rounded">
 
-      <li class="list-group-item d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == null ? 'bg-secondary text-white' : 'bg-white text-black'" (click)="selectFeature(null)">
-        Déseléctionner
+      <li class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == null ? 'bg-secondary text-white' : 'bg-white text-black'" (click)="selectFeature(null)">
+        <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
+
+          <div class="">
+            <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>
+          </div>
+          <div class="">
+            Déseléctionner
+          </div>
+        </div>
+
       </li>
 
-      <li class="list-group-item d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == feature.getId() ? 'bg-secondary text-white' : 'bg-white - text-black'" (click)="selectFeature(feature.getId())" *ngFor="let feature of layer.features()">
-        {{feature.get('name')}}
+      <li class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == feature.getId() ? 'bg-secondary text-white' : 'bg-white - text-black'" (click)="selectFeature(feature.getId())" *ngFor="let feature of layer.features()">
+        <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
 
-        <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="color" [style.background]="layer.getFeatureAttribute(feature.getId(), 'fill_color')" (colorPickerClose)="updateFillColor(feature.getId(), $event)"/>
-        <input class="small strokeWidth" type="number" min="0" max="12" [value]="layer.getFeatureAttribute(feature.getId(), 'stroke_width')" (change)="updateStrokeWidth(feature.getId(), $event)"/>
-        <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="color" [style.background]="layer.getFeatureAttribute(feature.getId(), 'stroke_color')" (colorPickerClose)="updateStrokeColor(feature.getId(), $event)"/>
+          <div class="m-1">
 
-        <span *ngIf="layer.geomType === 'Polygon'" class="badge bg-success rounded m-1 small" (click)="addPolygonHole(layer.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ajouter un trou au polygon sélectionné">
-          Trou
-        </span>
+            <svg height="25" width="25" *ngIf="layer.geomType === 'Point'">
+              <circle cx="10" cy="10" r="8" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
+            </svg>
 
+            <svg height="25" width="25" *ngIf="layer.geomType === 'LineString'">
+              <line x1="0" y1="10" x2="25" y2="10" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * 2"/>
+              <line x1="0" y1="10" x2="25" y2="10" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') *1.5"/>
+            </svg>
 
-        <span class="badge bg-danger rounded m-1" (click)="layer.removeFeature(feature.getId())" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer">
-          <fa-icon class="m-0" [icon]="disabledIcon" ></fa-icon>
-        </span>
+            <svg height="15" width="25" *ngIf="layer.geomType === 'Polygon'">
+              <rect x="0" y="0" width="25" height="15" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')"/>
+            </svg>
+          </div>
+
+          <div class="">
+            {{feature.get('name')}}
+          </div>
+
+          <div class="ms-auto">
+            <span *ngIf="layer.geomType === 'Polygon'" class="badge bg-success rounded m-1 small" (click)="addPolygonHole(layer.id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ajouter un trou au polygon sélectionné">
+              Trou
+            </span>
+
+            <span class="badge bg-danger rounded m-1" (click)="layer.removeFeature(feature.getId())" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer">
+              <fa-icon class="m-0" [icon]="disabledIcon" ></fa-icon>
+            </span>
+          </div>
+
+        </div>
 
       </li>
 
@@ -198,6 +226,11 @@
           <span>Créé à {{ feature.created_at | date: 'HH:mm:ss' }}</span>
           <span>Modifié à {{ feature.updated_at | date: 'HH:mm:ss' }}</span>
         </div>
+
+
+        <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="feature.fill_color" [style.background]="feature.fill_color" (colorPickerClose)="updateFillColor(feature.id, $event)"/>
+        <input class="small strokeWidth" type="number" min="0" max="12" [value]="feature.stroke_width" (change)="updateStrokeWidth(feature.id, $event)"/>
+        <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="feature.stroke_color" [style.background]="feature.stroke_color" (colorPickerClose)="updateStrokeColor(feature.id, $event)"/>
 
 
         <span class="">{{ feature.wkt }}</span>

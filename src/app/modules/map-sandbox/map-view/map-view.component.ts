@@ -8,7 +8,7 @@ import Map from 'ol/Map';
 
 import {faLayerGroup, faPencil, faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { GroupHandler, layerHandler, getWkt, findBy, findElementBy } from '@modules/map-sandbox/shared/core';
+import { GroupHandler, layerHandler, getWkt, findBy, findElementBy  } from '@modules/map-sandbox/shared/core';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -71,7 +71,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
   groupSelectedName!: string;
 
   selectedFeaturesProperties: any[] = [];
-  color!: string  // TODO check if needed
 
   mousePositionControl!: MousePosition;
   cursorCoordinates!: any;
@@ -497,6 +496,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   updateStrokeColor(featureId: string, color: string): void {
     let feature = this.getFeature(featureId)
     feature.set("stroke_color", color, true)
+
   }
 
 }
