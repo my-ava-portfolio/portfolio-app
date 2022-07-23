@@ -43,7 +43,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   allExistingLayers: any[] = [];
   existingLayers: any[] = []; // LayerHandler or GroupHandler list
-  layerIdSelected: string | null = null;
+  layerIdSelected!: string;
   layerIdEdited: string | null = null;
   layerIdDrawn: string | null = null;
   layerNamedIncrement: number = 0;
@@ -156,6 +156,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
+  getSelectedLayerId(layerId: any): void {
+    this.layerIdSelected = layerId
+  }
 
   addLayer(geomType: any, groupId: string | null = null): void {
 
@@ -165,27 +168,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
       geomType,
       groupId
     )
-
-    // add behavior when selecting on map
-    newLayer.select.on("select", (event: any) => {
-      let deselected = event.deselected
-      let selected = event.selected
-
-      if (deselected.length > 0 && selected.length === 0) {
-        deselected.forEach((_: any) => {
-          this.selectFeature(null)
-          // this.addFeature(null) // to cancel a drawing mode (hole..)
-        })
-      }
-
-      if (selected.length > 0) {
-        selected.forEach((feature: any) => {
-          this.selectLayer(feature.get('_layerId'))
-          this.editFeature(feature.get('_layerId'))
-          this.selectFeature(feature.getId())
-        })
-      }
-    })
 
     this.allExistingLayers.push(newLayer)
 
@@ -200,170 +182,17 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
 
-  selectLayer(layerId: string | null): void {
+  unSelectLayer(): void {
+    this.layerIdSelected = 'none'
     this.resetToasts()
-    this.addFeature(null)
-    this.editFeature(null)
-
-    this.layerIdSelected = layerId
-
-    let layerFound = findElementBy(this.existingLayers, 'id', layerId)
-    if (layerFound !== null) {
-
-
-      layerFound.enableSelecting()
-
-      this.layerFeatures = layerFound.features()
-
-
-      layerFound.sourceFeatures.on('addfeature', (event: any) => {
-        event.feature.set("_layerId", this.layerIdSelected, true)
-        this.displayCurrentLayerFeatures(layerFound)
-      });
-
-      layerFound.sourceFeatures.on('changefeature', (event: any) => {
-        // this.featuresDisplayedObservable.next([event.feature]);  // useful to synchro the map selection and the div... maybe we can use the select event here
-      });
-
-      layerFound.sourceFeatures.on('removefeature', (event: any) => {
-        this.displayCurrentLayerFeatures(layerFound)
-      });
-      this.displayCurrentLayerFeatures(layerFound)
-    }
-    this.getCurrentLayer(layerId)
-    this.refreshAllLayers()
-
   }
 
-  getCurrentLayer(layerId: string | null): void {
-    this.layerObjectSelected = findElementBy(this.existingLayers, 'id', layerId)
-  }
-
-  addPolygonHole(layerId: string): void {
-    this.addFeature(null)
-    let layerFound = findElementBy(this.existingLayers, 'id', layerId)
-    if (layerFound !== null) {
-      this.addFeature(layerId, true)
-      // this.layerIdDrawn = layerFound.id
-      // // this.selectLayer(this.layerIdDrawn) // draw and edit tool are reset here
-      // layerFound.enableDrawing(true)
-    }
-
-  }
-
-  addFeature(layerId: string | null, holeStatus = false): void {
-    if (layerId === this.layerIdDrawn || layerId === null) {
-      let layerFound = findElementBy(this.existingLayers, 'id', this.layerIdDrawn)
-      if (layerFound !== null) {
-          layerFound.disableDrawing()
-          this.layerIdDrawn = null
-      }
-
-    } else {
-      let layerFound = findElementBy(this.existingLayers, 'id', layerId)
-      if (layerFound !== null) {
-        this.selectLayer(layerId) // draw and edit tool are reset here
-        this.layerIdDrawn = layerId
-        layerFound.enableDrawing(holeStatus)
-      }
-
-    }
-  }
-
-  editFeature(layerId: string | null): void {
-    console.log("edit", this.layerIdDrawn, this.layerIdEdited)
-
-    if (layerId === this.layerIdEdited || layerId === null) {
-      let layerFound = findElementBy(this.existingLayers, 'id', this.layerIdEdited)
-      if (layerFound !== null) {
-          layerFound.disableEditing()
-          this.layerIdEdited = null
-      }
-
-    } else {
-      let layerFound = findElementBy(this.existingLayers, 'id', layerId)
-      if (layerFound !== null) {
-        if (layerFound.features().length > 0) {
-          this.selectLayer(layerId) // draw and edit tool are reset here
-          this.layerIdEdited = layerId
-          layerFound.enableEditing()
-        } else {
-          this.editFeature(null)
-        }
-
-      }
-
-    }
-  }
 
   removeLayer(layerId: string): void {
-    this.existingLayers.forEach((layer: layerHandler) => {
-
-      if (layer.id === layerId) {
-        this.addFeature(null)
-
-        layer.removeLayer()
-        this.layerIdSelected = null // deselect by defaultt when removing
-        this.resetToasts()
-        this.layerFeatures = layer.features()
-        this.refreshAllLayers()
-      }
-    });
-  }
-
-  refreshAllLayers(): void {
-
-    this.existingLayers = this.existingLayers.filter((layer: layerHandler) => {
-      return !layer.deleted
-    })
+    // TOOD remove it from list
   }
 
 
-  displayCurrentLayerFeatures(layer: any): void {
-    if (layer === null) {
-      this.layerFeatures = []
-    } else {
-      this.layerFeatures = layer.features()
-    }
-  }
-
-  selectFeature(featureId: string | null): void {
-    // reset toast
-    this.resetToasts()
-
-    if (featureId !== null) {
-      let layerFound = findElementBy(this.existingLayers, 'id', this.layerIdSelected)
-      if (layerFound !== null) {
-
-        // reset the selection and set it (then the style will be updated) + it call the changefeature event !
-        let feature = this.getFeature(featureId)
-        this.featureIdSelected = feature.get('id');
-
-        this.featuresDisplayedObservable.next([feature]);  // useful to synchro the map selection and the div... maybe we can use the select event here
-
-        layerFound.select.getFeatures().clear()
-        layerFound.select.getFeatures().push(feature)
-      }
-
-    } else {
-      this.resetFeatureSelection()
-
-    }
-
-  }
-
-  resetFeatureSelection(): void {
-    if (this.featureIdSelected !== null) {
-      let layerFound = findElementBy(this.existingLayers, 'id', this.layerIdSelected)
-      if (layerFound !== null) {
-        // reset the selection and set it (then the style will be updated) + it call the changefeature event !
-        layerFound.select.getFeatures().clear()
-        this.featureIdSelected = null;
-      }
-
-    }
-
-  }
 
   resetToasts(): void {
     this.selectedFeaturesProperties = []

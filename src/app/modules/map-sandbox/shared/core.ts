@@ -112,6 +112,9 @@ export class layerHandler {
   geomType: 'Point' | 'LineString' | 'Polygon';
   deleted = false;
 
+  featuresSelected: any[] = []
+  featuresDeselected: any[] = []
+
   constructor(
     map: Map,
     layerName: string,
@@ -160,7 +163,6 @@ export class layerHandler {
       multi: false,
       layers: [this.vectorLayer],
     })
-
   }
 
   private initSnap(): void {
@@ -313,6 +315,7 @@ export class layerHandler {
     e.feature.setId(uuid)
     e.feature.setProperties({
       'id': e.feature.getId(),
+      'no': this.counter,
       'name': 'feature ' + this.counter,
       'geom_type': e.feature.getGeometry()?.getType(),
       "status": "added",
@@ -355,9 +358,14 @@ export class layerHandler {
   }
 
 
-  features(): Feature[] {
+  features(): any[] {
     if (!this.deleted) {
-      return this.sourceFeatures.getFeatures()
+      // sort feature by no
+      let features = this.sourceFeatures.getFeatures().sort((a, b) => {
+        return a.get('no') - b.get('no');
+      });
+
+      return features
     } else {
       return []
     }
@@ -543,3 +551,4 @@ export function findElementBy(layer: any, attribute: string, value: string | num
 
   return null;
 }
+

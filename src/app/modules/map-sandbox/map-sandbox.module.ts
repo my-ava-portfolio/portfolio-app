@@ -7,12 +7,14 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { MapSandboxRoutingModule } from '@modules/map-sandbox/map-sandbox-routing.module';
 
 import { MapViewComponent } from '@modules/map-sandbox/map-view/map-view.component';
+import { LayerComponent } from './layer/layer.component';
 
 
 
 @NgModule({
   declarations: [
-    MapViewComponent
+    MapViewComponent,
+    LayerComponent
   ],
   imports: [
     CommonModule,
