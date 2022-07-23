@@ -11,9 +11,24 @@
   cursor: pointer;
 }
 
-#mapTools {
-  z-index: 1;
+
+#container {
+  //@debug: 56px;
   position: fixed;
+  height: calc(100vh - 56px);  // 56px is about the control bar height...
+}
+
+#layersList {
+  // height: calc((100vh - 56px) /2);
+  // box-shadow: inset 0px -1rem 1rem rgb(0 0 0 / 15%)!important;
+}
+
+.layer:hover{
+  font-weight: bold;
+}
+
+#mapTools {
+  // position: fixed;
 }
 
 .colorPicker {
