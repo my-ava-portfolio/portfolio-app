@@ -38,6 +38,10 @@ export class LayerComponent implements OnInit {
   featuresDisplayedSubscription!: Subscription;
   featuresPopupsProperties: any[] = []
 
+  layerDisplayedObservable = new Subject<layerHandler>()
+  layerDisplayedSubscription!: Subscription;
+  layerForPopup!: layerHandler | null;
+
   constructor(
     private elementRef: ElementRef
   ) {
@@ -48,6 +52,15 @@ export class LayerComponent implements OnInit {
         features.forEach((feature: Feature) => {
           this.buildFeaturesPopups(feature, false)
         })
+      }
+    )
+
+    this.layerDisplayedSubscription = this.layerDisplayedObservable.subscribe(
+      (feature: layerHandler) => {
+        this.resetLayerForPopup()
+        this.layerForPopup = feature
+        d3.selectAll("#toastLayer")
+        .attr("class", "toast toastFeature faded");
       }
     )
 
@@ -84,15 +97,18 @@ export class LayerComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this.featuresDisplayedSubscription.unsubscribe();
+    this.layerDisplayedSubscription.unsubscribe();
+
     this.elementRef.nativeElement.remove();
 
-    this.resetInteractions()
+    this.resetAll()
   }
 
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes.currentLayerIdSelected.currentValue !== this.layer.id) {
-      this.resetInteractions()
+      this.resetAll()
     }
 
   }
@@ -122,13 +138,18 @@ export class LayerComponent implements OnInit {
   }
 
   selectLayer(): void {
+    this.resetLayerForPopup()
+    this.resetFeaturesPopups()
+
     this.layerSelected = !this.layerSelected
     this.layerSelectedId.emit(this.layer.id)
+    this.layerDisplayedObservable.next(this.layer)
   }
 
   selectFeature(featureId: string | null): void {
+
     this.featureIdSelected = featureId
-    this.resetFeaturesPopups()
+    this.resetLayerForPopup()
 
     if (featureId !== null) {
       let feature = this.getFeature(featureId)
@@ -138,7 +159,9 @@ export class LayerComponent implements OnInit {
     }
   }
 
-  private resetInteractions(): void {
+  private resetAll(): void {
+    this.resetLayerForPopup()
+    this.resetFeaturesPopups()
     this.drawHandler(false)
     this.editHandler(false)
   }
@@ -173,6 +196,9 @@ export class LayerComponent implements OnInit {
     return null
   }
 
+  resetLayerForPopup(): void {
+    this.layerForPopup = null
+  }
   resetFeaturesPopups(): void {
     this.featuresPopupsProperties = []
   }

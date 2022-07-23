@@ -8,7 +8,7 @@
 }
 
 
-#mapToasts .toast {
+.toast {
   opacity: 0;
   display: unset!important;
   -webkit-transition: opacity 0.5s;
@@ -19,4 +19,14 @@
   opacity: 1!important;
 	-webkit-transition: opacity 0.5s!important;
 	transition: opacity 0.5s!important;
+}
+
+
+.modal-backdrop {
+  z-index: -1!important;
+}
+
+.modal {
+  z-index: 9999;
+  background-color:transparent!important;
 }

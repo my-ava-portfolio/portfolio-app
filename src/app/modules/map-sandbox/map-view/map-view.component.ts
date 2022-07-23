@@ -42,6 +42,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   allExistingLayers: any[] = [];
   existingLayers: any[] = []; // LayerHandler or GroupHandler list
   layerIdSelected!: string;
+  layerForModal!: layerHandler;
   layerNamedIncrement: number = 0;
   createModesSupported = [
     {

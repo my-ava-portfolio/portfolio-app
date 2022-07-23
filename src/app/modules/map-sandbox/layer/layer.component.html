@@ -1,3 +1,5 @@
+
+
 <div class="layer pointer d-flex flex-row small mt-1 mx-1 px-1 border rounded align-items-center" [ngClass]="currentLayerIdSelected === layer.id ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'" (click)="selectLayer()">
 
   <div class="">
@@ -32,7 +34,7 @@
       <fa-icon class="" [icon]="editIcon" ></fa-icon>
     </label>
 
-    <button class="btn p-1 bg-transparent border-0 text-black" data-bs-toggle="modal" data-bs-target="#layerModalStyle">
+    <button class="btn p-1 bg-transparent border-0 text-black" data-bs-toggle="modal" [attr.data-bs-target]="'#layerModalStyle-'+ layer.id">
       <fa-icon class="" [icon]="paramIcon"></fa-icon>
     </button>
 
@@ -87,6 +89,7 @@
           <span class="badge bg-danger rounded m-1" (click)="layer.removeFeature(feature.getId())" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer">
             <fa-icon class="m-0" [icon]="disabledIcon" ></fa-icon>
           </span>
+
         </div>
 
       </div>
@@ -100,27 +103,6 @@
 
 
 
-
-
-<div *ngIf="layer !== null" class="modal modal-layer-params fade" id="layerModalStyle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" >
-        <h5 class="modal-title" id="staticBackdropLabel">{{ layer.layerName}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form class="">
-          <span>Opacité</span>
-          <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" value="1" (change)="layer.setOpacity($event)"/>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
@@ -169,22 +151,23 @@
 
 
 
-<div class="modal modal-layer-params fade" id="layerModalStyle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" >
-        <h5 class="modal-title" id="staticBackdropLabel">{{ layer.layerName}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div id="layerToats" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row" style="z-index: 11">
+
+    <div *ngIf="layerForPopup !== null" class="toast toastLayer faded" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header justify-content-between">
+
+        <strong>{{ layerForPopup.layerName }}</strong>
+        <button type="button" class="btn-close"  aria-label="Close"></button>
+
       </div>
-      <div class="modal-body">
+
+      <div class="toast-body bg-white">
+
         <form class="">
           <span>Opacité</span>
-          <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" value="1" (change)="layer.setOpacity($event)"/>
+          <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" value="1" (change)="layerForPopup.setOpacity($event)"/>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+
       </div>
     </div>
-  </div>
 </div>
