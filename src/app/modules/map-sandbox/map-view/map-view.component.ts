@@ -218,7 +218,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
       layerFound.sourceFeatures.on('addfeature', (event: any) => {
         event.feature.set("_layerId", this.layerIdSelected, true)
-        this.refreshAllFeatures(layerFound)
+        this.displayCurrentLayerFeatures(layerFound)
       });
 
       layerFound.sourceFeatures.on('changefeature', (event: any) => {
@@ -226,9 +226,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
       });
 
       layerFound.sourceFeatures.on('removefeature', (event: any) => {
-        this.refreshAllFeatures(layerFound)
+        this.displayCurrentLayerFeatures(layerFound)
       });
-
+      this.displayCurrentLayerFeatures(layerFound)
     }
     this.getCurrentLayer(layerId)
     this.refreshAllLayers()
@@ -319,7 +319,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
 
-  refreshAllFeatures(layer: any): void {
+  displayCurrentLayerFeatures(layer: any): void {
     if (layer === null) {
       this.layerFeatures = []
     } else {
