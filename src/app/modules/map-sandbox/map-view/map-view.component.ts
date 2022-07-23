@@ -36,16 +36,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
   lineStringIcon = faWaveSquare;
   polygonIcon = faDrawPolygon;
 
-  featuresDisplayedObservable = new Subject<Feature[]>()
-
   map!: Map;
   defaultMapView!: View;
 
   allExistingLayers: any[] = [];
   existingLayers: any[] = []; // LayerHandler or GroupHandler list
   layerIdSelected!: string;
-  layerIdEdited: string | null = null;
-  layerIdDrawn: string | null = null;
   layerNamedIncrement: number = 0;
   createModesSupported = [
     {
@@ -65,13 +61,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     }
   ]
 
-  groupsList: GroupHandler[] = []
-  groupNameIncrement: number = 0;
-  groupSelectedId!: string;
-  groupSelectedName!: string;
-
-  selectedFeaturesProperties: any[] = [];
-
   mousePositionControl!: MousePosition;
   cursorCoordinates!: any;
   epsgAvailable = ["EPSG:4326", "EPSG:3857"];
@@ -79,14 +68,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
   currentEpsg!: string;
   selectedEpsg!: string;
 
-  layerFeatures: any[] = [];
-  featureIdSelected: string | null = null;
-  layerObjectSelected: any | null = null;
-
   isLegendDisplayed = true;
 
   mapSubscription!: Subscription;
-  featuresDisplayedSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -94,15 +78,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
   ) {
-
-    this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
-      (features: Feature[]) => {
-        this.resetToasts()
-        features.forEach((feature: Feature) => {
-          this.setFeatureToasts(feature, false)
-        })
-      }
-    )
 
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
@@ -128,15 +103,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.map.setView(this.defaultMapView)
 
     this.mapSubscription.unsubscribe();
-    this.featuresDisplayedSubscription.unsubscribe();
 
 
     this.allExistingLayers.forEach((layer: any) => {
       this.map.removeLayer(layer.vectorLayer)
       layer.cleanEvents()
-    })
-    this.groupsList.forEach((group: GroupHandler) => {
-      this.map.removeLayer(group._group)
     })
 
     this.mapService.changeMapInteractionStatus(false)
@@ -181,79 +152,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
     })
   }
 
-
   unSelectLayer(): void {
     this.layerIdSelected = 'none'
-    this.resetToasts()
-  }
-
-
-  removeLayer(layerId: string): void {
-    // TOOD remove it from list
-  }
-
-
-
-  resetToasts(): void {
-    this.selectedFeaturesProperties = []
-  }
-  setFeatureToasts(feature: Feature, isNotify: boolean): any {
-
-    // get the geom Icon // TODO could be improved...
-    const modeSupportedFound = this.createModesSupported.filter(mode => {
-      return mode.mode === feature.get('geom_type')
-    });
-    const geomIcon = modeSupportedFound[0].icon
-
-    // get wkt regarding selected projection
-    const geomFeature = feature.getGeometry();
-    if (geomFeature !== undefined) {
-
-      this.selectedFeaturesProperties.push({
-        'id': feature.getId(),
-        'name': feature.get('name'),
-        'group': "feature.groupId",
-        'layer_id': this.layerIdSelected,
-        'geom_type': feature.get('geom_type'),
-        'created_at': feature.get('created_at'),
-        'updated_at': feature.get('updated_at'),
-        'fill_color': feature.get('fill_color'),
-        'stroke_color': feature.get('stroke_color'),
-        'stroke_width': feature.get('stroke_width'),
-        'icon': geomIcon,
-        'wkt': getWkt(geomFeature)
-      })
-
-      if (isNotify) {  // TODO deprecated
-        // display it with fading
-        d3.select("html")
-        .transition()
-        .delay(2000) // need this delayto wait the toats html building
-        .duration(5000)
-        .on("end", () => {
-          d3.selectAll(".toastFeature")
-          .attr("class", "toast toastFeature");
-        })
-      } else {
-        // happened only if a feature is selected
-        d3.selectAll(".toastFeature")
-        .attr("class", "toast toastFeature faded");
-      }
-    }
-  }
-
-  copyToClipboard(value: string): void {
-    const selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = value;
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
   }
 
   initMousePosition(): void {
@@ -299,33 +199,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
       });
   }
 
-  getFeature(featureId: string): any {
-    // TODO get the layer?!
-    let features = this.layerFeatures.filter((feature: any) => {
-      return feature.getId() === featureId
-    })
-    if (features.length === 1) {
-      return features[0]
-    }
-    return null
-  }
 
   setMapEpsg(): void {
     this.currentEpsg = this.map.getView().getProjection().getCode();
-  }
-
-  updateFillColor(featureId: string, color: string): void {
-    let feature = this.getFeature(featureId)
-    feature.set("fill_color", color, false)
-  }
-  updateStrokeWidth(featureId: string, event: any): void {
-    let feature = this.getFeature(featureId)
-    feature.set("stroke_width", event.target.value, true)
-  }
-  updateStrokeColor(featureId: string, color: string): void {
-    let feature = this.getFeature(featureId)
-    feature.set("stroke_color", color, true)
-
   }
 
 }

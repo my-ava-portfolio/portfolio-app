@@ -1,12 +1,3 @@
-.pointer {
-  cursor: pointer;
-
-}
-
-
-
-
-
 #toastActions span {
   cursor: pointer;
 }
@@ -18,14 +9,9 @@
   height: calc(100vh - 56px);  // 56px is about the control bar height...
 }
 
-#layersList {
-  // height: calc((100vh - 56px) /2);
-  // box-shadow: inset 0px -1rem 1rem rgb(0 0 0 / 15%)!important;
-}
 
-.layer:hover, .feature:hover{
-  font-weight: bold;
-}
+
+
 
 #mapTools {
   // position: fixed;
@@ -36,6 +22,7 @@
   height: 25px;
   cursor: pointer;
 }
+
 
 
 /* width */
@@ -53,18 +40,5 @@
 ::-webkit-scrollbar-thumb {
   background: black;
   border-radius: 25px;
-}
-
-#mapToasts .toast {
-  opacity: 0;
-  display: unset!important;
-  -webkit-transition: opacity 0.5s;
-	transition: opacity 0.5s;
-  }
-
-.faded {
-  opacity: 1!important;
-	-webkit-transition: opacity 0.5s!important;
-	transition: opacity 0.5s!important;
 }
 

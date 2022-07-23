@@ -1,7 +1,10 @@
-import { findElementBy, layerHandler } from '@modules/map-sandbox/shared/core';
+import { findElementBy, getWkt, layerHandler } from '@modules/map-sandbox/shared/core';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { identifierName } from '@angular/compiler';
+import { Subject, Subscription } from 'rxjs';
+import Feature from 'ol/Feature';
+import * as d3 from 'd3';
 
 @Component({
   selector: 'app-layer',
@@ -31,9 +34,25 @@ export class LayerComponent implements OnInit {
   layerSelected: boolean = false;
   featureIdSelected: string | number | undefined | null = null;
 
+  featuresDisplayedObservable = new Subject<Feature[]>()
+  featuresDisplayedSubscription!: Subscription;
+  featuresPopupsProperties: any[] = []
+
   constructor(
     private elementRef: ElementRef
-  ) { }
+  ) {
+
+    this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
+      (features: Feature[]) => {
+        this.resetFeaturesPopups()
+        features.forEach((feature: Feature) => {
+          this.buildFeaturesPopups(feature, false)
+        })
+      }
+    )
+
+
+  }
 
   ngOnInit(): void {
 
@@ -54,7 +73,10 @@ export class LayerComponent implements OnInit {
       if (selected.length > 0) {
         selected.forEach((feature: any) => {
           this.selectFeature(feature.getId())
+
         })
+        this.featuresDisplayedObservable.next(selected)
+
       }
     })
 
@@ -106,11 +128,13 @@ export class LayerComponent implements OnInit {
 
   selectFeature(featureId: string | null): void {
     this.featureIdSelected = featureId
-    // TODO reset toast
+    this.resetFeaturesPopups()
+
     if (featureId !== null) {
       let feature = this.getFeature(featureId)
       this.layer.select.getFeatures().clear()
       this.layer.select.getFeatures().push(feature)
+      this.featuresDisplayedObservable.next([feature])
     }
   }
 
@@ -149,5 +173,73 @@ export class LayerComponent implements OnInit {
     return null
   }
 
+  resetFeaturesPopups(): void {
+    this.featuresPopupsProperties = []
+  }
+  buildFeaturesPopups(feature: Feature, isNotify: boolean): any {
 
+    // get wkt regarding selected projection
+    const geomFeature = feature.getGeometry();
+    if (geomFeature !== undefined) {
+
+      this.featuresPopupsProperties.push({
+        'id': feature.getId(),
+        'name': feature.get('name'),
+        'layer_id': this.layer.id,
+        'geom_type': feature.get('geom_type'),
+        'created_at': feature.get('created_at'),
+        'updated_at': feature.get('updated_at'),
+        'fill_color': feature.get('fill_color'),
+        'stroke_color': feature.get('stroke_color'),
+        'stroke_width': feature.get('stroke_width'),
+        'wkt': getWkt(geomFeature)
+      })
+
+      if (isNotify) {  // TODO deprecated
+        // display it with fading
+        d3.select("html")
+        .transition()
+        .delay(2000) // need this delayto wait the toats html building
+        .duration(5000)
+        .on("end", () => {
+          d3.selectAll(".toastFeature")
+          .attr("class", "toast toastFeature");
+        })
+      } else {
+        // happened only if a feature is selected
+        d3.selectAll(".toastFeature")
+        .attr("class", "toast toastFeature faded");
+      }
+    }
+  }
+
+  updateFillColor(featureId: string, color: string): void {
+    let feature = this.getFeature(featureId)
+    feature.set("fill_color", color, false)
+  }
+  updateStrokeWidth(featureId: string, event: any): void {
+    let feature = this.getFeature(featureId)
+    feature.set("stroke_width", event.target.value, true)
+  }
+  updateStrokeColor(featureId: string, color: string): void {
+    let feature = this.getFeature(featureId)
+    feature.set("stroke_color", color, true)
+
+  }
+
+  copyToClipboard(value: string): void {
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = value;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
 }
+
+
