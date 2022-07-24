@@ -16,80 +16,15 @@ import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
-import Group from 'ol/layer/Group';
-import Collection from 'ol/Collection';
-
 
 const defaultStrokeWidth: number = 2;
 const defaultStrokeColor: string = "black";
 const defaultFillColor: string = '#ffcc33';
 
 
-export class GroupHandler {
-
-  private map: Map;
-  _group!: Group;
-
-  id: string;
-
-  groupName!: string;
-
-  layers: any[] = []
-
-  constructor(
-    map: Map,
-    groupName: string,
-  ) {
-    this.map = map
-    this.groupName = groupName
-
-    this.id = uuidv4()
-    this.initGroup()
-  }
-
-  initGroup(): void {
-    this._group = new Group({
-      layers: [],
-    });
-
-    this._group.set('id', this.id)
-    this._group.set('name', this.groupName)
-
-    this.map.addLayer(this._group)
-  }
-
-  removeGroup(groupId: string): void {
-
-  }
-
-  addLayer(layer: any): void {
-    this.layers.push(layer)
-
-    let innerLayers = this._group.getLayers().getArray(); // no array!
-
-    if (innerLayers[0] === undefined) {
-      innerLayers = [layer]
-    } else {
-      innerLayers.push(layer.vectorLayer);
-    }
-    if (innerLayers instanceof Collection) {
-      // set the layer collection of the grouplayer
-      this._group.setLayers(innerLayers);
-    }
-  }
-
-  setOpacity(event: any): void {
-    this._group.setOpacity(event.target.valueAsNumber)
-    console.log(this._group.getOpacity())
-  }
-
-}
-
-
-
 export class layerHandler {
   private map: Map;
-  private draw!: Draw;
+  draw!: Draw;
   snap!: Snap;
   private modifier!: Modify;
   select!: Select;
@@ -250,8 +185,7 @@ export class layerHandler {
         this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
         this.polygonIntersected = undefined;
       }
-        this.holePolygonDrawingStatus = false // we set to false to come back to the basic draw tool
-      }
+    }
   }
 
   private onDrawStart(e: any): void {

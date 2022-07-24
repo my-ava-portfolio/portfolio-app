@@ -122,6 +122,8 @@ export class LayerComponent implements OnInit {
   editHandler(status: boolean): void {
     if (status) {
       this.drawHandler(false) // disable draw tool
+      this.drawHoleHandler(false) // disable hole draw tool
+
       this.editFeatureEnable()
     } else {
       this.editFeatureDisable()
@@ -131,6 +133,8 @@ export class LayerComponent implements OnInit {
   drawHandler(status: boolean, holeStatus: boolean = false): void {
     if (status) {
       this.editHandler(false) // disable edit tool
+      this.drawHoleHandler(false) // disable hole draw tool
+
       this.addFeatureEnable(holeStatus)
     } else {
       this.addFeatureDisable()
@@ -138,12 +142,13 @@ export class LayerComponent implements OnInit {
   }
 
   drawHoleHandler(status: boolean, holeStatus: boolean = true): void {
-
     if (status) {
+      this.drawHandler(false) // disable draw tool
       this.editHandler(false) // disable edit tool
-      this.addFeatureEnable(holeStatus)
+
+      this.addHoleFeatureEnable(holeStatus)
     } else {
-      this.addFeatureDisable()
+      this.addHoleFeatureDisable()
     }
   }
 
@@ -211,6 +216,16 @@ export class LayerComponent implements OnInit {
     this.layer.disableEditing()
     this.isEdited = false
   }
+
+  private addHoleFeatureEnable(holeStatus: boolean = true): void {
+    this.layer.enableDrawing(holeStatus);
+    this.isHole = true;
+  }
+  private addHoleFeatureDisable(): void {
+    this.layer.disableDrawing();
+    this.isHole = false;
+  }
+
 
   private getFeature(featureId: string): any {
     let features = this.layer.features().filter((feature: any) => {
