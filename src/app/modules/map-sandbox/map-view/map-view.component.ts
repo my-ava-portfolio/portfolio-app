@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
@@ -6,7 +6,7 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import {faLayerGroup, faPencil, faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {faLayerGroup, faPencil, faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark, faTag } from '@fortawesome/free-solid-svg-icons';
 
 import { layerHandler, getWkt, findBy, findElementBy  } from '@modules/map-sandbox/shared/core';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -19,9 +19,10 @@ import { View } from 'ol';
   templateUrl: './map-view.component.html',
   styleUrls: ['./map-view.component.scss']
 })
-export class MapViewComponent implements OnInit, OnDestroy {
+export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // icons
+  tagIcon = faTag;
   groupIcon = faLayerGroup;
   helpIcon = faCircleQuestion;
   addIcon = faCirclePlus;
@@ -83,6 +84,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
         this.currentEpsg = this.map.getView().getProjection().getCode();
         this.defaultMapView = this.map.getView()
         this.selectedEpsg = this.currentEpsg
+
       }
     );
 
@@ -94,7 +96,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapService.changeMapInteractionStatus(true)
     this.mapService.getMap();
 
+  }
+
+  ngAfterViewInit(): void {
     this.initMousePosition()
+
   }
 
   ngOnDestroy(): void {
@@ -160,13 +166,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.mousePositionControl = new MousePosition({
       coordinateFormat: this.setPrecisionFunc(4),
-      placeholder: false,
+      placeholder: 'x :<br>y : ',
       className: 'mouse-position',
       target: mouseCoordinatesDiv,
+
     });
-    this.mousePositionControl.on("propertychange", (event: any) => {
-      this.cursorCoordinates = event
-    })
+
     this.map.addControl(this.mousePositionControl)
   }
 
@@ -190,7 +195,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     return this.mousePositionControl.setCoordinateFormat(this.setPrecisionFunc(event.target.value))
   }
   private setPrecisionFunc(precision: any): any {
-    var template = '{x}, {y}';
+    var template = 'x : {x}<br>y : {y}';
     return (
       function(coordinate: any) {
           return format(coordinate, template, precision);

@@ -10,6 +10,8 @@ import { MapViewComponent } from '@modules/map-sandbox/map-view/map-view.compone
 import { LayerComponent } from './layer/layer.component';
 import { FeatureComponent } from './feature/feature.component';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 
 @NgModule({
@@ -22,7 +24,8 @@ import { FeatureComponent } from './feature/feature.component';
     CommonModule,
     MapSandboxRoutingModule,
     FontAwesomeModule,
-    ColorPickerModule
+    ColorPickerModule,
+    NgbModule
   ],
 })
 export class MapSandboxModule { }
