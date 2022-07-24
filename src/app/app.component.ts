@@ -23,11 +23,15 @@ export class AppComponent implements OnInit {
   scrolltoTopDisabledForced: boolean = false;
   scrolltoTopActivated: boolean = false
 
-  orientationDisclaimerPages: string[] = [
+  orientationPortraitRoutes: string[] = [
     '/map/app/activities',
-    '/map/app/sandbox',
     '/map/app/gtfs-viewer'
   ];
+
+  orientationLandscapeRoutes: string[] = [
+    '/map/app/sandbox',
+  ];
+
 
   routesWhereScrollingIsDisabled: string[] = [
     "/map/app/activities",
@@ -68,11 +72,18 @@ export class AppComponent implements OnInit {
     this.isLandscapeDeviceMode = false;
 
     if (window.screen.orientation.angle === 90 && window.screen.width < minWidthLandscape && window.screen.height < minHeightLandscape ) {
-      const pageFound = this.orientationDisclaimerPages.filter(element => element <= this.currentPage )
+      const pageFound = this.orientationPortraitRoutes.filter(element => element <= this.currentPage )
       if (pageFound.includes(this.currentPage)) {
         this.isLandscapeDeviceMode = true;
         this.orientationErrorMessage = "Page disponible uniquement en mode portrait"
       }
+    } else {
+      const pageFound = this.orientationLandscapeRoutes.filter(element => element <= this.currentPage )
+      if (pageFound.includes(this.currentPage)) {
+        this.isLandscapeDeviceMode = true;
+        this.orientationErrorMessage = "Page disponible uniquement en mode paysage"
+      }
+
     }
   }
 

@@ -1,6 +1,6 @@
 <div class="container-fluid h-100" >
 
-  <nav id="container" class="d-flex flex-column w-25 bg-light rounded shadow overflow-auto">
+  <nav id="container" class="col-4 col-sm-3 bg-light rounded shadow overflow-auto">
 
     <div id="mapTools" class="d-flex flex-column">
 
@@ -71,7 +71,11 @@
 
         <div id="layersList" class="d-flex flex-column justify-content-start">
 
-          <div class="layer pointer d-flex flex-row small mt-1 mx-1 px-1 border rounded align-items-center" (click)="unSelectLayer()" [ngClass]="layerIdSelected === 'none' ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'">
+          <div
+            class="layer pointer d-flex flex-row small mt-1 mx-1 px-1 border rounded align-items-center"
+            (click)="unSelectLayer()"
+            [ngClass]="layerIdSelected === 'none' ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
+            >
 
             <div class="pointer p-2 d-flex flex-row pointer justify-content-around align-items-center">
                 <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>
