@@ -1,6 +1,11 @@
 
 
-<div class="layer pointer d-flex flex-row small mt-1 mx-1 px-1 border rounded align-items-center" [ngClass]="currentLayerIdSelected === layer.id ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'" (click)="selectLayer()">
+<div
+  class="layer pointer d-flex flex-row small mt-1 mx-1 px-1 border rounded align-items-center"
+  [ngClass]="currentLayerIdSelected === layer.id ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
+  (click)="selectLayer()"
+  data-bs-toggle="modal" [attr.data-bs-target]="'#layerModalStyle-'+ layer.id" [ngClass]="currentLayerIdSelected === layer.id ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'" (click)="selectLayer()" data-bs-toggle="collapse" [attr.data-bs-target]="'#featuresLayer-' + layer.id" aria-expanded="false" aria-controls="collapseExample"
+  >
 
   <div class="">
     <input class="form-check-input me-1" type="checkbox" [value]="true" aria-label="...">
@@ -42,7 +47,7 @@
     </ng-container>
 
 
-    <button class="btn p-1 bg-transparent border-0 text-black" data-bs-toggle="modal" [attr.data-bs-target]="'#layerModalStyle-'+ layer.id">
+    <button class="btn p-1 bg-transparent border-0 text-black" >
       <fa-icon class="" [icon]="paramIcon"></fa-icon>
     </button>
 
@@ -50,11 +55,11 @@
 
 </div>
 
-<div class="featuresList d-flex flex-row small" *ngIf="layer.features().length > 0">
-  <ul class="w-100 list-group list-group-flush mx-3 border rounded">
+<div class="featuresList d-flex flex-row small mb-1" >
+  <ul class="w-100 list-group list-group-flush mx-3 border rounded-bottom collapse show" [id]="'featuresLayer-' + layer.id">
 
-    <li class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == 'none' ? 'bg-secondary text-black bg-opacity-25' : 'bg-white text-black'" (click)="unSelectFeature()">
-      <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
+    <li *ngIf="layer.features().length > 0" class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == 'none' ? 'bg-secondary text-black bg-opacity-25' : 'bg-white text-black'" (click)="unSelectFeature()">
+      <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill m-1">
 
         <div class="">
           <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>
