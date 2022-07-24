@@ -16,47 +16,52 @@
 
 }
 
-.editEnabled {
-  color: red
+.hidden {
+  visibility: hidden !important;
 }
 
-label, .projection {
+.pointer {
   cursor: pointer;
 }
 
 
-#toastActions span {
-  cursor: pointer;
+#container {
+
 }
+
+
+
+
 
 #mapTools {
-  z-index: 1;
   position: fixed;
+  //height: calc(100vh / 1.2);  // 56px is about the control bar height...
+  width: 18vw;
 }
 
-#featuresContainer {
-  scrollbar-width: none;
-  max-height: 20em;
-
+.shadow-map-tools {
+    box-shadow: 1em 0rem 1rem rgb(0 0 0 / 15%) !important;
 }
 
-#groupsList {
-  height: 10em;
-}
-#featuresList {
-  height: 20em;
-}
-#geomList {
-  // height: 100%;
+#layerToolsFeatures {
+  height: calc(100vh / 1.2);  // 56px is about the control bar height...
 }
 
+@media (max-width: 960px){
 
+  #mapTools {
+    width: 75vw;
+  }
+
+
+}
 
 .colorPicker {
   width: 10px;
   height: 25px;
   cursor: pointer;
 }
+
 
 
 /* width */
@@ -74,18 +79,5 @@ label, .projection {
 ::-webkit-scrollbar-thumb {
   background: black;
   border-radius: 25px;
-}
-
-#mapToasts .toast {
-  opacity: 0;
-  display: unset!important;
-  -webkit-transition: opacity 0.5s;
-	transition: opacity 0.5s;
-  }
-
-.faded {
-  opacity: 1!important;
-	-webkit-transition: opacity 0.5s!important;
-	transition: opacity 0.5s!important;
 }
 

@@ -16,80 +16,17 @@ import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
-import Group from 'ol/layer/Group';
-import Collection from 'ol/Collection';
-
 
 const defaultStrokeWidth: number = 2;
 const defaultStrokeColor: string = "black";
 const defaultFillColor: string = '#ffcc33';
 
 
-export class GroupHandler {
-
-  private map: Map;
-  _group!: Group;
-
-  id: string;
-
-  groupName!: string;
-
-  layers: layerHandler[] = []
-
-  constructor(
-    map: Map,
-    groupName: string,
-  ) {
-    this.map = map
-    this.groupName = groupName
-
-    this.id = uuidv4()
-    this.initGroup()
-  }
-
-  initGroup(): void {
-    this._group = new Group({
-      layers: [],
-    });
-
-    this._group.set('id', this.id)
-    this._group.set('name', this.groupName)
-
-    this.map.addLayer(this._group)
-  }
-
-  removeGroup(groupId: string): void {
-
-  }
-
-  addLayer(layer: any): void {
-    let innerLayers = this._group.getLayers().getArray(); // no array!
-
-    if (innerLayers[0] === undefined) {
-      innerLayers = [layer]
-    } else {
-      innerLayers.push(layer.vectorLayer);
-    }
-    if (innerLayers instanceof Collection) {
-      // set the layer collection of the grouplayer
-      this._group.setLayers(innerLayers);
-    }
-  }
-
-  setOpacity(event: any): void {
-    this._group.setOpacity(event.target.valueAsNumber)
-    console.log(this._group.getOpacity())
-  }
-
-}
-
-
-
 export class layerHandler {
   private map: Map;
-  private draw!: Draw;
+  draw!: Draw;
   snap!: Snap;
-  private modifier!: Modify;
+  modifier!: Modify;
   select!: Select;
 
   private counter: number = 0
@@ -104,17 +41,20 @@ export class layerHandler {
   sourceFeatures!: VectorSource;
   allFeatures: any[] = [];
 
-  groupId: string
+  groupId: string | null;
   id: string;
   layerName: string;
   geomType: 'Point' | 'LineString' | 'Polygon';
   deleted = false;
 
+  featuresSelected: any[] = []
+  featuresDeselected: any[] = []
+
   constructor(
     map: Map,
     layerName: string,
     geomType: 'Point' | 'LineString' | 'Polygon',
-    groupId: string
+    groupId: string | null = null
   ) {
     this.map = map
     this.layerName = layerName
@@ -158,7 +98,6 @@ export class layerHandler {
       multi: false,
       layers: [this.vectorLayer],
     })
-
   }
 
   private initSnap(): void {
@@ -213,14 +152,7 @@ export class layerHandler {
     this.draw.on('drawstart', this.onDrawStart.bind(this));
     this.draw.on('drawend', this.onDrawEnd.bind(this));
 
-    this.draw.on('drawabort', (e: any) => {
-      // to cancel a drawing hole (shift + left click OR shift + right click for hole )
-      if (this.holePolygonDrawingStatus && this.polygonIntersected !== undefined) {
-        this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
-        this.polygonIntersected = undefined;
-      }
-
-    });
+    this.draw.on('drawabort', this.onDrawAborting.bind(this));
   }
 
   disableDrawing(): void {
@@ -245,6 +177,16 @@ export class layerHandler {
     this.disableSelecting();
   }
 
+  private onDrawAborting(e: any): void {
+      // to cancel a drawing hole (shift + left click OR shift + right click for hole )
+    if (this.holePolygonDrawingStatus) {
+
+      if (this.polygonIntersected !== undefined) {
+        this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
+        this.polygonIntersected = undefined;
+      }
+    }
+  }
 
   private onDrawStart(e: any): void {
 
@@ -256,6 +198,7 @@ export class layerHandler {
         this.polygonIntersected = featureFound
         if (this.polygonIntersected === undefined) {
           e.target.abortDrawing();
+          this.onDrawAborting(e)
           alert('An hole is possible only on a polygon!')
           return;
         }
@@ -306,6 +249,8 @@ export class layerHandler {
     e.feature.setId(uuid)
     e.feature.setProperties({
       'id': e.feature.getId(),
+      'layer_id': this.id,
+      'no': this.counter,
       'name': 'feature ' + this.counter,
       'geom_type': e.feature.getGeometry()?.getType(),
       "status": "added",
@@ -334,16 +279,28 @@ export class layerHandler {
     }
   }
 
-  removeFeature(id: string): void {
-    const featureFound = this.sourceFeatures.getFeatureById(id)
+  removeFeature(featureId: string): void {
+    const featureFound = this.sourceFeatures.getFeatureById(featureId)
     if (featureFound !== null) {
       this.sourceFeatures.removeFeature(featureFound);
     }
   }
+  getFeatureAttribute(featureId: string, attribute: string): void {
+    const featureFound = this.sourceFeatures.getFeatureById(featureId)
+    if (featureFound !== null) {
+      return featureFound.get(attribute)
+    }
+  }
 
-  features(): Feature[] {
+
+  features(): any[] {
     if (!this.deleted) {
-      return this.sourceFeatures.getFeatures()
+      // sort feature by no
+      let features = this.sourceFeatures.getFeatures().sort((a, b) => {
+        return a.get('no') - b.get('no');
+      });
+
+      return features
     } else {
       return []
     }
@@ -392,7 +349,7 @@ export class layerHandler {
       "status": "modified",
     }, true)
   }
-  
+
   setOpacity(event: any): void {
     this.vectorLayer.setOpacity(event.target.valueAsNumber)
     console.log(this.vectorLayer.getOpacity())
@@ -529,3 +486,5 @@ export function findElementBy(layer: any, attribute: string, value: string | num
 
   return null;
 }
+
+

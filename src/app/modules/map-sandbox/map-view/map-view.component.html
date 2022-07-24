@@ -1,282 +1,135 @@
-<div id="mapTools" class="">
-  <div class="d-flex flex-column">
+<div class="container-fluid vh-100">
 
-    <div id="infosContainer" class="d-flex flex-row m-2">
-      <div class="w-100 d-flex flex-column">
-        <button type="button" class="button-title btn btn-info rounded shadow">
-          <span class="fw-bold">INFOS</span>
+  <nav id="container" class="d-flex flex-row">
+
+    <div class="d-flex flex-row">
+
+      <div id="mapTools" class="d-flex flex-column ms-2 mt-2" [ngClass]="!isLegendDisplayed ? 'pe-none' : ''">
+
+        <div id="legendLabels" class="d-flex flex-row ms-2">
+
+          <button
+            class="btn bg-dark bg-gradient text-white title-button rounded-top-3 pe-auto me-1" type="button"
+            (click)="showHideLegend()">
+            <span class="my-2 fw-bold ">
+              <fa-icon class="my-1 me-1" [icon]="layersIcon"></fa-icon>Couches</span>
+          </button>
+          <button
+          class="btn bg-danger bg-gradient text-white title-button rounded-top-3 pe-auto" type="button"
+          (click)="showHideLegend()">
+          <span class="my-2 fw-bold ">
+            <fa-icon class="my-1 me-1" [icon]="layersIcon"></fa-icon>Export</span>
         </button>
+        </div>
 
-        <div id="infos" class="d-flex flex-row bg-white rounded-bottom shadow mx-2" role="group" aria-label="">
+        <div id="layerToolsFeatures" class="border border-5 d-flex flex-column bg-light px-2 py-2 vh-50 rounded-3 overflow-auto shadow-map-tools" [ngClass]="!isLegendDisplayed ? 'hidden' : ''">
 
-          <div class="d-flex flex-column justify-content-evenly mx-2">
+          <div class="d-flex flex-row align-items-center justify-content-center bg-info text-black py-2 px-3 mt-2 rounded-3">
+            <span class="fw-bold">Informations</span>
+          </div>
+
+          <div id="infosContainer" class="d-flex flex-column mx-3">
+            <div class="d-flex flex-row my-1 justify-content-evenly">
+
+              <div class="d-flex flex-column">
+
+                <div id="epsgList" class="btn-group-vertical my-2 align-self-center bg-white rounded-3 border">
+                  <ng-container *ngFor="let epsg of epsgAvailable; let idx = index">
+                    <input type="radio" class="border btn-check mx-1" name="btnRadio" [id]="'btnradio-selector-' + idx" [checked]="selectedEpsg === epsg" autocomplete="off">
+                    <label class="pointer"  [for]="'btnradio-selector-' + idx" (click)="setProjection(epsg)">
+                      <div class="dropdown-item small d-flex flex-row" [ngClass]="selectedEpsg === epsg ? 'bg-info text-white ' :  ''">
+                        <span>{{ epsg }}</span>
+                      </div>
+                    </label>
+                  </ng-container>
+                </div>
+
+              </div>
+
+              <div class="d-flex flex-column align-items-center justify-content-center small mx-2">
+
+                <div class="d-flex flex-column align-items-center justify-content-center small">
+                  <span class="fw-bold m-2">Précision</span>
+                  <input class="small" id="precision" type="number" min="0" max="12" value="4" (change)="updatePrecision($event)"/>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="d-flex flex-column align-items-center align-self-center justify-content-center small mb-3">
+              <span class="fw-bold">Coordonnées</span>
+              <span id="mouseCoordinates"></span>
+            </div>
+
+          </div>
+
+          <div class="d-flex flex-row align-items-center justify-content-center bg-warning text-black py-2 px-3 mt-2 rounded-3">
+            <span class="fw-bold">Créer des couches</span>
+          </div>
 
 
-            <div id="epsgList" class="btn-group-vertical my-2 align-self-center bg-white rounded-3 border" role="group" aria-label="">
-              <ng-container *ngFor="let epsg of epsgAvailable; let idx = index">
-                <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + idx" [checked]="selectedEpsg === epsg" autocomplete="off">
-                <label class=""  [for]="'btnradio-selector-' + idx" (click)="setProjection(epsg)">
-                  <div class="dropdown-item small d-flex flex-row" [ngClass]="selectedEpsg === epsg ? 'bg-info' :  ''">
-                    <span>{{ epsg }}</span>
-                  </div>
-                </label>
+          <div id="creationTools" class="d-flex flex-column">
+
+            <div class="d-flex flex-row justify-content-center my-2 mx-3">
+
+              <ng-container *ngFor="let feature of createModesSupported">
+                <button class="badge btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)">
+                  <fa-icon class="" [icon]="feature.icon"></fa-icon>
+                </button>
               </ng-container>
             </div>
 
           </div>
 
-          <div class="d-flex flex-column align-items-center justify-content-center small mx-2">
-            <span class="fw-bold">Précision</span>
-
-            <form id="coordsPrecision" class="">
-              <label for="precision" class=""></label>
-              <input class="small" id="precision" type="number" min="0" max="12" value="4" (change)="updatePrecision($event)"/>
-            </form>
+          <div class="d-flex flex-row align-items-center justify-content-center bg-primary text-white py-2 px-3 my-2 rounded-3">
+            <span class="fw-bold">Couches</span>
           </div>
 
-          <div class="w-100 d-flex flex-column align-items-center justify-content-center small">
+          <div id="layersContainer" class="d-flex flex-column mx-2">
 
-            <span class="fw-bold">Coordonnées (x,y)</span>
-            <span id="mouseCoordinates"></span>
+            <div id="layersList" class="d-flex flex-column justify-content-start mb-2">
 
-          </div>
+              <div
+                class="layer pointer d-flex flex-row small mt-1 mx-1 px-1 border rounded align-items-center"
+                (click)="unSelectLayer()"
+                [ngClass]="layerIdSelected === 'none' ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
+                >
 
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <div class="d-flex flex-row">
-
-    <div id="groupsContainer" class="d-flex flex-row m-2">
-      <div class="d-flex flex-column">
-
-        <button type="button" class="button-title btn btn-dark rounded shadow">
-          <span class="fw-bold">
-            GROUPES
-          </span>
-          <fa-icon class="p-0" [icon]="helpIcon"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ajouter un groupe pour y créer des couches"></fa-icon>
-        </button>
-
-        <div id="groupsList" class="overflow-auto btn-group-vertical justify-content-start mx-2 bg-white rounded-end shadow" role="group" aria-label="">
-
-          <input type="radio" class="border btn-check m-0" name="btnradio" id="btnradio-group">
-          <label class="sticky-top w-100 border-success px-0 shadow"  for="btnradio-group" (click)="addGroup()">
-            <div class="dropdown-item small d-flex flex-row bg-success text-white">
-                <fa-icon class="me-2" [icon]="addIcon" ></fa-icon>
-                <span>Ajouter un groupe</span>
-            </div>
-          </label>
-
-          <ng-container *ngFor="let group of groupsList">
-            <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-feature-' + group.id" [checked]="groupSelectedId === group.id" autocomplete="off">
-            <label class="w-100 border-warning px-0"  [for]="'btnradio-feature-' + group.id" (click)="selectGroup(group.id)">
-
-            <div class="dropdown-item small d-flex flex-row justify-content-between align-items-between" [ngClass]="groupSelectedId === group.id ? 'bg-secondary text-white' :  'text-black'">
-              <span>{{ group.groupName }}</span>
-              <div class="ms-auto">
-                <fa-icon class="mx-1" [icon]="paramIcon" ></fa-icon>
-              </div>
-            </div>
-
-            </label>
-          </ng-container>
-        </div>
-      </div>
-
-    </div>
-
-    <div id="geomSelector" class="d-flex flex-row m-2">
-      <div class="d-flex flex-column">
-
-        <button type="button" class="button-title btn btn-warning rounded shadow">
-          <span class="fw-bold">CREER</span>
-        </button>
-
-        <div id="geomList" class="btn-group-vertical mx-2 align-self-center bg-white shadow rounded-end" role="group" aria-label="">
-
-          <ng-container *ngFor="let feature of createModesSupported">
-            <input type="radio" class="border btn-check m-0" name="btnRadio" [id]="'btnradio-selector-' + feature.mode" autocomplete="off">
-            <label class="w-100 border-secondary px-0"  [for]="'btnradio-selector-' + feature.mode" (click)="addLayer(feature.mode)">
-              <div class="dropdown-item small d-flex flex-row">
-                <fa-icon [ngClass]="'me-2 ' + feature.mode" [icon]="feature.icon" ></fa-icon>
-                <span>{{ feature.label }}</span>
-              </div>
-            </label>
-          </ng-container>
-
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="d-flex flex-column">
-
-    <div id="layersContainer" class="d-flex flex-column m-2">
-      <div  class="d-flex flex-row ">
-
-        <button type="button" class="button-title btn btn-dark rounded p-2 shadow">
-            <span class="fw-bold vertical-text">COUCHES</span>
-        </button>
-
-        <div id="layersList" class="overflow-auto btn-group-vertical justify-content-start my-2 bg-white rounded-end shadow" role="group" aria-label="">
-
-          <input type="radio" class="border btn-check m-0" name="btnradio" id="btnradio-feature-cancel" [checked]="layerIdSelected === null" autocomplete="off">
-          <label class="w-100 border-warning px-0"  for="btnradio-feature-cancel" (click)="selectLayer(null)">
-          <div class="dropdown-item small d-flex flex-row" [ngClass]="layerIdSelected === null ? 'bg-secondary text-white' :  'text-black'">
-              <fa-icon class="me-2" [icon]="disabledIcon" ></fa-icon>
-              <span>Désélectionner</span>
-          </div>
-          </label>
-
-          <ng-container *ngFor="let layer of layersFromCurrentGroup">
-            <div class="dropdown-item d-flex flex-row" [ngClass]="layerIdSelected === layer.id ? 'bg-secondary text-white' :  'text-black'">
-              <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-layer-' + layer.id" [checked]="layerIdSelected === layer.id" autocomplete="off">
-              <label class="border-warning px-0"  [for]="'btnradio-layer-' + layer.id" (click)="selectLayer(layer.id)">
-                <div class=" small d-flex flex-row align-items-center">
-                  <fa-icon *ngIf="layer.geomType === 'Point'" class="me-2" [icon]="pointIcon"></fa-icon>
-                  <fa-icon *ngIf="layer.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
-                  <fa-icon *ngIf="layer.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
-                  <span>{{ layer.layerName }}</span>
-                  <span class="small">({{ groupSelectedName }})</span>
+                <div class="pointer p-2 d-flex flex-row pointer justify-content-around align-items-center">
+                    <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>
+                    <span>Désélectionner</span>
                 </div>
-              </label>
 
-              <div class="ms-auto" [ngClass]="layerIdSelected === layer.id ? 'pe-auto' : 'pe-none'">
-                <button class="badge bg-transparent border-0 me-1 text-danger" (click)="removeLayer(layer.id)">
-                  <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
-                </button>
-                <button class="badge bg-transparent border-0 me-1" [ngClass]="layerIdDrawn === layer.id ? 'text-danger' : 'text-success'" (click)="addFeature(layer.id)">
-                  <fa-icon class="" [icon]="addIcon"></fa-icon>
-                </button>
-                <button class="badge bg-transparent border-0 me-1" [ngClass]="layerIdEdited === layer.id ? 'text-danger' : 'text-warning'" type="submit" (click)="editFeature(layer.id)">
-                  <fa-icon class="" [icon]="editIcon"></fa-icon>
-                </button>
-                <button class="badge bg-transparent border-0 me-1 text-black" data-bs-toggle="modal" data-bs-target="#layerModalStyle">
-                  <fa-icon class="" [icon]="paramIcon"></fa-icon>
-                </button>
-             </div>
-
-            </div>
-          </ng-container>
-        </div>
-
-        </div>
-      </div>
-    </div>
-
-    <div id="featuresContainer" class="d-flex flex-column m-2">
-      <div  class="d-flex flex-row ">
-
-        <button type="button" class="button-title btn btn-dark rounded p-2 shadow">
-          <span class="fw-bold vertical-text">
-            <span class="badge bg-success my-2 horizontal-text">{{layerFeatures.length}}</span>OBJET<span class="horizontal-text">(S)</span>
-          </span>
-        </button>
-
-        <div id="featuresList" class="overflow-auto btn-group-vertical justify-content-start my-2 bg-white rounded-end shadow" role="group" aria-label="">
-
-          <input type="radio" class="border btn-check m-0" name="btnradio" id="btnradio-feature-cancel" [checked]="featureSelectedId === null" autocomplete="off">
-          <label class="w-100 border-warning px-0"  for="btnradio-feature-cancel"  (click)="selectFeature(null)">
-            <div class="dropdown-item small d-flex flex-row" [ngClass]="featureSelectedId === null ? 'bg-secondary text-white' :  'text-black'">
-              <fa-icon class="me-2" [icon]="disabledIcon" ></fa-icon>
-              <span>Désélectionner</span>
-            </div>
-          </label>
-
-          <ng-container *ngFor="let feature of layerFeatures">
-            <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-feature-' + feature.getId()" [checked]="featureSelectedId === feature.getId()" autocomplete="off">
-            <label class="w-100 border-warning px-0"  [for]="'btnradio-feature-' + feature.getId()" (click)="selectFeature(feature.getId())">
-
-              <div class="dropdown-item small d-flex flex-row align-items-center" [ngClass]="featureSelectedId === feature.getId() ? 'bg-secondary text-white' :  'text-black'">
-                <fa-icon *ngIf="feature.get('geom_type') === 'Point'" class="me-2" [icon]="pointIcon" [style.color]="feature.get('fill_color')"></fa-icon>
-                <fa-icon *ngIf="feature.get('geom_type') === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
-                <fa-icon *ngIf="feature.get('geom_type') === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
-                <span>{{ feature.get('name') }}</span>
               </div>
 
-            </label>
-          </ng-container>
-      </div>
-    </div>
+              <ng-container *ngFor="let layer of existingLayers">
 
-  </div>
-  
-</div>
+                  <app-layer
+                    [layer]="layer"
+                    [currentLayerIdSelected]="layerIdSelected"
+                    (layerSelectedId)="getSelectedLayerId($event)"
+                  >
+                  </app-layer>
 
-<div id="mapToasts" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row" style="z-index: 11">
-  <ng-container *ngFor="let feature of selectedFeaturesProperties">
+              </ng-container>
+            </div>
 
-    <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header justify-content-between">
-
-        <fa-icon class="me-2" [icon]="feature.icon" ></fa-icon>
-        <strong>{{ feature.name }}</strong>
-        <em class="ms-2 me-auto me-auto">({{ feature.geom_type }})</em>
-        <button type="button" class="btn-close" (click)="resetToasts()" aria-label="Close"></button>
-
-      </div>
-
-      <div class="toast-body bg-white">
-
-        <div id="toastActions" class="d-flex flex-row justify-content-start align-items-center">
-          <span class="fw-bold">Actions :</span>
-
-          <span class="badge bg-danger rounded m-1"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer">
-            <fa-icon class="m-0" [icon]="disabledIcon" ></fa-icon>
-          </span>
-
-          <span class="badge bg-dark rounded m-1 small" (click)="copyToClipboard(feature.wkt)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
-            WKT
-          </span>
-
-          <span *ngIf="feature.geom_type === 'Polygon'" class="badge bg-success rounded m-1 small" (click)="addPolygonHole(feature.layer_id)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ajouter un trou au polygon sélectionné">
-            Trou
-          </span>
+          </div>
 
         </div>
 
-        <div class="d-flex flex-row justify-content-between">
-          <span>Créé à {{ feature.created_at | date: 'HH:mm:ss' }}</span>
-          <span>Modifié à {{ feature.updated_at | date: 'HH:mm:ss' }}</span>
-        </div>
-
-
-        <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="color" [style.background]="feature.fill_color" (colorPickerClose)="updateFillColor(feature.id, $event)"/>
-        <input class="small strokeWidth" type="number" min="0" max="12" [value]="feature.stroke_width" (change)="updateStrokeWidth(feature.id, $event)"/>
-        <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="color" [style.background]="feature.stroke_color" (colorPickerClose)="updateStrokeColor(feature.id, $event)"/>
-
-          <span class="">{{ feature.wkt }}</span>
-
-
       </div>
+
+
+
     </div>
-  </ng-container>
+
+  </nav>
+
+
 
 </div>
 
 
-<div *ngIf="layerObjectSelected !== null" class="modal modal-layer-params fade" id="layerModalStyle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" >
-        <h5 class="modal-title" id="staticBackdropLabel">{{ layerObjectSelected.layerName}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form class="">
-          <span>Opacité</span>
-          <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" value="1" (change)="layerObjectSelected.setOpacity($event)"/>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
-      </div>
-    </div>
-  </div>
-</div>
+

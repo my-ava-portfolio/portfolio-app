@@ -168,7 +168,7 @@ export const mapActivitiesPages: any = {
       title: "Bac à sable",
       route: "app/sandbox",
       icon: mapIcon,  // TODO improve icon
-      details: "Un bac à sable pour saisir des données géographiques. En cours de développement..."
+      details: "Un bac à sable pour saisir des données géographiques: Points, LineString, Polygons (et à trous). En cours de développement..."
     },
     {
       id: "gtfs-viewer",

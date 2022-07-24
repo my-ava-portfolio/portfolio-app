@@ -7,18 +7,25 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { MapSandboxRoutingModule } from '@modules/map-sandbox/map-sandbox-routing.module';
 
 import { MapViewComponent } from '@modules/map-sandbox/map-view/map-view.component';
+import { LayerComponent } from './layer/layer.component';
+import { FeatureComponent } from './feature/feature.component';
+
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 
 @NgModule({
   declarations: [
-    MapViewComponent
+    MapViewComponent,
+    LayerComponent,
+    FeatureComponent
   ],
   imports: [
     CommonModule,
     MapSandboxRoutingModule,
     FontAwesomeModule,
-    ColorPickerModule
+    ColorPickerModule,
+    NgbModule
   ],
 })
 export class MapSandboxModule { }
