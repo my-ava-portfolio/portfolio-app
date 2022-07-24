@@ -77,7 +77,9 @@ export class AppComponent implements OnInit {
         this.isLandscapeDeviceMode = true;
         this.orientationErrorMessage = "Page disponible uniquement en mode portrait"
       }
-    } else {
+    }
+
+    if (window.screen.width < window.screen.height) {
       const pageFound = this.orientationLandscapeRoutes.filter(element => element <= this.currentPage )
       if (pageFound.includes(this.currentPage)) {
         this.isLandscapeDeviceMode = true;
