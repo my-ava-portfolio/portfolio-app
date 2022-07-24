@@ -1,9 +1,8 @@
 .pointer {
   cursor: pointer;
-
 }
 
-.layer:hover, .feature:hover{
+.layer:hover {
   font-weight: bold;
 }
 
@@ -19,14 +18,4 @@
   opacity: 1!important;
 	-webkit-transition: opacity 0.5s!important;
 	transition: opacity 0.5s!important;
-}
-
-
-.modal-backdrop {
-  z-index: -1!important;
-}
-
-.modal {
-  z-index: 9999;
-  background-color:transparent!important;
 }

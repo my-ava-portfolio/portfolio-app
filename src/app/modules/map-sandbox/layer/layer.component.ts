@@ -32,7 +32,7 @@ export class LayerComponent implements OnInit {
   isShown: boolean = false;
 
   layerSelected: boolean = false;
-  featureIdSelected: string | number | undefined | null = null;
+  featureIdSelected!: string;
 
   featuresDisplayedObservable = new Subject<Feature[]>()
   featuresDisplayedSubscription!: Subscription;
@@ -56,9 +56,9 @@ export class LayerComponent implements OnInit {
     )
 
     this.layerDisplayedSubscription = this.layerDisplayedObservable.subscribe(
-      (feature: layerHandler) => {
+      (layer: layerHandler) => {
         this.resetLayerForPopup()
-        this.layerForPopup = feature
+        this.layerForPopup = layer
         d3.selectAll("#toastLayer")
         .attr("class", "toast toastFeature faded");
       }
@@ -79,16 +79,16 @@ export class LayerComponent implements OnInit {
 
       if (deselected.length > 0 && selected.length === 0) {
         deselected.forEach((_: any) => {
-          this.selectFeature(null)
+          this.unSelectFeature()
         })
       }
 
       if (selected.length > 0) {
         selected.forEach((feature: any) => {
-          this.selectFeature(feature.getId())
+          this.featureIdSelected = feature.getId();
+          this.selectFeatureById(this.featureIdSelected)
 
         })
-        this.featuresDisplayedObservable.next(selected)
 
       }
     })
@@ -102,13 +102,13 @@ export class LayerComponent implements OnInit {
 
     this.elementRef.nativeElement.remove();
 
-    this.resetAll()
+    this.resetSelection()
   }
 
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes.currentLayerIdSelected.currentValue !== this.layer.id) {
-      this.resetAll()
+      this.resetSelection()
     }
 
   }
@@ -140,30 +140,46 @@ export class LayerComponent implements OnInit {
   selectLayer(): void {
     this.resetLayerForPopup()
     this.resetFeaturesPopups()
+    this.unSelectFeature()
 
     this.layerSelected = !this.layerSelected
     this.layerSelectedId.emit(this.layer.id)
     this.layerDisplayedObservable.next(this.layer)
   }
 
-  selectFeature(featureId: string | null): void {
-
-    this.featureIdSelected = featureId
-    this.resetLayerForPopup()
-
-    if (featureId !== null) {
-      let feature = this.getFeature(featureId)
-      this.layer.select.getFeatures().clear()
-      this.layer.select.getFeatures().push(feature)
-      this.featuresDisplayedObservable.next([feature])
-    }
+  updateLayerSelectionFromFeatureLayerId(layerIdToSelect: string): void {
+    // during feature selection
+    this.layerSelectedId.emit(layerIdToSelect)
   }
 
-  private resetAll(): void {
+  unSelectFeature(): void {
+
+    this.resetLayerForPopup()
+    this.featureIdSelected = 'none'
+    this.layer.select.getFeatures().clear()
+
+  }
+
+  selectFeatureById(featureId: any): void {
+    this.resetLayerForPopup()
+
+    this.featureIdSelected = featureId
+
+    let feature = this.getFeature(this.featureIdSelected)
+    this.layer.select.getFeatures().clear()
+    this.layer.select.getFeatures().push(feature)
+    this.featuresDisplayedObservable.next([feature])
+  }
+  removeFeatureById(featureId: any): void {
+    this.layer.removeFeature(featureId)
+  }
+
+  private resetSelection(): void {
     this.resetLayerForPopup()
     this.resetFeaturesPopups()
     this.drawHandler(false)
     this.editHandler(false)
+    this.unSelectFeature()
   }
 
   private addFeatureEnable(holeStatus: boolean = false): void {
@@ -250,7 +266,6 @@ export class LayerComponent implements OnInit {
   updateStrokeColor(featureId: string, color: string): void {
     let feature = this.getFeature(featureId)
     feature.set("stroke_color", color, true)
-
   }
 
   copyToClipboard(value: string): void {
@@ -266,6 +281,7 @@ export class LayerComponent implements OnInit {
     document.execCommand('copy');
     document.body.removeChild(selBox);
   }
+
 }
 
 

@@ -8,13 +8,15 @@ import { MapSandboxRoutingModule } from '@modules/map-sandbox/map-sandbox-routin
 
 import { MapViewComponent } from '@modules/map-sandbox/map-view/map-view.component';
 import { LayerComponent } from './layer/layer.component';
+import { FeatureComponent } from './feature/feature.component';
 
 
 
 @NgModule({
   declarations: [
     MapViewComponent,
-    LayerComponent
+    LayerComponent,
+    FeatureComponent
   ],
   imports: [
     CommonModule,

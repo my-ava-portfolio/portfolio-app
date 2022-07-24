@@ -1,0 +1,47 @@
+<li class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="currentFeatureIdSelected == feature.getId() ? 'bg-secondary text-white' : 'bg-white - text-black'" (click)="selectFeature()" >
+
+  <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
+
+    <div class="m-1">
+
+      <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'Point'">
+        <circle cx="10" cy="10" r="8" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
+      </svg>
+
+      <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'LineString'">
+        <line x1="0" y1="10" x2="25" y2="10" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * 2"/>
+        <line x1="0" y1="10" x2="25" y2="10" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') *1.5"/>
+      </svg>
+
+      <svg height="15" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
+        <rect x="0" y="0" width="25" height="15" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')"/>
+      </svg>
+    </div>
+
+    <div class="">
+      {{feature.get('name')}}
+    </div>
+
+    <div class="ms-auto">
+
+      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="removeFeature()">
+        <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
+      </button>
+
+      <ng-container *ngIf="feature.get('geom_type') === 'Polygon'">
+        <input #btnHole type="checkbox" class="btn-check" [id]="'btnHole' + feature.getId()" [checked]="isHole" (change)="addHole(btnHole.checked)">
+        <label class="btn p-1 bg-transparent border-0" [for]="'btnHole' + feature.getId()" [ngClass]="isHole ? 'text-danger' : 'text-success'">
+          Trou
+        </label>
+      </ng-container>
+
+    </div>
+
+  </div>
+</li>
+
+
+
+
+
+

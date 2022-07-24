@@ -45,7 +45,7 @@
 <div class="featuresList d-flex flex-row small" *ngIf="layer.features().length > 0">
   <ul class="w-100 list-group list-group-flush mx-3 border rounded">
 
-    <li class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == null ? 'bg-secondary text-white' : 'bg-white text-black'" (click)="selectFeature(null)">
+    <li class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == 'none' ? 'bg-secondary text-black bg-opacity-25' : 'bg-white text-black'" (click)="unSelectFeature()">
       <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
 
         <div class="">
@@ -58,43 +58,17 @@
 
     </li>
 
-    <li class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == feature.getId() ? 'bg-secondary text-white' : 'bg-white - text-black'" (click)="selectFeature(feature.getId())" *ngFor="let feature of layer.features()">
-      <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
-
-        <div class="m-1">
-
-          <svg height="25" width="25" *ngIf="layer.geomType === 'Point'">
-            <circle cx="10" cy="10" r="8" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
-          </svg>
-
-          <svg height="25" width="25" *ngIf="layer.geomType === 'LineString'">
-            <line x1="0" y1="10" x2="25" y2="10" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * 2"/>
-            <line x1="0" y1="10" x2="25" y2="10" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') *1.5"/>
-          </svg>
-
-          <svg height="15" width="25" *ngIf="layer.geomType === 'Polygon'">
-            <rect x="0" y="0" width="25" height="15" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')"/>
-          </svg>
-        </div>
-
-        <div class="">
-          {{feature.get('name')}}
-        </div>
-
-        <div class="ms-auto">
-          <span *ngIf="layer.geomType === 'Polygon'" class="badge bg-success rounded m-1 small" (click)="drawHandler(true, true)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ajouter un trou au polygon sélectionné">
-            Trou
-          </span>
-
-          <span class="badge bg-danger rounded m-1" (click)="layer.removeFeature(feature.getId())" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Supprimer">
-            <fa-icon class="m-0" [icon]="disabledIcon" ></fa-icon>
-          </span>
-
-        </div>
-
-      </div>
-
-    </li>
+    <ng-container *ngFor="let feature of layer.features()">
+      <app-feature
+      [feature]="feature"
+      [currentFeatureIdSelected]="featureIdSelected"
+      (layerIdFromFeature)="updateLayerSelectionFromFeatureLayerId($event)"
+      (featureIdSelected)="selectFeatureById($event)"
+      (removeFeatureEvent)="removeFeatureById($event)"
+      (addHoleEvent)="drawHandler($event, true)"
+      >
+      </app-feature>
+    </ng-container>
 
   </ul>
 </div>
@@ -104,9 +78,7 @@
 
 
 
-
-
-<div id="mapToasts" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row" style="z-index: 11">
+<div id="featureToasts" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row" style="z-index: 11">
   <ng-container *ngFor="let feature of featuresPopupsProperties">
 
     <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true">
@@ -148,6 +120,8 @@
   </ng-container>
 
 </div>
+
+
 
 
 

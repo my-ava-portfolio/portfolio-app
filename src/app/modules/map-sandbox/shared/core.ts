@@ -315,6 +315,7 @@ export class layerHandler {
     e.feature.setId(uuid)
     e.feature.setProperties({
       'id': e.feature.getId(),
+      'layer_id': this.id,
       'no': this.counter,
       'name': 'feature ' + this.counter,
       'geom_type': e.feature.getGeometry()?.getType(),
