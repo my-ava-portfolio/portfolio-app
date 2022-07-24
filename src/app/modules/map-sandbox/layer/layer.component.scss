@@ -6,7 +6,9 @@
   font-weight: bold;
 }
 
-
+.disabled button {
+  color: grey!important
+}
 .toast {
   opacity: 0;
   display: unset!important;

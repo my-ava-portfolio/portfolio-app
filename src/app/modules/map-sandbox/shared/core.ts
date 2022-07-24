@@ -26,7 +26,7 @@ export class layerHandler {
   private map: Map;
   draw!: Draw;
   snap!: Snap;
-  private modifier!: Modify;
+  modifier!: Modify;
   select!: Select;
 
   private counter: number = 0

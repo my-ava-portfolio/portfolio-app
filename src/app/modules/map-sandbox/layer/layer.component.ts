@@ -1,6 +1,6 @@
 import { findElementBy, getWkt, layerHandler } from '@modules/map-sandbox/shared/core';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { identifierName } from '@angular/compiler';
 import { Subject, Subscription } from 'rxjs';
 import Feature from 'ol/Feature';
@@ -26,7 +26,10 @@ export class LayerComponent implements OnInit {
   pointIcon = faCircle;
   lineStringIcon = faWaveSquare;
   polygonIcon = faDrawPolygon;
+  visibleIcon = faEye;
+  invisibleIcon = faEyeSlash;
 
+  isVisible: boolean = true;
   isDrawn: boolean = false;
   isEdited: boolean = false;
   isShown: boolean = false;
@@ -94,6 +97,12 @@ export class LayerComponent implements OnInit {
       }
     })
 
+    this.layer.modifier.on('modifyend', (event: any) => {
+      event.features.getArray().forEach((feature: any) => {
+        this.selectFeatureById(this.featureIdSelected)
+      })
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -113,6 +122,18 @@ export class LayerComponent implements OnInit {
 
   }
 
+
+  visibleHandler(status: boolean): void {
+    this.isVisible = status
+    if (status) {
+      this.layer.vectorLayer.setVisible(status)
+    }
+    if (!status) {
+      this.drawHandler(false) // disable draw tool
+      this.editHandler(false) // disable edit tool
+      this.drawHoleHandler(false) // disable hole draw tool
+    }
+  }
 
   removeLayer(): void {
     this.layer.removeLayer()
