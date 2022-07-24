@@ -8,11 +8,8 @@ import Map from 'ol/Map';
 
 import {faLayerGroup, faPencil, faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { GroupHandler, layerHandler, getWkt, findBy, findElementBy  } from '@modules/map-sandbox/shared/core';
-import Feature from 'ol/Feature';
-import * as d3 from 'd3';
+import { layerHandler, getWkt, findBy, findElementBy  } from '@modules/map-sandbox/shared/core';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { Subject } from 'rxjs/internal/Subject';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
 import { View } from 'ol';

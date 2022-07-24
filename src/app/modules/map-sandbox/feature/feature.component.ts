@@ -15,11 +15,8 @@ export class FeatureComponent implements OnInit {
   @Output() layerIdFromFeature = new EventEmitter<string>();
   @Output() featureIdSelected = new EventEmitter<string>();
   @Output() removeFeatureEvent = new EventEmitter<string>();
-  @Output() addHoleEvent = new EventEmitter<boolean>();
 
   disabledIcon = faXmark;
-
-  isHole: boolean = false;
 
   constructor(
     private elementRef: ElementRef
@@ -48,10 +45,6 @@ export class FeatureComponent implements OnInit {
     if (typeof featureId === 'string') {
       this.featureIdSelected.emit(featureId)
     }
-  }
-
-  addHole(status: boolean): void {
-    this.addHoleEvent.emit(status)
   }
 
   removeFeature(): void {

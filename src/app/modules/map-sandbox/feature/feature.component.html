@@ -28,13 +28,6 @@
         <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
       </button>
 
-      <ng-container *ngIf="feature.get('geom_type') === 'Polygon'">
-        <input #btnHole type="checkbox" class="btn-check" [id]="'btnHole' + feature.getId()" [checked]="isHole" (change)="addHole(btnHole.checked)">
-        <label class="btn p-1 bg-transparent border-0" [for]="'btnHole' + feature.getId()" [ngClass]="isHole ? 'text-danger' : 'text-success'">
-          Trou
-        </label>
-      </ng-container>
-
     </div>
 
   </div>

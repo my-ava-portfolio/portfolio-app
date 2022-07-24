@@ -30,6 +30,7 @@ export class LayerComponent implements OnInit {
   isDrawn: boolean = false;
   isEdited: boolean = false;
   isShown: boolean = false;
+  isHole: boolean = false;
 
   layerSelected: boolean = false;
   featureIdSelected!: string;
@@ -93,7 +94,6 @@ export class LayerComponent implements OnInit {
       }
     })
 
-
   }
 
   ngOnDestroy(): void {
@@ -129,6 +129,16 @@ export class LayerComponent implements OnInit {
   }
 
   drawHandler(status: boolean, holeStatus: boolean = false): void {
+    if (status) {
+      this.editHandler(false) // disable edit tool
+      this.addFeatureEnable(holeStatus)
+    } else {
+      this.addFeatureDisable()
+    }
+  }
+
+  drawHoleHandler(status: boolean, holeStatus: boolean = true): void {
+
     if (status) {
       this.editHandler(false) // disable edit tool
       this.addFeatureEnable(holeStatus)
