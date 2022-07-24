@@ -9,14 +9,20 @@
         <div id="legendLabels" class="d-flex flex-row ms-2">
 
           <button
-            class="btn bg-dark bg-gradient text-white title-button rounded-top-3 pe-auto" type="button"
+            class="btn bg-dark bg-gradient text-white title-button rounded-top-3 pe-auto me-1" type="button"
             (click)="showHideLegend()">
             <span class="my-2 fw-bold ">
               <fa-icon class="my-1 me-1" [icon]="layersIcon"></fa-icon>Couches</span>
           </button>
+          <button
+          class="btn bg-danger bg-gradient text-white title-button rounded-top-3 pe-auto" type="button"
+          (click)="showHideLegend()">
+          <span class="my-2 fw-bold ">
+            <fa-icon class="my-1 me-1" [icon]="layersIcon"></fa-icon>Export</span>
+        </button>
         </div>
 
-        <div id="mapToolsFeatures" class="border border-5 d-flex flex-column bg-light px-2 py-2 vh-50 rounded-3 overflow-auto shadow-map-tools" [ngClass]="!isLegendDisplayed ? 'hidden' : ''">
+        <div id="layerToolsFeatures" class="border border-5 d-flex flex-column bg-light px-2 py-2 vh-50 rounded-3 overflow-auto shadow-map-tools" [ngClass]="!isLegendDisplayed ? 'hidden' : ''">
 
           <div class="d-flex flex-row align-items-center justify-content-center bg-info text-black py-2 px-3 mt-2 rounded-3">
             <span class="fw-bold">Informations</span>
