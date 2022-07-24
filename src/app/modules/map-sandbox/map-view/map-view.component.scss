@@ -26,8 +26,7 @@
 
 
 #container {
-  position: fixed;
-  height: calc(100vh - 56px);  // 56px is about the control bar height...
+
 }
 
 
@@ -35,8 +34,16 @@
 
 
 #mapTools {
-  box-shadow: 1em 0rem 1rem rgb(0 0 0 / 15%) !important;
-  width: 15vw;
+  position: fixed;
+  height: calc(100vh - 56px);  // 56px is about the control bar height...
+  width: 18vw;
+}
+
+.shadow-map-tools {
+    box-shadow: 1em 0rem 1rem rgb(0 0 0 / 15%) !important;
+}
+
+#mapToolsFeatures {
 }
 
 @media (max-width: 960px){

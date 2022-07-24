@@ -2,7 +2,7 @@
 
 <div
   class="layer pointer d-flex flex-row small mt-1 mx-1 px-1 border rounded align-items-center"
-  [ngClass]="currentLayerIdSelected === layer.id ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
+  [ngClass]="currentLayerIdSelected === layer.id ? 'bg-primary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
   >
 
   <div class="">
@@ -99,7 +99,7 @@
 
 
 
-<div id="featureToasts" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row" style="z-index: 11">
+<div id="featureToasts" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row overflow-auto" style="z-index: 11">
   <ng-container *ngFor="let feature of featuresPopupsProperties">
 
     <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true">
@@ -107,7 +107,7 @@
 
         <strong>{{ feature.name }}</strong>
         <em class="ms-2 me-auto me-auto">({{ feature.geom_type }})</em>
-        <button type="button" class="btn-close"  aria-label="Close"></button>
+        <button type="button" class="btn-close" aria-label="Close" (click)="resetFeaturesPopups()"></button>
 
       </div>
 
@@ -152,7 +152,7 @@
       <div class="toast-header justify-content-between">
 
         <strong>{{ layerForPopup.layerName }}</strong>
-        <button type="button" class="btn-close"  aria-label="Close"></button>
+        <button type="button" class="btn-close" aria-label="Close" (click)="resetLayerForPopup()"></button>
 
       </div>
 
