@@ -22,7 +22,7 @@ import { View } from 'ol';
 export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // icons
-  tagIcon = faTag;
+  layersIcon = faLayerGroup;
   groupIcon = faLayerGroup;
   helpIcon = faCircleQuestion;
   addIcon = faCirclePlus;
