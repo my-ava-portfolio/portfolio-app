@@ -30,10 +30,18 @@
 
   <div class="ms-auto d-flex flex-row">
 
-    <div class="editTools" [ngClass]="isVisible ? 'pe-auto enabled' : 'pe-none disabled'">
+    <div class="editTools" [ngClass]="isVisible && currentLayerIdSelected === layer.id ? 'pe-auto enabled' : 'pe-none disabled'">
 
       <button class="btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer la couche" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
+      </button>
+
+      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="layer.downPosition()" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
+        +
+      </button>
+
+      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="layer.upPosition()" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
+        -
       </button>
 
       <input #btnDraw type="checkbox" class="btn-check" [id]="'btnDraw' + layer.id" [checked]="isDrawn" (change)="drawHandler(btnDraw.checked)">
