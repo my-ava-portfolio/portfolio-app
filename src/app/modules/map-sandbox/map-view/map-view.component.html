@@ -83,7 +83,7 @@
 
           <div id="layersContainer" class="d-flex flex-column mx-2">
 
-            <div id="layersList" class="d-flex flex-column justify-content-start mb-2">
+            <div #layersListDiv id="layersList" class="d-flex flex-column justify-content-start mb-2">
 
               <div
                 class="layer pointer d-flex flex-row small mt-1 mx-1 px-1 border rounded align-items-center"
@@ -98,12 +98,14 @@
 
               </div>
 
-              <ng-container *ngFor="let layer of existingLayers">
+              <ng-container *ngFor="let layer of existingLayers.reverse()">
 
                   <app-layer
                     [layer]="layer"
                     [currentLayerIdSelected]="layerIdSelected"
                     (layerSelectedId)="getSelectedLayerId($event)"
+                    (layerMoveUp)="layerGoUp($event)"
+                    (layerMoveDown)="layerGoDown($event)"
                   >
                   </app-layer>
 

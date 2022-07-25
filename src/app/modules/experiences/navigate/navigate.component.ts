@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 
 import { ResumeService } from '@services/resume.service';
 import { expandIcon, navIcon, helpIcon, ungroupIconUnicode, nextIcon } from '@core/inputs';
+import { ActivityActionsService } from '../services/activity-actions.service';
+import { includes } from 'ol/array';
 
 @Component({
   selector: 'app-navigate',
@@ -57,6 +59,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   job_identifier = 'job'
   personal_project_identifier = 'personal_project'
   volunteer_identifier = 'volunteer'
+  skill_topics = ['themes', 'technics', 'tools']
 
   legendInputTitles = [
     { id: 'legend_graph_title', label: 'Activités', cx: 5, cy: 15 },
@@ -86,6 +89,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private resumeService: ResumeService,
+    private activityActionsService: ActivityActionsService
   ) {
 
     this.activitiesFilteredSubscription = this.resumeService.ActivitiesChartData.subscribe(
@@ -264,7 +268,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
 
         this.buildGraphElements();
-
       });
 
     svgContainer.selectAll()
@@ -487,11 +490,19 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(e.currentTarget).attr('id');
+
+        if (!this.skill_topics.includes(d.properties.type)) { // to switch on the activities buttons
+          this.activityActionsService.setActivity(d.properties.type)
+        } else {
+          this.activityActionsService.setActivity(this.job_identifier)
+        }
+
         this._graphSelectedFiltering(e.currentTarget);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
         this.currentNodeIdSelected = this.defaultNodeIdSelected;
+        this.activityActionsService.setActivity(this.job_identifier) // to switch on the activities buttons
         this._defaultDisplayingByDate();
 
       } else {

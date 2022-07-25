@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
 import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, personalBlogUrl, projectIcon, projectPages, websiteIcon } from '@core/inputs';
 
@@ -15,7 +15,7 @@ import { ActivityActionsService } from '../services/activity-actions.service';
   templateUrl: './activities.component.html',
   styleUrls: ['./activities.component.scss'],
 })
-export class ActivitiesComponent implements OnInit, OnChanges {
+export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() fragment: any;
   @Input() jobsData: any;
