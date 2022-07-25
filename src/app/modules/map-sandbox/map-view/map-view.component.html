@@ -24,7 +24,7 @@
 
         <div id="layerToolsFeatures" class="border border-5 d-flex flex-column bg-light px-2 py-2 vh-50 rounded-3 overflow-auto shadow-map-tools" [ngClass]="!isLegendDisplayed ? 'hidden' : ''">
 
-          <div class="d-flex flex-row align-items-center justify-content-center bg-info text-black py-2 px-3 mt-2 rounded-3">
+          <div class="d-flex flex-row align-items-center justify-content-center bg-info text-white py-2 px-3 mt-2 rounded-3">
             <span class="fw-bold">Informations</span>
           </div>
 
@@ -74,7 +74,7 @@
             <div class="d-flex flex-row justify-content-center my-2 mx-3">
 
               <ng-container *ngFor="let feature of createModesSupported">
-                <button class="badge btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)">
+                <button class="badge btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" triggers="mouseenter:mouseleave">
                   <fa-icon class="" [icon]="feature.icon"></fa-icon>
                 </button>
               </ng-container>
@@ -131,5 +131,64 @@
 
 </div>
 
+
+
+<div *ngIf="layerForModal" id="modalLayer" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{ layerForModal.layerName}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="d-flex flex-column my-3">
+          <h4 class="">Général</h4>
+          <div class="d-flex flex-row ms-2">
+            <span class="me-2">Nom de la couche :</span>
+            <input type="text" class="form-control" [placeholder]="layerForModal.layerName" aria-label="layerName" (change)="layerForModal.setName($event)">
+          </div>
+        </div>
+
+        <div class="d-flex flex-column my-3">
+          <h4 class="">Style</h4>
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Opacité :</span>
+            <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layerForModal.getOpacity()" (change)="layerForModal.setOpacity($event)"/>
+          </div>
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Couleur de fond :</span>
+            <input class="form-control fillColor colorPicker" [(colorPicker)]="layerForModal.fillColor" [style.background]="layerForModal.fillColor" (colorPickerClose)="layerForModal.setStyleForAllFeatures($event, 'fill_color')"/>
+          </div>
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Couleur du contour :</span>
+            <input class="form-control strokeColor colorPicker" [(colorPicker)]="layerForModal.strokeColor" [style.background]="layerForModal.strokeColor" (colorPickerClose)="layerForModal.setStyleForAllFeatures($event, 'stroke_color')"/>
+          </div>
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Epaisseur du contour :</span>
+            <input class="small strokeWidth" type="number" min="0" max="12" [value]="layerForModal.strokeWidth" (change)="layerForModal.setStyleForAllFeatures($event, 'stroke_width')"/>
+          </div>
+
+        </div>
+
+        <div class="d-flex flex-column my-3">
+          <h4 class="">Export</h4>
+          <div class="d-flex flex-column my-1">
+            <span class="ms-2">GeoJSON:</span>
+            <textarea #exportStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportStringGeomDiv.select()" readonly>{{layerForModal.exportToGeoJSON()}}</textarea>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 

@@ -32,23 +32,23 @@
 
     <div class="editTools" [ngClass]="isVisible ? 'pe-auto enabled' : 'pe-none disabled'">
 
-      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()">
+      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer la couche" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
       </button>
 
       <input #btnDraw type="checkbox" class="btn-check" [id]="'btnDraw' + layer.id" [checked]="isDrawn" (change)="drawHandler(btnDraw.checked)">
-      <label class="btn p-1 bg-transparent border-0" [for]="'btnDraw' + layer.id" [ngClass]="isDrawn ? 'text-danger' : 'text-success'">
+      <label class="btn p-1 bg-transparent border-0" [for]="'btnDraw' + layer.id" [ngClass]="isDrawn ? 'text-danger' : 'text-success'" [ngbPopover]="'Ajouter un ' + layer.geomType" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="addIcon" ></fa-icon>
       </label>
 
       <input #btnEdit type="checkbox" class="btn-check" [id]="'btnEdit' + layer.id" [checked]="isEdited" (change)="editHandler(btnEdit.checked)">
-      <label class="btn p-1 bg-transparent border-0" [for]="'btnEdit' + layer.id" [ngClass]="isEdited ? 'text-danger' : 'text-warning'">
+      <label class="btn p-1 bg-transparent border-0" [for]="'btnEdit' + layer.id" [ngClass]="isEdited ? 'text-danger' : 'text-warning'" ngbPopover="Editer" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="editIcon" ></fa-icon>
       </label>
 
       <ng-container *ngIf="layer.geomType === 'Polygon'">
         <input #btnHole type="checkbox" class="btn-check" [id]="'btnHole' + layer.id" [checked]="isHole" (change)="drawHoleHandler(true, btnHole.checked)">
-        <label class="btn p-1 bg-transparent border-0" [for]="'btnHole' + layer.id" [ngClass]="isHole ? 'text-danger' : 'text-warning'">
+        <label class="btn p-1 bg-transparent border-0" [for]="'btnHole' + layer.id" [ngClass]="isHole ? 'text-danger' : 'text-warning'" ngbPopover="Ajouter un trou" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="polygonIcon" ></fa-icon>
         </label>
       </ng-container>
@@ -56,7 +56,7 @@
     </div>
 
 
-    <button class="btn p-1 bg-transparent border-0 text-black" >
+    <button class="btn p-1 bg-transparent border-0 text-black" data-bs-toggle="modal" data-bs-target="#modalLayer" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
       <fa-icon class="" [icon]="paramIcon"></fa-icon>
     </button>
 
@@ -64,10 +64,10 @@
 
 </div>
 
-<div class="featuresList d-flex flex-row small mb-1" >
-  <ul class="w-100 list-group list-group-flush mx-3 border rounded-bottom collapse" [id]="'featuresLayer-' + layer.id">
+<div class="featuresList d-flex flex-row small mb-1" *ngIf="layer.features().length > 0">
+  <ul class="w-100 list-group list-group-flush mx-3 border rounded-bottom collapse show" [id]="'featuresLayer-' + layer.id">
 
-    <li *ngIf="layer.features().length > 0" class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == 'none' ? 'bg-secondary text-black bg-opacity-25' : 'bg-white text-black'" (click)="unSelectFeature()">
+    <li class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == 'none' ? 'bg-secondary text-black bg-opacity-25' : 'bg-white text-black'" (click)="unSelectFeature()">
       <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill m-1">
 
         <div class="">
@@ -142,27 +142,3 @@
 
 </div>
 
-
-
-
-
-<div id="layerToats" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row" style="z-index: 11">
-
-    <div *ngIf="layerForPopup !== null" class="toast toastLayer faded" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header justify-content-between">
-
-        <strong>{{ layerForPopup.layerName }}</strong>
-        <button type="button" class="btn-close" aria-label="Close" (click)="resetLayerForPopup()"></button>
-
-      </div>
-
-      <div class="toast-body bg-white">
-
-        <form class="">
-          <span>Opacité</span>
-          <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" value="1" (change)="layerForPopup.setOpacity($event)"/>
-        </form>
-
-      </div>
-    </div>
-</div>

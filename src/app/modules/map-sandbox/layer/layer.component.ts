@@ -1,4 +1,4 @@
-import { findElementBy, getWkt, layerHandler } from '@modules/map-sandbox/shared/core';
+import { findElementBy, getWkt, layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { identifierName } from '@angular/compiler';
@@ -42,10 +42,6 @@ export class LayerComponent implements OnInit {
   featuresDisplayedSubscription!: Subscription;
   featuresPopupsProperties: any[] = []
 
-  layerDisplayedObservable = new Subject<layerHandler>()
-  layerDisplayedSubscription!: Subscription;
-  layerForPopup!: layerHandler | null;
-
   constructor(
     private elementRef: ElementRef
   ) {
@@ -59,14 +55,7 @@ export class LayerComponent implements OnInit {
       }
     )
 
-    this.layerDisplayedSubscription = this.layerDisplayedObservable.subscribe(
-      (layer: layerHandler) => {
-        this.resetLayerForPopup()
-        this.layerForPopup = layer
-        d3.selectAll("#toastLayer")
-        .attr("class", "toast toastFeature faded");
-      }
-    )
+
 
 
   }
@@ -103,11 +92,16 @@ export class LayerComponent implements OnInit {
       })
     });
 
+    this.layer.sourceFeatures.on('changefeature', (event: any) => {
+      // update step when change on feature occurs
+      refreshFeatureStyle(event.feature)
+      this.featuresDisplayedObservable.next([event.feature])
+    })
+
   }
 
   ngOnDestroy(): void {
     this.featuresDisplayedSubscription.unsubscribe();
-    this.layerDisplayedSubscription.unsubscribe();
 
     this.elementRef.nativeElement.remove();
 
@@ -174,13 +168,11 @@ export class LayerComponent implements OnInit {
   }
 
   selectLayer(): void {
-    this.resetLayerForPopup()
     this.resetFeaturesPopups()
     this.unSelectFeature()
 
     this.layerSelected = !this.layerSelected
     this.layerSelectedId.emit(this.layer.id)
-    this.layerDisplayedObservable.next(this.layer)
   }
 
   updateLayerSelectionFromFeatureLayerId(layerIdToSelect: string): void {
@@ -189,15 +181,11 @@ export class LayerComponent implements OnInit {
   }
 
   unSelectFeature(): void {
-
-    this.resetLayerForPopup()
     this.featureIdSelected = 'none'
     this.layer.select.getFeatures().clear()
-
   }
 
   selectFeatureById(featureId: any): void {
-    this.resetLayerForPopup()
 
     this.featureIdSelected = featureId
 
@@ -211,7 +199,6 @@ export class LayerComponent implements OnInit {
   }
 
   private resetSelection(): void {
-    this.resetLayerForPopup()
     this.resetFeaturesPopups()
     this.drawHandler(false)
     this.editHandler(false)
@@ -258,9 +245,6 @@ export class LayerComponent implements OnInit {
     return null
   }
 
-  resetLayerForPopup(): void {
-    this.layerForPopup = null
-  }
   resetFeaturesPopups(): void {
     this.featuresPopupsProperties = []
   }

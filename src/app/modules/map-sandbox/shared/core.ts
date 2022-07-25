@@ -1,3 +1,4 @@
+import GeoJSON from 'ol/format/GeoJSON';
 import {LineString, Polygon}  from 'ol/geom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -41,10 +42,14 @@ export class layerHandler {
   sourceFeatures!: VectorSource;
   allFeatures: any[] = [];
 
-  groupId: string | null;
+  groupId: string | null; // not used
   id: string;
   layerName: string;
   geomType: 'Point' | 'LineString' | 'Polygon';
+  fillColor = defaultFillColor;
+  strokeColor = defaultStrokeColor;
+  strokeWidth = defaultStrokeWidth;
+
   deleted = false;
 
   featuresSelected: any[] = []
@@ -61,14 +66,14 @@ export class layerHandler {
     this.geomType = geomType
     this.groupId = groupId
 
-    this.id = uuidv4()
+    this.id = uuidv4();
 
-    this.setLayer()
+    this.setLayer();
     this.initSelect();
     this.initSnap();
-    this.initModifier()
+    this.initModifier();
 
-    this.map.addLayer(this.vectorLayer)
+    this.map.addLayer(this.vectorLayer);
 
   }
 
@@ -77,7 +82,7 @@ export class layerHandler {
 
     this.vectorLayer = new VectorLayer({
       source: this.sourceFeatures,
-      style: (feature: any, resolution: any): any => {
+      style: (feature: any, _: any): any => {
         return refreshFeatureStyle(feature)
       }
     });
@@ -256,9 +261,9 @@ export class layerHandler {
       "status": "added",
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString(),
-      'fill_color': defaultFillColor,
-      'stroke_width': defaultStrokeWidth,
-      'stroke_color': defaultStrokeColor
+      'fill_color': this.fillColor,
+      'stroke_width': this.strokeWidth,
+      'stroke_color':  this.strokeColor
     }, true)
 
   }
@@ -350,9 +355,39 @@ export class layerHandler {
     }, true)
   }
 
+  // update functions
+  getOpacity(): number {
+    return this.vectorLayer.getOpacity()
+  }
   setOpacity(event: any): void {
     this.vectorLayer.setOpacity(event.target.valueAsNumber)
     console.log(this.vectorLayer.getOpacity())
+  }
+
+  setName(event: any): void {
+    this.layerName = event.target.value
+    this.vectorLayer.set('name', this.layerName, true)
+  }
+
+  setStyleForAllFeatures(eventValue: any, styleProperties: 'fill_color' | 'stroke_color' | 'stroke_width'): void {
+    let value!: string;
+    // TODO avoid this condition regarding input output type?
+    if (styleProperties === 'stroke_width') {
+      value = eventValue.target.value
+    } else {
+      value = eventValue
+    }
+    this.features().forEach((feature: Feature) => {
+      feature.set(styleProperties, value, false)
+      // refreshFeatureStyle(feature) // not need ? supported by changefeature event....
+    })
+  }
+
+  exportToGeoJSON(): string {
+    let exportFormatContainer = new GeoJSON();
+    return JSON.stringify(JSON.parse(
+      exportFormatContainer.writeFeatures(this.features())
+    ), null, 2);
   }
 }
 

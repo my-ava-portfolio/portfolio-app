@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
@@ -20,6 +20,7 @@ import { View } from 'ol';
   styleUrls: ['./map-view.component.scss']
 })
 export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
 
   // icons
   layersIcon = faLayerGroup;
@@ -45,17 +46,17 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   createModesSupported = [
     {
       "mode": 'Point',
-      "label": 'Couche de Points',
+      "label": 'Ajouter une couche de Points',
       "icon": this.pointIcon
     },
     {
       "mode": 'LineString',
-      "label": 'Couche de LineString',
+      "label": 'Ajouter une couche de LineString',
       "icon": this.lineStringIcon
     },
     {
       "mode": 'Polygon',
-      "label": 'Couche de Polygones',
+      "label": 'Ajouter une couche de Polygones',
       "icon": this.polygonIcon
     }
   ]
@@ -133,6 +134,12 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getSelectedLayerId(layerId: any): void {
     this.layerIdSelected = layerId
+    let currentLayer = this.allExistingLayers.filter((layer: layerHandler) => {
+      return layer.id === layerId
+    })
+
+    this.layerForModal = currentLayer[0]
+
   }
 
   addLayer(geomType: any, groupId: string | null = null): void {
