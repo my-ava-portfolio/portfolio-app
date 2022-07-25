@@ -1,4 +1,4 @@
-import { findElementBy, getWkt, layerHandler } from '@modules/map-sandbox/shared/core';
+import { findElementBy, getWkt, layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { identifierName } from '@angular/compiler';
@@ -91,6 +91,11 @@ export class LayerComponent implements OnInit {
         this.selectFeatureById(this.featureIdSelected)
       })
     });
+
+    this.layer.sourceFeatures.on('changefeature', (event: any) => {
+      refreshFeatureStyle(event.feature)
+      this.featuresDisplayedObservable.next([event.feature])
+    })
 
   }
 

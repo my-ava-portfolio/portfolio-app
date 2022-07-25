@@ -45,6 +45,11 @@ export class layerHandler {
   id: string;
   layerName: string;
   geomType: 'Point' | 'LineString' | 'Polygon';
+  fillColor = defaultFillColor;
+  strokeColor = defaultStrokeColor;
+  strokeWidth = defaultStrokeWidth;
+
+
   deleted = false;
 
   featuresSelected: any[] = []
@@ -77,7 +82,7 @@ export class layerHandler {
 
     this.vectorLayer = new VectorLayer({
       source: this.sourceFeatures,
-      style: (feature: any, resolution: any): any => {
+      style: (feature: any, _: any): any => {
         return refreshFeatureStyle(feature)
       }
     });
@@ -256,9 +261,9 @@ export class layerHandler {
       "status": "added",
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString(),
-      'fill_color': defaultFillColor,
-      'stroke_width': defaultStrokeWidth,
-      'stroke_color': defaultStrokeColor
+      'fill_color': this.fillColor,
+      'stroke_width': this.strokeWidth,
+      'stroke_color':  this.strokeColor
     }, true)
 
   }
@@ -362,6 +367,14 @@ export class layerHandler {
   setName(event: any): void {
     this.layerName = event.target.value
     this.vectorLayer.set('name', this.layerName, true)
+  }
+
+  setFillColorForAllFeatures(eventValue: string): void {
+
+    this.features().forEach((feature: Feature) => {
+      feature.set('fill_color', eventValue, false)
+      refreshFeatureStyle(feature)
+    })
   }
 }
 
