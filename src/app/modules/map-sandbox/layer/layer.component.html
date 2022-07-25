@@ -36,12 +36,12 @@
         <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
       </button>
 
-      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="layer.downPosition()" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
-        +
+      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="layerGoDown()" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
+        -
       </button>
 
-      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="layer.upPosition()" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
-        -
+      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="layerGoUp()" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
+        +
       </button>
 
       <input #btnDraw type="checkbox" class="btn-check" [id]="'btnDraw' + layer.id" [checked]="isDrawn" (change)="drawHandler(btnDraw.checked)">

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit, ElementRef, ViewChild, SimpleChanges } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
@@ -21,6 +21,7 @@ import { View } from 'ol';
 })
 export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
+  @ViewChild('layersListDiv') layersListDiv!: ElementRef;
 
   // icons
   layersIcon = faLayerGroup;
@@ -42,7 +43,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   existingLayers: any[] = []; // LayerHandler or GroupHandler list
   layerIdSelected!: string;
   layerForModal!: layerHandler;
-  layerNamedIncrement: number = 0;
+  layerNamedIncrement: number = -1;
   createModesSupported = [
     {
       "mode": 'Point',
@@ -121,6 +122,14 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+
+    if (changes.layersListDiv) {
+      this.refreshLayers()
+    }
+
+  }
+
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
@@ -143,14 +152,14 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addLayer(geomType: any, groupId: string | null = null): void {
-
+    const layerNo: number = ++this.layerNamedIncrement
     let newLayer = new layerHandler(
       this.map,
-      'layer ' + ++this.layerNamedIncrement,
+      'layer ' + layerNo,
       geomType,
+      layerNo,
       groupId
     )
-
     this.allExistingLayers.push(newLayer)
 
     this.refreshLayers()
@@ -161,6 +170,8 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.existingLayers = this.allExistingLayers.filter((layer: layerHandler) => {
       return !layer.deleted;
     })
+    this.existingLayers = this.existingLayers.sort((a,b) => b.zIndexValue - a.zIndexValue)
+
   }
 
   unSelectLayer(): void {

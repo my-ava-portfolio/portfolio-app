@@ -5,6 +5,7 @@ import { identifierName } from '@angular/compiler';
 import { Subject, Subscription } from 'rxjs';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
+import { faOldRepublic } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-layer',
@@ -15,6 +16,7 @@ export class LayerComponent implements OnInit {
   @Input() layer!: layerHandler;
   @Input() currentLayerIdSelected!: string;
   @Output() layerSelectedId = new EventEmitter<string>();
+  @Output() layerZindexFromToUpdate = new EventEmitter<any>(); // go to update the layer which need a zindex changes regarding the action
 
   groupIcon = faLayerGroup;
   helpIcon = faCircleQuestion;
@@ -98,6 +100,16 @@ export class LayerComponent implements OnInit {
       this.featuresDisplayedObservable.next([event.feature])
     })
 
+    this.layer.vectorLayer.on('change:zIndex', (event: any) => {
+      // update step when change on feature occurs
+      const fromValue = event.oldValue;
+      const toValue = event.target.getZIndex()
+      // we have to update the z index of the layer at index 'newValue' with the index 'oldValue'
+      this.layerZindexFromToUpdate.emit([fromValue, toValue])
+      console.log("")
+
+    })
+
   }
 
   ngOnDestroy(): void {
@@ -165,6 +177,16 @@ export class LayerComponent implements OnInit {
     } else {
       this.addHoleFeatureDisable()
     }
+  }
+
+  layerGoUp(): void{
+    this.layer.upPosition()
+    // this.layerZindexFromToUpdate.emit(['up', this.layer.zIndexValue])
+  }
+
+  layerGoDown(): void{
+    this.layer.downPosition()
+    // this.layerZindexFromToUpdate.emit(['down', this.layer.zIndexValue])
   }
 
   selectLayer(): void {

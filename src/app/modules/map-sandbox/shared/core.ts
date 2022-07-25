@@ -44,6 +44,7 @@ export class layerHandler {
 
   groupId: string | null; // not used
   id: string;
+  zIndexValue: number;
   layerName: string;
   geomType: 'Point' | 'LineString' | 'Polygon';
   fillColor = defaultFillColor;
@@ -59,6 +60,7 @@ export class layerHandler {
     map: Map,
     layerName: string,
     geomType: 'Point' | 'LineString' | 'Polygon',
+    zIndexValue: number,
     groupId: string | null = null
   ) {
     this.map = map
@@ -67,6 +69,7 @@ export class layerHandler {
     this.groupId = groupId
 
     this.id = uuidv4();
+    this.zIndexValue = zIndexValue;
 
     this.setLayer();
     this.initSelect();
@@ -89,6 +92,7 @@ export class layerHandler {
 
     this.vectorLayer.set('name', this.layerName, true)
     this.vectorLayer.set('geomType', this.geomType, true)
+    this.vectorLayer.setZIndex(this.zIndexValue);
 
   }
 
@@ -387,6 +391,22 @@ export class layerHandler {
     return JSON.stringify(JSON.parse(
       exportFormatContainer.writeFeatures(this.features())
     ), null, 2);
+  }
+
+  upPosition(): void {
+    let layerZindex: number = this.vectorLayer.getZIndex()
+    if (layerZindex !== this.map.getLayers().getArray().length - 1) {
+      this.zIndexValue = ++layerZindex
+      this.vectorLayer.setZIndex(this.zIndexValue)
+    }
+  }
+
+  downPosition(): void {
+    let layerZindex: number = this.vectorLayer.getZIndex()
+    if (layerZindex > 0) {
+      this.zIndexValue = --layerZindex
+      this.vectorLayer.setZIndex(this.zIndexValue)
+    }
   }
 }
 
