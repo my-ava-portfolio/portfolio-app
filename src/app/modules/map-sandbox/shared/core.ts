@@ -1,3 +1,4 @@
+import GeoJSON from 'ol/format/GeoJSON';
 import {LineString, Polygon}  from 'ol/geom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -41,14 +42,13 @@ export class layerHandler {
   sourceFeatures!: VectorSource;
   allFeatures: any[] = [];
 
-  groupId: string | null;
+  groupId: string | null; // not used
   id: string;
   layerName: string;
   geomType: 'Point' | 'LineString' | 'Polygon';
   fillColor = defaultFillColor;
   strokeColor = defaultStrokeColor;
   strokeWidth = defaultStrokeWidth;
-
 
   deleted = false;
 
@@ -66,14 +66,14 @@ export class layerHandler {
     this.geomType = geomType
     this.groupId = groupId
 
-    this.id = uuidv4()
+    this.id = uuidv4();
 
-    this.setLayer()
+    this.setLayer();
     this.initSelect();
     this.initSnap();
-    this.initModifier()
+    this.initModifier();
 
-    this.map.addLayer(this.vectorLayer)
+    this.map.addLayer(this.vectorLayer);
 
   }
 
@@ -381,6 +381,13 @@ export class layerHandler {
       feature.set(styleProperties, value, false)
       // refreshFeatureStyle(feature) // not need ? supported by changefeature event....
     })
+  }
+
+  exportToGeoJSON(): string {
+    let exportFormatContainer = new GeoJSON();
+    return JSON.stringify(JSON.parse(
+      exportFormatContainer.writeFeatures(this.features())
+    ), null, 2);
   }
 }
 

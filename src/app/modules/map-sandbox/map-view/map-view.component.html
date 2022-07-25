@@ -134,7 +134,7 @@
 
 
 <div *ngIf="layerForModal" id="modalLayer" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">{{ layerForModal.layerName}}</h5>
@@ -172,15 +172,20 @@
             <input class="small strokeWidth" type="number" min="0" max="12" [value]="layerForModal.strokeWidth" (change)="layerForModal.setStyleForAllFeatures($event, 'stroke_width')"/>
           </div>
 
+        </div>
 
-
+        <div class="d-flex flex-column my-3">
+          <h4 class="">Export</h4>
+          <div class="d-flex flex-column my-1">
+            <span class="ms-2">GeoJSON:</span>
+            <textarea #exportStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportStringGeomDiv.select()" readonly>{{layerForModal.exportToGeoJSON()}}</textarea>
+          </div>
 
         </div>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
       </div>
     </div>
   </div>

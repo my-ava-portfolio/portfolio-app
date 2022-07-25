@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
@@ -20,6 +20,7 @@ import { View } from 'ol';
   styleUrls: ['./map-view.component.scss']
 })
 export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
 
   // icons
   layersIcon = faLayerGroup;
