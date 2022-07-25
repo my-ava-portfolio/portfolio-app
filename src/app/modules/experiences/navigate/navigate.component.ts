@@ -412,7 +412,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .force('collision', d3.forceCollide(15))
       .nodes(this.graphData.nodes)
       .on('tick', this._ticked.bind(this));
-    console.log(this.graphData)
+
     this.adjlist = {};
     this.graphData.links.forEach( (d: any): any => {
       this.adjlist[d.source.index + '-' + d.target.index] = true;
