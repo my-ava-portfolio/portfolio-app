@@ -157,28 +157,23 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
       groupId
     )
     this.allExistingLayers.push(newLayer)
-
     this.refreshLayers()
 
   }
 
   layerGoUp(layerId: string): void {
-    this.existingLayers = moveLayerOnZIndex(this.existingLayers, layerId, -1)
-    this.refreshLayers()
+    this.existingLayers = moveLayerOnZIndex(this.existingLayers, layerId, 1)
   }
 
   layerGoDown(layerId: string): void {
-
-    this.existingLayers = moveLayerOnZIndex(this.existingLayers, layerId, 1)
-
-    this.refreshLayers()
+    this.existingLayers = moveLayerOnZIndex(this.existingLayers, layerId, -1)
   }
 
   refreshLayers(): void {
     this.existingLayers = this.allExistingLayers.filter((layer: layerHandler) => {
       return !layer.deleted;
     })
-    this.existingLayers = this.existingLayers.sort((a,b) =>  a.zIndexValue - b.zIndexValue)
+    // this.existingLayers = this.existingLayers.sort((a,b) =>  a.zIndexValue - b.zIndexValue)
 
   }
 
@@ -247,6 +242,7 @@ function moveLayerOnZIndex(layersArray: layerHandler[], layerId: string, increme
       toIndex, 0,
       layersArray.splice(layerZIndex, 1)[0]
     );
+    // rebuild ZIndex
     layersArray.forEach((layer: layerHandler, idx: number) => {
       layer.zIndexValue = idx;
       layer.vectorLayer.setZIndex(idx);
@@ -254,6 +250,6 @@ function moveLayerOnZIndex(layersArray: layerHandler[], layerId: string, increme
     })
   }
 
-  return outputArray
+  return layersArray
 }
 
