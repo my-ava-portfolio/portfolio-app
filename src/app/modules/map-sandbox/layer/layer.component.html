@@ -107,7 +107,11 @@
 
 
 
-<div id="featureToasts" class="position-fixed bottom-0 end-0 p-3 d-flex flex-row overflow-auto" style="z-index: 11">
+<div
+  id="featureToasts"
+  class="position-fixed bottom-0 end-0 p-3 d-flex flex-row overflow-auto" style="z-index: 11"
+  [ngClass]="currentLayerIdSelected === layer.id ? 'd-block' : 'd-none'"
+  >
   <ng-container *ngFor="let feature of featuresPopupsProperties">
 
     <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true">
