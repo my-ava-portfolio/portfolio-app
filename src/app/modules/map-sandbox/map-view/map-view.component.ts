@@ -46,17 +46,17 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   createModesSupported = [
     {
       "mode": 'Point',
-      "label": 'Couche de Points',
+      "label": 'Ajouter une couche de Points',
       "icon": this.pointIcon
     },
     {
       "mode": 'LineString',
-      "label": 'Couche de LineString',
+      "label": 'Ajouter une couche de LineString',
       "icon": this.lineStringIcon
     },
     {
       "mode": 'Polygon',
-      "label": 'Couche de Polygones',
+      "label": 'Ajouter une couche de Polygones',
       "icon": this.polygonIcon
     }
   ]

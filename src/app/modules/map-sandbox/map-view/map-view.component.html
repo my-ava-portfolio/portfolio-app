@@ -74,7 +74,7 @@
             <div class="d-flex flex-row justify-content-center my-2 mx-3">
 
               <ng-container *ngFor="let feature of createModesSupported">
-                <button class="badge btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)">
+                <button class="badge btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" triggers="mouseenter:mouseleave">
                   <fa-icon class="" [icon]="feature.icon"></fa-icon>
                 </button>
               </ng-container>

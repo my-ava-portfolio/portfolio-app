@@ -32,23 +32,23 @@
 
     <div class="editTools" [ngClass]="isVisible ? 'pe-auto enabled' : 'pe-none disabled'">
 
-      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()">
+      <button class="btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer la couche" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
       </button>
 
       <input #btnDraw type="checkbox" class="btn-check" [id]="'btnDraw' + layer.id" [checked]="isDrawn" (change)="drawHandler(btnDraw.checked)">
-      <label class="btn p-1 bg-transparent border-0" [for]="'btnDraw' + layer.id" [ngClass]="isDrawn ? 'text-danger' : 'text-success'">
+      <label class="btn p-1 bg-transparent border-0" [for]="'btnDraw' + layer.id" [ngClass]="isDrawn ? 'text-danger' : 'text-success'" [ngbPopover]="'Ajouter un ' + layer.geomType" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="addIcon" ></fa-icon>
       </label>
 
       <input #btnEdit type="checkbox" class="btn-check" [id]="'btnEdit' + layer.id" [checked]="isEdited" (change)="editHandler(btnEdit.checked)">
-      <label class="btn p-1 bg-transparent border-0" [for]="'btnEdit' + layer.id" [ngClass]="isEdited ? 'text-danger' : 'text-warning'">
+      <label class="btn p-1 bg-transparent border-0" [for]="'btnEdit' + layer.id" [ngClass]="isEdited ? 'text-danger' : 'text-warning'" ngbPopover="Editer" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="editIcon" ></fa-icon>
       </label>
 
       <ng-container *ngIf="layer.geomType === 'Polygon'">
         <input #btnHole type="checkbox" class="btn-check" [id]="'btnHole' + layer.id" [checked]="isHole" (change)="drawHoleHandler(true, btnHole.checked)">
-        <label class="btn p-1 bg-transparent border-0" [for]="'btnHole' + layer.id" [ngClass]="isHole ? 'text-danger' : 'text-warning'">
+        <label class="btn p-1 bg-transparent border-0" [for]="'btnHole' + layer.id" [ngClass]="isHole ? 'text-danger' : 'text-warning'" ngbPopover="Ajouter un trou" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="polygonIcon" ></fa-icon>
         </label>
       </ng-container>
@@ -56,7 +56,7 @@
     </div>
 
 
-    <button class="btn p-1 bg-transparent border-0 text-black" data-bs-toggle="modal" data-bs-target="#modalLayer">
+    <button class="btn p-1 bg-transparent border-0 text-black" data-bs-toggle="modal" data-bs-target="#modalLayer" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
       <fa-icon class="" [icon]="paramIcon"></fa-icon>
     </button>
 
