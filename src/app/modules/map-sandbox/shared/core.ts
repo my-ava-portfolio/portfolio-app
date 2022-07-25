@@ -369,11 +369,17 @@ export class layerHandler {
     this.vectorLayer.set('name', this.layerName, true)
   }
 
-  setFillColorForAllFeatures(eventValue: string): void {
-
+  setStyleForAllFeatures(eventValue: any, styleProperties: 'fill_color' | 'stroke_color' | 'stroke_width'): void {
+    let value!: string;
+    // TODO avoid this condition regarding input output type?
+    if (styleProperties === 'stroke_width') {
+      value = eventValue.target.value
+    } else {
+      value = eventValue
+    }
     this.features().forEach((feature: Feature) => {
-      feature.set('fill_color', eventValue, false)
-      refreshFeatureStyle(feature)
+      feature.set(styleProperties, value, false)
+      // refreshFeatureStyle(feature) // not need ? supported by changefeature event....
     })
   }
 }

@@ -142,22 +142,37 @@
       </div>
       <div class="modal-body">
 
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column my-3">
           <h4 class="">Général</h4>
           <div class="d-flex flex-row ms-2">
-            <span class="me-2">Nom de la couchage :</span>
+            <span class="me-2">Nom de la couche :</span>
             <input type="text" class="form-control" [placeholder]="layerForModal.layerName" aria-label="layerName" (change)="layerForModal.setName($event)">
           </div>
         </div>
 
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column my-3">
           <h4 class="">Style</h4>
-          <div class="d-flex flex-row ms-2">
+          <div class="d-flex flex-row ms-2 my-1">
             <span class="me-2">Opacité :</span>
             <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layerForModal.getOpacity()" (change)="layerForModal.setOpacity($event)"/>
           </div>
 
-          <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="layerForModal.fillColor" [style.background]="layerForModal.fillColor" (colorPickerClose)="layerForModal.setFillColorForAllFeatures($event)"/>
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Couleur de fond :</span>
+            <input class="form-control fillColor colorPicker" [(colorPicker)]="layerForModal.fillColor" [style.background]="layerForModal.fillColor" (colorPickerClose)="layerForModal.setStyleForAllFeatures($event, 'fill_color')"/>
+          </div>
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Couleur du contour :</span>
+            <input class="form-control strokeColor colorPicker" [(colorPicker)]="layerForModal.strokeColor" [style.background]="layerForModal.strokeColor" (colorPickerClose)="layerForModal.setStyleForAllFeatures($event, 'stroke_color')"/>
+          </div>
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Epaisseur du contour :</span>
+            <input class="small strokeWidth" type="number" min="0" max="12" [value]="layerForModal.strokeWidth" (change)="layerForModal.setStyleForAllFeatures($event, 'stroke_width')"/>
+          </div>
+
+
 
 
         </div>

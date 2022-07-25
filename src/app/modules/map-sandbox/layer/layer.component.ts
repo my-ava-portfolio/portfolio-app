@@ -93,6 +93,7 @@ export class LayerComponent implements OnInit {
     });
 
     this.layer.sourceFeatures.on('changefeature', (event: any) => {
+      // update step when change on feature occurs
       refreshFeatureStyle(event.feature)
       this.featuresDisplayedObservable.next([event.feature])
     })
