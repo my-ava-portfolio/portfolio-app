@@ -6,13 +6,14 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import {faLayerGroup, faPencil, faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark, faTag } from '@fortawesome/free-solid-svg-icons';
+import {faLayerGroup, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { layerHandler, getWkt, findBy, findElementBy  } from '@modules/map-sandbox/shared/core';
 import { Subscription } from 'rxjs/internal/Subscription';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
 import { View } from 'ol';
+import { layer } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
   selector: 'app-map-view',
@@ -25,16 +26,11 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // icons
   layersIcon = faLayerGroup;
-  groupIcon = faLayerGroup;
-  helpIcon = faCircleQuestion;
-  addIcon = faCirclePlus;
-  editIcon = faPencil;
-  paramIcon = faGear;
   disabledIcon = faXmark;
-  EditIcon = faCircle;
   pointIcon = faCircle;
   lineStringIcon = faWaveSquare;
   polygonIcon = faDrawPolygon;
+
 
   map!: Map;
   defaultMapView!: View;
@@ -157,7 +153,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
       this.map,
       'layer ' + layerNo,
       geomType,
-      layerNo,
+      layerNo, // Zindex
       groupId
     )
     this.allExistingLayers.push(newLayer)
@@ -166,11 +162,23 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+  layerGoUp(layerId: string): void {
+    this.existingLayers = moveLayerOnZIndex(this.existingLayers, layerId, -1)
+    this.refreshLayers()
+  }
+
+  layerGoDown(layerId: string): void {
+
+    this.existingLayers = moveLayerOnZIndex(this.existingLayers, layerId, 1)
+
+    this.refreshLayers()
+  }
+
   refreshLayers(): void {
     this.existingLayers = this.allExistingLayers.filter((layer: layerHandler) => {
       return !layer.deleted;
     })
-    this.existingLayers = this.existingLayers.sort((a,b) => b.zIndexValue - a.zIndexValue)
+    this.existingLayers = this.existingLayers.sort((a,b) =>  a.zIndexValue - b.zIndexValue)
 
   }
 
@@ -227,4 +235,25 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
 }
 
+
+function moveLayerOnZIndex(layersArray: layerHandler[], layerId: string, incrementValue: number): layerHandler[] {
+  let outputArray: layerHandler[] = [];
+
+  const layerIndexToGet = layersArray.findIndex((layer: layerHandler) => layer.id === layerId);
+  const layerZIndex = layersArray[layerIndexToGet].zIndexValue;
+  const toIndex = layerZIndex + incrementValue
+  if (toIndex >= 0 && toIndex < layersArray.length) {
+    layersArray.splice(
+      toIndex, 0,
+      layersArray.splice(layerZIndex, 1)[0]
+    );
+    layersArray.forEach((layer: layerHandler, idx: number) => {
+      layer.zIndexValue = idx;
+      layer.vectorLayer.setZIndex(idx);
+      outputArray.push(layer)
+    })
+  }
+
+  return outputArray
+}
 

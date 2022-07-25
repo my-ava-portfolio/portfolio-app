@@ -104,6 +104,8 @@
                     [layer]="layer"
                     [currentLayerIdSelected]="layerIdSelected"
                     (layerSelectedId)="getSelectedLayerId($event)"
+                    (layerMoveUp)="layerGoUp($event)"
+                    (layerMoveDown)="layerGoDown($event)"
                   >
                   </app-layer>
 

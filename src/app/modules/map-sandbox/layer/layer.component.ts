@@ -1,7 +1,6 @@
 import { findElementBy, getWkt, layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { identifierName } from '@angular/compiler';
+import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { Subject, Subscription } from 'rxjs';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
@@ -16,7 +15,8 @@ export class LayerComponent implements OnInit {
   @Input() layer!: layerHandler;
   @Input() currentLayerIdSelected!: string;
   @Output() layerSelectedId = new EventEmitter<string>();
-  @Output() layerZindexFromToUpdate = new EventEmitter<any>(); // go to update the layer which need a zindex changes regarding the action
+  @Output() layerMoveUp = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
+  @Output() layerMoveDown = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
 
   groupIcon = faLayerGroup;
   helpIcon = faCircleQuestion;
@@ -30,6 +30,8 @@ export class LayerComponent implements OnInit {
   polygonIcon = faDrawPolygon;
   visibleIcon = faEye;
   invisibleIcon = faEyeSlash;
+  upIcon = faCaretUp;
+  downIcon = faCaretDown;
 
   isVisible: boolean = true;
   isDrawn: boolean = false;
@@ -98,16 +100,6 @@ export class LayerComponent implements OnInit {
       // update step when change on feature occurs
       refreshFeatureStyle(event.feature)
       this.featuresDisplayedObservable.next([event.feature])
-    })
-
-    this.layer.vectorLayer.on('change:zIndex', (event: any) => {
-      // update step when change on feature occurs
-      const fromValue = event.oldValue;
-      const toValue = event.target.getZIndex()
-      // we have to update the z index of the layer at index 'newValue' with the index 'oldValue'
-      this.layerZindexFromToUpdate.emit([fromValue, toValue])
-      console.log("")
-
     })
 
   }
@@ -180,13 +172,12 @@ export class LayerComponent implements OnInit {
   }
 
   layerGoUp(): void{
-    this.layer.upPosition()
-    // this.layerZindexFromToUpdate.emit(['up', this.layer.zIndexValue])
+    // this.layer.upPosition()
+    this.layerMoveUp.emit(this.layer.id)
   }
 
   layerGoDown(): void{
-    this.layer.downPosition()
-    // this.layerZindexFromToUpdate.emit(['down', this.layer.zIndexValue])
+    this.layerMoveDown.emit(this.layer.id)
   }
 
   selectLayer(): void {

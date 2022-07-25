@@ -392,22 +392,6 @@ export class layerHandler {
       exportFormatContainer.writeFeatures(this.features())
     ), null, 2);
   }
-
-  upPosition(): void {
-    let layerZindex: number = this.vectorLayer.getZIndex()
-    if (layerZindex !== this.map.getLayers().getArray().length - 1) {
-      this.zIndexValue = ++layerZindex
-      this.vectorLayer.setZIndex(this.zIndexValue)
-    }
-  }
-
-  downPosition(): void {
-    let layerZindex: number = this.vectorLayer.getZIndex()
-    if (layerZindex > 0) {
-      this.zIndexValue = --layerZindex
-      this.vectorLayer.setZIndex(this.zIndexValue)
-    }
-  }
 }
 
 
