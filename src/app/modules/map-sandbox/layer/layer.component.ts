@@ -200,6 +200,7 @@ export class LayerComponent implements OnInit {
 
   private resetSelection(): void {
     this.resetFeaturesPopups()
+    this.drawHoleHandler(false)
     this.drawHandler(false)
     this.editHandler(false)
     this.unSelectFeature()
