@@ -350,9 +350,18 @@ export class layerHandler {
     }, true)
   }
 
+  // update functions
+  getOpacity(): number {
+    return this.vectorLayer.getOpacity()
+  }
   setOpacity(event: any): void {
     this.vectorLayer.setOpacity(event.target.valueAsNumber)
     console.log(this.vectorLayer.getOpacity())
+  }
+
+  setName(event: any): void {
+    this.layerName = event.target.value
+    this.vectorLayer.set('name', this.layerName, true)
   }
 }
 
