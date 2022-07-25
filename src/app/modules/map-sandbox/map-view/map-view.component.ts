@@ -133,6 +133,12 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getSelectedLayerId(layerId: any): void {
     this.layerIdSelected = layerId
+    let currentLayer = this.allExistingLayers.filter((layer: layerHandler) => {
+      return layer.id === layerId
+    })
+
+    this.layerForModal = currentLayer[0]
+
   }
 
   addLayer(geomType: any, groupId: string | null = null): void {

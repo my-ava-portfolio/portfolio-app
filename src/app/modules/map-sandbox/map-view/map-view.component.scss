@@ -30,9 +30,6 @@
 }
 
 
-
-
-
 #mapTools {
   position: fixed;
   //height: calc(100vh / 1.2);  // 56px is about the control bar height...
@@ -81,3 +78,8 @@
   border-radius: 25px;
 }
 
+.faded {
+  opacity: 1!important;
+	-webkit-transition: opacity 0.5s!important;
+	transition: opacity 0.5s!important;
+}
