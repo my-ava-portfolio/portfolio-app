@@ -14,12 +14,7 @@
             <span class="my-2 fw-bold ">
               <fa-icon class="my-1 me-1" [icon]="layersIcon"></fa-icon>Couches</span>
           </button>
-          <button
-          class="btn bg-danger bg-gradient text-white title-button rounded-top-3 pe-auto" type="button"
-          (click)="showHideLegend()">
-          <span class="my-2 fw-bold ">
-            <fa-icon class="my-1 me-1" [icon]="layersIcon"></fa-icon>Export</span>
-        </button>
+
         </div>
 
         <div id="layerToolsFeatures" class="border border-5 d-flex flex-column bg-light px-2 py-2 vh-50 rounded-3 overflow-auto shadow-map-tools" [ngClass]="!isLegendDisplayed ? 'hidden' : ''">
