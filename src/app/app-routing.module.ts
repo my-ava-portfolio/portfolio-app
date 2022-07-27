@@ -42,7 +42,7 @@ const appRoutes: Routes = [
       },
       {
         path: 'maps',
-        loadChildren: () => import('@modules/map/map.module').then(m => m.MapModule),
+        loadChildren: () => import('@modules/maps/maps.module').then(m => m.MapsModule),
       },
       {
         path: 'blog',

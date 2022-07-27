@@ -2,10 +2,7 @@ import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/cor
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { bugIcon, githubBugIssueUrl, loadingIcon, mobileIcon, minWidthLandscape, minHeightLandscape, arrowUpIcon } from './core/inputs';
-import { interval, Subscription, timer } from 'rxjs';
-import { startWith, map, delay  } from 'rxjs/operators';
-import { MainService } from '@services/main.service';
+import { bugIcon, loadingIcon, mobileIcon, minWidthLandscape, minHeightLandscape, arrowUpIcon } from './core/inputs';
 
 @Component({
   selector: 'app-root',
@@ -24,15 +21,15 @@ export class AppComponent implements OnInit {
   scrolltoTopActivated: boolean = false
 
   orientationPortraitRoutes: string[] = [
-    '/map/app/activities',
-    '/map/app/gtfs-viewer',
-    '/map/app/sandbox',
+    '/maps/app/activities',
+    '/maps/app/gtfs-viewer',
+    '/maps/app/sandbox',
   ];
 
   routesWhereScrollingIsDisabled: string[] = [
-    "/map/app/activities",
-    "/map/app/sandbox",
-    "/map/app/gtfs-viewer"
+    "/maps/app/activities",
+    "/maps/app/sandbox",
+    "/maps/app/gtfs-viewer"
   ];
 
 

@@ -2,8 +2,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LayoutComponent } from '@modules/map/layout/layout.component';
-import { HomeComponent } from '@modules/map/home/home.component';
+import { LayoutComponent } from '@modules/maps/layout/layout.component';
+import { HomeComponent } from '@modules/maps/home/home.component';
 
 
 const routes: Routes = [

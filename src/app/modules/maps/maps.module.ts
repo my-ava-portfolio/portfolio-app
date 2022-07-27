@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { MapRoutingModule } from './map-routing.module';
+import { MapRoutingModule } from './maps-routing.module';
 
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
@@ -20,4 +20,4 @@ import { HomeComponent } from './home/home.component';
     FontAwesomeModule
   ]
 })
-export class MapModule { }
+export class MapsModule { }
