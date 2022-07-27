@@ -1,10 +1,10 @@
 import { findElementBy, getWkt, layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { identifierName } from '@angular/compiler';
+import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { Subject, Subscription } from 'rxjs';
 import Feature from 'ol/Feature';
 import * as d3 from 'd3';
+import { faOldRepublic } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-layer',
@@ -15,6 +15,8 @@ export class LayerComponent implements OnInit {
   @Input() layer!: layerHandler;
   @Input() currentLayerIdSelected!: string;
   @Output() layerSelectedId = new EventEmitter<string>();
+  @Output() layerMoveUp = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
+  @Output() layerMoveDown = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
 
   groupIcon = faLayerGroup;
   helpIcon = faCircleQuestion;
@@ -28,6 +30,8 @@ export class LayerComponent implements OnInit {
   polygonIcon = faDrawPolygon;
   visibleIcon = faEye;
   invisibleIcon = faEyeSlash;
+  upIcon = faCaretUp;
+  downIcon = faCaretDown;
 
   isVisible: boolean = true;
   isDrawn: boolean = false;
@@ -165,6 +169,15 @@ export class LayerComponent implements OnInit {
     } else {
       this.addHoleFeatureDisable()
     }
+  }
+
+  layerGoUp(): void{
+    // this.layer.upPosition()
+    this.layerMoveUp.emit(this.layer.id)
+  }
+
+  layerGoDown(): void{
+    this.layerMoveDown.emit(this.layer.id)
   }
 
   selectLayer(): void {

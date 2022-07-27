@@ -5,11 +5,19 @@
   [ngClass]="currentLayerIdSelected === layer.id ? 'bg-primary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
   >
 
-  <div class="">
+  <div class="me-1">
     <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.id" [checked]="isVisible" (change)="visibleHandler(btnVisible.checked)">
     <label class="btn p-1 bg-transparent border-0" [for]="'btnVisible' + layer.id" [ngClass]="isVisible ? 'text-success' : 'text-danger'">
       <fa-icon class="" [icon]="isVisible ? visibleIcon : invisibleIcon" ></fa-icon>
     </label>
+
+    <button class="btn p-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="downIcon" ></fa-icon>
+    </button>
+
+    <button class="btn p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="upIcon" ></fa-icon>
+    </button>
   </div>
 
   <div
@@ -34,14 +42,6 @@
 
       <button class="btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer la couche" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
-      </button>
-
-      <button class="btn p-1 bg-transparent border-0 text-danger" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
-        +
-      </button>
-
-      <button class="btn p-1 bg-transparent border-0 text-danger" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
-        -
       </button>
 
       <input #btnDraw type="checkbox" class="btn-check" [id]="'btnDraw' + layer.id" [checked]="isDrawn" (change)="drawHandler(btnDraw.checked)">

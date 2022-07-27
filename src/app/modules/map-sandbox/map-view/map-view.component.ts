@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit, ElementRef, ViewChild, SimpleChanges } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
@@ -6,13 +6,14 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import {faLayerGroup, faPencil, faCircleQuestion, faGear, faCirclePlus, faCircle, faWaveSquare, faDrawPolygon, faXmark, faTag } from '@fortawesome/free-solid-svg-icons';
+import {faLayerGroup, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { layerHandler, getWkt, findBy, findElementBy  } from '@modules/map-sandbox/shared/core';
 import { Subscription } from 'rxjs/internal/Subscription';
 import MousePosition from 'ol/control/MousePosition';
 import { format } from 'ol/coordinate';
 import { View } from 'ol';
+import { layer } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
   selector: 'app-map-view',
@@ -21,19 +22,15 @@ import { View } from 'ol';
 })
 export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
+  @ViewChild('layersListDiv') layersListDiv!: ElementRef;
 
   // icons
   layersIcon = faLayerGroup;
-  groupIcon = faLayerGroup;
-  helpIcon = faCircleQuestion;
-  addIcon = faCirclePlus;
-  editIcon = faPencil;
-  paramIcon = faGear;
   disabledIcon = faXmark;
-  EditIcon = faCircle;
   pointIcon = faCircle;
   lineStringIcon = faWaveSquare;
   polygonIcon = faDrawPolygon;
+
 
   map!: Map;
   defaultMapView!: View;
@@ -42,7 +39,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   existingLayers: any[] = []; // LayerHandler or GroupHandler list
   layerIdSelected!: string;
   layerForModal!: layerHandler;
-  layerNamedIncrement: number = 0;
+  layerNamedIncrement: number = -1;
   createModesSupported = [
     {
       "mode": 'Point',
@@ -121,6 +118,14 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+
+    if (changes.layersListDiv) {
+      this.refreshLayers()
+    }
+
+  }
+
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
@@ -143,24 +148,33 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addLayer(geomType: any, groupId: string | null = null): void {
-
+    const layerNo: number = ++this.layerNamedIncrement
     let newLayer = new layerHandler(
       this.map,
-      'layer ' + ++this.layerNamedIncrement,
+      'layer ' + layerNo,
       geomType,
+      layerNo, // Zindex
       groupId
     )
-
     this.allExistingLayers.push(newLayer)
-
     this.refreshLayers()
 
+  }
+
+  layerGoUp(layerId: string): void {
+    this.existingLayers = moveLayerOnZIndex(this.existingLayers, layerId, 1)
+  }
+
+  layerGoDown(layerId: string): void {
+    this.existingLayers = moveLayerOnZIndex(this.existingLayers, layerId, -1)
   }
 
   refreshLayers(): void {
     this.existingLayers = this.allExistingLayers.filter((layer: layerHandler) => {
       return !layer.deleted;
     })
+    // this.existingLayers = this.existingLayers.sort((a,b) =>  a.zIndexValue - b.zIndexValue)
+
   }
 
   unSelectLayer(): void {
@@ -216,4 +230,26 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
 }
 
+
+function moveLayerOnZIndex(layersArray: layerHandler[], layerId: string, incrementValue: number): layerHandler[] {
+  let outputArray: layerHandler[] = [];
+
+  const layerIndexToGet = layersArray.findIndex((layer: layerHandler) => layer.id === layerId);
+  const layerZIndex = layersArray[layerIndexToGet].zIndexValue;
+  const toIndex = layerZIndex + incrementValue
+  if (toIndex >= 0 && toIndex < layersArray.length) {
+    layersArray.splice(
+      toIndex, 0,
+      layersArray.splice(layerZIndex, 1)[0]
+    );
+    // rebuild ZIndex
+    layersArray.forEach((layer: layerHandler, idx: number) => {
+      layer.zIndexValue = idx;
+      layer.vectorLayer.setZIndex(idx);
+      outputArray.push(layer)
+    })
+  }
+
+  return layersArray
+}
 
