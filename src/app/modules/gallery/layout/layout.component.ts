@@ -46,6 +46,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   apiMapsUrl = apiMapsUrl;
   galleryItems!: any;
 
+  innerRoutesAvailable: string[] = ['map/app/']; // to redirect on the routes portolio
   isDataAvailable = false;
 
   fragment: string | null = null;
@@ -168,4 +169,16 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
+  urlAppChecker(url: string): boolean {
+    let urlIsAnInnerUrl: boolean = false;
+    this.innerRoutesAvailable.forEach((innerUrl: string) => {
+      if (url.includes(innerUrl)) {
+        urlIsAnInnerUrl = true
+      }
+    });
+    return urlIsAnInnerUrl;
+  }
+
 }
+
+
