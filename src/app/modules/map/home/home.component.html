@@ -12,6 +12,14 @@
           </div>
 
           <div class="card-body">
+
+            <div class="text-center mb-2" *ngIf="app.img">
+              <img class="img-fluid rounded mx-auto d-block shadow" [src]="app.img"/>
+            </div>
+
+
+
+
             <p class="card-text">{{ app.details }}</p>
             <a [routerLink]="[app.route]" class="btn btn-warning mt-auto fw-bold">Accéder</a>
           </div>

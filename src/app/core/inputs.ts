@@ -8,6 +8,7 @@ import { apiBaseUrl } from './constants';
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
 export const apiLogoUrl = `./assets/logo/`;
 export const apiMapsUrl = `./assets/maps/`;
+export const assetsAppImgUrl = `./assets/app_img/`;
 export const personalBlogUrl = 'https://blog.amaury-valorge.com';
 export const githubUrl = 'https://github.com/amauryval/';
 export const githubBugIssueUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';
@@ -160,6 +161,7 @@ export const mapActivitiesPages: any = {
       id: "activities",
       title: "Carte des activités",
       route: "app/activities",
+      img: `${assetsAppImgUrl}/portfolio_activities.jpg`,
       icon: mapIcon,  // TODO improve icon
       details: "Cartographie de mon parcours universitaire et professionnel."
     },
@@ -167,6 +169,7 @@ export const mapActivitiesPages: any = {
       id: "sandbox",
       title: "Bac à sable",
       route: "app/sandbox",
+      img: `${assetsAppImgUrl}/sandbox.jpg`,
       icon: mapIcon,  // TODO improve icon
       details: "Un bac à sable pour saisir des données géographiques: Points, LineString, Polygons (et à trous). En cours de développement..."
     },
@@ -174,6 +177,7 @@ export const mapActivitiesPages: any = {
       id: "gtfs-viewer",
       title: "Visualisation de GTFS",
       route: "app/gtfs-viewer",
+      img: `${assetsAppImgUrl}/gtfs_viewer.jpg`,
       icon: mapIcon,  // TODO improve icon
       details: "Application pour visualiser des GTFS. En cours de développement..."
     }
