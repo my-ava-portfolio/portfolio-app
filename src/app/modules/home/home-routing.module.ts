@@ -8,7 +8,7 @@ import { ProfilCardComponent } from '@modules/home/profil-card/profil-card.compo
 
 const routes: Routes = [
   {
-    path: 'about_me',
+    path: '',
     component: LayoutComponent,
     data: { title: 'Amaury Valorge - Portfolio', page: 'about_me' }
   },
