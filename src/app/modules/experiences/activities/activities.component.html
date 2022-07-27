@@ -241,19 +241,21 @@
       <div class="card-body pb-0">
         <div class="row justify-content-around align-items-center">
 
-          <div class="col-12 ps-3 mb-1">
+          <div class="col-6 mt-2 mb-3 col-md-3 my-lg-0 text-center">
+            <img class="img-fluid rounded mx-auto d-block shadow" [src]="assetsImgUrl + activity.img_company"/>
+          </div>
+
+          <div class="col-12 col-md-8 align-self-center">
             <div *ngIf="activity.status === 'InProgress'" class="fst-italic">Du {{ activity.start_date | date: 'MM-yyyy' }} à {{ activity.end_date | date: 'MM-yyyy' }} ({{activity.duration}}).</div>
             <div *ngIf="activity.status !== 'InProgress'" class="fst-italic">Depuis le {{ activity.start_date | date: 'MM-yyyy' }} ({{activity.duration}}) ...</div>
-          </div>
-
-          <div class="col-10 ps-3 mb-1">
             <p class="text-justify">{{activity.presentation}}</p>
-          </div>
 
-          <div class="" *ngIf="activity.keywords">
-            <span class="badge rounded-pill m-1" [style.border]="'1px solid ' + item.value" [style.color]="item.value"
-              *ngFor="let item of activity.keywords | keyvalue"
-            >{{ item.key }}</span>
+            <div class="" *ngIf="activity.keywords">
+              <span class="badge rounded-pill m-1" [style.border]="'1px solid ' + item.value" [style.color]="item.value"
+                *ngFor="let item of activity.keywords | keyvalue"
+              >{{ item.key }}</span>
+            </div>
+
           </div>
 
 

@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
-import { apiLogoUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, personalBlogUrl, projectIcon, projectPages, websiteIcon } from '@core/inputs';
+import { apiLogoUrl, assetsImgUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, personalBlogUrl, projectIcon, projectPages, websiteIcon } from '@core/inputs';
 
 import { ResumeService } from '@services/resume.service';
 
@@ -23,6 +23,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() volunteersData: any;
 
   apiImgUrl = apiLogoUrl;
+  assetsImgUrl = assetsImgUrl;
   mapPages: any = mapActivitiesPages;
   galleryPagesRoute: string = galleryPages.route;
   blogPagesRoute: string = projectPages[0].route;
