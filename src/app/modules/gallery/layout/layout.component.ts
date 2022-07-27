@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { apiMapsUrl, experiencesPages, minWidthLandscape } from '@core/inputs';
+import { apiMapsUrl, assetsImgUrl, experiencesPages, minWidthLandscape } from '@core/inputs';
 
 import { GalleryService } from '@services/gallery.service';
 import { MainService } from '@services/main.service';
@@ -12,7 +12,6 @@ import { Title } from '@angular/platform-browser';
 import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '@core/inputs';
 
 import { ControlerService } from '@services/controler.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { fadeInOutAnimation } from '@core/animation_routes';
 
 
@@ -46,7 +45,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   apiMapsUrl = apiMapsUrl;
   galleryItems!: any;
 
-  innerRoutesAvailable: string[] = ['map/app/']; // to redirect on the routes portolio
+  assetsImgUrl = assetsImgUrl;
+
+  innerRoutesAvailable: string[] = ['maps/app/']; // to redirect on the routes portolio
   isDataAvailable = false;
 
   fragment: string | null = null;

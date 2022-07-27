@@ -58,12 +58,14 @@
           <ng-container *ngSwitchCase="'url_app'">
             <ng-container *ngIf="!urlAppChecker(media_feature.media)">
               <a [href]="media_feature.media | safeUrl" target="_blank" rel="noopener noreferrer">
-                <img [src]="media_feature.media_splash" class="card-img-top pointer">
+                <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="card-img-top pointer">
+                <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="card-img-top pointer">
               </a>
             </ng-container>
             <ng-container *ngIf="urlAppChecker(media_feature.media)">
               <a [routerLink]="'../' + media_feature.media">
-                <img [src]="media_feature.media_splash" class="card-img-top pointer">
+                <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="card-img-top pointer">
+                <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="card-img-top pointer">
               </a>
             </ng-container>
           </ng-container>
