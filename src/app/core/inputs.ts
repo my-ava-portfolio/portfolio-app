@@ -180,6 +180,14 @@ export const mapActivitiesPages: any = {
       img: `${assetsImgUrl}/gtfs_viewer.jpg`,
       icon: mapIcon,  // TODO improve icon
       details: "Application pour visualiser des GTFS. En cours de développement..."
+    },
+    {
+      id: "find-my-path",
+      title: "Find my path",
+      route: "https://findmypath.amaury-valorge.com/",
+      img: `${assetsImgUrl}/find_my_path.jpg`,
+      icon: mapIcon,  // TODO improve icon
+      details: "Application pour déterminer le meilleur chemin. En cours de refonte..."
     }
   ]
 };
