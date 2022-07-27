@@ -125,7 +125,8 @@
 
                               <ng-container *ngSwitchCase="'url_app'">
                                 <a [routerLink]="[galleryPagesRoute]" [fragment]="item.identifier">
-                                  <img [src]="item.media_splash" class="card-img-top pointer img-fluid shadow" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
+                                  <img *ngIf="item.media_splash.includes('https')" [src]="item.media_splash" class="card-img-top pointer img-fluid shadow" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
+                                  <img *ngIf="!item.media_splash.includes('https')" [src]="assetsImgUrl + item.media_splash" class="card-img-top pointer img-fluid shadow" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
                                 </a>
                               </ng-container>
 
@@ -193,7 +194,8 @@
 
                           <ng-container *ngSwitchCase="'url_app'">
                             <a [routerLink]="[galleryPagesRoute]" [fragment]="item.identifier">
-                              <img [src]="item.media_splash" class="card-img-top pointer img-fluid shadow" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
+                              <img *ngIf="item.media_splash.includes('https')" [src]="item.media_splash" class="card-img-top pointer img-fluid shadow" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
+                              <img *ngIf="!item.media_splash.includes('https')" [src]="assetsImgUrl + item.media_splash" class="card-img-top pointer img-fluid shadow" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
                             </a>
                           </ng-container>
 
