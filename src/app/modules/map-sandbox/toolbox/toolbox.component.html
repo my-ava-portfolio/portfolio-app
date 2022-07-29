@@ -28,7 +28,7 @@
       class="tool btn btn-warning text-black my-3 shadow rounded-end"
       [ngClass]="isLegendDisplayed ? 'selected' : ''"
       (click)="showHideLegend()">
-      <fa-icon class="" [icon]="leftSideIcon"></fa-icon>
+      <fa-icon class="" [icon]="isLegendDisplayed ? leftSideIcon : rightSideIcon"></fa-icon>
     </span>
 
     <span

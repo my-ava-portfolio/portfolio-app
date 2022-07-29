@@ -6,7 +6,7 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import { faGlobe, faOutdent, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faLayerGroup, faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
 
 import { Subscription } from 'rxjs/internal/Subscription';
 import View from 'ol/View';
@@ -22,7 +22,8 @@ export class ToolboxComponent implements OnInit, OnDestroy {
 
   // icons
   geoIcon = faGlobe;
-  leftSideIcon = faOutdent;
+  leftSideIcon = faAnglesLeft;
+  rightSideIcon = faAnglesRight;
   layersIcon = faLayerGroup;
 
   map!: Map;
