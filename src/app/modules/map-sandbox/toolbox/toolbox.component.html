@@ -2,53 +2,43 @@
 
   <div id="mapTools" class="d-flex flex-column bg-light shadow-map-tools" [ngClass]="!isLegendDisplayed ? 'hidden' : 'displayed'">
 
-    <div >
-      <app-geoinfo
-        id="geoTools"
-        class="d-flex flex-column overflow-auto"
-        *ngIf="currentMenuDisplayed == 'geoTools'"
-        [map]="map"
-        [currentEpsg]="currentEpsg"
-      >
-      </app-geoinfo>
+    <app-geoinfo
+      id="geoTools"
+      class="d-flex flex-column overflow-auto"
+      *ngIf="currentMenuDisplayed == 'geoTools'"
+      [map]="map"
+      [currentEpsg]="currentEpsg"
+    >
+    </app-geoinfo>
 
-    </div>
-
-
-    <div id="createTools" class="d-flex flex-column overflow-auto"  *ngIf="currentMenuDisplayed == 'createTools'">
-
-      <app-creator
-        id="createTools"
-        class="d-flex flex-column overflow-auto"
-        *ngIf="currentMenuDisplayed == 'createTools'"
-        [map]="map"
-        [currentEpsg]="currentEpsg"
-      >
-      </app-creator>
-
-
-
-    </div>
+    <app-creator
+      id="createTools"
+      class="d-flex flex-column overflow-auto"
+      *ngIf="currentMenuDisplayed == 'createTools'"
+      [map]="map"
+      [currentEpsg]="currentEpsg"
+    >
+    </app-creator>
 
   </div>
 
   <div id="legendLabels" class="d-flex flex-column">
 
     <span
-      class="btn btn-warning text-black mt-3 mb-1 shadow rounded-end" type="button"
+      class="tool btn btn-warning text-black my-3 shadow rounded-end"
       (click)="showHideLegend()">
       <fa-icon class="" [icon]="leftSideIcon"></fa-icon>
     </span>
 
     <span
-      class="btn btn-info text-white mb-1 shadow rounded-end" type="button"
+      class="tool btn btn-info text-white mb-1 shadow rounded-end"
       (click)="currentMenuDisplayed = 'geoTools'"
       >
       <fa-icon class="" [icon]="geoIcon"></fa-icon>
     </span>
 
     <span
-      class="btn btn-dark text-white mb-1 shadow rounded-end" type="button"
+      class="tool btn btn-dark text-white mb-1 shadow rounded-end" type="button"
       (click)="currentMenuDisplayed = 'createTools'"
       >
       <fa-icon class="" [icon]="layersIcon"></fa-icon>

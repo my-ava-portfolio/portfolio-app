@@ -1,4 +1,4 @@
-<div class="d-flex flex-row align-items-center justify-content-center bg-warning text-black py-2 px-3 mt-2 rounded-3">
+<div class="d-flex flex-row align-items-center justify-content-center bg-warning text-black py-2 px-3">
   <span class="fw-bold">Créer des couches</span>
 </div>
 
@@ -7,7 +7,7 @@
   <div class="d-flex flex-row justify-content-center my-2 mx-3">
 
     <ng-container *ngFor="let feature of createModesSupported">
-      <button class="badge btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" triggers="mouseenter:mouseleave">
+      <button class="badge btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="feature.icon"></fa-icon>
       </button>
     </ng-container>
@@ -15,7 +15,7 @@
 
 </div>
 
-<div class="d-flex flex-row align-items-center justify-content-center bg-primary text-white py-2 px-3 my-2 rounded-3">
+<div class="d-flex flex-row align-items-center justify-content-center bg-warning text-black py-2 px-3">
   <span class="fw-bold">Couches</span>
 </div>
 
