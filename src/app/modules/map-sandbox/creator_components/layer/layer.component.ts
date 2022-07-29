@@ -132,9 +132,8 @@ export class LayerComponent implements OnInit {
 
   visibleHandler(status: boolean): void {
     this.isVisible = status
-    if (status) {
-      this.layer.vectorLayer.setVisible(status)
-    }
+    this.layer.vectorLayer.setVisible(status)
+
     if (!status) {
       this.drawHandler(false) // disable draw tool
       this.editHandler(false) // disable edit tool
