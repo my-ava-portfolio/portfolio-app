@@ -6,7 +6,7 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import {faLayerGroup, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faOutdent, faLayerGroup, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { layerHandler, getWkt, findBy, findElementBy  } from '@modules/map-sandbox/shared/core';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -25,6 +25,8 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('layersListDiv') layersListDiv!: ElementRef;
 
   // icons
+  geoIcon = faGlobe;
+  leftSideIcon = faOutdent;
   layersIcon = faLayerGroup;
   disabledIcon = faXmark;
   pointIcon = faCircle;
@@ -66,6 +68,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedEpsg!: string;
 
   isLegendDisplayed = true;
+  currentMenuDisplayed = 'geoTools'
 
   mapSubscription!: Subscription;
 

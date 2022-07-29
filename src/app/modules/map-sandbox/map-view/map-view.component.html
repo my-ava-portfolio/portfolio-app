@@ -1,132 +1,136 @@
-<div class="container-fluid vh-100">
+<div class="d-flex flex-row position-fixed">
 
-  <nav id="container" class="d-flex flex-row">
+  <div id="mapTools" class="d-flex flex-column bg-light shadow-map-tools" [ngClass]="!isLegendDisplayed ? 'hidden' : 'displayed'">
 
-    <div class="d-flex flex-row">
+    <div id="geoTools" class="d-flex flex-column overflow-auto" *ngIf="currentMenuDisplayed == 'geoTools'">
 
-      <div id="mapTools" class="d-flex flex-column ms-2 mt-2" [ngClass]="!isLegendDisplayed ? 'pe-none' : ''">
+      <div class="d-flex flex-row align-items-center justify-content-center bg-info text-white p-2 px-3 mt-2 rounded-3">
+        <span class="fw-bold">Informations</span>
+      </div>
 
-        <div id="legendLabels" class="d-flex flex-row ms-2">
+      <div id="infosContainer" class="d-flex flex-column mx-3">
+        <div class="d-flex flex-row my-1 justify-content-evenly">
 
-          <button
-            class="btn bg-dark bg-gradient text-white title-button rounded-top-3 pe-auto me-1" type="button"
-            (click)="showHideLegend()">
-            <span class="my-2 fw-bold ">
-              <fa-icon class="my-1 me-1" [icon]="layersIcon"></fa-icon>Couches</span>
-          </button>
+          <div class="d-flex flex-column">
+
+            <div id="epsgList" class="btn-group-vertical my-2 align-self-center bg-white rounded-3 border">
+              <ng-container *ngFor="let epsg of epsgAvailable; let idx = index">
+                <input type="radio" class="border btn-check mx-1" name="btnRadio" [id]="'btnradio-selector-' + idx" [checked]="selectedEpsg === epsg" autocomplete="off">
+                <label class="pointer"  [for]="'btnradio-selector-' + idx" (click)="setProjection(epsg)">
+                  <div class="dropdown-item small d-flex flex-row" [ngClass]="selectedEpsg === epsg ? 'bg-info text-white ' :  ''">
+                    <span>{{ epsg }}</span>
+                  </div>
+                </label>
+              </ng-container>
+            </div>
+
+          </div>
+
+          <div class="d-flex flex-column align-items-center justify-content-center small mx-2">
+
+            <div class="d-flex flex-column align-items-center justify-content-center small">
+              <span class="fw-bold m-2">Précision</span>
+              <input class="small" id="precision" type="number" min="0" max="12" value="4" (change)="updatePrecision($event)"/>
+            </div>
+
+          </div>
 
         </div>
 
-        <div id="layerToolsFeatures" class="border border-5 d-flex flex-column bg-light px-2 py-2 vh-50 rounded-3 overflow-auto shadow-map-tools" [ngClass]="!isLegendDisplayed ? 'hidden' : ''">
+        <div class="d-flex flex-column align-items-center align-self-center justify-content-center small mb-3">
+          <span class="fw-bold">Coordonnées</span>
+          <span id="mouseCoordinates"></span>
+        </div>
 
-          <div class="d-flex flex-row align-items-center justify-content-center bg-info text-white py-2 px-3 mt-2 rounded-3">
-            <span class="fw-bold">Informations</span>
-          </div>
-
-          <div id="infosContainer" class="d-flex flex-column mx-3">
-            <div class="d-flex flex-row my-1 justify-content-evenly">
-
-              <div class="d-flex flex-column">
-
-                <div id="epsgList" class="btn-group-vertical my-2 align-self-center bg-white rounded-3 border">
-                  <ng-container *ngFor="let epsg of epsgAvailable; let idx = index">
-                    <input type="radio" class="border btn-check mx-1" name="btnRadio" [id]="'btnradio-selector-' + idx" [checked]="selectedEpsg === epsg" autocomplete="off">
-                    <label class="pointer"  [for]="'btnradio-selector-' + idx" (click)="setProjection(epsg)">
-                      <div class="dropdown-item small d-flex flex-row" [ngClass]="selectedEpsg === epsg ? 'bg-info text-white ' :  ''">
-                        <span>{{ epsg }}</span>
-                      </div>
-                    </label>
-                  </ng-container>
-                </div>
-
-              </div>
-
-              <div class="d-flex flex-column align-items-center justify-content-center small mx-2">
-
-                <div class="d-flex flex-column align-items-center justify-content-center small">
-                  <span class="fw-bold m-2">Précision</span>
-                  <input class="small" id="precision" type="number" min="0" max="12" value="4" (change)="updatePrecision($event)"/>
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="d-flex flex-column align-items-center align-self-center justify-content-center small mb-3">
-              <span class="fw-bold">Coordonnées</span>
-              <span id="mouseCoordinates"></span>
-            </div>
-
-          </div>
-
-          <div class="d-flex flex-row align-items-center justify-content-center bg-warning text-black py-2 px-3 mt-2 rounded-3">
-            <span class="fw-bold">Créer des couches</span>
-          </div>
+      </div>
+    </div>
 
 
-          <div id="creationTools" class="d-flex flex-column">
+    <div id="createTools" class="d-flex flex-column overflow-auto"  *ngIf="currentMenuDisplayed == 'createTools'">
 
-            <div class="d-flex flex-row justify-content-center my-2 mx-3">
+      <div class="d-flex flex-row align-items-center justify-content-center bg-warning text-black py-2 px-3 mt-2 rounded-3">
+        <span class="fw-bold">Créer des couches</span>
+      </div>
 
-              <ng-container *ngFor="let feature of createModesSupported">
-                <button class="badge btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" triggers="mouseenter:mouseleave">
-                  <fa-icon class="" [icon]="feature.icon"></fa-icon>
-                </button>
-              </ng-container>
-            </div>
+      <div id="creationTools" class="d-flex flex-column">
 
-          </div>
+        <div class="d-flex flex-row justify-content-center my-2 mx-3">
 
-          <div class="d-flex flex-row align-items-center justify-content-center bg-primary text-white py-2 px-3 my-2 rounded-3">
-            <span class="fw-bold">Couches</span>
-          </div>
-
-          <div id="layersContainer" class="d-flex flex-column mx-2">
-
-            <div #layersListDiv id="layersList" class="d-flex flex-column justify-content-start mb-2">
-
-              <div
-                class="layer pointer d-flex flex-row small mt-1 mx-1 px-1 border rounded align-items-center"
-                (click)="unSelectLayer()"
-                [ngClass]="layerIdSelected === 'none' ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
-                >
-
-                <div class="pointer p-2 d-flex flex-row pointer justify-content-around align-items-center">
-                    <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>
-                    <span>Désélectionner</span>
-                </div>
-
-              </div>
-
-              <ng-container *ngFor="let layer of existingLayers.reverse()">
-
-                  <app-layer
-                    [layer]="layer"
-                    [currentLayerIdSelected]="layerIdSelected"
-                    (layerSelectedId)="getSelectedLayerId($event)"
-                    (layerMoveUp)="layerGoUp($event)"
-                    (layerMoveDown)="layerGoDown($event)"
-                  >
-                  </app-layer>
-
-              </ng-container>
-            </div>
-
-          </div>
-
+          <ng-container *ngFor="let feature of createModesSupported">
+            <button class="badge btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" triggers="mouseenter:mouseleave">
+              <fa-icon class="" [icon]="feature.icon"></fa-icon>
+            </button>
+          </ng-container>
         </div>
 
       </div>
 
+      <div class="d-flex flex-row align-items-center justify-content-center bg-primary text-white py-2 px-3 my-2 rounded-3">
+        <span class="fw-bold">Couches</span>
+      </div>
 
+      <div id="layersContainer" class="d-flex flex-column mx-2 overflow-auto">
+
+        <div #layersListDiv id="layersList" class="d-flex flex-column justify-content-start mb-2">
+
+          <div
+            class="layer pointer d-flex flex-row small mt-1 mx-1 px-1 border rounded align-items-center"
+            (click)="unSelectLayer()"
+            [ngClass]="layerIdSelected === 'none' ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
+            >
+
+            <div class="pointer p-2 d-flex flex-row pointer justify-content-around align-items-center">
+                <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>
+                <span>Désélectionner</span>
+            </div>
+
+          </div>
+
+          <ng-container *ngFor="let layer of existingLayers.reverse()">
+
+              <app-layer
+                [layer]="layer"
+                [currentLayerIdSelected]="layerIdSelected"
+                (layerSelectedId)="getSelectedLayerId($event)"
+                (layerMoveUp)="layerGoUp($event)"
+                (layerMoveDown)="layerGoDown($event)"
+              >
+              </app-layer>
+
+          </ng-container>
+        </div>
+
+      </div>
 
     </div>
 
-  </nav>
+  </div>
 
+  <div id="legendLabels" class="d-flex flex-column">
 
+    <span
+      class="btn btn-warning text-white mt-3 mb-1 shadow rounded-end" type="button"
+      (click)="showHideLegend()">
+      <fa-icon class="" [icon]="leftSideIcon"></fa-icon>
+    </span>
 
+    <span
+      class="btn btn-info text-white mb-1 shadow rounded-end" type="button"
+      (click)="currentMenuDisplayed = 'geoTools'"
+      >
+      <fa-icon class="" [icon]="geoIcon"></fa-icon>
+    </span>
+
+    <span
+      class="btn btn-dark text-white mb-1 shadow rounded-end" type="button"
+      (click)="currentMenuDisplayed = 'createTools'"
+      >
+      <fa-icon class="" [icon]="layersIcon"></fa-icon>
+    </span>
+
+  </div>
 </div>
+
 
 
 
