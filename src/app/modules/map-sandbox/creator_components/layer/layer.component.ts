@@ -102,6 +102,12 @@ export class LayerComponent implements OnInit {
   ngOnDestroy(): void {
     this.featuresDisplayedSubscription.unsubscribe();
 
+    // remove the modal div
+    let modalLayerDiv = document.getElementById('modalLayer-' + this.layer.id)
+    if (modalLayerDiv !== null) {
+      modalLayerDiv.remove()
+    }
+
     this.elementRef.nativeElement.remove();
 
     this.resetSelection()
@@ -280,6 +286,7 @@ export class LayerComponent implements OnInit {
       if (toastDiv !== null) {
 
         toastDiv[0].classList.add("faded");
+
       }
     }
   }
@@ -309,6 +316,18 @@ export class LayerComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  moveModalToBody(): void {
+    let modalLayerDiv = document.getElementById('modalLayer-'+ this.layer.id);
+    if (modalLayerDiv !== null) {
+
+      let bodyDiv = document.body;
+      if (bodyDiv !== null) {
+        bodyDiv.appendChild(modalLayerDiv)
+
+      }
+    }
   }
 
 }
