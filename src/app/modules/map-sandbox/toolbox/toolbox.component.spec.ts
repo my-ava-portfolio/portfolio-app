@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapViewComponent } from './map-view.component';
+import { ToolboxComponent } from './toolbox.component';
 
-describe('MapViewComponent', () => {
-  let component: MapViewComponent;
-  let fixture: ComponentFixture<MapViewComponent>;
+describe('ToolboxComponent', () => {
+  let component: ToolboxComponent;
+  let fixture: ComponentFixture<ToolboxComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MapViewComponent ]
+      declarations: [ ToolboxComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MapViewComponent);
+    fixture = TestBed.createComponent(ToolboxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

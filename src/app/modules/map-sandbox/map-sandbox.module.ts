@@ -8,7 +8,7 @@ import { MapSandboxRoutingModule } from '@modules/map-sandbox/map-sandbox-routin
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { MapViewComponent } from '@modules/map-sandbox/map-view/map-view.component';
+import { ToolboxComponent } from './toolbox/toolbox.component';
 
 import { GeoinfoComponent } from '@modules/map-sandbox/geoinfo/geoinfo.component';
 
@@ -19,7 +19,7 @@ import { FeatureComponent } from '@modules/map-sandbox/creator_components/featur
 
 @NgModule({
   declarations: [
-    MapViewComponent,
+    ToolboxComponent,
     LayerComponent,
     FeatureComponent,
     GeoinfoComponent,

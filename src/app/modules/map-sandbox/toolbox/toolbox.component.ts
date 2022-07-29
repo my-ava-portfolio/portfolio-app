@@ -12,11 +12,11 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import View from 'ol/View';
 
 @Component({
-  selector: 'app-map-view',
-  templateUrl: './map-view.component.html',
-  styleUrls: ['./map-view.component.scss']
+  selector: 'app-toolbox',
+  templateUrl: './toolbox.component.html',
+  styleUrls: ['./toolbox.component.scss']
 })
-export class MapViewComponent implements OnInit, OnDestroy {
+export class ToolboxComponent implements OnInit, OnDestroy {
 
   currentEpsg!: string;
 
