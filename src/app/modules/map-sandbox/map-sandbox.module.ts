@@ -6,13 +6,15 @@ import { ColorPickerModule } from 'ngx-color-picker';
 
 import { MapSandboxRoutingModule } from '@modules/map-sandbox/map-sandbox-routing.module';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { MapViewComponent } from '@modules/map-sandbox/map-view/map-view.component';
-import { LayerComponent } from './layer/layer.component';
-import { FeatureComponent } from './feature/feature.component';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { GeoinfoComponent } from './geoinfo/geoinfo.component';
+import { GeoinfoComponent } from '@modules/map-sandbox/geoinfo/geoinfo.component';
 
+import { CreatorComponent } from '@modules/map-sandbox/creator/creator.component';
+import { LayerComponent } from '@modules/map-sandbox/creator_components/layer/layer.component';
+import { FeatureComponent } from '@modules/map-sandbox/creator_components/feature/feature.component';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { GeoinfoComponent } from './geoinfo/geoinfo.component';
     MapViewComponent,
     LayerComponent,
     FeatureComponent,
-    GeoinfoComponent
+    GeoinfoComponent,
+    CreatorComponent
   ],
   imports: [
     CommonModule,

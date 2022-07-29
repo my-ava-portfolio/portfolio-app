@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { format } from 'ol/coordinate';
 
 import Map from 'ol/Map';
-import { View } from 'ol';
 
 
 @Component({
@@ -15,34 +14,19 @@ import { View } from 'ol';
 })
 export class GeoinfoComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() currentEpsg!: string;
-
-  map!: Map;
+  @Input() map!: Map;
 
   mousePositionControl!: MousePosition;
   cursorCoordinates!: any;
   epsgAvailable = ["EPSG:4326", "EPSG:3857"];
-  // create a service to get the map epsg!
-
-  defaultMapView!: View;
 
   mapSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
-  ) {
-
-    this.mapSubscription = this.mapService.map.subscribe(
-      (map: Map) => {
-        this.map = map;
-        this.defaultMapView = this.map.getView()
-
-      }
-    );
-
-  }
+  ) {  }
 
   ngOnInit(): void {
-    this.mapService.getMap();
   }
 
   ngAfterViewInit(): void {
@@ -51,9 +35,6 @@ export class GeoinfoComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.map.setView(this.defaultMapView)
-
-    this.mapSubscription.unsubscribe();
   }
 
 

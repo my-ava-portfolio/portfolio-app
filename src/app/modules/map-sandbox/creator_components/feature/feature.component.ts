@@ -1,8 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import * as d3 from 'd3';
-import Feature from 'ol/Feature';
-import { Subject, Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-feature',

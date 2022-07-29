@@ -1,10 +1,8 @@
-import { findElementBy, getWkt, layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
+import { getWkt, layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { Subject, Subscription } from 'rxjs';
 import Feature from 'ol/Feature';
-import * as d3 from 'd3';
-import { faOldRepublic } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-layer',
@@ -58,9 +56,6 @@ export class LayerComponent implements OnInit {
         })
       }
     )
-
-
-
 
   }
 
@@ -281,20 +276,10 @@ export class LayerComponent implements OnInit {
         'wkt': getWkt(geomFeature)
       })
 
-      if (isNotify) {  // TODO deprecated
-        // display it with fading
-        d3.select("html")
-        .transition()
-        .delay(2000) // need this delayto wait the toats html building
-        .duration(5000)
-        .on("end", () => {
-          d3.selectAll(".toastFeature")
-          .attr("class", "toast toastFeature");
-        })
-      } else {
-        // happened only if a feature is selected
-        d3.selectAll(".toastFeature")
-        .attr("class", "toast toastFeature faded");
+      let toastDiv = document.getElementsByClassName('toastFeature');
+      if (toastDiv !== null) {
+
+        toastDiv[0].classList.add("faded");
       }
     }
   }
