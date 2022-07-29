@@ -1,8 +1,9 @@
 import { getWkt, layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { Subject, Subscription } from 'rxjs';
 import Feature from 'ol/Feature';
+import WKT from 'ol/format/WKT';
 
 @Component({
   selector: 'app-layer',
@@ -15,6 +16,9 @@ export class LayerComponent implements OnInit {
   @Output() layerSelectedId = new EventEmitter<string>();
   @Output() layerMoveUp = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerMoveDown = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
+
+  @ViewChild('wktValue') wktValue!: ElementRef;
+  @ViewChild('wktEpsgInput') wktEspgInput!: ElementRef;
 
   groupIcon = faLayerGroup;
   helpIcon = faCircleQuestion;
@@ -106,6 +110,10 @@ export class LayerComponent implements OnInit {
     let modalLayerDiv = document.getElementById('modalLayer-' + this.layer.id)
     if (modalLayerDiv !== null) {
       modalLayerDiv.remove()
+    }
+    let modalWktDiv = document.getElementById('modalWktLayer-' + this.layer.id)
+    if (modalWktDiv !== null) {
+      modalWktDiv.remove()
     }
 
     this.elementRef.nativeElement.remove();
@@ -319,6 +327,7 @@ export class LayerComponent implements OnInit {
   }
 
   moveModalToBody(): void {
+    // TODO create a global function
     let modalLayerDiv = document.getElementById('modalLayer-'+ this.layer.id);
     if (modalLayerDiv !== null) {
 
@@ -328,6 +337,34 @@ export class LayerComponent implements OnInit {
 
       }
     }
+  }
+
+  moveWktModalToBody(): void {
+    // TODO create a global function
+    let modalLayerDiv = document.getElementById('modalWktLayer-'+ this.layer.id);
+    if (modalLayerDiv !== null) {
+
+      let bodyDiv = document.body;
+      if (bodyDiv !== null) {
+        bodyDiv.appendChild(modalLayerDiv)
+
+      }
+    }
+  }
+
+  addWkt(): void {
+    //TODO support multipleWKT
+    const wktString: string = this.wktValue.nativeElement.value;
+    const wktFormat = new WKT();
+    // POLYGON((10.689 -25.092, 34.595 -20.170, 38.814 -35.639, 13.502 -39.155, 10.689 -25.092))
+    //TODO add espg support
+    const feature = wktFormat.readFeature(wktString, {
+      dataProjection: 'EPSG:4326',
+      featureProjection: 'EPSG:3857',
+    });
+    //TODO check geom type and alert user
+
+    this.layer.addFeatureFromGeomFeatureWithoutProperties(feature)
   }
 
 }

@@ -49,6 +49,10 @@
         <fa-icon class="" [icon]="addIcon" ></fa-icon>
       </label>
 
+      <button class="btn p-1 bg-transparent border-0 text-black" (click)="moveWktModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalWktLayer-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+        W
+      </button>
+
       <input #btnEdit type="checkbox" class="btn-check" [id]="'btnEdit' + layer.id" [checked]="isEdited" (change)="editHandler(btnEdit.checked)">
       <label class="btn p-1 bg-transparent border-0" [for]="'btnEdit' + layer.id" [ngClass]="isEdited ? 'text-danger' : 'text-warning'" ngbPopover="Editer" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="editIcon" ></fa-icon>
@@ -209,6 +213,24 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div [id]="'modalWktLayer-'+ layer.id" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Saisir un WKT</h5>
+      </div>
+      <div class="modal-body">
+        <input #wktValue type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+      </div>
+      <div class="modal-footer">
+        <button (click)="addWkt()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Valider</button>
       </div>
     </div>
   </div>
