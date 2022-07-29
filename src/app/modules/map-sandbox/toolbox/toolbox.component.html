@@ -26,12 +26,14 @@
 
     <span
       class="tool btn btn-warning text-black my-3 shadow rounded-end"
+      [ngClass]="isLegendDisplayed ? 'selected' : ''"
       (click)="showHideLegend()">
       <fa-icon class="" [icon]="leftSideIcon"></fa-icon>
     </span>
 
     <span
       class="tool btn btn-info text-white mb-1 shadow rounded-end"
+      [ngClass]="currentMenuDisplayed === 'geoTools' ? 'selected' : ''"
       (click)="currentMenuDisplayed = 'geoTools'"
       >
       <fa-icon class="" [icon]="geoIcon"></fa-icon>
@@ -39,6 +41,7 @@
 
     <span
       class="tool btn btn-dark text-white mb-1 shadow rounded-end" type="button"
+      [ngClass]="currentMenuDisplayed === 'createTools' ? 'selected' : ''"
       (click)="currentMenuDisplayed = 'createTools'"
       >
       <fa-icon class="" [icon]="layersIcon"></fa-icon>

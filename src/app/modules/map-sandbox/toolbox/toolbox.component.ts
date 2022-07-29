@@ -33,7 +33,6 @@ export class ToolboxComponent implements OnInit, OnDestroy {
   currentMenuDisplayed = 'geoTools'
 
   mapSubscription!: Subscription;
-  epsgChangesSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -66,7 +65,6 @@ export class ToolboxComponent implements OnInit, OnDestroy {
     this.map.setView(this.defaultMapView)
 
     this.mapSubscription.unsubscribe();
-    this.epsgChangesSubscription.unsubscribe();
 
     this.mapService.changeMapInteractionStatus(false)
 

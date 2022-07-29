@@ -16,30 +16,26 @@
 
 }
 
-.hidden {
+.hidden .d-flex {
   visibility: hidden !important;
+  opacity: 0;
+  transition: all 0.3s;
 }
 
-.pointer {
-  cursor: pointer;
-}
 
-
-#container {
-
-}
 
 
 #mapTools.displayed{
   //height: calc(100vh / 1.2);  // 56px is about the control bar height...
+  opacity: 1;
   width: 18vw;
   transition: all 0.3s;
 }
 
 #mapTools.hidden{
-  width: 0vw;
-  opacity: 0;
+  width: 1vw;
   transition: all 0.3s;
+
 }
 
 .shadow-map-tools {
@@ -61,5 +57,22 @@
 
 
 .tool.btn {
+  width: 45px;
   border-radius: unset;
+  -webkit-transition: width 1s ease-in-out;
+  -moz-transition: width 1s ease-in-out;
+  -o-transition: width 1s ease-in-out;
+  transition: width 1s ease-in-out;
+}
+
+.tool.btn:hover {
+  width: 60px;
+  -webkit-transition: width 1s ease-in-out;
+  -moz-transition: width 1s ease-in-out;
+  -o-transition: width 1s ease-in-out;
+  transition: width 1s ease-in-out;
+}
+
+.tool.btn.selected {
+  width: 60px;
 }
