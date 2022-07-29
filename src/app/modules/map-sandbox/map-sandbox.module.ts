@@ -11,6 +11,7 @@ import { LayerComponent } from './layer/layer.component';
 import { FeatureComponent } from './feature/feature.component';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { GeoinfoComponent } from './geoinfo/geoinfo.component';
 
 
 
@@ -18,7 +19,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   declarations: [
     MapViewComponent,
     LayerComponent,
-    FeatureComponent
+    FeatureComponent,
+    GeoinfoComponent
   ],
   imports: [
     CommonModule,

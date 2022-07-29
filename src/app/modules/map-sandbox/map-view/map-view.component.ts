@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, AfterViewInit, ElementRef, ViewChild, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit, ElementRef, ViewChild, SimpleChanges } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
@@ -8,21 +8,19 @@ import Map from 'ol/Map';
 
 import { faGlobe, faOutdent, faLayerGroup, faCircle, faWaveSquare, faDrawPolygon, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { layerHandler, getWkt, findBy, findElementBy  } from '@modules/map-sandbox/shared/core';
+import { layerHandler } from '@modules/map-sandbox/shared/core';
 import { Subscription } from 'rxjs/internal/Subscription';
-import MousePosition from 'ol/control/MousePosition';
-import { format } from 'ol/coordinate';
-import { View } from 'ol';
-import { layer } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
   selector: 'app-map-view',
   templateUrl: './map-view.component.html',
   styleUrls: ['./map-view.component.scss']
 })
-export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MapViewComponent implements OnInit, OnDestroy {
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
   @ViewChild('layersListDiv') layersListDiv!: ElementRef;
+
+  currentEpsg!: string;
 
   // icons
   geoIcon = faGlobe;
@@ -35,7 +33,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   map!: Map;
-  defaultMapView!: View;
 
   allExistingLayers: any[] = [];
   existingLayers: any[] = []; // LayerHandler or GroupHandler list
@@ -60,17 +57,13 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   ]
 
-  mousePositionControl!: MousePosition;
-  cursorCoordinates!: any;
-  epsgAvailable = ["EPSG:4326", "EPSG:3857"];
-  // create a service to get the map epsg!
-  currentEpsg!: string;
-  selectedEpsg!: string;
+
 
   isLegendDisplayed = true;
   currentMenuDisplayed = 'geoTools'
 
   mapSubscription!: Subscription;
+  epsgChangesSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -83,11 +76,20 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
       (map: Map) => {
         this.map = map;
         this.currentEpsg = this.map.getView().getProjection().getCode();
-        this.defaultMapView = this.map.getView()
-        this.selectedEpsg = this.currentEpsg
-
       }
     );
+
+    this.epsgChangesSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
+      (epsg: string) => {
+        this.allExistingLayers.forEach((layer: layerHandler) => {
+          layer.features().forEach( (feature: any) => {
+            feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, epsg))
+          });
+        })
+
+        this.currentEpsg = epsg;
+      }
+    )
 
    }
 
@@ -99,16 +101,12 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  ngAfterViewInit(): void {
-    this.initMousePosition()
 
-  }
 
   ngOnDestroy(): void {
-    this.map.setView(this.defaultMapView)
 
     this.mapSubscription.unsubscribe();
-
+    this.epsgChangesSubscription.unsubscribe();
 
     this.allExistingLayers.forEach((layer: any) => {
       this.map.removeLayer(layer.vectorLayer)
@@ -176,59 +174,10 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.existingLayers = this.allExistingLayers.filter((layer: layerHandler) => {
       return !layer.deleted;
     })
-    // this.existingLayers = this.existingLayers.sort((a,b) =>  a.zIndexValue - b.zIndexValue)
-
   }
 
   unSelectLayer(): void {
     this.layerIdSelected = 'none'
-  }
-
-  initMousePosition(): void {
-    let mouseCoordinatesDiv!: any;
-    mouseCoordinatesDiv = document.getElementById('mouseCoordinates')
-
-    this.mousePositionControl = new MousePosition({
-      coordinateFormat: this.setPrecisionFunc(4),
-      placeholder: 'x :<br>y : ',
-      className: 'mouse-position',
-      target: mouseCoordinatesDiv,
-
-    });
-
-    this.map.addControl(this.mousePositionControl)
-  }
-
-  setProjection(epsg: string): void {
-    this.selectedEpsg = epsg;
-
-    this.mapService.setProjectionOnMap(epsg)
-
-    //  reproject each layer  // TODO create func
-    this.allExistingLayers.forEach((layer: layerHandler) => {
-      layer.features().forEach( (feature: any) => {
-        feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, this.selectedEpsg))
-      });
-    })
-
-    this.setMapEpsg();
-
-  }
-
-  updatePrecision(event: any): any {
-    return this.mousePositionControl.setCoordinateFormat(this.setPrecisionFunc(event.target.value))
-  }
-  private setPrecisionFunc(precision: any): any {
-    var template = 'x : {x}<br>y : {y}';
-    return (
-      function(coordinate: any) {
-          return format(coordinate, template, precision);
-      });
-  }
-
-
-  setMapEpsg(): void {
-    this.currentEpsg = this.map.getView().getProjection().getCode();
   }
 
 }
