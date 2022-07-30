@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 import { Subscription } from 'rxjs';
 
 import { tagIcon, centerIcon} from '@core/inputs';
 
 import { MapService } from '@services/map.service';
-import { Router } from '@angular/router';
+import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
 
@@ -37,6 +38,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private router: Router,
+    private location: Location,
     private controlerService: ControlerService,
   ) {
 
@@ -56,8 +58,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
 
-    this.routerSubscription = this.router.events.subscribe(_ => {
-      const urlSplit: string[] =  router.url.split('/')
+    this.routerSubscription = this.router.events.subscribe((_: any) => {
+      const urlSplit: string[] =  this.location.path().split('/')
       this.currentMapTool = urlSplit[urlSplit.length - 1];
     });
 
