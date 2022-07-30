@@ -59,7 +59,7 @@ const appRoutes: Routes = [
       scrollPositionRestoration: 'enabled',
       anchorScrolling: 'enabled',
       scrollOffset: [0, 64], // [x, y]
-      // useHash: true, // in order to prevent error 40 page on reload,
+      useHash: true, // in order to prevent error 40 page on reload,
       // preloadingStrategy: CustomPreloadingStrategy
     })
   ],

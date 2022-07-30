@@ -60,7 +60,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.routerSubscription = this.router.events.subscribe((_: any) => {
       const urlSplit: string[] =  this.location.path().split('/')
-      this.currentMapTool = urlSplit[urlSplit.length - 1];
+      this.currentMapTool = urlSplit[urlSplit.length - 1].split('#')[0];
     });
 
   }
