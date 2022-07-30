@@ -1,16 +1,14 @@
 <div class="d-flex flex-column flex-xl-row justify-content-around align-items-center">
 
-      <app-theme-legend
-      ></app-theme-legend>
+  <app-theme-legend
+  ></app-theme-legend>
 
-      <app-time-legend
-        [currentActivityIdSelected]="fragment"
-        [map]="map"
-      ></app-time-legend>
+  <app-time-legend
+    [currentActivityIdSelected]="fragment"
+    [map]="map"
+  ></app-time-legend>
 
-  </div>
-
-
+</div>
 
 
 <ng-container *ngTemplateOutlet="activitiesPopups; context:{}"></ng-container>

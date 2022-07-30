@@ -1,4 +1,4 @@
-<div class="d-flex flex-column flex-lg-row mt-auto justify-content-center" id="theme-legend">
+<div class="d-flex flex-column flex-sm-row mt-auto justify-content-center" id="theme-legend">
 
   <div class="d-flex flex-column justify-content-center align-items-center">
     <h6>Barre Temporelle</h6>
@@ -15,7 +15,7 @@
         <span class="fw-bold" id="slider-value">{{ currentDate | date:'dd MMMM y HH:mm' }}</span>
       </div>
 
-      <div class="d-flex flex-row flex-lg-column justify-content-center align-items-center mt-auto">
+      <div class="d-flex flex-column justify-content-center align-items-center mt-auto">
 
         <div class="d-flex flex-row align-items-center">
           <a id="start-button" class="btn btn-dark btn-sm" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
@@ -24,14 +24,18 @@
         </div>
 
 
-        <div class="row justify-content-center mt-2" *ngIf="timeLineSpeedSliderEnabled">
+        <div class="d-flex flex-column justify-content-center mt-2" *ngIf="timeLineSpeedSliderEnabled">
           <span class="fw-bold">Vitesse</span>
 
-          <div class="col-1">-</div>
-          <div class="col-8 px-0">
-            <input id="speed-slider" class="form-range" type="range" [min]="minStepValue" [max]="maxStepValue" [step]="minStepValue" [value]="stepValue" (change)="updateStepValue($event)"/>
+          <div class="d-flex flex-row align-self-center">
+
+            <div class="fw-bold">-</div>
+            <div class="px-1">
+              <input id="speed-slider" class="form-range" type="range" [min]="minStepValue" [max]="maxStepValue" [step]="minStepValue" [value]="stepValue" (change)="updateStepValue($event)"/>
+            </div>
+            <div class="fw-bold">+</div>
           </div>
-          <div class="col-1">+</div>
+
         </div>
       </div>
 
