@@ -65,12 +65,11 @@ export class GeoinfoComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-
   setMapEpsg(): void {
     this.currentEpsg = this.map.getView().getProjection().getCode();
   }
 
-    setProjection(epsg: string): void {
+  setProjection(epsg: string): void {
     this.currentEpsg = epsg;
 
     this.mapService.setProjectionOnMap(epsg)
