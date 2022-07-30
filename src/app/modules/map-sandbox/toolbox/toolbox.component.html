@@ -5,7 +5,7 @@
     <app-geoinfo
       id="geoTools"
       class="d-flex flex-column overflow-auto"
-      *ngIf="currentMenuDisplayed == 'geoTools'"
+      [ngClass]="currentMenuDisplayed == 'geoTools' ? 'd-block' : 'd-none'"
       [map]="map"
       [currentEpsg]="currentEpsg"
     >
@@ -14,7 +14,7 @@
     <app-creator
       id="createTools"
       class="d-flex flex-column overflow-auto"
-      *ngIf="currentMenuDisplayed == 'createTools'"
+      [ngClass]="currentMenuDisplayed == 'createTools' ? 'd-block' : 'd-none'"
       [map]="map"
       [currentEpsg]="currentEpsg"
     >
