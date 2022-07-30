@@ -1,6 +1,6 @@
 
 
-  <div class="d-flex flex-column flex-xxl-row py-2 bg-dark bg-gradient rounded-top">
+  <div class="d-flex flex-column flex-xxl-row py-2 bg-dark bg-gradient rounded-top shadow">
 
     <div class="d-flex flex-column flex-md-row flex-grow-1 justify-content-evenly align-items-center">
 
@@ -21,7 +21,7 @@
 
       <div id="activities-buttons" class="card-box d-flex flex-sm-row flex-column justify-content-around align-items-stretch">
         <ng-container *ngFor="let type of activityTypesMetadata">
-          <div class="activity-button nav-link fw-bold border text-center m-2 align-items-center rounded-3" [class.active]="tabView == type.id" (click)="enableActivity(type.id)">
+          <div class="activity-button nav-link fw-bold text-center m-2 align-items-center rounded-3" [class.active]="tabView == type.id" (click)="enableActivity(type.id)">
             {{type.title}}
             <span [ngClass]="type.id !== 'volunteer' ? 'text-black' : 'text-white'" [class]="'badge bg-color-' + type.id">{{ type.count }}</span>
           </div>
