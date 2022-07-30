@@ -276,9 +276,13 @@ export class layerHandler {
     return feature
   }
 
-  addFeatureFromGeomFeatureWithoutProperties(feature: any): void {
-    let featureWithProperties = this.addProperties(feature)
-    this.sourceFeatures.addFeature(featureWithProperties)
+  addFeaturesFromGeomFeatureWithoutProperties(features: any[]): void {
+    if (features.length > 0) {
+      features.forEach((feature: any) => {
+        let featureWithProperties = this.addProperties(feature)
+        this.sourceFeatures.addFeature(featureWithProperties)
+      })
+    }
 
   }
 

@@ -230,11 +230,19 @@
       <div class="modal-header">
         <h5 class="modal-title">Saisir un WKT</h5>
       </div>
-      <div class="modal-body">
-        <input #wktValue type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+      <div class="modal-body" (changes)="addWkt()">
+
+        <textarea [(ngModel)]="wktValues" class="form-control"></textarea>
+
+        EPSG du WKT
+        <select [(ngModel)]="wktEspgInput" class="form-select form-select-sm">
+          <option [value]="epsg" *ngFor="let epsg of epsgAvailable">{{epsg}}</option>
+        </select>
+
       </div>
       <div class="modal-footer">
-        <button (click)="addWkt()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Valider</button>
+        <button [ngClass]="wktEspgInput !== null && wktValues !== null ? '' : 'pe-none' " (click)="addWkt()" type="button" class="btn btn-secondary">Ajouter</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
       </div>
     </div>
   </div>

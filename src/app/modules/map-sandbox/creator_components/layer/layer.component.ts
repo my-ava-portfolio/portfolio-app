@@ -13,12 +13,15 @@ import WKT from 'ol/format/WKT';
 export class LayerComponent implements OnInit {
   @Input() layer!: layerHandler;
   @Input() currentLayerIdSelected!: string;
+  @Input() currentEpsg!: string;
+
   @Output() layerSelectedId = new EventEmitter<string>();
   @Output() layerMoveUp = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerMoveDown = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
 
-  @ViewChild('wktValue') wktValue!: ElementRef;
-  @ViewChild('wktEpsgInput') wktEspgInput!: ElementRef;
+  // wkt import
+  wktValues: string | null = null;
+  wktEspgInput: string | null = null;
 
   groupIcon = faLayerGroup;
   helpIcon = faCircleQuestion;
@@ -40,6 +43,9 @@ export class LayerComponent implements OnInit {
   isEdited: boolean = false;
   isShown: boolean = false;
   isHole: boolean = false;
+
+  //TODO refactor
+  epsgAvailable = ["EPSG:4326", "EPSG:3857"];
 
   layerSelected: boolean = false;
   featureIdSelected!: string;
@@ -288,13 +294,6 @@ export class LayerComponent implements OnInit {
         'stroke_width': feature.get('stroke_width'),
         'wkt': getWkt(geomFeature)
       })
-
-      let toastDiv = document.getElementsByClassName('toastFeature');
-      if (toastDiv !== null) {
-
-        toastDiv[0].classList.add("faded");
-
-      }
     }
   }
 
@@ -352,18 +351,57 @@ export class LayerComponent implements OnInit {
   }
 
   addWkt(): void {
-    //TODO support multipleWKT
-    const wktString: string = this.wktValue.nativeElement.value;
     const wktFormat = new WKT();
-    // POLYGON((10.689 -25.092, 34.595 -20.170, 38.814 -35.639, 13.502 -39.155, 10.689 -25.092))
-    //TODO add espg support
-    const feature = wktFormat.readFeature(wktString, {
-      dataProjection: 'EPSG:4326',
-      featureProjection: 'EPSG:3857',
-    });
-    //TODO check geom type and alert user
 
-    this.layer.addFeatureFromGeomFeatureWithoutProperties(feature)
+    let featureParams = {}
+    if (this.wktEspgInput !== this.currentEpsg) {
+      featureParams = {
+        dataProjection: this.wktEspgInput,
+        featureProjection: this.currentEpsg
+      }
+    }
+
+    let featuresToAdd: any[] = [];
+
+    if (this.wktValues !== null) {
+
+      const wktString: string[] = this.wktValues.split('\n');
+
+      wktString.forEach((wktValue: string) => {
+        // POLYGON((10.689 -25.092, 34.595 -20.170, 38.814 -35.639, 13.502 -39.155, 10.689 -25.092))
+        let feature!: any;
+        try {
+
+          feature = wktFormat.readFeature(wktValue, featureParams);
+        } catch (error: any) { // TODO catche the expected exception
+          alert(error.message)
+        }
+
+        if (feature !== undefined) {
+          const featureGeomType = feature.getGeometry();
+
+          if (featureGeomType !== undefined) {
+            if (featureGeomType.getType() !== this.layer.geomType) {
+              alert('Only ' + this.layer.geomType + " are supported on your selected layer")
+              return;
+            } else {
+              featuresToAdd.push(feature)
+            }
+          }
+        }
+
+      })
+
+      this.layer.addFeaturesFromGeomFeatureWithoutProperties(featuresToAdd)
+      this.clearWktDialog()
+
+    }
+
+  }
+
+  clearWktDialog(): void {
+    this.wktValues = null;
+    this.wktEspgInput = null;
   }
 
 }
