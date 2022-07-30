@@ -63,6 +63,7 @@ export class LayerComponent implements OnInit {
         this.resetFeaturesPopups()
         features.forEach((feature: Feature) => {
           this.buildFeaturesPopups(feature, false)
+          this.moveToastsFeaturesToBody()
         })
       }
     )
@@ -345,6 +346,19 @@ export class LayerComponent implements OnInit {
       let bodyDiv = document.body;
       if (bodyDiv !== null) {
         bodyDiv.appendChild(modalLayerDiv)
+
+      }
+    }
+  }
+
+  moveToastsFeaturesToBody(): void {
+    // TODO create a global function
+    let toastFeatureDiv = document.getElementById('featureToasts');
+    if (toastFeatureDiv !== null) {
+
+      let bodyDiv = document.body;
+      if (bodyDiv !== null) {
+        bodyDiv.appendChild(toastFeatureDiv)
 
       }
     }
