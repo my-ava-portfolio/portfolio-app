@@ -26,7 +26,6 @@
 
 
 #mapTools.displayed{
-  //height: calc(100vh / 1.2);  // 56px is about the control bar height...
   opacity: 1;
   width: 18vw;
   transition: all 0.3s;
@@ -48,10 +47,13 @@
 
 @media (max-width: 960px){
 
-  #mapTools {
-    width: 75vw;
+  #mapTools.hidden {
+    width: 3vw;
   }
 
+  #mapTools.displayed {
+    width: 75vw;
+  }
 
 }
 
