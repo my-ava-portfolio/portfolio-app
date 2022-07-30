@@ -86,9 +86,9 @@
 </div>
 
 <div class="featuresList d-flex flex-row small mb-1" *ngIf="layer.features().length > 0">
-  <ul class="w-100 list-group list-group-flush mx-3 border rounded-bottom collapse show" [id]="'featuresLayer-' + layer.id">
+  <ul class="w-100 list-group list-group-flush mx-3 border rounded collapse show" [id]="'featuresLayer-' + layer.id">
 
-    <li class="feature list-group-item py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == 'none' ? 'bg-secondary text-black bg-opacity-25' : 'bg-white text-black'" (click)="unSelectFeature()">
+    <li class="feature py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == 'none' ? 'fw-bold bg-secondary bg-opacity-25' : ''" (click)="unSelectFeature()">
       <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill m-1">
 
         <div class="">
