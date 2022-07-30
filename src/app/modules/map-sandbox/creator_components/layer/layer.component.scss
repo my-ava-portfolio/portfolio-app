@@ -2,7 +2,17 @@
   cursor: pointer;
 }
 
-.layer:hover, .feature:hover {
+
+.layer:hover {
+
+  .layer-name{
+    font-weight: bold;
+  }
+
+}
+
+
+.feature:hover {
   font-weight: bold;
 }
 
@@ -29,3 +39,4 @@
   height: 25px;
   cursor: pointer;
 }
+
