@@ -1,31 +1,38 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ColorPickerModule } from 'ngx-color-picker';
 
 import { MapSandboxRoutingModule } from '@modules/map-sandbox/map-sandbox-routing.module';
 
-import { MapViewComponent } from '@modules/map-sandbox/map-view/map-view.component';
-import { LayerComponent } from './layer/layer.component';
-import { FeatureComponent } from './feature/feature.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { ToolboxComponent } from './toolbox/toolbox.component';
 
+import { GeoinfoComponent } from '@modules/map-sandbox/geoinfo/geoinfo.component';
+
+import { CreatorComponent } from '@modules/map-sandbox/creator/creator.component';
+import { LayerComponent } from '@modules/map-sandbox/creator_components/layer/layer.component';
+import { FeatureComponent } from '@modules/map-sandbox/creator_components/feature/feature.component';
 
 
 @NgModule({
   declarations: [
-    MapViewComponent,
+    ToolboxComponent,
     LayerComponent,
-    FeatureComponent
+    FeatureComponent,
+    GeoinfoComponent,
+    CreatorComponent
   ],
   imports: [
     CommonModule,
     MapSandboxRoutingModule,
     FontAwesomeModule,
     ColorPickerModule,
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
 })
 export class MapSandboxModule { }

@@ -1,0 +1,39 @@
+<div class="d-flex flex-row align-items-center justify-content-center bg-info text-white p-2 px-3">
+  <span class="fw-bold">Informations</span>
+</div>
+
+<div id="infosContainer" class="d-flex flex-column mx-3">
+  <div class="d-flex flex-row my-1 justify-content-evenly">
+
+    <div class="d-flex flex-column">
+
+      <div id="epsgList" class="btn-group-vertical my-2 align-self-center bg-white rounded-3 border">
+        <ng-container *ngFor="let epsg of epsgAvailable; let idx = index">
+          <input type="radio" class="border btn-check mx-1" name="btnRadio" [id]="'btnradio-selector-' + idx" [checked]="currentEpsg === epsg" autocomplete="off">
+          <label class="pointer"  [for]="'btnradio-selector-' + idx" (click)="setProjection(epsg)">
+            <div class="dropdown-item small d-flex flex-row" [ngClass]="currentEpsg === epsg ? 'bg-info text-white ' :  ''">
+              <span>{{ epsg }}</span>
+            </div>
+          </label>
+        </ng-container>
+      </div>
+
+    </div>
+
+    <div class="d-flex flex-column align-items-center justify-content-center small mx-2">
+
+      <div class="d-flex flex-column align-items-center justify-content-center small">
+        <span class="fw-bold m-2">Précision</span>
+        <input class="small" id="precision" type="number" min="0" max="12" value="4" (change)="updatePrecision($event)"/>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="d-flex flex-column align-items-center align-self-center justify-content-center small mb-3">
+    <span class="fw-bold">Coordonnées</span>
+    <span id="mouseCoordinates"></span>
+  </div>
+
+</div>

@@ -253,15 +253,19 @@ export class layerHandler {
       return
     }
 
+    this.addProperties(e.feature)
+  }
+
+  addProperties(feature: any): any {
     ++this.counter;
     const uuid = uuidv4()
-    e.feature.setId(uuid)
-    e.feature.setProperties({
-      'id': e.feature.getId(),
+    feature.setId(uuid)
+    feature.setProperties({
+      'id': feature.getId(),
       'layer_id': this.id,
       'no': this.counter,
       'name': 'feature ' + this.counter,
-      'geom_type': e.feature.getGeometry()?.getType(),
+      'geom_type': feature.getGeometry()?.getType(),
       "status": "added",
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString(),
@@ -269,6 +273,16 @@ export class layerHandler {
       'stroke_width': this.strokeWidth,
       'stroke_color':  this.strokeColor
     }, true)
+    return feature
+  }
+
+  addFeaturesFromGeomFeatureWithoutProperties(features: any[]): void {
+    if (features.length > 0) {
+      features.forEach((feature: any) => {
+        let featureWithProperties = this.addProperties(feature)
+        this.sourceFeatures.addFeature(featureWithProperties)
+      })
+    }
 
   }
 

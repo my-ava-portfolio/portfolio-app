@@ -1,4 +1,4 @@
-import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer } from './../shared/core';
+import { activitiesStyle, activityLayerName, activitySelectedStyle, educationColor, getFeatureFromLayer } from './../shared/core';
 import { Component, OnInit, ViewEncapsulation, OnDestroy, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { DataService } from '@modules/map-activities/shared/services/data.servic
 import { MapService } from '@services/map.service';
 
 import * as d3 from 'd3';
-import { legendActivitiesId, sliderBarId } from '@modules/map-activities/shared/core';
+import { legendActivitiesId, sliderBarId, jobColor, volunteerColor } from '@modules/map-activities/shared/core';
 
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
@@ -384,6 +384,16 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
           }
         }
         return 'activityPoint ' + d.properties.type;
+      })
+      .style('fill', (d: any) => {
+        if (d.properties.type === 'job') {
+          return jobColor;
+        } else if (d.properties.type === 'education') {
+          return educationColor;
+        } else if (d.properties.type === 'volunteer') {
+          return volunteerColor;
+        }
+        return jobColor;
       })
       .attr('r', this.sliderNodesSize)
       .attr('cursor', 'pointer')

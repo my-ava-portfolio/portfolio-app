@@ -2,12 +2,18 @@
   cursor: pointer;
 }
 
-// .layer:hover, .feature:hover {
-//   font-weight: bold;
-// }
 
-.disabled button {
-  color: grey!important
+.layer:hover {
+
+  .layer-name{
+    font-weight: bold;
+  }
+
+}
+
+
+.feature:hover {
+  font-weight: bold;
 }
 
 .toast {
@@ -22,3 +28,15 @@
 	-webkit-transition: opacity 0.5s!important;
 	transition: opacity 0.5s!important;
 }
+
+.pointer {
+  cursor: pointer;
+}
+
+
+.colorPicker {
+  width: 10px;
+  height: 25px;
+  cursor: pointer;
+}
+

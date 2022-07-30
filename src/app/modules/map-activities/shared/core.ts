@@ -12,8 +12,8 @@ export const legendActivitiesId = 'legendActivity';
 export const sliderBarId = 'slider-bar';
 export const travelNodespeed = 100;
 
-
-export const jobColor = 'rgba(225, 0, 116, 0.6)';
+// TODO refactor these color values on app.component...
+export const jobColor = 'rgba(225, 0, 1, 0.6)';
 export const educationColor = 'rgba(0, 144, 29, 0.6)';
 export const volunteerColor = 'rgba(98, 0, 255, 0.6)';
 export const strokeColor = 'white';

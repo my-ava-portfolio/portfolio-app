@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapViewComponent } from './map-view.component';
+import { GeoinfoComponent } from './geoinfo.component';
 
-describe('MapViewComponent', () => {
-  let component: MapViewComponent;
-  let fixture: ComponentFixture<MapViewComponent>;
+describe('GeoinfoComponent', () => {
+  let component: GeoinfoComponent;
+  let fixture: ComponentFixture<GeoinfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MapViewComponent ]
+      declarations: [ GeoinfoComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MapViewComponent);
+    fixture = TestBed.createComponent(GeoinfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

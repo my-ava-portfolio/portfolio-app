@@ -1,0 +1,58 @@
+<div id="sandbox" class="d-flex flex-row position-fixed">
+
+  <div id="mapTools" class="d-flex flex-column bg-light shadow-map-tools" [ngClass]="!isLegendDisplayed ? 'hidden' : 'displayed'">
+
+    <app-geoinfo
+      id="geoTools"
+      class="d-flex flex-column overflow-auto"
+      [ngClass]="currentMenuDisplayed == 'geoTools' ? 'd-block' : 'd-none'"
+      [map]="map"
+      [currentEpsg]="currentEpsg"
+    >
+    </app-geoinfo>
+
+    <app-creator
+      id="createTools"
+      class="d-flex flex-column overflow-auto"
+      [ngClass]="currentMenuDisplayed == 'createTools' ? 'd-block' : 'd-none'"
+      [map]="map"
+      [currentEpsg]="currentEpsg"
+    >
+    </app-creator>
+
+  </div>
+
+  <div id="legendLabels" class="d-flex flex-column">
+
+    <span
+      class="tool btn btn-warning text-black my-3 shadow rounded-end"
+      [ngClass]="isLegendDisplayed ? 'selected' : ''"
+      (click)="showHideLegend()">
+      <fa-icon class="" [icon]="isLegendDisplayed ? leftSideIcon : rightSideIcon"></fa-icon>
+    </span>
+
+    <span
+      class="tool btn btn-info text-white mb-1 shadow rounded-end"
+      [ngClass]="currentMenuDisplayed === 'geoTools' ? 'selected' : ''"
+      (click)="currentMenuDisplayed = 'geoTools'"
+      >
+      <fa-icon class="" [icon]="geoIcon"></fa-icon>
+    </span>
+
+    <span
+      class="tool btn btn-dark text-white mb-1 shadow rounded-end" type="button"
+      [ngClass]="currentMenuDisplayed === 'createTools' ? 'selected' : ''"
+      (click)="currentMenuDisplayed = 'createTools'"
+      >
+      <fa-icon class="" [icon]="layersIcon"></fa-icon>
+    </span>
+
+  </div>
+</div>
+
+
+
+
+
+
+

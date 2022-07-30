@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MapViewComponent } from '@modules/map-sandbox/map-view/map-view.component';
+import { ToolboxComponent } from './toolbox/toolbox.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MapViewComponent,
+    component: ToolboxComponent,
     data: {
       title: 'Bac à sable', page: 'map-sandbox'
     },
