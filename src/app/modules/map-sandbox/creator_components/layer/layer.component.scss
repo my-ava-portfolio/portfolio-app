@@ -2,12 +2,8 @@
   cursor: pointer;
 }
 
-// .layer:hover, .feature:hover {
-//   font-weight: bold;
-// }
-
-.disabled button {
-  color: grey!important
+.layer:hover, .feature:hover {
+  font-weight: bold;
 }
 
 .toast {
@@ -27,3 +23,9 @@
   cursor: pointer;
 }
 
+
+.colorPicker {
+  width: 10px;
+  height: 25px;
+  cursor: pointer;
+}
