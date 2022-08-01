@@ -6,33 +6,33 @@
   <div #svgGraphChart class="graph-content w-100"></div>
 
 
-    <div class="d-flex flex-column w-100 justify-content-center text-center">
-      <div class="col-12">
-        <div class="graph-legend"></div>
-      </div>
+  <div class="d-flex flex-column w-100 justify-content-center text-center">
+    <div class="graph-legend"></div>
 
-      <div class="col-12">
-        <span class="legend_graph_title">Barre temporelle</span>
+    <div class="d-flex flex-column">
+      <span class="legend_graph_title">Barre temporelle</span>
 
-        <div class="row justify-content-center my-2">
+      <div class="d-flex flex-row w-50 justify-content-center mx-auto my-2">
 
-          <div class="col-3 text-end fw-bold">
-            {{ graphInputData.start_date }}
-          </div>
-
-          <div class="col-6">
-            <input class="w-100 my-1 border-0" type="range" steps="1" [min]="graphInputData.start_date" [max]="graphInputData.end_date" [value]="currentDate"  (change)="updateDate($event)"/>
-          </div>
-
-          <div class="col-3 text-start fw-bold">
-            {{ graphInputData.end_date }}
-          </div>
-
+        <div class="text-end fw-bold">
+          {{ graphInputData.start_date }}
         </div>
-        <button id="reset-graph mx-1" class="btn btn-primary" (click)="resetChart()"><span></span>Reset</button>
+
+        <input class="w-100 my-1 border-0" type="range" steps="1" [min]="graphInputData.start_date" [max]="graphInputData.end_date" [value]="currentDate"  (change)="updateDate($event)"/>
+
+        <div class="text-start fw-bold">
+          {{ graphInputData.end_date }}
+        </div>
 
       </div>
+
+      <div class="d-flex flex-row w-50 justify-content-center mx-auto my-1">
+
+        <button id="reset-graph mx-1" class="btn btn-s btn-primary" (click)="resetChart()"><span></span>Reset</button>
+      </div>
+
     </div>
+  </div>
 
 
 </div>

@@ -12,7 +12,6 @@ import { ActivityActionsService } from '@modules/experiences/services/activity-a
 
 import { LayoutComponent } from '@modules/experiences/layout/layout.component';
 import { NavigateComponent } from '@modules/experiences/navigate/navigate.component';
-import { ProfilBarComponent } from '@modules/experiences/profil-bar/profil-bar.component';
 import { ActivitiesComponent } from '@modules/experiences/activities/activities.component';
 import { SkillsComponent } from '@modules/experiences/skills/skills.component';
 
@@ -24,7 +23,6 @@ import { GeneralInfoComponent } from './general-info/general-info.component';
   declarations: [
     LayoutComponent,
     NavigateComponent,
-    ProfilBarComponent,
     ActivitiesComponent,
     SkillsComponent,
     ActivitiesComponent,
