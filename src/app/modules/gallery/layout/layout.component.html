@@ -1,31 +1,28 @@
-<div class="container-fluid">
-  <div class="row justify-content-center" *ngIf="isDataAvailable" [@fadeInOut]>
 
+<div class="container-fluid g-0" [@fadeInOut]>
+  <div class="d-flex flex-column" *ngIf="isDataAvailable">
 
-    <div class="col-11 mt-4 gallery-content">
+    <div class="d-flex flex-row m-4 gallery-content">
       <div class="grid-container">
           <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
       </div>
     </div>
 
-    <div class="col-12 legend-container">
-      <div class="row justfiy-content-center">
+    <div class="d-flex flex-column legend-container bg-white">
 
-        <div class="col-9">
+        <div class="mx-3">
           <button class="btn btn-dark me-2" type="button" checked autocomplete="off" (click)="showHideLegend()">
             <fa-icon class="" [icon]="tagsIcon"></fa-icon>
             Légende
           </button>
         </div>
 
-        <div class="col-12 bg-white legend-content text-center py-3" *ngIf="isLegendDisplayed">
+        <div class="legend-content text-center py-3" *ngIf="isLegendDisplayed">
           <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
         </div>
 
-        <div class="col-12 bg-white legend-content text-center py-3" *ngIf="!isLegendDisplayed">
+        <div class="legend-content text-center py-3" *ngIf="!isLegendDisplayed">
         </div>
-
-      </div>
 
     </div>
 
@@ -129,8 +126,8 @@
 
 
 <ng-template #galleryControler>
-    <div class="row">
-      <div class="col-lg-4">
+  <div class="d-flex flex-row justify-content-around align-items-center">
+    <div class="d-flex flex-column">
 
         <h6>Filtrage par catégories</h6>
 
@@ -163,7 +160,7 @@
         </div>
       </div>
 
-      <div class="col-lg-5">
+      <div class="d-flex flex-column">
 
         <h6>Filtrage par activités</h6>
 
@@ -181,7 +178,7 @@
 
       </div>
 
-      <div class="col-lg-3">
+      <div class="d-flex flex-column">
 
         <h6>Filtrage par types d'illustration</h6>
 
