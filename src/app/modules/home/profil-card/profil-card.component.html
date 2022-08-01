@@ -95,7 +95,7 @@
         <div id="gallerySlideshow" class="card-body bg-light text-black justify-content-center pt-0" *ngIf="galleryItems">
           <div id="" class="d-flex flex-column">
 
-            <h3 class="section-title mb-2">Réalisations</h3>
+            <h3 class="section-title mb-3">Réalisations</h3>
 
             <div id="slideCarouselMD" class="d-none d-md-block carousel carousel-fade" data-b-ride="carousel">
 
@@ -104,9 +104,9 @@
                   <ng-container *ngFor="let items of galleryItemsChunked; let idx = index">
 
                     <div class="carousel-item"  [ngClass]="idx === 0 ? 'active' : ''">
-                      <div class="row justify-content-center text-center align-items-center mb-4">
+                      <div class="d-flex flex-row justify-content-center text-center align-items-center mb-3">
 
-                        <div class="col-3" *ngFor="let item of items">
+                        <div class="w-25 m-2" *ngFor="let item of items">
                           <div class="gallery-item d-flex flex-column rounded-bottom">
 
                             <ng-container [ngSwitch]="item.source">
@@ -151,8 +151,6 @@
                   </ng-container>
 
 
-
-
                 <button class="carousel-control-prev" type="button" data-bs-target="#slideCarouselMD" data-bs-slide="prev">
                   <fa-icon class="bg-black p-2 rounded-3" [icon]="arrowLeftIcon" size="2x"></fa-icon>
                   <span class="visually-hidden">Previous</span>
@@ -174,9 +172,9 @@
                 <ng-container *ngFor="let item of galleryItems; let idx = index">
 
                   <div class="carousel-item"  [ngClass]="idx === 0 ? 'active' : ''">
-                    <div class="row justify-content-center text-center align-items-center mb-4">
+                    <div class="d-flex flex-row justify-content-center text-center align-items-center mb-3">
 
-                      <div class="col-8 gallery-item rounded-bottom">
+                      <div class="w-75 gallery-item rounded-bottom">
 
                         <ng-container [ngSwitch]="item.source">
 
