@@ -1,13 +1,13 @@
 $enable-responsive-font-sizes: true;
 $enable-shadows: true;
 
-// Variables
+// Variables  - should match whith src/app/core/colors.ts, without opacity
 $very-dark: #2a2e33;
 $less-dark: #495057;
-$personal-project-color: #ff7f00;
-$job-color: #e31a1c;
-$volunteer-color: #6a3d9a;
-$education-color: #168720;
+$personal-project-color: rgba(255, 127, 0);
+$job-color: rgba(225, 0, 1);
+$volunteer-color: rgba(98, 0, 255);
+$education-color: rgba(0, 144, 29);
 $disabled-color: #b7b6b6;
 $technics-color: #3b77a1;
 $themes-color: #76a02f;
@@ -125,6 +125,7 @@ body::-webkit-scrollbar {
   .bg-color-#{$name} {
     background-color: get_color($name);
     color: white;
+    opacity: 1!important;
   }
   .btn-outline-#{$name} {
     border-color: get_color($name);

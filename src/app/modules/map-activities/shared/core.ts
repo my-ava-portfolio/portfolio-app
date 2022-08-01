@@ -1,3 +1,4 @@
+import { educationColor, jobColor, volunteerColor } from "@core/colors";
 import Feature from "ol/Feature";
 import { Style } from "ol/style";
 import CircleStyle from "ol/style/Circle";
@@ -13,9 +14,6 @@ export const sliderBarId = 'slider-bar';
 export const travelNodespeed = 100;
 
 // TODO refactor these color values on app.component...
-export const jobColor = 'rgba(225, 0, 1, 0.6)';
-export const educationColor = 'rgba(0, 144, 29, 0.6)';
-export const volunteerColor = 'rgba(98, 0, 255, 0.6)';
 export const strokeColor = 'white';
 const strokeWidth = 2;
 const radiusMultiplier = 2;

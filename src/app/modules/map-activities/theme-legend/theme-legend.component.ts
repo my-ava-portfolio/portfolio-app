@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { educationColor, jobColor, legendActivitiesId, sliderBarId, strokeColor, travelMovingNodeColor, travelNodeStrokeColor, volunteerColor } from '@modules/map-activities/shared/core';
+import { legendActivitiesId, sliderBarId, strokeColor, travelMovingNodeColor, travelNodeStrokeColor } from '@modules/map-activities/shared/core';
+
+import { educationColor, jobColor, volunteerColor } from "@core/colors";
 
 
 @Component({

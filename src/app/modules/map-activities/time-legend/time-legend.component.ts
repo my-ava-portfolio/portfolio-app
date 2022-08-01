@@ -1,4 +1,4 @@
-import { activitiesStyle, activityLayerName, activitySelectedStyle, educationColor, getFeatureFromLayer } from './../shared/core';
+import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer } from './../shared/core';
 import { Component, OnInit, ViewEncapsulation, OnDestroy, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';
@@ -9,7 +9,8 @@ import { DataService } from '@modules/map-activities/shared/services/data.servic
 import { MapService } from '@services/map.service';
 
 import * as d3 from 'd3';
-import { legendActivitiesId, sliderBarId, jobColor, volunteerColor } from '@modules/map-activities/shared/core';
+import { legendActivitiesId, sliderBarId, } from '@modules/map-activities/shared/core';
+import { educationColor, jobColor, volunteerColor } from "@core/colors";
 
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
