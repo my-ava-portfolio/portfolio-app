@@ -1,5 +1,6 @@
-<div id="presentation-card" class="text-white m-3 shadow rounded-3" *ngIf="generalData">
-  <div id="profilSummary" class="card-header text-justify d-flex flex-column bg-dark bg-gradient">
+<div id="presentation-card" class="d-flex flex-column m-3 shadow rounded-3 text-white" *ngIf="generalData">
+  
+  <div id="profilSummary" class="d-flex flex-column text-justify d-flex flex-column bg-dark bg-gradient">
 
     <div class="d-flex flex-row justify-content-around align-items-center">
 
@@ -15,8 +16,8 @@
 
       </div>
 
-      <div id="" class="d-flex d-none d-lg-block">
-        <img class="rounded m-auto rounded-circle img-fluid img-thumbnail" [src]="imageProfile">
+      <div id="" class="d-flex d-none d-lg-block mt-3">
+        <img class="rounded rounded-circle img-fluid img-thumbnail" [src]="imageProfile">
       </div>
 
 
@@ -31,7 +32,6 @@
   </div>
 
   <div class="d-flex flex-column">
-
 
       <div id="welcome" class="d-flex flex-column">
 
@@ -119,20 +119,20 @@
 
                               <ng-container *ngSwitchCase="'url_img'">
                                 <a [routerLink]="[galleryPagesRoute]" [fragment]="item.identifier">
-                                  <img [src]="item.media | safeUrl" class="card-img-top pointer img-fluid shadow" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
+                                  <img [src]="item.media | safeUrl" class="card-img-top pointer img-fluid" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
                                 </a>
                               </ng-container>
 
                               <ng-container *ngSwitchCase="'url_app'">
                                 <a [routerLink]="[galleryPagesRoute]" [fragment]="item.identifier">
-                                  <img *ngIf="item.media_splash.includes('https')" [src]="item.media_splash" class="card-img-top pointer img-fluid shadow" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
-                                  <img *ngIf="!item.media_splash.includes('https')" [src]="assetsImgUrl + item.media_splash" class="card-img-top pointer img-fluid shadow" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
+                                  <img *ngIf="item.media_splash.includes('https')" [src]="item.media_splash" class="card-img-top pointer img-fluid" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
+                                  <img *ngIf="!item.media_splash.includes('https')" [src]="assetsImgUrl + item.media_splash" class="card-img-top pointer img-fluid" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
                                 </a>
                               </ng-container>
 
                               <ng-container *ngSwitchCase="'api_img'">
                                 <a class="" [routerLink]="[galleryPagesRoute]" [fragment]="item.identifier" role="button">
-                                  <img [src]="apiMapsUrl + item.media" class="card-img-top pointer img-fluid shadow" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
+                                  <img [src]="apiMapsUrl + item.media" class="card-img-top pointer img-fluid" [style]="'border: 0.1em solid ' + item.color + ';color: white'">
                                 </a>
                               </ng-container>
                             </ng-container>

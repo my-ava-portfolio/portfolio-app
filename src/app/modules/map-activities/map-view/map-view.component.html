@@ -17,7 +17,7 @@
 
 
 <ng-template #activitiesPopups>
-<div [id]="'popup-feature-' + feature.properties.id" class="col-md-4 item card shadow map-popup" *ngFor="let feature of geoFeaturesData">
+<div [id]="'popup-feature-' + feature.properties.id" class="item card shadow map-popup" *ngFor="let feature of geoFeaturesData">
   <div class="card-body">
     <div class="d-flex flex-row justify-content-around mb-1">
       <h5 class="fw-bolder small">{{feature.properties.title}}</h5>

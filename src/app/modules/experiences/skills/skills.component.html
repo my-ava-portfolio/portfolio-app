@@ -1,16 +1,12 @@
 
 
-    <section id="skills" class="col-12 mb-3">
+<section id="skills" class="d-flex flex-column mb-3">
 
-      <div class="d-flex flex-column">
+    <ng-container *ngTemplateOutlet="skillDetails; context:{title:'Thématique', category:'themes'}"></ng-container>
+    <ng-container *ngTemplateOutlet="skillDetails; context:{title:'Techniques', category:'technics'}"></ng-container>
+    <ng-container *ngTemplateOutlet="skillDetails; context:{title:'Outils', category:'tools'}"></ng-container>
 
-        <ng-container *ngTemplateOutlet="skillDetails; context:{title:'Thématique', category:'themes'}"></ng-container>
-        <ng-container *ngTemplateOutlet="skillDetails; context:{title:'Techniques', category:'technics'}"></ng-container>
-        <ng-container *ngTemplateOutlet="skillDetails; context:{title:'Outils', category:'tools'}"></ng-container>
-
-      </div>
-
-    </section>
+</section>
 
 
 <ng-template #skillDetails let-title='title' let-category='category'>
