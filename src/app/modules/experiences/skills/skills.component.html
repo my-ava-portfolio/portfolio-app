@@ -2,7 +2,7 @@
 
     <section id="skills" class="col-12 mb-3">
 
-      <div class="row">
+      <div class="d-flex flex-column">
 
         <ng-container *ngTemplateOutlet="skillDetails; context:{title:'Thématique', category:'themes'}"></ng-container>
         <ng-container *ngTemplateOutlet="skillDetails; context:{title:'Techniques', category:'technics'}"></ng-container>
@@ -15,17 +15,17 @@
 
 <ng-template #skillDetails let-title='title' let-category='category'>
 
-  <div class="col-12 mb-1" *ngIf="isActivitiesDataAvailable">
-    <div class="card-body mx-3 pb-0">
+  <div class="" *ngIf="isActivitiesDataAvailable">
+    <div class="card-body">
 
-      <h5 [class]="'border p-2 pointer text-center text-white mb-4 ' + 'bg-color-' + category" data-bs-toggle="collapse" [attr.data-bs-target]="'.' + category + '-multi-collapse'">
+      <h5 [class]="'border p-2 pointer text-center text-white ' + 'bg-color-' + category" data-bs-toggle="collapse" [attr.data-bs-target]="'.' + category + '-multi-collapse'">
         <fa-icon class="me-2" [icon]="skillIcon"></fa-icon>
         {{ title }}
       </h5>
 
-      <div class="justify-content-center grid-container">
+      <div class="mx-3 grid-container">
 
-        <div class="skills feat-skill mx-3" *ngFor="let skill of skillsData[category]; let idx = index; trackBy: trackByMethod">
+        <div class="skills feat-skill" *ngFor="let skill of skillsData[category]; let idx = index; trackBy: trackByMethod">
           <h6 [ngClass]="{ 'collapsed':!skill.active || !skill.enabled, 'pointer':skill.active }" class="" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + category + idx" [attr.aria-expanded]="{ 'true':skill.active, 'false':!skill.active}" [attr.aria-controls]="'#collapse' + category + idx"><a>
             <!-- <fa-icon class="me-2"  clickClass="rotation" [icon]="arrowDownIcon"></fa-icon> -->
             {{ skill.name }}</a></h6>
