@@ -17,13 +17,13 @@
             </div>
           </div>
 
-          <div class="d-flex flex-column justify-content-center align-items-center">
+          <div class="d-flex flex-column justify-content-center align-items-center  m-3">
 
             <div *ngIf="training.img_tool !== 'null'" class="justify-content-center m-2">
               <img class="img-fluid rounded mx-auto" [src]="training.img_tool"/>
             </div>
 
-            <div class="d-flex flex-column m-3">
+            <div class="d-flex flex-column">
               <span class="fw-bolder">{{ training.name }}</span>
               <span class="fw-bolder small">par {{ training.trainer }}</span>
             </div>
