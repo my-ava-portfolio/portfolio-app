@@ -1,11 +1,11 @@
-<div class="d-flex flex-column flex-sm-row justify-content-around">
+<div class="d-flex flex-column flex-lg-row justify-content-evenly">
 
-  <div class="d-flex flex-row justify-content-between my-auto">
+  <div class="d-flex flex-row justify-content-around mx-2">
 
     <div class="mx-2">
       <h6>GTFS</h6>
 
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
         <ng-container *ngFor="let area of availableArea">
           <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-' + area" [checked]="currentArea === area" autocomplete="off" (click)="updateData(area)">
           <label class="w-100 btn border-warning btn-outline-warning p-0" [for]="'btnradio-' + area">
@@ -45,13 +45,11 @@
 
 
   <div class="my-2">
-
-      <app-time-line
-        timeLineId="timeline-slider"
-        [timeLineSpeedSliderEnabled]="true"
-        [sliderDayStyleEnabled]="true"
-      ></app-time-line>
-
+    <app-time-line
+      timeLineId="timeline-slider"
+      [timeLineSpeedSliderEnabled]="true"
+      [sliderDayStyleEnabled]="true"
+    ></app-time-line>
   </div>
 
 </div>

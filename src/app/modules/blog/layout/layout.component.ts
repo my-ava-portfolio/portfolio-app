@@ -34,7 +34,7 @@ export class LayoutComponent implements OnDestroy {
 
   allTags!: string[];
   currentTag!: string;
-  seedTag = 100;
+  seedTag = 8;
 
   selectedblogTopics!: any[];
   allBlogTopics!: any[];

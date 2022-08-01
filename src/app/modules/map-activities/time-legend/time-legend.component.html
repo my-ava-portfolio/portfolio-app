@@ -1,4 +1,4 @@
-<div class="d-flex flex-column flex-lg-row mt-auto py-2 justify-content-center" id="theme-legend">
+<div class="d-flex flex-column flex-xxl-row mt-auto py-2 justify-content-center align-items-center" id="theme-legend">
 
   <div class="">
     <h6>Barre Temporelle</h6>
@@ -13,14 +13,12 @@
 
   <div class="text-center px-5">
     <div class="d-flex flex-column justify-content-center">
-      <div class="">
-        <h5 id="slider-value">{{ sliderDate | date:'MMMM y' }}</h5>
-      </div>
+      <h5 id="slider-value">{{ sliderDate | date:'MMMM y' }}</h5>
 
-      <div class="">
-        <a id="start-button" class="btn btn-dark btn-sm" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
+      <div class="d-flex flex-row">
+        <a id="start-button" class="btn btn-dark" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
         <a id="play-button" class="btn btn-dark mx-2" role="button" (click)="startTimeLine()">Play</a>
-        <a id="end-button" class="btn btn-dark btn-sm" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
+        <a id="end-button" class="btn btn-dark" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
       </div>
     </div>
 
