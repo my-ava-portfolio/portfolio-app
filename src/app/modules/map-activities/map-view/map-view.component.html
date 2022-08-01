@@ -19,23 +19,17 @@
 <ng-template #activitiesPopups>
 <div [id]="'popup-feature-' + feature.properties.id" class="col-md-4 item card shadow map-popup" *ngFor="let feature of geoFeaturesData">
   <div class="card-body">
-    <div class="row justify-content-around">
-
-      <div class="col-lg-12 mb-1">
-        <h5 class="fw-bolder small">{{feature.properties.title}}</h5>
-      </div>
+    <div class="d-flex flex-row justify-content-around mb-1">
+      <h5 class="fw-bolder small">{{feature.properties.title}}</h5>
     </div>
 
-    <div class="row justify-content-around">
+    <div class="d-flex flex-row justify-content-around">
 
-      <div *ngIf="feature.properties.img_activity !== 'null';then ImgActivity"></div>
-      <ng-template #ImgActivity>
-        <div class="col-4 my-auto justify-content-around text-center">
-          <img class="img-fluid rounded mx-auto d-block shadow mini-img-thumbnail" [src]="apiImgUrl + feature.properties.img_activity"/>
-        </div>
-      </ng-template>
+      <div *ngIf="feature.properties.img_activity !== 'null'" class="w-25 justify-content-around text-center">
+        <img class="img-fluid rounded mx-auto shadow mini-img-thumbnail" [src]="apiImgUrl + feature.properties.img_activity"/>
+      </div>
 
-      <div class="col-8 my-auto">
+      <div class="my-auto">
         <h6 class="fw-bolder small">{{feature.properties.name}}</h6>
           <span class="small">
             <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>

@@ -1,102 +1,96 @@
-<div class="row py-2  mt-auto justify-content-center" id="theme-legend">
+<div class="d-flex flex-row py-2 justify-content-around" id="theme-legend">
 
-  <div class="col-4 col-lg-4">
+  <div class="d-flex flex-column mx-2">
     <h6>Activités</h6>
-    <div class="col-lg-12">
-      <svg
-        [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement"
-        [id]="legendActivitiesId"
-      >
+    <svg
+      [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement"
+      [id]="legendActivitiesId"
+    >
 
-        <circle *ngFor="let feature of activityTypesLegendData.circleJobs"
-          [attr.r]="activityTypesLegendData.circleR"
-          [attr.cx]="activityTypesLegendData.circleCxPos"
-          [attr.cy]="feature.cy"
-          [class]="feature.class"
-          [attr.fill]="feature.color"
-          [attr.stroke]="feature.strokeColor">
-        </circle>
+      <circle *ngFor="let feature of activityTypesLegendData.circleJobs"
+        [attr.r]="activityTypesLegendData.circleR"
+        [attr.cx]="activityTypesLegendData.circleCxPos"
+        [attr.cy]="feature.cy"
+        [class]="feature.class"
+        [attr.fill]="feature.color"
+        [attr.stroke]="feature.strokeColor">
+      </circle>
 
-        <text *ngFor="let feature of activityTypesLegendData.circleJobs"
-          [attr.x]="activityTypesLegendData.textXPos"
-          [attr.y]="feature.cy"
-          [attr.font-size]="fontSize"
-          [class]="feature.class + ' label'">{{ feature.label }}
-        </text>
-      </svg>
-    </div>
+      <text *ngFor="let feature of activityTypesLegendData.circleJobs"
+        [attr.x]="activityTypesLegendData.textXPos"
+        [attr.y]="feature.cy"
+        [attr.font-size]="fontSize"
+        [class]="feature.class + ' label'">{{ feature.label }}
+      </text>
+    </svg>
   </div>
 
 
-  <div class="col-4 col-lg-4">
+  <div class="d-flex flex-column mx-2">
     <h6>Durée</h6>
-    <div class="col-lg-12">
-      <svg
-        [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement"
-      >
-        <circle *ngFor="let monthSize of activityMonthLegendData.circleMonthR"
-          [attr.r]="monthSize"
-          [attr.cx]="activityMonthLegendData.circleCxPos"
-          [attr.cy]="monthSize"
-          class="activity-months">
-        </circle>
+    <svg
+      [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement"
+    >
+      <circle *ngFor="let monthSize of activityMonthLegendData.circleMonthR"
+        [attr.r]="monthSize"
+        [attr.cx]="activityMonthLegendData.circleCxPos"
+        [attr.cy]="monthSize"
+        class="activity-months">
+      </circle>
 
-        <text *ngFor="let monthSize of activityMonthLegendData.circleMonthR"
-            [attr.x]="activityMonthLegendData.textXPos"
-            [attr.y]="monthSize * 2"
-            [attr.font-size]="fontSize"
-            class="label">{{ monthSize }} mois
-        </text>
+      <text *ngFor="let monthSize of activityMonthLegendData.circleMonthR"
+          [attr.x]="activityMonthLegendData.textXPos"
+          [attr.y]="monthSize * 2"
+          [attr.font-size]="fontSize"
+          class="label">{{ monthSize }} mois
+      </text>
 
-        <line *ngFor="let monthSize of activityMonthLegendData.circleMonthR"
-            x1="50"
-            x2="115"
-            [attr.y1]="monthSize * 2 + 2"
-            [attr.y2]="monthSize * 2 + 2"
-            class="line-dot">
-        </line>
-      </svg>
-    </div>
+      <line *ngFor="let monthSize of activityMonthLegendData.circleMonthR"
+          x1="50"
+          x2="115"
+          [attr.y1]="monthSize * 2 + 2"
+          [attr.y2]="monthSize * 2 + 2"
+          class="line-dot">
+      </line>
+    </svg>
   </div>
 
-  <div class="col-4 col-lg-4">
+  <div class="d-flex flex-column mx-2">
     <h6>Déplacements</h6>
-    <div class="col-lg-12">
-      <svg [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightMoveLegendElement">
+    <svg [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightMoveLegendElement">
 
-        <line *ngFor="let move_feature of movesLineLegendData.moves"
-          [attr.x1]="move_feature.x1"
-          [attr.x2]="move_feature.x2"
-          [attr.y1]="move_feature.y1"
-          [attr.y2]="move_feature.y2"
-          [class]="move_feature.classLine"
-          [attr.strokeColor]="move_feature.strokeColor">
-        </line>
+      <line *ngFor="let move_feature of movesLineLegendData.moves"
+        [attr.x1]="move_feature.x1"
+        [attr.x2]="move_feature.x2"
+        [attr.y1]="move_feature.y1"
+        [attr.y2]="move_feature.y2"
+        [class]="move_feature.classLine"
+        [attr.strokeColor]="move_feature.strokeColor">
+      </line>
 
-        <circle *ngFor="let move_feature of movesLineLegendData.moves"
-          [attr.r]="move_feature.r"
-          [attr.cx]="move_feature.y2 / 2"
-          [attr.cy]="move_feature.y2 / 2"
-          [class]="move_feature.classMarker"
-          [attr.color]="move_feature.circleColor"
-          [attr.strokeColor]="move_feature.strokeColor">
-        </circle>
-        
-        <text *ngFor="let move_feature of movesLineLegendData.moves"
-            [attr.x]="move_feature.y2 / 2"
-            [attr.y]="move_feature.y2 / 2"
-            [attr.font-size]="movesLineLegendData.markerFontSize">
-        </text>
+      <circle *ngFor="let move_feature of movesLineLegendData.moves"
+        [attr.r]="move_feature.r"
+        [attr.cx]="move_feature.y2 / 2"
+        [attr.cy]="move_feature.y2 / 2"
+        [class]="move_feature.classMarker"
+        [attr.color]="move_feature.circleColor"
+        [attr.strokeColor]="move_feature.strokeColor">
+      </circle>
+      
+      <text *ngFor="let move_feature of movesLineLegendData.moves"
+          [attr.x]="move_feature.y2 / 2"
+          [attr.y]="move_feature.y2 / 2"
+          [attr.font-size]="movesLineLegendData.markerFontSize">
+      </text>
 
-        <text *ngFor="let move_feature of movesLineLegendData.moves"
-            [attr.x]="movesLineLegendData.textXPos"
-            [attr.y]="move_feature.y2 / 2"
-            [attr.font-size]="fontSize"
-            class="label">{{ move_feature.label }}
-        </text>
+      <text *ngFor="let move_feature of movesLineLegendData.moves"
+          [attr.x]="movesLineLegendData.textXPos"
+          [attr.y]="move_feature.y2 / 2"
+          [attr.font-size]="fontSize"
+          class="label">{{ move_feature.label }}
+      </text>
 
-      </svg>
-    </div>
+    </svg>
   </div>
 
 </div>
