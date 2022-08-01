@@ -1,7 +1,8 @@
-<div class="container-fluid">
-  <div class="row justify-content-center" *ngIf="selectedblogTopics" [@fadeInOut]>
 
-    <div class="col-11 my-4 blog-content">
+<div class="container-fluid g-0" [@fadeInOut]>
+  <div class="d-flex flex-column" *ngIf="selectedblogTopics">
+
+    <div class="d-flex flex-row m-4 blog-content">
       <div class="grid-container">
 
         <div class="mb-4 feat-topic bg-white" *ngFor="let topic of selectedblogTopics">
@@ -43,38 +44,31 @@
 
           </div>
 
-
-
           <div class="card-footer">
           </div>
 
-
         </div>
 
       </div>
     </div>
 
-    <div class="col-12 legend-container">
-      <div class="row justfiy-content-center">
+    <div class="d-flex flex-column legend-container">
 
-        <div class="col-9">
-          <button class="btn btn-dark me-2" type="button" checked autocomplete="off" (click)="showHideLegend()">
-            <fa-icon class="" [icon]="tagsIcon"></fa-icon>
-            Légende
-          </button>
-        </div>
+      <div class="mx-3">
+        <button class="btn btn-dark me-2 shadow" type="button" checked autocomplete="off" (click)="showHideLegend()">
+          <fa-icon class="" [icon]="tagsIcon"></fa-icon>
+          Légende
+        </button>
+      </div>
 
-        <div class="col-12 bg-white legend-content text-center py-3" *ngIf="isLegendDisplayed">
-          <ng-container *ngTemplateOutlet="controler"></ng-container>
-        </div>
+      <div class="bg-white legend-content text-center py-3" *ngIf="isLegendDisplayed">
+        <ng-container *ngTemplateOutlet="controler"></ng-container>
+      </div>
 
-        <div class="col-12 bg-white legend-content text-center py-3" *ngIf="!isLegendDisplayed">
-        </div>
-
+      <div class="bg-white legend-content text-center py-3" *ngIf="!isLegendDisplayed">
       </div>
 
     </div>
-
 
   </div>
 </div>
@@ -82,13 +76,9 @@
 
 
 
-
-
-
-
 <ng-template #controler>
-  <div class="row">
-    <div class="col-lg-3">
+  <div class="d-flex flex-row mx-3">
+    <div class="d-flex flex-column">
 
       <h6>Filtrage par catégories</h6>
 
@@ -109,7 +99,7 @@
       </div>
     </div>
 
-    <div class="col-lg-9">
+    <div class="d-flex flex-column">
 
       <h6>Filtrage par tags</h6>
 
