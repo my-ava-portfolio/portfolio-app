@@ -1,31 +1,27 @@
 <div class="container-fluid h-100" *ngIf="isDataAvailable" [@fadeInOut]>
 
-  <div class="d-flex flex-column flex-grow-1 bg-white my-2 rounded-top">
+  <div class="d-flex flex-column bg-white my-2 rounded">
 
-    <div class="mb-2">
-      <app-general-info
-        [fragment]="fragment"
-        [profilData]="profilData"
-        [languagesData]="languagesData"
-      ></app-general-info>
-    </div>
+    <app-general-info
+      class="mb-2"
+      [fragment]="fragment"
+      [profilData]="profilData"
+      [languagesData]="languagesData"
+    ></app-general-info>
 
-    <div class="p-2">
-      <app-degrees-bar
-        [fragment]="fragment"
-        [degreesData]="degreesData"
-        [publicationsData]="publicationsData"
-      ></app-degrees-bar>
-    </div>
+    <app-degrees-bar
+      class="mb-2"
+      [fragment]="fragment"
+      [degreesData]="degreesData"
+      [publicationsData]="publicationsData"
+    ></app-degrees-bar>
 
-    <div class="p-2">
-      <app-trainings-bar
-        [fragment]="fragment"
-        [trainingsData]="trainingsData"
-      ></app-trainings-bar>
-    </div>
+    <app-trainings-bar
+      class="mb-2"
+      [fragment]="fragment"
+      [trainingsData]="trainingsData"
+    ></app-trainings-bar>
 
   </div>
-
 
 </div>

@@ -1,36 +1,27 @@
 
-<div class="d-flex flex-column flex-xxl-row align-content-center shadow">
+<div class="d-flex flex-column flex-xxl-row justify-content-center align-items-around bg-dark bg-gradient p-2 rounded-top shadow">
 
-  <div class="card-box d-flex flex-column flex-xxl-row bg-dark bg-gradient text-center rounded-top align-items-center justify-content-around">
+  <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center">
 
-    <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center my-2">
-
-      <div class="d-flex flex-column w-100">
-        <h3 class="fw-bolder text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
-        <div class="">
-          <h5 class="bg-white rounded-pill text-black profil-badge">{{ inputProfilData.job }}</h5>
-        </div>
-      </div>
-
-      <div class="d-flex flex-row justify-content-center">
-        <div class="text-white">5 d'études post-bac en Géographie avec une spécialisation en Système d'Information Géographique</div>
+    <div class="d-flex flex-column w-50">
+      <h3 class="fw-bolder text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
+      <div class="">
+        <h5 class="bg-white rounded-pill text-black profil-badge">{{ inputProfilData.job }}</h5>
       </div>
     </div>
 
-    <div id="languages" class="d-flex flex-sm-row flex-column justify-content-around mx-2 my-1">
-      <div class="card-box m-2 my-xxl-0 bg-warning rounded-3 text-center align-self-center" *ngFor="let language of inputLanguagesData">
-
-          <h6>{{language.language}}</h6>
-          <span class="small">{{language.level}}</span>
-          <div class="">
-            <fa-icon class="icon" [icon]="languageIcon"></fa-icon>
-          </div>
-
-      </div>
+    <div class="d-flex flex-row justify-content-center text-center">
+      <div class="text-white">5 d'études post-bac en Géographie avec une spécialisation en Système d'Information Géographique</div>
     </div>
-
   </div>
 
+  <div id="languages" class="d-flex flex-sm-row flex-column justify-content-around mx-2 my-1">
+    <div class="card-box m-2 my-xxl-0 bg-warning rounded-3 text-center align-self-center" *ngFor="let language of inputLanguagesData">
 
+        <div class="fw-4 fw-bold">{{language.language}}</div>
+        <div class="small">{{language.level}}</div>
+
+    </div>
+  </div>
 
 </div>
