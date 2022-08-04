@@ -3,18 +3,15 @@
 
   <div class="content d-flex flex-column flex-grow-1 bg-white my-2 rounded-top">
 
-    <div class="">
       <app-general-info
+        class="mb-2"
         [profilData]="profilData"
         [activityTypesMetadata]="activityTypesMetadata"
       ></app-general-info>
-    </div>
 
-    <div class="p-3">
       <app-navigate
         [graphInputData]="generalData"
       ></app-navigate>
-    </div>
 
     <div class="d-flex flex-column flex-xl-row">
 
