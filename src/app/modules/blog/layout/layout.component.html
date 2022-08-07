@@ -7,8 +7,8 @@
 
         <div class="mb-4 feat-topic bg-white" *ngFor="let topic of selectedblogTopics">
 
-          <div class="card-header bg-dark bg-gradient text-white">
-            <h4 class="fs-6">{{ topic.title }}</h4>
+          <div class="p-2 bg-dark bg-gradient text-white">
+            <span class="fs-6 fw-bold">{{ topic.title }}</span>
           </div>
 
           <div class="card-body">
@@ -18,7 +18,7 @@
             </div>
 
             <div class="d-flex flex-row justify-content-end">
-              <div class="fst-italic">Le {{ topic.date | date: 'dd MMMM y'}}</div>
+              <div class="fst-italic small">Le {{ topic.date | date: 'dd MMMM y'}}</div>
             </div>
 
             <div class="d-flex flex-column pb-2">
@@ -30,14 +30,14 @@
                 </ng-container>
               </div>
 
-              <div class="py-1">
+              <div class="">
                 <span class="fw-bold small me-2">Tag(s):</span>
                   <ng-container *ngFor="let tag of topic.tags">
                       <span class="badge rounded-pill mx-1" [style]="'background-color:' + this.getTagColor(tag, seedTag) + ';color: white'">{{tag}}</span>
                   </ng-container>
               </div>
 
-              <p class="card-text my-4">{{ topic.resume }}</p>
+              <p class="card-text my-2">{{ topic.resume }}</p>
             </div>
 
             <a [href]="topic.url" target="_blank" rel="noopener noreferrer" class="btn btn-warning mt-auto fw-bold">Accéder</a>
