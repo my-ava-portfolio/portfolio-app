@@ -11,7 +11,7 @@
     <div class="d-flex flex-column legend-container">
 
         <div class="mx-3">
-          <button class="btn btn-dark me-2" type="button" checked autocomplete="off" (click)="showHideLegend()">
+          <button class="btn btn-dark me-2 rounded-top" type="button" checked autocomplete="off" (click)="showHideLegend()">
             <fa-icon class="" [icon]="tagsIcon"></fa-icon>
             Légende
           </button>
@@ -35,7 +35,11 @@
   <div class="mb-4 feat-gallery" *ngFor="let media_feature of medias; let idx = index">
     <div class="card rounded shadow bg-light">
 
-      <div class="card-header">
+      <div class="p-2 bg-dark bg-gradient text-white">
+        <span class="fw-bold">{{ media_feature.title }}</span>
+      </div>
+
+      <div class="card-body px-3">
 
         <ng-container [ngSwitch]="media_feature.source">
 
@@ -76,18 +80,17 @@
 
         </ng-container>
 
-        <h6 class="card-title pt-3">{{ media_feature.title }}</h6>
-      </div>
+        <div class="my-2">
+          <span [class]="'badge rounded-pill mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
+          <a [routerLink]="[experiencesRoute]" [fragment]="media_feature.identifier"><span class="badge rounded-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
+          <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + media_feature.type">
+            <fa-icon class="me-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
+          </span>
+        </div>
 
-
-      <div class="card-body px-3 pt-1">
-        <span [class]="'badge rounded-pill mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
-        <a [routerLink]="[experiencesRoute]" [fragment]="media_feature.identifier"><span class="badge rounded-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
-        <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + media_feature.type">
-          <fa-icon class="me-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
-        </span>
         <p class="card-text mt-2 small">{{media_feature.description}}</p>
-        <ul class="mb-0">
+
+        <ul class="">
           <li class="card-text small" *ngIf="media_feature.data">
             <span>Données: </span>
             <span class="fst-italic">{{media_feature.data}}</span>
