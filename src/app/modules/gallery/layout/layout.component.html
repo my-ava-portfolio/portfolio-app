@@ -32,81 +32,79 @@
 
 
 <ng-template #imgProject let-medias=medias>
-  <div class="mb-4 feat-gallery" *ngFor="let media_feature of medias; let idx = index">
-    <div class="card rounded shadow bg-light">
+  <div class="mb-4 feat-gallery bg-light" *ngFor="let media_feature of medias; let idx = index">
 
-      <div class="p-2 bg-dark bg-gradient text-white">
-        <span class="fw-bold">{{ media_feature.title }}</span>
-      </div>
+    <div class="card-header p-2 bg-dark bg-gradient text-white">
+      <span class="fw-bold">{{ media_feature.title }}</span>
+    </div>
 
-      <div class="card-body px-3">
+    <div class="card-body px-3">
 
-        <ng-container [ngSwitch]="media_feature.source">
+      <ng-container [ngSwitch]="media_feature.source">
 
-          <ng-container *ngSwitchCase="'youtube'">
-            <div class="ratio ratio-16x9">
-              <iframe [src]="media_feature.media | safeUrl" class="" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
-            </div>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'url_img'">
-            <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
-              <img [src]="media_feature.media | safeUrl" class="card-img-top pointer">
-            </a>
-            <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'url_app'">
-            <ng-container *ngIf="!urlAppChecker(media_feature.media)">
-              <a [href]="media_feature.media | safeUrl" target="_blank" rel="noopener noreferrer">
-                <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="card-img-top pointer">
-                <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="card-img-top pointer">
-              </a>
-            </ng-container>
-            <ng-container *ngIf="urlAppChecker(media_feature.media)">
-              <a [routerLink]="'../' + media_feature.media">
-                <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="card-img-top pointer">
-                <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="card-img-top pointer">
-              </a>
-            </ng-container>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'api_img'">
-            <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
-              <img [src]="apiMapsUrl + media_feature.media" class="card-img-top pointer">
-            </a>
-            <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiMapsUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
-          </ng-container>
-
+        <ng-container *ngSwitchCase="'youtube'">
+          <div class="ratio ratio-16x9">
+            <iframe [src]="media_feature.media | safeUrl" class="" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
+          </div>
         </ng-container>
 
-        <div class="my-2">
-          <span [class]="'badge rounded-pill mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
-          <a [routerLink]="[experiencesRoute]" [fragment]="media_feature.identifier"><span class="badge rounded-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
-          <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + media_feature.type">
-            <fa-icon class="me-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
-          </span>
-        </div>
+        <ng-container *ngSwitchCase="'url_img'">
+          <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
+            <img [src]="media_feature.media | safeUrl" class="card-img-top pointer">
+          </a>
+          <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
+        </ng-container>
 
-        <p class="card-text mt-2 small">{{media_feature.description}}</p>
+        <ng-container *ngSwitchCase="'url_app'">
+          <ng-container *ngIf="!urlAppChecker(media_feature.media)">
+            <a [href]="media_feature.media | safeUrl" target="_blank" rel="noopener noreferrer">
+              <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="card-img-top pointer">
+              <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="card-img-top pointer">
+            </a>
+          </ng-container>
+          <ng-container *ngIf="urlAppChecker(media_feature.media)">
+            <a [routerLink]="'../' + media_feature.media">
+              <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="card-img-top pointer">
+              <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="card-img-top pointer">
+            </a>
+          </ng-container>
+        </ng-container>
 
-        <ul class="">
-          <li class="card-text small" *ngIf="media_feature.data">
-            <span>Données: </span>
-            <span class="fst-italic">{{media_feature.data}}</span>
-          </li>
-          <li class="card-text small" *ngIf="media_feature.data">
-            <span>Outils: </span>
-            <span class="fst-italic">{{media_feature.tools}}</span>
-          </li>
-        </ul>
+        <ng-container *ngSwitchCase="'api_img'">
+          <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
+            <img [src]="apiMapsUrl + media_feature.media" class="card-img-top pointer">
+          </a>
+          <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiMapsUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
+        </ng-container>
 
+      </ng-container>
+
+      <div class="my-2">
+        <span [class]="'badge rounded-pill mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
+        <a [routerLink]="[experiencesRoute]" [fragment]="media_feature.identifier"><span class="badge rounded-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
+        <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + media_feature.type">
+          <fa-icon class="me-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
+        </span>
       </div>
 
-      <div class="card-footer">
-      </div>
+      <p class="card-text mt-2 small">{{media_feature.description}}</p>
+
+      <ul class="">
+        <li class="card-text small" *ngIf="media_feature.data">
+          <span>Données: </span>
+          <span class="fst-italic">{{media_feature.data}}</span>
+        </li>
+        <li class="card-text small" *ngIf="media_feature.data">
+          <span>Outils: </span>
+          <span class="fst-italic">{{media_feature.tools}}</span>
+        </li>
+      </ul>
 
     </div>
+
+    <div class="card-footer">
+    </div>
+
   </div>
 </ng-template>
 
@@ -185,13 +183,16 @@
 
       <h6>Filtrage par types d'illustration</h6>
 
-      <div class="btn-group my-2 mb-1 flex-wrap">
-        <ng-container *ngFor="let type of mediaTypes">
-          <button (click)="getGalleryDataByType(type)" type="button" [title]="typeStyleMapping[type].title" [id]="type" class="btn btn-secondary btn-sm" [ngClass]="{'active fw-bolder': currentType === type}">
-            <fa-icon [icon]="typeStyleMapping[type].icon"></fa-icon>
-          </button>
-        </ng-container>
+      <div class="d-flex flex-row justify-content-center my-2 mb-1 flex-wrap">
+        <div class="btn-group">
+          <ng-container *ngFor="let type of mediaTypes">
+            <button (click)="getGalleryDataByType(type)" type="button" [title]="typeStyleMapping[type].title" [id]="type" class="btn btn-secondary btn-sm" [ngClass]="{'active fw-bolder': currentType === type}">
+              <fa-icon [icon]="typeStyleMapping[type].icon"></fa-icon>
+            </button>
+          </ng-container>
+        </div>
       </div>
+
     </div>
 
 

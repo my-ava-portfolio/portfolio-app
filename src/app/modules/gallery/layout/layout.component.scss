@@ -52,7 +52,7 @@ $methodo-color: cyan;
   background-color: #fff;
   border: 1px solid #dee2e6;
   border-radius: 0.25rem;
-  max-width: 100%;
+  //max-width: 100%;
   height: auto;
 }
 
@@ -124,9 +124,8 @@ $methodo-color: cyan;
 }
 
 .feat-gallery {
-  margin: 0;
-  display: grid;
-  grid-template-rows: 1fr auto;
-  // margin-bottom: 10px;
+ // display: grid;
+  //grid-template-rows: 1fr auto;
   break-inside: avoid;
+
 }
