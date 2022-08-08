@@ -1,37 +1,35 @@
 <div class="container-fluid g-0" [@fadeInOut]>
   <div class="d-flex flex-column">
 
-    <div class="d-flex flex-row m-4 maps-content">
-      <div class="grid-container">
+    <div class="m-4  grid-container">
 
-        <div class="mb-4 feat-map bg-white" *ngFor="let app of mapPagesMenus.sub_menus">
+      <div class="mb-4 feat-map bg-white" *ngFor="let app of mapPagesMenus.sub_menus">
 
-          <div class="card-header bg-dark bg-gradient text-white">
-            <h4 class="card-title">{{ app.title }}</h4>
+        <div class="card-header bg-dark bg-gradient text-white">
+          <h4 class="card-title">{{ app.title }}</h4>
+        </div>
+
+        <div class="card-body">
+
+          <div class="text-center mb-3" *ngIf="app.img">
+            <img class="img-fluid rounded mx-auto d-block shadow" [src]="app.img"/>
           </div>
 
-          <div class="card-body">
-
-            <div class="text-center mb-3" *ngIf="app.img">
-              <img class="img-fluid rounded mx-auto d-block shadow" [src]="app.img"/>
-            </div>
 
 
 
-
-            <p class="card-text">{{ app.details }}</p>
-            <a *ngIf="!app.route.includes('https')" [routerLink]="[app.route]" class="btn btn-warning mt-auto fw-bold">Accéder</a>
-            <a *ngIf="app.route.includes('https')" [href]="app.route" class="btn btn-warning mt-auto fw-bold" target="_blank" rel="noopener noreferrer">Accéder</a>
-
-          </div>
-
-          <div class="card-footer">
-          </div>
-
+          <p class="card-text">{{ app.details }}</p>
+          <a *ngIf="!app.route.includes('https')" [routerLink]="[app.route]" class="btn btn-warning mt-auto fw-bold">Accéder</a>
+          <a *ngIf="app.route.includes('https')" [href]="app.route" class="btn btn-warning mt-auto fw-bold" target="_blank" rel="noopener noreferrer">Accéder</a>
 
         </div>
 
+        <div class="card-footer">
+        </div>
+
+
       </div>
+
     </div>
 
   </div>
