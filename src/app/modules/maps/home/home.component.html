@@ -1,12 +1,12 @@
 <div class="container-fluid g-0" [@fadeInOut]>
   <div class="d-flex flex-column">
 
-    <div class="m-4  grid-container">
+    <div class="m-4 grid-container">
 
       <div class="mb-4 feat-map bg-white" *ngFor="let app of mapPagesMenus.sub_menus">
 
         <div class="card-header bg-dark bg-gradient text-white">
-          <h4 class="card-title">{{ app.title }}</h4>
+          <span class="fw-bold">{{ app.title }}</span>
         </div>
 
         <div class="card-body">
