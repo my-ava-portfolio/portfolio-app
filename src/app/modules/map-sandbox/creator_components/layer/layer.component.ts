@@ -201,6 +201,7 @@ export class LayerComponent implements OnInit {
 
     this.layerSelected = !this.layerSelected
     this.layerSelectedId.emit(this.layer.id)
+    // TODO send layer object to an other component dedicated to toolbar
   }
 
   updateLayerSelectionFromFeatureLayerId(layerIdToSelect: string): void {
