@@ -1,3 +1,4 @@
+import { layerHandler } from '@modules/map-sandbox/shared/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -31,7 +32,9 @@ export class ToolboxComponent implements OnInit, OnDestroy {
   defaultMapView!: View;
 
   isLegendDisplayed = true;
-  currentMenuDisplayed = 'geoTools'
+  currentMenuDisplayed = 'createTools'
+
+  currentLayerSelected: layerHandler | null = null;
 
   mapSubscription!: Subscription;
 
@@ -84,6 +87,10 @@ export class ToolboxComponent implements OnInit, OnDestroy {
 
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
+  }
+
+  getSelectedLayer(layer: layerHandler | null): void {
+    this.currentLayerSelected = layer;
   }
 
 
