@@ -16,6 +16,7 @@ import { GeoinfoComponent } from '@modules/map-sandbox/geoinfo/geoinfo.component
 import { CreatorComponent } from '@modules/map-sandbox/creator/creator.component';
 import { LayerComponent } from '@modules/map-sandbox/creator_components/layer/layer.component';
 import { FeatureComponent } from '@modules/map-sandbox/creator_components/feature/feature.component';
+import { EditBarComponent } from './edit-bar/edit-bar.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { FeatureComponent } from '@modules/map-sandbox/creator_components/featur
     LayerComponent,
     FeatureComponent,
     GeoinfoComponent,
-    CreatorComponent
+    CreatorComponent,
+    EditBarComponent
   ],
   imports: [
     CommonModule,
