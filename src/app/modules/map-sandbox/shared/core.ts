@@ -256,23 +256,39 @@ export class layerHandler {
     this.addProperties(e.feature)
   }
 
-  addProperties(feature: any): any {
+  addProperties(feature: any, copy=false): any {
     ++this.counter;
     const uuid = uuidv4()
     feature.setId(uuid)
+
+    let name!: string;
+    if (copy) {
+      name = feature.get("name") + " (copy)"
+    } else {
+      name = 'feature ' + this.counter
+    }
     feature.setProperties({
       'id': feature.getId(),
       'layer_id': this.id,
       'no': this.counter,
-      'name': 'feature ' + this.counter,
+      'name': name,
       'geom_type': feature.getGeometry()?.getType(),
       "status": "added",
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString(),
-      'fill_color': this.fillColor,
-      'stroke_width': this.strokeWidth,
-      'stroke_color':  this.strokeColor
+      // 'fill_color': this.fillColor,
+      // 'stroke_width': this.strokeWidth,
+      // 'stroke_color':  this.strokeColor
     }, true)
+    if (feature.get("fill_color") === undefined) {
+      feature.set("fill_color",  this.fillColor, true)
+    }
+    if (feature.get("stroke_width") === undefined) {
+      feature.set("stroke_width",  this.strokeWidth, true)
+    }
+    if (feature.get("stroke_color") === undefined) {
+      feature.set("stroke_color",  this.strokeColor, true)
+    }
     return feature
   }
 
@@ -283,7 +299,15 @@ export class layerHandler {
         this.sourceFeatures.addFeature(featureWithProperties)
       })
     }
-
+  }
+  addFeaturesAndUpdateIds(features: any[]): void {
+    if (features.length > 0) {
+      features.forEach((feature: any) => {
+        let featureCloned = feature.clone()
+        let featureWithProperties = this.addProperties(featureCloned, true)
+        this.sourceFeatures.addFeature(featureWithProperties)
+      })
+    }
   }
 
   onGeomChangeBuildHole(e: any): void {
@@ -308,7 +332,17 @@ export class layerHandler {
       this.sourceFeatures.removeFeature(featureFound);
     }
   }
+  duplicateFeature(featureId: string): void {
+    const featureFound = this.sourceFeatures.getFeatureById(featureId)
+    if (featureFound !== null) {
+      const newFeature = this.addProperties(featureFound.clone(), true)
+      this.sourceFeatures.addFeature(newFeature)
+      console.log(newFeature)
+    }
+  }
+
   getFeatureAttribute(featureId: string, attribute: string): void {
+    // TODO issue stay selected
     const featureFound = this.sourceFeatures.getFeatureById(featureId)
     if (featureFound !== null) {
       return featureFound.get(attribute)
@@ -406,6 +440,15 @@ export class layerHandler {
       exportFormatContainer.writeFeatures(this.features())
     ), null, 2);
   }
+
+  exportToWkt(): string {
+    let wktFeatures: string[] = []
+    this.features().forEach((feature: any) => {
+      wktFeatures.push(getWkt(feature.getGeometry()))
+    })
+    return wktFeatures.join('\n')
+  }
+
 }
 
 
