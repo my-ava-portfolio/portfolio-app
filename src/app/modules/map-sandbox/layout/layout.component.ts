@@ -13,11 +13,11 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import View from 'ol/View';
 
 @Component({
-  selector: 'app-toolbox',
-  templateUrl: './toolbox.component.html',
-  styleUrls: ['./toolbox.component.scss']
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss']
 })
-export class ToolboxComponent implements OnInit, OnDestroy {
+export class LayoutComponent implements OnInit, OnDestroy {
 
   currentEpsg!: string;
 
@@ -63,26 +63,17 @@ export class ToolboxComponent implements OnInit, OnDestroy {
 
   }
 
-
-
   ngOnDestroy(): void {
     this.map.setView(this.defaultMapView)
-
     this.mapSubscription.unsubscribe();
-
     this.mapService.changeMapInteractionStatus(false)
-
     this.mapService.resetMapView()
-
   }
-
-
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
-
   }
 
   showHideLegend(): void {
