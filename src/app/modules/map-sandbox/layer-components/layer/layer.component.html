@@ -81,7 +81,8 @@
           <app-feature
           [feature]="feature"
           [currentFeatureIdSelected]="featureIdSelected"
-          (layerIdFromFeature)="updateLayerSelectionFromFeatureLayerId($event)"
+          [currentLayer]="layer"
+          (layerIdFromFeature)="getLayerIdFromFeatureSelectedId($event)"
           (featureIdSelected)="selectFeatureById($event)"
           (removeFeatureEvent)="removeFeatureById($event)"
           (duplicateFeatureEvent)="duplicateFeatureById($event)"
@@ -95,80 +96,6 @@
 
 
 </div>
-
-
-
-
-
-
-
-
-<div
-  id="featureToasts"
-  class="position-fixed bottom-0 end-0 p-3 d-flex flex-row overflow-auto" style="z-index: 11"
-  [ngClass]="currentLayerIdSelected === layer.id ? 'd-block' : 'd-none'"
-  >
-  <ng-container *ngFor="let feature of featuresPopupsProperties">
-
-    <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header justify-content-between">
-
-        <strong>{{ feature.name }}</strong>
-        <em class="ms-2 me-auto me-auto">({{ feature.geom_type }})</em>
-        <em class="ms-auto">Couche: {{ layer.layerName }}</em>
-        <button type="button" class="btn-close" aria-label="Close" (click)="resetFeaturesPopups()"></button>
-
-      </div>
-
-      <div class="toast-body bg-white">
-
-        <div id="toastActions" class="d-flex flex-row justify-content-start align-items-center">
-          <span class="fw-bold">Actions :</span>
-
-          <span class="badge bg-dark rounded m-1 small" (click)="copyToClipboard(feature.wkt)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
-            WKT
-          </span>
-
-        </div>
-
-        <div class="d-flex flex-row justify-content-between">
-          <span>Créé à {{ feature.created_at | date: 'HH:mm:ss' }}</span>
-          <span>Modifié à {{ feature.updated_at | date: 'HH:mm:ss' }}</span>
-        </div>
-
-
-        <div class="d-flex flex-column my-3">
-          <h6 class="">Style</h6>
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Opacité :</span>
-            <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layer.getOpacity()" (change)="layer.setOpacity($event)"/>
-          </div>
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Couleur de fond :</span>
-            <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="feature.fill_color" [style.background]="feature.fill_color" (colorPickerClose)="updateFillColor(feature.id, $event)"/>
-          </div>
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Couleur du contour :</span>
-            <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="feature.stroke_color" [style.background]="feature.stroke_color" (colorPickerClose)="updateStrokeColor(feature.id, $event)"/>
-          </div>
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Epaisseur du contour :</span>
-            <input class="small strokeWidth" type="number" min="0" max="12" [value]="feature.stroke_width" (change)="updateStrokeWidth(feature.id, $event)"/>
-          </div>
-
-        </div>
-
-        <span class="">{{ feature.wkt }}</span>
-
-      </div>
-    </div>
-  </ng-container>
-
-</div>
-
 
 
 <div *ngIf="layer" [id]="'modalLayer-'+ layer.id" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

@@ -45,23 +45,9 @@ export class LayerComponent implements OnInit {
   layerSelected: boolean = false;
   featureIdSelected!: string;
 
-  featuresDisplayedObservable = new Subject<Feature[]>()
-  featuresDisplayedSubscription!: Subscription;
-  featuresPopupsProperties: any[] = []
-
   constructor(
     private elementRef: ElementRef
   ) {
-
-    this.featuresDisplayedSubscription = this.featuresDisplayedObservable.subscribe(
-      (features: Feature[]) => {
-        this.resetFeaturesPopups()
-        features.forEach((feature: Feature) => {
-          this.buildFeaturesPopups(feature, false)
-          this.moveToastsFeaturesToBody()
-        })
-      }
-    )
 
   }
 
@@ -100,13 +86,12 @@ export class LayerComponent implements OnInit {
     this.layer.sourceFeatures.on('changefeature', (event: any) => {
       // update step when change on feature occurs
       refreshFeatureStyle(event.feature)
-      this.featuresDisplayedObservable.next([event.feature])
+      // this.featuresDisplayedObservable.next([event.feature])
     })
 
   }
 
   ngOnDestroy(): void {
-    this.featuresDisplayedSubscription.unsubscribe();
 
     // remove the modal div
     let modalLayerDiv = document.getElementById('modalLayer-' + this.layer.id)
@@ -124,6 +109,7 @@ export class LayerComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes.currentLayerIdSelected.currentValue !== this.layer.id) {
+      this.unSelectFeature()  // unselect feature selected if an other layer is selected
     }
 
   }
@@ -149,7 +135,6 @@ export class LayerComponent implements OnInit {
   }
 
   selectLayer(): void {
-    this.resetFeaturesPopups()
     this.unSelectFeature()
 
     this.layerSelected = !this.layerSelected
@@ -157,7 +142,6 @@ export class LayerComponent implements OnInit {
   }
 
   duplicateLayer(): void {
-    this.resetFeaturesPopups()
     this.unSelectFeature()
     this.layerSelected = !this.layerSelected // TODO refactor ? on unSelectFeature() ?
 
@@ -165,7 +149,7 @@ export class LayerComponent implements OnInit {
     this.layerCloned.emit(layerCloned)
   }
 
-  updateLayerSelectionFromFeatureLayerId(layerIdToSelect: string): void {
+  getLayerIdFromFeatureSelectedId(layerIdToSelect: string): void {
     // during feature selection
     this.layerSelectedId.emit(layerIdToSelect)
   }
@@ -182,7 +166,7 @@ export class LayerComponent implements OnInit {
     let feature = this.getFeature(this.featureIdSelected)
     this.layer.select.getFeatures().clear()
     this.layer.select.getFeatures().push(feature)
-    this.featuresDisplayedObservable.next([feature])
+    // this.featuresDisplayedObservable.next([feature])
   }
   removeFeatureById(featureId: any): void {
     this.layer.removeFeature(featureId)
@@ -204,57 +188,6 @@ export class LayerComponent implements OnInit {
     return null
   }
 
-  resetFeaturesPopups(): void {
-    this.featuresPopupsProperties = []
-  }
-  buildFeaturesPopups(feature: Feature, isNotify: boolean): any {
-
-    // get wkt regarding selected projection
-    const geomFeature = feature.getGeometry();
-    if (geomFeature !== undefined) {
-
-      this.featuresPopupsProperties.push({
-        'id': feature.getId(),
-        'name': feature.get('name'),
-        'layer_id': this.layer.id,
-        'geom_type': feature.get('geom_type'),
-        'created_at': feature.get('created_at'),
-        'updated_at': feature.get('updated_at'),
-        'fill_color': feature.get('fill_color'),
-        'stroke_color': feature.get('stroke_color'),
-        'stroke_width': feature.get('stroke_width'),
-        'wkt': getWkt(geomFeature)
-      })
-    }
-  }
-
-  updateFillColor(featureId: string, color: string): void {
-    let feature = this.getFeature(featureId)
-    feature.set("fill_color", color, false)
-  }
-  updateStrokeWidth(featureId: string, event: any): void {
-    let feature = this.getFeature(featureId)
-    feature.set("stroke_width", event.target.value, true)
-  }
-  updateStrokeColor(featureId: string, color: string): void {
-    let feature = this.getFeature(featureId)
-    feature.set("stroke_color", color, true)
-  }
-
-  copyToClipboard(value: string): void {
-    const selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = value;
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
-  }
-
   moveModalToBody(): void {
     // TODO create a global function
     let modalLayerDiv = document.getElementById('modalLayer-'+ this.layer.id);
@@ -267,21 +200,6 @@ export class LayerComponent implements OnInit {
       }
     }
   }
-
-  moveToastsFeaturesToBody(): void {
-    // TODO create a global function
-    let toastFeatureDiv = document.getElementById('featureToasts');
-    if (toastFeatureDiv !== null) {
-
-      let bodyDiv = document.body;
-      if (bodyDiv !== null) {
-        bodyDiv.appendChild(toastFeatureDiv)
-
-      }
-    }
-  }
-
-
 
 }
 

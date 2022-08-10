@@ -42,3 +42,64 @@
 
 
 
+<div
+*ngIf="featuresPopupsProperties"
+  class="featureToasts position-fixed bottom-0 end-0 p-3 d-flex flex-row overflow-auto" style="z-index: 11"
+  >
+
+    <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true"
+    [ngClass]="currentLayer.id === feature.layer_id || currentFeatureIdSelected === feature.id ? 'd-block' : 'd-none'"
+
+    >
+      <div class="toast-header justify-content-between">
+
+        <strong>{{ featuresPopupsProperties.name }}</strong>
+        <em class="ms-2 me-auto me-auto">({{ featuresPopupsProperties.geom_type }})</em>
+        <em class="ms-auto">Couche: {{ currentLayer.layerName }}</em>
+        <button type="button" class="btn-close" aria-label="Close" (click)="resetFeaturesPopups()"></button>
+
+      </div>
+
+      <div class="toast-body bg-white">
+
+        <div id="toastActions" class="d-flex flex-row justify-content-start align-items-center">
+          <span class="fw-bold">Actions :</span>
+
+          <span class="badge bg-dark rounded m-1 small" (click)="copyToClipboard(featuresPopupsProperties.wkt)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
+            WKT
+          </span>
+
+        </div>
+
+        <div class="d-flex flex-row justify-content-between">
+          <span>Créé à {{ featuresPopupsProperties.created_at | date: 'HH:mm:ss' }}</span>
+          <span>Modifié à {{ featuresPopupsProperties.updated_at | date: 'HH:mm:ss' }}</span>
+        </div>
+
+
+        <div class="d-flex flex-column my-3">
+          <h6 class="">Style</h6>
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Couleur de fond :</span>
+            <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="featuresPopupsProperties.fill_color" [style.background]="featuresPopupsProperties.fill_color" (colorPickerClose)="updateFillColor(featuresPopupsProperties.id, $event)"/>
+          </div>
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Couleur du contour :</span>
+            <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="featuresPopupsProperties.stroke_color" [style.background]="featuresPopupsProperties.stroke_color" (colorPickerClose)="updateStrokeColor(featuresPopupsProperties.id, $event)"/>
+          </div>
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Epaisseur du contour :</span>
+            <input class="small strokeWidth" type="number" min="0" max="12" [value]="featuresPopupsProperties.stroke_width" (change)="updateStrokeWidth(featuresPopupsProperties.id, $event)"/>
+          </div>
+
+        </div>
+
+        <span class="">{{ featuresPopupsProperties.wkt }}</span>
+
+      </div>
+    </div>
+
+</div>
