@@ -13,7 +13,7 @@
       >
       </app-geoinfo>
 
-      <app-creator
+      <app-layer-manager
         id="createTools"
         class="d-flex flex-column overflow-auto"
         [ngClass]="currentMenuDisplayed == 'createTools' ? 'd-block' : 'd-none'"
@@ -21,7 +21,7 @@
         [currentEpsg]="currentEpsg"
         (layerSelected)="getSelectedLayer($event)"
       >
-      </app-creator>
+      </app-layer-manager>
 
     </div>
 

@@ -5,21 +5,21 @@
   >
 
     <div class="d-flex flex-row border rounded"
-    [ngClass]="currentLayerIdSelected === layer.id ? 'shadow border-dark border-2' :  ''"
+    [ngClass]="currentLayerIdSelected === layer.id ? 'border-dark border-2' :  ''"
     >
 
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
         <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.id" [checked]="isVisible" (change)="visibleHandler(btnVisible.checked)">
-        <label class="btn p-1 bg-transparent border-0" [for]="'btnVisible' + layer.id" [ngClass]="isVisible ? 'text-success' : 'text-danger'">
+        <label class="p-1 bg-transparent border-0 pointer" [for]="'btnVisible' + layer.id" [ngClass]="isVisible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="isVisible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="isVisible ? visibleIcon : invisibleIcon" ></fa-icon>
         </label>
 
-        <div class="d-flex flex-column">
-          <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
+        <div class="d-flex flex-column" [ngClass]="currentLayerIdSelected === layer.id ? 'pe-auto' :  'pe-none'">
+          <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
             <fa-icon class="" [icon]="upIcon" ></fa-icon>
           </button>
 
-          <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
+          <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
             <fa-icon class="" [icon]="downIcon" ></fa-icon>
           </button>
 
@@ -45,6 +45,13 @@
       </div>
 
       <div class="ms-auto d-flex flex-row">
+        <button class="ms-auto btn p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer la couche" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="duplicateIcon" ></fa-icon>
+        </button>
+
+        <button class="ms-auto btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer la couche" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
+        </button>
 
         <button class="btn m-1 bg-transparent border-0 text-black" (click)="moveModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayer-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="paramIcon"></fa-icon>
@@ -53,36 +60,6 @@
       </div>
 
     </div>
-
-    <div class="d-flex flex-row mx-4 mb-2 justify-content-center editTools align-items-center" [ngClass]="isVisible && currentLayerIdSelected === layer.id ? 'd-block' : 'd-none'">
-
-      <input #btnDraw type="checkbox" class="btn-check" [id]="'btnDraw' + layer.id" [checked]="isDrawn" (change)="drawHandler(btnDraw.checked)">
-      <label class="btn p-1 bg-transparent border-0" [for]="'btnDraw' + layer.id" [ngClass]="isDrawn ? 'text-danger' : 'text-success'" [ngbPopover]="'Ajouter un ' + layer.geomType" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="addIcon" ></fa-icon>
-      </label>
-
-      <button class="btn p-1 bg-transparent border-0 text-black" (click)="moveWktModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalWktLayer-'+ layer.id" ngbPopover="Ajouter des WKT" triggers="mouseenter:mouseleave">
-        WKT
-      </button>
-
-      <input #btnEdit type="checkbox" class="btn-check" [id]="'btnEdit' + layer.id" [checked]="isEdited" (change)="editHandler(btnEdit.checked)">
-      <label class="btn p-1 bg-transparent border-0" [for]="'btnEdit' + layer.id" [ngClass]="isEdited ? 'text-danger' : 'text-warning'" ngbPopover="Editer" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="editIcon" ></fa-icon>
-      </label>
-
-      <ng-container *ngIf="layer.geomType === 'Polygon'">
-        <input #btnHole type="checkbox" class="btn-check" [id]="'btnHole' + layer.id" [checked]="isHole" (change)="drawHoleHandler(true, btnHole.checked)">
-        <label class="btn p-1 bg-transparent border-0" [for]="'btnHole' + layer.id" [ngClass]="isHole ? 'text-danger' : 'text-warning'" ngbPopover="Ajouter un trou" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="polygonIcon" ></fa-icon>
-        </label>
-      </ng-container>
-
-      <button class="ms-auto btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer la couche" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
-      </button>
-
-    </div>
-
 
     <div class="d-flex flex-row small mb-1" *ngIf="layer.features().length > 0">
       <ul id="featuresList" class="w-100 list-group list-group-flush mx-3 border rounded collapse show" [id]="'featuresLayer-' + layer.id">
@@ -107,6 +84,8 @@
           (layerIdFromFeature)="updateLayerSelectionFromFeatureLayerId($event)"
           (featureIdSelected)="selectFeatureById($event)"
           (removeFeatureEvent)="removeFeatureById($event)"
+          (duplicateFeatureEvent)="duplicateFeatureById($event)"
+
           >
           </app-feature>
         </ng-container>
@@ -235,9 +214,31 @@
 
         <div class="d-flex flex-column my-3">
           <h4 class="">Export</h4>
-          <div class="d-flex flex-column my-1">
-            <span class="ms-2">GeoJSON:</span>
-            <textarea #exportStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportStringGeomDiv.select()" readonly>{{layer.exportToGeoJSON()}}</textarea>
+
+          <ul class="nav nav-pills align-items-center justify-content-center" role="tablist">
+            <li class="nav-item border m-1" role="presentation">
+              <a class="nav-link fw-bold active" data-bs-toggle="tab" [attr.data-bs-target]="'#GeoJsonTab' + layer.id" type="button" role="tab">
+                GeoJSON
+              </a>
+            </li>
+            <li class="nav-item border m-1" role="presentation">
+              <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#wktTab' + layer.id" type="button" role="tab">
+                WKT
+              </a>
+            </li>
+
+          </ul>
+
+          <div class="d-flex flex-row mx-2 tab-content" id="'tabContent' + layer.id">
+
+            <div class="tab-pane fade w-100 active show" [id]="'GeoJsonTab' + layer.id" role="tabpanel">
+              <textarea #exportGeoJsonStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportGeoJsonStringGeomDiv.select()" readonly>{{layer.exportToGeoJSON()}}</textarea>
+            </div>
+
+            <div class="tab-pane fade w-100 show" [id]="'wktTab' + layer.id" role="tabpanel">
+              <textarea #exportWktStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportWktStringGeomDiv.select()" readonly>{{layer.exportToWkt()}}</textarea>
+            </div>
+
           </div>
 
         </div>
@@ -252,26 +253,4 @@
 
 
 
-<div [id]="'modalWktLayer-'+ layer.id" class="modal fade" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Saisir un WKT</h5>
-      </div>
-      <div class="modal-body" (changes)="addWkt()">
 
-        <textarea [(ngModel)]="wktValues" class="form-control"></textarea>
-
-        EPSG du WKT
-        <select [(ngModel)]="wktEspgInput" class="form-select form-select-sm">
-          <option [value]="epsg" *ngFor="let epsg of epsgAvailable">{{epsg}}</option>
-        </select>
-
-      </div>
-      <div class="modal-footer">
-        <button [ngClass]="wktEspgInput !== null && wktValues !== null ? '' : 'pe-none' " (click)="addWkt()" type="button" class="btn btn-secondary">Ajouter</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>

@@ -1,19 +1,21 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { faXmark, faCircle, faWaveSquare, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
-import { layerHandler } from '../shared/core';
+import { layerHandler, layerHandlerPositionning } from '@modules/map-sandbox/shared/core';
 
 import Map from 'ol/Map';
 import { MapService } from '@services/map.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-creator',
-  templateUrl: './creator.component.html',
-  styleUrls: ['./creator.component.scss']
+  selector: 'app-layer-manager',
+  templateUrl: './layer-manager.component.html',
+  styleUrls: ['./layer-manager.component.scss']
 })
-export class CreatorComponent implements OnInit, OnDestroy {
+export class LayerManagerComponent implements OnInit, OnDestroy {
   @Input() map!: Map;
   @Input() currentEpsg!: string;
+
+  @Output() layerSelected = new EventEmitter<layerHandler|null>();
 
 
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
@@ -25,10 +27,10 @@ export class CreatorComponent implements OnInit, OnDestroy {
   polygonIcon = faDrawPolygon;
 
 
-  allExistingLayers: any[] = [];
-  existingLayers: any[] = []; // LayerHandler or GroupHandler list
+  existingLayers: any[] = [];
+  // existingLayers: any[] = []; // LayerHandler or GroupHandler list
   layerIdSelected!: string;
-  layerForModal!: layerHandler;
+  currentLayer!: layerHandler;
   layerNamedIncrement: number = -1;
   createModesSupported = [
     {
@@ -56,7 +58,7 @@ export class CreatorComponent implements OnInit, OnDestroy {
 
     this.epsgChangesSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
       (epsg: string) => {
-        this.allExistingLayers.forEach((layer: layerHandler) => {
+        this.existingLayers.forEach((layer: layerHandler) => {
           layer.features().forEach( (feature: any) => {
             feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, epsg))
           });
@@ -73,7 +75,7 @@ export class CreatorComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
-    this.allExistingLayers.forEach((layer: any) => {
+    this.existingLayers.forEach((layer: any) => {
       this.map.removeLayer(layer.vectorLayer)
       layer.cleanEvents()
     })
@@ -88,7 +90,7 @@ export class CreatorComponent implements OnInit, OnDestroy {
   }
 
   addLayer(geomType: any, groupId: string | null = null): void {
-    const layerNo: number = ++this.layerNamedIncrement
+    const layerNo: number = this.existingLayers.length
     let newLayer = new layerHandler(
       this.map,
       'layer ' + layerNo,
@@ -96,61 +98,73 @@ export class CreatorComponent implements OnInit, OnDestroy {
       layerNo, // Zindex
       groupId
     )
-    this.allExistingLayers.push(newLayer)
+    this.existingLayers.push(newLayer)
     this.refreshLayers()
 
   }
 
+  appendLayer(layer: layerHandler): void {
+    const layerNo: number = this.existingLayers.length
+    let newLayer = new layerHandler(
+      this.map,
+      layer.layerName + " (copy)",
+      layer.geomType,
+      layerNo, // Zindex
+      null
+    )
+    newLayer.addFeaturesAndUpdateIds(layer.features())
+    this.existingLayers.push(newLayer)
+    this.refreshLayers()
+  }
+
   layerGoUp(layerId: string): void {
-    this.existingLayers = moveLayerOnZIndex(this.existingLayers, layerId, 1)
+    this.existingLayers = layerHandlerPositionning(this.existingLayers, layerId, 1)
   }
 
   layerGoDown(layerId: string): void {
-    this.existingLayers = moveLayerOnZIndex(this.existingLayers, layerId, -1)
+    this.existingLayers = layerHandlerPositionning(this.existingLayers, layerId, -1)
+  }
+
+  removeLayer(layerId: string): void {
+    this.existingLayers = this.existingLayers.filter((layer: layerHandler) => {
+      return layer.id !== layerId
+    })
+    this.buildLayersIndexes()
   }
 
   getSelectedLayerId(layerId: any): void {
     this.layerIdSelected = layerId
-    let currentLayer = this.allExistingLayers.filter((layer: layerHandler) => {
+    let currentLayer = this.existingLayers.filter((layer: layerHandler) => {
       return layer.id === layerId
     })
 
-    this.layerForModal = currentLayer[0]
-
+    this.currentLayer = currentLayer[0]
+    this.layerSelected.emit(this.currentLayer)
   }
 
   refreshLayers(): void {
-    this.existingLayers = this.allExistingLayers.filter((layer: layerHandler) => {
+    this.existingLayers = this.existingLayers.filter((layer: layerHandler) => {
       return !layer.deleted;
     })
   }
 
   unSelectLayer(): void {
     this.layerIdSelected = 'none'
+    this.layerSelected.emit(null)
+
   }
 
-}
+  buildLayersIndexes(): void {
+    let existingLayers = this.existingLayers.sort((a, b) => (a.zIndexValue < b.zIndexValue ? -1 : 1))
 
-
-
-function moveLayerOnZIndex(layersArray: layerHandler[], layerId: string, incrementValue: number): layerHandler[] {
-  let outputArray: layerHandler[] = [];
-
-  const layerIndexToGet = layersArray.findIndex((layer: layerHandler) => layer.id === layerId);
-  const layerZIndex = layersArray[layerIndexToGet].zIndexValue;
-  const toIndex = layerZIndex + incrementValue
-  if (toIndex >= 0 && toIndex < layersArray.length) {
-    layersArray.splice(
-      toIndex, 0,
-      layersArray.splice(layerZIndex, 1)[0]
-    );
-    // rebuild ZIndex
-    layersArray.forEach((layer: layerHandler, idx: number) => {
+    this.existingLayers = []
+    existingLayers.forEach((layer: layerHandler, idx: number) => {
       layer.zIndexValue = idx;
       layer.vectorLayer.setZIndex(idx);
-      outputArray.push(layer)
+      this.existingLayers.push(layer)
     })
   }
 
-  return layersArray
 }
+
+

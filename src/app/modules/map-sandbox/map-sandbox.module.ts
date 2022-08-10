@@ -13,9 +13,9 @@ import { ToolboxComponent } from './toolbox/toolbox.component';
 
 import { GeoinfoComponent } from '@modules/map-sandbox/geoinfo/geoinfo.component';
 
-import { CreatorComponent } from '@modules/map-sandbox/creator/creator.component';
-import { LayerComponent } from '@modules/map-sandbox/creator_components/layer/layer.component';
-import { FeatureComponent } from '@modules/map-sandbox/creator_components/feature/feature.component';
+import { LayerManagerComponent } from './layer-manager/layer-manager.component';
+import { LayerComponent } from '@modules/map-sandbox/layers_components/layer/layer.component';
+import { FeatureComponent } from '@modules/map-sandbox/layers_components/feature/feature.component';
 import { EditBarComponent } from './edit-bar/edit-bar.component';
 
 
@@ -25,7 +25,7 @@ import { EditBarComponent } from './edit-bar/edit-bar.component';
     LayerComponent,
     FeatureComponent,
     GeoinfoComponent,
-    CreatorComponent,
+    LayerManagerComponent,
     EditBarComponent
   ],
   imports: [

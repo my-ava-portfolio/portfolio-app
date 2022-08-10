@@ -24,6 +24,10 @@
 
     <div class="ms-auto">
 
+      <button class="ms-auto btn p-1 bg-transparent border-0" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="duplicateIcon" ></fa-icon>
+      </button>
+
       <button class="btn m-0 bg-transparent border-0 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
       </button>

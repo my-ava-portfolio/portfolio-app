@@ -3,7 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChang
 import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { Subject, Subscription } from 'rxjs';
 import Feature from 'ol/Feature';
-import WKT from 'ol/format/WKT';
+import { faClone } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-layer',
@@ -13,15 +13,12 @@ import WKT from 'ol/format/WKT';
 export class LayerComponent implements OnInit {
   @Input() layer!: layerHandler;
   @Input() currentLayerIdSelected!: string;
-  @Input() currentEpsg!: string;
 
   @Output() layerSelectedId = new EventEmitter<string>();
   @Output() layerMoveUp = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerMoveDown = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
-
-  // wkt import
-  wktValues: string | null = null;
-  wktEspgInput: string | null = null;
+  @Output() layerCloned = new EventEmitter<layerHandler>();
+  @Output() removeLayerId = new EventEmitter<string>();
 
   groupIcon = faLayerGroup;
   helpIcon = faCircleQuestion;
@@ -37,15 +34,13 @@ export class LayerComponent implements OnInit {
   invisibleIcon = faEyeSlash;
   upIcon = faCaretUp;
   downIcon = faCaretDown;
+  duplicateIcon = faClone;
 
   isVisible: boolean = true;
   isDrawn: boolean = false;
   isEdited: boolean = false;
   isShown: boolean = false;
   isHole: boolean = false;
-
-  //TODO refactor
-  epsgAvailable = ["EPSG:4326", "EPSG:3857"];
 
   layerSelected: boolean = false;
   featureIdSelected!: string;
@@ -124,14 +119,11 @@ export class LayerComponent implements OnInit {
     }
 
     this.elementRef.nativeElement.remove();
-
-    this.resetSelection()
   }
 
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes.currentLayerIdSelected.currentValue !== this.layer.id) {
-      this.resetSelection()
     }
 
   }
@@ -140,54 +132,15 @@ export class LayerComponent implements OnInit {
   visibleHandler(status: boolean): void {
     this.isVisible = status
     this.layer.vectorLayer.setVisible(status)
-
-    if (!status) {
-      this.drawHandler(false) // disable draw tool
-      this.editHandler(false) // disable edit tool
-      this.drawHoleHandler(false) // disable hole draw tool
-    }
   }
 
   removeLayer(): void {
-    this.layer.removeLayer()
+    // this.layer.removeLayer()
+    this.removeLayerId.emit(this.layer.id)
     this.ngOnDestroy()
   }
 
-  editHandler(status: boolean): void {
-    if (status) {
-      this.drawHandler(false) // disable draw tool
-      this.drawHoleHandler(false) // disable hole draw tool
-
-      this.editFeatureEnable()
-    } else {
-      this.editFeatureDisable()
-    }
-  }
-
-  drawHandler(status: boolean, holeStatus: boolean = false): void {
-    if (status) {
-      this.editHandler(false) // disable edit tool
-      this.drawHoleHandler(false) // disable hole draw tool
-
-      this.addFeatureEnable(holeStatus)
-    } else {
-      this.addFeatureDisable()
-    }
-  }
-
-  drawHoleHandler(status: boolean, holeStatus: boolean = true): void {
-    if (status) {
-      this.drawHandler(false) // disable draw tool
-      this.editHandler(false) // disable edit tool
-
-      this.addHoleFeatureEnable(holeStatus)
-    } else {
-      this.addHoleFeatureDisable()
-    }
-  }
-
   layerGoUp(): void{
-    // this.layer.upPosition()
     this.layerMoveUp.emit(this.layer.id)
   }
 
@@ -201,7 +154,15 @@ export class LayerComponent implements OnInit {
 
     this.layerSelected = !this.layerSelected
     this.layerSelectedId.emit(this.layer.id)
-    // TODO send layer object to an other component dedicated to toolbar
+  }
+
+  duplicateLayer(): void {
+    this.resetFeaturesPopups()
+    this.unSelectFeature()
+    this.layerSelected = !this.layerSelected // TODO refactor ? on unSelectFeature() ?
+
+    const layerCloned: layerHandler = Object.create(this.layer) // create a clone
+    this.layerCloned.emit(layerCloned)
   }
 
   updateLayerSelectionFromFeatureLayerId(layerIdToSelect: string): void {
@@ -227,43 +188,11 @@ export class LayerComponent implements OnInit {
     this.layer.removeFeature(featureId)
   }
 
-  private resetSelection(): void {
-    this.resetFeaturesPopups()
-    this.drawHoleHandler(false)
-    this.drawHandler(false)
-    this.editHandler(false)
-    this.unSelectFeature()
+  duplicateFeatureById(featureId: any): void {
+    this.unSelectFeature() // IMPORTANT: we must unselect to avoid conflict with the style applied during selection...
+    this.layer.duplicateFeature(featureId)
+    this.selectFeatureById(featureId) // then reselect it
   }
-
-  private addFeatureEnable(holeStatus: boolean = false): void {
-    this.layer.enableDrawing(holeStatus);
-    this.isDrawn = true;
-  }
-
-  private addFeatureDisable(): void {
-    this.layer.disableDrawing();
-    this.isDrawn = false;
-  }
-
-  private editFeatureEnable(): void {
-    this.layer.enableEditing()
-    this.isEdited = true;
-  }
-
-  private editFeatureDisable(): void {
-    this.layer.disableEditing()
-    this.isEdited = false
-  }
-
-  private addHoleFeatureEnable(holeStatus: boolean = true): void {
-    this.layer.enableDrawing(holeStatus);
-    this.isHole = true;
-  }
-  private addHoleFeatureDisable(): void {
-    this.layer.disableDrawing();
-    this.isHole = false;
-  }
-
 
   private getFeature(featureId: string): any {
     let features = this.layer.features().filter((feature: any) => {
@@ -339,19 +268,6 @@ export class LayerComponent implements OnInit {
     }
   }
 
-  moveWktModalToBody(): void {
-    // TODO create a global function
-    let modalLayerDiv = document.getElementById('modalWktLayer-'+ this.layer.id);
-    if (modalLayerDiv !== null) {
-
-      let bodyDiv = document.body;
-      if (bodyDiv !== null) {
-        bodyDiv.appendChild(modalLayerDiv)
-
-      }
-    }
-  }
-
   moveToastsFeaturesToBody(): void {
     // TODO create a global function
     let toastFeatureDiv = document.getElementById('featureToasts');
@@ -365,59 +281,7 @@ export class LayerComponent implements OnInit {
     }
   }
 
-  addWkt(): void {
-    const wktFormat = new WKT();
 
-    let featureParams = {}
-    if (this.wktEspgInput !== this.currentEpsg) {
-      featureParams = {
-        dataProjection: this.wktEspgInput,
-        featureProjection: this.currentEpsg
-      }
-    }
-
-    let featuresToAdd: any[] = [];
-
-    if (this.wktValues !== null) {
-
-      const wktString: string[] = this.wktValues.split('\n');
-
-      wktString.forEach((wktValue: string) => {
-        // POLYGON((10.689 -25.092, 34.595 -20.170, 38.814 -35.639, 13.502 -39.155, 10.689 -25.092))
-        let feature!: any;
-        try {
-
-          feature = wktFormat.readFeature(wktValue, featureParams);
-        } catch (error: any) { // TODO catche the expected exception
-          alert(error.message)
-        }
-
-        if (feature !== undefined) {
-          const featureGeomType = feature.getGeometry();
-
-          if (featureGeomType !== undefined) {
-            if (featureGeomType.getType() !== this.layer.geomType) {
-              alert('Only ' + this.layer.geomType + " are supported on your selected layer")
-              return;
-            } else {
-              featuresToAdd.push(feature)
-            }
-          }
-        }
-
-      })
-
-      this.layer.addFeaturesFromGeomFeatureWithoutProperties(featuresToAdd)
-      this.clearWktDialog()
-
-    }
-
-  }
-
-  clearWktDialog(): void {
-    this.wktValues = null;
-    this.wktEspgInput = null;
-  }
 
 }
 

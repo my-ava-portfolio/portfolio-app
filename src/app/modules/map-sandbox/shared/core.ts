@@ -452,6 +452,30 @@ export class layerHandler {
 }
 
 
+export function layerHandlerPositionning(layersArray: layerHandler[], layerId: string, incrementValue: number): layerHandler[] {
+  let outputArray: layerHandler[] = [];
+
+  const layerIndexToGet = layersArray.findIndex((layer: layerHandler) => layer.id === layerId);
+  const layerZIndex = layersArray[layerIndexToGet].zIndexValue;
+  const toIndex = layerZIndex + incrementValue
+  if (toIndex >= 0 && toIndex < layersArray.length) {
+    layersArray.splice(
+      toIndex, 0,
+      layersArray.splice(layerZIndex, 1)[0]
+    );
+    // rebuild ZIndex
+    layersArray.forEach((layer: layerHandler, idx: number) => {
+      layer.zIndexValue = idx;
+      layer.vectorLayer.setZIndex(idx);
+      outputArray.push(layer)
+    })
+    return outputArray
+  }
+
+  return layersArray
+}
+
+
 export function getWkt(geometry: any): string {
   const wktFormat = new WKT()
   return wktFormat.writeGeometry(geometry);

@@ -41,10 +41,11 @@
         <app-layer
           [layer]="layer"
           [currentLayerIdSelected]="layerIdSelected"
-          [currentEpsg]="currentEpsg"
           (layerSelectedId)="getSelectedLayerId($event)"
           (layerMoveUp)="layerGoUp($event)"
           (layerMoveDown)="layerGoDown($event)"
+          (layerCloned)="appendLayer($event)"
+          (removeLayerId)="removeLayer($event)"
         >
         </app-layer>
 
