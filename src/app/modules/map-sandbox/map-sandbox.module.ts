@@ -13,10 +13,10 @@ import { LayoutComponent } from './layout/layout.component';
 
 import { GeoinfoComponent } from '@modules/map-sandbox/geoinfo/geoinfo.component';
 
-import { LayerManagerComponent } from './layer-manager/layer-manager.component';
-import { LayerComponent } from '@modules/map-sandbox/layers_components/layer/layer.component';
-import { FeatureComponent } from '@modules/map-sandbox/layers_components/feature/feature.component';
-import { EditBarComponent } from './edit-bar/edit-bar.component';
+import { LayerManagerComponent } from '@modules/map-sandbox/layer-manager/layer-manager.component';
+import { LayerComponent } from '@modules/map-sandbox/layer-components/layer/layer.component';
+import { FeatureComponent } from '@modules/map-sandbox/layer-components/feature/feature.component';
+import { EditBarComponent } from '@modules/map-sandbox/edit-bar/edit-bar.component';
 
 
 @NgModule({
