@@ -1,9 +1,8 @@
-import { getWkt, layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
-import { Subject, Subscription } from 'rxjs';
-import Feature from 'ol/Feature';
+import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
+import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 
 @Component({
   selector: 'app-layer',
@@ -35,18 +34,23 @@ export class LayerComponent implements OnInit {
   upIcon = faCaretUp;
   downIcon = faCaretDown;
   duplicateIcon = faClone;
+  centerIcon = faExpand;
+  lockIcon = faLock;
+  unLockIcon = faLockOpen;
 
   isVisible: boolean = true;
   isDrawn: boolean = false;
   isEdited: boolean = false;
   isShown: boolean = false;
   isHole: boolean = false;
+  isLocked: boolean = false;
 
   layerSelected: boolean = false;
   featureIdSelected!: string;
 
   constructor(
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private interactionsService: InteractionsService
   ) {
 
   }
@@ -86,7 +90,6 @@ export class LayerComponent implements OnInit {
     this.layer.sourceFeatures.on('changefeature', (event: any) => {
       // update step when change on feature occurs
       refreshFeatureStyle(event.feature)
-      // this.featuresDisplayedObservable.next([event.feature])
     })
 
   }
@@ -120,6 +123,11 @@ export class LayerComponent implements OnInit {
     this.layer.vectorLayer.setVisible(status)
   }
 
+  lockingLayer(): void {
+    this.layer.locked = !this.layer.locked
+    this.interactionsService.setLayerLockStatus(this.layer.locked)
+  }
+
   removeLayer(): void {
     // this.layer.removeLayer()
     this.removeLayerId.emit(this.layer.id)
@@ -141,6 +149,10 @@ export class LayerComponent implements OnInit {
     this.layerSelectedId.emit(this.layer.id)
   }
 
+  zoomToLayer(): void {
+    this.layer.zoomToLayer()
+  }
+
   duplicateLayer(): void {
     this.unSelectFeature()
     this.layerSelected = !this.layerSelected // TODO refactor ? on unSelectFeature() ?
@@ -153,6 +165,20 @@ export class LayerComponent implements OnInit {
     // during feature selection
     this.layerSelectedId.emit(layerIdToSelect)
   }
+
+    moveModalToBody(): void {
+    // TODO create a global function
+    let modalLayerDiv = document.getElementById('modalLayer-'+ this.layer.id);
+    if (modalLayerDiv !== null) {
+
+      let bodyDiv = document.body;
+      if (bodyDiv !== null) {
+        bodyDiv.appendChild(modalLayerDiv)
+      }
+    }
+  }
+
+  // START FEATURE FUNCS //
 
   unSelectFeature(): void {
     this.featureIdSelected = 'none'
@@ -169,10 +195,12 @@ export class LayerComponent implements OnInit {
     // this.featuresDisplayedObservable.next([feature])
   }
   removeFeatureById(featureId: any): void {
+    // TODO move it on feature component ?
     this.layer.removeFeature(featureId)
   }
 
   duplicateFeatureById(featureId: any): void {
+    // TODO move it on feature component ?
     this.unSelectFeature() // IMPORTANT: we must unselect to avoid conflict with the style applied during selection...
     this.layer.duplicateFeature(featureId)
     this.selectFeatureById(featureId) // then reselect it
@@ -188,18 +216,7 @@ export class LayerComponent implements OnInit {
     return null
   }
 
-  moveModalToBody(): void {
-    // TODO create a global function
-    let modalLayerDiv = document.getElementById('modalLayer-'+ this.layer.id);
-    if (modalLayerDiv !== null) {
-
-      let bodyDiv = document.body;
-      if (bodyDiv !== null) {
-        bodyDiv.appendChild(modalLayerDiv)
-
-      }
-    }
-  }
+  // END FEATURE FUNCS //
 
 }
 

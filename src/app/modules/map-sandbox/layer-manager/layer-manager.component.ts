@@ -107,7 +107,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     const layerNo: number = this.existingLayers.length
     let newLayer = new layerHandler(
       this.map,
-      layer.layerName + " (copy)",
+      layer.layerName + " copy",
       layer.geomType,
       layerNo, // Zindex
       null

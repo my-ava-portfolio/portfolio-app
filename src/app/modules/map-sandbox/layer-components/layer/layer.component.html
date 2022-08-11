@@ -45,11 +45,20 @@
       </div>
 
       <div class="ms-auto d-flex flex-row">
-        <button class="ms-auto btn p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer la couche" triggers="mouseenter:mouseleave">
+
+        <button [ngClass]="currentLayerIdSelected === layer.id ? 'pe-auto' :  'pe-none'" class="ms-auto btn p-1 bg-transparent border-0" (click)="lockingLayer()" ngbPopover="Verrouiler" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="this.layer.locked ? lockIcon : unLockIcon" ></fa-icon>
+        </button>
+
+        <button class="ms-auto btn p-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="centerIcon" ></fa-icon>
+        </button>
+
+        <button class="ms-auto btn p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="duplicateIcon" ></fa-icon>
         </button>
 
-        <button class="ms-auto btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer la couche" triggers="mouseenter:mouseleave">
+        <button [ngClass]="this.layer.locked ? 'pe-none' : 'pe-auto'" class="ms-auto btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
         </button>
 
@@ -99,7 +108,7 @@
 
 
 <div *ngIf="layer" [id]="'modalLayer-'+ layer.id" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">{{ layer.layerName}}</h5>
@@ -107,7 +116,7 @@
       </div>
       <div class="modal-body">
 
-        <div class="d-flex flex-column my-3">
+        <div class="d-flex flex-column my-3" [ngClass]="this.layer.locked ?  'pe-auto' :'pe-none'">
           <h4 class="">Général</h4>
           <div class="d-flex flex-row ms-2">
             <span class="me-2">Nom de la couche :</span>
@@ -115,7 +124,7 @@
           </div>
         </div>
 
-        <div class="d-flex flex-column my-3">
+        <div class="d-flex flex-column my-3" [ngClass]="this.layer.locked ? 'pe-auto' :'pe-none'">
           <h4 class="">Style</h4>
           <div class="d-flex flex-row ms-2 my-1">
             <span class="me-2">Opacité :</span>
@@ -154,6 +163,12 @@
               </a>
             </li>
 
+            <li class="nav-item border m-1" role="presentation">
+              <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#pytestFixture' + layer.id" type="button" role="tab">
+                Pytest Fixtures
+              </a>
+            </li>
+
           </ul>
 
           <div class="d-flex flex-row mx-2 tab-content" id="'tabContent' + layer.id">
@@ -164,6 +179,10 @@
 
             <div class="tab-pane fade w-100 show" [id]="'wktTab' + layer.id" role="tabpanel">
               <textarea #exportWktStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportWktStringGeomDiv.select()" readonly>{{layer.exportToWkt()}}</textarea>
+            </div>
+
+            <div class="tab-pane fade w-100 show" [id]="'pytestFixture' + layer.id" role="tabpanel">
+              <textarea #exportPytestFixturesGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportPytestFixturesGeomDiv.select()" readonly>{{layer.exportToPytestFixture()}}</textarea>
             </div>
 
           </div>
