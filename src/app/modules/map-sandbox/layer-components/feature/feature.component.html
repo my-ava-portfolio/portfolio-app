@@ -24,6 +24,11 @@
 
     <div class="ms-auto">
 
+      <button class="ms-auto btn p-1 bg-transparent border-0" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="centerIcon" ></fa-icon>
+      </button>
+
+
       <button class="ms-auto btn p-1 bg-transparent border-0" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="duplicateIcon" ></fa-icon>
       </button>
@@ -43,20 +48,18 @@
 
 
 <div
-*ngIf="featuresPopupsProperties"
+  [id]="'featurePopup' + feature.getId()"
+  *ngIf="( currentLayer.id === feature.layer_id || currentFeatureIdSelected === feature.getId() ) && displayPopup"
   class="featureToasts position-fixed bottom-0 end-0 p-3 d-flex flex-row overflow-auto" style="z-index: 11"
   >
 
-    <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true"
-    [ngClass]="currentLayer.id === feature.layer_id || currentFeatureIdSelected === feature.id ? 'd-block' : 'd-none'"
-
-    >
+    <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header justify-content-between">
 
-        <strong>{{ featuresPopupsProperties.name }}</strong>
-        <em class="ms-2 me-auto me-auto">({{ featuresPopupsProperties.geom_type }})</em>
+        <strong>{{ feature.get('name') }}</strong>
+        <em class="ms-2 me-auto me-auto">({{ feature.get('geom_type') }})</em>
         <em class="ms-auto">Couche: {{ currentLayer.layerName }}</em>
-        <button type="button" class="btn-close" aria-label="Close" (click)="resetFeaturesPopups()"></button>
+        <button type="button" class="btn-close" aria-label="Close" (click)="hidePopup()"></button>
 
       </div>
 
@@ -65,15 +68,15 @@
         <div id="toastActions" class="d-flex flex-row justify-content-start align-items-center">
           <span class="fw-bold">Actions :</span>
 
-          <span class="badge bg-dark rounded m-1 small" (click)="copyToClipboard(featuresPopupsProperties.wkt)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
+          <span class="badge bg-dark rounded m-1 small" (click)="copyToClipboard(getWktFromFeature(feature))" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
             WKT
           </span>
 
         </div>
 
         <div class="d-flex flex-row justify-content-between">
-          <span>Créé à {{ featuresPopupsProperties.created_at | date: 'HH:mm:ss' }}</span>
-          <span>Modifié à {{ featuresPopupsProperties.updated_at | date: 'HH:mm:ss' }}</span>
+          <span>Créé à {{ feature.get('created_at') | date: 'HH:mm:ss' }}</span>
+          <span>Modifié à {{ feature.get('updated_at') | date: 'HH:mm:ss' }}</span>
         </div>
 
 
@@ -82,22 +85,22 @@
 
           <div class="d-flex flex-row ms-2 my-1">
             <span class="me-2">Couleur de fond :</span>
-            <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="featuresPopupsProperties.fill_color" [style.background]="featuresPopupsProperties.fill_color" (colorPickerClose)="updateFillColor(featuresPopupsProperties.id, $event)"/>
+            <input class="form-control fillColor colorPicker m-1" [(colorPicker)]="currentFillColor" [style.background]="feature.get('fill_color')" (colorPickerClose)="updateFillColor(feature.getId(), $event)"/>
           </div>
 
           <div class="d-flex flex-row ms-2 my-1">
             <span class="me-2">Couleur du contour :</span>
-            <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="featuresPopupsProperties.stroke_color" [style.background]="featuresPopupsProperties.stroke_color" (colorPickerClose)="updateStrokeColor(featuresPopupsProperties.id, $event)"/>
+            <input class="form-control strokeColor colorPicker m-1" [(colorPicker)]="currentStrokeColor" [style.background]="feature.get('stroke_color')" (colorPickerClose)="updateStrokeColor(feature.getId(), $event)"/>
           </div>
 
           <div class="d-flex flex-row ms-2 my-1">
             <span class="me-2">Epaisseur du contour :</span>
-            <input class="small strokeWidth" type="number" min="0" max="12" [value]="featuresPopupsProperties.stroke_width" (change)="updateStrokeWidth(featuresPopupsProperties.id, $event)"/>
+            <input class="small strokeWidth" type="number" min="0" max="12" [value]="currentStrokeWidth" (change)="updateStrokeWidth(feature.getId(), $event)"/>
           </div>
 
         </div>
 
-        <span class="">{{ featuresPopupsProperties.wkt }}</span>
+        <span class="">{{ getWktFromFeature(feature) }}</span>
 
       </div>
     </div>
