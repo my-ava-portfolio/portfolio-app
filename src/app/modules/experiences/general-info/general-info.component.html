@@ -1,4 +1,4 @@
-<div class="d-flex flex-column flex-xxl-row justify-content-around py-2 bg-dark bg-gradient rounded-top shadow align-self-items align-items-center">
+<div class="d-flex flex-column flex-xxl-row justify-content-around py-3 bg-dark bg-gradient rounded-top shadow align-self-items align-items-center">
 
   <div class="d-flex flex-column flex-lg-row flex-fill text-center justify-content-around align-self-items align-items-center">
 
@@ -11,10 +11,10 @@
 
   </div>
 
-  <div id="activities-buttons" class="d-flex flex-sm-row flex-column justify-content-center my-2">
+  <div id="activities-buttons" class="d-flex flex-sm-row flex-column justify-content-center mx-5">
       <ng-container *ngFor="let type of activityTypesMetadata">
-        <div 
-          class="btn activity-button fw-bold text-center m-2 align-items-center" 
+        <div
+          class="btn activity-button fw-bold text-center m-2 align-items-center"
           [class.active]="tabView == type.id"
           (click)="enableActivity(type.id)">
           {{type.title}}
