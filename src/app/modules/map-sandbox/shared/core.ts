@@ -2,7 +2,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import {LineString, Polygon}  from 'ol/geom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Draw, Modify, Snap } from 'ol/interaction';
+import { Draw, Modify, Snap, Translate } from 'ol/interaction';
 import VectorLayer from 'ol/layer/Vector';
 
 import Map from 'ol/Map';
@@ -27,6 +27,7 @@ export class layerHandler {
   private map: Map;
   draw!: Draw;
   snap!: Snap;
+  translate!: Translate;
   modifier!: Modify;
   select!: Select;
 
@@ -52,9 +53,13 @@ export class layerHandler {
   strokeWidth = defaultStrokeWidth;
 
   deleted = false;
+  locked = false;
 
   featuresSelected: any[] = []
   featuresDeselected: any[] = []
+
+  zoomPadding = [100, 100, 100, 100];
+  maxZoom = 14;
 
   constructor(
     map: Map,
@@ -73,6 +78,7 @@ export class layerHandler {
 
     this.setLayer();
     this.initSelect();
+    this.initTranslate();
     this.initSnap();
     this.initModifier();
 
@@ -113,7 +119,20 @@ export class layerHandler {
     this.snap = new Snap({
       source: this.sourceFeatures
     });
+  }
 
+  private initTranslate(): void {
+    this.translate = new Translate({
+      features: this.select.getFeatures(),
+    });
+  }
+
+  enableTranslating(): void {
+    this.map.addInteraction(this.translate)
+  }
+
+  disableTranslating(): void {
+    this.map.removeInteraction(this.translate)
   }
 
   enableSelecting(): void {
@@ -263,7 +282,7 @@ export class layerHandler {
 
     let name!: string;
     if (copy) {
-      name = feature.get("name") + " (copy)"
+      name = feature.get("name") + " copy"
     } else {
       name = 'feature ' + this.counter
     }
@@ -447,6 +466,34 @@ export class layerHandler {
       wktFeatures.push(getWkt(feature.getGeometry()))
     })
     return wktFeatures.join('\n')
+  }
+
+  exportToPytestFixture(): string {
+    const fixtureHeader = "\n@pytest.fixture\ndef "
+    let fixtureFeatures: string[] = []
+    this.features().forEach((feature: any) => {
+      fixtureFeatures.push(
+        fixtureHeader + feature.get('name').replace(' ', '_') + '():\n\treturn \'' + getWkt(feature.getGeometry()) + '\''
+      )
+    })
+    console.log(fixtureFeatures)
+    return 'import pytest\n' + fixtureFeatures.join('\n')
+
+  }
+
+  zoomToLayer(): void {
+    if (this.sourceFeatures.getFeatures().length > 0) {
+      this.map.getView().fit(this.sourceFeatures.getExtent(), { size: this.map.getSize(), maxZoom: this.maxZoom, padding: this.zoomPadding});
+    }
+  }
+
+  zoomToFeature(featureId: string): void {
+
+    this.features().filter((feature: any) => {
+      if (feature.getId() === featureId) {
+        this.map.getView().fit(feature.getGeometry(), {size:this.map.getSize(), maxZoom: this.maxZoom})
+      }
+    })
   }
 
 }
