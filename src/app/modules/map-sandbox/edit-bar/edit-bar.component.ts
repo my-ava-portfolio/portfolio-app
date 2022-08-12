@@ -1,13 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { faArrowsUpDownLeftRight, faUpload, faCircle, faCirclePlus, faDrawPolygon, faGear, faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsUpDownLeftRight, faCircle, faCirclePlus, faDrawPolygon, faGear, faPencil } from '@fortawesome/free-solid-svg-icons';
 
 import { layerHandler } from '@modules/map-sandbox/shared/core';
 
-import WKT from 'ol/format/WKT';
-import GeoJSON from 'ol/format/GeoJSON';
-
-import VectorSource from 'ol/source/Vector';
 import { InteractionsService } from '../shared/service/interactions.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 
@@ -30,7 +26,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   paramIcon = faGear;
   EditIcon = faCircle;
   polygonIcon = faDrawPolygon;
-  loadIcon = faUpload;
   moveIcon = faArrowsUpDownLeftRight;
 
   isDrawn: boolean = false;
@@ -194,114 +189,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   private addHoleFeatureDisable(): void {
     this.layer.disableDrawing();
     this.isHole = false;
-  }
-
-
-  moveWktModalToBody(): void {
-    // TODO create a global function
-    let modalLayerDiv = document.getElementById('modalWktLayer-'+ this.layer.id);
-    if (modalLayerDiv !== null) {
-
-      let bodyDiv = document.body;
-      if (bodyDiv !== null) {
-        bodyDiv.appendChild(modalLayerDiv)
-
-      }
-    }
-  }
-
-  moveGeoJsonModalToBody(): void {
-    // TODO create a global function
-    let modalLayerDiv = document.getElementById('modalGeoJsonLayer-'+ this.layer.id);
-    if (modalLayerDiv !== null) {
-
-      let bodyDiv = document.body;
-      if (bodyDiv !== null) {
-        bodyDiv.appendChild(modalLayerDiv)
-
-      }
-    }
-  }
-
-  addGeoJSON(): void {
-
-    let featureParams = {}
-    if (this.strInputEspgInput !== this.currentEpsg) {
-      featureParams = {
-        dataProjection: this.strInputEspgInput,
-        featureProjection: this.currentEpsg
-      }
-    }
-
-    let featuresToAdd: any[] = [];
-
-    if (this.strInputDataValues !== null) {
-      const vectorSource = new VectorSource({
-        features: new GeoJSON().readFeatures(JSON.parse(this.strInputDataValues), featureParams),
-      });
-      vectorSource.getFeatures().forEach((element: any) => {
-        if (element.getGeometry().getType() === this.layer.geomType) {
-          featuresToAdd.push(element)
-        }
-      })
-      this.layer.addFeaturesFromGeomFeatureWithoutProperties(featuresToAdd)
-
-    }
-    this.clearStrInputDataDialog()
-
-  }
-
-  addWkt(): void {
-
-    let featureParams = {}
-    if (this.strInputEspgInput !== this.currentEpsg) {
-      featureParams = {
-        dataProjection: this.strInputEspgInput,
-        featureProjection: this.currentEpsg
-      }
-    }
-
-    let featuresToAdd: any[] = [];
-
-    if (this.strInputDataValues !== null) {
-
-      const wktString: string[] = this.strInputDataValues.split('\n');
-
-      wktString.forEach((wktValue: string) => {
-        // POLYGON((10.689 -25.092, 34.595 -20.170, 38.814 -35.639, 13.502 -39.155, 10.689 -25.092))
-        let feature!: any;
-        try {
-
-          feature = new WKT().readFeature(wktValue, featureParams);
-        } catch (error: any) { // TODO catche the expected exception
-          alert(error.message)
-        }
-
-        if (feature !== undefined) {
-          const featureGeomType = feature.getGeometry();
-
-          if (featureGeomType !== undefined) {
-            if (featureGeomType.getType() !== this.layer.geomType) {
-              alert('Only ' + this.layer.geomType + " are supported on your selected layer")
-              return;
-            } else {
-              featuresToAdd.push(feature)
-            }
-          }
-        }
-
-      })
-
-      this.layer.addFeaturesFromGeomFeatureWithoutProperties(featuresToAdd)
-      this.clearStrInputDataDialog()
-
-    }
-
-  }
-
-  clearStrInputDataDialog(): void {
-    this.strInputDataValues = null;
-    this.strInputEspgInput = null;
   }
 
 }

@@ -20,20 +20,6 @@
             <fa-icon class="" [icon]="addIcon" size="1x"></fa-icon>
           </label>
 
-          <button class="edit-button btn px-1 py-0 border m-1 text-black" (click)="moveWktModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalWktLayer-'+ layer.id" ngbPopover="Ajouter à partir de WKT(s)" triggers="mouseenter:mouseleave">
-            <span class="small fst-italic">
-              <fa-icon class="" [icon]="loadIcon" size="1x"></fa-icon>
-              WKT
-            </span>
-          </button>
-
-          <button class="edit-button btn px-1 py-0 border m-1 text-black" (click)="moveGeoJsonModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalGeoJsonLayer-'+ layer.id" ngbPopover="Ajouter à partir d'un GeoJSON" triggers="mouseenter:mouseleave">
-            <span class="small fst-italic">
-              <fa-icon class="" [icon]="loadIcon" size="1x"></fa-icon>
-              GeoJSON
-            </span>
-          </button>
-
         </div>
 
       </div>
@@ -71,62 +57,3 @@
 
 
   </div>
-
-
-
-<div [id]="'modalWktLayer-'+ layer.id" class="modal fade" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Ajouter des WKT</h5>
-      </div>
-      <div class="modal-body">
-
-        <textarea [(ngModel)]="strInputDataValues" class="form-control"></textarea>
-
-        EPSG du/des WKT(s) à importer
-        <select [(ngModel)]="strInputEspgInput" class="form-select form-select-sm">
-          <option [value]="epsg" *ngFor="let epsg of epsgAvailable">{{epsg}}</option>
-        </select>
-
-      </div>
-      <div class="modal-footer">
-        <button [ngClass]="strInputEspgInput !== null && strInputDataValues !== null ? '' : 'pe-none' " (click)="addWkt()" type="button" class="btn btn-secondary">Ajouter</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<div [id]="'modalGeoJsonLayer-'+ layer.id" class="modal fade" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Ajouter un GeoJSON</h5>
-        <span>
-          Géométrie de la couche : {{layer.geomType}}
-        </span>
-        <span>
-          Attention: seuls les objets de type {{layer.geomType}} seront ajoutés
-        </span>
-
-      </div>
-      <div class="modal-body">
-
-        <textarea [(ngModel)]="strInputDataValues" class="form-control"></textarea>
-
-        EPSG du GeoJSON à importer
-        <select [(ngModel)]="strInputEspgInput" class="form-select form-select-sm">
-          <option [value]="epsg" *ngFor="let epsg of epsgAvailable">{{epsg}}</option>
-        </select>
-
-      </div>
-      <div class="modal-footer">
-        <button [ngClass]="strInputEspgInput !== null && strInputDataValues !== null ? '' : 'pe-none' " (click)="addGeoJSON()" type="button" class="btn btn-secondary">Ajouter</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>
