@@ -275,13 +275,14 @@ export class layerHandler {
     this.addProperties(e.feature)
   }
 
-  addProperties(feature: any, copy=false): any {
+  addProperties(feature: any): any {
+    // TODO synchronize properties after the call of this func
     ++this.counter;
     const uuid = uuidv4()
     feature.setId(uuid)
 
     let name!: string;
-    if (copy) {
+    if (feature.get("name") !== undefined) {
       name = feature.get("name") + " copy"
     } else {
       name = 'feature ' + this.counter
@@ -311,19 +312,19 @@ export class layerHandler {
     return feature
   }
 
-  addFeaturesFromGeomFeatureWithoutProperties(features: any[]): void {
-    if (features.length > 0) {
-      features.forEach((feature: any) => {
-        let featureWithProperties = this.addProperties(feature)
-        this.sourceFeatures.addFeature(featureWithProperties)
-      })
-    }
-  }
+  // addFeaturesFromGeomFeatureWithoutProperties(features: any[]): void {
+  //   if (features.length > 0) {
+  //     features.forEach((feature: any) => {
+  //       let featureWithProperties = this.addProperties(feature)
+  //       this.sourceFeatures.addFeature(featureWithProperties)
+  //     })
+  //   }
+  // }
   addFeaturesAndUpdateIds(features: any[]): void {
     if (features.length > 0) {
       features.forEach((feature: any) => {
-        let featureCloned = feature.clone()
-        let featureWithProperties = this.addProperties(featureCloned, true)
+        let featureCloned = feature.clone() // important if it's some duplicated feature
+        let featureWithProperties = this.addProperties(featureCloned)
         this.sourceFeatures.addFeature(featureWithProperties)
       })
     }
@@ -354,7 +355,7 @@ export class layerHandler {
   duplicateFeature(featureId: string): void {
     const featureFound = this.sourceFeatures.getFeatureById(featureId)
     if (featureFound !== null) {
-      const newFeature = this.addProperties(featureFound.clone(), true)
+      const newFeature = this.addProperties(featureFound.clone())
       this.sourceFeatures.addFeature(newFeature)
       console.log(newFeature)
     }
@@ -476,7 +477,6 @@ export class layerHandler {
         fixtureHeader + feature.get('name').replace(' ', '_') + '():\n\treturn \'' + getWkt(feature.getGeometry()) + '\''
       )
     })
-    console.log(fixtureFeatures)
     return 'import pytest\n' + fixtureFeatures.join('\n')
 
   }

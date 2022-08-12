@@ -11,6 +11,25 @@
         <fa-icon class="" [icon]="feature.icon"></fa-icon>
       </button>
     </ng-container>
+
+  </div>
+
+</div>
+
+<div class="d-flex flex-row align-items-center justify-content-center bg-dark text-white py-2 px-3">
+  <span class="fw-bold">Importer des données</span>
+</div>
+
+<div id="creationTools" class="d-flex flex-column">
+
+  <div class="d-flex flex-row justify-content-center my-2 mx-3">
+
+    <ng-container *ngFor="let feature of createFromModesSupported">
+      <button class="badge btn-dark border-0 me-1 text-warning" (click)="setImportDataType(feature.label_text)" data-bs-toggle="modal" data-bs-target="#modalDataImport" type="button" role="tab" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
+        <fa-icon class="mx-1" [icon]="feature.icon"></fa-icon>{{ feature.label_text}}
+      </button>
+    </ng-container>
+
   </div>
 
 </div>
@@ -44,7 +63,7 @@
           (layerSelectedId)="getSelectedLayerId($event)"
           (layerMoveUp)="layerGoUp($event)"
           (layerMoveDown)="layerGoDown($event)"
-          (layerCloned)="appendLayer($event)"
+          (layerCloned)="duplicateLayer($event)"
           (removeLayerId)="removeLayer($event)"
         >
         </app-layer>
@@ -57,3 +76,33 @@
 
 
 
+<div id="modalDataImport" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Importer {{ importDataType}}</h5>
+      </div>
+      <div class="modal-body">
+
+        <textarea [(ngModel)]="strInputDataValues" class="form-control"></textarea>
+
+        EPSG des données à importer
+        <select [(ngModel)]="strInputEpsgInput" class="form-select form-select-sm">
+          <option [value]="epsg" *ngFor="let epsg of epsgAvailable">{{epsg}}</option>
+        </select>
+
+        Type d'importation
+        <select [(ngModel)]="modeImportInput" class="form-select form-select-sm">
+          <option value="new">Créer de nouvelles couches</option>
+          <option [value]="layer.id" *ngFor="let layer of existingLayers">Importer dans la couche : {{layer.layerName}}</option>
+
+        </select>
+
+      </div>
+      <div class="modal-footer">
+        <button [ngClass]="strInputEpsgInput !== null && strInputDataValues !== null ? '' : 'pe-none' " (click)="importGeoJSON()" type="button" class="btn btn-secondary">Ajouter</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
