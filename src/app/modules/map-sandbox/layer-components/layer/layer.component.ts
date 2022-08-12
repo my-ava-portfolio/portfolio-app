@@ -114,9 +114,7 @@ export class LayerComponent implements OnInit {
     if (changes.currentLayerIdSelected.currentValue !== this.layer.id) {
       this.unSelectFeature()  // unselect feature selected if an other layer is selected
     }
-
   }
-
 
   visibleHandler(status: boolean): void {
     this.isVisible = status
@@ -129,7 +127,7 @@ export class LayerComponent implements OnInit {
   }
 
   removeLayer(): void {
-    // this.layer.removeLayer()
+    this.layer.removeLayer()
     this.removeLayerId.emit(this.layer.id)
     this.ngOnDestroy()
   }
@@ -166,7 +164,7 @@ export class LayerComponent implements OnInit {
     this.layerSelectedId.emit(layerIdToSelect)
   }
 
-    moveModalToBody(): void {
+  moveModalToBody(): void {
     // TODO create a global function
     let modalLayerDiv = document.getElementById('modalLayer-'+ this.layer.id);
     if (modalLayerDiv !== null) {
