@@ -1,8 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faExpand, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
-import { Feature } from 'ol';
-import { Subject, Subscription } from 'rxjs';
 import { getWkt } from '@modules/map-sandbox/shared/core';
 import { layerHandler } from '@modules/map-sandbox/shared/core';
 
