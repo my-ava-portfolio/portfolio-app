@@ -18,7 +18,7 @@ export class GeoinfoComponent implements OnInit, OnDestroy, AfterViewInit {
 
   mousePositionControl!: MousePosition;
   cursorCoordinates!: any;
-  epsgAvailable = ["EPSG:4326", "EPSG:3857"];
+  epsgAvailable = ["EPSG:4326", "EPSG:3857"]; // TODO refactor go to layout because shared with layerManager comp
 
   mapSubscription!: Subscription;
 
