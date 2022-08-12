@@ -11,16 +11,20 @@
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
         <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.id" [checked]="isVisible" (change)="visibleHandler(btnVisible.checked)">
         <label class="p-1 bg-transparent border-0 pointer" [for]="'btnVisible' + layer.id" [ngClass]="isVisible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="isVisible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="isVisible ? visibleIcon : invisibleIcon" ></fa-icon>
+          <fa-icon class="" [icon]="isVisible ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
         </label>
+
+        <button [ngClass]="currentLayerIdSelected === layer.id ? 'pe-auto' :  'pe-none'" class="ms-auto btn p-1 bg-transparent border-0" (click)="lockingLayer()" ngbPopover="Verrouiler" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="this.layer.locked ? lockIcon : unLockIcon" size="xs"></fa-icon>
+        </button>
 
         <div class="d-flex flex-column" [ngClass]="currentLayerIdSelected === layer.id ? 'pe-auto' :  'pe-none'">
           <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
-            <fa-icon class="" [icon]="upIcon" ></fa-icon>
+            <fa-icon class="" [icon]="upIcon" size="xs"></fa-icon>
           </button>
 
           <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
-            <fa-icon class="" [icon]="downIcon" ></fa-icon>
+            <fa-icon class="" [icon]="downIcon" size="xs"></fa-icon>
           </button>
 
         </div>
@@ -34,9 +38,9 @@
         data-bs-toggle="collapse" [attr.data-bs-target]="'#featuresLayer-' + layer.id" aria-expanded="false" aria-controls="collapseExample"
       >
         <div class="">
-          <fa-icon *ngIf="layer.geomType === 'Point'" class="me-2" [icon]="pointIcon"></fa-icon>
-          <fa-icon *ngIf="layer.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon"></fa-icon>
-          <fa-icon *ngIf="layer.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon"></fa-icon>
+          <fa-icon *ngIf="layer.geomType === 'Point'" class="me-2" [icon]="pointIcon" size="xs"></fa-icon>
+          <fa-icon *ngIf="layer.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon" size="xs"></fa-icon>
+          <fa-icon *ngIf="layer.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon" size="xs"></fa-icon>
         </div>
 
         <div class="layer-name">
@@ -44,26 +48,26 @@
         </div>
       </div>
 
-      <div class="ms-auto d-flex flex-row">
-
-        <button [ngClass]="currentLayerIdSelected === layer.id ? 'pe-auto' :  'pe-none'" class="ms-auto btn p-1 bg-transparent border-0" (click)="lockingLayer()" ngbPopover="Verrouiler" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="this.layer.locked ? lockIcon : unLockIcon" ></fa-icon>
-        </button>
-
-        <button class="ms-auto btn p-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="centerIcon" ></fa-icon>
-        </button>
+      <div class="ms-auto d-flex flex-row" [ngClass]="currentLayerIdSelected === layer.id ? 'd-block' : 'd-none'">
 
         <button class="ms-auto btn p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="duplicateIcon" ></fa-icon>
+          <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
         </button>
 
         <button [ngClass]="this.layer.locked ? 'pe-none' : 'pe-auto'" class="ms-auto btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="disabledIcon" ></fa-icon>
+          <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
         </button>
 
-        <button class="btn m-1 bg-transparent border-0 text-black" (click)="moveModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayer-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="paramIcon"></fa-icon>
+      </div>
+
+      <div class="ms-auto d-flex flex-row">
+
+        <button class="ms-auto btn p-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
+        </button>
+
+        <button class="btn p-1 bg-transparent border-0 text-black" (click)="moveModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayer-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
         </button>
 
       </div>
