@@ -18,6 +18,7 @@ import WKT from 'ol/format/WKT';
 export class LayerManagerComponent implements OnInit, OnDestroy {
   @Input() map!: Map;
   @Input() currentEpsg!: string;
+  @Input() epsgAvailable!: string[];
 
   @Output() layerSelected = new EventEmitter<layerHandler|null>();
 
@@ -32,7 +33,6 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
 
   existingLayers: any[] = [];
-  // existingLayers: any[] = []; // LayerHandler or GroupHandler list
   layerIdSelected!: string;
   currentLayer!: layerHandler;
   layerNamedIncrement: number = -1;
@@ -72,7 +72,6 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   strInputDataValues: string | null = null;
   strInputEpsgInput: string | null = null;
   modeImportInput: string = 'new';
-  epsgAvailable = ["EPSG:4326", "EPSG:3857"]; // TODO refactor go to layout because shared with geoInfo comp
 
   epsgChangesSubscription!: Subscription;
 

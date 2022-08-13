@@ -20,6 +20,7 @@ import View from 'ol/View';
 export class LayoutComponent implements OnInit, OnDestroy {
 
   currentEpsg!: string;
+  epsgAvailable = ["EPSG:4326", "EPSG:3857"];
 
   // icons
   geoIcon = faGlobe;

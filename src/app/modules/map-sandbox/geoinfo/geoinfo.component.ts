@@ -15,10 +15,10 @@ import Map from 'ol/Map';
 export class GeoinfoComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() currentEpsg!: string;
   @Input() map!: Map;
+  @Input() epsgAvailable!: string[];
 
   mousePositionControl!: MousePosition;
   cursorCoordinates!: any;
-  epsgAvailable = ["EPSG:4326", "EPSG:3857"]; // TODO refactor go to layout because shared with layerManager comp
 
   mapSubscription!: Subscription;
 

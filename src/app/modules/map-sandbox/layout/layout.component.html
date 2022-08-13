@@ -10,6 +10,7 @@
         [ngClass]="currentMenuDisplayed == 'geoTools' ? 'd-block' : 'd-none'"
         [map]="map"
         [currentEpsg]="currentEpsg"
+        [epsgAvailable]="epsgAvailable"
       >
       </app-geoinfo>
 
@@ -19,6 +20,7 @@
         [ngClass]="currentMenuDisplayed == 'createTools' ? 'd-block' : 'd-none'"
         [map]="map"
         [currentEpsg]="currentEpsg"
+        [epsgAvailable]="epsgAvailable"
         (layerSelected)="getSelectedLayer($event)"
       >
       </app-layer-manager>
