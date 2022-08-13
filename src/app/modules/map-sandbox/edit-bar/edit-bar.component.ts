@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { faArrowsUpDownLeftRight, faCircle, faCirclePlus, faDrawPolygon, faGear, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsUpDownLeftRight, faCircle, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil } from '@fortawesome/free-solid-svg-icons';
 
 import { layerHandler } from '@modules/map-sandbox/shared/core';
 
@@ -24,7 +24,8 @@ export class EditBarComponent implements OnInit, OnDestroy {
   addIcon = faCirclePlus;
   editIcon = faPencil;
   paramIcon = faGear;
-  EditIcon = faCircle;
+  lockIcon = faLock;
+  unLockIcon = faLockOpen;
   polygonIcon = faDrawPolygon;
   moveIcon = faArrowsUpDownLeftRight;
 
@@ -88,7 +89,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   unSelectFeature(): void {
-    // this.featureIdSelected = 'none'
     this.layer.select.getFeatures().clear()
 
   }
@@ -100,9 +100,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
     if (status) {
       this.disableEditing(false)
-      // this.drawHandler(false) // disable draw tool
-      // this.drawHoleHandler(false) // disable hole draw tool
-      // this.editHandler(false)
 
       this.translateFeatureEnable()
     } else {
@@ -115,10 +112,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
 
-      // this.drawHandler(false) // disable draw tool
-      // this.drawHoleHandler(false) // disable hole draw tool
-      // this.translateHandler(false)
-
       this.editFeatureEnable()
     } else {
       this.editFeatureDisable()
@@ -129,9 +122,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
 
-      // this.editHandler(false) // disable edit tool
-      // this.drawHoleHandler(false) // disable hole draw tool
-
       this.addFeatureEnable(holeStatus)
     } else {
       this.addFeatureDisable()
@@ -141,9 +131,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   drawHoleHandler(status: boolean, holeStatus: boolean = true): void {
     if (status) {
       this.disableEditing(false)
-
-      // this.drawHandler(false) // disable draw tool
-      // this.editHandler(false) // disable edit tool
 
       this.addHoleFeatureEnable(holeStatus)
     } else {
@@ -160,7 +147,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
     this.layer.disableTranslating()
     this.isMoved = false
   }
-
 
   private addFeatureEnable(holeStatus: boolean = false): void {
     this.layer.enableDrawing(holeStatus);

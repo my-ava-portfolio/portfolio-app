@@ -1,20 +1,21 @@
 
 
-  <div class="d-flex flex-column mx-4 justify-content-center editTools align-items-center bg-dark bg-gradient p-2 rounded-3 shadow">
+  <div class="d-flex flex-column mx-4 editTools bg-dark bg-gradient p-2 m-1 rounded-3 shadow">
 
-    <div class="d-flex flex-row">
-      <h6 class="text-warning fw-bold">{{layer.layerName}}</h6>
-      <span class="">{{ this.layer.locked ? 'None éditable' : 'Editable'}}</span>
+    <div class="d-flex flex-row justify-content-around text-warning m-2">
+      <span class="fw-bold me-1">{{layer.layerName}}</span>
+      <span class="fst-italic">({{layer.geomType}})</span>
+      <fa-icon class="ms-auto" [ngClass]="layer.locked ? 'text-danger' : 'text-success'" [icon]="layer.locked ? lockIcon : unLockIcon" size="1x" [ngbPopover]="layer.locked ? 'None éditable' : 'Editable'" triggers="mouseenter:mouseleave"></fa-icon>
 
     </div>
 
     <div class="d-flex flex-row">
 
-      <div class="d-flex flex-row mx-2 align-items-center shadow border rounded bg-light" [ngClass]="this.layer.locked ? 'pe-none text-secondary' : 'pe-auto'">
+      <div class="d-flex flex-row mx-2 align-items-center shadow border rounded bg-light">
 
         <span class="text-dark mx-2 fw-bold small">Ajouter</span>
 
-        <div class="d-flex flex-row border-start rounded-end p-1">
+        <div class="d-flex flex-row border-start rounded-end p-1" [ngClass]="layer.locked ? 'pe-none text-secondary' : 'pe-auto'">
           <input #btnDraw type="checkbox" class="btn-check" [id]="'btnDraw' + layer.id" [checked]="isDrawn" (change)="drawHandler(btnDraw.checked)">
           <label class="edit-button btn px-1 py-0 border m-1" [for]="'btnDraw' + layer.id" [ngClass]="isDrawn ? 'text-danger' : 'text-success'" [ngbPopover]="'Ajouter un objet de type \'' + layer.geomType + '\''" triggers="mouseenter:mouseleave">
             <fa-icon class="" [icon]="addIcon" size="1x"></fa-icon>
@@ -24,11 +25,11 @@
 
       </div>
 
-      <div class="d-flex flex-row mx-2 align-items-center shadow border rounded bg-light" [ngClass]="this.layer.locked ? 'pe-none text-secondary' : 'pe-auto'">
+      <div class="d-flex flex-row mx-2 align-items-center shadow border rounded bg-light">
 
         <span class="text-dark mx-2 fw-bold small">Editer</span>
 
-        <div class="d-flex flex-row border-start rounded-end p-1">
+        <div class="d-flex flex-row border-start rounded-end p-1" [ngClass]="layer.locked ? 'pe-none text-secondary' : 'pe-auto'">
 
           <input #btnEdit type="checkbox" class="btn-check" [id]="'btnEdit' + layer.id" [checked]="isEdited" (change)="editHandler(btnEdit.checked)">
           <label class="edit-button btn px-1 py-0 border border m-1" [for]="'btnEdit' + layer.id" [ngClass]="isEdited ? 'text-danger' : 'text-success'" ngbPopover="Editer" triggers="mouseenter:mouseleave">
