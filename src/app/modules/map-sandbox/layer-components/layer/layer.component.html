@@ -14,7 +14,7 @@
           <fa-icon class="" [icon]="isVisible ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
         </label>
 
-        <button [ngClass]="currentLayerIdSelected === layer.id ? 'pe-auto' :  'pe-none'" class="ms-auto btn p-1 bg-transparent border-0" (click)="lockingLayer()" ngbPopover="Verrouiler" triggers="mouseenter:mouseleave">
+        <button [ngClass]="currentLayerIdSelected === layer.id ? 'pe-auto' :  'pe-none'" class="ms-auto p-0 m-1 bg-transparent border-0" (click)="lockingLayer()" ngbPopover="Verrouiler" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="this.layer.locked ? lockIcon : unLockIcon" size="xs"></fa-icon>
         </button>
 
@@ -50,11 +50,11 @@
 
       <div class="ms-auto d-flex flex-row" [ngClass]="currentLayerIdSelected === layer.id ? 'd-block' : 'd-none'">
 
-        <button class="ms-auto btn p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
+        <button class="ms-auto p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
         </button>
 
-        <button [ngClass]="this.layer.locked ? 'pe-none' : 'pe-auto'" class="ms-auto btn p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
+        <button [ngClass]="this.layer.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
         </button>
 
@@ -62,11 +62,11 @@
 
       <div class="ms-auto d-flex flex-row">
 
-        <button class="ms-auto btn p-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+        <button class="ms-auto p-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
         </button>
 
-        <button class="btn p-1 bg-transparent border-0 text-black" (click)="moveModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayer-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+        <button class="p-1 bg-transparent border-0 text-black" (click)="moveModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayer-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
         </button>
 
