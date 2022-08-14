@@ -65,7 +65,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
         if (layerSelected !== this.currentLayerSelected) {
           this.editBarEnabled = false
-          this.cdRef.detectChanges();
+          this.cdRef.detectChanges(); // in order to delete/reset the edit bar component
 
           this.currentLayerSelected = layerSelected
           this.editBarEnabled = true

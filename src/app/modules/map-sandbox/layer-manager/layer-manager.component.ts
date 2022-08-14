@@ -113,7 +113,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.currentSelectedLayerIdSubscription = this.interactionsService.currentSelectedLayerId.subscribe(
       (layerIdSelected: string) => {
         this.layerIdSelected = layerIdSelected
-        this.cdRef.detectChanges();
+        this.cdRef.detectChanges(); // to force angular to detect the changes
       }
     )
 
