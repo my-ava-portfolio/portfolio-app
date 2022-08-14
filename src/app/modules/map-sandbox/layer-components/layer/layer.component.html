@@ -75,7 +75,7 @@
     </div>
 
     <div class="d-flex flex-row small mb-1" *ngIf="layer.features().length > 0">
-      <ul id="featuresList" [ngClass]="layerSelected ? 'pe-auto' : 'pe-none'" class="w-100 list-group list-group-flush mx-3 border rounded" [id]="'featuresLayer-' + layer.id">
+      <ul id="featuresList" class="w-100 list-group list-group-flush mx-3 border rounded" [id]="'featuresLayer-' + layer.id">
 
         <li class="feature py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == 'none' ? 'fw-bold bg-secondary bg-opacity-25' : ''" (click)="unSelectFeature()">
           <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill m-1">

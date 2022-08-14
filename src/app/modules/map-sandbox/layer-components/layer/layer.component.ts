@@ -239,7 +239,9 @@ export class LayerComponent implements OnInit {
   }
 
   selectFeatureById(featureId: any): void {
-
+    this.layer.disableSelecting()
+    this.layer.enableSelecting()
+    
     this.featureIdSelected = featureId
 
     let feature = this.getFeature(this.featureIdSelected)
