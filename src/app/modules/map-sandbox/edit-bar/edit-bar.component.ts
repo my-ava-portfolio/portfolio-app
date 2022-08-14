@@ -18,7 +18,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   @Input() currentEpsg!: string;
 
   layer!: layerHandler;
-
+  editBarEnabled = false
   currentLayerIdSelected!: string;
 
   addIcon = faCirclePlus;
@@ -40,8 +40,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   strInputDataValues: string | null = null;
   strInputEspgInput: string | null = null;
 
-  tutu!: Subscription;
-
+  currentSelectedLayerSubscription!: Subscription;
   layerLockStatusSubscription!: Subscription;
 
   constructor(
@@ -56,15 +55,18 @@ export class EditBarComponent implements OnInit, OnDestroy {
       }
     )
 
-
-
-    this.tutu = this.interactionsService.currentSelectedLayer.subscribe(
+    this.currentSelectedLayerSubscription = this.interactionsService.currentSelectedLayer.subscribe(
       (layerSelected: layerHandler | null) => {
+        this.enableSelectingOnAllLayers()
+
         if (this.layer !== undefined) {
           this.resetPreviousSelectedLayer(this.layer)
+          this.editBarEnabled = false
         }
         if (layerSelected !== null) {
           this.layer = layerSelected
+          this.editBarEnabled = true
+
         }
     }
     )
@@ -75,7 +77,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.layerLockStatusSubscription.unsubscribe()
-
+    this.currentSelectedLayerSubscription.unsubscribe()
     this.disableEditing()
   }
 

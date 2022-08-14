@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-layer',
   templateUrl: './layer.component.html',
-  styleUrls: ['./layer.component.scss']
+  styleUrls: ['./layer.component.scss'],
 })
 export class LayerComponent implements OnInit {
   @Input() layer!: layerHandler;
@@ -16,10 +16,7 @@ export class LayerComponent implements OnInit {
   layerIdSelected!: string;
 
   @Input() layersVisibleStatus!: boolean;
-  // layerSelected: boolean = false;
 
-  
-  // @Output() layerSelectedId = new EventEmitter<string>();
   @Output() layerMoveUp = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerMoveDown = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerCloned = new EventEmitter<layerHandler>();
@@ -51,12 +48,11 @@ export class LayerComponent implements OnInit {
   isHole: boolean = false;
   @Input() isLocked: boolean = false;
 
-  // layerSelected: boolean = false;
   featureIdSelected!: string;
 
   removeLayerSubscription!: Subscription;
   selectingStatusSubscription!: Subscription;
-  tutu!: Subscription;
+  currentSelectedLayerIdSubscription!: Subscription;
 
   constructor(
     private elementRef: ElementRef,
@@ -82,9 +78,12 @@ export class LayerComponent implements OnInit {
       }
     )
 
-    this.tutu = this.interactionsService.currentSelectedLayerId.subscribe(
+    this.currentSelectedLayerIdSubscription = this.interactionsService.currentSelectedLayerId.subscribe(
       (layerIdSelected: string) => {
-        this.layerIdSelected = layerIdSelected 
+        if (layerIdSelected === 'none') {
+          this.featureIdSelected = layerIdSelected
+          this.layer.select.getFeatures().clear()
+        }
     })
     
   }
@@ -140,24 +139,12 @@ export class LayerComponent implements OnInit {
     
     this.removeLayerSubscription.unsubscribe();
     this.selectingStatusSubscription.unsubscribe();
-
+    this.currentSelectedLayerIdSubscription.unsubscribe();
 
     this.elementRef.nativeElement.remove();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
-    if (changes.currentLayerIdSelected) {
-      if (!changes.isSelected.currentValue) {
-        // this.currentLayerIdSelected = changes.currentLayerIdSelected.currentValue
-        this.unSelectFeature()  // unselect feature selected if an other layer is selected
-        this.interactionsService.sendSelectedLayerId('none')
-
-        // this.layerSelectedId.emit('none')
-
-      }
-    }
-
 
     // if (changes.isLocked) {
     //   this.lockingLayer(changes.isLocked.currentValue)
@@ -201,8 +188,6 @@ export class LayerComponent implements OnInit {
     this.layerSelected = !this.layerSelected
     this.interactionsService.sendSelectedLayerId(this.layer.id)
     this.interactionsService.sendSelectedLayer(this.layer)
-
-    // this.layerSelectedId.emit(this.layer.id)
   }
 
   zoomToLayer(): void {
@@ -220,8 +205,6 @@ export class LayerComponent implements OnInit {
   getLayerIdFromFeatureSelectedId(layerIdToSelect: string): void {
     // during feature selection
     this.interactionsService.sendSelectedLayerId(layerIdToSelect)
-
-    // this.layerSelectedId.emit(layerIdToSelect)
   }
 
   moveModalToBody(): void {
@@ -240,9 +223,6 @@ export class LayerComponent implements OnInit {
 
   unSelectFeature(): void {
     this.interactionsService.sendSelectedLayerId('none')
-
-    this.featureIdSelected = 'none'
-    this.layer.select.getFeatures().clear()
   }
 
   selectFeatureById(featureId: any): void {
@@ -252,7 +232,6 @@ export class LayerComponent implements OnInit {
     let feature = this.getFeature(this.featureIdSelected)
     this.layer.select.getFeatures().clear()
     this.layer.select.getFeatures().push(feature)
-    // this.featuresDisplayedObservable.next([feature])
   }
   removeFeatureById(featureId: any): void {
     // TODO move it on feature component ?

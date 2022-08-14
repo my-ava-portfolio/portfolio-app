@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { faXmark, faCircle, faWaveSquare, faDrawPolygon, faUpload, faExpand, faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { layerHandler, layerHandlerPositionning } from '@modules/map-sandbox/shared/core';
 
@@ -18,14 +18,13 @@ import { InteractionsService } from '../shared/service/interactions.service';
 @Component({
   selector: 'app-layer-manager',
   templateUrl: './layer-manager.component.html',
-  styleUrls: ['./layer-manager.component.scss']
+  styleUrls: ['./layer-manager.component.scss'],
+
 })
 export class LayerManagerComponent implements OnInit, OnDestroy {
   @Input() map!: Map;
   @Input() currentEpsg!: string;
   @Input() epsgAvailable!: string[];
-
-  @Output() layerSelected = new EventEmitter<layerHandler>();
 
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
   @ViewChild('layersListDiv') layersListDiv!: ElementRef;
@@ -89,13 +88,14 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   modeImportInput: string = 'new';
 
   epsgChangesSubscription!: Subscription;
-  tutu!: Subscription;
+  currentSelectedLayerIdSubscription!: Subscription;
 
   zoomPadding = [100, 100, 100, 100];  // TODO refactor
 
   constructor(
     private mapService: MapService,
-    private interactionsService: InteractionsService
+    private interactionsService: InteractionsService,
+    private cdRef:ChangeDetectorRef
   ) {
 
     this.epsgChangesSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
@@ -110,15 +110,17 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
       }
     )
 
-    this.tutu = this.interactionsService.currentSelectedLayerId.subscribe(
+    this.currentSelectedLayerIdSubscription = this.interactionsService.currentSelectedLayerId.subscribe(
       (layerIdSelected: string) => {
         this.layerIdSelected = layerIdSelected
-    }
+        this.cdRef.detectChanges();
+      }
     )
 
    }
 
   ngOnInit(): void {
+
     this.moveImportDataModalToBody()
   }
 
@@ -128,6 +130,9 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
       this.map.removeLayer(layer.vectorLayer)
       layer.cleanEvents()
     })
+
+    this.epsgChangesSubscription.unsubscribe()
+    this.currentSelectedLayerIdSubscription.unsubscribe()
 
   }
 
@@ -199,14 +204,6 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.buildLayersIndexes()
   }
 
-  getSelectedLayerId(layerId: any): void {
-    // this.layerIdSelected = layerId
-    this.currentLayer = this.getLayerFromId(layerId)
-
-    this.layerSelected.emit(this.currentLayer)
-    this.interactionsService.sendSelectedLayerId(layerId)
-  }
-
   private getLayerFromId(layerId: string): layerHandler {
     let currentLayer = this.existingLayers.filter((layer: layerHandler) => {
       return layer.id === layerId
@@ -221,10 +218,8 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   }
 
   unSelectLayer(): void {
-    // this.layerIdSelected = 'none'
     this.interactionsService.sendSelectedLayerId('none')
-
-
+    this.interactionsService.sendSelectedLayer(null)
   }
 
   buildLayersIndexes(): void {

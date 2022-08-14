@@ -54,7 +54,8 @@ export class layerHandler {
 
   deleted = false;
   locked = false;
-
+  selected = false;
+  
   featuresSelected: any[] = []
   featuresDeselected: any[] = []
 
