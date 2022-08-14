@@ -67,6 +67,8 @@
   <app-edit-bar
   id="editBar"
   class="d-flex flex-row align-items-center justify-content-center m-2"
+  *ngIf="editBarEnabled && currentLayerSelected !== null"
+  [layer]="currentLayerSelected"
   [currentEpsg]="currentEpsg"
   ></app-edit-bar>
 </div>

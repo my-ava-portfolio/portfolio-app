@@ -11,6 +11,7 @@ import { faGlobe, faLayerGroup, faAnglesLeft, faAnglesRight } from '@fortawesome
 
 import { Subscription } from 'rxjs/internal/Subscription';
 import View from 'ol/View';
+import { InteractionsService } from '../shared/service/interactions.service';
 
 @Component({
   selector: 'app-layout',
@@ -35,7 +36,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   isLegendDisplayed = true;
   currentMenuDisplayed = 'createTools'
 
-  currentLayerSelected!: layerHandler;
+  editBarEnabled!: boolean
+  currentLayerSelected!: layerHandler | null;
 
   mapSubscription!: Subscription;
 
@@ -44,6 +46,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private controlerService: ControlerService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
+    private interactionsService: InteractionsService,
+    private cdRef:ChangeDetectorRef
   ) {
 
     this.mapSubscription = this.mapService.map.subscribe(
@@ -53,6 +57,22 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.defaultMapView = this.map.getView()
       }
     );
+
+    this.interactionsService.currentSelectedLayer.subscribe(
+      (layerSelected: layerHandler | null) => {
+
+
+
+        if (layerSelected !== this.currentLayerSelected) {
+          this.editBarEnabled = false
+          this.cdRef.detectChanges();
+
+          this.currentLayerSelected = layerSelected
+          this.editBarEnabled = true
+        } else if (layerSelected === null ) {
+          this.editBarEnabled = false
+        }
+      })
 
    }
 
@@ -80,11 +100,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
-
-  getSelectedLayer(layer: layerHandler): void {
-    this.currentLayerSelected = layer;
-  }
-
 
 }
 

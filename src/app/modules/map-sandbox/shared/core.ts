@@ -54,7 +54,6 @@ export class layerHandler {
 
   deleted = false;
   locked = false;
-  selected = false;
   
   featuresSelected: any[] = []
   featuresDeselected: any[] = []
@@ -473,11 +472,13 @@ export class layerHandler {
   exportToPytestFixture(): string {
     const fixtureHeader = "\n@pytest.fixture\ndef "
     let fixtureFeatures: string[] = []
-    this.features().forEach((feature: any) => {
-      fixtureFeatures.push(
-        fixtureHeader + feature.get('name').replace(' ', '_') + '():\n\treturn \'' + getWkt(feature.getGeometry()) + '\''
-      )
-    })
+    if (this.features() !== undefined) {
+      this.features().forEach((feature: any) => {
+        fixtureFeatures.push(
+          fixtureHeader + feature.get('name').replace(' ', '_') + '():\n\treturn \'' + getWkt(feature.getGeometry()) + '\''
+        )
+      })
+    }
     return 'import pytest\n' + fixtureFeatures.join('\n')
 
   }

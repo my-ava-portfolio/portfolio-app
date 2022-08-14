@@ -54,6 +54,8 @@ export class LayerComponent implements OnInit {
   selectingStatusSubscription!: Subscription;
   currentSelectedLayerIdSubscription!: Subscription;
 
+  displayLayerModal = false;
+
   constructor(
     private elementRef: ElementRef,
     private interactionsService: InteractionsService,
@@ -207,7 +209,12 @@ export class LayerComponent implements OnInit {
     this.interactionsService.sendSelectedLayerId(layerIdToSelect)
   }
 
+  hideModalLayer(): void {
+    this.displayLayerModal = false;
+  }
+
   moveModalToBody(): void {
+    this.displayLayerModal = true;
     // TODO create a global function
     let modalLayerDiv = document.getElementById('modalLayer-'+ this.layer.id);
     if (modalLayerDiv !== null) {

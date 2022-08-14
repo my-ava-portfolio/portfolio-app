@@ -14,10 +14,10 @@ import { Subscription } from 'rxjs/internal/Subscription';
   styleUrls: ['./edit-bar.component.scss']
 })
 export class EditBarComponent implements OnInit, OnDestroy {
-  // @Input() layer!: layerHandler;
+  @Input() layer!: layerHandler;
   @Input() currentEpsg!: string;
 
-  layer!: layerHandler;
+  // layer!: layerHandler;
   editBarEnabled = false
   currentLayerIdSelected!: string;
 
@@ -40,7 +40,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   strInputDataValues: string | null = null;
   strInputEspgInput: string | null = null;
 
-  currentSelectedLayerSubscription!: Subscription;
   layerLockStatusSubscription!: Subscription;
 
   constructor(
@@ -55,39 +54,19 @@ export class EditBarComponent implements OnInit, OnDestroy {
       }
     )
 
-    this.currentSelectedLayerSubscription = this.interactionsService.currentSelectedLayer.subscribe(
-      (layerSelected: layerHandler | null) => {
-        this.enableSelectingOnAllLayers()
-
-        if (this.layer !== undefined) {
-          this.resetPreviousSelectedLayer(this.layer)
-          this.editBarEnabled = false
-        }
-        if (layerSelected !== null) {
-          this.layer = layerSelected
-          this.editBarEnabled = true
-
-        }
-    }
-    )
   }
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
+    this.enableSelectingOnAllLayers()
+
     this.layerLockStatusSubscription.unsubscribe()
-    this.currentSelectedLayerSubscription.unsubscribe()
     this.disableEditing()
   }
 
   ngOnChanges(changes: any) {
-    // if (changes.layer) {
-    //   if (!changes.layer.firstChange) {
-    //     this.resetPreviousSelectedLayer(changes.layer.previousValue)
-    //   }
-    // }
-    // this.layer = changes.layer.currentValue
   }
 
   resetPreviousSelectedLayer(previousLayer: layerHandler): void {
@@ -188,13 +167,11 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   private editFeatureEnable(): void {
-    this.disableSelectingOnAllLayers()
     this.layer.enableEditing()
     this.isEdited = true;
   }
 
   private editFeatureDisable(): void {
-    this.enableSelectingOnAllLayers()
     this.layer.disableEditing()
     this.isEdited = false
   }
