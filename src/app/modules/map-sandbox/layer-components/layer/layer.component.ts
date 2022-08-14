@@ -168,14 +168,11 @@ export class LayerComponent implements OnInit {
   lockingLayer(status: boolean): void {
     this.isLocked = status
     this.layer.locked = this.isLocked
-    // this.interactionsService.setLayerLockStatus(this.layer.locked)
     if (this.layer.locked) {
       this.layer.disableSelecting()
-      this.layer.disableEditing()
+      this.unSelectFeature()
     } else {
       this.layer.enableSelecting()
-      this.layer.enableEditing()
-
     }
   }
 

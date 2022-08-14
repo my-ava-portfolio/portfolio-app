@@ -46,13 +46,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
     private interactionsService: InteractionsService
   ) {
 
-    // this.layerLockStatusSubscription = this.interactionsService.layerLockStatus.subscribe(
-    //   (locked: boolean) => {
-    //     if (locked) {
-    //       this.disableEditing()
-    //     }
-    //   }
-    // )
 
   }
 
@@ -60,9 +53,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.enableSelectingOnAllLayers()
-
-    // this.layerLockStatusSubscription.unsubscribe()
     this.disableEditing()
   }
 
@@ -128,9 +118,13 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
 
+      this.disableSelectingOnAllLayers()
+
       this.addFeatureEnable(holeStatus)
     } else {
       this.addFeatureDisable()
+      this.enableSelectingOnAllLayers()
+
     }
   }
 
@@ -138,9 +132,13 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
 
+      // this.disableSelectingOnAllLayers()
+
       this.addHoleFeatureEnable(holeStatus)
     } else {
       this.addHoleFeatureDisable()
+      // this.enableSelectingOnAllLayers()
+
     }
   }
 
@@ -155,13 +153,13 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   private addFeatureEnable(holeStatus: boolean = false): void {
-    this.disableSelectingOnAllLayers()
+    // this.disableSelectingOnAllLayers()
     this.layer.enableDrawing(holeStatus);
     this.isDrawn = true;
   }
 
   private addFeatureDisable(): void {
-    this.enableSelectingOnAllLayers()
+    // this.enableSelectingOnAllLayers()
     this.layer.disableDrawing();
     this.isDrawn = false;
   }
@@ -172,17 +170,18 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   private editFeatureDisable(): void {
+    // this.enableSelectingOnAllLayers()
     this.layer.disableEditing()
     this.isEdited = false
   }
 
   private addHoleFeatureEnable(holeStatus: boolean = true): void {
-    this.disableSelectingOnAllLayers()
+    // this.disableSelectingOnAllLayers()
     this.layer.enableDrawing(holeStatus);
     this.isHole = true;
   }
   private addHoleFeatureDisable(): void {
-    this.enableSelectingOnAllLayers()
+    // this.enableSelectingOnAllLayers()
 
     this.layer.disableDrawing();
     this.isHole = false;
