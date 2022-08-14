@@ -71,9 +71,11 @@ export class LayerComponent implements OnInit {
       (isEnabled: boolean) => {
         if (!this.layerSelected) {
           if (isEnabled) {
+            // this.lockingLayer(true)
             this.layer.enableSelecting()
           } else {
             this.layer.disableSelecting()
+            // this.lockingLayer(false)
           }
         }
 
@@ -148,9 +150,9 @@ export class LayerComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
 
-    // if (changes.isLocked) {
-    //   this.lockingLayer(changes.isLocked.currentValue)
-    // }
+    if (changes.isLocked) {
+      this.lockingLayer(changes.isLocked.currentValue)
+    }
   
 
     if (changes.isVisible) {
@@ -166,8 +168,15 @@ export class LayerComponent implements OnInit {
   lockingLayer(status: boolean): void {
     this.isLocked = status
     this.layer.locked = this.isLocked
-    this.interactionsService.setLayerLockStatus(this.layer.locked)
-    this.interactionsService.setSelectingLayers(!status) // if lock disable the selecting 
+    // this.interactionsService.setLayerLockStatus(this.layer.locked)
+    if (this.layer.locked) {
+      this.layer.disableSelecting()
+      this.layer.disableEditing()
+    } else {
+      this.layer.enableSelecting()
+      this.layer.enableEditing()
+
+    }
   }
 
   removeLayer(): void {

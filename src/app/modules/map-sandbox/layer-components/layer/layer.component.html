@@ -15,7 +15,7 @@
         </label>
 
         <input #btnLocked type="checkbox" class="btn-check" [id]="'btnLocked' + layer.id" [checked]="isLocked" (click)="lockingLayer(btnLocked.checked)">
-        <label class="ms-auto p-1 bg-transparent border-0 pointer" [for]="'btnLocked' + layer.id" container="body" [ngbPopover]="btnLocked.checked ? 'Verrouiler' : 'Déverouiller'" triggers="mouseenter:mouseleave">
+        <label class="ms-auto p-1 bg-transparent border-0 pointer" [for]="'btnLocked' + layer.id" container="body" [ngbPopover]="btnLocked.checked ? 'Déverrouiler' : 'Verrouiller'" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="btnLocked.checked ? lockIcon : unLockIcon" size="xs"></fa-icon>
         </label>
 

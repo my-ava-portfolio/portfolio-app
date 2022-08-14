@@ -46,13 +46,13 @@ export class EditBarComponent implements OnInit, OnDestroy {
     private interactionsService: InteractionsService
   ) {
 
-    this.layerLockStatusSubscription = this.interactionsService.layerLockStatus.subscribe(
-      (locked: boolean) => {
-        if (locked) {
-          this.disableEditing()
-        }
-      }
-    )
+    // this.layerLockStatusSubscription = this.interactionsService.layerLockStatus.subscribe(
+    //   (locked: boolean) => {
+    //     if (locked) {
+    //       this.disableEditing()
+    //     }
+    //   }
+    // )
 
   }
 
@@ -62,7 +62,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.enableSelectingOnAllLayers()
 
-    this.layerLockStatusSubscription.unsubscribe()
+    // this.layerLockStatusSubscription.unsubscribe()
     this.disableEditing()
   }
 
