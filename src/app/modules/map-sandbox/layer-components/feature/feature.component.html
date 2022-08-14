@@ -37,6 +37,10 @@
         <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
       </button>
 
+      <button class="p-1 bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
+      </button>
+
     </div>
 
   </div>
@@ -59,7 +63,7 @@
         <strong>{{ feature.get('name') }}</strong>
         <em class="ms-2 me-auto me-auto">({{ feature.get('geom_type') }})</em>
         <em class="ms-auto">Couche: {{ currentLayer.layerName }}</em>
-        <button type="button" class="btn-close" aria-label="Close" (click)="hidePopup()"></button>
+        <button type="button" class="btn-close" aria-label="Close" (click)="showPopup()"></button>
 
       </div>
 

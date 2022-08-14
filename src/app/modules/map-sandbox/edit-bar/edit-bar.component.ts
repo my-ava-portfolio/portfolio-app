@@ -54,15 +54,10 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.disableEditing()
+    this.layer.enableSelecting()
   }
 
   ngOnChanges(changes: any) {
-  }
-
-  resetPreviousSelectedLayer(previousLayer: layerHandler): void {
-    this.layer = previousLayer
-
-    this.disableEditing()
   }
 
   disableSelectingOnAllLayers(): void { // not really on all layer

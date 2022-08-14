@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { faExpand, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faExpand, faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { getWkt } from '@modules/map-sandbox/shared/core';
 import { layerHandler } from '@modules/map-sandbox/shared/core';
@@ -23,26 +23,25 @@ export class FeatureComponent implements OnInit {
   disabledIcon = faXmark;
   duplicateIcon = faClone;
   centerIcon = faExpand;
+  paramIcon = faGear;
 
   currentFillColor!: string;
   currentStrokeColor!: string;
   currentStrokeWidth!: number;
 
-  displayPopup: boolean = true;
+  displayPopup: boolean = false;
 
   constructor(
     private elementRef: ElementRef
   ) {
-
-
   }
 
   ngOnInit(): void {
-    this.moveToastsFeaturesToBody()
 
     this.currentFillColor = this.feature.get('fill_color')
     this.currentStrokeColor = this.feature.get('stroke_color')
     this.currentStrokeWidth = this.feature.get('stroke_width')
+
   }
 
   ngOnDestroy(): void {
@@ -63,7 +62,6 @@ export class FeatureComponent implements OnInit {
     const featureId = this.feature.getId()
     if (typeof featureId === 'string') {
       this.featureIdSelected.emit(featureId)
-      this.displayPopup = true;
     }
   }
 
@@ -75,22 +73,8 @@ export class FeatureComponent implements OnInit {
     this.duplicateFeatureEvent.emit(this.feature.getId())
   }
 
-  hidePopup(): void {
-    this.displayPopup = false;
-  }
-
-  moveToastsFeaturesToBody(): void {
-    // TODO create a global function
-    let toastFeatureDiv = document.getElementById("featureToasts");
-
-    if (toastFeatureDiv !== null) {
-
-      let bodyDiv = document.body;
-      if (bodyDiv !== null) {
-        bodyDiv.appendChild(toastFeatureDiv)
-
-      }
-    }
+  showPopup(): void {
+    this.displayPopup = !this.displayPopup;
   }
 
   copyToClipboard(value: string): void {

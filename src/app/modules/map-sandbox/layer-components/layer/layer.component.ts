@@ -84,8 +84,8 @@ export class LayerComponent implements OnInit {
 
     this.currentSelectedLayerIdSubscription = this.interactionsService.currentSelectedLayerId.subscribe(
       (layerIdSelected: string) => {
-        if (layerIdSelected === 'none') {
-          this.featureIdSelected = layerIdSelected
+        if (layerIdSelected !== this.layer.id) {
+          this.featureIdSelected = 'none'
           this.layer.select.getFeatures().clear()
         }
     })
