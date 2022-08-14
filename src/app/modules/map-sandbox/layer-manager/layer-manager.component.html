@@ -40,12 +40,12 @@
 
 <div id="layersTools" class="d-flex flex-row justfiy-content-around mx-2">
 
-  <!-- <input #btnVisible type="checkbox" class="btn-check" id="btnVisibleLayers" [checked]="true" (click)="visibleLayers(btnVisible.checked)">
+  <input #btnVisible type="checkbox" class="btn-check" id="btnVisibleLayers" [checked]="true" (click)="visibleLayers(btnVisible.checked)">
   <label class="p-1 bg-transparent border-0 pointer" for="btnVisibleLayers" [ngClass]="btnVisible.checked ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="btnVisible.checked ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="btnVisible.checked ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
   </label>
 
-  <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="lockLayers(btnLock.checked)">
+  <!-- <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="lockLayers(btnLock.checked)">
   <label class="p-1 bg-transparent border-0 pointer" for="btnLockLayers" container="body" [ngbPopover]="btnLock.checked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="btnLock.checked ? lockIcon : unLockIcon" size="xs"></fa-icon>
   </label> -->
@@ -83,7 +83,7 @@
         <app-layer
           [layer]="layer"
           [layerSelected]="layerIdSelected === layer.id"
-          [isVisible]="layersVisibleStatus"
+          [isVisible]="forceVisibleStatus"
           [isLocked]="layersLockStatus"
           (layerMoveUp)="layerGoUp($event)"
           (layerMoveDown)="layerGoDown($event)"

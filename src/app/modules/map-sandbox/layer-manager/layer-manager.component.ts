@@ -41,7 +41,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   lockIcon = faLock;
   unLockIcon = faLockOpen;
 
-  layersVisibleStatus: boolean = true;
+  forceVisibleStatus: boolean = true;
   layersLockStatus: boolean = false;
 
   existingLayers: layerHandler[] = [];
@@ -311,9 +311,9 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     );
   }
 
-  // visibleLayers(status: boolean): void {
-  //   this.layersVisibleStatus = status
-  // }
+  visibleLayers(status: boolean): void {
+    this.forceVisibleStatus = status
+  }
 
   // lockLayers(status: boolean): void {
   //   this.layersLockStatus = status

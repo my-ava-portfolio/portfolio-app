@@ -153,9 +153,9 @@ export class LayerComponent implements OnInit {
     // }
   
 
-    // if (changes.isVisible) {
-    //   this.visibleHandler(changes.isVisible.currentValue)
-    // }
+    if (changes.isVisible) {
+      this.visibleHandler(changes.isVisible.currentValue)
+    }
   }
 
   visibleHandler(status: boolean): void {
