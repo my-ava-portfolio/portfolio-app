@@ -89,6 +89,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   modeImportInput: string = 'new';
 
   epsgChangesSubscription!: Subscription;
+  tutu!: Subscription;
 
   zoomPadding = [100, 100, 100, 100];  // TODO refactor
 
@@ -107,6 +108,12 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
         this.currentEpsg = epsg;
       }
+    )
+
+    this.tutu = this.interactionsService.currentSelectedLayerId.subscribe(
+      (layerIdSelected: string) => {
+        this.layerIdSelected = layerIdSelected
+    }
     )
 
    }
@@ -193,11 +200,11 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   }
 
   getSelectedLayerId(layerId: any): void {
-    this.layerIdSelected = layerId
+    // this.layerIdSelected = layerId
     this.currentLayer = this.getLayerFromId(layerId)
 
     this.layerSelected.emit(this.currentLayer)
-
+    this.interactionsService.sendSelectedLayerId(layerId)
   }
 
   private getLayerFromId(layerId: string): layerHandler {
@@ -214,8 +221,9 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   }
 
   unSelectLayer(): void {
-    this.layerIdSelected = 'none'
-    // this.layerSelected.emit(null)
+    // this.layerIdSelected = 'none'
+    this.interactionsService.sendSelectedLayerId('none')
+
 
   }
 

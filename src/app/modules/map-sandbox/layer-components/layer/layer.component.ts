@@ -12,12 +12,14 @@ import { Subscription } from 'rxjs';
 })
 export class LayerComponent implements OnInit {
   @Input() layer!: layerHandler;
-  @Input() currentLayerIdSelected!: string;
+  @Input() layerSelected!: boolean;
+  layerIdSelected!: string;
 
   @Input() layersVisibleStatus!: boolean;
+  // layerSelected: boolean = false;
 
   
-  @Output() layerSelectedId = new EventEmitter<string>();
+  // @Output() layerSelectedId = new EventEmitter<string>();
   @Output() layerMoveUp = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerMoveDown = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerCloned = new EventEmitter<layerHandler>();
@@ -49,20 +51,42 @@ export class LayerComponent implements OnInit {
   isHole: boolean = false;
   @Input() isLocked: boolean = false;
 
-  layerSelected: boolean = false;
+  // layerSelected: boolean = false;
   featureIdSelected!: string;
 
   removeLayerSubscription!: Subscription;
-    
+  selectingStatusSubscription!: Subscription;
+  tutu!: Subscription;
+
   constructor(
     private elementRef: ElementRef,
     private interactionsService: InteractionsService,
   ) {
+
     this.removeLayerSubscription = this.interactionsService.removeLayers.subscribe(
       (_: boolean) => {
         this.removeLayer()
       }
     )
+  
+    this.selectingStatusSubscription = this.interactionsService.selectingLayerStatus.subscribe(
+      (isEnabled: boolean) => {
+        if (!this.layerSelected) {
+          if (isEnabled) {
+            this.layer.enableSelecting()
+          } else {
+            this.layer.disableSelecting()
+          }
+        }
+
+      }
+    )
+
+    this.tutu = this.interactionsService.currentSelectedLayerId.subscribe(
+      (layerIdSelected: string) => {
+        this.layerIdSelected = layerIdSelected 
+    })
+    
   }
 
   ngOnInit(): void {
@@ -74,18 +98,16 @@ export class LayerComponent implements OnInit {
     this.layer.select.on("select", (event: any) => {
       let deselected = event.deselected
       let selected = event.selected
-
+      
       if (deselected.length > 0 && selected.length === 0) {
-        deselected.forEach((_: any) => {
-          this.unSelectFeature()
-        })
+        this.unSelectFeature()
+
       }
 
       if (selected.length > 0) {
         selected.forEach((feature: any) => {
           this.featureIdSelected = feature.getId();
           this.selectFeatureById(this.featureIdSelected)
-
         })
 
       }
@@ -115,6 +137,10 @@ export class LayerComponent implements OnInit {
     if (modalWktDiv !== null) {
       modalWktDiv.remove()
     }
+    
+    this.removeLayerSubscription.unsubscribe();
+    this.selectingStatusSubscription.unsubscribe();
+
 
     this.elementRef.nativeElement.remove();
   }
@@ -122,8 +148,13 @@ export class LayerComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes.currentLayerIdSelected) {
-      if (changes.currentLayerIdSelected.currentValue !== this.layer.id) {
+      if (!changes.isSelected.currentValue) {
+        // this.currentLayerIdSelected = changes.currentLayerIdSelected.currentValue
         this.unSelectFeature()  // unselect feature selected if an other layer is selected
+        this.interactionsService.sendSelectedLayerId('none')
+
+        // this.layerSelectedId.emit('none')
+
       }
     }
 
@@ -147,6 +178,7 @@ export class LayerComponent implements OnInit {
     this.isLocked = status
     this.layer.locked = this.isLocked
     this.interactionsService.setLayerLockStatus(this.layer.locked)
+    this.interactionsService.setSelectingLayers(!status) // if lock disable the selecting 
   }
 
   removeLayer(): void {
@@ -167,7 +199,10 @@ export class LayerComponent implements OnInit {
     this.unSelectFeature()
 
     this.layerSelected = !this.layerSelected
-    this.layerSelectedId.emit(this.layer.id)
+    this.interactionsService.sendSelectedLayerId(this.layer.id)
+    this.interactionsService.sendSelectedLayer(this.layer)
+
+    // this.layerSelectedId.emit(this.layer.id)
   }
 
   zoomToLayer(): void {
@@ -184,7 +219,9 @@ export class LayerComponent implements OnInit {
 
   getLayerIdFromFeatureSelectedId(layerIdToSelect: string): void {
     // during feature selection
-    this.layerSelectedId.emit(layerIdToSelect)
+    this.interactionsService.sendSelectedLayerId(layerIdToSelect)
+
+    // this.layerSelectedId.emit(layerIdToSelect)
   }
 
   moveModalToBody(): void {
@@ -202,6 +239,8 @@ export class LayerComponent implements OnInit {
   // START FEATURE FUNCS //
 
   unSelectFeature(): void {
+    this.interactionsService.sendSelectedLayerId('none')
+
     this.featureIdSelected = 'none'
     this.layer.select.getFeatures().clear()
   }

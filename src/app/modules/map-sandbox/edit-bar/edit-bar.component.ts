@@ -14,10 +14,10 @@ import { Subscription } from 'rxjs/internal/Subscription';
   styleUrls: ['./edit-bar.component.scss']
 })
 export class EditBarComponent implements OnInit, OnDestroy {
-  @Input() layer!: layerHandler;
+  // @Input() layer!: layerHandler;
   @Input() currentEpsg!: string;
 
-  // layer!: layerHandler;
+  layer!: layerHandler;
 
   currentLayerIdSelected!: string;
 
@@ -40,6 +40,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   strInputDataValues: string | null = null;
   strInputEspgInput: string | null = null;
 
+  tutu!: Subscription;
 
   layerLockStatusSubscription!: Subscription;
 
@@ -54,6 +55,19 @@ export class EditBarComponent implements OnInit, OnDestroy {
         }
       }
     )
+
+
+
+    this.tutu = this.interactionsService.currentSelectedLayer.subscribe(
+      (layerSelected: layerHandler | null) => {
+        if (this.layer !== undefined) {
+          this.resetPreviousSelectedLayer(this.layer)
+        }
+        if (layerSelected !== null) {
+          this.layer = layerSelected
+        }
+    }
+    )
   }
 
   ngOnInit(): void {
@@ -66,23 +80,26 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: any) {
-    this.disableEditing()
-
-    if (changes.layer) {
-      if (!changes.layer.firstChange) {
-        this.resetPreviousSelectedLayer(changes.layer.previousValue)
-      }
-    }
-    this.layer = changes.layer.currentValue
-
-
-
+    // if (changes.layer) {
+    //   if (!changes.layer.firstChange) {
+    //     this.resetPreviousSelectedLayer(changes.layer.previousValue)
+    //   }
+    // }
+    // this.layer = changes.layer.currentValue
   }
 
   resetPreviousSelectedLayer(previousLayer: layerHandler): void {
     this.layer = previousLayer
 
     this.disableEditing()
+  }
+
+  disableSelectingOnAllLayers(): void { // not really on all layer
+    this.interactionsService.setSelectingLayers(false)
+  }
+
+  enableSelectingOnAllLayers(): void {
+    this.interactionsService.setSelectingLayers(true)
   }
 
   disableEditing(unSelectLayer: boolean = true): void {
@@ -157,30 +174,37 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   private addFeatureEnable(holeStatus: boolean = false): void {
+    this.disableSelectingOnAllLayers()
     this.layer.enableDrawing(holeStatus);
     this.isDrawn = true;
   }
 
   private addFeatureDisable(): void {
+    this.enableSelectingOnAllLayers()
     this.layer.disableDrawing();
     this.isDrawn = false;
   }
 
   private editFeatureEnable(): void {
+    this.disableSelectingOnAllLayers()
     this.layer.enableEditing()
     this.isEdited = true;
   }
 
   private editFeatureDisable(): void {
+    this.enableSelectingOnAllLayers()
     this.layer.disableEditing()
     this.isEdited = false
   }
 
   private addHoleFeatureEnable(holeStatus: boolean = true): void {
+    this.disableSelectingOnAllLayers()
     this.layer.enableDrawing(holeStatus);
     this.isHole = true;
   }
   private addHoleFeatureDisable(): void {
+    this.enableSelectingOnAllLayers()
+
     this.layer.disableDrawing();
     this.isHole = false;
   }

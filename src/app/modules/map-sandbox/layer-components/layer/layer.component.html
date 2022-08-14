@@ -5,7 +5,7 @@
   >
 
     <div class="d-flex flex-row border rounded"
-    [ngClass]="currentLayerIdSelected === layer.id ? 'border-dark border-2' :  ''"
+    [ngClass]="layerSelected ? 'border-dark border-2' :  ''"
     >
 
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
@@ -19,7 +19,7 @@
           <fa-icon class="" [icon]="btnLocked.checked ? lockIcon : unLockIcon" size="xs"></fa-icon>
         </label>
 
-        <div class="d-flex flex-column" [ngClass]="currentLayerIdSelected === layer.id ? 'pe-auto' :  'pe-none'">
+        <div class="d-flex flex-column" [ngClass]="layerSelected ? 'pe-auto' :  'pe-none'">
           <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
             <fa-icon class="" [icon]="upIcon" size="xs"></fa-icon>
           </button>
@@ -35,7 +35,7 @@
       <div
         class="d-flex flex-row pointer justify-content-start align-items-center flex-fill p-1"
         (click)="selectLayer()"
-        [ngClass]="currentLayerIdSelected === layer.id ? 'fw-bold' :  'text-black'"
+        [ngClass]="layerSelected ? 'fw-bold' :  'text-black'"
         data-bs-toggle="collapse" [attr.data-bs-target]="'#featuresLayer-' + layer.id" aria-expanded="false" aria-controls="collapseExample"
       >
         <div class="">
@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <div class="ms-auto d-flex flex-row" [ngClass]="currentLayerIdSelected === layer.id ? 'd-block' : 'd-none'">
+      <div class="ms-auto d-flex flex-row" [ngClass]="layerSelected ? 'd-block' : 'd-none'">
 
         <button class="ms-auto p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>

@@ -21,7 +21,6 @@
         [map]="map"
         [currentEpsg]="currentEpsg"
         [epsgAvailable]="epsgAvailable"
-        (layerSelected)="getSelectedLayer($event)"
       >
       </app-layer-manager>
 
@@ -68,8 +67,6 @@
   <app-edit-bar
   id="editBar"
   class="d-flex flex-row align-items-center justify-content-center m-2"
-  *ngIf="currentLayerSelected"
-  [layer]=currentLayerSelected
   [currentEpsg]="currentEpsg"
   ></app-edit-bar>
 </div>

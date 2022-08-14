@@ -63,7 +63,7 @@
 
 <div id="layersContainer" class="d-flex flex-column mx-2 overflow-auto">
 
-  <div #layersListDiv id="layersList" class="d-flex flex-column justify-content-start mb-2">
+  <div #layersListDi id="layersList" class="d-flex flex-column justify-content-start mb-2">
 
     <div
       class="layer pointer d-flex flex-column small mt-1 mx-1 px-1 align-items-around"
@@ -82,10 +82,9 @@
 
         <app-layer
           [layer]="layer"
-          [currentLayerIdSelected]="layerIdSelected"
+          [layerSelected]="layerIdSelected === layer.id"
           [isVisible]="layersVisibleStatus"
           [isLocked]="layersLockStatus"
-          (layerSelectedId)="getSelectedLayerId($event)"
           (layerMoveUp)="layerGoUp($event)"
           (layerMoveDown)="layerGoDown($event)"
           (layerCloned)="duplicateLayer($event)"
