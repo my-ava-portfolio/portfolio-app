@@ -1,14 +1,19 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { faXmark, faCircle, faWaveSquare, faDrawPolygon, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faCircle, faWaveSquare, faDrawPolygon, faUpload, faExpand, faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { layerHandler, layerHandlerPositionning } from '@modules/map-sandbox/shared/core';
 
 import Map from 'ol/Map';
+import {createEmpty} from 'ol/extent';
+import {extend} from 'ol/extent';
+
 import { MapService } from '@services/map.service';
 import { Subscription } from 'rxjs';
 
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import WKT from 'ol/format/WKT';
+import { faEye } from '@fortawesome/free-regular-svg-icons';
+import { InteractionsService } from '../shared/service/interactions.service';
 
 @Component({
   selector: 'app-layer-manager',
@@ -20,7 +25,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   @Input() currentEpsg!: string;
   @Input() epsgAvailable!: string[];
 
-  @Output() layerSelected = new EventEmitter<layerHandler|null>();
+  @Output() layerSelected = new EventEmitter<layerHandler>();
 
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
   @ViewChild('layersListDiv') layersListDiv!: ElementRef;
@@ -31,8 +36,18 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   polygonIcon = faDrawPolygon;
   loadIcon = faUpload;
 
+  visibleIcon = faEye;
+  invisibleIcon = faEyeSlash;
+  centerIcon = faExpand;
+  lockIcon = faLock;
+  unLockIcon = faLockOpen;
 
-  existingLayers: any[] = [];
+  layersVisibleStatus: boolean = true;
+  layersLockStatus: boolean = false;
+
+  existingLayers: layerHandler[] = [];
+  allLayers: layerHandler[] = [];
+
   layerIdSelected!: string;
   currentLayer!: layerHandler;
   layerNamedIncrement: number = -1;
@@ -75,8 +90,11 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   epsgChangesSubscription!: Subscription;
 
+  zoomPadding = [100, 100, 100, 100];  // TODO refactor
+
   constructor(
     private mapService: MapService,
+    private interactionsService: InteractionsService
   ) {
 
     this.epsgChangesSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
@@ -159,10 +177,12 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   layerGoUp(layerId: string): void {
     this.existingLayers = layerHandlerPositionning(this.existingLayers, layerId, 1)
+    this.refreshLayers()
   }
 
   layerGoDown(layerId: string): void {
     this.existingLayers = layerHandlerPositionning(this.existingLayers, layerId, -1)
+    this.refreshLayers()
   }
 
   removeLayer(layerId: string): void {
@@ -177,6 +197,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.currentLayer = this.getLayerFromId(layerId)
 
     this.layerSelected.emit(this.currentLayer)
+
   }
 
   private getLayerFromId(layerId: string): layerHandler {
@@ -187,19 +208,19 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   }
 
   refreshLayers(): void {
-    this.existingLayers = this.existingLayers.filter((layer: layerHandler) => {
+    this.allLayers = this.existingLayers.filter((layer: layerHandler) => {
       return !layer.deleted;
-    })
+    }).sort((a, b) => (a.zIndexValue > b.zIndexValue ? -1 : 1))
   }
 
   unSelectLayer(): void {
     this.layerIdSelected = 'none'
-    this.layerSelected.emit(null)
+    // this.layerSelected.emit(null)
 
   }
 
   buildLayersIndexes(): void {
-    let existingLayers = this.existingLayers.sort((a, b) => (a.zIndexValue < b.zIndexValue ? -1 : 1))
+    let existingLayers = this.existingLayers
 
     this.existingLayers = []
     existingLayers.forEach((layer: layerHandler, idx: number) => {
@@ -274,6 +295,31 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.strInputEpsgInput = null;
     this.modeImportInput = 'new';
   }
+
+  // START layers controlers //
+  zoomLayers(): void {
+    let emptyExtent = createEmpty();
+    this.existingLayers.forEach((layer: layerHandler) => {
+      extend(emptyExtent, layer.sourceFeatures.getExtent());
+    })
+    this.map.getView().fit(
+      emptyExtent,
+      { size: this.map.getSize(), padding: this.zoomPadding }
+    );
+  }
+
+  // visibleLayers(status: boolean): void {
+  //   this.layersVisibleStatus = status
+  // }
+
+  // lockLayers(status: boolean): void {
+  //   this.layersLockStatus = status
+  // }
+
+  removeLayers(): void {
+    this.interactionsService.removeAllLayers()
+  }
+  // END layers controlers //
 
 }
 

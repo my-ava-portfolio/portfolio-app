@@ -9,14 +9,15 @@
     >
 
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
-        <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.id" [checked]="isVisible" (change)="visibleHandler(btnVisible.checked)">
-        <label class="p-1 bg-transparent border-0 pointer" [for]="'btnVisible' + layer.id" [ngClass]="isVisible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="isVisible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="isVisible ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
+        <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.id" [checked]="isVisible" (click)="visibleHandler(btnVisible.checked)">
+        <label class="p-1 bg-transparent border-0 pointer" [for]="'btnVisible' + layer.id" [ngClass]="btnVisible.checked ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="btnVisible.checked ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="btnVisible.checked ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
         </label>
 
-        <button [ngClass]="currentLayerIdSelected === layer.id ? 'pe-auto' :  'pe-none'" class="ms-auto p-0 m-1 bg-transparent border-0" (click)="lockingLayer()" ngbPopover="Verrouiler" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="this.layer.locked ? lockIcon : unLockIcon" size="xs"></fa-icon>
-        </button>
+        <input #btnLocked type="checkbox" class="btn-check" [id]="'btnLocked' + layer.id" [checked]="isLocked" (click)="lockingLayer(btnLocked.checked)">
+        <label class="ms-auto p-1 bg-transparent border-0 pointer" [for]="'btnLocked' + layer.id" container="body" [ngbPopover]="btnLocked.checked ? 'Verrouiler' : 'Déverouiller'" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="btnLocked.checked ? lockIcon : unLockIcon" size="xs"></fa-icon>
+        </label>
 
         <div class="d-flex flex-column" [ngClass]="currentLayerIdSelected === layer.id ? 'pe-auto' :  'pe-none'">
           <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
@@ -99,7 +100,6 @@
           (featureIdSelected)="selectFeatureById($event)"
           (removeFeatureEvent)="removeFeatureById($event)"
           (duplicateFeatureEvent)="duplicateFeatureById($event)"
-
           >
           </app-feature>
         </ng-container>

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { faArrowsUpDownLeftRight, faCircle, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil } from '@fortawesome/free-solid-svg-icons';
 
@@ -14,10 +14,10 @@ import { Subscription } from 'rxjs/internal/Subscription';
   styleUrls: ['./edit-bar.component.scss']
 })
 export class EditBarComponent implements OnInit, OnDestroy {
-  @Input() layerContainer!: layerHandler | null;
+  @Input() layer!: layerHandler;
   @Input() currentEpsg!: string;
 
-  layer!: layerHandler;
+  // layer!: layerHandler;
 
   currentLayerIdSelected!: string;
 
@@ -31,9 +31,9 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   isDrawn: boolean = false;
   isEdited: boolean = false;
-  isShown: boolean = false;
   isHole: boolean = false;
   isMoved: boolean = false;
+  isLocked!: boolean;
 
   // wkt import
   epsgAvailable = ["EPSG:4326", "EPSG:3857"]; //TODO refactor
@@ -61,13 +61,21 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.layerLockStatusSubscription.unsubscribe()
+
+    this.disableEditing()
   }
 
   ngOnChanges(changes: any) {
-    if (!changes.layerContainer.firstChange) {
-      this.resetPreviousSelectedLayer(changes.layerContainer.previousValue)
+    this.disableEditing()
+
+    if (changes.layer) {
+      if (!changes.layer.firstChange) {
+        this.resetPreviousSelectedLayer(changes.layer.previousValue)
+      }
     }
-    this.layer = changes.layerContainer.currentValue
+    this.layer = changes.layer.currentValue
+
+
 
   }
 

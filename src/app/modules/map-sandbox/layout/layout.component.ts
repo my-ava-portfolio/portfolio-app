@@ -35,7 +35,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   isLegendDisplayed = true;
   currentMenuDisplayed = 'createTools'
 
-  currentLayerSelected: layerHandler | null = null;
+  currentLayerSelected!: layerHandler;
 
   mapSubscription!: Subscription;
 
@@ -81,7 +81,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
-  getSelectedLayer(layer: layerHandler | null): void {
+  getSelectedLayer(layer: layerHandler): void {
     this.currentLayerSelected = layer;
   }
 

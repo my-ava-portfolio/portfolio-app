@@ -58,7 +58,7 @@ export class layerHandler {
   featuresSelected: any[] = []
   featuresDeselected: any[] = []
 
-  zoomPadding = [100, 100, 100, 100];
+  zoomPadding = [100, 100, 100, 100];  // TODO set as a global var (use by layer-manager)
   maxZoom = 14;
 
   constructor(

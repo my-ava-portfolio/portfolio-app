@@ -3,6 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChang
 import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-layer',
@@ -13,6 +14,9 @@ export class LayerComponent implements OnInit {
   @Input() layer!: layerHandler;
   @Input() currentLayerIdSelected!: string;
 
+  @Input() layersVisibleStatus!: boolean;
+
+  
   @Output() layerSelectedId = new EventEmitter<string>();
   @Output() layerMoveUp = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerMoveDown = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
@@ -38,21 +42,27 @@ export class LayerComponent implements OnInit {
   lockIcon = faLock;
   unLockIcon = faLockOpen;
 
-  isVisible: boolean = true;
+  @Input() isVisible: boolean = true;
   isDrawn: boolean = false;
   isEdited: boolean = false;
   isShown: boolean = false;
   isHole: boolean = false;
-  isLocked: boolean = false;
+  @Input() isLocked: boolean = false;
 
   layerSelected: boolean = false;
   featureIdSelected!: string;
 
+  removeLayerSubscription!: Subscription;
+    
   constructor(
     private elementRef: ElementRef,
-    private interactionsService: InteractionsService
+    private interactionsService: InteractionsService,
   ) {
-
+    this.removeLayerSubscription = this.interactionsService.removeLayers.subscribe(
+      (_: boolean) => {
+        this.removeLayer()
+      }
+    )
   }
 
   ngOnInit(): void {
@@ -111,9 +121,21 @@ export class LayerComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
 
-    if (changes.currentLayerIdSelected.currentValue !== this.layer.id) {
-      this.unSelectFeature()  // unselect feature selected if an other layer is selected
+    if (changes.currentLayerIdSelected) {
+      if (changes.currentLayerIdSelected.currentValue !== this.layer.id) {
+        this.unSelectFeature()  // unselect feature selected if an other layer is selected
+      }
     }
+
+
+    // if (changes.isLocked) {
+    //   this.lockingLayer(changes.isLocked.currentValue)
+    // }
+  
+
+    // if (changes.isVisible) {
+    //   this.visibleHandler(changes.isVisible.currentValue)
+    // }
   }
 
   visibleHandler(status: boolean): void {
@@ -121,8 +143,9 @@ export class LayerComponent implements OnInit {
     this.layer.vectorLayer.setVisible(status)
   }
 
-  lockingLayer(): void {
-    this.layer.locked = !this.layer.locked
+  lockingLayer(status: boolean): void {
+    this.isLocked = status
+    this.layer.locked = this.isLocked
     this.interactionsService.setLayerLockStatus(this.layer.locked)
   }
 
