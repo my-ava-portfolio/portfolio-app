@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { faArrowsUpDownLeftRight, faCircle, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil } from '@fortawesome/free-solid-svg-icons';
 
@@ -33,7 +33,8 @@ export class EditBarComponent implements OnInit, OnDestroy {
   isEdited: boolean = false;
   isHole: boolean = false;
   isMoved: boolean = false;
-  isLocked!: boolean;
+
+  isEditBarEnabled!: boolean;;
 
   // wkt import
   epsgAvailable = ["EPSG:4326", "EPSG:3857"]; //TODO refactor
@@ -43,24 +44,40 @@ export class EditBarComponent implements OnInit, OnDestroy {
   layerLockStatusSubscription!: Subscription;
 
   constructor(
-    private interactionsService: InteractionsService
+    private interactionsService: InteractionsService,
+    private cdRef: ChangeDetectorRef,
   ) {
-    this.layerLockStatusSubscription = this.interactionsService.layerLockStatus.subscribe(
-      (locked: boolean) => {
-        if (locked) {
+    this.layerLockStatusSubscription = this.interactionsService.editBarActivation.subscribe(
+      (activated: boolean) => {
+        // if (this.layer.id === this.currentLayerIdSelected) {
+        if (activated) {
+          this.isEditBarEnabled = true
+        } else {
+          this.isEditBarEnabled = false
+
           this.disableEditing()
         }
-        this.isLocked = locked
-      }
+        this.cdRef.detectChanges();
+
+      console.log(this.isEditBarEnabled, this.layer.layerName)
+        }
+      // } 
     )
 
   }
 
   ngOnInit(): void {
+    if (this.layer.locked) {
+      this.isEditBarEnabled = false
+      // this.disableEditing()
+    } else {
+      this.isEditBarEnabled = true
+    }
   }
 
   ngOnDestroy(): void {
     this.disableEditing()
+    this.layerLockStatusSubscription.unsubscribe()
   }
 
   ngOnChanges(changes: any) {

@@ -157,7 +157,9 @@ export class LayerComponent implements OnInit {
     }
 
     if (changes.isLocked) {
-      this.lockingLayer(changes.isLocked.currentValue)
+      if (this.layer.locked !== changes.isLocked.currentValue) {
+        this.lockingLayer(changes.isLocked.currentValue)
+      }
     }
   
 
@@ -174,7 +176,11 @@ export class LayerComponent implements OnInit {
   lockingLayer(status: boolean): void {
     this.isLocked = status
     this.layer.locked = this.isLocked
-    this.interactionsService.setLayerLockStatus(status)
+    if (this.isSelected) {
+      // it concerns here only the selected layer
+      this.interactionsService.activateEditBar(!this.layer.locked)
+
+    }
   }
 
   removeLayer(): void {

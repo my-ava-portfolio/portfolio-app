@@ -45,10 +45,10 @@
     <fa-icon class="" [icon]="btnVisible.checked ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
   </label>
 
-  <!-- <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="lockLayers(btnLock.checked)">
+  <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="lockLayers(btnLock.checked)">
   <label class="p-1 bg-transparent border-0 pointer" for="btnLockLayers" container="body" [ngbPopover]="btnLock.checked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="btnLock.checked ? lockIcon : unLockIcon" size="xs"></fa-icon>
-  </label> -->
+  </label>
 
   <button class="ms-auto p-1 bg-transparent border-0" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>

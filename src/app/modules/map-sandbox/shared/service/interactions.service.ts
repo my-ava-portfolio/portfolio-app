@@ -11,15 +11,15 @@ export class InteractionsService {
   layerObjectSelected: Subject<layerHandler | null> = new Subject<layerHandler | null>();
   selectableLayerId: Subject<string> = new Subject<string>();
   selectableAllLayers: Subject<boolean> = new Subject<boolean>();
-  layerLockStatus: Subject<boolean> = new Subject<boolean>();
+  editBarActivation: Subject<boolean> = new Subject<boolean>();
   removeLayers: Subject<boolean> = new Subject<boolean>();
   selectingLayerStatus: Subject<boolean> = new Subject<boolean>();
 
   constructor(
   ) { }
 
-  setLayerLockStatus(event: boolean): void {
-    this.layerLockStatus.next(event);
+  activateEditBar(event: boolean): void {
+    this.editBarActivation.next(event);
   }
 
   removeAllLayers(): void {

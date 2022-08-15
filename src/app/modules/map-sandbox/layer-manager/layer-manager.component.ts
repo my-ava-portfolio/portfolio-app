@@ -316,9 +316,9 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.forceVisibleStatus = status
   }
 
-  // lockLayers(status: boolean): void {
-  //   this.layersLockStatus = status
-  // }
+  lockLayers(status: boolean): void {
+    this.layersLockStatus = status
+  }
 
   removeLayers(): void {
     this.interactionsService.removeAllLayers()
