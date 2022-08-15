@@ -7,7 +7,7 @@
   <div class="d-flex flex-row justify-content-center my-2 mx-3">
 
     <ng-container *ngFor="let feature of createModesSupported">
-      <button class="badge btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
+      <button class="badge bg-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="feature.icon"></fa-icon>
       </button>
     </ng-container>
@@ -25,7 +25,7 @@
   <div class="d-flex flex-row justify-content-center my-2 mx-3">
 
     <ng-container *ngFor="let feature of createFromModesSupported">
-      <button class="badge btn-dark border-0 me-1 text-warning" (click)="setImportDataType(feature.label_text)" data-bs-toggle="modal" data-bs-target="#modalDataImport" type="button" role="tab" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
+      <button class="badge bg-dark border-0 me-1 text-warning" (click)="setImportDataType(feature.label_text)" data-bs-toggle="modal" data-bs-target="#modalDataImport" type="button" role="tab" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
         <fa-icon class="mx-1" [icon]="feature.icon"></fa-icon>{{ feature.label_text}}
       </button>
     </ng-container>
