@@ -9,7 +9,8 @@ export class InteractionsService {
 
   layerIdSelected: Subject<string> = new Subject<string>();
   layerObjectSelected: Subject<layerHandler | null> = new Subject<layerHandler | null>();
-
+  selectableLayerId: Subject<string> = new Subject<string>();
+  selectableAllLayers: Subject<boolean> = new Subject<boolean>();
   layerLockStatus: Subject<boolean> = new Subject<boolean>();
   removeLayers: Subject<boolean> = new Subject<boolean>();
   selectingLayerStatus: Subject<boolean> = new Subject<boolean>();
@@ -27,6 +28,12 @@ export class InteractionsService {
 
   setSelectingLayers(isEnabled: boolean): void {
     this.selectingLayerStatus.next(isEnabled)
+  }
+  setSelectableLayer(layerId: string): void {
+    this.selectableLayerId.next(layerId)
+  }
+  setSelectableAllLayers(): void {
+    this.selectableAllLayers.next(true)
   }
 
   sendSelectedLayerId(layerId: string): void {

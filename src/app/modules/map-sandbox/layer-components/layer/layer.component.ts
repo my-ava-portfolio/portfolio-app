@@ -53,7 +53,9 @@ export class LayerComponent implements OnInit {
   featureIdSelected!: string;
 
   removeLayerSubscription!: Subscription;
-  selectingStatusSubscription!: Subscription;
+  selectableLayerStatusSubscription!: Subscription;
+  selectableAllLayersStatusSubscription!: Subscription;
+
   layerIdSelectedSubscription!: Subscription;
 
   displayLayerModal = false;
@@ -70,18 +72,22 @@ export class LayerComponent implements OnInit {
       }
     )
   
-    this.selectingStatusSubscription = this.interactionsService.selectingLayerStatus.subscribe(
-      (isEnabled: boolean) => {
-        if (!this.isSelected) {
-          if (isEnabled) {
-            // this.lockingLayer(true)
-            this.layer.enableSelecting()
-          } else {
-            this.layer.disableSelecting()
-            // this.lockingLayer(false)
-          }
-        }
+    this.selectableLayerStatusSubscription = this.interactionsService.selectableLayerId.subscribe(
+      (layerIdtoSelect: string) => {
 
+        if (this.layer.id !== layerIdtoSelect) {
+          this.layer.disableSelecting()
+        } else {
+          this.layer.disableSelecting()
+          this.layer.enableSelecting()
+        }
+      }
+    )
+
+    this.selectableAllLayersStatusSubscription = this.interactionsService.selectableAllLayers.subscribe(
+      (_: boolean) => {
+        this.layer.disableSelecting()
+        this.layer.enableSelecting()
       }
     )
    
@@ -110,12 +116,6 @@ export class LayerComponent implements OnInit {
       }
     })
 
-    // this.layer.modifier.on('modifyend', (event: any) => {
-    //   event.features.getArray().forEach((feature: any) => {
-    //     // this.selectFeatureById(feature.getId())
-    //   })
-    // });
-
     this.layer.sourceFeatures.on('changefeature', (event: any) => {
       // update step when change on feature occurs
       refreshFeatureStyle(event.feature)
@@ -136,8 +136,11 @@ export class LayerComponent implements OnInit {
     }
     
     this.removeLayerSubscription.unsubscribe();
-    this.selectingStatusSubscription.unsubscribe();
-    // this.layerIdSelectedSubscription.unsubscribe();
+    this.selectableLayerStatusSubscription.unsubscribe();
+    this.selectableAllLayersStatusSubscription.unsubscribe();
+
+    this.layer.disableSelecting()
+
 
     this.elementRef.nativeElement.remove();
   }
@@ -168,12 +171,7 @@ export class LayerComponent implements OnInit {
   lockingLayer(status: boolean): void {
     this.isLocked = status
     this.layer.locked = this.isLocked
-    if (this.layer.locked) {
-      this.layer.disableSelecting()
-      this.unSelectFeature()
-    } else {
-      this.layer.enableSelecting()
-    }
+    this.interactionsService.setLayerLockStatus(status)
   }
 
   removeLayer(): void {
@@ -191,9 +189,6 @@ export class LayerComponent implements OnInit {
   }
 
   selectLayer(): void {
-    // this.unSelectFeature()
-
-    // this.layerSelected = !this.layerSelected
     this.interactionsService.sendSelectedLayerId(this.layer.id)
     this.interactionsService.sendSelectedLayer(this.layer)
   }
@@ -204,7 +199,6 @@ export class LayerComponent implements OnInit {
 
   duplicateLayer(): void {
     this.unSelectFeature()
-    // this.layerSelected = !this.layerSelected // TODO refactor ? on unSelectFeature() ?
 
     const layerCloned: layerHandler = Object.create(this.layer) // create a clone
     this.layerCloned.emit(layerCloned)
@@ -232,13 +226,10 @@ export class LayerComponent implements OnInit {
   unSelectFeature(): void {
     this.featureIdSelected = 'none'
     this.layer.select.getFeatures().clear()
-    // this.interactionsService.sendSelectedLayerId('none')
   }
 
   selectFeatureById(featureId: any): void {
-    this.layer.disableSelecting()
-    this.layer.enableSelecting()
-    
+
     this.featureIdSelected = featureId
 
     let feature = this.getFeature(this.featureIdSelected)

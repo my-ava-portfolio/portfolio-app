@@ -45,7 +45,14 @@ export class EditBarComponent implements OnInit, OnDestroy {
   constructor(
     private interactionsService: InteractionsService
   ) {
-
+    this.layerLockStatusSubscription = this.interactionsService.layerLockStatus.subscribe(
+      (locked: boolean) => {
+        if (locked) {
+          this.disableEditing()
+        }
+        this.isLocked = locked
+      }
+    )
 
   }
 
@@ -54,18 +61,17 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.disableEditing()
-    this.layer.enableSelecting()
   }
 
   ngOnChanges(changes: any) {
   }
 
-  disableSelectingOnAllLayers(): void { // not really on all layer
-    this.interactionsService.setSelectingLayers(false)
+  enablingSelectOnlyOnTheCurrentLayer(): void { // not really on all layer
+    this.interactionsService.setSelectableLayer(this.layer.id)
   }
 
   enableSelectingOnAllLayers(): void {
-    this.interactionsService.setSelectingLayers(true)
+    this.interactionsService.setSelectableAllLayers()
   }
 
   disableEditing(unSelectLayer: boolean = true): void {
@@ -113,7 +119,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
 
-      this.disableSelectingOnAllLayers()
+      this.enablingSelectOnlyOnTheCurrentLayer()
 
       this.addFeatureEnable(holeStatus)
     } else {
@@ -127,12 +133,12 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
 
-      // this.disableSelectingOnAllLayers()
+      this.enablingSelectOnlyOnTheCurrentLayer()
 
       this.addHoleFeatureEnable(holeStatus)
     } else {
       this.addHoleFeatureDisable()
-      // this.enableSelectingOnAllLayers()
+      this.enableSelectingOnAllLayers()
 
     }
   }
@@ -148,13 +154,11 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   private addFeatureEnable(holeStatus: boolean = false): void {
-    // this.disableSelectingOnAllLayers()
     this.layer.enableDrawing(holeStatus);
     this.isDrawn = true;
   }
 
   private addFeatureDisable(): void {
-    // this.enableSelectingOnAllLayers()
     this.layer.disableDrawing();
     this.isDrawn = false;
   }
@@ -165,18 +169,15 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   private editFeatureDisable(): void {
-    // this.enableSelectingOnAllLayers()
     this.layer.disableEditing()
     this.isEdited = false
   }
 
   private addHoleFeatureEnable(holeStatus: boolean = true): void {
-    // this.disableSelectingOnAllLayers()
     this.layer.enableDrawing(holeStatus);
     this.isHole = true;
   }
   private addHoleFeatureDisable(): void {
-    // this.enableSelectingOnAllLayers()
 
     this.layer.disableDrawing();
     this.isHole = false;
