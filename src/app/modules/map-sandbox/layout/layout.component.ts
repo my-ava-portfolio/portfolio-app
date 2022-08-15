@@ -40,6 +40,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   currentLayerSelected!: layerHandler | null;
 
   mapSubscription!: Subscription;
+  layerObjectSelectedSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -58,10 +59,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.interactionsService.layerObjectSelected.subscribe(
+    this.layerObjectSelectedSubscription = this.interactionsService.layerObjectSelected.subscribe(
       (layerSelected: layerHandler | null) => {
-
-
 
         if (layerSelected !== this.currentLayerSelected) {
           this.editBarEnabled = false
@@ -87,7 +86,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.map.setView(this.defaultMapView)
+
     this.mapSubscription.unsubscribe();
+    this.layerObjectSelectedSubscription.unsubscribe();
+
     this.mapService.changeMapInteractionStatus(false)
     this.mapService.resetMapView()
   }

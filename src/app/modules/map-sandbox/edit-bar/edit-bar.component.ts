@@ -47,9 +47,9 @@ export class EditBarComponent implements OnInit, OnDestroy {
     private interactionsService: InteractionsService,
     private cdRef: ChangeDetectorRef,
   ) {
+
     this.layerLockStatusSubscription = this.interactionsService.editBarActivation.subscribe(
       (activated: boolean) => {
-        // if (this.layer.id === this.currentLayerIdSelected) {
         if (activated) {
           this.isEditBarEnabled = true
         } else {
@@ -61,7 +61,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
       console.log(this.isEditBarEnabled, this.layer.layerName)
         }
-      // } 
     )
 
   }
