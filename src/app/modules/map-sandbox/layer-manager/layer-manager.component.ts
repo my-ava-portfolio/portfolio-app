@@ -49,7 +49,6 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   currentLayerIdSelected!: string;
 
-  currentLayer!: layerHandler;
   layerNamedIncrement: number = -1;
   createModesSupported = [
     {
