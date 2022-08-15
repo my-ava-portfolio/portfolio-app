@@ -1,0 +1,209 @@
+
+
+<div
+  class="layer pointer d-flex flex-column small mt-1 mx-1 px-1 align-items-around"
+  >
+
+    <div class="d-flex flex-row border rounded"
+    [ngClass]="isSelected ? 'border-dark border-2' :  ''"
+    >
+
+      <div class="d-flex flex-row justify-content-start align-items-center me-1">
+        <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.id" [checked]="isVisible" (click)="visibleHandler(btnVisible.checked)">
+        <label class="p-1 bg-transparent border-0 pointer" [for]="'btnVisible' + layer.id" [ngClass]="btnVisible.checked ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="btnVisible.checked ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="btnVisible.checked ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
+        </label>
+
+        <input #btnLocked type="checkbox" class="btn-check" [id]="'btnLocked' + layer.id" [checked]="isLocked" (click)="lockingLayer(btnLocked.checked)">
+        <label class="ms-auto p-1 bg-transparent border-0 pointer" [for]="'btnLocked' + layer.id" container="body" [ngbPopover]="btnLocked.checked ? 'Déverrouiler' : 'Verrouiller'" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="btnLocked.checked ? lockIcon : unLockIcon" size="xs"></fa-icon>
+        </label>
+
+        <div class="d-flex flex-column" [ngClass]="isSelected ? 'pe-auto' :  'pe-none'">
+          <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
+            <fa-icon class="" [icon]="upIcon" size="xs"></fa-icon>
+          </button>
+
+          <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
+            <fa-icon class="" [icon]="downIcon" size="xs"></fa-icon>
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+        class="d-flex flex-row pointer justify-content-start align-items-center flex-fill p-1"
+        (click)="selectLayer()"
+        [ngClass]="isSelected ? 'fw-bold' :  'text-black'"
+        >
+        <div class="">
+          <fa-icon *ngIf="layer.geomType === 'Point'" class="me-2" [icon]="pointIcon" size="xs"></fa-icon>
+          <fa-icon *ngIf="layer.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon" size="xs"></fa-icon>
+          <fa-icon *ngIf="layer.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon" size="xs"></fa-icon>
+        </div>
+
+        <div class="layer-name">
+          <span>{{ layer.layerName }}</span>
+        </div>
+      </div>
+
+      <div class="ms-auto d-flex flex-row" [ngClass]="isSelected ? 'd-block' : 'd-none'">
+
+        <button class="ms-auto p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
+        </button>
+
+        <button [ngClass]="this.layer.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
+        </button>
+
+      </div>
+
+      <div class="ms-auto d-flex flex-row">
+
+        <button class="ms-auto p-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
+        </button>
+
+        <button class="p-1 bg-transparent border-0 text-black" (click)="moveModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayer-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="d-flex flex-row small mb-1" *ngIf="layer.features().length > 0">
+      <ul id="featuresList" class="w-100 list-group list-group-flush mx-3 border rounded" [id]="'featuresLayer-' + layer.id">
+
+        <li 
+        class="feature py-0 d-flex justify-content-between align-items-center pointer" 
+        [ngClass]="featureIdSelected == 'none' && isSelected ? 'fw-bold bg-secondary bg-opacity-25' : ''" 
+        (click)="unSelectFeature()"
+        >
+          <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill m-1">
+
+            <div class="">
+              <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>
+            </div>
+            <div class="">
+              Déseléctionner
+            </div>
+          </div>
+
+        </li>
+
+        <ng-container *ngFor="let feature of layer.features()">
+          <app-feature
+          [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"
+          (click)="selectFeatureById(feature.getId())"
+          [currentFeatureIdSelected]="featureIdSelected"
+          [feature]="feature"
+          [currentLayer]="layer"
+          >
+          </app-feature>
+        </ng-container>
+
+      </ul>
+    </div>
+
+
+</div>
+
+<div [id]="'modalLayer-'+ layer.id" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{ layer.layerName}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModalLayer()"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="d-flex flex-column my-3" [ngClass]="this.layer.locked ? 'pe-none' :'pe-auto'">
+          <h4 class="">Général</h4>
+          <div class="d-flex flex-row ms-2">
+            <span class="me-2">Nom de la couche :</span>
+            <input type="text" class="form-control" [placeholder]="layer.layerName" aria-label="layerName" (change)="layer.setName($event)">
+          </div>
+        </div>
+
+        <div class="d-flex flex-column my-3" [ngClass]="this.layer.locked ? 'pe-none' :'pe-auto'">
+          <h4 class="">Style</h4>
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Opacité :</span>
+            <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layer.getOpacity()" (change)="layer.setOpacity($event)"/>
+          </div>
+
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Couleur de fond :</span>
+            <input #layerFillColor type="color" [id]="'fillColor-' + layer.id" class=" fillColor m-1 pointer" [value]="layer.fillColor" (change)="layer.setStyleForAllFeatures(layerFillColor.value, 'fill_color')"/>
+            <label [attr.for]="'fillColor-' + layer.id"></label>
+          </div>
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Couleur du contour :</span>
+            <input #layerStrokeColor type="color" [id]="'strokeColor-' + layer.id" class="fillColor m-1 pointer" [value]="layerStrokeColor.value" (change)="layer.setStyleForAllFeatures(layerStrokeColor.value, 'stroke_color')"/>
+            <label [attr.for]="'strokeColor-' + layer.id"></label>
+          </div>
+
+          <div class="d-flex flex-row ms-2 my-1">
+            <span class="me-2">Epaisseur du contour :</span>
+            <input class="small strokeWidth" type="number" min="0" max="12" [value]="layer.strokeWidth" (change)="layer.setStyleForAllFeatures($event, 'stroke_width')"/>
+          </div>
+
+        </div>
+
+        <div class="d-flex flex-column my-3">
+          <h4 class="">Export</h4>
+
+          <ul class="nav nav-pills align-items-center justify-content-center" role="tablist">
+            <li class="nav-item border m-1" role="presentation">
+              <a class="nav-link fw-bold active" (click)="exportBuilder('geojson')" data-bs-toggle="tab" [attr.data-bs-target]="'#GeoJsonTab' + layer.id" type="button" role="tab">
+                GeoJSON
+              </a>
+            </li>
+            <li class="nav-item border m-1" role="presentation">
+              <a class="nav-link fw-bold" (click)="exportBuilder('wkt')" data-bs-toggle="tab" [attr.data-bs-target]="'#wktTab' + layer.id" type="button" role="tab">
+                WKT
+              </a>
+            </li>
+
+            <li class="nav-item border m-1" role="presentation">
+              <a class="nav-link fw-bold" (click)="exportBuilder('pytestFixture')" data-bs-toggle="tab" [attr.data-bs-target]="'#pytestFixture' + layer.id" type="button" role="tab">
+                Pytest Fixtures
+              </a>
+            </li>
+
+          </ul>
+
+          <div class="d-flex flex-row mx-2 tab-content" id="'tabContent' + layer.id">
+
+            <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'geojson' ? 'active' : ''" [id]="'GeoJsonTab' + layer.id" role="tabpanel">
+              <textarea #exportGeoJsonStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportGeoJsonStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
+            </div>
+
+            <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'wkt' ? 'active' : ''" [id]="'wktTab' + layer.id" role="tabpanel">
+              <textarea #exportWktStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportWktStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
+            </div>
+
+            <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'pytestFixture' ? 'active' : ''" [id]="'pytestFixture' + layer.id" role="tabpanel">
+              <textarea #exportPytestFixturesGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportPytestFixturesGeomDiv.select()" readonly>{{this.exportData}}</textarea>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

@@ -3,7 +3,7 @@
 
       <div class="m-4 grid-container">
 
-        <div class="mb-4 feat-topic bg-white" *ngFor="let topic of selectedblogTopics">
+        <div class="mb-4 card feat-topic bg-white" *ngFor="let topic of selectedblogTopics">
 
           <div class="card-header p-2 bg-dark bg-gradient text-white">
             <span class="fs-6 fw-bold">{{ topic.title }}</span>
@@ -12,7 +12,7 @@
           <div class="card-body">
 
             <div class="d-flex flex-column py-2">
-              <img [src]="topic.image | safeUrl"  class="card-img">
+              <img [src]="topic.image | safeUrl"  class="card-img img-thumbnail">
             </div>
 
             <div class="d-flex flex-row justify-content-end">

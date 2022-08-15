@@ -1,0 +1,132 @@
+<div class="d-flex flex-row align-items-center justify-content-center bg-dark bg-gradient text-white py-2 px-3">
+  <span class="fw-bold">Créer des couches</span>
+</div>
+
+<div id="creationTools" class="d-flex flex-column">
+
+  <div class="d-flex flex-row justify-content-center my-2 mx-3">
+
+    <ng-container *ngFor="let feature of createModesSupported">
+      <button class="badge bg-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="feature.icon"></fa-icon>
+      </button>
+    </ng-container>
+
+  </div>
+
+</div>
+
+<div class="d-flex flex-row align-items-center justify-content-center bg-dark bg-gradient text-white py-2 px-3">
+  <span class="fw-bold">Importer des données</span>
+</div>
+
+<div id="creationTools" class="d-flex flex-column">
+
+  <div class="d-flex flex-row justify-content-center my-2 mx-3">
+
+    <ng-container *ngFor="let feature of createFromModesSupported">
+      <button class="badge bg-dark border-0 me-1 text-warning" (click)="setImportDataType(feature.label_text)" data-bs-toggle="modal" data-bs-target="#modalDataImport" type="button" role="tab" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
+        <fa-icon class="mx-1" [icon]="feature.icon"></fa-icon>{{ feature.label_text}}
+      </button>
+    </ng-container>
+
+  </div>
+
+</div>
+
+<div class="d-flex flex-row align-items-center justify-content-center bg-dark bg-gradient text-white py-2 px-3">
+  <span class="fw-bold">Couches</span>
+</div>
+
+<div id="layersTools" class="d-flex flex-row justify-content-evenly align-items-center mx-2">
+
+  <input #btnVisible type="checkbox" class="btn-check" id="btnVisibleLayers" [checked]="true" (click)="visibleLayers(btnVisible.checked)">
+  <label class="p-1 bg-transparent border-0 pointer" for="btnVisibleLayers" [ngClass]="btnVisible.checked ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="btnVisible.checked ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="btnVisible.checked ? visibleIcon : invisibleIcon" size="1x"></fa-icon>
+  </label>
+
+  <button class="p-1 bg-transparent border-0" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="centerIcon" size="1x"></fa-icon>
+  </button>
+
+  <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="lockLayers(btnLock.checked)">
+  <label class="p-1 bg-transparent border-0 pointer" for="btnLockLayers" container="body" [ngbPopover]="btnLock.checked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="btnLock.checked ? lockIcon : unLockIcon" size="1x"></fa-icon>
+  </label>
+
+  <button class="p-1 bg-transparent border-0 text-danger" (click)="removeLayers()" ngbPopover="Supprimer toutes les couches" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="disabledIcon" size="1x"></fa-icon>
+  </button>
+
+</div>
+
+
+<div id="layersContainer" class="d-flex flex-column mx-2 overflow-auto">
+
+  <div #layersListDi id="layersList" class="d-flex flex-column justify-content-start mb-2">
+
+    <div
+      class="layer pointer d-flex flex-column small mt-1 mx-1 px-1 align-items-around"
+      (click)="unSelectLayer()"
+      [ngClass]="currentLayerIdSelected === 'none' ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
+      >
+
+      <div class="pointer p-2 d-flex flex-row pointer justify-content-start align-items-center border rounded">
+          <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>
+          <span>Désélectionner</span>
+      </div>
+
+    </div>
+
+    <ng-container *ngFor="let layer of allLayers">
+
+        <app-layer
+          [layer]="layer"
+          [isSelected]="currentLayerIdSelected == layer.id"
+          [isVisible]="forceVisibleStatus"
+          [isLocked]="layersLockStatus"
+          (layerMoveUp)="layerGoUp($event)"
+          (layerMoveDown)="layerGoDown($event)"
+          (layerCloned)="duplicateLayer($event)"
+          (removeLayerId)="removeLayer($event)"
+        >
+        </app-layer>
+
+    </ng-container>
+  </div>
+
+</div>
+
+
+
+
+<div id="modalDataImport" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Importer {{ importDataType}}</h5>
+      </div>
+      <div class="modal-body">
+
+        <textarea [(ngModel)]="strInputDataValues" class="form-control"></textarea>
+
+        EPSG des données à importer
+        <select [(ngModel)]="strInputEpsgInput" class="form-select form-select-sm">
+          <option [value]="epsg" *ngFor="let epsg of epsgAvailable">{{epsg}}</option>
+        </select>
+
+        Type d'importation
+        <select [(ngModel)]="modeImportInput" class="form-select form-select-sm">
+          <option value="new">Créer de nouvelles couches</option>
+          <option [value]="layer.id" *ngFor="let layer of existingLayers">Importer dans la couche : {{layer.layerName}}</option>
+
+        </select>
+
+      </div>
+      <div class="modal-footer">
+        <button [ngClass]="strInputEpsgInput !== null && strInputDataValues !== null ? '' : 'pe-none' " (click)="importFromFormat()" type="button" class="btn btn-secondary">Ajouter</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

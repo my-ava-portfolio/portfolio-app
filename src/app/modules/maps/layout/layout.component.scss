@@ -46,6 +46,9 @@
   max-width: unset;
 }
 
+.ol-overviewmap-box {
+  border: 2px dashed var(--bs-dark);
+}
 
 #legend-scale {
   font-size: 12px!important;

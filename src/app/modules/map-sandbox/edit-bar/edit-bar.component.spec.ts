@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToolboxComponent } from './toolbox.component';
+import { EditBarComponent } from './edit-bar.component';
 
-describe('ToolboxComponent', () => {
-  let component: ToolboxComponent;
-  let fixture: ComponentFixture<ToolboxComponent>;
+describe('EditBarComponent', () => {
+  let component: EditBarComponent;
+  let fixture: ComponentFixture<EditBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ToolboxComponent ]
+      declarations: [ EditBarComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ToolboxComponent);
+    fixture = TestBed.createComponent(EditBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

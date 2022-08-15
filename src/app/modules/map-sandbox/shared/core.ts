@@ -2,7 +2,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import {LineString, Polygon}  from 'ol/geom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Draw, Modify, Snap } from 'ol/interaction';
+import { Draw, Modify, Snap, Translate } from 'ol/interaction';
 import VectorLayer from 'ol/layer/Vector';
 
 import Map from 'ol/Map';
@@ -27,6 +27,7 @@ export class layerHandler {
   private map: Map;
   draw!: Draw;
   snap!: Snap;
+  translate!: Translate;
   modifier!: Modify;
   select!: Select;
 
@@ -52,9 +53,13 @@ export class layerHandler {
   strokeWidth = defaultStrokeWidth;
 
   deleted = false;
-
+  locked = false;
+  
   featuresSelected: any[] = []
   featuresDeselected: any[] = []
+
+  zoomPadding = [100, 100, 100, 100];  // TODO set as a global var (use by layer-manager)
+  maxZoom = 14;
 
   constructor(
     map: Map,
@@ -73,6 +78,7 @@ export class layerHandler {
 
     this.setLayer();
     this.initSelect();
+    this.initTranslate();
     this.initSnap();
     this.initModifier();
 
@@ -113,7 +119,20 @@ export class layerHandler {
     this.snap = new Snap({
       source: this.sourceFeatures
     });
+  }
 
+  private initTranslate(): void {
+    this.translate = new Translate({
+      features: this.select.getFeatures(),
+    });
+  }
+
+  enableTranslating(): void {
+    this.map.addInteraction(this.translate)
+  }
+
+  disableTranslating(): void {
+    this.map.removeInteraction(this.translate)
   }
 
   enableSelecting(): void {
@@ -257,33 +276,58 @@ export class layerHandler {
   }
 
   addProperties(feature: any): any {
+    // TODO synchronize properties after the call of this func
     ++this.counter;
     const uuid = uuidv4()
     feature.setId(uuid)
+
+    let name!: string;
+    if (feature.get("name") !== undefined) {
+      name = feature.get("name") + " copy"
+    } else {
+      name = 'feature ' + this.counter
+    }
     feature.setProperties({
       'id': feature.getId(),
       'layer_id': this.id,
       'no': this.counter,
-      'name': 'feature ' + this.counter,
+      'name': name,
       'geom_type': feature.getGeometry()?.getType(),
       "status": "added",
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString(),
-      'fill_color': this.fillColor,
-      'stroke_width': this.strokeWidth,
-      'stroke_color':  this.strokeColor
+      // 'fill_color': this.fillColor,
+      // 'stroke_width': this.strokeWidth,
+      // 'stroke_color':  this.strokeColor
     }, true)
+    if (feature.get("fill_color") === undefined) {
+      feature.set("fill_color",  this.fillColor, true)
+    }
+    if (feature.get("stroke_width") === undefined) {
+      feature.set("stroke_width",  this.strokeWidth, true)
+    }
+    if (feature.get("stroke_color") === undefined) {
+      feature.set("stroke_color",  this.strokeColor, true)
+    }
     return feature
   }
 
-  addFeaturesFromGeomFeatureWithoutProperties(features: any[]): void {
+  // addFeaturesFromGeomFeatureWithoutProperties(features: any[]): void {
+  //   if (features.length > 0) {
+  //     features.forEach((feature: any) => {
+  //       let featureWithProperties = this.addProperties(feature)
+  //       this.sourceFeatures.addFeature(featureWithProperties)
+  //     })
+  //   }
+  // }
+  addFeaturesAndUpdateIds(features: any[]): void {
     if (features.length > 0) {
       features.forEach((feature: any) => {
-        let featureWithProperties = this.addProperties(feature)
+        let featureCloned = feature.clone() // important if it's some duplicated feature
+        let featureWithProperties = this.addProperties(featureCloned)
         this.sourceFeatures.addFeature(featureWithProperties)
       })
     }
-
   }
 
   onGeomChangeBuildHole(e: any): void {
@@ -308,7 +352,17 @@ export class layerHandler {
       this.sourceFeatures.removeFeature(featureFound);
     }
   }
+  duplicateFeature(featureId: string): void {
+    const featureFound = this.sourceFeatures.getFeatureById(featureId)
+    if (featureFound !== null) {
+      const newFeature = this.addProperties(featureFound.clone())
+      this.sourceFeatures.addFeature(newFeature)
+      console.log(newFeature)
+    }
+  }
+
   getFeatureAttribute(featureId: string, attribute: string): void {
+    // TODO issue stay selected
     const featureFound = this.sourceFeatures.getFeatureById(featureId)
     if (featureFound !== null) {
       return featureFound.get(attribute)
@@ -393,6 +447,13 @@ export class layerHandler {
       value = eventValue.target.value
     } else {
       value = eventValue
+
+      if (styleProperties === 'fill_color') {
+        this.fillColor = eventValue;
+      } else if (styleProperties === 'stroke_color') {
+        this.strokeColor = eventValue;
+      }
+
     }
     this.features().forEach((feature: Feature) => {
       feature.set(styleProperties, value, false)
@@ -406,6 +467,68 @@ export class layerHandler {
       exportFormatContainer.writeFeatures(this.features())
     ), null, 2);
   }
+
+  exportToWkt(): string {
+    let wktFeatures: string[] = []
+    this.features().forEach((feature: any) => {
+      wktFeatures.push(getWkt(feature.getGeometry()))
+    })
+    return wktFeatures.join('\n')
+  }
+
+  exportToPytestFixture(): string {
+    const fixtureHeader = "\n@pytest.fixture\ndef "
+    let fixtureFeatures: string[] = []
+    if (this.features() !== undefined) {
+      this.features().forEach((feature: any) => {
+        fixtureFeatures.push(
+          fixtureHeader + feature.get('name').replace(' ', '_') + '():\n\treturn \'' + getWkt(feature.getGeometry()) + '\''
+        )
+      })
+    }
+    return 'import pytest\n' + fixtureFeatures.join('\n')
+
+  }
+
+  zoomToLayer(): void {
+    if (this.sourceFeatures.getFeatures().length > 0) {
+      this.map.getView().fit(this.sourceFeatures.getExtent(), { size: this.map.getSize(), maxZoom: this.maxZoom, padding: this.zoomPadding});
+    }
+  }
+
+  zoomToFeature(featureId: string): void {
+
+    this.features().filter((feature: any) => {
+      if (feature.getId() === featureId) {
+        this.map.getView().fit(feature.getGeometry(), {size:this.map.getSize(), maxZoom: this.maxZoom})
+      }
+    })
+  }
+
+}
+
+
+export function layerHandlerPositionning(layersArray: layerHandler[], layerId: string, incrementValue: number): layerHandler[] {
+  let outputArray: layerHandler[] = [];
+
+  const layerIndexToGet = layersArray.findIndex((layer: layerHandler) => layer.id === layerId);
+  const layerZIndex = layersArray[layerIndexToGet].zIndexValue;
+  const toIndex = layerZIndex + incrementValue
+  if (toIndex >= 0 && toIndex < layersArray.length) {
+    layersArray.splice(
+      toIndex, 0,
+      layersArray.splice(layerZIndex, 1)[0]
+    );
+    // rebuild ZIndex
+    layersArray.forEach((layer: layerHandler, idx: number) => {
+      layer.zIndexValue = idx;
+      layer.vectorLayer.setZIndex(idx);
+      outputArray.push(layer)
+    })
+    return outputArray
+  }
+
+  return layersArray
 }
 
 
