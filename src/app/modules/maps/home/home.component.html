@@ -3,7 +3,7 @@
 
     <div class="m-4 grid-container">
 
-      <div class="mb-4 feat-map bg-white" *ngFor="let app of mapPagesMenus.sub_menus">
+      <div class="mb-4 card feat-map bg-white" *ngFor="let app of mapPagesMenus.sub_menus">
 
         <div class="card-header bg-dark bg-gradient text-white">
           <span class="fw-bold">{{ app.title }}</span>
@@ -14,9 +14,6 @@
           <div class="text-center mb-3" *ngIf="app.img">
             <img class="img-fluid rounded mx-auto d-block shadow" [src]="app.img"/>
           </div>
-
-
-
 
           <p class="card-text">{{ app.details }}</p>
           <a *ngIf="!app.route.includes('https')" [routerLink]="[app.route]" class="btn btn-warning mt-auto fw-bold">Accéder</a>
