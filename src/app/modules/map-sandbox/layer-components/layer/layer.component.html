@@ -98,6 +98,7 @@
           <app-feature
           [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"
           (click)="selectFeatureById(feature.getId())"
+          [currentFeatureIdSelected]="featureIdSelected"
           [feature]="feature"
           [currentLayer]="layer"
           >

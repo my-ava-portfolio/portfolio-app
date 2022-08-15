@@ -45,6 +45,11 @@ export class FeatureComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.currentFeatureIdSelected) {
+      if (changes.currentFeatureIdSelected.currentValue !== this.feature.getId()) {
+        this.displayPopup = false;
+      }
+    }
   }
 
   removeFeature(): void {
@@ -74,13 +79,13 @@ export class FeatureComponent implements OnInit {
     document.body.removeChild(selBox);
   }
 
-  updateFillColor(featureId: string, color: string): void {
+  updateFillColor(color: string): void {
     this.feature.set("fill_color", color, false)
   }
-  updateStrokeWidth(featureId: string, event: any): void {
+  updateStrokeWidth(event: any): void {
     this.feature.set("stroke_width", event.target.value, true)
   }
-  updateStrokeColor(featureId: string, color: string): void {
+  updateStrokeColor(color: string): void {
     this.feature.set("stroke_color", color, true)
   }
 
