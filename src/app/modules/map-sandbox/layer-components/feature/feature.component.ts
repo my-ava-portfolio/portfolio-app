@@ -3,6 +3,7 @@ import { faExpand, faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { getWkt } from '@modules/map-sandbox/shared/core';
 import { layerHandler } from '@modules/map-sandbox/shared/core';
+import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 
 
 @Component({
@@ -14,11 +15,6 @@ export class FeatureComponent implements OnInit {
   @Input() feature!: any;
   @Input() currentFeatureIdSelected!: string;
   @Input() currentLayer!: layerHandler;
-
-  @Output() layerIdFromFeature = new EventEmitter<string>();
-  @Output() featureIdSelected = new EventEmitter<string>();
-  @Output() removeFeatureEvent = new EventEmitter<string>();
-  @Output() duplicateFeatureEvent = new EventEmitter<string>();
 
   disabledIcon = faXmark;
   duplicateIcon = faClone;
@@ -32,7 +28,7 @@ export class FeatureComponent implements OnInit {
   displayPopup: boolean = false;
 
   constructor(
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
   ) {
   }
 
@@ -49,28 +45,15 @@ export class FeatureComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
-    const featureIdSelected = changes.currentFeatureIdSelected.currentValue
-    if (this.feature.getId() === featureIdSelected) {
-      this.selectFeature()
-    }
-
-  }
-
-  selectFeature(): void {
-    this.layerIdFromFeature.emit(this.feature.get('layer_id'))
-    const featureId = this.feature.getId()
-    if (typeof featureId === 'string') {
-      this.featureIdSelected.emit(featureId)
-    }
   }
 
   removeFeature(): void {
-    this.removeFeatureEvent.emit(this.feature.getId())
+    this.currentLayer.removeFeature(this.feature.getId())
   }
 
   duplicateFeature(): void {
-    this.duplicateFeatureEvent.emit(this.feature.getId())
+    this.currentLayer.select.getFeatures().clear() // need to unselect to avoid to save the select style (openlayers behavior)
+    this.currentLayer.duplicateFeature(this.feature.getId())
   }
 
   showPopup(): void {

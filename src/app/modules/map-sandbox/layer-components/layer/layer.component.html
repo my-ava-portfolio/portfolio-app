@@ -5,7 +5,7 @@
   >
 
     <div class="d-flex flex-row border rounded"
-    [ngClass]="layerSelected ? 'border-dark border-2' :  ''"
+    [ngClass]="isSelected ? 'border-dark border-2' :  ''"
     >
 
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
@@ -19,7 +19,7 @@
           <fa-icon class="" [icon]="btnLocked.checked ? lockIcon : unLockIcon" size="xs"></fa-icon>
         </label>
 
-        <div class="d-flex flex-column" [ngClass]="layerSelected ? 'pe-auto' :  'pe-none'">
+        <div class="d-flex flex-column" [ngClass]="isSelected ? 'pe-auto' :  'pe-none'">
           <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
             <fa-icon class="" [icon]="upIcon" size="xs"></fa-icon>
           </button>
@@ -35,7 +35,7 @@
       <div
         class="d-flex flex-row pointer justify-content-start align-items-center flex-fill p-1"
         (click)="selectLayer()"
-        [ngClass]="layerSelected ? 'fw-bold' :  'text-black'"
+        [ngClass]="isSelected ? 'fw-bold' :  'text-black'"
         >
         <div class="">
           <fa-icon *ngIf="layer.geomType === 'Point'" class="me-2" [icon]="pointIcon" size="xs"></fa-icon>
@@ -48,7 +48,7 @@
         </div>
       </div>
 
-      <div class="ms-auto d-flex flex-row" [ngClass]="layerSelected ? 'd-block' : 'd-none'">
+      <div class="ms-auto d-flex flex-row" [ngClass]="isSelected ? 'd-block' : 'd-none'">
 
         <button class="ms-auto p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
@@ -77,7 +77,11 @@
     <div class="d-flex flex-row small mb-1" *ngIf="layer.features().length > 0">
       <ul id="featuresList" class="w-100 list-group list-group-flush mx-3 border rounded" [id]="'featuresLayer-' + layer.id">
 
-        <li class="feature py-0 d-flex justify-content-between align-items-center pointer" [ngClass]="featureIdSelected == 'none' ? 'fw-bold bg-secondary bg-opacity-25' : ''" (click)="unSelectFeature()">
+        <li 
+        class="feature py-0 d-flex justify-content-between align-items-center pointer" 
+        [ngClass]="featureIdSelected == 'none' && isSelected ? 'fw-bold bg-secondary bg-opacity-25' : ''" 
+        (click)="unSelectFeature()"
+        >
           <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill m-1">
 
             <div class="">
@@ -92,13 +96,10 @@
 
         <ng-container *ngFor="let feature of layer.features()">
           <app-feature
+          [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"
+          (click)="selectFeatureById(feature.getId())"
           [feature]="feature"
-          [currentFeatureIdSelected]="featureIdSelected"
           [currentLayer]="layer"
-          (layerIdFromFeature)="getLayerIdFromFeatureSelectedId($event)"
-          (featureIdSelected)="selectFeatureById($event)"
-          (removeFeatureEvent)="removeFeatureById($event)"
-          (duplicateFeatureEvent)="duplicateFeatureById($event)"
           >
           </app-feature>
         </ng-container>

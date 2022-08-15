@@ -12,10 +12,12 @@ import { Subscription } from 'rxjs';
 })
 export class LayerComponent implements OnInit {
   @Input() layer!: layerHandler;
-  @Input() layerSelected!: boolean;
+  @Input() isSelected!: boolean;
   layerIdSelected!: string;
 
   @Input() layersVisibleStatus!: boolean;
+
+  @Output() layerIdCurrentlySelected = new EventEmitter<string>();
 
   @Output() layerMoveUp = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerMoveDown = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
@@ -63,13 +65,14 @@ export class LayerComponent implements OnInit {
 
     this.removeLayerSubscription = this.interactionsService.removeLayers.subscribe(
       (_: boolean) => {
+        // to remove the layer, if all layers must be removed
         this.removeLayer()
       }
     )
   
     this.selectingStatusSubscription = this.interactionsService.selectingLayerStatus.subscribe(
       (isEnabled: boolean) => {
-        if (!this.layerSelected) {
+        if (!this.isSelected) {
           if (isEnabled) {
             // this.lockingLayer(true)
             this.layer.enableSelecting()
@@ -81,15 +84,7 @@ export class LayerComponent implements OnInit {
 
       }
     )
-
-    this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
-      (layerIdSelected: string) => {
-        if (layerIdSelected !== this.layer.id) {
-          this.featureIdSelected = 'none'
-          this.layer.select.getFeatures().clear()
-        }
-    })
-    
+   
   }
 
   ngOnInit(): void {
@@ -109,18 +104,17 @@ export class LayerComponent implements OnInit {
 
       if (selected.length > 0) {
         selected.forEach((feature: any) => {
-          this.featureIdSelected = feature.getId();
-          this.selectFeatureById(this.featureIdSelected)
+          this.selectFeatureById(feature.getId())
         })
 
       }
     })
 
-    this.layer.modifier.on('modifyend', (event: any) => {
-      event.features.getArray().forEach((feature: any) => {
-        this.selectFeatureById(this.featureIdSelected)
-      })
-    });
+    // this.layer.modifier.on('modifyend', (event: any) => {
+    //   event.features.getArray().forEach((feature: any) => {
+    //     // this.selectFeatureById(feature.getId())
+    //   })
+    // });
 
     this.layer.sourceFeatures.on('changefeature', (event: any) => {
       // update step when change on feature occurs
@@ -143,12 +137,18 @@ export class LayerComponent implements OnInit {
     
     this.removeLayerSubscription.unsubscribe();
     this.selectingStatusSubscription.unsubscribe();
-    this.layerIdSelectedSubscription.unsubscribe();
+    // this.layerIdSelectedSubscription.unsubscribe();
 
     this.elementRef.nativeElement.remove();
   }
 
   ngOnChanges(changes: SimpleChanges) {
+
+    if (changes.isSelected) {
+      if (!changes.isSelected.currentValue) {
+        this.unSelectFeature()
+      }
+    }
 
     if (changes.isLocked) {
       this.lockingLayer(changes.isLocked.currentValue)
@@ -191,9 +191,9 @@ export class LayerComponent implements OnInit {
   }
 
   selectLayer(): void {
-    this.unSelectFeature()
+    // this.unSelectFeature()
 
-    this.layerSelected = !this.layerSelected
+    // this.layerSelected = !this.layerSelected
     this.interactionsService.sendSelectedLayerId(this.layer.id)
     this.interactionsService.sendSelectedLayer(this.layer)
   }
@@ -204,15 +204,10 @@ export class LayerComponent implements OnInit {
 
   duplicateLayer(): void {
     this.unSelectFeature()
-    this.layerSelected = !this.layerSelected // TODO refactor ? on unSelectFeature() ?
+    // this.layerSelected = !this.layerSelected // TODO refactor ? on unSelectFeature() ?
 
     const layerCloned: layerHandler = Object.create(this.layer) // create a clone
     this.layerCloned.emit(layerCloned)
-  }
-
-  getLayerIdFromFeatureSelectedId(layerIdToSelect: string): void {
-    // during feature selection
-    this.interactionsService.sendSelectedLayerId(layerIdToSelect)
   }
 
   hideModalLayer(): void {
@@ -235,7 +230,9 @@ export class LayerComponent implements OnInit {
   // START FEATURE FUNCS //
 
   unSelectFeature(): void {
-    this.interactionsService.sendSelectedLayerId('none')
+    this.featureIdSelected = 'none'
+    this.layer.select.getFeatures().clear()
+    // this.interactionsService.sendSelectedLayerId('none')
   }
 
   selectFeatureById(featureId: any): void {
@@ -245,19 +242,11 @@ export class LayerComponent implements OnInit {
     this.featureIdSelected = featureId
 
     let feature = this.getFeature(this.featureIdSelected)
+
     this.layer.select.getFeatures().clear()
     this.layer.select.getFeatures().push(feature)
-  }
-  removeFeatureById(featureId: any): void {
-    // TODO move it on feature component ?
-    this.layer.removeFeature(featureId)
-  }
 
-  duplicateFeatureById(featureId: any): void {
-    // TODO move it on feature component ?
-    this.unSelectFeature() // IMPORTANT: we must unselect to avoid conflict with the style applied during selection...
-    this.layer.duplicateFeature(featureId)
-    this.selectFeatureById(featureId) // then reselect it
+    this.selectLayer()
   }
 
   private getFeature(featureId: string): any {

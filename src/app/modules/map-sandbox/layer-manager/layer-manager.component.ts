@@ -47,7 +47,8 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   existingLayers: layerHandler[] = [];
   allLayers: layerHandler[] = [];
 
-  layerIdSelected!: string;
+  currentLayerIdSelected!: string;
+
   currentLayer!: layerHandler;
   layerNamedIncrement: number = -1;
   createModesSupported = [
@@ -88,7 +89,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   modeImportInput: string = 'new';
 
   epsgChangesSubscription!: Subscription;
-  LayerIdSelectedSubscription!: Subscription;
+  layerIdSelectedSubscription!: Subscription;
 
   zoomPadding = [100, 100, 100, 100];  // TODO refactor
 
@@ -110,9 +111,9 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
       }
     )
 
-    this.LayerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
-      (layerIdSelected: string) => {
-        this.layerIdSelected = layerIdSelected
+    this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
+      (currentLayerIdSelected: string) => {
+        this.currentLayerIdSelected = currentLayerIdSelected
         this.cdRef.detectChanges(); // to force angular to detect the changes
       }
     )
@@ -132,7 +133,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     })
 
     this.epsgChangesSubscription.unsubscribe()
-    this.LayerIdSelectedSubscription.unsubscribe()
+    this.layerIdSelectedSubscription.unsubscribe()
 
   }
 
