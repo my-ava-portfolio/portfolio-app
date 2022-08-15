@@ -7,8 +7,8 @@ import { layerHandler } from '../core';
 })
 export class InteractionsService {
 
-  currentSelectedLayerId: Subject<string> = new Subject<string>();
-  currentSelectedLayer: Subject<layerHandler | null> = new Subject<layerHandler | null>();
+  layerIdSelected: Subject<string> = new Subject<string>();
+  layerObjectSelected: Subject<layerHandler | null> = new Subject<layerHandler | null>();
 
   layerLockStatus: Subject<boolean> = new Subject<boolean>();
   removeLayers: Subject<boolean> = new Subject<boolean>();
@@ -30,9 +30,9 @@ export class InteractionsService {
   }
 
   sendSelectedLayerId(layerId: string): void {
-    this.currentSelectedLayerId.next(layerId)
+    this.layerIdSelected.next(layerId)
   }
   sendSelectedLayer(layer: layerHandler |null): void {
-    this.currentSelectedLayer.next(layer)
+    this.layerObjectSelected.next(layer)
   }
 }

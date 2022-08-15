@@ -58,7 +58,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.interactionsService.currentSelectedLayer.subscribe(
+    this.interactionsService.layerObjectSelected.subscribe(
       (layerSelected: layerHandler | null) => {
 
 

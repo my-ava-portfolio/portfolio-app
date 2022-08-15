@@ -52,7 +52,7 @@ export class LayerComponent implements OnInit {
 
   removeLayerSubscription!: Subscription;
   selectingStatusSubscription!: Subscription;
-  currentSelectedLayerIdSubscription!: Subscription;
+  layerIdSelectedSubscription!: Subscription;
 
   displayLayerModal = false;
 
@@ -82,7 +82,7 @@ export class LayerComponent implements OnInit {
       }
     )
 
-    this.currentSelectedLayerIdSubscription = this.interactionsService.currentSelectedLayerId.subscribe(
+    this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
       (layerIdSelected: string) => {
         if (layerIdSelected !== this.layer.id) {
           this.featureIdSelected = 'none'
@@ -143,7 +143,7 @@ export class LayerComponent implements OnInit {
     
     this.removeLayerSubscription.unsubscribe();
     this.selectingStatusSubscription.unsubscribe();
-    this.currentSelectedLayerIdSubscription.unsubscribe();
+    this.layerIdSelectedSubscription.unsubscribe();
 
     this.elementRef.nativeElement.remove();
   }
