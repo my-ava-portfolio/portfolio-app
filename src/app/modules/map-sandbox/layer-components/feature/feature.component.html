@@ -95,7 +95,7 @@
 
           <div class="d-flex flex-row ms-2 my-1">
             <span class="me-2">Couleur du contour :</span>
-            <input #strokeColor type="color" [id]="'strokeColor-' + feature.getId()" [value]="feature.get('fill_color')" class="strokeColor m-1 pointer" (change)="updateStrokeColor(strokeColor.value)"/>
+            <input #strokeColor type="color" [id]="'strokeColor-' + feature.getId()" [value]="feature.get('stroke_color')" class="strokeColor m-1 pointer" (change)="updateStrokeColor(strokeColor.value)"/>
             <label [attr.for]="'strokeColor-' + feature.getId()"></label>
           </div>
 
