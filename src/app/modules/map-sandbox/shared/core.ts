@@ -447,6 +447,13 @@ export class layerHandler {
       value = eventValue.target.value
     } else {
       value = eventValue
+
+      if (styleProperties === 'fill_color') {
+        this.fillColor = eventValue;
+      } else if (styleProperties === 'stroke_color') {
+        this.strokeColor = eventValue;
+      }
+
     }
     this.features().forEach((feature: Feature) => {
       feature.set(styleProperties, value, false)

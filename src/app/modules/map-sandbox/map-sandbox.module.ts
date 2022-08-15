@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ColorPickerModule } from 'ngx-color-picker';
 
 import { MapSandboxRoutingModule } from '@modules/map-sandbox/map-sandbox-routing.module';
 
@@ -32,7 +31,6 @@ import { EditBarComponent } from '@modules/map-sandbox/edit-bar/edit-bar.compone
     CommonModule,
     MapSandboxRoutingModule,
     FontAwesomeModule,
-    ColorPickerModule,
     NgbModule,
     FormsModule
   ],
