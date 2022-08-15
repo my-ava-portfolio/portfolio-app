@@ -18,8 +18,7 @@ import { InteractionsService } from '../shared/service/interactions.service';
 @Component({
   selector: 'app-layer-manager',
   templateUrl: './layer-manager.component.html',
-  styleUrls: ['./layer-manager.component.scss'],
-
+  styleUrls: ['./layer-manager.component.scss']
 })
 export class LayerManagerComponent implements OnInit, OnDestroy {
   @Input() map!: Map;
@@ -95,7 +94,6 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   constructor(
     private mapService: MapService,
     private interactionsService: InteractionsService,
-    private cdRef:ChangeDetectorRef
   ) {
 
     this.epsgChangesSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
@@ -113,7 +111,6 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
       (currentLayerIdSelected: string) => {
         this.currentLayerIdSelected = currentLayerIdSelected
-        this.cdRef.detectChanges(); // to force angular to detect the changes
       }
     )
 
@@ -250,7 +247,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.importDataType = dataType;
   }
 
-  importGeoJSON(): void {
+  importFromFormat(): void {
     let featureParams = {}
     if (this.strInputEpsgInput !== this.currentEpsg) {
       featureParams = {
@@ -305,10 +302,17 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.existingLayers.forEach((layer: layerHandler) => {
       extend(emptyExtent, layer.sourceFeatures.getExtent());
     })
-    this.map.getView().fit(
-      emptyExtent,
-      { size: this.map.getSize(), padding: this.zoomPadding }
-    );
+    if (emptyExtent[0] !== Infinity
+      && emptyExtent[1] !== Infinity
+      && emptyExtent[2] !== Infinity
+      && emptyExtent[3] !== Infinity
+    ) {
+      this.map.getView().fit(
+        emptyExtent,
+        { size: this.map.getSize(), padding: this.zoomPadding }
+      );
+    }
+
   }
 
   visibleLayers(status: boolean): void {
