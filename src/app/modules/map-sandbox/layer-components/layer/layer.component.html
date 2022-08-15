@@ -110,8 +110,7 @@
 
 </div>
 
-
-<div *ngIf="layer && displayLayerModal" [id]="'modalLayer-'+ layer.id" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div [id]="'modalLayer-'+ layer.id" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
@@ -157,18 +156,18 @@
 
           <ul class="nav nav-pills align-items-center justify-content-center" role="tablist">
             <li class="nav-item border m-1" role="presentation">
-              <a class="nav-link fw-bold active" data-bs-toggle="tab" [attr.data-bs-target]="'#GeoJsonTab' + layer.id" type="button" role="tab">
+              <a class="nav-link fw-bold active" (click)="exportBuilder('geojson')" data-bs-toggle="tab" [attr.data-bs-target]="'#GeoJsonTab' + layer.id" type="button" role="tab">
                 GeoJSON
               </a>
             </li>
             <li class="nav-item border m-1" role="presentation">
-              <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#wktTab' + layer.id" type="button" role="tab">
+              <a class="nav-link fw-bold" (click)="exportBuilder('wkt')" data-bs-toggle="tab" [attr.data-bs-target]="'#wktTab' + layer.id" type="button" role="tab">
                 WKT
               </a>
             </li>
 
             <li class="nav-item border m-1" role="presentation">
-              <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#pytestFixture' + layer.id" type="button" role="tab">
+              <a class="nav-link fw-bold" (click)="exportBuilder('pytestFixture')" data-bs-toggle="tab" [attr.data-bs-target]="'#pytestFixture' + layer.id" type="button" role="tab">
                 Pytest Fixtures
               </a>
             </li>
@@ -177,16 +176,16 @@
 
           <div class="d-flex flex-row mx-2 tab-content" id="'tabContent' + layer.id">
 
-            <div class="tab-pane fade w-100 active show" [id]="'GeoJsonTab' + layer.id" role="tabpanel">
-              <textarea #exportGeoJsonStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportGeoJsonStringGeomDiv.select()" readonly>{{layer.exportToGeoJSON()}}</textarea>
+            <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'geojson' ? 'active' : ''" [id]="'GeoJsonTab' + layer.id" role="tabpanel">
+              <textarea #exportGeoJsonStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportGeoJsonStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
             </div>
 
-            <div class="tab-pane fade w-100 show" [id]="'wktTab' + layer.id" role="tabpanel">
-              <textarea #exportWktStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportWktStringGeomDiv.select()" readonly>{{layer.exportToWkt()}}</textarea>
+            <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'wkt' ? 'active' : ''" [id]="'wktTab' + layer.id" role="tabpanel">
+              <textarea #exportWktStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportWktStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
             </div>
 
-            <div class="tab-pane fade w-100 show" [id]="'pytestFixture' + layer.id" role="tabpanel">
-              <textarea #exportPytestFixturesGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportPytestFixturesGeomDiv.select()" readonly>{{layer.exportToPytestFixture()}}</textarea>
+            <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'pytestFixture' ? 'active' : ''" [id]="'pytestFixture' + layer.id" role="tabpanel">
+              <textarea #exportPytestFixturesGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportPytestFixturesGeomDiv.select()" readonly>{{this.exportData}}</textarea>
             </div>
 
           </div>

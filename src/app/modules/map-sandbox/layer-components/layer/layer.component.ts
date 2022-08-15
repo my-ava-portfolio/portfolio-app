@@ -60,6 +60,9 @@ export class LayerComponent implements OnInit {
 
   displayLayerModal = false;
 
+  exportData: string = '';
+  exportDataMode = 'geojson'
+
   constructor(
     private elementRef: ElementRef,
     private interactionsService: InteractionsService,
@@ -94,7 +97,7 @@ export class LayerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    
     // enable selecting
     this.layer.enableSelecting()
 
@@ -210,6 +213,7 @@ export class LayerComponent implements OnInit {
 
   moveModalToBody(): void {
     this.displayLayerModal = true;
+    this.exportBuilder(this.exportDataMode)
     // TODO create a global function
     let modalLayerDiv = document.getElementById('modalLayer-'+ this.layer.id);
     if (modalLayerDiv !== null) {
@@ -218,6 +222,17 @@ export class LayerComponent implements OnInit {
       if (bodyDiv !== null) {
         bodyDiv.appendChild(modalLayerDiv)
       }
+    }
+  }
+
+  exportBuilder(mode: string): void {
+    this.exportDataMode = mode
+    if (mode === 'wkt') {
+      this.exportData = this.layer.exportToWkt()
+    } else if (mode === 'geojson') {
+      this.exportData = this.layer.exportToGeoJSON()
+    } else if (mode === 'pytestFixture') {
+      this.exportData = this.layer.exportToPytestFixture()
     }
   }
 
