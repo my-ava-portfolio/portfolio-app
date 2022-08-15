@@ -17,10 +17,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   @Input() layer!: layerHandler;
   @Input() currentEpsg!: string;
 
-  // layer!: layerHandler;
-  editBarEnabled = false
-  currentLayerIdSelected!: string;
-
   addIcon = faCirclePlus;
   editIcon = faPencil;
   paramIcon = faGear;
@@ -58,20 +54,13 @@ export class EditBarComponent implements OnInit, OnDestroy {
           this.disableEditing()
         }
         this.cdRef.detectChanges();
-
-      console.log(this.isEditBarEnabled, this.layer.layerName)
-        }
+      }
     )
 
   }
 
   ngOnInit(): void {
-    if (this.layer.locked) {
-      this.isEditBarEnabled = false
-      // this.disableEditing()
-    } else {
-      this.isEditBarEnabled = true
-    }
+    this.isEditBarEnabled = !this.layer.locked
   }
 
   ngOnDestroy(): void {
