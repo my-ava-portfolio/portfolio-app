@@ -1,32 +1,30 @@
 
-<div class="container-fluid g-0" [@fadeInOut]>
-  <div class="d-flex flex-column" *ngIf="isDataAvailable">
+<div class="d-flex flex-column" *ngIf="isDataAvailable">
 
-    <div class="m-4 grid-container">
-        <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
+  <div class="m-4 grid-container">
+      <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
+  </div>
+
+  <div class="d-flex flex-column legend-container">
+
+    <div class="mx-3">
+      <button class="btn btn-dark me-2 rounded-top" type="button" checked autocomplete="off" (click)="showHideLegend()">
+        <fa-icon class="" [icon]="tagsIcon"></fa-icon>
+        Légende
+      </button>
     </div>
 
-    <div class="d-flex flex-column legend-container">
+    <div class="legend-content text-center py-3 bg-white" *ngIf="isLegendDisplayed">
+      <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
+    </div>
 
-      <div class="mx-3">
-        <button class="btn btn-dark me-2 rounded-top" type="button" checked autocomplete="off" (click)="showHideLegend()">
-          <fa-icon class="" [icon]="tagsIcon"></fa-icon>
-          Légende
-        </button>
-      </div>
-
-      <div class="legend-content text-center py-3 bg-white" *ngIf="isLegendDisplayed">
-        <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
-      </div>
-
-      <div class="legend-content text-center py-3 bg-white" *ngIf="!isLegendDisplayed">
-      </div>
-
+    <div class="legend-content text-center py-3 bg-white" *ngIf="!isLegendDisplayed">
     </div>
 
   </div>
 
 </div>
+
 
 
 <ng-template #imgProject let-medias=medias>

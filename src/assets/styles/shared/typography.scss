@@ -11,3 +11,8 @@
     @extend .text-justify;
     @extend .small;
 }
+
+@mixin linkStyle {
+    @extend .text-decoration-none;
+    @extend .text-black;
+}

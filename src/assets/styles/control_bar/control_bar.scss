@@ -1,0 +1,46 @@
+#controlBar {
+    @extend .sticky-top;
+    @extend .d-flex, .flex-column;
+    @extend .bg-light;
+    @extend .shadow;
+
+    #mainBar {
+        @extend .d-flex, .flex-row;
+        @extend .justify-content-center, .align-items-center;
+        @extend .p-2;
+
+        #navBarButton {
+            @extend .btn, .btn-warning;
+        }
+    
+        #pageTitle {
+            @extend .fs-4, .text-center;
+            @include bold;
+            @extend .ms-auto;
+        }
+    
+        #pageAnchors {
+            @extend .ms-auto;
+            @extend .d-flex, .flex-row;
+            @extend .d-none, .d-xl-block;
+        }
+    
+        #navBarAnchorsButton {
+            @extend .ms-auto;
+            @extend .btn, .btn-dark;
+            @extend .d-xl-none;
+        }
+    }
+    
+    #subBar {
+        @extend .d-flex, .flex-column;
+        @extend .justify-content-center, .align-items-center;
+        @extend .d-block, .d-xl-none;
+        @extend .mb-1;
+    }
+
+    a {
+        @include linkStyle;
+        @extend .m-2;
+    }
+}

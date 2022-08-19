@@ -15,7 +15,7 @@
     [sideBarCollapsed]="sideBarCollapsed"
     ></app-control-bar>
 
-    <div id="content-container">
+    <div class="container-fluid g-0">
       <router-outlet #outlet="outlet" (activate)="updatePage(outlet)"></router-outlet>
     </div>
 
