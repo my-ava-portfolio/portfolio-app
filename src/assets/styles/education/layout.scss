@@ -1,0 +1,44 @@
+@import "education/_core";
+
+@import 'education/_general-infos';
+@import 'education/_degrees';
+@import 'education/_trainings';
+
+
+article {
+    @extend .d-flex;
+    @extend .flex-column;
+    @extend .my-2;
+    @extend .rounded;
+    @extend .bg-white;
+
+    section {
+        @extend .mb-3;
+        @extend .px-2;
+        @extend .d-flex;
+        @extend .flex-column;
+        
+        &#generalInfo {
+            @extend .flex-xxl-row;
+            @extend .justify-content-around, .align-items-center;
+            @extend .py-3;
+            @extend .bg-dark, .bg-gradient;
+            @extend .rounded-top;
+
+            @include generalInfoStyle;
+        }
+
+        &#degrees {
+            @include degreesStyle;
+        }
+
+        &#trainings {
+            @include trainingsStyle;
+        }
+    }
+}
+
+
+.paragraph {
+    @include paragraph;
+}

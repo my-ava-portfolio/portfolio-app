@@ -1,0 +1,8 @@
+$fractions:'';
+@for $i from 1 through 4 {
+    $fractions : $fractions + 1fr + ' ';
+    .grid-#{$i} {
+        grid-template-columns: #{$fractions};
+        display: block;
+    }
+}

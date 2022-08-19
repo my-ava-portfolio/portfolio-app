@@ -1,0 +1,39 @@
+@mixin trainingsStyle {
+
+    #content {
+        @extend .d-flex, .flex-column, .flex-sm-row;
+        @extend .justify-content-center, .align-items-stretch;
+        @extend .flex-wrap;
+
+        .feature-training {
+            @include feature;
+            @extend .text-center;
+            max-width: 500px;
+
+            .title-date {
+                @include bannerTitle($job-color);
+                @extend .opacity-75;
+                @extend .text-white;
+            }
+
+            .details {
+                @include detailsContainer();
+
+                img {
+                    @include imageSizing;
+                }
+    
+                .trainer { 
+                    @include bold;
+                }
+    
+                .location {
+                    @include small;
+                }
+            }
+
+
+        }
+
+    }
+}

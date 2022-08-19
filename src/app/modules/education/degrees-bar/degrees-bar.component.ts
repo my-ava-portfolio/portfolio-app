@@ -8,7 +8,7 @@ import { mapActivitiesPages } from '@core/inputs';
 
 
 @Component({
-  selector: 'app-degrees-bar',
+  selector: '[app-degrees-bar]',
   templateUrl: './degrees-bar.component.html',
   styleUrls: ['./degrees-bar.component.scss'],
 })

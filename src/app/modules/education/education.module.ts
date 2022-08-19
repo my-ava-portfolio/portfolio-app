@@ -9,6 +9,7 @@ import { LayoutComponent } from '@modules/education/layout/layout.component';
 import { DegreesBarComponent } from '@modules/education/degrees-bar/degrees-bar.component';
 import { TrainingsBarComponent } from '@modules/education/trainings-bar/trainings-bar.component';
 import { GeneralInfoComponent } from './general-info/general-info.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { GeneralInfoComponent } from './general-info/general-info.component';
   imports: [
     CommonModule,
     EducationRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgbModule
   ]
 })
 export class EducationModule { }

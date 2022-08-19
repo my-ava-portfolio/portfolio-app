@@ -1,19 +1,6 @@
-img{
-  max-height: 10vh;
-}
-
-.title-date {
-  background: linear-gradient(to right, rgba(var(--bs-warning-rgb), var(--bs-bg-opacity)), white);
-  border: unset!important;
-}
-
-.educ-feature{
-  max-width: 500px;
-}
-
-
-.bounce {
+.location a {
   animation: bounce 2s ease infinite;
+  color: rgba(var(--bs-danger-rgb))
 }
 @keyframes bounce {
 	0%, 20%, 50%, 80%, 100% {transform: translateY(0);}

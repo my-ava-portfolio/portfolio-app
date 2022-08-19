@@ -8,6 +8,9 @@
       "schematics": {
         "@schematics/angular:application": {
           "strict": true
+        },
+        "@schematics/angular:component": {
+          "style": "scss"
         }
       },
       "root": "",
@@ -22,18 +25,26 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss", 
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
+              "node_modules/bootstrap/scss/bootstrap.scss",
+              "src/assets/styles/main.scss",
               "node_modules/ol/ol.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],
             "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              // "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets/styles/",
+                "node_modules/bootstrap/scss"
+              ]
+            },
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -96,6 +107,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
+            "inlineStyleLanguage": "scss", 
             "assets": [
               "src/favicon.ico",
               "src/assets"

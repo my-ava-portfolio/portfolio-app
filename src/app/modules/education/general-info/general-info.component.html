@@ -1,22 +1,20 @@
-<div class="d-flex flex-column flex-xxl-row justify-content-around py-3 bg-dark bg-gradient rounded-top shadow">
 
-  <div class="d-flex flex-column flex-lg-row flex-fill text-center justify-content-around align-items-center">
 
-    <div class="d-flex flex-column">
-      <h3 class="fw-bolder text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
-      <div class="bg-white inline-flex rounded-pill text-black profil-badge text-center">{{ inputProfilData.job }}</div>
+  <div id="title">
+    <h3>{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
+    <div class="profil-badge">{{ inputProfilData.job }}</div>
+  </div>
+
+  <div id="description">5 d'études post-bac en Géographie avec une spécialisation en Système d'Information Géographique</div>
+
+  <div id="languages">
+   
+    <div class="card-box" *ngFor="let language of inputLanguagesData">
+        <div class="title">{{language.language}}</div>
+      <div class="sub-title">{{language.level}}</div>
     </div>
-    <div class="text-white m-2">5 d'études post-bac en Géographie avec une spécialisation en Système d'Information Géographique</div>
 
   </div>
 
-  <div id="languages" class="d-flex flex-sm-row flex-column justify-content-around mx-2 my-1">
-    <div class="card-box m-2 my-xxl-0 bg-warning rounded-3 text-center align-self-center" *ngFor="let language of inputLanguagesData">
 
-      <div class="fw-4 fw-bold">{{language.language}}</div>
-      <div class="small">{{language.level}}</div>
 
-    </div>
-  </div>
-
-</div>

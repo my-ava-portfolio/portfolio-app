@@ -1,0 +1,91 @@
+
+@mixin degreesStyle {
+
+    #content {
+        @extend .d-flex, .flex-column, .flex-sm-row;
+        @extend .justify-content-center, .align-items-stretch;
+        @extend .flex-wrap;
+
+        .feature-degree {
+            @include feature;
+            @extend .text-center;
+            max-width: 500px;
+
+            .title-date {
+                @include bannerTitle($education-color);
+                @extend .opacity-75;
+                @extend .text-white;
+            }
+
+            .details {
+                @include detailsContainer();
+                @include small;
+
+                .degree {
+                    @extend .d-flex, .flex-row;
+                    @extend .align-items-center;
+                    @extend .mx-2;
+                    @include bold;
+    
+                    img {
+                        @include imageSizing;
+                    }
+                }
+    
+                .school { 
+                    @extend .d-flex, .flex-column;
+                    @extend .justify-content-center;
+                }
+    
+                .location {
+                    @extend .d-flex, .flex-row;
+                    @extend .justify-content-center;
+                    @extend .small;
+                }
+            }
+        }
+
+        .feature-publication {
+            @include feature; 
+            max-width: 600px;
+
+            .title-date {
+                @include bannerTitle(rgba(var(--bs-warning-rgb)));
+                @extend .text-center;
+            }
+
+            .details {
+                @include detailsContainer();
+                @include small;
+
+                .article {
+                    @extend .d-flex, .flex-row;
+                    @extend .mb-2;
+
+                    .infos {
+                        @extend .d-flex, .flex-column, .align-items-center;
+                        @extend .ms-auto;
+                        @extend .px-3;
+    
+                        .keyword {
+                            @extend .badge;
+                            @extend .m-2;
+                        }
+                        .keyword-link {
+                            @extend .badge;
+                            @extend .bg-danger;
+                        }
+                    }
+    
+                    .presentation {
+                        @extend .d-flex, .flex-column;
+                        @extend .m-2;
+                        @extend .text-justify;
+                    }
+
+                }
+
+            }
+        }
+    }
+}

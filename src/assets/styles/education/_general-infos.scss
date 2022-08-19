@@ -1,0 +1,39 @@
+@mixin generalInfoStyle {
+    
+    #title {
+        @extend .d-flex, .flex-column; 
+        @extend .text-white;
+
+        .profil-badge {
+            @include badgeTitle(rgba(var(--bs-white-rgb)), rgba(var(--bs-dark-rgb)));
+        }
+    }
+
+    #description {
+        @extend .text-white; 
+        @extend .m-2
+    }
+
+    #languages {
+        @extend .d-flex, .flex-sm-row, .flex-column;
+        @extend .justify-content-around;
+        @extend .mx-2, .my-1; 
+
+        .card-box {
+            @extend .bg-warning;
+            @extend .rounded;
+            @extend .m-2, .my-xxl-0;
+            @extend .px-3, .py-2;
+            @extend .text-center;
+
+            .title {
+                @include bold;
+            }
+
+            .sub-title {
+                @include small;
+            }
+        }
+    }
+}
+

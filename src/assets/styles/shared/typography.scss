@@ -1,0 +1,13 @@
+@mixin bold {
+    @extend .fw-bold;
+}
+
+@mixin small {
+    @extend .small;
+}
+
+
+@mixin paragraph {
+    @extend .text-justify;
+    @extend .small;
+}

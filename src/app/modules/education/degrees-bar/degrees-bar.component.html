@@ -1,120 +1,97 @@
+<h5 id="title">
+  <fa-icon [icon]="degreeIcon"></fa-icon>Parcours universitaire
+</h5>
 
-  <section id="degrees" class="d-flex flex-column px-2">
+<div id="content">
 
-    <div class="fs-5 fw-bolder px-2">
-      <fa-icon class="me-2" [icon]="degreeIcon"></fa-icon>Parcours universitaire
+  <div [id]="degree.identifier" class="feature-degree" *ngFor="let degree of inputDegreesData">
+
+    <div class="title-date">
+     {{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }}
     </div>
 
-      <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-center align-items-stretch">
+    <div class="details">
 
-        <div [id]="degree.identifier" class="educ-feature border text-center small m-3 rounded-3" *ngFor="let degree of inputDegreesData">
+      <div class="degree">
 
-          <div class="py-2 title-date mx-auto">
-            <p class="fw-bolder mb-0">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }}</p>
-          </div>
+        <img *ngIf="degree.img_school !== 'null'" class="" [src]="apiLogoUrl + degree.img_school"/>
+        <p>{{ degree.degree }}</p>
 
-          <div class="d-flex flex-column m-3">
+      </div>
 
-            <div class="d-flex flex-row mx-auto">
+      <div class="school">
+        <div>{{ degree.school }}</div>
 
-              <div *ngIf="degree.img_school !== 'null'" class="mx-auto my-1">
-                <img class="img-fluid rounded mx-auto mb-2" [src]="apiLogoUrl + degree.img_school"/>
-              </div>
-
-              <div class="d-flex flex-column mx-auto justify-content-around">
-                <p class="fw-bolder mx-2">{{ degree.degree }}</p>
-              </div>
-
-            </div>
-
-            <div class="d-flex flex-row justify-content-center align-item-center">
-              <div class="small">{{ degree.school }}</div>
-            </div>
-
-            <div class="d-flex flex-row justify-content-center align-item-center">
-              <div class="bounce">
-                <a [id]="'location_' + degree.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="degree.identifier">
-                  <fa-icon class="me-2 text-danger" [pulse]="true" [icon]="locationIcon"></fa-icon>
-                </a>
-              </div>
-              <div class="small">{{degree.location}}</div>
-
-            </div>
-
-          </div>
-
+        <div class="location">
+          <a [id]="'location_' + degree.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="degree.identifier">
+            <fa-icon [pulse]="true" [icon]="locationIcon"></fa-icon>
+          </a>
+          {{degree.location}}
         </div>
 
       </div>
 
-    <ng-container *ngTemplateOutlet="publications"></ng-container>
-
-  </section>
-
-
-
-
-<ng-template #publications>
-  <div class="card-body mx-auto">
-
-    <div class="d-flex flex-column justify-content-start">
-      <span class="fs-6 fw-bolder px-2">
-        <fa-icon class="me-2" [icon]="publishIcon"></fa-icon>
-        Travaux/publications universitaires
-      </span>
-
-
-      <div class="d-flex flex-column flex-lg-row justify-content-center">
-
-        <div class="card mx-4 my-2 publi_card" *ngFor="let publication of publicationsData">
-          <div class="card-body">
-            <div class="d-flex flex-row header mb-1 justify-content-between align-items-center">
-
-              <h6>{{publication.year}} - {{publication.editor}}</h6>
-
-              <div class="d-flex flex-column flex-lg-row align-items-center">
-
-                <ng-container *ngIf="publication.keywords">
-                  <div class="">
-                    <span class="badge m-2" [style]="'background-color:' + item.value"
-                      *ngFor="let item of publication.keywords | keyvalue"
-                    >{{ item.key }}</span>
-                  </div>
-                </ng-container>
-
-                <ng-container *ngIf="publication.link">
-                  <div class="">
-                    <a class="btn btn-sm btn-danger m-2"  href="{{publication.link}}" target="_blank" rel="noopener noreferrer" title="Documents"><fa-icon [icon]="pdfFileIcon"></fa-icon></a>
-                  </div>
-                </ng-container>
-
-              </div>
-            </div>
-
-              <div class="d-flex flex-column">
-
-                <div class="d-flex flex-row">
-                  <div class="ps-3">
-                    <p class="text-justify small">{{publication.publication}}</p>
-                  </div>
-                </div>
-
-                <div class="d-flex flex-column">
-                  <h6>Description</h6>
-                  <div class="ps-3">
-                    <p class="text-justify small">{{publication.description}}</p>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-        </div>
-
-      </div>
 
 
     </div>
 
   </div>
+
+</div>
+
+  <ng-container *ngTemplateOutlet="publications"></ng-container>
+
+
+
+
+<ng-template #publications>
+
+  <h5 id="title">
+    <fa-icon [icon]="degreeIcon"></fa-icon>Travaux/publications universitaires
+  </h5>
+  <div id="content">
+
+     <div class="feature-publication" *ngFor="let publication of publicationsData">
+
+      <div class="title-date">
+        {{publication.year}} - {{publication.editor}}
+       </div>
+
+      <div class="details">
+
+            <div class="article">
+
+              <div class="paragraph">{{publication.publication}}</div>
+
+              <div class="infos">
+
+                <ng-container *ngIf="publication.keywords">
+                  <span class="keyword" [style]="'background-color:' + item.value"
+                    *ngFor="let item of publication.keywords | keyvalue"
+                  >{{ item.key }}</span>
+                </ng-container>
+                <a *ngIf="publication.link" class="keyword-link"  href="{{publication.link}}" target="_blank" rel="noopener noreferrer" title="Documents">
+                  <fa-icon [icon]="pdfFileIcon" size="2x"></fa-icon>
+                </a>
+      
+              </div>
+
+            </div>
+
+            <div class="presentation">
+              <h6>Présentation</h6>
+              <div class="paragraph">{{publication.description}}</div>
+            </div>
+
+          </div>
+    </div>
+
+  </div>
+  
+  
+
+  
+
+
 
 </ng-template>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewEncapsulation  } from '@angular/core';
 
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
@@ -17,7 +17,7 @@ import { fadeInOutAnimation } from '@core/animation_routes';
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
-  animations: [fadeInOutAnimation]
+  animations: [fadeInOutAnimation ],
 })
 export class LayoutComponent implements OnInit {
   fragment!: string | null;
