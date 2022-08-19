@@ -1,27 +1,23 @@
-<div class="container-fluid h-100">
+<article *ngIf="isDataAvailable" [@fadeInOut]>
+  
+  <section app-general-info
+    id="generalInfo" 
+    [fragment]="fragment"
+    [profilData]="profilData"
+    [languagesData]="languagesData"
+  ></section>
 
-  <article class="" *ngIf="isDataAvailable" [@fadeInOut]>
-    
-    <section app-general-info
-      id="generalInfo" 
-      [fragment]="fragment"
-      [profilData]="profilData"
-      [languagesData]="languagesData"
-    ></section>
+  <section app-degrees-bar
+    id="degrees" 
+    [fragment]="fragment"
+    [degreesData]="degreesData"
+    [publicationsData]="publicationsData"
+  ></section>
 
-    <section app-degrees-bar
-      id="degrees" 
-      [fragment]="fragment"
-      [degreesData]="degreesData"
-      [publicationsData]="publicationsData"
-    ></section>
+  <section app-trainings-bar
+    id="trainings" 
+    [fragment]="fragment"
+    [trainingsData]="trainingsData"
+  ></section>
 
-    <section app-trainings-bar
-      id="trainings" 
-      [fragment]="fragment"
-      [trainingsData]="trainingsData"
-    ></section>
-
-  </article>
-
-</div>
+</article>
