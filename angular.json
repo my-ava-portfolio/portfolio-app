@@ -31,17 +31,18 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/bootstrap/scss/bootstrap.scss",
+              // "node_modules/bootstrap/scss/bootstrap.scss",
               "src/app/styles/main.scss",
               "node_modules/ol/ol.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],
             "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/app/styles/",
-                "node_modules/bootstrap/scss"
+                "node_modules/bootstrap/scss/"
               ]
             },
             "vendorChunk": true,

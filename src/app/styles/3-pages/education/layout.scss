@@ -6,8 +6,7 @@
 
 
 article {
-    @extend .d-flex;
-    @extend .flex-column;
+    @extend .d-flex, .flex-column;
     @extend .m-2;
     @extend .rounded;
     @extend .bg-white;
@@ -15,8 +14,7 @@ article {
     section {
         @extend .mb-3;
         @extend .px-2;
-        @extend .d-flex;
-        @extend .flex-column;
+        @extend .d-flex, .flex-column;
         
         &#generalInfo {
             @extend .flex-xxl-row;

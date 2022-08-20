@@ -6,3 +6,20 @@ $fractions:'';
         display: block;
     }
 }
+
+
+// @mixin flex($flex-type1, $flex-type2: $null, $justify-content: $null, $align-items: $null) {
+//     @extend .d-flex;
+//     @extend .flex-#{$flex-type1}; 
+
+//     @if $flex-type2 != $null {
+//         @extend .flex-#{$flex-type2};
+//     }
+
+//     @if $justify-content != $null {
+//         @extend .justify-content-#{$justify-content};
+//     }
+//     @if $align-items != $null {
+//         @extend .align-items-#{$align-items};
+//     }
+// }

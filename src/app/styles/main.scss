@@ -1,7 +1,10 @@
 @import '0-base/root-dir';
 @import '1-helpers/root-dir';
 
+// bootstrap
 @import 'bootstrap';
+// bootstrap
+
 
 @import '2-modules/root-dir';
 @import '3-pages/root-dir';
@@ -11,14 +14,18 @@ fa-icon {
 }
 
 
+// to hide scroll bar page: not needed
+body {
+  font-size: 15px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
 
-// html {
-//   -ms-overflow-style: none;  /* Internet Explorer 10+ */
-//   scrollbar-width: none;  /* Firefox */
-// }
-// .html::-webkit-scrollbar {
-//   display: none;  /* Safari and Chrome */
-// }
+
+
 
 // @mixin fade-in {
 //   opacity: 1;
@@ -78,11 +85,11 @@ fa-icon {
 // 	-webkit-animation:progress-bar-stripes 1s linear infinite !important;
 // 	animation:progress-bar-stripes 1s linear infinite !important;
 // }
-// .modal.fade .modal-dialog {
-// 	transition:-webkit-transform 0.3s ease-out !important;
-// 	transition:transform 0.3s ease-out !important;
-// 	transition:transform 0.3s ease-out,-webkit-transform 0.3s ease-out !important;
-// }
+// // .modal.fade .modal-dialog {
+// // 	transition:-webkit-transform 0.3s ease-out !important;
+// // 	transition:transform 0.3s ease-out !important;
+// // 	transition:transform 0.3s ease-out,-webkit-transform 0.3s ease-out !important;
+// // }
 // .carousel-item {
 // 	transition:-webkit-transform 0.6s ease-in-out !important;
 // 	transition:transform 0.6s ease-in-out !important;

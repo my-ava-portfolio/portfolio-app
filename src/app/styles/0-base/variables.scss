@@ -4,6 +4,8 @@ $enable-responsive-font-sizes: true;
 $enable-shadows: true;
 
 // Variables  
+$null: null;
+
 $very-dark: #2a2e33;
 $less-dark: #495057;
 $personal-project-color: rgba(255, 127, 0);
@@ -18,15 +20,6 @@ $tools-color: #302e2e;
 
 
 
-body {
-  font-size: 15px;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-}
-
-body::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
-}
 
 
 

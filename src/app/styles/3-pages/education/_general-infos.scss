@@ -5,7 +5,7 @@
         @extend .text-white;
 
         .profil-badge {
-            @include badgeTitle(rgba(var(--bs-white-rgb)), rgba(var(--bs-dark-rgb)));
+            @include badgeTitle($white, $dark);
         }
     }
 
@@ -22,8 +22,7 @@
         .card-box {
             @extend .bg-warning;
             @extend .rounded;
-            @extend .m-2, .my-xxl-0;
-            @extend .px-3, .py-2;
+            @extend .m-2, .p-2;
             @extend .text-center;
 
             .title {

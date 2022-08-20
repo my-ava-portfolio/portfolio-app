@@ -3,7 +3,7 @@
 }
 
 @mixin small {
-    font-size: 0.875em;
+    font-size: 0.9em;
 }
 
 
@@ -14,5 +14,5 @@
 
 @mixin linkStyle {
     text-decoration: none !important;
-    color: 'black';
+    color: $black !important;
 }
