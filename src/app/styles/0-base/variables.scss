@@ -15,29 +15,7 @@ $technics-color: #3b77a1;
 $themes-color: #76a02f;
 $tools-color: #302e2e;
 
-@function get_color($value) {
-  @if $value == "themes" {
-    @return $themes-color;
-  }
-  @if $value == "technics" {
-    @return $technics-color;
-  }
-  @if $value == "tools" {
-    @return $tools-color;
-  }
-  @if $value == "job" {
-    @return $job-color;
-  }
-  @if $value == "personal_project" {
-    @return $personal-project-color;
-  }
-  @if $value == "volunteer" {
-    @return $volunteer-color;
-  }
-  @if $value == "education" {
-    @return $education-color;
-  }
-}
+
 
 
 body {
@@ -51,19 +29,7 @@ body::-webkit-scrollbar {
 }
 
 
-// .circle {
-//   border-radius: 50%;
-// }
 
-.text-justify {
-  text-align: justify;
-}
-
-
-
-.container-width-extended {
-  max-width: 1700px;
-}
 
 .bg-very-dark {
   background-color: $very-dark;
@@ -102,64 +68,5 @@ body::-webkit-scrollbar {
 }
 
 
-@each $name in 'education' 'personal_project' 'job' 'volunteer' {
-  .#{$name}_color {
-    color: get_color($name);
-  }
-
-  circle.#{$name} {
-    fill: get_color($name);
-
-    &.selected {
-      stroke: black!important;
-      stroke-width: 2px!important;
-    }
-
-    &.disabled {
-      fill: $disabled-color;
-    }
-
-    &.invisible {
-      visibility: hidden;
-    }
-  }
-
-  .bg-color-#{$name} {
-    background-color: get_color($name);
-    color: white;
-    opacity: 1!important;
-  }
-  .btn-outline-#{$name} {
-    border-color: get_color($name);
-    &:hover {
-      background-color: lighten(get_color($name), 7.5%);
-      color: #ffffff!important;
-      border-color: get_color($name);
-    }
-  }
-
-}
-
-
-@each $name in 'themes' 'technics' 'tools' {
-
-  circle.#{$name} {
-    stroke: get_color($name);
-    stroke-width: 5;
-    fill: white;
-
-    &.invisible {
-      visibility: hidden;
-    }
-  }
-
-  .bg-color-#{$name} {
-    background-color: get_color($name);
-    &:hover {
-      background-color: lighten(get_color($name), 7.5%);
-      border-color: get_color($name);
-    }
-  }
-}
 
 

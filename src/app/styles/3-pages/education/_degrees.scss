@@ -80,7 +80,7 @@
                     .presentation {
                         @extend .d-flex, .flex-column;
                         @extend .m-2;
-                        @extend .text-justify;
+                        @include paragraph;
                     }
 
                 }
