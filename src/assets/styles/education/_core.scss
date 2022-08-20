@@ -24,15 +24,5 @@
     @extend .m-3; 
 }
 
-@mixin badgeTitle($bg_color, $text_color) {
-    display: inline-block;
-    padding: 5px 25px;
-    font-size: 12px;
-    line-height: 20px;
-    font-weight: 500;
-    margin-bottom: 10px;
-    border-radius: var(--bs-border-radius-pill)!important;
-    background-color: $bg_color;
-    color: $text_color;
-}
+
 
