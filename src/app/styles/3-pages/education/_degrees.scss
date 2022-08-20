@@ -2,6 +2,7 @@
 @mixin degreesStyle {
 
     #content {
+        // @include flex;
         @extend .d-flex, .flex-column, .flex-sm-row;
         @extend .justify-content-center, .align-items-stretch;
         @extend .flex-wrap;
