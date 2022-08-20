@@ -1,18 +1,10 @@
-
-@import 'core/variables';
-@import 'core/helpers';
-
-@import 'shared/typography';
+@import '0-base/root-dir';
+@import '1-helpers/root-dir';
 
 @import 'bootstrap';
 
-@import 'bases/layout';
-@import 'bases/control_bar';
-@import 'bases/navigation_bar';
-
-
-@import 'education/layout';
-
+@import '2-modules/root-dir';
+@import '3-pages/root-dir';
 
 fa-icon {
   @extend .m-2;

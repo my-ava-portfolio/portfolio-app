@@ -1,0 +1,18 @@
+@mixin bold {
+    font-weight: bold;
+}
+
+@mixin small {
+    font-size: 0.875em;
+}
+
+
+@mixin paragraph {
+    @include small;
+    text-align: justify;
+}
+
+@mixin linkStyle {
+    text-decoration: none !important;
+    color: 'black';
+}
