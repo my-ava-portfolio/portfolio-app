@@ -1,21 +1,21 @@
 <article id="education" *ngIf="isDataAvailable" [@fadeInOut]>
   
   <section app-general-info
-    id="generalInfo" 
+    id="education__generalInfo" 
     [fragment]="fragment"
     [profilData]="profilData"
     [languagesData]="languagesData"
   ></section>
 
   <section app-degrees-bar
-    id="degrees" 
+    id="education__degrees" 
     [fragment]="fragment"
     [degreesData]="degreesData"
     [publicationsData]="publicationsData"
   ></section>
 
   <section app-trainings-bar
-    id="trainings" 
+    id="education__trainings" 
     [fragment]="fragment"
     [trainingsData]="trainingsData"
   ></section>

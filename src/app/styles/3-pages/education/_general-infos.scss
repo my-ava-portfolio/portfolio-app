@@ -5,12 +5,12 @@
     @extend .bg-dark, .bg-gradient;
     @extend .rounded-top;
 
-    #title {
+    &__title {
         @extend .d-flex, .flex-column;
         @extend .mx-4; 
     }
 
-    #languages {
+    &__languages {
         @extend .d-flex, .flex-sm-row, .flex-column;
         @extend .justify-content-around;
         @extend .mx-2; 

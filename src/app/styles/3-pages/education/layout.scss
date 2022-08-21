@@ -7,22 +7,22 @@
 
 #education {
     @include articleStyle;
-
-    section {
+      
+    &__generalInfo {
         @include sectionStyle;
-        
-        &#generalInfo {
-            @include generalInfoStyle;
-        }
-
-        &#degrees {
-            @include degreesStyle;
-        }
-
-        &#trainings {
-            @include trainingsStyle;
-        }
+        @include generalInfoStyle;
     }
+
+    &__degrees {
+        @include sectionStyle;
+        @include degreesStyle;
+    }
+
+    &__trainings {
+        @include sectionStyle;
+        @include trainingsStyle;
+    }
+    
 }
 
 

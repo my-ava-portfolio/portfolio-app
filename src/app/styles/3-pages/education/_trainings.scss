@@ -1,33 +1,25 @@
 @mixin trainingsStyle {
 
-    #content {
-        @extend .d-flex, .flex-column, .flex-sm-row;
-        @extend .justify-content-center, .align-items-stretch;
-        @extend .flex-wrap;
+    .feature-training {
+        @include feature;
+        @extend .text-center;
+        max-width: 500px;
 
-        .feature-training {
-            @include feature;
-            @extend .text-center;
-            max-width: 500px;
+        .details {
+            @include detailsContainer();
 
-            .details {
-                @include detailsContainer();
-
-                img {
-                    @include imageSizing;
-                }
-    
-                .trainer { 
-                    @include bold;
-                }
-    
-                .location {
-                    @include small;
-                }
+            img {
+                @include imageSizing;
             }
 
+            .trainer { 
+                @include bold;
+            }
 
+            .location {
+                @include small;
+            }
         }
-
     }
+
 }

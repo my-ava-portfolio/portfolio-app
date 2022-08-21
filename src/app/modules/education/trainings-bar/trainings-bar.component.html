@@ -1,23 +1,23 @@
 
-    <h5 class="title-tick-job">
-      Formations professionnelles
-    </h5>
+<h5 class="title-tick-job">
+  Formations professionnelles
+</h5>
 
 
-    <div id="content">
+<div class="content">
 
-        <div [id]="training.identifier" class="feature-training" *ngFor="let training of inputTrainingsData">
+  <div [id]="training.identifier" class="feature-training" *ngFor="let training of inputTrainingsData">
 
-          <div class="title-bar-job">{{ training.year }}</div>
+    <div class="title-bar-job">{{ training.year }}</div>
 
-          <div class="details">
+    <div class="details">
 
-            <img *ngIf="training.img_tool !== 'null'" class="img-fluid rounded mx-auto" [src]="training.img_tool"/>
+      <img *ngIf="training.img_tool !== 'null'" class="img-fluid rounded mx-auto" [src]="training.img_tool"/>
 
-              <span class="trainer">{{ training.name }}</span>
-              <span class="location">par {{ training.trainer }}</span>
-          </div>
+        <span class="trainer">{{ training.name }}</span>
+        <span class="location">par {{ training.trainer }}</span>
+    </div>
 
-        </div>
+  </div>
 
-      </div>
+</div>
