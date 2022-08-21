@@ -1,0 +1,26 @@
+@import 'profil-card';
+@import 'welcome';
+
+article {
+    @include articleStyle;
+
+    section {
+        @include sectionStyle;
+        @extend .justify-content-center;
+
+        &#presentationCard {
+            
+            #profilSummary {
+                @include profilSummaryStyle;
+            }
+
+            #welcome {
+                @include welcomeStyle;
+            }
+
+        }
+
+
+
+    }
+}

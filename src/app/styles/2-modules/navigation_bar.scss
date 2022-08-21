@@ -23,21 +23,12 @@
         #header {
             @extend .mt-2;
             
-            img {
-                @extend .rounded-circle;
-                max-width: 80%;
-                // @extend .p-3;
-            }
-    
             #profil {
                 #name {
                     @extend .text-white;
                     @extend .my-2;
                 }
     
-                #jobTitle.profil-badge {
-                    @include badgeTitle(rgba(var(--bs-white-rgb)), rgba(var(--bs-dark-rgb)));
-                }
                 #resumeDl.profil-badge {
                     @include badgeTitle(rgba(var(--bs-warning-rgb)), rgba(var(--bs-dark-rgb)));
                 }

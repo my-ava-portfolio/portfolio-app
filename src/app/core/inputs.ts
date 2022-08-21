@@ -155,6 +155,7 @@ export const mapActivitiesPages: any = {
   route: '/maps',
   title: 'Cartes',
   verbose_title: 'Accès aux carte',
+  colorType: 'personal_project',
   icon: mapIcon,
   sub_menus: [
     {
@@ -197,6 +198,7 @@ export const galleryPages: any = {
   route: '/gallery',
   title: 'Galerie',
   verbose_title: 'Accès à la galerie',
+  colorType: 'gallery',
   icon: galleryIcon
 };
 
@@ -207,6 +209,7 @@ export const projectPages: any = [
     route: '/blog',
     title: 'Blog',
     verbose_title: 'Accès au blog',
+    colorType: 'external',
     icon: notesIcon
   },
   {
@@ -214,6 +217,7 @@ export const projectPages: any = [
     url: githubUrl,
     title: 'Github',
     verbose_title: 'Accès à Github',
+    colorType: 'external',
     icon: githubIcon
   }
 ];

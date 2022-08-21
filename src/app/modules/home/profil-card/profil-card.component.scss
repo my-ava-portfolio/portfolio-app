@@ -1,27 +1,6 @@
-.section-title{
-  position: relative;
-  padding-left: 1.5rem;
-}
 
-.section-title:before {
-  content: "";
-  display: inline-block;
-  background: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity)) !important;
-  width: 5px;
-  height: 100%;
-  position: absolute;
-  left: 0.5em;
-  top: 0;
-}
 
-.profil-badge {
-  display: inline-block;
-  padding: 5px 25px;
-  font-size: 12px;
-  line-height: 20px;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
+
 
 .carousel-item .row {
   min-height: 320px!Important;

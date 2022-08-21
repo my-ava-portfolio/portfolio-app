@@ -1,11 +1,11 @@
-$fractions:'';
-@for $i from 1 through 4 {
-    $fractions : $fractions + 1fr + ' ';
-    .grid-#{$i} {
-        grid-template-columns: #{$fractions};
-        display: block;
-    }
-}
+// $fractions:'';
+// @for $i from 1 through 4 {
+//     $fractions : $fractions + 1fr + ' ';
+//     .grid-#{$i} {
+//         grid-template-columns: #{$fractions};
+//         display: block;
+//     }
+// }
 
 
 // @mixin flex($flex-type1, $flex-type2: $null, $justify-content: $null, $align-items: $null) {

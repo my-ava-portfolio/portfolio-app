@@ -6,23 +6,12 @@
 
 
 article {
-    @extend .d-flex, .flex-column;
-    @extend .m-2;
-    @extend .rounded;
-    @extend .bg-white;
+    @include articleStyle;
 
     section {
-        @extend .mb-3;
-        @extend .px-2;
-        @extend .d-flex, .flex-column;
+        @include sectionStyle;
         
         &#generalInfo {
-            @extend .flex-xxl-row;
-            @extend .justify-content-around, .align-items-center;
-            @extend .py-3;
-            @extend .bg-dark, .bg-gradient;
-            @extend .rounded-top;
-
             @include generalInfoStyle;
         }
 
@@ -37,6 +26,3 @@ article {
 }
 
 
-.paragraph {
-    @include paragraph;
-}

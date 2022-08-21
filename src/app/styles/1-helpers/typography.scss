@@ -9,6 +9,7 @@
 
 @mixin paragraph {
     @include small;
+    @extend .mx-3;
     text-align: justify;
 }
 

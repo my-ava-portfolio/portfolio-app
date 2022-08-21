@@ -2,7 +2,7 @@
     @extend .d-flex;
 
     #mainContent {
-        @extend .container-fluid;
-        @extend .g-0;
+        @extend .container;
+        // @extend .g-0;
     }
 }

@@ -1,0 +1,17 @@
+@mixin welcomeStyle {
+    @extend .d-flex, .flex-column, .py-2;
+    @extend .justify-content-around;
+    
+    .paragraph {
+        @extend .my-2;
+    }
+
+    #pagesButtons {
+        @extend .d-flex, .flex-column, .py-3;
+        @extend .text-center;
+
+        .buttons {
+            @extend .my-2;
+        }
+    }
+}

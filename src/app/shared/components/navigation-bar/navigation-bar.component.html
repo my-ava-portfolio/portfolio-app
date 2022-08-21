@@ -3,15 +3,16 @@
   <div id="sideBarContainer">
     <div id="header">
 
-      <img [src]="imageProfile">
+      <img class="profil-img" [src]="imageProfile">
 
       <div id="profil" *ngIf="sideBarCollapsed">
-        <h4 id="name">{{ generalData.first_name }} {{ generalData.last_name }}</h4>
-        <h6 id="jobTitle" class="profil-badge">{{ generalData.job }}</h6>
+        <h4 class="title-name">{{ generalData.first_name }} {{ generalData.last_name }}</h4>
+        <div class="job-title-badge">{{ generalData.job }}</div>
 
-          <a id="resumeDl" class="profil-badge" [title]="legacyResumePage.title" [routerLink]="legacyResumePage.route">
-            {{legacyResumePage.verbose_title}}
-          </a>
+        <a class="resume-a4-badge" [title]="legacyResumePage.title" [routerLink]="legacyResumePage.route">
+          {{legacyResumePage.verbose_title}}
+        </a>
+
       </div>
 
       <div id="shortname" *ngIf="!sideBarCollapsed">

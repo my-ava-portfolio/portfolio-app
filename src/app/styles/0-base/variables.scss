@@ -9,6 +9,7 @@ $null: null;
 $very-dark: #2a2e33;
 $less-dark: #495057;
 $personal-project-color: rgba(255, 127, 0);
+$gallery-color: #0d6efd;
 $job-color: rgba(225, 0, 1);
 $volunteer-color: rgba(98, 0, 255);
 $education-color: rgba(0, 144, 29);
@@ -24,9 +25,9 @@ $tools-color: #302e2e;
 
 
 
-.bg-very-dark {
-  background-color: $very-dark;
-}
+// .bg-very-dark {
+//   background-color: $very-dark;
+// }
 
 .bg-less-dark {
   background-color: $less-dark;

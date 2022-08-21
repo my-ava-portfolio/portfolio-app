@@ -1,23 +1,19 @@
 @mixin generalInfoStyle {
-    
+    @extend .d-flex, .flex-xxl-row;
+    @extend .justify-content-around, .align-items-center;
+    @extend .py-3;
+    @extend .bg-dark, .bg-gradient;
+    @extend .rounded-top;
+
     #title {
-        @extend .d-flex, .flex-column; 
-        @extend .text-white;
-
-        .profil-badge {
-            @include badgeTitle($white, $dark);
-        }
-    }
-
-    #description {
-        @extend .text-white; 
-        @extend .m-2
+        @extend .d-flex, .flex-column;
+        @extend .mx-4; 
     }
 
     #languages {
         @extend .d-flex, .flex-sm-row, .flex-column;
         @extend .justify-content-around;
-        @extend .mx-2, .my-1; 
+        @extend .mx-2; 
 
         .card-box {
             @extend .bg-warning;
@@ -25,13 +21,6 @@
             @extend .m-2, .p-2;
             @extend .text-center;
 
-            .title {
-                @include bold;
-            }
-
-            .sub-title {
-                @include small;
-            }
         }
     }
 }

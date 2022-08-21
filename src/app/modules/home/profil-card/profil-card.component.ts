@@ -10,7 +10,7 @@ import { ResumeService } from '@services/resume.service';
 
 
 @Component({
-  selector: 'app-profil-card',
+  selector: '[app-profil-card]',
   templateUrl: './profil-card.component.html',
   styleUrls: ['./profil-card.component.scss']
 })

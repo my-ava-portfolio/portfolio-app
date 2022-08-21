@@ -1,0 +1,20 @@
+@mixin profilSummaryStyle {
+    @extend .d-flex, .flex-row, .py-2;
+    @extend .justify-content-around;
+    @extend .bg-dark, .bg-gradient;
+    @extend .rounded-top;
+
+    #header {
+        @extend .d-flex, .flex-column, .py-2;
+    }
+
+    .profil-img {
+        @extend .d-none, .d-lg-block;
+        @extend .img-thumbnail
+    }
+    
+    .profil-badge {
+        @include badgeTitle($white, $dark);
+    }
+
+}

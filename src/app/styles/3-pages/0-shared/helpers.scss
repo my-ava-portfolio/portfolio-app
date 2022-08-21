@@ -1,0 +1,56 @@
+@mixin articleStyle {
+    @extend .d-flex, .flex-column;
+    @extend .m-2;
+    @extend .rounded;
+    @extend .bg-white;
+}
+
+@mixin sectionStyle {
+    @extend .d-flex, .flex-column;
+    @extend .mb-3;
+    // @extend .px-2;
+}
+
+.title-name {
+    @extend .text-white;
+    @extend .p-2;
+    @extend .text-center;
+}
+
+.title {
+    @include bold;
+}
+
+.sub-title {
+    @include small;
+}
+
+
+.text-header {
+    @extend .text-white; 
+    @extend .text-center;
+    @extend .m-2
+}
+
+.profil-img {
+    @extend .rounded-circle;
+    @extend .img-fluid;
+    max-width: 60%;
+}
+
+
+.row-item {
+    @extend .d-flex, .flex-row;
+    // @extend .justify-content-around, .align-items-center;
+    @extend .py-2;
+}
+
+.column-item {
+    @extend .d-flex, .flex-column;
+    // @extend .justify-content-center, .align-items-center, .align-content-between;
+    @extend .py-2;
+}
+
+.paragraph {
+    @include paragraph;
+}
