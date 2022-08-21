@@ -2,7 +2,7 @@
     @extend .d-flex;
 
     #mainContent {
-        @extend .container;
+        @extend .container-fluid;
         // min-height: calc(100vh - $navbar-height);
         @extend .g-0;
     }
