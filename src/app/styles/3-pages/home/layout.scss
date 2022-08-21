@@ -1,26 +1,20 @@
 @import 'profil-card';
 @import 'welcome';
 
-article {
+#home {
     @include articleStyle;
-
-    section {
+    @extend .w-75, .mx-auto;
+    
+    #presentationCard {
         @include sectionStyle;
         @extend .justify-content-center;
-
-        &#presentationCard {
             
-            #profilSummary {
-                @include profilSummaryStyle;
-            }
-
-            #welcome {
-                @include welcomeStyle;
-            }
-
+        #profilSummary {
+            @include profilSummaryStyle;
         }
 
-
-
+        #welcome {
+            @include welcomeStyle;
+        }
     }
 }
