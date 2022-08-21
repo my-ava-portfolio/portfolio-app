@@ -6,12 +6,9 @@
         @extend .my-2;
     }
 
-    #pagesButtons {
-        @extend .d-flex, .flex-column, .py-3;
+    &__pageLinks {
+        @extend .d-flex, .flex-column;
         @extend .text-center;
 
-        .buttons {
-            @extend .my-2;
-        }
     }
 }
