@@ -6,7 +6,7 @@
 
   <div [id]="degree.identifier" class="feature-degree" *ngFor="let degree of inputDegreesData">
 
-    <div class="title-date">
+    <div class="title-bar-education">
      {{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }}
     </div>
 
@@ -53,7 +53,7 @@
 
      <div class="feature-publication" *ngFor="let publication of publicationsData">
 
-      <div class="title-date">
+      <div class="title-bar-warning">
         {{publication.year}} - {{publication.editor}}
        </div>
 

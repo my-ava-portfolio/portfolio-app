@@ -11,12 +11,6 @@
             @extend .text-center;
             max-width: 500px;
 
-            .title-date {
-                @include bannerTitle($education-color);
-                @extend .opacity-75;
-                @extend .text-white;
-            }
-
             .details {
                 @include detailsContainer();
                 @include small;
@@ -48,11 +42,6 @@
         .feature-publication {
             @include feature; 
             max-width: 600px;
-
-            .title-date {
-                @include bannerTitle(rgba(var(--bs-warning-rgb)));
-                @extend .text-center;
-            }
 
             .details {
                 @include detailsContainer();

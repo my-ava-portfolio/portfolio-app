@@ -10,12 +10,6 @@
             @extend .text-center;
             max-width: 500px;
 
-            .title-date {
-                @include bannerTitle($job-color);
-                @extend .opacity-75;
-                @extend .text-white;
-            }
-
             .details {
                 @include detailsContainer();
 

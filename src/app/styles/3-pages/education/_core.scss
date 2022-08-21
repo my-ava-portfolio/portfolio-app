@@ -1,10 +1,4 @@
-@mixin bannerTitle($color) {
-    @extend .mx-auto; 
-    @extend .py-2; 
-    @extend .rounded-top;
-    background-color: $color;
-    @extend .fw-bold;
-}
+
 
 @mixin imageSizing {
     @extend .img-fluid;
