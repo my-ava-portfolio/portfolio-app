@@ -5,15 +5,15 @@
     @include articleStyle;
     @extend .w-75, .mx-auto;
     
-    #presentationCard {
+    &__card {
         @include sectionStyle;
         @extend .justify-content-center;
             
-        #profilSummary {
-            @include profilSummaryStyle;
+        &__summary {
+            @include summaryStyle;
         }
 
-        #welcome {
+        &__welcome {
             @include welcomeStyle;
         }
     }

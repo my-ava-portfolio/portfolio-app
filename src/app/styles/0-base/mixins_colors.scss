@@ -1,5 +1,6 @@
+// TODO remove/refactor needed
 
-@function get_color($value) {
+@function getColor($value) {
     @if $value == "themes" {
       @return $themes-color;
     }
@@ -34,11 +35,11 @@
   
 @each $name in 'education' 'personal_project' 'job' 'volunteer' 'gallery' 'external' {
     .#{$name}_color {
-      color: get_color($name);
+      color: getColor($name);
     }
   
     circle.#{$name} {
-      fill: get_color($name)!important;
+      fill: getColor($name)!important;
   
       &.selected {
         stroke: black!important;
@@ -55,21 +56,9 @@
     }
   
     .bg-color-#{$name} {
-      background-color: get_color($name)!important;
+      background-color: getColor($name)!important;
       color: white;
       opacity: 1!important;
-    }
-    .btn-#{$name} {
-      @extend .btn;
-      @extend .m-1;
-
-      border-color: get_color($name)!important;
-      color: #ffffff!important;
-
-      &:hover {
-        background-color: lighten(get_color($name), 7.5%);
-        border-color: get_color($name);
-      }
     }
   
   }
@@ -78,7 +67,7 @@
   @each $name in 'themes' 'technics' 'tools' {
   
     circle.#{$name} {
-      stroke: get_color($name);
+      stroke: getColor($name);
       stroke-width: 5;
       fill: white;
   
@@ -88,10 +77,10 @@
     }
   
     .bg-color-#{$name} {
-      background-color: get_color($name);
+      background-color: getColor($name);
       &:hover {
-        background-color: lighten(get_color($name), 7.5%);
-        border-color: get_color($name);
+        background-color: lighten(getColor($name), 7.5%);
+        border-color: getColor($name);
       }
     }
   }

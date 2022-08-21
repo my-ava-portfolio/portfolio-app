@@ -155,7 +155,7 @@ export const mapActivitiesPages: any = {
   route: '/maps',
   title: 'Cartes',
   verbose_title: 'Accès aux carte',
-  colorType: 'personal_project',
+  colorType: 'personal-project',
   icon: mapIcon,
   sub_menus: [
     {
@@ -209,7 +209,7 @@ export const projectPages: any = [
     route: '/blog',
     title: 'Blog',
     verbose_title: 'Accès au blog',
-    colorType: 'external',
+    colorType: 'secondary',
     icon: notesIcon
   },
   {
@@ -217,7 +217,7 @@ export const projectPages: any = [
     url: githubUrl,
     title: 'Github',
     verbose_title: 'Accès à Github',
-    colorType: 'external',
+    colorType: 'secondary',
     icon: githubIcon
   }
 ];

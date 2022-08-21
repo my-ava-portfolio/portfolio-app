@@ -1,3 +1,82 @@
+$theme-colors-map: (
+  "primary": (
+    color: $primary,
+    text: $white
+  ),
+  "secondary": (
+    color: $secondary,
+    text: $white
+  ),
+  "success": (
+    color: $success,
+    text: $white
+  ),
+  "info": (
+    color: $info,
+    text: $white
+  ),
+  "warning": (
+    color: $warning,
+    text: $black
+  ),
+  "danger": (
+    color: $danger,
+    text: $white
+  ),
+  "light": (
+    color: $light,
+    text: $black
+  ),
+  "dark": (
+    color: $dark,
+    text: $white
+  ),
+  "very-dark": (
+    color: $very-dark,
+    text: $white
+  ),
+  "less-dark": (
+    color: $less-dark,
+    text: $white
+  ),
+  "personal-project": (
+    color: $personal-project-color,
+    text: $black
+  ),
+  "job": (
+    color: $job-color,
+    text: $white
+  ),
+  "gallery": (
+    color: $gallery-color,
+    text: $white
+  ),
+  "volunteer": (
+    color: $volunteer-color,
+    text: $white
+  ),
+  "education": (
+    color: $education-color,
+    text: $white
+  ),
+  "disabled": (
+    color: $disabled-color,
+    text: $white
+  ),
+  "technics": (
+    color: $technics-color,
+    text: $white
+  ),
+  "themes": (
+    color: $themes-color,
+    text: $white
+  ),
+  "tools": (
+    color: $tools-color,
+    text: $white
+  )
+);
+
 @mixin badgeTitle($bg_color, $text_color) {
     display: inline-block;
     padding: 5px 25px;
@@ -12,20 +91,7 @@
     color: $text_color;
 }
 
-.job-title-badge {
-    @include badgeTitle(rgba(var(--bs-white-rgb)), rgba(var(--bs-dark-rgb)));
-}
-
-.resume-a4-badge {
-    @include badgeTitle(rgba(var(--bs-warning-rgb)), rgba(var(--bs-dark-rgb)));
-}
-
-.experience-duration-badge {
-    @include badgeTitle(rgba(var(--bs-warning-rgb)), rgba(var(--bs-dark-rgb)));
-}
-
-
-.paragraph-title {
+@mixin paragraphTitle($color) {
     margin-top: 10px;
     margin-bottom: 10px;
     position: relative;
@@ -34,7 +100,7 @@
     &:before {
         content: "";
         display: inline-block;
-        background: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity)) !important;
+        background: $color;
         width: 5px;
         height: 100%;
         position: absolute;
@@ -42,3 +108,45 @@
         top: 0;
     }
 }
+
+
+@each $colorName, $colorSettings in $theme-colors-map {
+    .badge-title-#{$colorName} {
+        @include badgeTitle(
+            map-get($colorSettings, 'color'), 
+            map-get($colorSettings, 'text'), 
+        )
+    }
+
+    .text-#{$colorName} {
+        color: map-get($colorSettings, 'color');
+    }
+
+    .bg-#{$colorName} {
+        background-color: map-get($colorSettings, 'color');
+    }
+
+    .btn-#{$colorName} {
+        @extend .btn;
+        @extend .m-1;
+    
+        border-color: map-get($colorSettings, 'color')!important;
+        color: map-get($colorSettings, 'text');
+        background-color: map-get($colorSettings, 'color');
+
+        &:hover {
+            opacity: 0.8;
+            color: map-get($colorSettings, 'text');
+            background-color: map-get($colorSettings, 'color');
+        }
+    }
+
+    .title-tick-#{$colorName} {
+        @include paragraphTitle(map-get($colorSettings, 'color'))
+    }
+
+}
+
+
+
+

@@ -1,9 +1,10 @@
 @import '0-base/root-dir';
-@import '1-helpers/root-dir';
 
 // bootstrap
 @import 'bootstrap';
 // bootstrap
+
+@import '1-helpers/root-dir';
 
 
 @import '2-modules/root-dir';

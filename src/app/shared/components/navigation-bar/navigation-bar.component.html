@@ -7,9 +7,9 @@
 
       <div id="profil" *ngIf="sideBarCollapsed">
         <h4 class="title-name">{{ generalData.first_name }} {{ generalData.last_name }}</h4>
-        <div class="job-title-badge">{{ generalData.job }}</div>
+        <div class="badge-title-light">{{ generalData.job }}</div>
 
-        <a class="resume-a4-badge" [title]="legacyResumePage.title" [routerLink]="legacyResumePage.route">
+        <a class="badge-title-warning" [title]="legacyResumePage.title" [routerLink]="legacyResumePage.route">
           {{legacyResumePage.verbose_title}}
         </a>
 

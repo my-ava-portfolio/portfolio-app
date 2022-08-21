@@ -38,19 +38,6 @@
     max-width: 60%;
 }
 
-
-.row-item {
-    @extend .d-flex, .flex-row;
-    // @extend .justify-content-around, .align-items-center;
-    @extend .py-2;
-}
-
-.column-item {
-    @extend .d-flex, .flex-column;
-    // @extend .justify-content-center, .align-items-center, .align-content-between;
-    @extend .py-2;
-}
-
 .paragraph {
     @include paragraph;
 }

@@ -1,13 +1,12 @@
   
-  <div *ngIf="generalData" id="profilSummary">
+  <div *ngIf="generalData" id="home__card__summary">
 
       <div id="header">
 
         <h3 class="title-name">{{ generalData.first_name }} {{ generalData.last_name }}</h3>
-
-        <div class="">
-          <div class="job-title-badge">{{ generalData.job }}</div>
-          <div class="experience-duration-badge">{{ generalData.experience_duration }}</div>
+        <div>
+          <div class="badge-title-light">{{ generalData.job }}</div>
+          <div class="badge-title-warning">{{ generalData.experience_duration }}</div>
         </div>
 
       </div>
@@ -17,10 +16,9 @@
   </div>
 
 
-  <div *ngIf="generalData" id="welcome">
+  <div *ngIf="generalData" id="home__card__welcome">
 
-      <h3 class="paragraph-title">Bienvenue</h3>
-      
+      <h3 class="title-tick-warning">Bienvenue</h3>
 
       <div class="paragraph">
         Vous voici sur mon site personnel, à la fois pour présenter mon parcours et mes réalisations, mais aussi un bac à sable qui
@@ -34,7 +32,7 @@
 
         <div class="buttons">
           <ng-container *ngFor="let page of resumePages">
-            <a *ngIf="page.route" [class]="'btn-' + page.colorType + ' bg-color-' + page.colorType" [title]="page.title " [routerLink]="page.route">
+            <a *ngIf="page.route" [class]="'btn-' + page.colorType" [title]="page.title " [routerLink]="page.route">
               <fa-icon [icon]="page.icon "></fa-icon>
               {{ page.title }}
             </a>
@@ -43,11 +41,11 @@
 
         <div class="buttons">
           <ng-container *ngFor="let page of projectPages">
-            <a *ngIf="page.route" [class]="'btn-' + page.colorType + ' bg-color-' + page.colorType" [title]="page.title " [routerLink]="page.route " [routerLinkActive]="[ 'fw-bolder'] " [routerLinkActiveOptions]="{exact:true} ">
+            <a *ngIf="page.route" [class]="'btn-' + page.colorType" [title]="page.title " [routerLink]="page.route " [routerLinkActive]="[ 'fw-bolder'] " [routerLinkActiveOptions]="{exact:true} ">
                 <fa-icon [icon]="page.icon "></fa-icon>
                 {{ page.title }}
             </a>
-            <a *ngIf="page.url" [class]="'btn-' + page.colorType + ' bg-color-' + page.colorType" [href]="page.url" target="_blank " rel="noopener noreferrer ">
+            <a *ngIf="page.url" [class]="'btn-' + page.colorType" [href]="page.url" target="_blank " rel="noopener noreferrer ">
                 <fa-icon [icon]="page.icon"></fa-icon>
                 {{ page.title }}
             </a>
