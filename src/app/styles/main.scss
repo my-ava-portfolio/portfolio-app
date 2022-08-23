@@ -1,14 +1,14 @@
-@import '0-base/root-dir';
+@import '0-base';
 
 // bootstrap
 @import 'bootstrap';
 // bootstrap
 
-@import '1-helpers/root-dir';
+@import '1-helpers';
 
 
-@import '2-modules/root-dir';
-@import '3-pages/root-dir';
+@import '2-modules';
+@import '3-pages';
 
 fa-icon {
   @extend .m-2;
