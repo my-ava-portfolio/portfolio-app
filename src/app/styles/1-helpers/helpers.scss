@@ -154,6 +154,21 @@ $theme-colors-map: (
   @extend .my-1, .mx-2;
 }
 
+@mixin buttonBase($colorSettings) {
+  @extend .btn;
+  @extend .mx-2;
+
+  border-color: map-get($colorSettings, 'color')!important;
+  color: map-get($colorSettings, 'text');
+  background-color: map-get($colorSettings, 'color');
+
+  &:hover {
+      // add style effect
+      color: map-get($colorSettings, 'text');
+      background-color: map-get($colorSettings, 'color');
+  }
+}
+
 @each $colorName, $colorSettings in $theme-colors-map {
     .badge-title-#{$colorName} {
         @include badgeTitle(
@@ -171,18 +186,12 @@ $theme-colors-map: (
     }
 
     .btn-#{$colorName} {
-        @extend .btn;
-        // @extend .m-1;
-    
-        border-color: map-get($colorSettings, 'color')!important;
-        color: map-get($colorSettings, 'text');
-        background-color: map-get($colorSettings, 'color');
+      @include buttonBase($colorSettings)
+    }
 
-        &:hover {
-            // add style effect
-            color: map-get($colorSettings, 'text');
-            background-color: map-get($colorSettings, 'color');
-        }
+    .btn-sm-#{$colorName} {
+      @extend .btn-sm;
+      @include buttonBase($colorSettings);
     }
 
     .badge-#{$colorName} {

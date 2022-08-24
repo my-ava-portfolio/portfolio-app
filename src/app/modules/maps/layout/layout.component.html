@@ -30,12 +30,12 @@
 <div class="legend-container" *ngIf="appsWithLegend.includes(currentMapTool)" [@fadeInOut]>
 
   <div class="legend-container-buttons">
-    <button class="btn-dark" type="button" checked autocomplete="off" (click)="showHideLegend()">
+    <button class="btn-sm-dark" type="button" checked autocomplete="off" (click)="showHideLegend()">
       <fa-icon class="" [icon]="tagIcon"></fa-icon>
       Légende
     </button>
 
-    <button class="btn-warning" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
+    <button class="btn-sm-warning" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
       <fa-icon class="" [icon]="centerIcon"></fa-icon>
     </button>
   </div>
