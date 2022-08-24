@@ -10,7 +10,7 @@
 
     .profil-img {
         @extend .d-none, .d-lg-block;
-        @extend .img-thumbnail
+        max-width: 10em;
     }
     
 }
