@@ -6,9 +6,8 @@
         columns: 200px;
         column-count: 3;
         column-gap: 3%;
-        // min-height: 100%;
-        // max-height: 100vh;
-
+        min-height: 75vh; // to avoid a floating legend
+        
         .gallery-feature {
             @extend .mb-4;
             @extend .card;
