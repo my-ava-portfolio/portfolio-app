@@ -1,75 +1,58 @@
+<div class="d-flex flex-column">
 
+  <div class="map-sources">
 
-<div class="container-fluid g-0" [@fadeInOut]>
-  <div class="d-flex flex-column">
-
-    <div class="map-sources">
-
-      <div class="d-flex flex-column">
-        <div id="attribution" class="float-end d-none d-sm-block"></div>
-      </div>
-
-      <div class="map-sources d-flex flex-column">
-
-        <div class="m-2">
-          <div id="overview-map" class="float-end shadow d-none d-sm-block"></div>
-        </div>
-
-        <div class="mx-2">
-          <div id="legend-scale" class="float-end shadow"></div>
-        </div>
-
-      </div>
-
+    <div class="d-flex flex-column">
+      <div id="attribution" class="float-end d-none d-sm-block"></div>
     </div>
 
-    <ng-container *ngIf="appsWithoutLegend.includes(currentMapTool)">
-        <router-outlet name="map-sandbox"></router-outlet>
-    </ng-container>
+    <div class="map-sources d-flex flex-column">
 
+      <div class="m-2">
+        <div id="overview-map" class="float-end shadow d-none d-sm-block"></div>
+      </div>
 
-
-    <div class="d-flex flex-row map-content"></div>
-
-
-    <div class="legend-container" *ngIf="appsWithLegend.includes(currentMapTool)">
-
-
-      <div class="d-flex flex-column flex-fill">
-
-        <div class="d-flex flex-row align-items-end justify-content-between px-3">
-
-          <div id="legendLabels" class="d-flex flex-row">
-            <button class="rounded-top border-0 bg-dark bg-gradient text-white mx-2 p-2 -1" type="button" checked autocomplete="off" (click)="showHideLegend()">
-              <fa-icon class="" [icon]="tagIcon"></fa-icon>
-              Légende
-            </button>
-
-            <button class="rounded-top border-0 bg-warning bg-gradient text-black mx-2 mt-2 -1" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
-              <fa-icon class="" [icon]="centerIcon"></fa-icon>
-            </button>
-          </div>
-
-        </div>
-
-        <div class="bg-white legend-content text-center py-3 justify-content-center" [ngClass]="isLegendDisplayed ? 'd-block' : 'd-none'">
-          <ng-container *ngIf="currentMapTool === 'activities'">
-            <router-outlet name="map-activities"></router-outlet>
-          </ng-container>
-
-          <ng-container *ngIf="currentMapTool === 'gtfs-viewer'">
-            <router-outlet name="map-gtfs-viewer"></router-outlet>
-          </ng-container>
-
-        </div>
-
-        <div class="d-flex flex-column flex-lg-row bg-white legend-content text-center py-3 justify-content-center" [ngClass]="isLegendDisplayed ? 'd-none' : 'd-block'">
-        </div>
-
+      <div class="mx-2">
+        <div id="legend-scale" class="float-end shadow"></div>
       </div>
 
     </div>
 
   </div>
 
+  <ng-container *ngIf="appsWithoutLegend.includes(currentMapTool)">
+      <router-outlet name="map-sandbox"></router-outlet>
+  </ng-container>
 </div>
+
+<div class="d-flex flex-row map-content"></div>
+
+<div class="legend-container" *ngIf="appsWithLegend.includes(currentMapTool)" [@fadeInOut]>
+
+  <div class="legend-container-buttons">
+    <button class="btn-dark" type="button" checked autocomplete="off" (click)="showHideLegend()">
+      <fa-icon class="" [icon]="tagIcon"></fa-icon>
+      Légende
+    </button>
+
+    <button class="btn-warning" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
+      <fa-icon class="" [icon]="centerIcon"></fa-icon>
+    </button>
+  </div>
+
+  <div class="legend-container-content" [hidden]="!isLegendDisplayed">
+    <ng-container *ngIf="currentMapTool === 'activities'">
+      <router-outlet name="map-activities"></router-outlet>
+    </ng-container>
+
+    <ng-container *ngIf="currentMapTool === 'gtfs-viewer'">
+      <router-outlet name="map-gtfs-viewer"></router-outlet>
+    </ng-container>
+
+  </div>
+
+  <div class="legend-container-content" [hidden]="isLegendDisplayed"></div>
+
+</div>
+
+

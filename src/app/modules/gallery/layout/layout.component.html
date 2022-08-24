@@ -1,7 +1,7 @@
 
 <article id="gallery" class="gallery" *ngIf="isDataAvailable">
 
-  <div class="grid-container">
+  <div class="gallery-container">
       <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
   </div>
 
@@ -28,13 +28,13 @@
 
 
 <ng-template #imgProject let-medias=medias>
-  <div class="grid-feature" *ngFor="let media_feature of medias; let idx = index">
+  <div class="gallery-feature" *ngFor="let media_feature of medias; let idx = index">
 
-    <div class="grid-feature-header">
+    <div class="gallery-feature-header">
       <div class="title">{{ media_feature.title }}</div>
     </div>
 
-    <div class="grid-feature-body">
+    <div class="gallery-feature-body">
 
       <ng-container [ngSwitch]="media_feature.source">
 
@@ -75,22 +75,22 @@
 
       </ng-container>
 
-      <div class="grid-feature-body-badge">
-        <span [class]="'badge rounded-pill mx-2 text-white ' + 'bg-color-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
-        <a [routerLink]="[experiencesRoute]" [fragment]="media_feature.identifier"><span class="badge rounded-pill" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
-        <span [class]="'badge rounded-pill my-1 mx-2 text-white ' + media_feature.type">
-          <fa-icon class="me-1" [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
+      <div class="gallery-feature-body-badge">
+        <span [class]="'badge-' + media_feature.category_id" >{{ categoriesActivity[media_feature.category_id] }}</span>
+        <a [routerLink]="[experiencesRoute]" [fragment]="media_feature.identifier"><span class="badge-generic" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span></a>
+        <span [ngClass]="'badge-' + media_feature.type">
+          <fa-icon [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
         </span>
       </div>
 
-      <div class="grid-feature-body-text">{{media_feature.description}}</div>
+      <div class="gallery-feature-body-text">{{media_feature.description}}</div>
 
-      <ul class="grid-feature-body-sources">
-        <li class="grid-feature-body-text" *ngIf="media_feature.data">
+      <ul class="gallery-feature-body-sources">
+        <li class="gallery-feature-body-text" *ngIf="media_feature.data">
           <span>Données: </span>
           <span class="text-italic">{{media_feature.data}}</span>
         </li>
-        <li class="grid-feature-body-text" *ngIf="media_feature.tools">
+        <li class="gallery-feature-body-text" *ngIf="media_feature.tools">
           <span>Outils: </span>
           <span class="text-italic">{{media_feature.tools}}</span>
         </li>
@@ -98,7 +98,7 @@
 
     </div>
 
-    <div class="grid-feature-footer">
+    <div class="gallery-feature-footer">
     </div>
 
   </div>

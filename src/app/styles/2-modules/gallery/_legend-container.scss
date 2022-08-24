@@ -2,16 +2,19 @@
     @extend .d-flex, .flex-column;
     position: sticky;
     bottom: 0;
+    
 
     &-buttons {
         @extend .mx-3;
 
         button {
-            @extend .m-0;
+            @extend .shadow;
+            @extend .mx-2;
         }
     }
 
     &-content {
+        box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
         @extend .text-center;
         @extend .py-3;
         @extend .bg-white;

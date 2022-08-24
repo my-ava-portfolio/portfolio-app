@@ -74,8 +74,37 @@ $theme-colors-map: (
   "tools": (
     color: $tools-color,
     text: $white
+  ),
+  "map": (
+    color: $map-color,
+    text: $white
+  ),
+  "app": (
+    color: $app-color,
+    text: $white
+  ),
+  "video": (
+    color: $video-color,
+    text: $white
+  ),
+  "chart": (
+    color: $chart-color,
+    text: $black
+  ),
+  "methodo": (
+    color: $methodo-color,
+    text: $white
+  ),
+  "tool": (
+    color: $tool-color,
+    text: $white
+  ),
+  "library": (
+    color: $library-color,
+    text: $white
   )
 );
+
 
 @mixin badgeTitle($bg_color, $text_color) {
     display: inline-block;
@@ -119,6 +148,11 @@ $theme-colors-map: (
     @extend .text-center;
 }
 
+@mixin badge {
+  @extend .badge;
+  @extend .rounded-pill;
+  @extend .my-1, .mx-2;
+}
 
 @each $colorName, $colorSettings in $theme-colors-map {
     .badge-title-#{$colorName} {
@@ -138,17 +172,23 @@ $theme-colors-map: (
 
     .btn-#{$colorName} {
         @extend .btn;
-        @extend .m-1;
+        // @extend .m-1;
     
         border-color: map-get($colorSettings, 'color')!important;
         color: map-get($colorSettings, 'text');
         background-color: map-get($colorSettings, 'color');
 
         &:hover {
-            opacity: 0.8;
+            // add style effect
             color: map-get($colorSettings, 'text');
             background-color: map-get($colorSettings, 'color');
         }
+    }
+
+    .badge-#{$colorName} {
+      @include badge;
+      color: map-get($colorSettings, 'text');
+      background-color: map-get($colorSettings, 'color');
     }
 
     .title-tick-#{$colorName} {
@@ -163,3 +203,6 @@ $theme-colors-map: (
     }
 }
 
+.badge-generic {
+  @include badge;
+}

@@ -1,25 +1,25 @@
   <div id="mapsHome" class="gallery">
 
-    <div class="grid-container">
+    <div class="gallery-container">
 
-      <div class="grid-feature" *ngFor="let app of mapPagesMenus.sub_menus">
+      <div class="gallery-feature" *ngFor="let app of mapPagesMenus.sub_menus">
 
-        <div class="grid-feature-header">
+        <div class="gallery-feature-header">
           <span class="title">{{ app.title }}</span>
         </div>
 
-        <div class="grid-feature-body">
+        <div class="gallery-feature-body">
 
           <img *ngIf="app.img" [src]="app.img"/>
 
-          <div class="grid-feature-body-text">{{ app.details }}</div>
+          <div class="gallery-feature-body-text">{{ app.details }}</div>
 
           <a *ngIf="!app.route.includes('https')" [routerLink]="[app.route]" class="btn-warning">Accéder</a>
           <a *ngIf="app.route.includes('https')" [href]="app.route" class="btn-warning" target="_blank" rel="noopener noreferrer">Accéder</a>
 
         </div>
 
-        <div class="grid-feature-footer">
+        <div class="gallery-feature-footer">
         </div>
 
 
