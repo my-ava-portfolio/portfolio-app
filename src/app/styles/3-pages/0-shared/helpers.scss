@@ -32,6 +32,10 @@
     @extend .m-2
 }
 
+.text-italic {
+    @include italic;
+}
+
 .profil-img {
     @extend .rounded-circle;
     @extend .img-fluid;
@@ -41,3 +45,32 @@
 .paragraph {
     @include paragraph;
 }
+
+
+.map {
+    background-color: $map-color;
+  }
+  
+  .app {
+    background-color: $app-color;
+  }
+  
+  .video {
+    background-color: $video-color;
+  }
+  
+  .chart {
+    background-color: $chart-color;
+  }
+  
+  .tool {
+    background-color: $tool-color;
+  }
+  
+  .library {
+    background-color: $library-color;
+  }
+  
+  .methodo {
+    background-color: $methodo-color;
+  }

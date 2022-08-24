@@ -2,6 +2,10 @@
     font-weight: bold;
 }
 
+@mixin italic {
+    font-style: italic;
+}
+
 @mixin small {
     font-size: 0.9em;
 }

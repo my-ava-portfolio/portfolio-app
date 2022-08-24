@@ -1,0 +1,19 @@
+.legend-container {
+    @extend .d-flex, .flex-column;
+    position: sticky;
+    bottom: 0;
+
+    &-buttons {
+        @extend .mx-3;
+
+        button {
+            @extend .m-0;
+        }
+    }
+
+    &-content {
+        @extend .text-center;
+        @extend .py-3;
+        @extend .bg-white;
+    } 
+}

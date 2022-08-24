@@ -1,0 +1,43 @@
+.gallery {
+
+    .grid-container {
+        @extend .m-4;
+        columns: 200px;
+        column-count: 3;
+        column-gap: 3%;
+
+        .grid-feature {
+            @extend .mb-4;
+            @extend .card;
+            @extend .bg-light;
+            break-inside: avoid;
+
+            &-header{
+                @extend .card-header;
+                @extend .p-2;
+                @extend .bg-dark, .bg-gradient;
+                @extend .text-white;
+            }
+
+            &-body {
+                @extend .card-body;
+                @extend .px-3;
+
+                &-badge {
+                    @extend .my-2;
+                }
+
+                &-text {
+                    @include paragraph;
+                }
+
+                &-sources {
+                    @include paragraph;
+                }
+            }
+
+            &-footer {}
+        }
+    }
+
+}
