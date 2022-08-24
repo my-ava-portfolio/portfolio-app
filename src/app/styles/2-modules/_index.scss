@@ -2,5 +2,6 @@
 @import "layout";
 @import "navigation_bar";
 
-@import "gallery";
+@import "grid"; // used by gallery, blog, map home pages
+@import "legend"; // used by gallery, blog, maps apps pages
 

@@ -208,8 +208,3 @@ $theme-colors-map: (
 }
 
 
-@mixin grid($columnCount) {
-  columns: 200px;
-  column-count: $columnCount;
-  column-gap: 3%;
-}

@@ -107,12 +107,12 @@
 
 <ng-template #imgModal let-pictureUrl=pictureUrl let-activityId=activityId let-pictureId=pictureId>
 
-  <div class="modal" tabindex="-1" [id]="'modal-' + activityId + pictureId" data-bs-dismiss="modal" data-bs-backdrop="false">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+  <div class="modal" tabindex="-1" [id]="'modal-' + activityId + pictureId" data-bs-dismiss="modal" data-bs-backdrop="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered text-center">
 
-      <div class="modal-body">
-        <img [src]="pictureUrl | safeUrl" class="pointer img-size m-auto p-1">
-      </div>
+      <!-- <div class="modal-body"> -->
+        <img [src]="pictureUrl | safeUrl" class="pointer img-size m-auto">
+      <!-- </div> -->
 
     </div>
   </div>
