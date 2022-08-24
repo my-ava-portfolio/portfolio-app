@@ -1,52 +1,65 @@
-.gallery {
-    min-height: 100%;
+@mixin galleryContainer($columnCount) {  // create a mixin to choose the column number
+    @extend .m-4;
+    @include grid($columnCount);
+    min-height: 75vh; // to avoid a floating legend
+    
+    .gallery-feature {
+        @extend .mb-4;
+        @extend .card;
+        @extend .bg-light;
+        break-inside: avoid;
 
-    .gallery-container {  // create a mixin to choose the column number
-        @extend .m-4;
-        columns: 200px;
-        column-count: 3;
-        column-gap: 3%;
-        min-height: 75vh; // to avoid a floating legend
-        
-        .gallery-feature {
-            @extend .mb-4;
-            @extend .card;
-            @extend .bg-light;
-            break-inside: avoid;
+        &-header{
+            @extend .card-header;
+            @extend .p-2;
+            @extend .bg-dark, .bg-gradient;
+            @extend .text-white;
+        }
 
-            &-header{
-                @extend .card-header;
-                @extend .p-2;
-                @extend .bg-dark, .bg-gradient;
-                @extend .text-white;
+        &-body {
+            @extend .card-body;
+            @extend .px-3;
+
+            img {
+                @extend .img-fluid;
             }
 
-            &-body {
-                @extend .card-body;
-                @extend .px-3;
-
-                img {
-                    @extend .img-fluid;
-                }
-
-                &-badge {
-                    @extend .my-2;
-                }
-
-                &-text {
-                    @include paragraph;
-                    @extend .m-2;
-                }
-
-                &-sources {
-                    @include paragraph;
-                }
+            &-badge {
+                @extend .my-2;
             }
 
-            &-footer {
-                @extend .card-footer;
+            &-text {
+                @include paragraph;
+                @extend .m-2;
+            }
+
+            &-sources {
+                @include paragraph;
             }
         }
-    }
 
+        &-footer {
+            @extend .card-footer;
+        }
+    }
+}
+
+
+
+#blogHome {
+    .gallery-container {
+        @include galleryContainer(3);
+    }
+}
+
+#galleryHome {
+    .gallery-container {
+        @include galleryContainer(3);
+    }
+}    
+
+#mapsHome {
+    .gallery-container {
+        @include galleryContainer(4);
+    }
 }
