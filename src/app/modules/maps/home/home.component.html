@@ -1,27 +1,25 @@
-<div class="container-fluid g-0" [@fadeInOut]>
-  <div class="d-flex flex-column">
+  <div id="mapsHome" class="gallery">
 
-    <div class="m-4 grid-container">
+    <div class="grid-container">
 
-      <div class="mb-4 card feat-map bg-white" *ngFor="let app of mapPagesMenus.sub_menus">
+      <div class="grid-feature" *ngFor="let app of mapPagesMenus.sub_menus">
 
-        <div class="card-header bg-dark bg-gradient text-white">
-          <span class="fw-bold">{{ app.title }}</span>
+        <div class="grid-feature-header">
+          <span class="title">{{ app.title }}</span>
         </div>
 
-        <div class="card-body">
+        <div class="grid-feature-body">
 
-          <div class="text-center mb-3" *ngIf="app.img">
-            <img class="img-fluid rounded mx-auto d-block shadow" [src]="app.img"/>
-          </div>
+          <img *ngIf="app.img" [src]="app.img"/>
 
-          <p class="card-text">{{ app.details }}</p>
-          <a *ngIf="!app.route.includes('https')" [routerLink]="[app.route]" class="btn btn-warning mt-auto fw-bold">Accéder</a>
-          <a *ngIf="app.route.includes('https')" [href]="app.route" class="btn btn-warning mt-auto fw-bold" target="_blank" rel="noopener noreferrer">Accéder</a>
+          <div class="grid-feature-body-text">{{ app.details }}</div>
+
+          <a *ngIf="!app.route.includes('https')" [routerLink]="[app.route]" class="btn-warning">Accéder</a>
+          <a *ngIf="app.route.includes('https')" [href]="app.route" class="btn-warning" target="_blank" rel="noopener noreferrer">Accéder</a>
 
         </div>
 
-        <div class="card-footer">
+        <div class="grid-feature-footer">
         </div>
 
 
@@ -30,4 +28,3 @@
     </div>
 
   </div>
-</div>

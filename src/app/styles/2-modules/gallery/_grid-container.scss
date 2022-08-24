@@ -23,12 +23,17 @@
                 @extend .card-body;
                 @extend .px-3;
 
+                img {
+                    @extend .img-fluid;
+                }
+
                 &-badge {
                     @extend .my-2;
                 }
 
                 &-text {
                     @include paragraph;
+                    @extend .m-2;
                 }
 
                 &-sources {
@@ -36,7 +41,9 @@
                 }
             }
 
-            &-footer {}
+            &-footer {
+                @extend .card-footer;
+            }
         }
     }
 
