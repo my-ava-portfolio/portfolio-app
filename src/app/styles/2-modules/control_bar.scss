@@ -7,7 +7,7 @@
     #mainBar {
         @extend .d-flex, .flex-row;
         @extend .justify-content-center, .align-items-center;
-        @extend .p-2;
+        @include p(2);
 
         #navBarButton {
             @extend .btn, .btn-warning;

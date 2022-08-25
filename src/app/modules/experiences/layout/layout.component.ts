@@ -94,7 +94,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
             count: this.jobsData.length
           },
           {
-            id: "personal_project",
+            id: "personal-project",
             title: "Projets personnels",
             count: this.personalProjectsData.length
           },

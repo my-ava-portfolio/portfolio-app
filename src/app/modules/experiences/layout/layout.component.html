@@ -1,40 +1,35 @@
-<div class="container-fluid h-100" *ngIf="isDataAvailable" [@fadeInOut]>
+<article id="experiences" *ngIf="isDataAvailable" [@fadeInOut]>
 
+    <section app-general-info
+      id="experiences__generalInfo" 
+      [profilData]="profilData"
+      [activityTypesMetadata]="activityTypesMetadata"
+    ></section>
 
-  <div class="content d-flex flex-column flex-grow-1 bg-white my-2 rounded-top">
+    <section app-navigate
+      id="experiences__navigate" 
+      [graphInputData]="generalData"
+    ></section>
 
-      <app-general-info
-        class="mb-2"
-        [profilData]="profilData"
-        [activityTypesMetadata]="activityTypesMetadata"
-      ></app-general-info>
+  <section id="experiences__content" >
 
-      <app-navigate
-        [graphInputData]="generalData"
-      ></app-navigate>
+    <section class="experiences__content__activities">
+      <app-activities
+        [fragment]="fragment"
+        [jobsData]="jobsData"
+        [personalProjectsData]="personalProjectsData"
+        [volunteersData]="volunteersData"
+      ></app-activities>
+    </section>
 
-    <div class="d-flex flex-column flex-xl-row">
+    <section class="experiences__content__skills">
+      <app-skills
+        [skillsData]="skillsData"
+        [isActivitiesDataAvailable]="isActivitiesDataAvailable"
+      ></app-skills>
+    </section>
 
-      <div class="col-12 col-xl-7">
-        <app-activities
-          [fragment]="fragment"
-          [jobsData]="jobsData"
-          [personalProjectsData]="personalProjectsData"
-          [volunteersData]="volunteersData"
-        ></app-activities>
-      </div>
+  </section>
 
-      <div class="col-12 col-xl-5">
-        <app-skills
-          [skillsData]="skillsData"
-          [isActivitiesDataAvailable]="isActivitiesDataAvailable"
-        ></app-skills>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
+</article>
+ 

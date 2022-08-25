@@ -1,13 +1,3 @@
-// $fractions:'';
-// @for $i from 1 through 4 {
-//     $fractions : $fractions + 1fr + ' ';
-//     .grid-#{$i} {
-//         grid-template-columns: #{$fractions};
-//         display: block;
-//     }
-// }
-
-
 // @mixin flex($flex-type1, $flex-type2: $null, $justify-content: $null, $align-items: $null) {
 //     @extend .d-flex;
 //     @extend .flex-#{$flex-type1}; 
@@ -24,6 +14,37 @@
 //     }
 // }
 
+@mixin justifyContent($position) {
+  justify-content: $position!important;
+}
+
+@mixin alignItems($position) {
+  align-items:  $position!important;
+}
+@mixin alignSelf($position) {
+  align-self: $position!important;
+}
+
+
+@mixin flexColumn($atSize: null) {
+  // add bootstrap size check
+  @if ( $atSize != null) {
+      @extend .d-flex, .flex-#{$atSize}-column, .flex-row;
+
+  } @else {
+      @extend .d-flex, .flex-column;
+  }
+}
+
+@mixin flexRow($atSize: null) {
+  // add bootstrap size check
+  @if ( $atSize != null) {
+      @extend .d-flex, .flex-#{$atSize}-row, .flex-column;
+
+  } @else {
+      @extend .d-flex, .flex-row;
+  }
+}
 
 @mixin grid($columnCount) {
     columns: 200px;

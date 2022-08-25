@@ -1,0 +1,50 @@
+$svg-theme-colors-map: (
+  "personal_project": (
+    color: $personal-project-color,
+    text: $black
+  ),
+  "job": (
+    color: $job-color,
+    text: $white
+  ),
+  "volunteer": (
+    color: $volunteer-color,
+    text: $white
+  ),
+  "technics": (
+    color: $technics-color,
+    text: $white
+  ),
+  "themes": (
+    color: $themes-color,
+    text: $white
+  ),
+  "tools": (
+    color: $tools-color,
+    text: $white
+  )
+);
+
+@each $colorName, $colorSettings in $svg-theme-colors-map {
+ 
+    .svg-color-#{$colorName} {
+      fill: map-get($colorSettings, 'color')!important;
+  
+      &.selected {
+        stroke: black!important;
+        stroke-width: 2px!important;
+      }
+      
+    // used for activities-map (activities legend feature
+    //   &.disabled {
+    //     fill: $disabled-color!important;
+    //   }
+  
+    //   &.invisible {
+    //     visibility: hidden;
+    //   }
+    }
+   
+}
+  
+  

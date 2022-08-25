@@ -1,16 +1,3 @@
-@mixin articleStyle {
-    @extend .d-flex, .flex-column;
-    @extend .m-2;
-    @extend .rounded;
-    @extend .bg-white;
-}
-
-@mixin sectionStyle {
-    @extend .d-flex, .flex-column;
-    @extend .mb-3;
-    // @extend .px-2;
-}
-
 .title-name {
     @extend .text-white;
     @extend .p-2;

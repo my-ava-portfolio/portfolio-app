@@ -1,11 +1,13 @@
 @mixin summaryStyle {
-    @extend .d-flex, .flex-row, .py-2;
+    @extend .d-flex, .flex-row;
+    @extend .py-2;
     @extend .justify-content-around;
     @extend .bg-dark, .bg-gradient;
     @extend .rounded-top;
 
     &__header {
-        @extend .d-flex, .flex-column, .py-2;
+        @extend .d-flex, .flex-column;
+        @extend .py-2;
     }
 
     .profil-img {

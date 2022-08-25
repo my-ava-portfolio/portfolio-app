@@ -1,5 +1,6 @@
 @mixin welcomeStyle {
-    @extend .d-flex, .flex-column, .py-2;
+    @extend .d-flex, .flex-column;
+    @include py(2);
     @extend .justify-content-around;
     
     .paragraph {
@@ -10,5 +11,9 @@
         @extend .d-flex, .flex-column;
         @extend .text-center;
 
+    }
+
+    .buttons {
+        @include my(2);
     }
 }

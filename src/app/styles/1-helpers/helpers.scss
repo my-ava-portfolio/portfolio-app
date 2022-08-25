@@ -150,6 +150,7 @@ $theme-colors-map: (
 
 @mixin badge {
   @extend .badge;
+  @extend .small;
   @extend .rounded-pill;
   @extend .my-1, .mx-2;
 }
@@ -214,6 +215,18 @@ $theme-colors-map: (
 
 .badge-generic {
   @include badge;
+}
+
+
+@mixin articleStyle {
+  @include flexColumn();
+  @extend .m-2;
+  @extend .rounded;
+  @extend .bg-white;
+}
+
+@mixin sectionStyle {
+  @extend .mb-3;
 }
 
 

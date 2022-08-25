@@ -1,5 +1,5 @@
 @mixin generalInfoStyle {
-    @extend .d-flex, .flex-xxl-row;
+    @include flexRow('xxl');
     @extend .justify-content-around, .align-items-center;
     @extend .py-3;
     @extend .bg-dark, .bg-gradient;
@@ -11,7 +11,8 @@
     }
 
     &__languages {
-        @extend .d-flex, .flex-sm-row, .flex-column;
+        @include flexRow();
+        // @include flexColumn();
         @extend .justify-content-around;
         @extend .mx-2; 
 

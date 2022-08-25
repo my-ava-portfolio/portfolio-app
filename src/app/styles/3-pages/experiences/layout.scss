@@ -1,0 +1,29 @@
+@import 'general-infos';
+@import 'navigate';
+
+
+#experiences {
+    @include articleStyle;
+      
+    &__generalInfo {
+        @include sectionStyle;
+        @include generalInfoStyle;
+    }
+  
+    &__navigate {
+        @include sectionStyle;
+        @include navigationStyle;
+    }
+
+    &__content {
+        @include flexRow('xl');
+
+        &__activities {
+
+        }
+
+        &__skills {
+
+        }
+    }
+}

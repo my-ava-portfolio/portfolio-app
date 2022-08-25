@@ -30,17 +30,17 @@ $methodo-color: cyan;
 $navbar-height: 58px;
 
 
+$breakpoints: (
+  "xs":  0px,
+  "sm":  576px,
+  "md":  768px,
+  "lg":  992px,
+  "xl":  1200px,
+  "xxl": 1400px,
+) !default;
 
 
 
-
-// .bg-very-dark {
-//   background-color: $very-dark;
-// }
-
-.bg-less-dark {
-  background-color: $less-dark;
-}
 
 .img-thumbnail {
   width: 30vw;
@@ -54,22 +54,3 @@ $navbar-height: 58px;
 #gotop-button {
   z-index: 1;
 }
-
-
-/* style navigation chart and maps */
-
-.legend_graph_title { /* here due to svg */
-  font-size: 12px;
-  dominant-baseline: middle;
-  font-weight: bolder;
-}
-
-
-.grouper_jobs, .grouper_projects, .grouper_volunteers {
-  font-family: 'Font Awesome 5 Free';
-  text-anchor: middle;
-}
-
-
-
-

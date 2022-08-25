@@ -1,27 +1,19 @@
-<div class="d-flex flex-column flex-xxl-row justify-content-around py-3 bg-dark bg-gradient rounded-top shadow align-self-items align-items-center">
-
-  <div class="d-flex flex-column flex-lg-row flex-fill text-center justify-content-around align-self-items align-items-center">
-
-    <div class="d-flex flex-column">
-      <h3 class="fw-bolder text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
-      <div class="bg-white inline-flex rounded-pill text-black profil-badge text-center">{{ inputProfilData.job }}</div>
-    </div>
-
-    <div class="text-black bg-warning rounded-pill profil-badge">{{ inputProfilData.experience_duration }} professionnelle</div>
-
-  </div>
-
-  <div id="activities-buttons" class="d-flex flex-sm-row flex-column justify-content-center mx-5">
-      <ng-container *ngFor="let type of activityTypesMetadata">
-        <div
-          class="btn activity-button fw-bold text-center m-2 align-items-center"
-          [class.active]="tabView == type.id"
-          (click)="enableActivity(type.id)">
-          {{type.title}}
-          <span [ngClass]="type.id !== 'volunteer' ? 'text-black' : 'text-white'" [class]="'badge bg-color-' + type.id">{{ type.count }}</span>
-        </div>
-      </ng-container>
-  </div>
-
+<div id="generalInfo__title">
+  <h3 class="fw-bolder text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
+  <div class="badge-title-light">{{ inputProfilData.job }}</div>
 </div>
 
+<div class="badge-title-warning">{{ inputProfilData.experience_duration }} professionnelle</div>
+
+
+<div id="generalInfo__activitiesType" >
+    <ng-container *ngFor="let type of activityTypesMetadata">
+      <div
+        class="activity-button"
+        [class.active]="tabView == type.id"
+        (click)="enableActivity(type.id)">
+        {{type.title}}
+        <div [class]="'badge-' + type.id">{{ type.count }}</div>
+      </div>
+    </ng-container>
+</div>

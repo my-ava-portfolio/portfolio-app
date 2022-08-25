@@ -138,19 +138,19 @@
 
         <div class="btn-group my-1 mx-1" role="group">
           <button class="btn btn-secondary btn-sm" [ngClass]="currentCategory === 'job' ? 'fw-bolderer' : 'inactive'" (click)="getGalleryDataByCategory('job')">
-            <fa-icon class="job_color me-2" [icon]="tagIcon"></fa-icon>Expériences
+            <fa-icon class="bg-job me-2" [icon]="tagIcon"></fa-icon>Expériences
           </button>
         </div>
 
         <div class="btn-group my-1 mx-1" role="group">
           <button class="btn btn-secondary btn-sm" [ngClass]="currentCategory === 'personal_project' ? 'fw-bolderer' : 'inactive'" (click)="getGalleryDataByCategory('personal_project')">
-            <fa-icon class="personal_project_color me-2" [icon]="tagIcon"></fa-icon>Projets personnels
+            <fa-icon class="bg-personal_project me-2" [icon]="tagIcon"></fa-icon>Projets personnels
           </button>
         </div>
 
         <div class="btn-group my-1 mx-1" role="group">
           <button class="btn btn-secondary btn-sm" [ngClass]="currentCategory === 'volunteer' ? 'fw-bolderer' : 'inactive'" (click)="getGalleryDataByCategory('volunteer')">
-            <fa-icon class="volunteer_color me-2" [icon]="tagIcon"></fa-icon>Bénévolat
+            <fa-icon class="bg-volunteer me-2" [icon]="tagIcon"></fa-icon>Bénévolat
           </button>
         </div>
 
