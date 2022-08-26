@@ -5,9 +5,10 @@
     
 
     &-buttons {
-        @extend .mx-3;
+        @include mx(3);
 
         button {
+            @include mx(1);
             @extend .shadow;
         }
     }
