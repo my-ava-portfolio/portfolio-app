@@ -81,6 +81,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
     this.routeFragmentSubscription = this.activatedRoute.fragment.subscribe((fragment) => {
       // from the activities map & gallery. we wait the page loading
+      // TODO remove the timeout
       setTimeout(() => {
 
         if (fragment !== null) {

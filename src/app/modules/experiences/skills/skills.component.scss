@@ -1,48 +1,9 @@
-.active {
-  color: grey
-}
+// .active {
+//   color: grey
+// }
 
-.text-grey,
-.skills .collapsed {
-  color: grey!important;
-}
+// .text-grey,
+// .skills .collapsed {
+//   color: grey!important;
+// }
 
-
-.pointer {
-  cursor: pointer
-}
-
-.collapsed .rotation {
-  display: inline-block;
-  transform: rotate(-90deg);
-}
-
-
-.grid-container {
-  // columns: 200px;
-  -webkit-column-count: 3;
-  -webkit-column-gap: 3%; // Saf3, Chrome
-  -moz-column-count: 3;
-  -moz-column-gap: 3%; // FF3.5+
-  column-count: 3;
-  column-gap: 3%; // Opera 11+
-}
-
-
-@media (max-width: 960px){
-  .grid-container {
-    // columns: 200px;
-    -webkit-column-count: 2;
-    -webkit-column-gap: 3%; // Saf3, Chrome
-    -moz-column-count: 2;
-    -moz-column-gap: 3%; // FF3.5+
-    column-count: 2;
-    column-gap: 3%; // Opera 11+
-  }
-}
-
-.feat-skill {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  break-inside: avoid-column;
-}

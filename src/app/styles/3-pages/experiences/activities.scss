@@ -7,7 +7,8 @@
         .activity-feature {
             @extend .card;
             @extend .rounded;
-            @include m(3);
+            @include mb(3);
+            @include mx(3);
 
             .header{
                 @extend .card-header;
@@ -32,11 +33,11 @@
 
                 .general-infos {
                     @include flexRow('sm');
-                    @include alignItems('center');
-                    @include justifyContent('start');
+                    @include alignItems(center);
+                    @include justifyContent(start);
   
                     .activity-img {
-                        @include my(auto);
+                        @include my(2);
                         img {
                             @extend .img-small;
                         }

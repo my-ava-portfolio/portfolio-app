@@ -1,6 +1,7 @@
 @import 'general-infos';
 @import 'navigate';
 @import 'activities';
+@import 'skills';
 
 
 #experiences {
@@ -26,8 +27,7 @@
 
         &__skills {
             @extend .w-100;
-
-
+            @include skillsStyle;
         }
     }
 }

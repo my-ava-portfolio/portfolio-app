@@ -11,7 +11,7 @@
 @mixin detailsContainer {
     @extend .d-flex, .flex-column;
     @extend .p-3;
-    @extend .border, .border;
+    @extend .border, .rounded-bottom;
 }
 
 @mixin feature {

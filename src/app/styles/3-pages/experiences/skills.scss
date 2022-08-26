@@ -1,0 +1,21 @@
+@mixin skillsStyle{
+    section[id^='skills__'] {
+        @include mx(3);
+        @include mb(3);
+
+        .skills-container{
+            @include p(3);
+
+            @extend .border, .rounded-bottom;
+            @include grid(4);
+
+            .skill {
+                break-inside: avoid-column;
+            }
+            h6.collapsed {
+                opacity: 0.5;
+            }
+
+        }
+    }
+}
