@@ -1,10 +1,8 @@
 
 @mixin degreesStyle {
 
-
-
     .feature-degree {
-        @include feature;
+        @include m(3); 
         @extend .text-center;
         max-width: 500px;
 
@@ -19,7 +17,7 @@
                 @include bold;
 
                 img {
-                    @include imageSizing;
+                    @include imageSizing(8vh);
                 }
             }
 
@@ -37,7 +35,7 @@
     }
 
     .feature-publication {
-        @include feature; 
+        @include m(3); 
         max-width: 600px;
 
         .details {

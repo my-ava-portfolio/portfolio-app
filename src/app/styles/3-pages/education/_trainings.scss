@@ -1,7 +1,7 @@
 @mixin trainingsStyle {
 
     .feature-training {
-        @include feature;
+        @include m(3);
         @extend .text-center;
         max-width: 500px;
 
@@ -9,7 +9,7 @@
             @include detailsContainer();
 
             img {
-                @include imageSizing;
+                @include imageSizing(8vh);
             }
 
             .trainer { 

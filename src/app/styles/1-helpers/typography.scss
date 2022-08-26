@@ -13,7 +13,7 @@
 
 @mixin paragraph {
     @include small;
-    @extend .mx-3;
+    @include mx(5);
     text-align: justify;
 }
 

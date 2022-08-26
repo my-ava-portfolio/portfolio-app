@@ -29,8 +29,7 @@
 
 .profil-img {
     @extend .rounded-circle;
-    @extend .img-fluid;
-    max-width: 60%;
+    @include imageSizing(15vh);
 }
 
 .paragraph {

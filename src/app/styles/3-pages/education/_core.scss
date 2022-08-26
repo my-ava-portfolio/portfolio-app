@@ -1,21 +1,11 @@
 
 
-@mixin imageSizing {
-    @extend .img-fluid;
-    @extend .rounded;
-    @extend .mx-auto, .mb-2;
-    max-height: 8vh;
 
-}
 
 @mixin detailsContainer {
     @extend .d-flex, .flex-column;
     @extend .p-3;
     @extend .border, .rounded-bottom;
-}
-
-@mixin feature {
-    @extend .m-3; 
 }
 
 .content {

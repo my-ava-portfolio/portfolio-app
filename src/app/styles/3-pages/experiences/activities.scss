@@ -2,7 +2,6 @@
 
     .activities-widget {
         @include flexColumn();
-        @include justifyContent('center');
 
         .activity-feature {
             @extend .card;
@@ -13,14 +12,11 @@
             .header{
                 @extend .card-header;
                 @include flexRow();
-                @include justifyContent('between');
-                @include alignItems('center');
+                @include alignItems(center);
 
                 .buttons-tools {
                     @include ml(auto);
                     @include flexRow();
-                    @include justifyContent('end');
-                    @include alignItems('center');
 
                     fa-icon {
                         @include mx(0 !important);
@@ -39,7 +35,7 @@
                     .activity-img {
                         @include my(2);
                         img {
-                            @extend .img-small;
+                            @include imageSizing(12vh);
                         }
                     }
     

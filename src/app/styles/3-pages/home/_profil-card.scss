@@ -10,9 +10,10 @@
         @extend .py-2;
     }
 
-    .profil-img {
+    .home-img {
         @extend .d-none, .d-lg-block;
-        max-width: 10em;
+        max-width: 10em!important;
+        @extend .rounded-circle;
     }
     
 }

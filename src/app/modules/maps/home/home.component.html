@@ -14,8 +14,10 @@
 
           <div class="gallery-feature-body-text">{{ app.details }}</div>
 
-          <a *ngIf="!app.route.includes('https')" [routerLink]="[app.route]" class="btn-warning">Accéder</a>
-          <a *ngIf="app.route.includes('https')" [href]="app.route" class="btn-warning" target="_blank" rel="noopener noreferrer">Accéder</a>
+          <div class="gallery-feature-buttons">
+            <a *ngIf="!app.route.includes('https')" [routerLink]="[app.route]" class="btn-warning">Accéder</a>
+            <a *ngIf="app.route.includes('https')" [href]="app.route" class="btn-warning" target="_blank" rel="noopener noreferrer">Accéder</a>
+          </div>
 
         </div>
 

@@ -7,6 +7,7 @@
         @extend .mb-4;
         @extend .card;
         @extend .bg-light;
+        @extend .shadow;
         break-inside: avoid;
 
         &-header{
@@ -21,7 +22,7 @@
             @extend .px-3;
 
             img {
-                @extend .img-fluid;
+                @include imageSizing(25em);
             }
 
             &-badge {
@@ -36,6 +37,13 @@
             &-sources {
                 @include paragraph;
             }
+            .gallery-feature-buttons {
+                a {
+                    @extend .float-right; // TODO create mixin
+                    @include bold;
+                }
+            }
+
         }
 
         &-footer {

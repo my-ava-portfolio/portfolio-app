@@ -43,6 +43,10 @@ $theme-colors-map: (
     color: $personal-project-color,
     text: $black
   ),
+  "personal_project": (
+    color: $personal-project-color,
+    text: $black
+  ),
   "job": (
     color: $job-color,
     text: $white
@@ -157,7 +161,7 @@ $theme-colors-map: (
 
 @mixin buttonBase($colorSettings) {
   @extend .btn;
-  @extend .mx-2;
+  // do not add margin spacing!
 
   border-color: map-get($colorSettings, 'color')!important;
   color: map-get($colorSettings, 'text');
