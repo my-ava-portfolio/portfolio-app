@@ -1,5 +1,5 @@
 
-<article id="galleryHome" class="gallery" *ngIf="isDataAvailable">
+<article id="galleryHome" class="gallery" *ngIf="isDataAvailable" [@fadeInOut]>
 
   <div class="gallery-container">
       <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
