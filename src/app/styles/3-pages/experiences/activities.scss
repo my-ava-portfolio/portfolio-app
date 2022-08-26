@@ -1,0 +1,105 @@
+@mixin activitiesStyle {
+
+    .activities-widget {
+        @include flexColumn();
+        @include justifyContent('center');
+
+        .activity-feature {
+            @extend .card;
+            @extend .rounded;
+            @include m(3);
+
+            .header{
+                @extend .card-header;
+                @include flexRow();
+                @include justifyContent('between');
+                @include alignItems('center');
+
+                .buttons-tools {
+                    @include ml(auto);
+                    @include flexRow();
+                    @include justifyContent('end');
+                    @include alignItems('center');
+
+                    fa-icon {
+                        @include mx(0 !important);
+                    }
+                }
+            }
+
+            .body {
+                @extend .card-body;
+
+                .general-infos {
+                    @include flexRow('sm');
+                    @include alignItems('center');
+                    @include justifyContent('start');
+  
+                    .activity-img {
+                        @include my(auto);
+                        img {
+                            @extend .img-small;
+                        }
+                    }
+    
+                    .abstract {
+                        @include flexColumn;
+                        @include mx(3);
+
+                        .location {
+                            @extend .d-flex, .flex-row;
+                        }
+
+                        .duration {
+                            @include flexRow;
+                        }
+
+                        .badge-keywords {
+                            @include my(2);
+                            span {
+                                @include badge()
+                            }
+                        }
+                    }
+                }
+
+                .feature-tabs {
+                    @include my(2);
+
+                    .nav-tabs {
+                        @include m(2);
+                        .title {
+                            @extend .text-black;
+                        }
+                        .title.active {
+                            @extend .bg-warning;
+                        }
+                    }
+                    .nav-content {
+                        // @include mx(4);
+                        @include my(3);
+
+                        .skills-container{
+                            @extend .paragraph;
+                            @include grid(4);
+
+                            .skill {
+                                break-inside: avoid-column;
+                            }
+                        }
+
+                    }
+                }
+                
+            }
+
+            .footer {
+                @extend .card-footer;
+                @extend .text-center;
+                @include m(0);
+                @extend .pointer;
+            }
+        }
+
+    }
+}

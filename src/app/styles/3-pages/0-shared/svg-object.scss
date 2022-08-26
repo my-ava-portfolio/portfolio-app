@@ -47,4 +47,18 @@ $svg-theme-colors-map: (
    
 }
   
-  
+
+.rotate-180 {
+  display: inline-block;
+  transform: rotate(-180deg);
+}
+
+.location a {
+  animation: bounce 2s ease infinite;
+  color: rgba(var(--bs-danger-rgb))
+}
+@keyframes bounce {
+	0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+	40% {transform: translateY(-8px);}
+	60% {transform: translateY(-3px);}
+}

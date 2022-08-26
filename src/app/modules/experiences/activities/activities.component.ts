@@ -42,6 +42,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   notesIcon = notesIcon;
   websiteIcon = websiteIcon;
 
+  hiddenActivitiesDetails: number[] = [];
 
   activityTitle = "Bénévolat";
   themesTitle = "Thèmes";
@@ -73,6 +74,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
       (activityId) => {
         this.tabView = activityId
+        // reset to avoid conflict between activity category
+        this.hiddenActivitiesDetails = [];
       }
     )
 
@@ -105,6 +108,21 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.routeFragmentSubscription.unsubscribe()
     this.activityEnablingSubscription.unsubscribe()
+  }
+
+
+
+  addToHiddenDetailsConter(activityIndex: number) {
+    if (this.hiddenActivitiesDetails.includes(activityIndex)) {
+
+      const index = this.hiddenActivitiesDetails.indexOf(activityIndex, 0);
+      if (index > -1) {
+        this.hiddenActivitiesDetails.splice(index, 1);
+      }
+
+    } else {
+      this.hiddenActivitiesDetails.push(activityIndex);
+    }
   }
 
   pushActivityId(activityId: string): void {

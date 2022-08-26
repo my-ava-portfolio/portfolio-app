@@ -23,6 +23,10 @@
     @include italic;
 }
 
+.text-justify {
+    text-justify: auto;
+}
+
 .profil-img {
     @extend .rounded-circle;
     @extend .img-fluid;
