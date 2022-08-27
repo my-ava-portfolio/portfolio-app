@@ -115,7 +115,7 @@ export class LayoutComponent implements OnDestroy {
     return {
       title: feature.title,
       image_url: feature.image,
-      content_url: feature.topic_url,
+      content_url: feature.url,
       categories: categoriesBuild,
       tags: tagsBuild,
       type: 'website',
