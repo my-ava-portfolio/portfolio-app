@@ -27,4 +27,4 @@ import {RouterModule} from '@angular/router';
     TimelineService
   ]
 })
-export class SharedModule { }
+export class TimelineModule { }
