@@ -7,7 +7,7 @@
             @include p(3);
 
             @extend .border, .rounded-bottom;
-            @include grid(4);
+            @include grid(4, 200px);
 
             .skill {
                 break-inside: avoid-column;

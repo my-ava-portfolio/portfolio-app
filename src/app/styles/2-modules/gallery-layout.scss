@@ -1,6 +1,6 @@
 @mixin galleryContainer($columnCount) {  // create a mixin to choose the column number
     @extend .m-4;
-    @include grid($columnCount);
+    @include grid($columnCount, 350px);
     min-height: 75vh; // to avoid a floating legend
     
     .gallery-feature {

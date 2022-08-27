@@ -81,7 +81,7 @@
 
                         .skills-container{
                             @extend .paragraph;
-                            @include grid(4);
+                            @include grid(4, 150px);
 
                             .skill {
                                 break-inside: avoid-column;
