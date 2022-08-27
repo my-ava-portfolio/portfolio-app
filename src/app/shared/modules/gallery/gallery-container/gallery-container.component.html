@@ -8,7 +8,7 @@
 
         <div class="gallery-feature-body">
 
-            <div class="media-container">
+            <div class="body-media-container">
                 <ng-container *ngIf="feature.type === 'video'">
                     <div class="ratio ratio-16x9">
                         <iframe [src]="feature.image_url | safeUrl" class="" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
@@ -19,44 +19,38 @@
                 </ng-container>
             </div>
 
-            <div class="generic-badges">
-                <div class="gallery-feature-body-text"  *ngIf="feature.categories.length > 0">
+            <div class="body-generic-badges">
+                <div class="body-text"  *ngIf="feature.categories.length > 0">
                     <span class="title">Catégorie(s):</span>
                     <span *ngFor="let category of feature.categories" class="badge-generic" [style]="'background-color:' + category.color + ';color: white'">{{category.name}}</span>
                 </div>
 
-                <div class="gallery-feature-body-text" *ngIf="feature.tags.length > 0">
+                <div class="body-text" *ngIf="feature.tags.length > 0">
                     <span class="title">Tag(s):</span>
                     <span *ngFor="let tag of feature.tags" class="badge-generic" [style]="'background-color:' + tag.color + ';color: white'">{{tag.name}}</span>
                 </div>
             </div>
 
             <!-- gallery experiences badges ONLY -->
-            <div class="activity-badges">
-                <div class="gallery-feature-body-text" *ngIf="feature.activityType">
-                    <span [ngClass]="'badge-' + feature.activityType.class">{{feature.activityType.name}}</span>
-                </div>
-                <div class="gallery-feature-body-text" *ngIf="feature.experienceName">
-                    <span class="badge-generic" [style]="'background-color:' + feature.experienceName.color + ';color: white'">{{feature.experienceName.name}}</span>
-                </div>
-                <div class="gallery-feature-body-text" *ngIf="feature.mediaType">
-                    <span [ngClass]="'badge-' + feature.mediaType.name">
-                        <fa-icon [icon]="feature.mediaType.icon.icon"></fa-icon>{{feature.mediaType.icon.title}}
-                      </span>
-                </div>
+            <div class="body-activity-badges">
+                <span *ngIf="feature.activityType" [ngClass]="'badge-' + feature.activityType.class">{{feature.activityType.name}}</span>
+                <span *ngIf="feature.experienceName" class="badge-generic" [style]="'background-color:' + feature.experienceName.color + ';color: white'">{{feature.experienceName.name}}</span>
+                <span *ngIf="feature.mediaType" [ngClass]="'badge-' + feature.mediaType.name">
+                    <fa-icon [icon]="feature.mediaType.icon.icon"></fa-icon>{{feature.mediaType.icon.title}}
+                </span>
             </div>
             <!-- gallery experiences badges ONLY -->
 
             <div class="paragraph">{{ feature.description }}</div>
 
-            <ul *ngIf="feature.addons">
-                <li *ngFor="let addon of feature.addons | keyvalue" class="paragraph">
+            <ul class="body-addons" *ngIf="feature.addons">
+                <li *ngFor="let addon of feature.addons | keyvalue" class="">
                     <span>{{addon.key}} : </span>
                     <span>{{addon.value}}</span>
                 </li>
             </ul>
 
-            <div class="gallery-feature-buttons">
+            <div class="body-buttons">
 
                 <ng-container *ngIf="feature.type !== 'modal'">
                     <a *ngIf="!feature.content_url.includes('http')" [routerLink]="'../' + feature.content_url" class="btn-warning">Accéder</a>

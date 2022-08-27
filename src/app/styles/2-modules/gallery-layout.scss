@@ -21,32 +21,32 @@
             @extend .card-body;
             // @extend .px-3;
             
-            .media-container {
+            .body-media-container {
                 @include flexRow;
                 img {
                     @include imageSizing(90vh);
                 }
             }
 
-
-            .activity-badges {
-                // @include flexRow();
+            .body-generic-badges {
+                @include paragraph;
+            }
+            .body-activity-badges {
+                @include flexRow();
+                @include mt(2);
                 @include justifyContent(start);
             }
 
-            &-badge {
-                @extend .my-2;
-            }
-
-            &-text {
+            .body-text {
                 @include paragraph;
                 @extend .m-2;
             }
 
-            &-sources {
-                @include paragraph;
+            .body-addons li span {
+                @include small;
             }
-            .gallery-feature-buttons {
+
+            .body-buttons {
                 a {
                     @extend .float-right; // TODO create mixin
                     @include bold;
