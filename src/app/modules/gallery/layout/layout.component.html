@@ -46,7 +46,7 @@
 
         <ng-container *ngSwitchCase="'url_img'">
           <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
-            <img [src]="media_feature.media | safeUrl" class="card-img-top pointer">
+            <img [src]="media_feature.media | safeUrl" class="pointer">
           </a>
           <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
         </ng-container>
@@ -54,21 +54,21 @@
         <ng-container *ngSwitchCase="'url_app'">
           <ng-container *ngIf="!urlAppChecker(media_feature.media)">
             <a [href]="media_feature.media | safeUrl" target="_blank" rel="noopener noreferrer">
-              <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="card-img-top pointer">
-              <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="card-img-top pointer">
+              <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="pointer">
+              <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="pointer">
             </a>
           </ng-container>
           <ng-container *ngIf="urlAppChecker(media_feature.media)">
             <a [routerLink]="'../' + media_feature.media">
-              <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="card-img-top pointer">
-              <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="card-img-top pointer">
+              <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="pointer">
+              <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="pointer">
             </a>
           </ng-container>
         </ng-container>
 
         <ng-container *ngSwitchCase="'api_img'">
           <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
-            <img [src]="apiMapsUrl + media_feature.media" class="card-img-top pointer">
+            <img [src]="apiMapsUrl + media_feature.media" class="pointer">
           </a>
           <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiMapsUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
         </ng-container>
