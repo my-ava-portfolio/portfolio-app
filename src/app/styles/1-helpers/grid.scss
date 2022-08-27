@@ -47,7 +47,7 @@
 }
 
 @mixin grid($columnCount) {
-    columns: 200px;
+    columns: 350px;  // it try to set this width to each grid feature (more responsive)
     column-count: $columnCount;
     column-gap: 3%;
   }
