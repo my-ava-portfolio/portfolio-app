@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContainerComponent } from './container/container.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { GalleryContainerComponent } from './gallery-container/gallery-container.component';
 
 import { PipesModule } from '@shared/pipes/pipes.module';
 import {RouterModule} from '@angular/router';
@@ -8,17 +10,18 @@ import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
-    ContainerComponent
+    GalleryContainerComponent
   ],
   imports: [
     CommonModule,
     PipesModule,
-    RouterModule
+    RouterModule,
+    FontAwesomeModule
   ],
   exports: [
-    ContainerComponent
+    GalleryContainerComponent
   ],
   providers: [
  ]
 })
-export class GalleryModule { }
+export class GalleryContainerModule { }

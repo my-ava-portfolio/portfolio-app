@@ -1,19 +1,19 @@
-.img-size {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
+// .img-size {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   bottom: 0;
+//   right: 0;
+// }
 
-@media (orientation: portrait) {
-  .img-size {
-      max-width: 100%;
-  }
-}
+// @media (orientation: portrait) {
+//   .img-size {
+//       max-width: 100%;
+//   }
+// }
 
-@media (orientation: landscape) {
-  .img-size {
-      max-height: 90%;
-  }
-}
+// @media (orientation: landscape) {
+//   .img-size {
+//       max-height: 90%;
+//   }
+// }

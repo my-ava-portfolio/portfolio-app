@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, ViewEncapsulation  } from 
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
 
-import { apiLogoUrl } from '@core/inputs';
+import { assetsLogoPath } from '@core/inputs';
 import { educationPages } from '@core/inputs';
 
 import { interval, Subscription } from 'rxjs';
@@ -21,7 +21,7 @@ import { fadeInOutAnimation } from '@core/animation_routes';
 })
 export class LayoutComponent implements OnInit {
   fragment!: string | null;
-  apiImgUrl = apiLogoUrl;
+  apiImgUrl = assetsLogoPath;
 
 
   activityIdFromActivityComponents!: string;

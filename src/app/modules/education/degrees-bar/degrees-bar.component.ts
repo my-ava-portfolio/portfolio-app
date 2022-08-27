@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { apiLogoUrl, pdfFileIcon, publishIcon } from '@core/inputs';
+import { assetsLogoPath, pdfFileIcon, publishIcon } from '@core/inputs';
 
 import { degreeIcon, locationIcon } from '@core/inputs';
 import { presIcon, expandIcon, languageIcon } from '@core/inputs';
@@ -20,7 +20,7 @@ export class DegreesBarComponent implements OnInit {
 
   mapPages: any = mapActivitiesPages;
 
-  apiLogoUrl = apiLogoUrl;
+  assetsLogoPath = assetsLogoPath;
   cardTitle!: string;
   inputDegreesData: any;
 

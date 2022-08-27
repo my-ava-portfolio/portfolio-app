@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, HostListener  } from '@ang
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
 
-import { apiLogoUrl, minWidthLandscape, tagsIcon } from '@core/inputs';
+import { assetsLogoPath, minWidthLandscape, tagsIcon } from '@core/inputs';
 import { experiencesPages } from '@core/inputs';
 
 import { interval, Subscription } from 'rxjs';
@@ -27,7 +27,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   fragment: string = '';
 
-  apiImgUrl = apiLogoUrl;
+  apiImgUrl = assetsLogoPath;
   activityIdFromActivityComponents!: string;
   isLegendDisplayed = true;
 

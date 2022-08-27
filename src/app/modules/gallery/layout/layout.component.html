@@ -1,8 +1,8 @@
 <article id="galleryHome" class="gallery" *ngIf="isDataAvailable" [@fadeInOut]>
 
-  <div class="gallery-container">
-      <ng-container *ngTemplateOutlet="imgProject; context:{medias: galleryItems}"></ng-container>
-  </div>
+  <app-gallery-container
+    [features]="galleryItems"
+  ></app-gallery-container>
 
   <div class="legend-container">
 
@@ -23,101 +23,6 @@
   </div>
 
 </article>
-
-
-
-<ng-template #imgProject let-medias=medias>
-  <div class="gallery-feature" *ngFor="let media_feature of medias; let idx = index">
-
-    <div class="gallery-feature-header">
-      <div class="title">{{ media_feature.title }}</div>
-    </div>
-
-    <div class="gallery-feature-body">
-
-      <ng-container [ngSwitch]="media_feature.source">
-
-        <ng-container *ngSwitchCase="'youtube'">
-          <div class="ratio ratio-16x9">
-            <iframe [src]="media_feature.media | safeUrl" class="" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
-          </div>
-        </ng-container>
-
-        <ng-container *ngSwitchCase="'url_img'">
-          <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
-            <img [src]="media_feature.media | safeUrl" class="pointer">
-          </a>
-          <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
-        </ng-container>
-
-        <ng-container *ngSwitchCase="'url_app'">
-          <ng-container *ngIf="!urlAppChecker(media_feature.media)">
-            <a [href]="media_feature.media | safeUrl" target="_blank" rel="noopener noreferrer">
-              <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="pointer">
-              <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="pointer">
-            </a>
-          </ng-container>
-          <ng-container *ngIf="urlAppChecker(media_feature.media)">
-            <a [routerLink]="'../' + media_feature.media">
-              <img *ngIf="media_feature.media_splash.includes('https')" [src]="media_feature.media_splash" class="pointer">
-              <img *ngIf="!media_feature.media_splash.includes('https')" [src]="assetsImgUrl + media_feature.media_splash" class="pointer">
-            </a>
-          </ng-container>
-        </ng-container>
-
-        <ng-container *ngSwitchCase="'api_img'">
-          <a data-bs-toggle="modal" [href]="'#modal-' + media_feature.identifier + idx" role="button">
-            <img [src]="apiMapsUrl + media_feature.media" class="pointer">
-          </a>
-          <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: apiMapsUrl + media_feature.media, activityId: media_feature.identifier, pictureId: idx}"></ng-container>
-        </ng-container>
-
-      </ng-container>
-
-      <div class="gallery-feature-body-badge">
-        <span [class]="'badge-' + media_feature.category_id">{{ categoriesActivity[media_feature.category_id] }}</span>
-        <span [routerLink]="[experiencesRoute]" [fragment]="media_feature.identifier" class="badge-generic" [style]="'background-color:' + media_feature.color + ';color: white'">{{media_feature.name}}</span>
-        <span [ngClass]="'badge-' + media_feature.type">
-          <fa-icon [icon]="typeStyleMapping[media_feature.type].icon"></fa-icon>{{typeStyleMapping[media_feature.type].title}}
-        </span>
-      </div>
-
-      <div class="gallery-feature-body-text">{{media_feature.description}}</div>
-
-      <ul class="gallery-feature-body-sources">
-        <li class="gallery-feature-body-text" *ngIf="media_feature.data">
-          <span>Données: </span>
-          <span class="text-italic">{{media_feature.data}}</span>
-        </li>
-        <li class="gallery-feature-body-text" *ngIf="media_feature.tools">
-          <span>Outils: </span>
-          <span class="text-italic">{{media_feature.tools}}</span>
-        </li>
-      </ul>
-
-    </div>
-
-    <div class="gallery-feature-footer">
-    </div>
-
-  </div>
-</ng-template>
-
-
-<ng-template #imgModal let-pictureUrl=pictureUrl let-activityId=activityId let-pictureId=pictureId>
-
-  <div class="modal" tabindex="-1" [id]="'modal-' + activityId + pictureId" data-bs-dismiss="modal" data-bs-backdrop="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered text-center">
-
-      <!-- <div class="modal-body"> -->
-        <img [src]="pictureUrl | safeUrl" class="pointer img-size m-auto">
-      <!-- </div> -->
-
-    </div>
-  </div>
-
-
-</ng-template>
 
 
 

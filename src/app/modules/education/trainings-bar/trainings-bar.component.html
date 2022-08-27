@@ -12,8 +12,7 @@
 
     <div class="details">
 
-      <img *ngIf="training.img_tool !== 'null'" class="img-fluid rounded mx-auto" [src]="training.img_tool"/>
-
+      <img *ngIf="training.img_tool !== 'null'" [src]="training.img_tool"/>
         <span class="trainer">{{ training.name }}</span>
         <span class="location">par {{ training.trainer }}</span>
     </div>

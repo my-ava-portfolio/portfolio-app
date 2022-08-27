@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { apiMapsUrl, arrowLeftIcon, arrowRightIcon, assetsImgUrl, chunkArray, galleryPages, imageProfile, projectPages, resumeTopicsPages } from '@core/inputs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { arrowLeftIcon, arrowRightIcon, chunkArray, galleryPages, imageProfile, projectPages, resumeTopicsPages } from '@core/inputs';
 
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -22,8 +22,6 @@ export class ProfilCardComponent implements OnInit, OnDestroy {
   arrowRightIcon = arrowRightIcon;
   arrowLeftIcon = arrowLeftIcon;
 
-  apiMapsUrl = apiMapsUrl;
-  assetsImgUrl = assetsImgUrl;
   galleryPagesRoute: string = galleryPages.route;
 
   resumePages: any[] = resumeTopicsPages;

@@ -9,7 +9,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
-import { GalleryModule } from '@shared/modules/gallery/gallery.module';
+import { GalleryContainerModule } from '@shared/modules/gallery/gallery.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { GalleryModule } from '@shared/modules/gallery/gallery.module';
     MapRoutingModule,
     FontAwesomeModule,
     PipesModule,
-    GalleryModule
+    GalleryContainerModule
   ]
 })
 export class MapsModule { }

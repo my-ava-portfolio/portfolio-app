@@ -41,7 +41,7 @@
         </div>
       </ng-container>
 
-      <ng-container *ngIf="activityType == 'personal_project'">
+      <ng-container *ngIf="activityType == 'personal-project'">
         <a *ngIf="activity.url_github" class="btn-sm-secondary" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
         <a *ngIf="activity.url_blog != 'nan'" class="btn-sm-info" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
         <a *ngIf="activity.url_website" class="btn-sm-primary" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
@@ -58,17 +58,17 @@
     <div class="general-infos">
 
       <div class="activity-img">
-        <img *ngIf="activityType === 'personal_project'" [src]="assetsImgUrl + activity.img_company"/>
+        <img *ngIf="activityType === 'personal-project'" [src]="assetsImagesPath + activity.img_company"/>
         <img *ngIf="activityType === 'job'" [src]="apiImgUrl + activity.img_company"/>
         <img *ngIf="activityType === 'volunteer'" [src]="apiImgUrl + activity.img_company"/>
       </div>
 
       <div class="abstract">
 
-          <h6 *ngIf="activityType !== 'personal_project'" class="title">{{activity.company}}</h6>
-          <h6 *ngIf="activityType === 'personal_project'" class="title">{{activity.title}}</h6>
+          <h6 *ngIf="activityType !== 'personal-project'" class="title">{{activity.company}}</h6>
+          <h6 *ngIf="activityType === 'personal-project'" class="title">{{activity.title}}</h6>
 
-          <div *ngIf="activityType !== 'personal_project'" class="location">
+          <div *ngIf="activityType !== 'personal-project'" class="location">
             <a [id]="'location_' + activity.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="activity.identifier">
               <fa-icon [pulse]="true" [icon]="locationIcon"></fa-icon>
             </a>
@@ -77,7 +77,7 @@
 
 
         <div class="duration">
-          <div *ngIf="activityType !== 'personal_project'" class="">{{ this.contractValueAlias(activity.contract) }} - </div>
+          <div *ngIf="activityType !== 'personal-project'" class="">{{ this.contractValueAlias(activity.contract) }} - </div>
           <ng-container *ngIf="activity.status !== 'InProgress'">
               <div>Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }} ({{activity.duration}})</div>
           </ng-container>

@@ -7,9 +7,8 @@ import { mapActivitiesPagesType } from './data-types';
 
 
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
-export const apiLogoUrl = `./assets/logo/`;
-export const apiMapsUrl = `./assets/maps/`;
-export const assetsImgUrl = `./assets/images/`;
+export const assetsLogoPath = `./assets/logo/`;
+export const assetsImagesPath = `./assets/images/`;
 export const personalBlogUrl = 'https://blog.amaury-valorge.com';
 export const githubUrl = 'https://github.com/amauryval/';
 export const githubBugIssueUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';
@@ -166,7 +165,7 @@ export const mapActivitiesPages: mapActivitiesPagesType = {
       content_url: "app/activities",
       categories: [],
       tags: [],
-      image_url: `${assetsImgUrl}/portfolio_activities.jpg`,
+      image_url: `${assetsImagesPath}/portfolio_activities.jpg`,
       description: "Cartographie de mon parcours universitaire et professionnel."
     },
     {
@@ -176,7 +175,7 @@ export const mapActivitiesPages: mapActivitiesPagesType = {
       content_url: "app/sandbox",
       categories: [],
       tags: [],
-      image_url: `${assetsImgUrl}/sandbox.jpg`,
+      image_url: `${assetsImagesPath}/sandbox.jpg`,
       description: "Un bac à sable pour saisir des données géographiques: Points, LineString, Polygons (et à trous). En cours de développement..."
     },
     {
@@ -186,7 +185,7 @@ export const mapActivitiesPages: mapActivitiesPagesType = {
       content_url: "app/gtfs-viewer",
       categories: [],
       tags: [],
-      image_url: `${assetsImgUrl}/gtfs_viewer.jpg`,
+      image_url: `${assetsImagesPath}/gtfs_viewer.jpg`,
       description: "Application pour visualiser des GTFS. En cours de développement..."
     },
     {
@@ -196,7 +195,7 @@ export const mapActivitiesPages: mapActivitiesPagesType = {
       categories: [],
       tags: [],
       content_url: "https://findmypath.amaury-valorge.com/",
-      image_url: `${assetsImgUrl}/find_my_path.jpg`,
+      image_url: `${assetsImagesPath}/find_my_path.jpg`,
       description: "Application pour déterminer le meilleur chemin. En cours de refonte..."
     }
   ]

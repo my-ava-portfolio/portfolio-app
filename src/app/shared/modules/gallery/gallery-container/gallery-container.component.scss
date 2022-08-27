@@ -1,0 +1,21 @@
+
+.img-size-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+  
+  @media (orientation: portrait) {
+    .img-size-modal {
+        max-width: 100%;
+    }
+  }
+  
+  @media (orientation: landscape) {
+    .img-size-modal {
+        max-height: 90%;
+    }
+  }
+  
