@@ -34,7 +34,7 @@
             <!-- gallery experiences badges ONLY -->
             <div class="body-activity-badges">
                 <span *ngIf="feature.activityType" [ngClass]="'badge-' + feature.activityType.class">{{feature.activityType.name}}</span>
-                <span *ngIf="feature.experienceName" class="badge-generic" [style]="'background-color:' + feature.experienceName.color + ';color: white'">{{feature.experienceName.name}}</span>
+                <span *ngIf="feature.experienceName" [routerLink]="[experiencesRoute]" [fragment]="feature.id" class="pointer badge-generic" [style]="'background-color:' + feature.experienceName.color + ';color: white'">{{feature.experienceName.name}}</span>
                 <span *ngIf="feature.mediaType" [ngClass]="'badge-' + feature.mediaType.name">
                     <fa-icon [icon]="feature.mediaType.icon.icon"></fa-icon>{{feature.mediaType.icon.title}}
                 </span>

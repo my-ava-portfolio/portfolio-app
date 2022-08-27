@@ -110,12 +110,10 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
       }
     );
 
-
-
-
     this.routeSubscription = this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment) {
+          // in order to filter the experiences page with a specific activity
           this.fragment = fragment
         }
       }

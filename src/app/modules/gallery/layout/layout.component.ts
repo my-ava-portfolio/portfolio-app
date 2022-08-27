@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { assetsImagesPath, experiencesPages, minWidthLandscape } from '@core/inputs';
+import { assetsImagesPath, minWidthLandscape } from '@core/inputs';
 
 import { GalleryService } from '@services/gallery.service';
 import { MainService } from '@services/main.service';
@@ -23,7 +23,6 @@ import { galleryFeature } from '@core/data-types';
   animations: [fadeInOutAnimation]
 })
 export class LayoutComponent implements OnInit, OnDestroy {
-  experiencesRoute: string = experiencesPages.route;
 
   // TODO create a route to get all activities titles
   currentDate: number = new Date().getFullYear();
@@ -101,7 +100,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
         data.items.forEach((feature: any) => {
           this.galleryItems.push(this.buildFeature(feature))
         })
-        console.log(this.galleryItems)
         this.mediaTypes = data.media_types_available;
         this.activities = data.activities;
         this.currentCategory = data.current_category;

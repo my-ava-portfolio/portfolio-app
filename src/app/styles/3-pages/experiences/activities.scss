@@ -17,10 +17,13 @@
                 .buttons-tools {
                     @include ml(auto);
                     @include flexRow();
-
+                    a {
+                        @include mx(1);
+                    }
                     fa-icon {
                         @include mx(0 !important);
                     }
+
                 }
             }
 

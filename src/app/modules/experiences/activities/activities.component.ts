@@ -6,7 +6,6 @@ import { assetsLogoPath, assetsImagesPath, galleryPages, githubIcon, mapActiviti
 import { ResumeService } from '@services/resume.service';
 
 import { arrowsDownIcon, expandIcon, resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '@core/inputs';
-import { ActivatedRoute } from '@angular/router';
 import { ActivityActionsService } from '../services/activity-actions.service';
 
 
@@ -61,12 +60,10 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   pageLoadingTimeOut: number = 750;
 
   routeQueryParamsSubscription!: Subscription;
-  routeFragmentSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
-    private activatedRoute: ActivatedRoute,
     private activityActionsService: ActivityActionsService
 
   ) {
@@ -79,35 +76,16 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       }
     )
 
-    this.routeFragmentSubscription = this.activatedRoute.fragment.subscribe((fragment) => {
-      // from the activities map & gallery. we wait the page loading
-      // TODO remove the timeout
-      setTimeout(() => {
-
-        if (fragment !== null) {
-          this.tabView = this.findActitivityTypeFromId(fragment)
-
-          // scrolling to the anchor (fragment)
-          setTimeout(() => {
-            const targetElement: any = document.getElementById(fragment);
-            if (targetElement) {
-              targetElement.scrollIntoView();
-            }
-          },this.pageLoadingTimeOut / 2)
-        }
-
-      }, this.pageLoadingTimeOut
-      )
-
-    })
-
   }
 
   ngOnInit(): void {
+    // in order to filter the page regarding an activity
+    if (this.fragment !== null) {
+      this.pushActivityId(this.fragment);
+    }
   }
 
   ngOnDestroy(): void {
-    this.routeFragmentSubscription.unsubscribe()
     this.activityEnablingSubscription.unsubscribe()
   }
 

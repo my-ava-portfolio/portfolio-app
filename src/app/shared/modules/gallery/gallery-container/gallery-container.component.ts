@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { galleryFeature } from '@core/data-types';
+import { experiencesPages } from '@core/inputs';
 
 
 @Component({
@@ -10,6 +11,9 @@ import { galleryFeature } from '@core/data-types';
 })
 export class GalleryContainerComponent implements OnInit {
   @Input() features!: galleryFeature[];
+
+  experiencesRoute: string = experiencesPages.route;
+
 
   constructor() { }
 
