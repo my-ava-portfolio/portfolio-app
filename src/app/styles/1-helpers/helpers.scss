@@ -167,11 +167,12 @@ $theme-colors-map: (
   color: map-get($colorSettings, 'text');
   background-color: map-get($colorSettings, 'color');
 
-  &:hover {
-      // add style effect
-      color: map-get($colorSettings, 'text');
-      background-color: map-get($colorSettings, 'color');
-  }
+  //TODO
+  // &:hover {
+  //     // add style effect
+  //     color: map-get($colorSettings, 'text');
+  //     background-color: map-get($colorSettings, 'color');
+  // }
 }
 
 @each $colorName, $colorSettings in $theme-colors-map {
@@ -195,8 +196,8 @@ $theme-colors-map: (
     }
 
     .btn-sm-#{$colorName} {
-      @extend .btn-sm;
       @include buttonBase($colorSettings);
+      @extend .btn-sm;
     }
 
     .badge-#{$colorName} {

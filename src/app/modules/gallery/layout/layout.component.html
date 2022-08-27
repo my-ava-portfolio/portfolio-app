@@ -1,4 +1,3 @@
-
 <article id="galleryHome" class="gallery" *ngIf="isDataAvailable" [@fadeInOut]>
 
   <div class="gallery-container">
@@ -131,25 +130,25 @@
       <div class="btn-toolbar my-2 d-flex justify-content-center" role="toolbar">
 
         <div class="btn-group my-1 mx-1" role="group">
-          <button class="btn-sm-secondary" [ngClass]="currentCategory === null ? 'fw-bolderer' : 'inactive'" (click)="this.resetGallery()">
+          <button class="btn-sm-secondary" type="button" id="allButton" [ngClass]="currentCategory === null ? 'fw-bolde' : 'inactive'" (click)="this.resetGallery()">
             <fa-icon [icon]="tagIcon"></fa-icon>Tous
           </button>
         </div>
 
         <div class="btn-group my-1 mx-1" role="group">
-          <button class="btn-sm-secondary" [ngClass]="currentCategory === 'job' ? 'fw-bolderer' : 'inactive'" (click)="getGalleryDataByCategory('job')">
+          <button class="btn-sm-secondary" type="button" [id]="'all' + currentCategory" [ngClass]="currentCategory === 'job' ? 'active' : 'inactive'" (click)="getGalleryDataByCategory('job')">
             <fa-icon class="text-job" [icon]="tagIcon"></fa-icon>Expériences
           </button>
         </div>
 
         <div class="btn-group my-1 mx-1" role="group">
-          <button class="btn-sm-secondary" [ngClass]="currentCategory === 'personal_project' ? 'fw-bolderer' : 'inactive'" (click)="getGalleryDataByCategory('personal_project')">
+          <button class="btn-sm-secondary" type="button" [id]="'all' + currentCategory" [ngClass]="currentCategory === 'personal_project' ? 'active' : 'inactive'" (click)="getGalleryDataByCategory('personal_project')">
             <fa-icon class="text-personal_project" [icon]="tagIcon"></fa-icon>Projets personnels
           </button>
         </div>
 
         <div class="btn-group my-1 mx-1" role="group">
-          <button class="btn-sm-secondary" [ngClass]="currentCategory === 'volunteer' ? 'fw-bolderer' : 'inactive'" (click)="getGalleryDataByCategory('volunteer')">
+          <button class="btn-sm-secondary" type="button" [id]="'all' + currentCategory" [ngClass]="currentCategory === 'volunteer' ? 'active' : 'inactive'" (click)="getGalleryDataByCategory('volunteer')">
             <fa-icon class="text-volunteer" [icon]="tagIcon"></fa-icon>Bénévolat
           </button>
         </div>
@@ -165,7 +164,7 @@
         <div class="btn-toolbar d-flex justify-content-center" role="toolbar">
           <ng-container *ngFor="let activity of activities | keyvalue">
             <div class="btn-group my-1 me-1" role="group">
-              <button (click)="getGalleryDataByActivity(activity.key)" type="button" [id]="activity.key" class="btn-sm-secondary" [ngClass]="{'active fw-bolder': currentActivity === activity.key}">
+              <button (click)="getGalleryDataByActivity(activity.key)" type="button" [id]="activity.key" class="btn-sm-secondary" [ngClass]="{'active': currentActivity === activity.key}">
                 {{ activity.value}}
               </button>
             </div>
@@ -182,7 +181,7 @@
       <div class="d-flex flex-row justify-content-center my-2 mb-1 flex-wrap">
         <div class="btn-group">
           <ng-container *ngFor="let type of mediaTypes">
-            <button (click)="getGalleryDataByType(type)" type="button" [title]="typeStyleMapping[type].title" [id]="type" class="btn-sm-secondary" [ngClass]="{'active fw-bolder': currentType === type}">
+            <button (click)="getGalleryDataByType(type)" type="button" [title]="typeStyleMapping[type].title" [id]="type" class="btn-sm-secondary" [ngClass]="{'active': currentType === type}">
               <fa-icon [icon]="typeStyleMapping[type].icon"></fa-icon>
             </button>
           </ng-container>

@@ -36,13 +36,13 @@
       <div class="btn-toolbar my-2 d-flex justify-content-center" role="toolbar">
 
         <div class="btn-group my-1 mx-1" role="group">
-          <button class="btn btn-secondary btn-sm" [ngClass]="currentCategory === null ? 'fw-bolderer' : 'inactive'" (click)="resetContent()">
+          <button class="btn btn-secondary btn-sm" [ngClass]="currentCategory === null ? 'fw-bolder' : 'inactive'" (click)="resetContent()">
             <fa-icon class="me-2" [icon]="tagIcon"></fa-icon>Tous
           </button>
         </div>
 
         <div class="btn-group my-1 mx-1" role="group" *ngFor="let category of allCategories">
-          <button class="btn btn-sm btn-secondary btn-sm" [ngClass]="currentCategory === category.name ? 'fw-bolderer' : 'inactive'" (click)="selectContentByCategory(category.name)">
+          <button class="btn btn-sm btn-secondary btn-sm" [ngClass]="currentCategory === category.name ? 'fw-bolder' : 'inactive'" (click)="selectContentByCategory(category.name)">
             <fa-icon class="me-2" [icon]="tagIcon" [style]="'color:' + category.color + ';'"></fa-icon>{{ category.name }}
           </button>
         </div>
@@ -57,7 +57,7 @@
       <div class="btn-toolbar my-2 d-flex justify-content-center" role="toolbar">
 
         <div class="btn-group my-1 mx-1" role="group" *ngFor="let tag of allTags">
-          <button class="btn btn-sm btn-secondary btn-sm" [ngClass]="currentTag === tag.name ? 'fw-bolderer' : 'inactive'" (click)="selectContentByTag(tag.name)">
+          <button class="btn btn-sm btn-secondary btn-sm" [ngClass]="currentTag === tag.name ? 'fw-bolder' : 'inactive'" (click)="selectContentByTag(tag.name)">
             <fa-icon class="me-2" [icon]="tagIcon" [style]="'color:' + tag.color + ';'"></fa-icon>{{ tag.name }}
           </button>
         </div>
