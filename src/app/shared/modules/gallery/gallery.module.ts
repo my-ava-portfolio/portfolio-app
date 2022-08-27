@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TimeLineComponent } from './time-line/time-line.component';
+import { ContainerComponent } from './container/container.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
-import { TimelineService } from '@shared/services/timeline.service';
 
 import { PipesModule } from '@shared/pipes/pipes.module';
 import {RouterModule} from '@angular/router';
@@ -12,7 +10,7 @@ import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
-    TimeLineComponent,
+    ContainerComponent
   ],
   imports: [
     CommonModule,
@@ -21,10 +19,9 @@ import {RouterModule} from '@angular/router';
     RouterModule
   ],
   exports: [
-    TimeLineComponent,
+    ContainerComponent
   ],
   providers: [
-    TimelineService
-  ]
+ ]
 })
-export class SharedModule { }
+export class GalleryModule { }

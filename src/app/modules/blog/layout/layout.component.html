@@ -1,44 +1,8 @@
 <div id="blogHome" class="gallery" *ngIf="selectedblogTopics" [@fadeInOut]>
 
-    <div class="gallery-container">
-
-      <div class="gallery-feature" *ngFor="let topic of selectedblogTopics">
-
-        <div class="gallery-feature-header">
-          <span class="title">{{ topic.title }}</span>
-        </div>
-
-        <div class="gallery-feature-body">
-
-          <img [src]="topic.image | safeUrl">
-
-
-            <div class="gallery-feature-body-text">
-              <span class="title">Catégorie(s):</span>
-              <ng-container *ngFor="let category of topic.categories">
-                <span class="badge-generic" [style]="'background-color:' + this.getTagColor(category, seedCategory) + ';color: white'">{{category}}</span>
-              </ng-container>
-            </div>
-
-            <div class="gallery-feature-body-text">
-              <span class="title">Tag(s):</span>
-              <span *ngFor="let tag of topic.tags" class="badge-generic" [style]="'background-color:' + this.getTagColor(tag, seedTag) + ';color: white'">{{tag}}</span>
-            </div>
-
-            <div class="paragraph">{{ topic.resume }}</div>
-
-            <div class="gallery-feature-buttons">
-              <a [href]="topic.url" target="_blank" rel="noopener noreferrer" class="btn-warning">Accéder</a>
-            </div>
-            
-        </div>
-
-        <div class="gallery-feature-footer">
-        </div>
-
-      </div>
-
-    </div>
+  <app-main
+  [features]="selectedblogTopics"
+  ></app-main>
 
   <div class="legend-container">
 
@@ -78,8 +42,8 @@
         </div>
 
         <div class="btn-group my-1 mx-1" role="group" *ngFor="let category of allCategories">
-          <button class="btn btn-sm btn-secondary btn-sm" [ngClass]="currentCategory === category ? 'fw-bolderer' : 'inactive'" (click)="selectContentByCategory(category)">
-            <fa-icon class="me-2" [icon]="tagIcon" [style]="'color:' + this.getTagColor(category, seedCategory)+ ';'"></fa-icon>{{ category }}
+          <button class="btn btn-sm btn-secondary btn-sm" [ngClass]="currentCategory === category.name ? 'fw-bolderer' : 'inactive'" (click)="selectContentByCategory(category.name)">
+            <fa-icon class="me-2" [icon]="tagIcon" [style]="'color:' + category.color + ';'"></fa-icon>{{ category.name }}
           </button>
         </div>
 
@@ -93,8 +57,8 @@
       <div class="btn-toolbar my-2 d-flex justify-content-center" role="toolbar">
 
         <div class="btn-group my-1 mx-1" role="group" *ngFor="let tag of allTags">
-          <button class="btn btn-sm btn-secondary btn-sm" [ngClass]="currentTag === tag ? 'fw-bolderer' : 'inactive'" (click)="selectContentByTag(tag)">
-            <fa-icon class="me-2" [icon]="tagIcon" [style]="'color:' + this.getTagColor(tag, seedTag)+ ';'"></fa-icon>{{ tag }}
+          <button class="btn btn-sm btn-secondary btn-sm" [ngClass]="currentTag === tag.name ? 'fw-bolderer' : 'inactive'" (click)="selectContentByTag(tag.name)">
+            <fa-icon class="me-2" [icon]="tagIcon" [style]="'color:' + tag.color + ';'"></fa-icon>{{ tag.name }}
           </button>
         </div>
 

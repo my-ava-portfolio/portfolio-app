@@ -3,6 +3,7 @@ import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortaw
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
 
 import { apiBaseUrl } from './constants';
+import { mapActivitiesPagesType } from './data-types';
 
 
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
@@ -150,7 +151,7 @@ export const experiencesPages: any = {
   sub_menus: []
 };
 
-export const mapActivitiesPages: any = {
+export const mapActivitiesPages: mapActivitiesPagesType = {
   id: 'maps',
   route: '/maps',
   title: 'Cartes',
@@ -161,34 +162,42 @@ export const mapActivitiesPages: any = {
     {
       id: "activities",
       title: "Carte des activités",
-      route: "app/activities",
-      img: `${assetsImgUrl}/portfolio_activities.jpg`,
-      icon: mapIcon,  // TODO improve icon
-      details: "Cartographie de mon parcours universitaire et professionnel."
+      type: 'app',
+      content_url: "app/activities",
+      categories: [],
+      tags: [],
+      image_url: `${assetsImgUrl}/portfolio_activities.jpg`,
+      description: "Cartographie de mon parcours universitaire et professionnel."
     },
     {
       id: "sandbox",
       title: "Bac à sable",
-      route: "app/sandbox",
-      img: `${assetsImgUrl}/sandbox.jpg`,
-      icon: mapIcon,  // TODO improve icon
-      details: "Un bac à sable pour saisir des données géographiques: Points, LineString, Polygons (et à trous). En cours de développement..."
+      type: 'app',
+      content_url: "app/sandbox",
+      categories: [],
+      tags: [],
+      image_url: `${assetsImgUrl}/sandbox.jpg`,
+      description: "Un bac à sable pour saisir des données géographiques: Points, LineString, Polygons (et à trous). En cours de développement..."
     },
     {
       id: "gtfs-viewer",
       title: "Visualisation de GTFS",
-      route: "app/gtfs-viewer",
-      img: `${assetsImgUrl}/gtfs_viewer.jpg`,
-      icon: mapIcon,  // TODO improve icon
-      details: "Application pour visualiser des GTFS. En cours de développement..."
+      type: 'app',
+      content_url: "app/gtfs-viewer",
+      categories: [],
+      tags: [],
+      image_url: `${assetsImgUrl}/gtfs_viewer.jpg`,
+      description: "Application pour visualiser des GTFS. En cours de développement..."
     },
     {
       id: "find-my-path",
       title: "Find my path",
-      route: "https://findmypath.amaury-valorge.com/",
-      img: `${assetsImgUrl}/find_my_path.jpg`,
-      icon: mapIcon,  // TODO improve icon
-      details: "Application pour déterminer le meilleur chemin. En cours de refonte..."
+      type: 'website',
+      categories: [],
+      tags: [],
+      content_url: "https://findmypath.amaury-valorge.com/",
+      image_url: `${assetsImgUrl}/find_my_path.jpg`,
+      description: "Application pour déterminer le meilleur chemin. En cours de refonte..."
     }
   ]
 };

@@ -11,6 +11,7 @@ import { ControlerService } from '@services/controler.service';
 
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { MainService } from '@services/main.service';
+import { badge, galleryFeature } from '@core/data-types';
 
 
 @Component({
@@ -28,16 +29,16 @@ export class LayoutComponent implements OnDestroy {
   tagsIcon = tagsIcon;
   tagIcon = tagIcon;
 
-  allCategories!: string[];
+  allCategories: badge[] = [];
   currentCategory!: string;
   seedCategory = 50;
 
-  allTags!: string[];
+  allTags: badge[] = [];
   currentTag!: string;
   seedTag = 8;
 
-  selectedblogTopics!: any[];
-  allBlogTopics!: any[];
+  selectedblogTopics: galleryFeature[] = [];
+  allBlogTopics: galleryFeature[] = [];
 
   constructor(
     private blogService: BlogService,
@@ -52,21 +53,30 @@ export class LayoutComponent implements OnDestroy {
 
     this.topicsDataSubscription = this.blogService.topicsData.subscribe(
       (data) => {
-        this.allBlogTopics = data
-        this.selectedblogTopics = data
+        data.forEach((feature: any) => {
+          this.allBlogTopics.push(this.buildFeature(feature))
+        })
+        this.selectedblogTopics = this.allBlogTopics
 
         // TODO refactor
-        let categoriesValues: string[] = [];
-        this.allBlogTopics.forEach((element: any, index: number) => {
-          categoriesValues = [...categoriesValues, ...element.categories]
+        this.allBlogTopics.forEach((element: any) => {
+          element.categories.forEach((category: badge) => {
+            const elementFound = Array.from(this.allCategories.values()).filter((item: any) => item.name === category.name);
+            if (elementFound.length === 0) {
+              this.allCategories.push(category)
+            }
+          });
         })
-        this.allCategories = Array.from(new Set(categoriesValues));
 
-        let tagsValues: string[] = [];
-        this.allBlogTopics.forEach((element: any, index: number) => {
-          tagsValues = [...tagsValues, ...element.tags]
+
+        this.allBlogTopics.forEach((element: any) => {
+          element.tags.forEach((tag: badge) => {
+            const elementFound = Array.from(this.allTags.values()).filter((item: any) => item.name === tag.name);
+            if (elementFound.length === 0) {
+              this.allTags.push(tag)
+            }
+          });
         })
-        this.allTags = Array.from(new Set(tagsValues));
       }
     )
 
@@ -86,6 +96,33 @@ export class LayoutComponent implements OnDestroy {
     this.controlerService.pullSubMenus([])
   }
 
+  buildFeature(feature: any): galleryFeature {
+    let categoriesBuild: badge[] = [];
+    feature.categories.forEach((element: any) => {
+      categoriesBuild.push({
+        name: element,
+        color: this.getTagColor(element, this.seedCategory)
+      })
+    })
+
+    let tagsBuild: badge[] = [];
+    feature.tags.forEach((element: any) => {
+      tagsBuild.push({
+        name: element,
+        color: this.getTagColor(element, this.seedTag)
+      })
+    })
+    return {
+      title: feature.title,
+      image_url: feature.image,
+      content_url: feature.topic_url,
+      categories: categoriesBuild,
+      tags: tagsBuild,
+      type: 'website',
+      description: feature.resume
+    }
+  }
+
   getTagColor(value: string, seed: number): string {
     return stringToColor(value, seed)
   }
@@ -101,16 +138,18 @@ export class LayoutComponent implements OnDestroy {
   }
 
   selectContentByCategory(category_name: string): void {
-    let topicsFound = this.allBlogTopics.filter((e: any) => {
-      return e.categories.includes(category_name)
+    let topicsFound = this.allBlogTopics.filter((feature: galleryFeature) => {
+      const elementFound = Array.from(feature.categories.values()).filter((item: any) => item.name === category_name);
+      return elementFound.length === 1;
     })
     this.selectedblogTopics = topicsFound;
     this.mainService.scrollToTopAction()
   }
 
   selectContentByTag(tag_name: string): void {
-    let topicsFound = this.allBlogTopics.filter((e: any) => {
-      return e.tags.includes(tag_name)
+    let topicsFound = this.allBlogTopics.filter((feature: galleryFeature) => {
+      const elementFound = Array.from(feature.tags.values()).filter((item: any) => item.name === tag_name);
+      return elementFound.length === 1;
     })
     this.selectedblogTopics = topicsFound;
     this.mainService.scrollToTopAction()

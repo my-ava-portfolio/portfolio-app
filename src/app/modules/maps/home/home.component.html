@@ -1,32 +1,7 @@
   <div id="mapsHome" class="gallery" [@fadeInOut]>
 
-    <div class="gallery-container">
-
-      <div class="gallery-feature" *ngFor="let app of mapPagesMenus.sub_menus">
-
-        <div class="gallery-feature-header">
-          <span class="title">{{ app.title }}</span>
-        </div>
-
-        <div class="gallery-feature-body">
-
-          <img *ngIf="app.img" [src]="app.img"/>
-
-          <div class="gallery-feature-body-text">{{ app.details }}</div>
-
-          <div class="gallery-feature-buttons">
-            <a *ngIf="!app.route.includes('https')" [routerLink]="[app.route]" class="btn-warning">Accéder</a>
-            <a *ngIf="app.route.includes('https')" [href]="app.route" class="btn-warning" target="_blank" rel="noopener noreferrer">Accéder</a>
-          </div>
-
-        </div>
-
-        <div class="gallery-feature-footer">
-        </div>
-
-
-      </div>
-
-    </div>
+    <app-main
+    [features]="mapPagesMenus.sub_menus"
+    ></app-main>
 
   </div>
