@@ -163,16 +163,15 @@ $theme-colors-map: (
   @extend .btn;
   // do not add margin spacing!
 
-  border-color: map-get($colorSettings, 'color')!important;
+  // border-color: map-get($colorSettings, 'color')!important;
   color: map-get($colorSettings, 'text');
   background-color: map-get($colorSettings, 'color');
 
-  //TODO
-  // &:hover {
-  //     // add style effect
-  //     color: map-get($colorSettings, 'text');
-  //     background-color: map-get($colorSettings, 'color');
-  // }
+  &:hover {
+      background-color: lighten(map-get($colorSettings, 'color'), 15%);
+      border-color: lighten(map-get($colorSettings, 'color'), 15%);
+      color: map-get($colorSettings, 'text');
+  }
 }
 
 @each $colorName, $colorSettings in $theme-colors-map {
