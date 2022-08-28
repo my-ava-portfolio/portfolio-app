@@ -7,7 +7,7 @@
             @extend .card;
             @extend .rounded;
             @include mb(3);
-            @include mx(3);
+            @include mx(4);
 
             .header{
                 @extend .card-header;

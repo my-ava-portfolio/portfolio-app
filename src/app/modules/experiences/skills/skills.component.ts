@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
-import { skillIcon, arrowDownIcon, expandIcon } from '@core/inputs';
+import { skillIcon, skillsMapping } from '@core/inputs';
 
 
 @Component({
@@ -8,36 +8,27 @@ import { skillIcon, arrowDownIcon, expandIcon } from '@core/inputs';
   templateUrl: './skills.component.html',
   styleUrls: ['./skills.component.scss']
 })
-export class SkillsComponent implements OnInit, OnDestroy {
+export class SkillsComponent implements OnInit {
   @Input() skillsData: any;
   @Input() isActivitiesDataAvailable: any;
 
 
-  skillsCategories = {
-    technics: 'Techniques',
-    themes: 'Thématiques',
-    tools: 'Outils'
-  };
+  skillsCategories = skillsMapping;
 
   skillIcon = skillIcon;
-  expandIcon = expandIcon;
-  arrowDownIcon = arrowDownIcon;
 
-
-  constructor(
-  ) {
-
-  }
+  constructor(  ) {  }
 
   ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
   }
 
   trackByMethod(index: number, el: any): number {
     // TODO add an id field
     return el.name;
+  }
+
+  keepOrder(): any {
+    // check https://stackoverflow.com/a/72286062/13168168
   }
 
 }

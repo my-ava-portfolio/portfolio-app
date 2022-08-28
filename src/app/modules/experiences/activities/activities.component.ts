@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
-import { assetsLogoPath, assetsImagesPath, galleryPages, githubIcon, mapActivitiesPages, notesIcon, personalBlogUrl, projectIcon, projectPages, websiteIcon } from '@core/inputs';
+import { assetsLogoPath, assetsImagesPath, galleryPages, githubIcon, mapActivitiesPages, notesIcon, personalBlogUrl, projectIcon, projectPages, websiteIcon, activitiesMapping } from '@core/inputs';
 
 import { ResumeService } from '@services/resume.service';
 
@@ -43,7 +43,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   hiddenActivitiesDetails: number[] = [];
 
-  activityTitle = "Bénévolat";
   themesTitle = "Thèmes";
   contextTitle = "Contexte";
   missionTitle = "Missions";
@@ -53,8 +52,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   detailsTitle = "Détails";
   publicationsTitle = "Publications";
 
-  // tabView = 'companies';
-  availabled_topics = ["job", "personal_project", "volunteer"]
+  activitiesMapping = activitiesMapping;
+  availabled_topics = Object.keys(activitiesMapping)
   tabView = this.availabled_topics[0];
 
   pageLoadingTimeOut: number = 750;

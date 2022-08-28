@@ -90,7 +90,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
         this.activityTypesMetadata = [
           {
             id: "job",
-            title: "Entreprises",
+            title: "Missions",
             count: this.jobsData.length
           },
           {

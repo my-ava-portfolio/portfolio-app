@@ -1,6 +1,6 @@
 @mixin skillsStyle{
     section[id^='skills__'] {
-        @include mx(3);
+        @include mx(4);
         @include mb(3);
 
         .skills-container{

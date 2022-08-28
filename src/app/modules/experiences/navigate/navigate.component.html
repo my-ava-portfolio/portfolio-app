@@ -1,4 +1,3 @@
-
 <div id="activitiesGraph" #svgGraphChart></div>
 
 <div id="legendGraph">
@@ -9,9 +8,9 @@
 
     <div id="legendGraph__temporal__slider">
 
-      {{ graphInputData.start_date }}
-      <input type="range" steps="1" [min]="graphInputData.start_date" [max]="graphInputData.end_date" [value]="currentDate"  (change)="updateDate($event)"/>
-      {{ graphInputData.end_date }}
+        <span>{{ graphInputData.start_date }}</span>
+        <input type="range" steps="1" [min]="graphInputData.start_date" [max]="graphInputData.end_date" [value]="currentDate"  (change)="updateDate($event)"/>
+        <span>{{ graphInputData.end_date }}</span>
 
     </div>
 

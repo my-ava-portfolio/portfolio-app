@@ -110,20 +110,14 @@ export const educationPages: any = {
   sub_menus: [
     {
       id: "degrees",
-      title: "Diplômes",
-      fragment: "degrees",
+      title: "Parcours universitaire",
+      fragment: "education__degrees",
       icon: degreeIcon
     },
     {
-      id: "languages",
-      title: "Langues",
-      fragment: "languages",
-      icon: languageIcon
-    },
-    {
       id: "trainings",
-      title: "Formation",
-      fragment: "trainings",
+      title: "Formations",
+      fragment: "education__trainings",
       icon: navIcon
     }
   ]
@@ -147,7 +141,26 @@ export const experiencesPages: any = {
   colorType: 'job',
   verbose_title: 'Accès au CV',
   icon: resumeIcon,
-  sub_menus: []
+  sub_menus: [
+    {
+      id: "navigation",
+      title: "Navigation",
+      fragment: "experiences__navigate",
+      icon: navIcon
+    },
+    {
+      id: "activities",
+      title: "Activités",
+      fragment: "experiences__content__activities",
+      icon: jobIcon
+    },
+    {
+      id: "skills",
+      title: "Compétences",
+      fragment: "experiences__content__skills",
+      icon: skillIcon
+    }
+  ]
 };
 
 export const mapActivitiesPages: mapActivitiesPagesType = {
@@ -272,4 +285,17 @@ export function chunkArray(array: any[], size: number) {
     outputArray.push(array.slice(i, i+size));
   }
   return outputArray;
+}
+
+
+export const activitiesMapping: { job: string; 'personal-project': string; volunteer: string;} = {
+  "job": "Missions",
+  "personal-project": "Projets personnels",
+  "volunteer": "Bénévolat"
+}
+
+export const skillsMapping: { themes: string; technics: string; tools: string;} = {
+  "themes": "Thématiques",
+  "technics": "Techniques",
+  "tools": "Outils"
 }

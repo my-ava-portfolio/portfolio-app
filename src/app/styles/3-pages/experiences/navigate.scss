@@ -1,7 +1,12 @@
+$navigate-text-color: black;
+$navigate-background-color: '.bg-white';
+
 @mixin navigationStyle {
     @include flexRow('md');
     @extend .justify-content-around;
     @extend .align-items-center;
+    @include py(3);
+    @extend #{$navigate-background-color};
 
     #activitiesGraph {
         @extend .w-100;
@@ -13,12 +18,25 @@
         @include flexColumn();
         @extend .w-100;
 
+        .legend-graph-title {
+            fill: $navigate-text-color;
+        }
+
         &__temporal {
 
             &__slider {
+                @include flexRow();
+                @include justifyContent(center);
+                @include my(3);
+
+                span {
+                    @include mx(2);
+                    @include small;
+                    @include bold;
+                }
+
                 input {
                     @extend .w-50;
-                    @extend .m-1;
                 }
             }
         }
@@ -41,7 +59,7 @@
 
     // graph misc //
     #activitiesGraph__svgLegend .nodeLabels text:not(.technics):not(.themes):not(.tools), #activitiesGraph__svgChart .nodeLabels text:not(.technics):not(.themes):not(.tools) {
-        fill: black;
+        fill: $navigate-text-color;
         font-family: Arial;
         font-size: 12px;
         font-weight: bold;
@@ -49,7 +67,7 @@
       }
       
     #activitiesGraph__svgChart .nodeLabels text.technics, #activitiesGraph__svgChart .nodeLabels text.themes, #activitiesGraph__svgChart .nodeLabels text.tools {
-        fill: black;
+        fill: $navigate-text-color;
         font-family: Arial;
         font-size: 10px;
         pointer-events: none; /* to prevent mouseover/drag capture*/
@@ -69,7 +87,7 @@
         font-size: 12em;
         dominant-baseline: middle;
         pointer-events: none;
-        fill: #000000;
+        fill: $navigate-text-color;
         opacity: 0.2;
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -93,6 +111,9 @@
       
     #activitiesGraph__svgLegend foreignObject{
         @extend .pointer;
+    } 
+    #activitiesGraph__svgLegend text{
+        fill: $navigate-text-color;
     } 
     // graph misc //
 

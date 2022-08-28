@@ -5,11 +5,6 @@
     @extend .bg-dark, .bg-gradient;
     @extend .rounded-top;
 
-    &__title {
-        @extend .d-flex, .flex-column;
-        @extend .mx-4; 
-    }
-
     &__languages {
         @include flexRow();
         // @include flexColumn();
@@ -17,7 +12,7 @@
         @extend .mx-2; 
 
         .card-box {
-            @extend .bg-warning;
+            @extend .bg-light;
             @extend .rounded;
             @extend .m-2, .p-2;
             @extend .text-center;

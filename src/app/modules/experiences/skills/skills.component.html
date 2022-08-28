@@ -1,6 +1,9 @@
-<ng-container *ngTemplateOutlet="skillDetails; context:{title:'Thématique', category:'themes'}"></ng-container>
-<ng-container *ngTemplateOutlet="skillDetails; context:{title:'Techniques', category:'technics'}"></ng-container>
-<ng-container *ngTemplateOutlet="skillDetails; context:{title:'Outils', category:'tools'}"></ng-container>
+<h5 class="title-tick-skills">Compétences</h5>
+
+<ng-container *ngFor="let skill of skillsCategories | keyvalue: keepOrder">
+  <ng-container *ngTemplateOutlet="skillDetails; context:{title:skill.value, category: skill.key}"></ng-container>
+</ng-container>
+
 
 
 

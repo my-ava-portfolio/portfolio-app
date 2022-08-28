@@ -2,8 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActivityActionsService } from '../services/activity-actions.service';
 
-
-
 @Component({
   selector: '[app-general-info]',
   templateUrl: './general-info.component.html',
