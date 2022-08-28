@@ -1,21 +1,14 @@
-<div class="d-flex flex-column">
+<div id="mapContainer">
 
-  <div class="map-sources">
+  <div id="mapSources">
 
-    <div class="d-flex flex-column">
-      <div id="attribution" class="float-end d-none d-sm-block"></div>
+    <div class="attribution">
+      <div id="attribution"></div>
     </div>
 
-    <div class="map-sources d-flex flex-column">
-
-      <div class="m-2">
-        <div id="overview-map" class="float-end shadow d-none d-sm-block"></div>
-      </div>
-
-      <div class="mx-2">
-        <div id="legend-scale" class="float-end shadow"></div>
-      </div>
-
+    <div class="map-sources">
+      <span id="overviewMap"></span>
+      <span id="legendScale" class=""></span>
     </div>
 
   </div>
@@ -25,7 +18,7 @@
   </ng-container>
 </div>
 
-<div class="d-flex flex-row map-content"></div>
+<div id="mapContent"></div>
 
 <div class="legend-container" *ngIf="appsWithLegend.includes(currentMapTool)" [@fadeInOut]>
 

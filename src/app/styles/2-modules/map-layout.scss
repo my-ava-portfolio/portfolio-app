@@ -1,0 +1,62 @@
+#mapContainer {
+    @include flexColumn();
+    pointer-events: none;
+
+    #mapSources{
+        position: fixed;
+        right: 0em;
+
+        .attribution{
+            @include flexColumn();
+            @include m(1);
+            @extend .d-none, .d-sm-block;
+
+        }
+        .map-sources{
+            @include flexColumn();
+            @include m(0);  
+            @include justifyContent(right);
+
+            span {
+                @include ml(auto!important);
+                @include m(1);  
+            }
+
+            #overviewMap {
+                @extend .d-none, .d-sm-block;
+            }
+            #legendScale {
+                font-size: 12px!important;
+                @include p(2);
+            }
+        }
+    }
+
+    // openlayers items //
+    .ol-attribution, .ol-scale-line, .ol-control {
+        position: unset!important;
+        border-radius: 4px;
+        background: rgba(255,255,255,0.8);
+        max-width: none; // important for attribution...
+
+    }
+    .ol-overviewmap-box {
+        border: 2px dashed var(--bs-dark);
+    }
+    .ol-scale-line-inner {
+      border: 2px solid #000;
+      color: #000;
+      border-top: none;
+    }
+    // openlayers items //
+
+}
+
+#mapContent {
+    @include flexRow();
+    min-height: 100vh;
+    pointer-events: none;
+}
+
+
+

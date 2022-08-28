@@ -107,13 +107,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapService.unsetControlToMap("attribution")
 
     this.mapService.setControlToMap("miniMap")
-    const divOverview: any = window.document.getElementById('overview-map');
+    const divOverview: any = window.document.getElementById('overviewMap');
     divOverview.appendChild(
       window.document.getElementsByClassName("ol-overviewmap ol-custom-overviewmap")[0]
     )
 
     this.mapService.setControlToMap("scale")
-    const divScale: any = window.document.getElementById('legend-scale');
+    const divScale: any = window.document.getElementById('legendScale');
     divScale.appendChild(
       window.document.getElementsByClassName("ol-scale-line ol-unselectable")[0]
     )
