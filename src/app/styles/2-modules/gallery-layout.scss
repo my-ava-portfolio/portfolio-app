@@ -19,7 +19,6 @@
 
         &-body {
             @extend .card-body;
-            // @extend .px-3;
             
             .body-media-container {
                 @include flexRow;
