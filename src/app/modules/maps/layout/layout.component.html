@@ -20,7 +20,7 @@
 
 <div id="mapContent"></div>
 
-<div class="legend-container" *ngIf="appsWithLegend.includes(currentMapTool)" [@fadeInOut]>
+<div id="legendContainer" *ngIf="appsWithLegend.includes(currentMapTool)" [@fadeInOut]>
 
   <div class="legend-container-buttons">
     <button class="btn-sm-dark" type="button" checked autocomplete="off" (click)="showHideLegend()">

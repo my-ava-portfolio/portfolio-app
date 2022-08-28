@@ -1,10 +1,9 @@
-.legend-container {
+#legendContainer {
     @extend .d-flex, .flex-column;
     position: sticky;
-    bottom: 0;
-    
+    bottom: 0;    
 
-    &-buttons {
+    .legend-container-buttons {
         @include mx(3);
 
         button {
@@ -13,7 +12,7 @@
         }
     }
 
-    &-content {
+    .legend-container-content {
         box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
         @extend .text-center;
         @extend .py-3;
