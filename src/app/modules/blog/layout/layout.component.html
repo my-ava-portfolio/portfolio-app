@@ -1,4 +1,4 @@
-<div id="blogHome" class="gallery" *ngIf="selectedblogTopics" [@fadeInOut]>
+<div id="blogHome" class="gallery" *ngIf="selectedblogTopics.length > 0" [@fadeInOut]>
 
   <app-gallery-container
   [features]="selectedblogTopics"
