@@ -1,0 +1,39 @@
+#leftSideBar{
+    min-width: 250px;
+    max-width: 250px;
+    transition: all 0.3s;
+
+    &.active {
+        min-width: 80px;
+        max-width: 80px;
+    }
+}
+
+@media (max-width: 960px){
+
+    #sideBar{
+      position: fixed;
+      min-width: 200px;
+      max-width: 200px;
+
+      &.active{
+            min-width: 80px;
+            max-width: 80px;
+            text-align: center;
+            margin-left: -80px !important;
+        }
+    
+        #header{
+            padding-top: 56px!important;  // due to navbar height
+            }
+    }
+
+}
+
+.copyright {
+    word-wrap: break-word;
+}
+
+.page:hover, a.active{
+    font-weight: bold;
+}
