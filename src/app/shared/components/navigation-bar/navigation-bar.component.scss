@@ -1,3 +1,7 @@
+//title-name
+//badge-title-*
+//profil-img
+
 #leftSideBar{
     min-width: 250px;
     max-width: 250px;
@@ -11,23 +15,24 @@
 
 @media (max-width: 960px){
 
-    #sideBar{
+    #leftSideBar{
       position: fixed;
       min-width: 200px;
       max-width: 200px;
-
-      &.active{
+      padding-top: 90px!important;  // due to navbar height
+    
+        &.active{
             min-width: 80px;
             max-width: 80px;
             text-align: center;
             margin-left: -80px !important;
         }
-    
-        #header{
-            padding-top: 56px!important;  // due to navbar height
-            }
     }
 
+    [class^="badge-title-"] {
+        font-size:x-small;
+    }
+    
 }
 
 .copyright {

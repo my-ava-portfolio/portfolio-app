@@ -39,16 +39,12 @@ export class ControlBarComponent implements OnInit, OnDestroy {
       (data) => {
         this.topicPages = data;
         this.topicPagesSubMenus = data.sub_menus;
-      },
-      (error) => {
       }
     );
 
     this.controlerPageTitleSubscription = this.controlerService.titlePageFeature.subscribe(
       (data) => {
         this.pageTitle = data;
-      },
-      (error) => {
       }
     );
 

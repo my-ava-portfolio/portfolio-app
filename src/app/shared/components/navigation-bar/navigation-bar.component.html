@@ -14,7 +14,7 @@
     class="
       d-flex flex-column
       h-100
-      mx-3
+      mx-2
       text-center
     "
   >
@@ -76,7 +76,7 @@
 
     <div id="leftSideBar__container__body" class="mt-3">
 
-      <ul class="list-unstyled" id="pages" [ngClass]="sideBarCollapsed ? '' : 'd-flex flex-column'">
+      <ul class="list-unstyled align-items-center" id="pages" [ngClass]="sideBarCollapsed ? 'mx-3' : 'd-flex flex-column'">
         <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: topicPages}"></ng-container>
       </ul>
     </div>
@@ -162,7 +162,7 @@
   <div class="icon w-25 text-center">
     <fa-icon [icon]="page.icon"></fa-icon>
   </div>
-  <span class="page-name" *ngIf="sideBarCollapsed">{{page.title}}</span>
+  <span class="page-name w-75" *ngIf="sideBarCollapsed">{{page.title}}</span>
 </ng-template>
 
 
