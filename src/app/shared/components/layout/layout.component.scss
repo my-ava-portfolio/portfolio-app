@@ -1,4 +1,4 @@
-#overlay {
+#main__overlay {
   position: fixed;
   /* full screen */
   width: 100vw;
@@ -11,12 +11,11 @@
 }
 
 @media (max-width: 960px){
-  #overlay{
-    display:block
-  }
+  #main__overlay{
+    display:block;
 
-  #overlay.active{
-    opacity: 1;
+    &.active{
+      opacity: 1;
+    }
   }
-
 }

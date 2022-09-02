@@ -1,9 +1,0 @@
-#main {
-    @extend .d-flex;
-    min-height: calc(100vh - $navbar-height);
-
-    #mainContent {
-        @extend .container-fluid;
-        @extend .g-0;
-    }
-}
