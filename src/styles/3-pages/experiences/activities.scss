@@ -1,105 +1,105 @@
 @mixin activitiesStyle {
 
-    // .activities-widget {
-    //     @include flexColumn();
+    .activities-widget {
+        @include flexColumn();
 
-    //     .activity-feature {
-    //         @extend .card;
-    //         @extend .rounded;
-    //         @include mb(3);
-    //         @include mx(4);
+        .activity-feature {
+            @extend .card;
+            @extend .rounded;
+            @include mb(3);
+            @include mx(4);
 
-    //         .header{
-    //             @extend .card-header;
-    //             @include flexRow();
-    //             @include alignItems(center);
+            .header{
+                @extend .card-header;
+                @include flexRow();
+                @include alignItems(center);
 
-    //             .buttons-tools {
-    //                 @include ml(auto);
-    //                 @include flexRow();
-    //                 a {
-    //                     @include mx(1);
-    //                 }
-    //                 fa-icon {
-    //                     @include mx(0 !important);
-    //                 }
+                .buttons-tools {
+                    @include ml(auto);
+                    @include flexRow();
+                    a {
+                        @include mx(1);
+                    }
+                    fa-icon {
+                        @include mx(0 !important);
+                    }
 
-    //             }
-    //         }
+                }
+            }
 
-    //         .body {
-    //             @extend .card-body;
+            .body {
+                @extend .card-body;
 
-    //             .general-infos {
-    //                 @include flexRow('sm');
-    //                 @include alignItems(center);
-    //                 @include justifyContent(start);
+                .general-infos {
+                    @include flexRow('sm');
+                    @include alignItems(center);
+                    @include justifyContent(start);
   
-    //                 .activity-img {
-    //                     @include my(2);
-    //                     img {
-    //                         @include imageSizing(12vh);
-    //                     }
-    //                 }
+                    .activity-img {
+                        @include my(2);
+                        img {
+                            @include imageSizing(12vh);
+                        }
+                    }
     
-    //                 .abstract {
-    //                     @include flexColumn;
-    //                     @include mx(3);
+                    .abstract {
+                        @include flexColumn;
+                        @include mx(3);
 
-    //                     .location {
-    //                         @extend .d-flex, .flex-row;
-    //                     }
+                        .location {
+                            @extend .d-flex, .flex-row;
+                        }
 
-    //                     .duration {
-    //                         @include flexRow;
-    //                     }
+                        .duration {
+                            @include flexRow;
+                        }
 
-    //                     .badge-keywords {
-    //                         @include my(2);
-    //                         span {
-    //                             @include badge()
-    //                         }
-    //                     }
-    //                 }
-    //             }
+                        .badge-keywords {
+                            @include my(2);
+                            span {
+                                @include badge()
+                            }
+                        }
+                    }
+                }
 
-    //             .feature-tabs {
-    //                 @include my(2);
+                .feature-tabs {
+                    @include my(2);
 
-    //                 .nav-tabs {
-    //                     @include m(2);
-    //                     .title {
-    //                         @extend .text-black;
-    //                     }
-    //                     .title.active {
-    //                         @extend .bg-warning;
-    //                     }
-    //                 }
-    //                 .nav-content {
-    //                     // @include mx(4);
-    //                     @include my(3);
+                    .nav-tabs {
+                        @include m(2);
+                        .title {
+                            @extend .text-black;
+                        }
+                        .title.active {
+                            @extend .bg-warning;
+                        }
+                    }
+                    .nav-content {
+                        // @include mx(4);
+                        @include my(3);
 
-    //                     .skills-container{
-    //                         @extend .paragraph;
-    //                         @include grid(4, 150px);
+                        .skills-container{
+                            @extend .paragraph;
+                            @include grid(4, 150px);
 
-    //                         .skill {
-    //                             break-inside: avoid-column;
-    //                         }
-    //                     }
+                            .skill {
+                                break-inside: avoid-column;
+                            }
+                        }
 
-    //                 }
-    //             }
+                    }
+                }
                 
-    //         }
+            }
 
-    //         .footer {
-    //             @extend .card-footer;
-    //             @extend .text-center;
-    //             @include m(0);
-    //             @extend .pointer;
-    //         }
-    //     }
+            .footer {
+                @extend .card-footer;
+                @extend .text-center;
+                @include m(0);
+                @extend .pointer;
+            }
+        }
 
-    // }
+    }
 }

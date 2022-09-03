@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-article-container',
+  selector: 'set-article-container',
   templateUrl: './article-container.component.html',
   styleUrls: ['./article-container.component.scss']
 })

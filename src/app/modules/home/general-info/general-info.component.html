@@ -1,0 +1,33 @@
+<div *ngIf="generalData" id="home__generalInfo" class="
+    d-flex flex-row
+    justify-content-around
+    py-2
+    bg-dark bg-gradient
+    rounded-top
+">
+
+    <div id="home__generalInfo__header" class="
+        d-flex flex-column
+    ">
+
+      <h3 class="title-name">{{ generalData.first_name }} {{ generalData.last_name }}</h3>
+      
+      <div class="text-center">
+        <div class="badge-title-light">{{ generalData.job }}</div>
+        <div class="badge-title-warning">{{ generalData.experience_duration }}</div>
+      </div>
+
+      <set-paragraph-content class="text-white">
+        {{ generalData.carrier_summary}}
+      </set-paragraph-content>
+
+    </div>
+
+    <img class="home-img
+        d-none d-lg-block
+        rounded-circle
+        col-2
+        m-3
+    " [src]="imageProfile">
+
+</div>

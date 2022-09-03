@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { fadeInOutAnimation } from '@core/animation_routes';
 
 import { homePages } from '@core/inputs';
@@ -18,14 +20,16 @@ export class LayoutComponent implements OnInit {
 
   isWelcomeCardDisplayed = true;
 
-  generalData!: any;
 
   legendEnabled: boolean = false;
 
   constructor(
+    private titleService: Title,
+    private activatedRoute: ActivatedRoute,
     private controlerService: ControlerService,
   ) {
 
+    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
 
 
