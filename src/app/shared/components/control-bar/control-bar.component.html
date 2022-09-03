@@ -20,11 +20,11 @@
       <fa-icon [icon]="navBarIcon"></fa-icon>
     </button>
 
-    <div id="controlBar__mainBar__pageTitle"
-      class="fs-4 text-center fw-bold ms-auto">{{this.pageTitle}}</div>
+    <div id="controlBar__mainBar__pageTitle" class="
+      fs-4 text-center fw-bold ms-auto
+    ">{{this.pageTitle}}</div>
     
-    <div id="pageAnchors"
-      class="
+    <div id="pageAnchors" class="
         d-flex flex-row ms-auto
         d-none d-xl-block
       ">
@@ -62,13 +62,15 @@
 
     <ng-container *ngFor="let page of topicPagesSubMenus" >
 
-      <a class="text-decoration-none text-black m-2" *ngIf="page.fragment" [routerLink]="topicPages.route" [fragment]="page.fragment" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-        <fa-icon [icon]="page.icon"></fa-icon>{{page.title}}
-      </a>
+      <set-icon-text *ngIf="page.fragment"
+      [route]="topicPages.route"
+      [fragment]="page.fragment"
+      [title]="page.title"
+      [iconInput]="page.icon"
+      classes="text-black m-2"
+    ></set-icon-text>
 
-      <a class="text-decoration-none text-black m-2" *ngIf="page.route" [routerLink]="page.route" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-        <fa-icon [icon]="page.icon"></fa-icon>{{page.title}}
-      </a>
+    <!-- not working for map apps because data model is different & it's the right data model -->
     </ng-container>
 
 

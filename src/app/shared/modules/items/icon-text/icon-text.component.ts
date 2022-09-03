@@ -11,7 +11,6 @@ export class IconTextComponent implements OnInit {
   @Input() title!: string;
   @Input() classes!: string;
   @Input() iconInput!: any;
-
   
   constructor() { }
 
