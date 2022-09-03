@@ -24,7 +24,6 @@ import { BackgroundComponent } from '@shared/components/background-map/backgroun
 import { NavigationBarComponent } from '@shared/components/navigation-bar/navigation-bar.component';
 import { ControlBarComponent } from '@shared/components/control-bar/control-bar.component';
 
-
 registerLocaleData(localeFr);
 
 @NgModule({

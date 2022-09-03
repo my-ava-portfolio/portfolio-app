@@ -1,23 +1,26 @@
-<article id="education" *ngIf="isDataAvailable" [@fadeInOut]>
+<set-article-container *ngIf="isDataAvailable" [@fadeInOut]>
+
   
-  <section app-general-info
-    id="education__generalInfo" 
-    [fragment]="fragment"
-    [profilData]="profilData"
-    [languagesData]="languagesData"
-  ></section>
+    <section app-general-info
+      id="education__generalInfo" 
+      [fragment]="fragment"
+      [profilData]="profilData"
+      [languagesData]="languagesData"
+    ></section>
+  
+    <section app-degrees-bar
+      id="education__degrees" 
+      [fragment]="fragment"
+      [degreesData]="degreesData"
+      [publicationsData]="publicationsData"
+    ></section>
+  
+    <section app-trainings-bar
+      id="education__trainings" 
+      [fragment]="fragment"
+      [trainingsData]="trainingsData"
+    ></section>
+  
 
-  <section app-degrees-bar
-    id="education__degrees" 
-    [fragment]="fragment"
-    [degreesData]="degreesData"
-    [publicationsData]="publicationsData"
-  ></section>
 
-  <section app-trainings-bar
-    id="education__trainings" 
-    [fragment]="fragment"
-    [trainingsData]="trainingsData"
-  ></section>
-
-</article>
+</set-article-container>

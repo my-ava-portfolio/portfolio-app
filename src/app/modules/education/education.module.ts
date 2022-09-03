@@ -11,9 +11,13 @@ import { TrainingsBarComponent } from '@modules/education/trainings-bar/training
 import { GeneralInfoComponent } from './general-info/general-info.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { ItemsModule } from '@shared/modules/items/items.module';
+
 
 @NgModule({
   declarations: [
+    // ArticleContainerComponent,
+    // SectionContainerComponent,
     DegreesBarComponent,
     TrainingsBarComponent,
     LayoutComponent,
@@ -23,7 +27,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     EducationRoutingModule,
     FontAwesomeModule,
-    NgbModule
+    NgbModule,
+    ItemsModule
   ]
 })
 export class EducationModule { }
