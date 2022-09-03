@@ -11,7 +11,7 @@
     text-center
   ">
       <div class="my-2" *ngIf="training.img_tool !== 'null'">
-        <img [src]="training.img_tool"/>
+        <img class="img-fluid" [src]="training.img_tool"/>
       </div>
       <span class="trainer fw-bold">{{ training.name }}</span>
       <span class="location">par {{ training.trainer }}</span>

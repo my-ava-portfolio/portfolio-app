@@ -1,0 +1,23 @@
+    <div class="badge rounded-pill" *ngIf="!url"
+      [ngClass]="classes" 
+      [ngStyle]="{'background-color': customBgColor ? customBgColor : 'none'}"
+    >
+        <ng-container *ngIf="icon">
+            <fa-icon  [icon]="icon" size="2x"></fa-icon>
+        </ng-container>
+        {{ title }}
+    </div>
+
+
+
+
+    <a class="badge rounded-pill" *ngIf="url"
+      [href]="url" target="_blank" rel="noopener noreferrer"
+      [ngClass]="classes" 
+      [ngStyle]="{'background-color': customBgColor ? customBgColor : 'none'}"
+      >
+        <ng-container *ngIf="icon">
+            <fa-icon  [icon]="icon" size="2x"></fa-icon>
+        </ng-container>
+        {{ title }}
+    </a>
