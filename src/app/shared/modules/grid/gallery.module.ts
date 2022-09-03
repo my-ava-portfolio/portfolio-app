@@ -2,26 +2,28 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { GalleryContainerComponent } from './gallery-container/gallery-container.component';
+import { GridContainerComponent } from './grid-container/grid-container.component';
 
 import { PipesModule } from '@shared/pipes/pipes.module';
 import {RouterModule} from '@angular/router';
+import { ItemsModule } from '../items/items.module';
 
 
 @NgModule({
   declarations: [
-    GalleryContainerComponent
+    GridContainerComponent
   ],
   imports: [
     CommonModule,
     PipesModule,
     RouterModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ItemsModule
   ],
   exports: [
-    GalleryContainerComponent
+    GridContainerComponent
   ],
   providers: [
  ]
 })
-export class GalleryContainerModule { }
+export class GridContainerModule { }

@@ -5,11 +5,12 @@ import { experiencesPages } from '@core/inputs';
 
 
 @Component({
-  selector: 'app-gallery-container',
-  templateUrl: './gallery-container.component.html',
-  styleUrls: ['./gallery-container.component.scss']
+  selector: 'app-grid-container',
+  templateUrl: './grid-container.component.html',
+  styleUrls: ['./grid-container.component.scss']
 })
-export class GalleryContainerComponent implements OnInit {
+export class GridContainerComponent implements OnInit {
+  @Input() itemTpl!: any;
   @Input() features!: galleryFeature[];
 
   experiencesRoute: string = experiencesPages.route;

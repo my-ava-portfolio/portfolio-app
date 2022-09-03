@@ -1,8 +1,10 @@
 <div id="blogHome" class="gallery" *ngIf="selectedblogTopics.length > 0" [@fadeInOut]>
 
-  <app-gallery-container
-  [features]="selectedblogTopics"
-  ></app-gallery-container>
+  <app-grid-container
+    [features]="selectedblogTopics"
+  >
+
+  </app-grid-container>
 
   <div id="legendContainer">
 

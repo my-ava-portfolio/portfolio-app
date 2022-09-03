@@ -1,38 +1,69 @@
-<div class="gallery-container">
+<div class="grid-container m-4">
 
-    <div class="gallery-feature" *ngFor="let feature of features; let idx = index">
+    <div class="grid-feature
+        card    
+        mb-4
+        bg-light
+        shadow
+        " *ngFor="let feature of features; let idx = index">
 
-        <div class="gallery-feature-header">
+        <div class="grid-feature-header
+            card-header
+            p-2
+            bg-dark bg-gradient
+            text-white
+            ">
             <span class="fw-bold">{{ feature.title }}</span>
         </div>
 
-        <div class="gallery-feature-body">
+        <div class="grid-feature-body
+            card-body
+            ">
 
-            <div class="body-media-container">
+            <div class="body-media-container
+                d-flex flex-row
+                ">
                 <ng-container *ngIf="feature.type === 'video'">
                     <div class="ratio ratio-16x9">
-                        <iframe [src]="feature.image_url | safeUrl" class="" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
+                        <iframe [src]="feature.image_url | safeUrl" options="" loading="lazy" scrolling="no" frameborder="0" allowfullscreen></iframe>
                     </div>
                 </ng-container>
                 <ng-container *ngIf="feature.type !== 'video'">
-                    <img [src]="feature.image_url | safeUrl">
+                    <img class="img-fluid mx-auto" [src]="feature.image_url | safeUrl">
                 </ng-container>
             </div>
 
-            <div class="body-generic-badges">
-                <div class="body-text"  *ngIf="feature.categories.length > 0">
+            <ng-content></ng-content>
+            <!-- gallery blog badges ONLY -->
+            <div class="body-generic-badges mt-2">
+
+                <div class="body-text small"  *ngIf="feature.categories.length > 0">
                     <span class="fw-bold">Catégorie(s):</span>
-                    <span *ngFor="let category of feature.categories" class="badge-generic" [style]="'background-color:' + category.color + ';color: white'">{{category.name}}</span>
+                    <set-badge-content
+                    *ngFor="let category of feature.categories"
+                    [title]="category.name"
+                    [customBgColor]="category.color"
+                  ></set-badge-content>
                 </div>
 
-                <div class="body-text" *ngIf="feature.tags.length > 0">
-                    <span class="fw-bold">Tag(s):</span>
-                    <span *ngFor="let tag of feature.tags" class="badge-generic" [style]="'background-color:' + tag.color + ';color: white'">{{tag.name}}</span>
+                <div class="body-text small" *ngIf="feature.tags.length > 0">
+                  <span class="fw-bold">Tag(s):</span>
+                  <set-badge-content
+                    *ngFor="let tag of feature.tags"
+                    [title]="tag.name"
+                    [customBgColor]="tag.color"
+                  ></set-badge-content>
                 </div>
+                
             </div>
+            <!-- gallery blog badges ONLY -->
 
             <!-- gallery experiences badges ONLY -->
-            <div class="body-activity-badges">
+            <div class="body-activity-badges
+                d-flex flex-row
+                mt-2
+                justfiy-content-start
+                ">
                 <span *ngIf="feature.activityType" [ngClass]="'badge-' + feature.activityType.class">{{feature.activityType.name}}</span>
                 <span *ngIf="feature.experienceName" [routerLink]="[experiencesRoute]" [fragment]="feature.id" class="pointer badge-generic" [style]="'background-color:' + feature.experienceName.color + ';color: white'">{{feature.experienceName.name}}</span>
                 <span *ngIf="feature.mediaType" [ngClass]="'badge-' + feature.mediaType.name">
@@ -66,7 +97,9 @@
             
         </div>
 
-        <div class="gallery-feature-footer">
+        <div class="grid-feature-footer
+            card-footer
+            ">
         </div>
 
     </div>

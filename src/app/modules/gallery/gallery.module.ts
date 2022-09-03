@@ -10,7 +10,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { GalleryService } from '@services/gallery.service';
 
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { GalleryContainerModule } from '@shared/modules/gallery/gallery.module';
+import { GridContainerModule } from '@shared/modules/grid/gallery.module';
 
 
 @NgModule({
@@ -22,7 +22,7 @@ import { GalleryContainerModule } from '@shared/modules/gallery/gallery.module';
     GalleryRoutingModule,
     FontAwesomeModule,
     PipesModule,
-    GalleryContainerModule
+    GridContainerModule
   ],
   providers: [
     GalleryService

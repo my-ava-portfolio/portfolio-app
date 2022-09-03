@@ -17,3 +17,9 @@
 //       max-height: 90%;
 //   }
 // }
+@use '/src/styles/1-helpers/grid';
+@use '/src/styles/1-helpers/spacing';
+.gallery-container {
+    @include grid.grid(3, 350px);
+
+}
