@@ -46,7 +46,7 @@
     align-items-center
     " [ngStyle]="buildColorStyle(activity.color)">
 
-    <div class="title">{{activity.title}}</div>
+    <div class="fw-bold">{{activity.title}}</div>
 
     <div class="buttons-tools
       d-flex flex-row
@@ -97,8 +97,8 @@
         mx-3
         ">
 
-          <h6 *ngIf="activityType !== 'personal-project'" class="title">{{activity.company}}</h6>
-          <h6 *ngIf="activityType === 'personal-project'" class="title">{{activity.title}}</h6>
+          <h6 *ngIf="activityType !== 'personal-project'" class="fw-bold">{{activity.company}}</h6>
+          <h6 *ngIf="activityType === 'personal-project'" class="fw-bold">{{activity.title}}</h6>
 
             
           <set-location-icon *ngIf="activityType !== 'personal-project'"
@@ -141,35 +141,35 @@
       <ul ngbNav #nav="ngbNav" class="nav-tabs">
 
         <li ngbNavItem>
-          <a ngbNavLink class="title">{{ this.contextTitle }}</a>
+          <a ngbNavLink class="fw-bold">{{ this.contextTitle }}</a>
           <ng-template ngbNavContent>
             <ng-container *ngTemplateOutlet="ngbNavPresentationContent; context:{data: activity}"></ng-container>
           </ng-template>
         </li>
 
         <li ngbNavItem>
-          <a ngbNavLink class="title">{{ this.missionTitle }}</a>
+          <a ngbNavLink class="fw-bold">{{ this.missionTitle }}</a>
           <ng-template ngbNavContent>
             <ng-container *ngTemplateOutlet="ngbNavDescriptionContent; context:{data: activity}"></ng-container>
           </ng-template>
         </li>
 
         <li ngbNavItem>
-          <a ngbNavLink class="title">{{ this.envTitle }}</a>
+          <a ngbNavLink class="fw-bold">{{ this.envTitle }}</a>
           <ng-template ngbNavContent>
             <ng-container *ngTemplateOutlet="ngbNavSkillsContent; context:{data: activity}"></ng-container>
           </ng-template>
         </li>
 
         <li ngbNavItem *ngIf="activity.trainings">
-          <a ngbNavLink class="title">{{ this.trainingTitle }}</a>
+          <a ngbNavLink class="fw-bold">{{ this.trainingTitle }}</a>
           <ng-template ngbNavContent>
             <ng-container *ngTemplateOutlet="ngbNavTrainingsContent; context:{data: activity}"></ng-container>
           </ng-template>
         </li>
 
         <li ngbNavItem *ngIf="activity.publications !== null">
-          <a ngbNavLink class="title">{{ this.publicationsTitle }}</a>
+          <a ngbNavLink class="fw-bold">{{ this.publicationsTitle }}</a>
           <ng-template ngbNavContent>
             <ng-container *ngTemplateOutlet="ngbNavPublicationsContent; context:{data: activity}"></ng-container>
           </ng-template>
@@ -220,7 +220,7 @@
 <ng-template #ngbNavTrainingsContent let-data='data'>
   <div class="paragraph">
     <ng-container *ngFor="let training of data.trainings">
-      <span class="title">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span>
+      <span class="fw-bold">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span>
     </ng-container>
   </div>
 </ng-template>
@@ -228,7 +228,7 @@
 <ng-template #ngbNavPublicationsContent let-data='data'>
   <div class="paragraph">
     <ng-container *ngFor="let publication of data.publications">
-      <span class="title">{{ publication.year }} - </span>
+      <span class="fw-bold">{{ publication.year }} - </span>
       <span>{{ publication.editor }} par {{ publication.publication }}</span>
       <a [href]="publication.link" type="button">Accès</a>
     </ng-container>

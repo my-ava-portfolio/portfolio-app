@@ -1,9 +1,6 @@
-<div class="
-    icon-feature
-    d-flex flex-row
-">
-<a role="button" [routerLink]="[mainRoute + '/' + specificRoute]" [fragment]="fragment">
-    <fa-icon [pulse]="true" [icon]="locationIcon"></fa-icon>
-</a>
-{{title}}
+<div [ngClass]="'icon-feature d-flex ' + classes">
+    <a role="button" [routerLink]="[mainRoute + '/' + specificRoute]" [fragment]="fragment">
+        <fa-icon [pulse]="true" [icon]="locationIcon"></fa-icon>
+    </a>
+    {{title}}
 </div>

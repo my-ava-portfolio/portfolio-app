@@ -1,12 +1,10 @@
 <set-article-container *ngIf="isDataAvailable" [@fadeInOut]>
   
-  <set-section-container>
-    <app-general-info
-      id="experiences__generalInfo" 
-      [profilData]="profilData"
-      [activityTypesMetadata]="activityTypesMetadata"
-    ></app-general-info>
-  </set-section-container>
+  <app-general-info
+    id="experiences__generalInfo" 
+    [profilData]="profilData"
+    [activityTypesMetadata]="activityTypesMetadata"
+  ></app-general-info>
 
   <set-section-container>
     <h5 id="experiences__navigate" class="title-tick-education">Navigation</h5>

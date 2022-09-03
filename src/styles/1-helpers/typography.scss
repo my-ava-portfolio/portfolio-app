@@ -1,3 +1,15 @@
+.title-name {
+    color: var(--bs-white);
+    // @extend .p-2;
+    text-align: center
+}
+
+.paragraph {
+    @include m(2);
+    text-align: justify;
+
+}
+
 @mixin bold {
     font-weight: bold;
 }
@@ -13,8 +25,7 @@
 
 @mixin paragraph {
     @include small;
-    @include m(2);
-    text-align: justify;
+
 }
 
 @mixin linkStyle {

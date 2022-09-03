@@ -1,37 +1,4 @@
-.title-name {
-    @extend .text-white;
-    @extend .p-2;
-    @extend .text-center;
-}
-
-.title {
-    @include bold;
-}
-
-.sub-title {
-    @include small;
-}
 
 
-.text-header {
-    @extend .text-white; 
-    @extend .text-center;
-    @extend .m-2
-}
 
-.text-italic {
-    @include italic;
-}
 
-.text-justify {
-    text-justify: auto;
-}
-
-.profil-img {
-    @extend .rounded-circle;
-    @include imageSizing(15vh);
-}
-
-.paragraph {
-    @include paragraph;
-}

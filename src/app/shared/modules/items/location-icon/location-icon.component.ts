@@ -11,6 +11,7 @@ export class LocationIconComponent implements OnInit {
   @Input() specificRoute!: string;
   @Input() fragment!: string;
   @Input() title!: string;
+  @Input() classes!: string;
 
   locationIcon = locationIcon;
 

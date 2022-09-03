@@ -24,3 +24,16 @@ img {
         break-inside: avoid-column;
     }
 }
+
+.rotate-180 {
+    display: inline-block;
+    transform: rotate(-180deg);
+}
+
+.nav-tabs a {
+    color: var(--bs-black);
+
+    &.active {
+        background-color: var(--bs-warning)
+    }
+}
