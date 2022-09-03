@@ -7,7 +7,7 @@ import { presIcon, expandIcon } from '@core/inputs';
 
 
 @Component({
-  selector: '[app-trainings-bar]',
+  selector: 'app-trainings-bar',
   templateUrl: './trainings-bar.component.html',
   styleUrls: ['./trainings-bar.component.scss'],
 })

@@ -8,14 +8,13 @@ import { mapActivitiesPages } from '@core/inputs';
 
 
 @Component({
-  selector: '[app-degrees-bar]',
+  selector: 'app-degrees-bar',
   templateUrl: './degrees-bar.component.html',
   styleUrls: ['./degrees-bar.component.scss'],
 })
 export class DegreesBarComponent implements OnInit {
   @Input() fragment: any;
   @Input() degreesData: any;
-  @Input() publicationsData: any;
 
 
   mapPages: any = mapActivitiesPages;
@@ -26,18 +25,21 @@ export class DegreesBarComponent implements OnInit {
 
   // icons
   degreeIcon = degreeIcon;
-  locationIcon = locationIcon;
   languageIcon = languageIcon;
   presIcon = presIcon;
   expandIcon = expandIcon;
-  publishIcon = publishIcon;
-  pdfFileIcon = pdfFileIcon;
+
 
   constructor() { }
 
   ngOnInit(): void {
 
     this.inputDegreesData = this.degreesData;
+  }
+
+  getTitle(data: any): string {
+    return (new Date(data.start_date)).getFullYear() + ' - ' +
+     (new Date(data.end_date)).getFullYear();
   }
 
 }

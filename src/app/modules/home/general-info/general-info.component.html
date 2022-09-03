@@ -1,10 +1,4 @@
-<div *ngIf="generalData" id="home__generalInfo" class="
-    d-flex flex-row
-    justify-content-around
-    py-2
-    bg-dark bg-gradient
-    rounded-top
-">
+<set-article-header *ngIf="generalData">
 
     <div id="home__generalInfo__header" class="
         d-flex flex-column
@@ -30,4 +24,4 @@
         m-3
     " [src]="imageProfile">
 
-</div>
+</set-article-header>

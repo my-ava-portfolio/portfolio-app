@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ButtonContentComponent implements OnInit {
   @Input() color!: string;
-  @Input() title: string = '';
+  @Input() title!: string;
 
   @Input() route?: string;
   @Input() url?: string;

@@ -1,84 +1,33 @@
-<h5 class="title-tick-education">Parcours universitaire</h5>
 
-<div class="content">
+  <ng-container *ngFor="let degree of inputDegreesData">
+    <set-card-container
+      class="feature-degree text-center"
+      [title]="getTitle(degree)"
+      colorName="education"
+    >
 
-  <div [id]="degree.identifier" class="feature-degree" *ngFor="let degree of inputDegreesData">
-
-    <div class="title-bar-education">
-     {{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy'  }}
-    </div>
-
-    <div class="details">
-
-      <div class="degree">
-
-        <img *ngIf="degree.img_school !== 'null'" class="" [src]="assetsLogoPath + degree.img_school"/>
-        <p>{{ degree.degree }}</p>
-
+      <div class="degree
+        d-flex flex-row
+        align-items-center
+      ">
+        <img *ngIf="degree.img_school !== 'null'" [src]="assetsLogoPath + degree.img_school"/>
+        <set-paragraph-content class="fw-bold">{{ degree.degree }}</set-paragraph-content>
       </div>
 
       <div class="school">
-        <div>{{ degree.school }}</div>
-
-        <div class="location">
-          <a [id]="'location_' + degree.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="degree.identifier">
-            <fa-icon [pulse]="true" [icon]="locationIcon"></fa-icon>
-          </a>
-          {{degree.location}}
-        </div>
-
+        <set-paragraph-content>{{ degree.school }}</set-paragraph-content>
+        <set-location-icon
+          [mainRoute]="mapPages.route"
+          [specificRoute]="mapPages.sub_menus[0].route"
+          [fragment]="degree.identifier"
+          [title]="degree.location"
+        ></set-location-icon>
       </div>
 
+    </set-card-container>
 
 
-    </div>
-
-  </div>
-
-</div>
+  </ng-container>
 
 
 
-<h5 class="title-tick-warning">
-  Travaux/publications universitaires
-</h5>
-
-<div class="content">
-
-  <div class="feature-publication" *ngFor="let publication of publicationsData">
-
-    <div class="title-bar-warning">
-      {{publication.year}} - {{publication.editor}}
-    </div>
-
-    <div class="details">
-
-      <div class="article">
-
-        <div class="paragraph">{{publication.publication}}</div>
-
-        <div class="infos">
-
-          <ng-container *ngIf="publication.keywords">
-            <span class="keyword" [style]="'background-color:' + item.value"
-              *ngFor="let item of publication.keywords | keyvalue"
-            >{{ item.key }}</span>
-          </ng-container>
-          <a *ngIf="publication.link" class="keyword-link"  href="{{publication.link}}" target="_blank" rel="noopener noreferrer" title="Documents">
-            <fa-icon [icon]="pdfFileIcon" size="2x"></fa-icon>
-          </a>
-
-        </div>
-
-      </div>
-
-      <div class="presentation">
-        <h6>Présentation</h6>
-        <div class="paragraph">{{publication.description}}</div>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>

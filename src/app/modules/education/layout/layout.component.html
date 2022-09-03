@@ -1,25 +1,55 @@
 <set-article-container *ngIf="isDataAvailable" [@fadeInOut]>
 
-  
-    <section app-general-info
-      id="education__generalInfo" 
+  <set-section-container>
+    <app-general-info
       [fragment]="fragment"
       [profilData]="profilData"
       [languagesData]="languagesData"
-    ></section>
-  
-    <section app-degrees-bar
-      id="education__degrees" 
+    ></app-general-info>
+  </set-section-container>
+
+
+  <set-section-container>
+    <h5 id="education__degrees" class="title-tick-education">Parcours universitaire</h5>
+
+    <app-degrees-bar
+      class="
+        d-flex flex-xl-row;
+        justify-content-center
+        flex-wrap
+      "
       [fragment]="fragment"
       [degreesData]="degreesData"
+    ></app-degrees-bar>
+  </set-section-container>
+
+  <set-section-container>
+    <h5 id="education__publish" class="title-tick-warning">Travaux/publications universitaires</h5>
+
+    <app-publication-bar
+      class="
+        d-flex flex-xl-row;
+        justify-content-center
+        flex-wrap
+      "
+      [fragment]="fragment"
       [publicationsData]="publicationsData"
-    ></section>
-  
-    <section app-trainings-bar
-      id="education__trainings" 
+    ></app-publication-bar>
+  </set-section-container>
+
+  <set-section-container>
+    <h5 id="education__trainings" class="title-tick-job">Formations professionnelles</h5>
+
+    <app-trainings-bar
+      class="
+        d-flex flex-xl-row;
+        justify-content-center
+        flex-wrap
+      "
       [fragment]="fragment"
       [trainingsData]="trainingsData"
-    ></section>
+    ></app-trainings-bar>
+  </set-section-container>
   
 
 

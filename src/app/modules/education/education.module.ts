@@ -12,16 +12,16 @@ import { GeneralInfoComponent } from './general-info/general-info.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ItemsModule } from '@shared/modules/items/items.module';
+import { PublicationBarComponent } from './publication-bar/publication-bar.component';
 
 
 @NgModule({
   declarations: [
-    // ArticleContainerComponent,
-    // SectionContainerComponent,
     DegreesBarComponent,
     TrainingsBarComponent,
     LayoutComponent,
     GeneralInfoComponent,
+    PublicationBarComponent,
   ],
   imports: [
     CommonModule,

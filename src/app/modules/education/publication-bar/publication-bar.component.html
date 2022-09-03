@@ -1,0 +1,43 @@
+<ng-container *ngFor="let publication of publicationsData">
+    <set-card-container
+        class="feature-publication col col-lg-5"
+        [title]="getTitle(publication)"
+        colorName="warning"
+    >
+
+        <div class="
+            article
+            d-flex flex-row
+        ">
+
+        <set-paragraph-content>{{publication.publication}}</set-paragraph-content>
+
+        <div class="
+            infos
+            d-flex flex-column
+            align-items-center
+        ">
+
+            <ng-container *ngIf="publication.keywords">
+            <span class="keyword" [style]="'background-color:' + item.value"
+                *ngFor="let item of publication.keywords | keyvalue"
+            >{{ item.key }}</span>
+            </ng-container>
+            <a *ngIf="publication.link" class="keyword-link"  href="{{publication.link}}" target="_blank" rel="noopener noreferrer" title="Documents">
+            <fa-icon [icon]="pdfFileIcon" size="2x"></fa-icon>
+            </a>
+
+        </div>
+
+        </div>
+
+        <div class="
+            presentation
+            d-flex flex-column
+        ">
+            <h6>Présentation</h6>
+            <set-paragraph-content class="footer">{{publication.description}}</set-paragraph-content>
+        </div>
+    </set-card-container>
+
+</ng-container>

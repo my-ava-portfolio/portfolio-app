@@ -1,22 +1,21 @@
+<ng-container *ngFor="let training of inputTrainingsData">
+  <set-card-container
+    class="feature-training"
+    [title]="training.year"
+    colorName="job"
+  >
 
-<h5 class="title-tick-job">
-  Formations professionnelles
-</h5>
-
-
-<div class="content">
-
-  <div [id]="training.identifier" class="feature-training" *ngFor="let training of inputTrainingsData">
-
-    <div class="title-bar-job">{{ training.year }}</div>
-
-    <div class="details">
-
-      <img *ngIf="training.img_tool !== 'null'" [src]="training.img_tool"/>
-        <span class="trainer">{{ training.name }}</span>
-        <span class="location">par {{ training.trainer }}</span>
-    </div>
-
+  <div class="
+    details
+    d-flex flex-column
+    text-center
+  ">
+      <div class="my-2" *ngIf="training.img_tool !== 'null'">
+        <img [src]="training.img_tool"/>
+      </div>
+      <span class="trainer fw-bold">{{ training.name }}</span>
+      <span class="location">par {{ training.trainer }}</span>
   </div>
 
-</div>
+  </set-card-container>
+</ng-container>

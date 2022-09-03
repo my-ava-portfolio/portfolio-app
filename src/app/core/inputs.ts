@@ -115,6 +115,12 @@ export const educationPages: any = {
       icon: degreeIcon
     },
     {
+      id: "degrees",
+      title: "Travaux/publications",
+      fragment: "education__publish",
+      icon: degreeIcon  // TODO find a better icon
+    },
+    {
       id: "trainings",
       title: "Formations",
       fragment: "education__trainings",
