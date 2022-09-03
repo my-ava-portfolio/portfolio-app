@@ -38,38 +38,35 @@
 
       </div>
 
-      <div id="leftSideBar__container__header__shortname" *ngIf="!sideBarCollapsed" class="title-name">
+      <h4 id="leftSideBar__container__header__shortname" *ngIf="!sideBarCollapsed" class="title-name">
         {{ generalData.first_name[0] }}{{ generalData.last_name[0] }}
-      </div>
+      </h4>
 
-      <h6 *ngIf="sideBarCollapsed" class="text-white">Contact</h6>
+      <h5 *ngIf="sideBarCollapsed" class="text-white">Contact</h5>
 
       <div id="leftSideBar__container__header__contact" *ngIf="contactData">
         <a class="
             badge 
-            bg-white 
-            rounded-pill
-            mx-1
+            bg-light 
+            m-1
           " [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="emailIcon" size="xs"></fa-icon>
+          <fa-icon class="text-black" [icon]="emailIcon" size="2x"></fa-icon>
         </a>
 
         <a class="
             badge 
-            bg-white 
-            rounded-pill
-            mx-1
+            bg-light 
+            m-1
           " [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="linkedinIcon" size="xs"></fa-icon>
+          <fa-icon class="text-black" [icon]="linkedinIcon" size="2x"></fa-icon>
         </a>
 
         <a class="
             badge 
-            bg-white 
-            rounded-pill
-            mx-1
+            bg-light 
+            m-1
           " [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="githubIcon" size="xs"></fa-icon>
+          <fa-icon class="text-black" [icon]="githubIcon" size="2x"></fa-icon>
         </a>
 
       </div>
@@ -84,28 +81,28 @@
 
     <div id="leftSideBar__container__footer" class="mt-auto mb-3">
 
-      <ul class="list-group justify-content-center mb-2" [ngClass]="sideBarCollapsed ? 'list-group-horizontal' : ''">
+      <ul class="list-unstyled list-group justify-content-center mb-2" [ngClass]="sideBarCollapsed ? 'list-group-horizontal' : ''">
 
         <li>
-          <a class="text-white" id="infosLink" data-bs-toggle="modal" data-bs-target="#websiteInfos">
+          <a class="text-white mx-1" id="infosLink" data-bs-toggle="modal" data-bs-target="#websiteInfos">
             <fa-icon [icon]="infoIcon" size="1x"></fa-icon>
           </a>
         </li>
 
         <li>
-          <a class="text-danger" id="issueLink" container="body" [href]="GithubBugIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactBugMessage" triggers="mouseenter:mouseleave">
+          <a class="text-danger mx-1" id="issueLink" container="body" [href]="GithubBugIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactBugMessage" triggers="mouseenter:mouseleave">
             <fa-icon [icon]="bugIcon" size="1x"></fa-icon>
           </a>
         </li>
 
         <li>
-          <a class="text-warning" id="questionLink" container="body" [href]="GithubQuestionIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactHelpMessage" triggers="mouseenter:mouseleave">
+          <a class="text-warning mx-1" id="questionLink" container="body" [href]="GithubQuestionIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactHelpMessage" triggers="mouseenter:mouseleave">
             <fa-icon [icon]="helpIcon" size="1x"></fa-icon>
           </a>
         </li>
 
         <li>
-          <a class="text-success" id="enhancementLink" container="body" [href]="GithubEnhancementIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactFeatureMessage" triggers="mouseenter:mouseleave">
+          <a class="text-success mx-1" id="enhancementLink" container="body" [href]="GithubEnhancementIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactFeatureMessage" triggers="mouseenter:mouseleave">
             <fa-icon [icon]="exclamationIcon" size="1x"></fa-icon>
           </a>
         </li>

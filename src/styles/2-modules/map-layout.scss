@@ -1,5 +1,5 @@
 #mapContainer {
-    @include flexColumn();
+    @extend .d-flex, .flex-column;
     pointer-events: none;
 
     #mapSources{
@@ -7,15 +7,15 @@
         right: 0em;
 
         .attribution{
-            @include flexColumn();
+            @extend .d-flex, .flex-column;
             @include m(1);
             @extend .d-none, .d-sm-block;
 
         }
         .map-sources{
-            @include flexColumn();
+            @extend .d-flex, .flex-column;
             @include m(0);  
-            @include justifyContent(right);
+            @extend .justify-content-end;
 
             span {
                 @include ml(auto!important);
@@ -32,28 +32,12 @@
         }
     }
 
-    // openlayers items //
-    .ol-attribution, .ol-scale-line, .ol-control {
-        position: unset!important;
-        border-radius: 4px;
-        background: rgba(255,255,255,0.8);
-        max-width: none; // important for attribution...
 
-    }
-    .ol-overviewmap-box {
-        border: 2px dashed var(--bs-dark);
-    }
-    .ol-scale-line-inner {
-      border: 2px solid #000;
-      color: #000;
-      border-top: none;
-    }
-    // openlayers items //
 
 }
 
 #mapContent {
-    @include flexRow();
+    @extend .d-flex, .flex-row;
     min-height: 100vh;
     pointer-events: none;
 }

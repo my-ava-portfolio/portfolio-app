@@ -1,34 +1,10 @@
 .title-name {
     color: var(--bs-white);
-    // @extend .p-2;
-    text-align: center
+    text-align: center;
 }
 
 .paragraph {
     @include m(2);
     text-align: justify;
 
-}
-
-@mixin bold {
-    font-weight: bold;
-}
-
-@mixin italic {
-    font-style: italic;
-}
-
-@mixin small {
-    font-size: 0.9em;
-}
-
-
-@mixin paragraph {
-    @include small;
-
-}
-
-@mixin linkStyle {
-    text-decoration: none !important;
-    color: $black !important;
 }

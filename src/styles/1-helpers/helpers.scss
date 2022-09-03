@@ -219,21 +219,3 @@ $theme-colors-map: (
         )
     }
 }
-
-.badge-generic {
-  @include badge;
-}
-
-
-@mixin articleStyle {
-  @include flexColumn();
-  @extend .m-2;
-  @extend .rounded;
-  @extend .bg-white;
-}
-
-@mixin sectionStyle {
-  @extend .mb-3;
-}
-
-
