@@ -1,0 +1,6 @@
+.activity-button {
+    &:hover, &.active {
+        background-color: var(--bs-warning)!important;
+      }
+      
+}

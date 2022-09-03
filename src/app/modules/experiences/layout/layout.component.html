@@ -1,37 +1,49 @@
-<article id="experiences" *ngIf="isDataAvailable" [@fadeInOut]>
-
-    <section app-general-info
+<set-article-container *ngIf="isDataAvailable" [@fadeInOut]>
+  
+  <set-section-container>
+    <app-general-info
       id="experiences__generalInfo" 
       [profilData]="profilData"
       [activityTypesMetadata]="activityTypesMetadata"
-    ></section>
+    ></app-general-info>
+  </set-section-container>
 
-    <h5 class="title-tick-education">Navigation</h5>
+  <set-section-container>
+    <h5 id="experiences__navigate" class="title-tick-education">Navigation</h5>
 
-    <section app-navigate
-      id="experiences__navigate" 
+    <app-navigate
+    class="
+      d-flex flex-md-row flex-column
+      justify-content-around
+      align-items-center
+    "
       [graphInputData]="generalData"
-    ></section>
+    ></app-navigate>
+  </set-section-container>
 
-  <section id="experiences__content" >
+  <div id="experiences__content" class="
+    d-flex flex-xl-row flex-column
+    h-100
+    bg-white
+  ">
 
-    <section id="experiences__content__activities">
+    <set-section-container id="experiences__content__activities" class="w-100">
       <app-activities
         [fragment]="fragment"
         [jobsData]="jobsData"
         [personalProjectsData]="personalProjectsData"
         [volunteersData]="volunteersData"
       ></app-activities>
-    </section>
+    </set-section-container>
 
-    <section id="experiences__content__skills">
+    <set-section-container id="experiences__content__skills" class="w-100">
       <app-skills
         [skillsData]="skillsData"
         [isActivitiesDataAvailable]="isActivitiesDataAvailable"
       ></app-skills>
-    </section>
+    </set-section-container>
 
-  </section>
+  </div>
 
-</article>
+</set-article-container>
  

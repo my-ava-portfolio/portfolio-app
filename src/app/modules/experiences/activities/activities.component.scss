@@ -1,0 +1,26 @@
+@use '/src/styles/1-helpers/grid';
+@use '/src/styles/1-helpers/spacing';
+
+
+img {
+    // height: auto;
+    max-height: 12vh;
+}
+
+.nav-tabs {
+    .title {
+        color: var(--bs-black)
+    }
+    .title.active {
+        background-color: var(--bs-warning)
+    }
+}
+
+.skills-container{
+    @include spacing.my(2);
+    @include grid.grid(4, 150px);
+
+    .skill {
+        break-inside: avoid-column;
+    }
+}

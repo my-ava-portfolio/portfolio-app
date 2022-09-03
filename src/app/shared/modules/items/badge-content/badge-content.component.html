@@ -1,4 +1,4 @@
-    <div class="badge rounded-pill" *ngIf="!url"
+    <div class="badge rounded-pill mx-1" *ngIf="!url"
       [ngClass]="classes" 
       [ngStyle]="{'background-color': customBgColor ? customBgColor : 'none'}"
     >
@@ -8,10 +8,7 @@
         {{ title }}
     </div>
 
-
-
-
-    <a class="badge rounded-pill" *ngIf="url"
+    <a class="badge rounded-pill mx-1" *ngIf="url"
       [href]="url" target="_blank" rel="noopener noreferrer"
       [ngClass]="classes" 
       [ngStyle]="{'background-color': customBgColor ? customBgColor : 'none'}"

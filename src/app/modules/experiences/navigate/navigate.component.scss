@@ -1,0 +1,76 @@
+$navigate-text-color: black;
+$disabled-color: grey;
+
+// legend misc // 
+.legend-graph-title {
+    font-size: 12px;
+    dominant-baseline: middle;
+    font-weight: bolder;
+}
+  
+  
+.grouper_jobs, .grouper_projects, .grouper_volunteers {
+    font-family: 'Font Awesome 5 Free';
+    text-anchor: middle;
+}
+// legend misc // 
+
+// graph misc //
+#activitiesGraph__svgLegend .nodeLabels text:not(.technics):not(.themes):not(.tools), #activitiesGraph__svgChart .nodeLabels text:not(.technics):not(.themes):not(.tools) {
+    fill: $navigate-text-color;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    pointer-events: none; /* to prevent mouseover/drag capture*/
+  }
+  
+#activitiesGraph__svgChart .nodeLabels text.technics, #activitiesGraph__svgChart .nodeLabels text.themes, #activitiesGraph__svgChart .nodeLabels text.tools {
+    fill: $navigate-text-color;
+    font-family: Arial;
+    font-size: 10px;
+    pointer-events: none; /* to prevent mouseover/drag capture*/
+}
+
+.unabled-topic {
+    pointer-events: none;
+}
+
+.enabled-topic {
+    pointer-events: auto;
+    cursor: pointer;
+}
+  
+.bg-date {
+    text-anchor: middle;
+    font-size: 12em;
+    dominant-baseline: middle;
+    pointer-events: none;
+    fill: $navigate-text-color;
+    opacity: 0.2;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.disabled-node circle {
+    stroke: $disabled-color;
+    stroke-width: 3;
+    fill: white !important;
+}
+  
+.disabled-group {
+    color: #aeaeae!important;
+}
+  
+#activitiesGraph__svgChart circle {
+    cursor: pointer;
+}
+  
+#activitiesGraph__svgLegend foreignObject{
+    cursor: pointer;
+} 
+#activitiesGraph__svgLegend text{
+    fill: $navigate-text-color;
+} 
+// graph misc //

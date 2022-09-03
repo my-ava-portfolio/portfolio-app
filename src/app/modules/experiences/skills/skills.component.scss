@@ -1,0 +1,15 @@
+@use '/src/styles/1-helpers/grid';
+@use '/src/styles/1-helpers/spacing';
+
+.skills-container{
+
+    @include grid.grid(4, 200px);
+
+    .skill {
+        break-inside: avoid-column;
+    }
+    h6.collapsed {
+        opacity: 0.5;
+    }
+
+}

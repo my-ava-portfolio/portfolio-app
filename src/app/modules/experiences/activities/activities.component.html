@@ -1,14 +1,23 @@
-<div id="jobWidget" class="activities-widget" *ngIf="tabView == 'job'">
+<div id="jobWidget" *ngIf="tabView == 'job'"
+  class="activities-widget
+    d-flex flex-column
+  ">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'job', activitiesData: jobsData}"></ng-container>
 </div>
 
-<div id="personal_projectWidget" class="activities-widget" *ngIf="tabView == 'personal-project'">
+<div id="personal_projectWidget" *ngIf="tabView == 'personal-project'"
+  class="activities-widget
+    d-flex flex-column
+  ">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'personal-project', activitiesData: personalProjectsData}"></ng-container>
 </div>
 
-<div id="volunteerWidget" class="activities-widget" *ngIf="tabView == 'volunteer'">
+<div id="volunteerWidget" *ngIf="tabView == 'volunteer'"
+  class="activities-widget
+    d-flex flex-column
+  ">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'volunteer', activitiesData: volunteersData}"></ng-container>
 </div>
@@ -16,7 +25,11 @@
 
 
 <ng-template #activityFeature let-activitiesType='activitiesType' let-activitiesData='activitiesData'>
-  <section [id]="'activities-' + activity.identifier" class="activity-feature" *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod">
+  <section [id]="'activities-' + activity.identifier" *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod"
+  class="activity-feature
+    card rounded
+    mb-3 mx-4
+  ">
     <ng-container *ngTemplateOutlet="ActivityCardFeature; context:{activity: activity, activityType: activitiesType, activityIndex: indexOfActivity}"></ng-container>
   </section>
 </ng-template>
@@ -27,11 +40,18 @@
 <!-- ACTIVITY CARD TEMPLATE -->
 <ng-template #ActivityCardFeature let-activity='activity' let-activityType='activityType' let-activityIndex='activityIndex'>
 
-  <div class="header" [ngStyle]="buildColorStyle(activity.color)">
+  <div class="header
+    card-header
+    d-flex flex-row
+    align-items-center
+    " [ngStyle]="buildColorStyle(activity.color)">
 
     <div class="title">{{activity.title}}</div>
 
-    <div class="buttons-tools">
+    <div class="buttons-tools
+      d-flex flex-row
+      ms-auto
+      ">
 
       <a *ngIf="activity.medias_found" class="btn-sm-warning" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
 
@@ -56,30 +76,43 @@
     </div>
   </div>
 
-  <div class="body">
+  <div class="body
+    card-body
+    ">
 
-    <div class="general-infos">
+    <div class="general-infos
+      d-flex flex-sm-row flex-column
+      justify-content-start
+      align-items-center
+      ">
 
-      <div class="activity-img">
-        <img *ngIf="activityType === 'personal-project'" [src]="assetsImagesPath + activity.img_company"/>
-        <img *ngIf="activityType === 'job'" [src]="apiImgUrl + activity.img_company"/>
-        <img *ngIf="activityType === 'volunteer'" [src]="apiImgUrl + activity.img_company"/>
+      <div class="activity-img my-2">
+        <img class="img-fluid" *ngIf="activityType === 'personal-project'" [src]="assetsImagesPath + activity.img_company"/>
+        <img class="img-fluid" *ngIf="activityType === 'job'" [src]="apiImgUrl + activity.img_company"/>
+        <img class="img-fluid" *ngIf="activityType === 'volunteer'" [src]="apiImgUrl + activity.img_company"/>
       </div>
 
-      <div class="abstract">
+      <div class="abstract
+        d-flex flex-column
+        mx-3
+        ">
 
           <h6 *ngIf="activityType !== 'personal-project'" class="title">{{activity.company}}</h6>
           <h6 *ngIf="activityType === 'personal-project'" class="title">{{activity.title}}</h6>
 
-          <div *ngIf="activityType !== 'personal-project'" class="location">
-            <a [id]="'location_' + activity.identifier" role="button" [routerLink]="[mapPages.route + '/' + mapPages.sub_menus[0].route]" [fragment]="activity.identifier">
-              <fa-icon [pulse]="true" [icon]="locationIcon"></fa-icon>
-            </a>
-            <div>{{activity.location}}</div>
-          </div>
+            
+          <set-location-icon *ngIf="activityType !== 'personal-project'"
+            [mainRoute]="mapPages.route"
+            [specificRoute]="mapPages.sub_menus[0].route"
+            [fragment]="activity.identifier"
+            [title]="activity.location"
+          ></set-location-icon>
 
 
-        <div class="duration">
+
+        <div class="duration
+          d-flex flex-row
+          ">
           <div *ngIf="activityType !== 'personal-project'" class="">{{ this.contractValueAlias(activity.contract) }} - </div>
           <ng-container *ngIf="activity.status !== 'InProgress'">
               <div>Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }} ({{activity.duration}})</div>
@@ -91,9 +124,12 @@
         </div>
 
         <div class="badge-keywords" *ngIf="activity.keywords">
-          <span [style.border]="'1px solid ' + item.value" [style.color]="item.value"
-            *ngFor="let item of activity.keywords | keyvalue"
-          >{{ item.key }}</span>
+          <set-badge-content
+          *ngFor="let item of activity.keywords | keyvalue"
+            [title]="item.key"
+            [customBgColor]="item.value"
+          ></set-badge-content>
+
         </div>
 
       </div>
@@ -141,13 +177,18 @@
 
       </ul>
 
-      <div [ngbNavOutlet]="nav" class="nav-content"></div>
+      <div [ngbNavOutlet]="nav" class="nav-content mx-2"></div>
 
     </div>
 
   </div>
 
-  <div clickClass="rotate-180" class="footer" (click)="addToHiddenDetailsConter(activityIndex)">
+  <div role="button" clickClass="rotate-180" (click)="addToHiddenDetailsConter(activityIndex)"
+  class="footer
+    card-footer
+    text-center
+    m-0
+  ">
     <fa-icon [icon]="arrowsDownIcon" ></fa-icon>
   </div>
 

@@ -1,17 +1,33 @@
-<div id="activitiesGraph" #svgGraphChart></div>
+<div id="activitiesGraph" #svgGraphChart
+  class="w-100"
+></div>
 
-<div id="legendGraph">
+<div id="legendGraph" class="
+  d-flex flex-column
+  text-center
+  w-100
+">
   <div id="legendGraph__themes"></div>
 
   <div id="legendGraph__temporal">
     <div class="legend-graph-title">Barre temporelle</div>
 
-    <div id="legendGraph__temporal__slider">
-
-        <span>{{ graphInputData.start_date }}</span>
-        <input type="range" steps="1" [min]="graphInputData.start_date" [max]="graphInputData.end_date" [value]="currentDate"  (change)="updateDate($event)"/>
-        <span>{{ graphInputData.end_date }}</span>
-
+    <div id="legendGraph__temporal__slider"
+      class="
+        d-flex flex-row
+        justify-content-center
+        align-items-center
+      "
+    >
+      <set-badge-content
+        classes="bg-secondary m-2"
+        [title]="graphInputData.start_date"
+      ></set-badge-content>
+      <input class="w-25" type="range" steps="1" [min]="graphInputData.start_date" [max]="graphInputData.end_date" [value]="currentDate"  (change)="updateDate($event)"/>
+      <set-badge-content
+        classes="bg-secondary m-2"
+        [title]="graphInputData.end_date"
+      ></set-badge-content>
     </div>
 
     <div id="legendGraph__temporal__reset">

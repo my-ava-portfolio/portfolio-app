@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, Input, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Input, ElementRef, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -6,12 +6,13 @@ import { Subscription } from 'rxjs';
 
 import { ResumeService } from '@services/resume.service';
 import { expandIcon, navIcon, helpIcon, ungroupIconUnicode, nextIcon, activitiesMapping, skillsMapping } from '@core/inputs';
-import { ActivityActionsService } from '../services/activity-actions.service';
+import { ActivityActionsService } from '@modules/experiences/services/activity-actions.service';
 
 @Component({
-  selector: '[app-navigate]',
+  selector: 'app-navigate',
   templateUrl: './navigate.component.html',
-  styleUrls: ['./navigate.component.scss']
+  styleUrls: ['./navigate.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() graphInputData!: any;
