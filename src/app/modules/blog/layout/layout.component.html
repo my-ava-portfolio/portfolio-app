@@ -3,7 +3,30 @@
   <app-grid-container
     [features]="selectedblogTopics"
   >
+    <ng-template #blogTemplate let-feature>
 
+      <div class="body-generic-badges mt-2">
+
+        <div class="body-text small"  *ngIf="feature.categories.length > 0">
+            <span class="fw-bold">Catégorie(s):</span>
+            <set-badge-content
+            *ngFor="let category of feature.categories"
+            [title]="category.name"
+            [customBgColor]="category.color"
+          ></set-badge-content>
+        </div>
+
+        <div class="body-text small" *ngIf="feature.tags.length > 0">
+          <span class="fw-bold">Tag(s):</span>
+          <set-badge-content
+            *ngFor="let tag of feature.tags"
+            [title]="tag.name"
+            [customBgColor]="tag.color"
+          ></set-badge-content>
+        </div>
+
+      </div>
+    </ng-template>
   </app-grid-container>
 
   <div id="legendContainer">

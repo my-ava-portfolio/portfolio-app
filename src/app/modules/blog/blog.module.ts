@@ -7,6 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LayoutComponent } from './layout/layout.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { GridContainerModule } from '@shared/modules/grid/gallery.module';
+import { ItemsModule } from '@shared/modules/items/items.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { GridContainerModule } from '@shared/modules/grid/gallery.module';
     BlogRoutingModule,
     PipesModule,
     FontAwesomeModule,
-    GridContainerModule
+    GridContainerModule,
+    ItemsModule
   ]
 })
 export class BlogModule { }

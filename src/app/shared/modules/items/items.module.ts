@@ -9,7 +9,7 @@ import { ArticleContainerComponent } from '@shared/modules/items/article-contain
 import { SectionContainerComponent } from './section-container/section-container.component';
 import { ButtonContentComponent } from './button-content/button-content.component';
 import { ParagraphContentComponent } from './paragraph-content/paragraph-content.component';
-import { LocationIconComponent } from './location-icon/location-icon.component';
+import { IconTextComponent } from './icon-text/icon-text.component';
 import { CardContainerComponent } from './card-container/card-container.component';
 import { ArticleHeaderComponent } from './article-header/article-header.component';
 import { BadgeContentComponent } from './badge-content/badge-content.component';
@@ -20,7 +20,7 @@ const components = [
   SectionContainerComponent,
   ButtonContentComponent,
   ParagraphContentComponent,
-  LocationIconComponent,
+  IconTextComponent,
   CardContainerComponent,
   ArticleHeaderComponent,
   BadgeContentComponent

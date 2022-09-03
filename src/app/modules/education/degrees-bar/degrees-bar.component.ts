@@ -16,7 +16,8 @@ export class DegreesBarComponent implements OnInit {
   @Input() fragment: any;
   @Input() degreesData: any;
 
-
+  locationIcon = locationIcon;
+  
   mapPages: any = mapActivitiesPages;
 
   assetsLogoPath = assetsLogoPath;

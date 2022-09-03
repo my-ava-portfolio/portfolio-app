@@ -16,13 +16,13 @@
 
       <div class="school">
         <set-paragraph-content>{{ degree.school }}</set-paragraph-content>
-        <set-location-icon
-          [mainRoute]="mapPages.route"
-          [specificRoute]="mapPages.sub_menus[0].route"
+        <set-icon-text
+          [route]="mapPages.sub_menus[0].content_url"
           [fragment]="degree.identifier"
           [title]="degree.location"
           classes="justify-content-center small"
-        ></set-location-icon>
+          [iconInput]="locationIcon"
+        ></set-icon-text>
       </div>
 
     </set-card-container>

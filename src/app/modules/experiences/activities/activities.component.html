@@ -101,12 +101,12 @@
           <h6 *ngIf="activityType === 'personal-project'" class="fw-bold">{{activity.title}}</h6>
 
             
-          <set-location-icon *ngIf="activityType !== 'personal-project'"
-            [mainRoute]="mapPages.route"
-            [specificRoute]="mapPages.sub_menus[0].route"
+          <set-icon-text *ngIf="activityType !== 'personal-project'"
+            [route]="mapPages.sub_menus[0].content_url"
             [fragment]="activity.identifier"
             [title]="activity.location"
-          ></set-location-icon>
+            [iconInput]="locationIcon"
+          ></set-icon-text>
 
 
 

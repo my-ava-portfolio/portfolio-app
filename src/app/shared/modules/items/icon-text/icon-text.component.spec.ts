@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LocationIconComponent } from './location-icon.component';
+import { IconTextComponent } from './icon-text.component';
 
-describe('LocationIconComponent', () => {
-  let component: LocationIconComponent;
-  let fixture: ComponentFixture<LocationIconComponent>;
+describe('IconTextComponent', () => {
+  let component: IconTextComponent;
+  let fixture: ComponentFixture<IconTextComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LocationIconComponent ]
+      declarations: [ IconTextComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LocationIconComponent);
+    fixture = TestBed.createComponent(IconTextComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

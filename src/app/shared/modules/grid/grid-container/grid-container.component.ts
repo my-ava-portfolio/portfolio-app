@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
 
 import { galleryFeature } from '@core/data-types';
 import { experiencesPages } from '@core/inputs';
@@ -10,11 +10,10 @@ import { experiencesPages } from '@core/inputs';
   styleUrls: ['./grid-container.component.scss']
 })
 export class GridContainerComponent implements OnInit {
-  @Input() itemTpl!: any;
+  @ContentChild('galleryTemplate') galleryTmplt!: TemplateRef<any>;
+  @ContentChild('blogTemplate') blogTmplt!: TemplateRef<any>;
+
   @Input() features!: galleryFeature[];
-
-  experiencesRoute: string = experiencesPages.route;
-
 
   constructor() { }
 

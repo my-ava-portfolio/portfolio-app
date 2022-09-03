@@ -34,43 +34,13 @@
             </div>
 
             <ng-content></ng-content>
-            <!-- gallery blog badges ONLY -->
-            <div class="body-generic-badges mt-2">
+            <!-- gallery blog PART -->
+            <ng-container *ngTemplateOutlet="blogTmplt, context: { $implicit: feature }"></ng-container>
+            <!-- gallery blog PART -->
 
-                <div class="body-text small"  *ngIf="feature.categories.length > 0">
-                    <span class="fw-bold">Catégorie(s):</span>
-                    <set-badge-content
-                    *ngFor="let category of feature.categories"
-                    [title]="category.name"
-                    [customBgColor]="category.color"
-                  ></set-badge-content>
-                </div>
-
-                <div class="body-text small" *ngIf="feature.tags.length > 0">
-                  <span class="fw-bold">Tag(s):</span>
-                  <set-badge-content
-                    *ngFor="let tag of feature.tags"
-                    [title]="tag.name"
-                    [customBgColor]="tag.color"
-                  ></set-badge-content>
-                </div>
-                
-            </div>
-            <!-- gallery blog badges ONLY -->
-
-            <!-- gallery experiences badges ONLY -->
-            <div class="body-activity-badges
-                d-flex flex-row
-                mt-2
-                justfiy-content-start
-                ">
-                <span *ngIf="feature.activityType" [ngClass]="'badge-' + feature.activityType.class">{{feature.activityType.name}}</span>
-                <span *ngIf="feature.experienceName" [routerLink]="[experiencesRoute]" [fragment]="feature.id" class="pointer badge-generic" [style]="'background-color:' + feature.experienceName.color + ';color: white'">{{feature.experienceName.name}}</span>
-                <span *ngIf="feature.mediaType" [ngClass]="'badge-' + feature.mediaType.name">
-                    <fa-icon [icon]="feature.mediaType.icon.icon"></fa-icon>{{feature.mediaType.icon.title}}
-                </span>
-            </div>
-            <!-- gallery experiences badges ONLY -->
+            <!-- gallery experiences PART -->
+            <ng-container *ngTemplateOutlet="galleryTmplt, context: { $implicit: feature }"></ng-container>
+            <!-- gallery experiences PART -->
 
             <div class="paragraph">{{ feature.description }}</div>
 
