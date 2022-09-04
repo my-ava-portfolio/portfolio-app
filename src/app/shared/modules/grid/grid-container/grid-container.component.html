@@ -33,33 +33,36 @@
                 </ng-container>
             </div>
 
-            <!-- gallery blog PART -->
+            <!-- TODO refactor gallery blog PART -->
             <ng-container *ngTemplateOutlet="blogTmplt, context: { $implicit: feature }"></ng-container>
             <!-- gallery blog PART -->
 
-            <!-- gallery experiences PART -->
+            <!-- TODO refactor gallery experiences PART -->
             <ng-container *ngTemplateOutlet="galleryTmplt, context: { $implicit: feature }"></ng-container>
             <!-- gallery experiences PART -->
 
-            <div class="paragraph">{{ feature.description }}</div>
-
-            <ul class="body-addons" *ngIf="feature.addons">
-                <li *ngFor="let addon of feature.addons | keyvalue" class="">
-                    <span>{{addon.key}} : </span>
-                    <span>{{addon.value}}</span>
-                </li>
-            </ul>
-
-            <div class="body-buttons">
+            <set-paragraph-content>{{ feature.description }}</set-paragraph-content>
+            
+            <!-- TODO gallery addon -->
+            <set-paragraph-content>
+                <ul class="body-addons" *ngIf="feature.addons">
+                    <li *ngFor="let addon of feature.addons | keyvalue" class="">
+                        <span>{{addon.key}} : </span>
+                        <span>{{addon.value}}</span>
+                    </li>
+                </ul>
+            </set-paragraph-content>
+    
+            <div class="body-buttons text-end">
 
                 <ng-container *ngIf="feature.type !== 'modal'">
-                    <a *ngIf="!feature.content_url.includes('http')" [routerLink]="'../' + feature.content_url" class="btn-warning">Accéder</a>
-                    <a *ngIf="feature.content_url.includes('http')" [href]="feature.content_url" class="btn-warning" target="_blank" rel="noopener noreferrer">Accéder</a>
+                    <a *ngIf="!feature.content_url.includes('http')" [routerLink]="'../' + feature.content_url" class="btn bg-warning">Accéder</a>
+                    <a *ngIf="feature.content_url.includes('http')" [href]="feature.content_url" class="btn bg-warning" target="_blank" rel="noopener noreferrer">Accéder</a>
                 </ng-container>
 
                 <ng-container *ngIf="feature.type === 'modal'">
                     <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: feature.content_url, activityId: feature.id, pictureId: idx}"></ng-container>
-                    <a data-bs-toggle="modal" [href]="'#modal-' + feature.id + idx" role="button" class="btn-warning">Afficher</a>
+                    <a data-bs-toggle="modal" [href]="'#modal-' + feature.id + idx" role="button" class="btn bg-warning">Afficher</a>
                 </ng-container>
            
             </div>

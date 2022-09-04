@@ -53,10 +53,10 @@
       ms-auto
       ">
 
-      <a *ngIf="activity.medias_found" class="btn-sm-warning" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
+      <a *ngIf="activity.medias_found" class="btn btn-sm bg-warning" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
 
       <ng-container *ngIf="activity.recommendations && countDictObject(activity.recommendations) > 0">
-        <span class="btn-sm-success" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="btn btn-sm bg-success" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <fa-icon [icon]="trophyIcon"></fa-icon>
         </span>
         <div class="dropdown-menu" aria-labelledby="dropdownRecomButton" *ngFor="let recommendation of activity.recommendations | keyvalue">
@@ -65,12 +65,12 @@
       </ng-container>
 
       <ng-container *ngIf="activityType == 'personal-project'">
-        <a *ngIf="activity.url_github" class="btn-sm-secondary" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
-        <a *ngIf="activity.url_blog != 'nan'" class="btn-sm-info" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
-        <a *ngIf="activity.url_website" class="btn-sm-primary" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
+        <a *ngIf="activity.url_github" class="btn btn-sm bg-secondary" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
+        <a *ngIf="activity.url_blog != 'nan'" class="btn btn-sm bg-info" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
+        <a *ngIf="activity.url_website" class="btn btn-sm bg-primary" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
       </ng-container>
 
-      <a class="btn-sm-dark" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
+      <a class="btn btn-sm bg-dark" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
 
 
     </div>
@@ -200,17 +200,17 @@
 
 <!-- TAB CONTENT TEMPLATES -->
 <ng-template #ngbNavPresentationContent let-data='data'>
-  <div class="paragraph">{{ data.presentation }}</div>
+  <set-paragraph-content>{{ data.presentation }}</set-paragraph-content>
 </ng-template>
 
 <ng-template #ngbNavDescriptionContent let-data='data'>
   <ng-container *ngFor="let task of data.description | keyvalue">
-    <div class="paragraph">
+    <set-paragraph-content>
       <h6 *ngIf="task.key !== 'NoTitle'">{{ task.key }}</h6>
       <ul>
         <li class="text-justify" *ngFor="let description_element of forceArrayType(task.value)">{{ description_element }}</li>
       </ul>
-    </div>
+    </set-paragraph-content>
   </ng-container>
 </ng-template>
 
@@ -219,21 +219,21 @@
 </ng-template>
 
 <ng-template #ngbNavTrainingsContent let-data='data'>
-  <div class="paragraph">
+  <set-paragraph-content>
     <ng-container *ngFor="let training of data.trainings">
       <span class="fw-bold">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span>
     </ng-container>
-  </div>
+  </set-paragraph-content>
 </ng-template>
 
 <ng-template #ngbNavPublicationsContent let-data='data'>
-  <div class="paragraph">
+  <set-paragraph-content>
     <ng-container *ngFor="let publication of data.publications">
       <span class="fw-bold">{{ publication.year }} - </span>
       <span>{{ publication.editor }} par {{ publication.publication }}</span>
       <a [href]="publication.link" type="button">Accès</a>
     </ng-container>
-  </div>
+  </set-paragraph-content>
 
 </ng-template>
 <!-- TAB CONTENT TEMPLATES -->

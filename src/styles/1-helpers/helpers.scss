@@ -1,36 +1,36 @@
 $theme-colors-map: (
-  "primary": (
-    color: $primary,
-    text: $white
-  ),
-  "secondary": (
-    color: $secondary,
-    text: $white
-  ),
-  "success": (
-    color: $success,
-    text: $white
-  ),
-  "info": (
-    color: $info,
-    text: $white
-  ),
-  "warning": (
-    color: $warning,
-    text: $black
-  ),
-  "danger": (
-    color: $danger,
-    text: $white
-  ),
-  "light": (
-    color: $light,
-    text: $black
-  ),
-  "dark": (
-    color: $dark,
-    text: $white
-  ),
+  // "primary": (
+  //   color: $primary,
+  //   text: $white
+  // ),
+  // "secondary": (
+  //   color: $secondary,
+  //   text: $white
+  // ),
+  // "success": (
+  //   color: $success,
+  //   text: $white
+  // ),
+  // "info": (
+  //   color: $info,
+  //   text: $white
+  // ),
+  // "warning": (
+  //   color: $warning,
+  //   text: $black
+  // ),
+  // "danger": (
+  //   color: $danger,
+  //   text: $white
+  // ),
+  // "light": (
+  //   color: $light,
+  //   text: $black
+  // ),
+  // "dark": (
+  //   color: $dark,
+  //   text: $white
+  // ),
   "very-dark": (
     color: $very-dark,
     text: $white
@@ -146,35 +146,8 @@ $theme-colors-map: (
 }
 
 @mixin bannerTitle($bgColor, $textColor) {
-    @extend .mx-auto; 
-    @extend .py-2; 
-    @extend .rounded-top;
     background-color: $bgColor;
     color: $textColor;
-    @extend .fw-bold;
-    @extend .text-center;
-}
-
-@mixin badge {
-  @extend .badge;
-  @extend .small;
-  @extend .rounded-pill;
-  @extend .my-1, .mx-2;
-}
-
-@mixin buttonBase($colorSettings) {
-  @extend .btn;
-  // do not add margin spacing!
-
-  // border-color: map-get($colorSettings, 'color')!important;
-  color: map-get($colorSettings, 'text');
-  background-color: map-get($colorSettings, 'color');
-
-  &:hover {
-      background-color: darken(map-get($colorSettings, 'color'), 5%);
-      border-color: darken(map-get($colorSettings, 'color'), 15%);
-      color: map-get($colorSettings, 'text');
-  }
 }
 
 @each $colorName, $colorSettings in $theme-colors-map {
@@ -184,38 +157,19 @@ $theme-colors-map: (
             map-get($colorSettings, 'text'), 
         )
     }
-
-    .text-#{$colorName} {
-        color: map-get($colorSettings, 'color');
+    .btn-#{$colorName} {
+        @include button-variant(
+          map-get($colorSettings, 'color'), 
+          map-get($colorSettings, 'color')
+        );
     }
-
     .bg-#{$colorName} {
         background-color: map-get($colorSettings, 'color');
-    }
-
-    .btn-#{$colorName} {
-      @include buttonBase($colorSettings)
-    }
-
-    .btn-sm-#{$colorName} {
-      @include buttonBase($colorSettings);
-      @extend .btn-sm;
-    }
-
-    .badge-#{$colorName} {
-      @include badge;
-      color: map-get($colorSettings, 'text');
-      background-color: map-get($colorSettings, 'color');
+        color: map-get($colorSettings, 'text');
     }
 
     .title-tick-#{$colorName} {
         @include paragraphTitle(map-get($colorSettings, 'color'))
     }
 
-    .title-bar-#{$colorName} {
-        @include bannerTitle(
-            map-get($colorSettings, 'color'),
-            map-get($colorSettings, 'text')
-        )
-    }
 }
