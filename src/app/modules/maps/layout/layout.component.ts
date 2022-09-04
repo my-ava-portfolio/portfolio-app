@@ -1,13 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
-import { Location } from '@angular/common';
 
 import { Subscription } from 'rxjs';
 
-import { tagIcon, centerIcon} from '@core/inputs';
-
 import { MapService } from '@services/map.service';
-import { Router } from '@angular/router';
 import { fadeInOutAnimation } from '@core/animation_routes';
+import { ControlerService } from '@services/controler.service';
 
 
 @Component({
@@ -18,36 +15,22 @@ import { fadeInOutAnimation } from '@core/animation_routes';
   animations: [fadeInOutAnimation]
 })
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
-  tagIcon = tagIcon;
-  centerIcon = centerIcon;
+
   isLegendDisplayed: boolean = true;
 
   mapScaleDivSubscription!: Subscription;
-  routerSubscription!: Subscription;
   mapProjectionSubscription!: Subscription;
-
-  currentMapTool!: string;
-  appsWithLegend = [
-    'gtfs-viewer',
-    'activities'
-  ]
-  appsWithoutLegend = [
-    'sandbox',
-  ]
 
   constructor(
     private mapService: MapService,
-    private router: Router,
-    private location: Location,
+    private controlerService: ControlerService,
   ) {
 
     this.mapScaleDivSubscription = this.mapService.setMapControler.subscribe(
       (status: boolean) => {
         if (status) {
           this.setMapElements()
-
         }
-
       }
     );
 
@@ -57,18 +40,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
 
-    this.routerSubscription = this.router.events.subscribe((_: any) => {
-      const urlSplit: string[] =  this.location.path().split('/')
-      this.currentMapTool = urlSplit[urlSplit.length - 1].split('#')[0];
-    });
-
   }
 
   ngOnInit(): void {
-    console.log(this)
+    this.sendResumeSubMenus()
     this.mapService.mapInteraction(true);
 
     this.mapService.buildMapMapControlers()
+  }
+
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus([])
   }
 
   ngAfterViewInit(): void {
@@ -83,7 +65,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapService.unsetControlToMap("miniMap")
 
     this.mapScaleDivSubscription.unsubscribe();
-    this.routerSubscription.unsubscribe();
     this.mapProjectionSubscription.unsubscribe();
 
   }

@@ -41,7 +41,8 @@ export class ControlBarComponent implements OnInit, OnDestroy {
         if (data.sub_menus) {
           this.topicPagesSubMenus = data.sub_menus;
         } else {
-
+          // to reset the control bar anchors
+          this.topicPagesSubMenus = data
         }
       }
     );
