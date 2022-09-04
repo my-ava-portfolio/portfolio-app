@@ -11,6 +11,7 @@ import { GalleryService } from '@services/gallery.service';
 
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { GridContainerModule } from '@shared/modules/grid/gallery.module';
+import { ItemsModule } from '@shared/modules/items/items.module';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { GridContainerModule } from '@shared/modules/grid/gallery.module';
     GalleryRoutingModule,
     FontAwesomeModule,
     PipesModule,
-    GridContainerModule
+    GridContainerModule,
+    ItemsModule
   ],
   providers: [
     GalleryService

@@ -29,23 +29,10 @@
     </ng-template>
   </app-grid-container>
 
-  <div id="legendContainer">
 
-    <div class="legend-container-buttons">
-      <button class="btn-sm-dark" type="button" checked autocomplete="off" (click)="showHideLegend()">
-        <fa-icon class="" [icon]="tagsIcon"></fa-icon>
-        Légende
-      </button>
-    </div>
-
-    <div class="legend-container-content" *ngIf="isLegendDisplayed">
-      <ng-container *ngTemplateOutlet="controler"></ng-container>
-    </div>
-
-    <div class="legend-container-content" *ngIf="!isLegendDisplayed">
-    </div>
-
-  </div>
+  <set-legend-container>
+    <ng-container *ngTemplateOutlet="controler"></ng-container>
+  </set-legend-container>
 
 </div>
 

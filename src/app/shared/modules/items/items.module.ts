@@ -13,6 +13,7 @@ import { IconTextComponent } from './icon-text/icon-text.component';
 import { CardContainerComponent } from './card-container/card-container.component';
 import { ArticleHeaderComponent } from './article-header/article-header.component';
 import { BadgeContentComponent } from './badge-content/badge-content.component';
+import { LegendContainerComponent } from './legend-container/legend-container.component';
 
 
 const components = [
@@ -23,7 +24,8 @@ const components = [
   IconTextComponent,
   CardContainerComponent,
   ArticleHeaderComponent,
-  BadgeContentComponent
+  BadgeContentComponent,
+  LegendContainerComponent
 ]
 
 @NgModule({

@@ -4,40 +4,26 @@
     [features]="galleryItems"
   >
 
-  <ng-template #galleryTemplate let-feature>
-    <div class="body-activity-badges
-        d-flex flex-row
-        mt-2
-        justfiy-content-start
-        align-items-center
-      ">
-        <span *ngIf="feature.activityType" [ngClass]="'badge-' + feature.activityType.class">{{feature.activityType.name}}</span>
-        <span *ngIf="feature.experienceName" [routerLink]="[experiencesRoute]" [fragment]="feature.id" class="pointer badge rounded-pill small" [style]="'background-color:' + feature.experienceName.color + ';color: white'">{{feature.experienceName.name}}</span>
-        <span *ngIf="feature.mediaType" [ngClass]="'badge-' + feature.mediaType.name">
-            <fa-icon [icon]="feature.mediaType.icon.icon"></fa-icon>{{feature.mediaType.icon.title}}
-        </span>
-    </div>
-  </ng-template>
+    <ng-template #galleryTemplate let-feature>
+      <div class="body-activity-badges
+          d-flex flex-row
+          mt-2
+          justfiy-content-start
+          align-items-center
+        ">
+          <span *ngIf="feature.activityType" [ngClass]="'badge-' + feature.activityType.class">{{feature.activityType.name}}</span>
+          <span *ngIf="feature.experienceName" [routerLink]="[experiencesRoute]" [fragment]="feature.id" class="pointer badge rounded-pill small" [style]="'background-color:' + feature.experienceName.color + ';color: white'">{{feature.experienceName.name}}</span>
+          <span *ngIf="feature.mediaType" [ngClass]="'badge-' + feature.mediaType.name">
+              <fa-icon [icon]="feature.mediaType.icon.icon"></fa-icon>{{feature.mediaType.icon.title}}
+          </span>
+      </div>
+    </ng-template>
 
-</app-grid-container>
+  </app-grid-container>
 
-  <div id="legendContainer">
-
-    <div class="legend-container-buttons">
-      <button class="btn-sm-dark" type="button" checked autocomplete="off" (click)="showHideLegend()">
-        <fa-icon [icon]="tagsIcon"></fa-icon>
-        Légende
-      </button>
-    </div>
-
-    <div class="legend-container-content" *ngIf="isLegendDisplayed">
-      <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
-    </div>
-
-    <div class="legend-container-content" *ngIf="!isLegendDisplayed">
-    </div>
-
-  </div>
+  <set-legend-container>
+    <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
+  </set-legend-container>
 
 </article>
 
