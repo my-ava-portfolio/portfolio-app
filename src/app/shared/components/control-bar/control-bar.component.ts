@@ -21,7 +21,7 @@ export class ControlBarComponent implements OnInit, OnDestroy {
 
   pageTitle!: string;
   topicPages!: any;
-  topicPagesSubMenus!: any;
+  topicPagesSubMenus: any[] = [];
 
   controlerPageTitleSubscription!: Subscription;
   controlerSubMenusSubscription!: Subscription;
@@ -38,7 +38,11 @@ export class ControlBarComponent implements OnInit, OnDestroy {
     this.controlerSubMenusSubscription = this.controlerService.subMenuFeatures.subscribe(
       (data) => {
         this.topicPages = data;
-        this.topicPagesSubMenus = data.sub_menus;
+        if (data.sub_menus) {
+          this.topicPagesSubMenus = data.sub_menus;
+        } else {
+
+        }
       }
     );
 

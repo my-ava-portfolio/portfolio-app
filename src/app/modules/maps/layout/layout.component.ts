@@ -6,8 +6,7 @@ import { Subscription } from 'rxjs';
 import { tagIcon, centerIcon} from '@core/inputs';
 
 import { MapService } from '@services/map.service';
-import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
-import { ControlerService } from '@services/controler.service';
+import { Router } from '@angular/router';
 import { fadeInOutAnimation } from '@core/animation_routes';
 
 
@@ -25,6 +24,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   mapScaleDivSubscription!: Subscription;
   routerSubscription!: Subscription;
+  mapProjectionSubscription!: Subscription;
 
   currentMapTool!: string;
   appsWithLegend = [
@@ -39,7 +39,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private mapService: MapService,
     private router: Router,
     private location: Location,
-    private controlerService: ControlerService,
   ) {
 
     this.mapScaleDivSubscription = this.mapService.setMapControler.subscribe(
@@ -52,7 +51,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
 
-    this.mapService.setMapProjectionFromEpsg.subscribe(
+    this.mapProjectionSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
       (_: string) => {
         this.setMapElements()
       }
@@ -67,7 +66,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.mapService.mapInteraction(true);
-    this.sendResumeSubMenus()
 
     this.mapService.buildMapMapControlers()
   }
@@ -84,14 +82,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapService.unsetControlToMap("miniMap")
 
     this.mapScaleDivSubscription.unsubscribe();
-    this.routerSubscription.unsubscribe()
+    this.routerSubscription.unsubscribe();
+    this.mapProjectionSubscription.unsubscribe();
 
   }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus([])
-  }
-
 
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
