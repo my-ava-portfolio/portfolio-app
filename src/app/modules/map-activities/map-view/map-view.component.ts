@@ -190,6 +190,11 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.mapService.resetMapView()
   }
 
+  zoomOnData(): void {
+    // TODO create map components with buttons
+    this.mapService.sendZoomAction();
+  }
+
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);

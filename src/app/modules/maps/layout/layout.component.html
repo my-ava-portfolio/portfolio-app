@@ -21,21 +21,12 @@
 
 </div>
 
-<!-- <ng-container *ngIf="appsWithoutLegend.includes(currentMapTool)"> -->
-<router-outlet name="map-sandbox"></router-outlet>
-<!-- </ng-container> -->
 
-<div id="mapContent" class="d-flex flex-row vh-100"></div>
+<!-- <router-outlet #outlet="outlet" ></router-outlet> -->
 
-<set-legend-container *ngIf="appsWithLegend.includes(currentMapTool)">
+<!-- <div id="mapContent" class="d-flex flex-row vh-100"></div> -->
 
-  <ng-template #buttonsTemplate>
-    <button class="btn btn-sm btn-warning mx-1" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
-      <fa-icon class="" [icon]="centerIcon"></fa-icon>
-    </button>
-  </ng-template>
+<router-outlet name="map-gtfs-viewer" ></router-outlet>
+<router-outlet name="map-activities" ></router-outlet>
+<router-outlet name="map-sandbox" ></router-outlet>
 
-  <router-outlet name="map-activities"></router-outlet>
-  <router-outlet name="map-gtfs-viewer"></router-outlet>
-
-</set-legend-container>

@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '', component: MapViewComponent,
     data: { title: 'Carte des activités', page: 'map-activities' },
-    outlet: 'map-activities'
+    outlet: 'map-activities' // remove to be able to use <router-outlet #outlet="outlet" ></router-outlet>
   },
 ]
 

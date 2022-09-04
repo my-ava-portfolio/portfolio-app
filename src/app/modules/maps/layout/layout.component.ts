@@ -65,6 +65,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log(this)
     this.mapService.mapInteraction(true);
 
     this.mapService.buildMapMapControlers()
@@ -91,9 +92,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
-  zoomOnData(): void {
-    this.mapService.sendZoomAction();
-  }
+  // zoomOnData(): void {
+  //   this.mapService.sendZoomAction();
+  // }
 
   setMapElements(): void {
     this.mapService.unsetControlToMap("miniMap")

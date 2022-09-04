@@ -245,6 +245,11 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapService.resetMapView()
 
   }
+  
+  zoomOnData(): void {
+    // TODO create map components with buttons
+    this.mapService.sendZoomAction();
+  }
 
   private parseTime(time: string): Date | null {
     return new Date(time);

@@ -1,4 +1,4 @@
-import { Component, ContentChild, OnInit, TemplateRef } from '@angular/core';
+import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { tagIcon, centerIcon } from '@core/inputs';
 import { MapService } from '@services/map.service';
@@ -10,7 +10,8 @@ import { MapService } from '@services/map.service';
   animations: [fadeInOutAnimation]
 })
 export class LegendContainerComponent implements OnInit {
-
+  // WARNING: important to set the element position (ex: fixed for apps map & sticky for grid)
+  @Input() classes!: string;
   @ContentChild('buttonsTemplate') buttonsTmplt!: TemplateRef<any>;
 
   tagIcon = tagIcon;

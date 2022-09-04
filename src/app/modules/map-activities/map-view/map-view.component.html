@@ -1,14 +1,26 @@
-<div class="d-flex flex-column flex-xl-row justify-content-around align-items-center">
+<set-legend-container
+  classes="position-fixed"
+  >
 
-  <app-theme-legend
-  ></app-theme-legend>
+  <ng-template #buttonsTemplate>
+    <button class="btn btn-sm btn-warning mx-1" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
+      <fa-icon class="" [icon]="centerIcon"></fa-icon>
+    </button>
+  </ng-template>
 
-  <app-time-legend
-    [currentActivityIdSelected]="fragment"
-    [map]="map"
-  ></app-time-legend>
 
-</div>
+  <div class="d-flex flex-column flex-xl-row justify-content-around align-items-center">
+
+    <app-theme-legend
+    ></app-theme-legend>
+
+    <app-time-legend
+      [currentActivityIdSelected]="fragment"
+      [map]="map"
+    ></app-time-legend>
+
+  </div>
+</set-legend-container>
 
 <ng-container *ngTemplateOutlet="activitiesPopups; context:{}"></ng-container>
 

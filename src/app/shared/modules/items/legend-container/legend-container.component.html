@@ -1,10 +1,9 @@
 <div id="legendContainer" [@fadeInOut]
+    [ngClass]="classes"
     class="
         d-flex flex-column
-        position-sticky
         bottom-0
-    "
-    >
+    ">
 
     <div class="legend-container-buttons mx-3">
       <button class="btn btn-sm btn-dark mx-1 shadow" type="button" checked autocomplete="off" (click)="showHideLegend()">

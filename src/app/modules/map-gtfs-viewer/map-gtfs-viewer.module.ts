@@ -11,6 +11,7 @@ import { TimelineService } from '@shared/services/timeline.service';
 import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.service';
 
 import { TimelineModule } from '@shared/modules/timeline/timeline.module';
+import { ItemsModule } from '@shared/modules/items/items.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TimelineModule } from '@shared/modules/timeline/timeline.module';
     CommonModule,
     MapGtfsViewerRoutingModule,
     FontAwesomeModule,
-    TimelineModule
+    TimelineModule,
+    ItemsModule
   ],
   providers: [
     TimelineService,
