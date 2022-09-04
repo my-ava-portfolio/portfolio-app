@@ -53,10 +53,10 @@
       ms-auto
       ">
 
-      <a *ngIf="activity.medias_found" class="btn btn-sm bg-warning" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
+      <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
 
       <ng-container *ngIf="activity.recommendations && countDictObject(activity.recommendations) > 0">
-        <span class="btn btn-sm bg-success" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="btn btn-sm btn-success" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <fa-icon [icon]="trophyIcon"></fa-icon>
         </span>
         <div class="dropdown-menu" aria-labelledby="dropdownRecomButton" *ngFor="let recommendation of activity.recommendations | keyvalue">
@@ -65,12 +65,12 @@
       </ng-container>
 
       <ng-container *ngIf="activityType == 'personal-project'">
-        <a *ngIf="activity.url_github" class="btn btn-sm bg-secondary" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
-        <a *ngIf="activity.url_blog != 'nan'" class="btn btn-sm bg-info" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
-        <a *ngIf="activity.url_website" class="btn btn-sm bg-primary" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
+        <a *ngIf="activity.url_github" class="btn btn-sm btn-secondary" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
+        <a *ngIf="activity.url_blog != 'nan'" class="btn btn-sm btn-info" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
+        <a *ngIf="activity.url_website" class="btn btn-sm btn-primary" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
       </ng-container>
 
-      <a class="btn btn-sm bg-dark" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
+      <a class="btn btn-sm btn-dark" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
 
 
     </div>
@@ -113,6 +113,7 @@
 
         <div class="duration
           d-flex flex-row
+          my-2
           ">
           <div *ngIf="activityType !== 'personal-project'" class="">{{ this.contractValueAlias(activity.contract) }} - </div>
           <ng-container *ngIf="activity.status !== 'InProgress'">
@@ -137,7 +138,7 @@
 
     </div>
 
-    <div class="feature-tabs" *ngIf="hiddenActivitiesDetails.includes(activityIndex)">
+    <div class="feature-tabs mt-3" *ngIf="hiddenActivitiesDetails.includes(activityIndex)">
 
       <ul ngbNav #nav="ngbNav" class="nav-tabs">
 

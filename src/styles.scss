@@ -1,13 +1,75 @@
-@import 'styles/0-base';
+@import 'styles/0-base/variables';
 
 
 // bootstrap
-@import 'bootstrap';
+@import "mixins/banner";
+@include bsBanner("");
+
+@import "functions";
+@import "variables";
+
+
+$theme-colors : map-merge($theme-colors, $portfolio-colors-map);
+
+
+@import "maps";
+@import "mixins";
+@import "utilities";
 // bootstrap
+
+
+
+
+// bootstrap
+// Layout & components
+@import "root";
+@import "reboot";
+@import "type";
+@import "images";
+@import "containers";
+@import "grid";
+@import "tables";
+@import "forms";
+@import "buttons";
+@import "transitions";
+@import "dropdown";
+@import "button-group";
+@import "nav";
+@import "navbar";
+@import "card";
+@import "accordion";
+@import "breadcrumb";
+@import "pagination";
+@import "badge";
+@import "alert";
+@import "progress";
+@import "list-group";
+@import "close";
+@import "toasts";
+@import "modal";
+@import "tooltip";
+@import "popover";
+@import "carousel";
+@import "spinners";
+@import "offcanvas";
+@import "placeholders";
+
+// Helpers
+@import "helpers";
+
+// Utilities
+@import "utilities/api";
+// scss-docs-end import-stack
+// bootstrap
+
+
+
 @import 'styles/1-helpers';
 
 
 
+$enable-responsive-font-sizes: true;
+$enable-shadows: true;
 
 // to hide scroll bar page: not needed
 body {
@@ -22,57 +84,58 @@ body::-webkit-scrollbar {
 
 
 
-// @mixin fade-in {
-//   opacity: 1;
-//   animation-name: fadeInOpacity;
-//   animation-iteration-count: 1;
-//   animation-timing-function: ease-in;
-//   animation-duration: 0.2s;
-// }
+@mixin fade-in {
+  opacity: 1;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-duration: 0.2s;
+}
 
-// @keyframes fadeInOpacity {
-//   0% {
-//       opacity: 0;
-//   }
-//   100% {
-//       opacity: 1;
-//   }
-// }
-
-
-// .tooltip{
-//   @extend .shadow;
-
-//   border: 0.1em solid!important;
-// }
+@keyframes fadeInOpacity {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
 
 
-// .fade {
-// 	transition:opacity 0.15s linear !important;
-// }
-// .collapsing {
-// 	transition:height 0.35s ease !important;
-// }
-// .custom-switch .custom-control-label::after {
-// 	transition:background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-transform 0.15s ease-in-out !important;
-// 	transition:transform 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
-// 	transition:transform 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-transform 0.15s ease-in-out !important;
-// }
-// .custom-range::-webkit-slider-thumb {
-// 	transition:background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
-// }
-// .custom-range::-moz-range-thumb {
-// 	transition:background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
-// }
-// .custom-range::-ms-thumb {
-// 	transition:background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
-// }
-// .custom-control-label::before,.custom-file-label,.custom-select {
-// 	transition:background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
-// }
-// .badge {
-// 	transition:color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
-// }
+.tooltip{
+  @extend .shadow;
+
+  border: 0.1em solid!important;
+}
+
+
+.fade {
+	transition:opacity 0.15s linear !important;
+}
+.collapsing {
+	transition:height 0.35s ease !important;
+}
+.custom-switch .custom-control-label::after {
+	transition:background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-transform 0.15s ease-in-out !important;
+	transition:transform 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
+	transition:transform 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-transform 0.15s ease-in-out !important;
+}
+.custom-range::-webkit-slider-thumb {
+	transition:background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
+}
+.custom-range::-moz-range-thumb {
+	transition:background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
+}
+.custom-range::-ms-thumb {
+	transition:background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
+}
+.custom-control-label::before,.custom-file-label,.custom-select {
+	transition:background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
+}
+.badge {
+	transition:color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
+}
+
 // .progress-bar {
 // 	transition:width 0.6s ease !important;
 // }
@@ -80,34 +143,17 @@ body::-webkit-scrollbar {
 // 	-webkit-animation:progress-bar-stripes 1s linear infinite !important;
 // 	animation:progress-bar-stripes 1s linear infinite !important;
 // }
-// // .modal.fade .modal-dialog {
-// // 	transition:-webkit-transform 0.3s ease-out !important;
-// // 	transition:transform 0.3s ease-out !important;
-// // 	transition:transform 0.3s ease-out,-webkit-transform 0.3s ease-out !important;
-// // }
-// .carousel-item {
-// 	transition:-webkit-transform 0.6s ease-in-out !important;
-// 	transition:transform 0.6s ease-in-out !important;
-// 	transition:transform 0.6s ease-in-out,-webkit-transform 0.6s ease-in-out !important;
-// }
-// .carousel-fade .carousel-item {
-//     transition-property: opacity !important;
-// }
 
-// .carousel-fade .active.carousel-item-left,
-// .carousel-fade .active.carousel-item-right {
-//     transition: 0s 0.6s opacity !important;
-// }
+.modal.fade .modal-dialog {
+	transition:-webkit-transform 0.3s ease-out !important;
+	transition:transform 0.3s ease-out !important;
+	transition:transform 0.3s ease-out,-webkit-transform 0.3s ease-out !important;
+}
 
-// .carousel-control-prev,.carousel-control-next {
-// 	transition:opacity 0.15s ease !important;
-// }
-// .carousel-indicators li {
-// 	transition:opacity 0.6s ease !important;
-// }
-// .form-control {
-// 	transition:border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
-// }
-// .btn {
-// 	transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
-// }
+
+.form-control {
+	transition:border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
+}
+.btn {
+	transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out !important;
+}

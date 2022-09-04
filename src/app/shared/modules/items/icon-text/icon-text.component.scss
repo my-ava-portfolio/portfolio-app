@@ -4,7 +4,7 @@ a {
   color: rgba(var(--bs-black-rgb))
 }
 
-.bounce a {
+.bounce a .icon {
     display:inline-block;
     animation: bounce 2s ease infinite;
     color: rgba(var(--bs-danger-rgb))

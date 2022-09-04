@@ -1,6 +1,7 @@
-    <div class="badge rounded-pill mx-1" *ngIf="!url"
+    <div class="badge rounded-pill m-1" *ngIf="!url"
       [ngClass]="classes" 
       [ngStyle]="{'background-color': customBgColor ? customBgColor : 'none'}"
+      [style.color]="getConstract(customBgColor)"
     >
         <ng-container *ngIf="icon">
             <fa-icon  [icon]="icon" size="2x"></fa-icon>
@@ -8,10 +9,11 @@
         {{ title }}
     </div>
 
-    <a class="badge rounded-pill mx-1" *ngIf="url"
+    <a class="badge rounded-pill m-1" *ngIf="url"
       [href]="url" target="_blank" rel="noopener noreferrer"
       [ngClass]="classes" 
       [ngStyle]="{'background-color': customBgColor ? customBgColor : 'none'}"
+      [style.color]="getConstract(customBgColor)"
       >
         <ng-container *ngIf="icon">
             <fa-icon  [icon]="icon" size="2x"></fa-icon>

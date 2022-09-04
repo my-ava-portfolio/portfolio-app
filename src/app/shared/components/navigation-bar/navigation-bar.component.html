@@ -46,27 +46,24 @@
 
       <div id="leftSideBar__container__header__contact" *ngIf="contactData">
         <a class="
-            badge 
-            bg-light 
+            badge text-bg-light 
             m-1
           " [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="emailIcon" size="2x"></fa-icon>
+          <fa-icon class="text-black" [icon]="emailIcon" size="1x"></fa-icon>
         </a>
 
         <a class="
-            badge 
-            bg-light 
+            badge text-bg-light 
             m-1
           " [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="linkedinIcon" size="2x"></fa-icon>
+          <fa-icon class="text-black" [icon]="linkedinIcon" size="1x"></fa-icon>
         </a>
 
         <a class="
-            badge 
-            bg-light 
+            badge text-bg-light 
             m-1
           " [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="githubIcon" size="2x"></fa-icon>
+          <fa-icon class="text-black" [icon]="githubIcon" size="1x"></fa-icon>
         </a>
 
       </div>

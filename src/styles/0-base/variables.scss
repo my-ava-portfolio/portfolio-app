@@ -1,46 +1,31 @@
 // TODO clean it
 
-$enable-responsive-font-sizes: true;
-$enable-shadows: true;
-
 // Variables  
 $null: null;
 
 $very-dark:               #2a2e33;
 $less-dark:               #495057;
-$personal-project-color:  rgb(177, 97, 17);
-$gallery-color:           rgba(31,120,180);
-$job-color:               rgb(185, 25, 28);
-$volunteer-color:         rgba(106,61,154);
-$education-color:         rgb(42, 136, 35);
+$personal-project-color:  #d8702a;
+$gallery-color:           #1f78b4;
+$job-color:               #a70a0c;
+$volunteer-color:         #6a3d9a;
+$education-color:         #2a8823;
 $disabled-color:          #b7b6b6;
-$technics-color:          rgb(18, 121, 177);
-$themes-color:            rgb(102, 189, 27);
-$tools-color:             rgb(161, 119, 2);
-$skills-color:             grey;
+$technics-color:          #1279b1;
+$themes-color:            #50990f;
+$tools-color:             #a17702;
+$skills-color:            #808080;
 
 
-$map-color:     teal;
-$app-color:     blue;
-$video-color:   brown;
-$chart-color:   grey;
-$tool-color:    black;
-$library-color: blue;
-$methodo-color: cyan;
+$map-color:     #96c418;
+$app-color:     #0000FF;
+$video-color:   #800000;
+$chart-color:   #808080;
+$tool-color:    #000000;
+$library-color: #800080;
+$methodo-color: #106969;
 
 $navbar-height: 58px;
-
-
-$breakpoints: (
-  "xs":  0px,
-  "sm":  576px,
-  "md":  768px,
-  "lg":  992px,
-  "xl":  1200px,
-  "xxl": 1400px,
-) !default;
-
-
 
 
 /* nav bar height */
@@ -51,3 +36,28 @@ $breakpoints: (
 #gotop-button {
   z-index: 1;
 }
+
+
+$portfolio-colors-map: (
+  "very-dark": $very-dark,
+  "less-dark": $less-dark,
+  "personal-project": $personal-project-color,
+  "personal_project": $personal-project-color,
+  "job": $job-color,
+  "gallery": $gallery-color,
+  "volunteer": $volunteer-color,
+  "education": $education-color,
+  "disabled": $disabled-color,
+  "technics": $technics-color,
+  "themes": $themes-color,
+  "tools": $tools-color,
+  "map": $map-color,
+  "app": $app-color,
+  "video": $video-color,
+  "chart": $chart-color,
+  "methodo": $methodo-color,
+  "tool": $tool-color,
+  "library": $library-color,
+  "skills": $skills-color
+);
+

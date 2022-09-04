@@ -12,14 +12,19 @@
       <ng-container *ngFor="let type of activityTypesMetadata">
         <div
           class="activity-button
-            btn btn-sm btn-light
+            btn btn-light
             fw-bold
-            m-2
+            my-2 mx-3
+            position-relative
           "
           [class.active]="tabView == type.id"
           (click)="enableActivity(type.id)">
           {{type.title}}
-          <div [class]="'badge bg-' + type.id">{{ type.count }}</div>
+          <span [ngClass]="'badge bg-' + type.id" class="position-absolute top-0 start-100 translate-middle p2 border border-3 border-light rounded-circle">
+            {{ type.count }}
+            <span class="visually-hidden"></span>
+          </span>
+          <div ></div>
         </div>
       </ng-container>
   </div>

@@ -2,11 +2,12 @@
 
     <div id="home__generalInfo__header" class="
         d-flex flex-column
+        text-center
       ">
 
       <h3 class="title-name">{{ generalData.first_name }} {{ generalData.last_name }}</h3>
       
-      <div class="text-center">
+      <div>
         <div class="badge-title-light">{{ generalData.job }}</div>
         <div class="badge-title-warning">{{ generalData.experience_duration }}</div>
       </div>
@@ -21,7 +22,7 @@
         d-none d-lg-block
         rounded-circle
         col-2
-        m-3
+        me-3
     " [src]="imageProfile">
 
 </set-article-header>
