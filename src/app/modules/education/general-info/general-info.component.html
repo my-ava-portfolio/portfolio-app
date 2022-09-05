@@ -11,15 +11,15 @@
   </div>
 
   <div id="education__generalInfo__languages" class="
-    d-flex flex-row
-    justify-content-around
+    d-flex flex-xl-row flex-column flex-wrap
+    justify-content-center
+    border border-white rounded-3 p-2 
   ">
     
     <div class="card-box
-      bg-light
-      rounded
-      m-2 p-2
-      text-center
+      btn btn-light
+      my-2 mx-3
+      pe-none
     " *ngFor="let language of inputLanguagesData">
         <div class="fw-bold">{{language.language}}</div>
       <div class="small">{{language.level}}</div>
