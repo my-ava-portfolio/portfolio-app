@@ -3,27 +3,24 @@
 // Variables  
 $null: null;
 
-$very-dark:               #2a2e33;
-$less-dark:               #495057;
-$personal-project-color:  #d8702a;
-$gallery-color:           #1f78b4;
-$job-color:               #a70a0c;
-$volunteer-color:         #6a3d9a;
-$education-color:         #2a8823;
-$disabled-color:          #b7b6b6;
-$technics-color:          #1279b1;
-$themes-color:            #50990f;
-$tools-color:             #a17702;
-$skills-color:            #808080;
+$personal-project-color:  #ff7f00; //
+$gallery-color:           #377eb8; //
+$job-color:               #e41a1c; //
+$volunteer-color:         #984ea3; //
+$education-color:         #4daf4a; //
+$disabled-color:          #999999; //
+$technics-color:          #377eb8;
+$themes-color:            #7abd3f;
+$tools-color:             #666666;
 
 
-$map-color:     #96c418;
-$app-color:     #0000FF;
-$video-color:   #800000;
-$chart-color:   #808080;
-$tool-color:    #000000;
-$library-color: #800080;
-$methodo-color: #106969;
+$map-color:     #d66363;
+$app-color:     #6fa2e4;
+$video-color:   #8da0cb;
+$chart-color:   #a6d854;
+$tool-color:    #ffd92f;
+$library-color: #bea277;
+$methodo-color: #b3b3b3;
 
 $navbar-height: 58px;
 
@@ -39,8 +36,6 @@ $navbar-height: 58px;
 
 
 $portfolio-colors-map: (
-  "very-dark": $very-dark,
-  "less-dark": $less-dark,
   "personal-project": $personal-project-color,
   "personal_project": $personal-project-color,
   "job": $job-color,
@@ -58,6 +53,5 @@ $portfolio-colors-map: (
   "methodo": $methodo-color,
   "tool": $tool-color,
   "library": $library-color,
-  "skills": $skills-color
 );
 
