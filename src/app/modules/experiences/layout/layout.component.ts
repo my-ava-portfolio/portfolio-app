@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, HostListener  } from '@ang
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
 
-import { apiLogoUrl, minWidthLandscape, tagsIcon } from '@core/inputs';
+import { assetsLogoPath, minWidthLandscape, tagsIcon } from '@core/inputs';
 import { experiencesPages } from '@core/inputs';
 
 import { interval, Subscription } from 'rxjs';
@@ -27,7 +27,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   fragment: string = '';
 
-  apiImgUrl = apiLogoUrl;
+  apiImgUrl = assetsLogoPath;
   activityIdFromActivityComponents!: string;
   isLegendDisplayed = true;
 
@@ -90,11 +90,11 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
         this.activityTypesMetadata = [
           {
             id: "job",
-            title: "Entreprises",
+            title: "Missions",
             count: this.jobsData.length
           },
           {
-            id: "personal_project",
+            id: "personal-project",
             title: "Projets personnels",
             count: this.personalProjectsData.length
           },
@@ -110,12 +110,10 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
       }
     );
 
-
-
-
     this.routeSubscription = this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment) {
+          // in order to filter the experiences page with a specific activity
           this.fragment = fragment
         }
       }

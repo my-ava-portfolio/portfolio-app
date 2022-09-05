@@ -1,115 +1,149 @@
-<nav id="sidebar" class="bg-dark sticky-top overflow-auto vh-100" [ngClass]="sideBarCollapsed ? 'inactive' : 'active'">
+<nav 
+  id="leftSideBar" 
+  *ngIf="generalData" 
+  [ngClass]="sideBarCollapsed ? 'inactive' : 'active'"
+  class="
+    sticky-top
+    vh-100
+    bg-dark bg-gradient
+  "
+  >
+  
+  <div 
+    id="leftSideBar__container"
+    class="
+      d-flex flex-column
+      h-100
+      mx-2
+      text-center
+    "
+  >
+    <div id="leftSideBar__container__header">
 
-  <div class="d-flex flex-column text-white text-center mx-3 h-100" *ngIf="generalData">
+      <img 
+        [src]="imageProfile"
+        class="img-fluid
+          p-3
+          rounded-circle
+        "
+      >
 
-      <div id="nav-header" class="mt-3">
+      <div id="leftSideBar__container__header__profil" *ngIf="sideBarCollapsed">
+        <h4 class="title-name">{{ generalData.first_name }} {{ generalData.last_name }}</h4>
+        <div class="badge-title-light">{{ generalData.job }}</div>
 
-        <img class="rounded mx-auto rounded-circle img-fluid" [src]="imageProfile">
+        <a class="badge-title-warning" [title]="legacyResumePage.title" [routerLink]="legacyResumePage.route">
+          {{legacyResumePage.verbose_title}}
+        </a>
 
-        <div id="profil-name" class="my-3" *ngIf="sideBarCollapsed">
-          <h4>{{ generalData.first_name }} {{ generalData.last_name }}</h4>
-          <h6 class="mt-2 bg-white rounded-pill text-black profil-badge small">{{ generalData.job }}</h6>
-
-          <h6 class="mt-2 bg-warning rounded-pill text-black profil-badge small">
-            <a class="text-decoration-none text-black" [title]="legacyResumePage.title" [routerLink]="legacyResumePage.route">
-              {{legacyResumePage.verbose_title}}
-            </a>
-          </h6>
-
-        </div>
-
-        <div id="profil-shortname" class="mb-1" *ngIf="!sideBarCollapsed">
-          <strong>{{ generalData.first_name[0] }}{{ generalData.last_name[0] }}</strong>
-        </div>
-
-        <ul class="list-unstyled">
-          <h6 class="fw-bold" *ngIf="sideBarCollapsed">Contact</h6>
-
-          <li class="m-1 badge bg-white rounded-pill" *ngIf="contactData">
-            <a class="" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-              <fa-icon class="text-black" [icon]="emailIcon" size="1x"></fa-icon>
-            </a>
-          </li>
-
-          <li class="m-1 badge bg-white rounded-pill">
-            <a class="" [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-              <fa-icon class="text-black" [icon]="linkedinIcon" size="1x"></fa-icon>
-            </a>
-          </li>
-
-          <li class="m-1 badge bg-white rounded-pill">
-            <a class="" [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-              <fa-icon class="text-black" [icon]="githubIcon" size="1x"></fa-icon>
-            </a>
-          </li>
-
-        </ul>
       </div>
 
-      <div id="nav-body">
+      <h4 id="leftSideBar__container__header__shortname" *ngIf="!sideBarCollapsed" class="title-name">
+        {{ generalData.first_name[0] }}{{ generalData.last_name[0] }}
+      </h4>
 
-        <ul class="list-unstyled" [ngClass]="sideBarCollapsed ? '' : 'd-flex flex-column align-items-center'" id="main-topics-buttons">
-          <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: topicPages}"></ng-container>
-        </ul>
+      <h5 *ngIf="sideBarCollapsed" class="text-white">Contact</h5>
+
+      <div id="leftSideBar__container__header__contact" *ngIf="contactData">
+        <a class="
+            badge text-bg-light 
+            m-1
+          " [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+          <fa-icon class="text-black" [icon]="emailIcon" size="1x"></fa-icon>
+        </a>
+
+        <a class="
+            badge text-bg-light 
+            m-1
+          " [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+          <fa-icon class="text-black" [icon]="linkedinIcon" size="1x"></fa-icon>
+        </a>
+
+        <a class="
+            badge text-bg-light 
+            m-1
+          " [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+          <fa-icon class="text-black" [icon]="githubIcon" size="1x"></fa-icon>
+        </a>
+
+      </div>
+    </div>
+
+    <div id="leftSideBar__container__body" class="mt-3">
+
+      <ul class="list-unstyled align-items-center" id="pages" [ngClass]="sideBarCollapsed ? 'mx-3' : 'd-flex flex-column'">
+        <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: topicPages}"></ng-container>
+      </ul>
+    </div>
+
+    <div id="leftSideBar__container__footer" class="mt-auto mb-3">
+
+      <ul class="list-unstyled list-group justify-content-center mb-2" [ngClass]="sideBarCollapsed ? 'list-group-horizontal' : ''">
+
+        <li>
+          <a class="text-white mx-1" id="infosLink" data-bs-toggle="modal" data-bs-target="#websiteInfos">
+            <fa-icon [icon]="infoIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+        <li>
+          <a class="text-danger mx-1" id="issueLink" container="body" [href]="GithubBugIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactBugMessage" triggers="mouseenter:mouseleave">
+            <fa-icon [icon]="bugIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+        <li>
+          <a class="text-warning mx-1" id="questionLink" container="body" [href]="GithubQuestionIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactHelpMessage" triggers="mouseenter:mouseleave">
+            <fa-icon [icon]="helpIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+        <li>
+          <a class="text-success mx-1" id="enhancementLink" container="body" [href]="GithubEnhancementIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactFeatureMessage" triggers="mouseenter:mouseleave">
+            <fa-icon [icon]="exclamationIcon" size="1x"></fa-icon>
+          </a>
+        </li>
+
+      </ul>
+
+      <div class="copyright
+        text-white
+      " *ngIf="sideBarCollapsed">
+        © {{currentYear}} {{ generalData.first_name }} {{ generalData.last_name }}
       </div>
 
-      <div id="nav-footer" class="mt-auto mb-3">
-
-        <ul class="list-group list-inline justify-content-center" id="contact-buttons" [ngClass]="sideBarCollapsed ? 'list-group-horizontal' : ''">
-
-          <li>
-            <a class="text-white cursor" data-bs-toggle="modal" data-bs-target="#websiteInfos">
-              <fa-icon class="m-1" [icon]="infoIcon" size="1x"></fa-icon>
-            </a>
-          </li>
-
-          <li>
-            <a class="text-danger" container="body" [href]="GithubBugIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactBugMessage" triggers="mouseenter:mouseleave">
-              <fa-icon class="m-1" [icon]="bugIcon" size="1x"></fa-icon>
-            </a>
-          </li>
-
-          <li>
-            <a class="text-warning" container="body" [href]="GithubQuestionIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactHelpMessage" triggers="mouseenter:mouseleave">
-              <fa-icon class="m-1" [icon]="helpIcon" size="1x"></fa-icon>
-            </a>
-          </li>
-
-          <li>
-            <a class="text-success" container="body" [href]="GithubEnhancementIssueLink + currentPage + issueSufixTitle" target="_blank" [popoverTitle]="contactPopupTitle" [ngbPopover]="contactFeatureMessage" triggers="mouseenter:mouseleave">
-              <fa-icon class="m-1" [icon]="exclamationIcon" size="1x"></fa-icon>
-            </a>
-          </li>
-
-        </ul>
-
-
-        <div id="profil-name" class="my-2" *ngIf="sideBarCollapsed">
-          © {{currentYear}} {{ generalData.first_name }} {{ generalData.last_name }}
-        </div>
-
-        <div id="profil-shortname" class="my-3" *ngIf="!sideBarCollapsed">
-          © {{currentYear}} {{ generalData.first_name[0] }}{{ generalData.last_name[0] }}
-        </div>
-
+      <div class="copyright
+        text-white
+      " *ngIf="!sideBarCollapsed">
+        © {{currentYear}} {{ generalData.first_name[0] }}{{ generalData.last_name[0] }}
       </div>
 
     </div>
-
-  </nav>
+  </div>
+</nav>
 
 
 <ng-template #topicPagesBuilder let-topicPages='topicPages'>
   <ng-container *ngFor="let page of topicPages">
 
-      <li class="border-bottom text-warning" hoverClass="fw-bold">
+      <li class="page
+        border-bottom
+      ">
         <ng-container *ngIf="page.route">
-          <a class="text-warning text-decoration-none p-2 d-flex d-block" [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['fw-bolder']">
+          <a class="
+            text-warning text-decoration-none
+            d-flex flex-row p-2
+            text-start
+          " [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']">
             <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
           </a>
         </ng-container>
         <ng-container *ngIf="page.url">
-          <a class="text-warning text-decoration-none p-2 d-flex d-block" [href]="page.url" target="_blank" rel="noopener noreferrer">
+          <a class="
+            text-warning text-decoration-none
+            d-flex flex-row p-2
+            text-start
+          " [href]="page.url" target="_blank" rel="noopener noreferrer">
             <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
           </a>
         </ng-container>
@@ -118,76 +152,14 @@
   </ng-container>
 </ng-template>
 
+
 <ng-template #linkTopicStyle  let-page='page'>
-  <div class="w-25 text-center">
+  <div class="icon w-25 text-center">
     <fa-icon [icon]="page.icon"></fa-icon>
   </div>
-  <span class="w-75" *ngIf="sideBarCollapsed">{{page.title}}</span>
+  <span class="page-name w-75" *ngIf="sideBarCollapsed">{{page.title}}</span>
 </ng-template>
 
-
-
-<div class="modal fade" id="websiteInfos"  tabindex="-1" aria-labelledby="websiteInfos" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Informations</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <a class="mb-3 text-dark" [href]="authorRepoUrl" target="_blank" rel="noopener noreferrer">
-          © {{currentYear}} amauryval <fa-icon class="ms-2" [icon]="githubIcon"></fa-icon>
-        </a>
-
-        <ul class="list-unstyled">
-
-          <li class="">
-            <fa-icon [icon]="pythonIcon"></fa-icon>
-            <span class="me-1">Python {{this.pythonVersion}}</span>
-          </li>
-          <li class="">
-            <a class="text-decoration-none" [href]="lib1RepoUrl" target="_blank" rel="noopener noreferrer">
-              <fa-icon class="" [icon]="githubIcon"></fa-icon>
-              <span> {{this.lib1Name}}</span>
-            </a>
-          </li>
-
-          <li class="">
-            <a class="text-decoration-none" [href]="angularRepoUrl" target="_blank" rel="noopener noreferrer">
-              <img class="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/512px-Angular_full_color_logo.svg.png" height="20px" width="20px"/>
-            </a>
-            <span> Angular</span>
-          </li>
-
-          <li class="">
-            <a class="text-decoration-none" [href]="bootstrapRepoUrl" target="_blank" rel="noopener noreferrer">
-              <img class="" src="https://ng-bootstrap.github.io/img/logo-stack.svg" height="20px" width="20px"/>
-            </a>
-          </li>
-
-          <li class="">
-            <a class="text-decoration-none" [href]="openLayersRepoUrl" target="_blank" rel="noopener noreferrer">
-              <img class="" src="https://openlayers.org/assets/theme/img/logo70.png" height="20px" width="60px"/>
-            </a>
-          </li>
-
-          <li class="">
-            <a class="text-decoration-none" [href]="d3RepoUrl" target="_blank" rel="noopener noreferrer">
-              <img class="" src="https://d3js.org/logo.svg" height="20px" width="20px"/>
-            </a>
-          </li>
-
-        </ul>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-
-</div>
 
 
 

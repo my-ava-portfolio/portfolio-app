@@ -1,9 +1,8 @@
 #backgroundMap {
-  // position: absolute;
   z-index: -1;
 }
 
-#map {
+#backgroundMap__map {
   position: fixed;
   width: 100%;
   height: 100%;

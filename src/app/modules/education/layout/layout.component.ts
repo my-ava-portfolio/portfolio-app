@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewEncapsulation  } from '@angular/core';
 
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
 
-import { apiLogoUrl } from '@core/inputs';
+import { assetsLogoPath } from '@core/inputs';
 import { educationPages } from '@core/inputs';
 
 import { interval, Subscription } from 'rxjs';
@@ -17,11 +17,11 @@ import { fadeInOutAnimation } from '@core/animation_routes';
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
-  animations: [fadeInOutAnimation]
+  animations: [fadeInOutAnimation ],
 })
 export class LayoutComponent implements OnInit {
   fragment!: string | null;
-  apiImgUrl = apiLogoUrl;
+  apiImgUrl = assetsLogoPath;
 
 
   activityIdFromActivityComponents!: string;

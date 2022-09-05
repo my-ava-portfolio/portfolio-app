@@ -1,14 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
-import { Location } from '@angular/common';
 
 import { Subscription } from 'rxjs';
 
-import { tagIcon, centerIcon} from '@core/inputs';
-
 import { MapService } from '@services/map.service';
-import { ActivationEnd, NavigationEnd, Router } from '@angular/router';
-import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
+import { ControlerService } from '@services/controler.service';
 
 
 @Component({
@@ -19,26 +15,14 @@ import { fadeInOutAnimation } from '@core/animation_routes';
   animations: [fadeInOutAnimation]
 })
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
-  tagIcon = tagIcon;
-  centerIcon = centerIcon;
+
   isLegendDisplayed: boolean = true;
 
   mapScaleDivSubscription!: Subscription;
-  routerSubscription!: Subscription;
-
-  currentMapTool!: string;
-  appsWithLegend = [
-    'gtfs-viewer',
-    'activities'
-  ]
-  appsWithoutLegend = [
-    'sandbox',
-  ]
+  mapProjectionSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
-    private router: Router,
-    private location: Location,
     private controlerService: ControlerService,
   ) {
 
@@ -46,30 +30,27 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       (status: boolean) => {
         if (status) {
           this.setMapElements()
-
         }
-
       }
     );
 
-    this.mapService.setMapProjectionFromEpsg.subscribe(
+    this.mapProjectionSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
       (_: string) => {
         this.setMapElements()
       }
     );
 
-    this.routerSubscription = this.router.events.subscribe((_: any) => {
-      const urlSplit: string[] =  this.location.path().split('/')
-      this.currentMapTool = urlSplit[urlSplit.length - 1].split('#')[0];
-    });
-
   }
 
   ngOnInit(): void {
-    this.mapService.mapInteraction(true);
     this.sendResumeSubMenus()
+    this.mapService.mapInteraction(true);
 
     this.mapService.buildMapMapControlers()
+  }
+
+  sendResumeSubMenus(): void {
+    this.controlerService.pullSubMenus([])
   }
 
   ngAfterViewInit(): void {
@@ -84,22 +65,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapService.unsetControlToMap("miniMap")
 
     this.mapScaleDivSubscription.unsubscribe();
-    this.routerSubscription.unsubscribe()
+    this.mapProjectionSubscription.unsubscribe();
 
   }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus([])
-  }
-
 
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
-  zoomOnData(): void {
-    this.mapService.sendZoomAction();
-  }
+  // zoomOnData(): void {
+  //   this.mapService.sendZoomAction();
+  // }
 
   setMapElements(): void {
     this.mapService.unsetControlToMap("miniMap")
@@ -107,13 +83,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapService.unsetControlToMap("attribution")
 
     this.mapService.setControlToMap("miniMap")
-    const divOverview: any = window.document.getElementById('overview-map');
+    const divOverview: any = window.document.getElementById('overviewMap');
     divOverview.appendChild(
       window.document.getElementsByClassName("ol-overviewmap ol-custom-overviewmap")[0]
     )
 
     this.mapService.setControlToMap("scale")
-    const divScale: any = window.document.getElementById('legend-scale');
+    const divScale: any = window.document.getElementById('legendScale');
     divScale.appendChild(
       window.document.getElementsByClassName("ol-scale-line ol-unselectable")[0]
     )

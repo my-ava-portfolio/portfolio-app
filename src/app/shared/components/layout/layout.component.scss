@@ -1,40 +1,21 @@
-#content {
-  transition: all 0.3s;
-}
-
-#content-container {
-  transition: all 0.5s ease-in-out;
-}
-
-.overlay {
+#main__overlay {
   position: fixed;
   /* full screen */
   width: 100vw;
   height: 100vh;
-  /* transparent black */
   background: rgba(0, 0, 0, 0.7);
-  /* middle layer, i.e. appears below the sidebar */
   z-index: 998;
   opacity: 0;
-  /* animate the transition */
   transition: all 0.5s ease-in-out;
-}
-
-
-
-
-
-#overlayContainer{
-  display:none
+  display: none;
 }
 
 @media (max-width: 960px){
-  #overlayContainer{
-    display:block
-  }
+  #main__overlay{
+    display:block;
 
-  .overlay.active{
-    opacity: 1;
+    &.active{
+      opacity: 1;
+    }
   }
-
 }

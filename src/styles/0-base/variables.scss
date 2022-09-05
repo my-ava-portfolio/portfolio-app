@@ -1,0 +1,57 @@
+// TODO clean it
+
+// Variables  
+$null: null;
+
+$personal-project-color:  #ff7f00; //
+$gallery-color:           #377eb8; //
+$job-color:               #e41a1c; //
+$volunteer-color:         #984ea3; //
+$education-color:         #4daf4a; //
+$disabled-color:          #999999; //
+$technics-color:          #377eb8;
+$themes-color:            #7abd3f;
+$tools-color:             #666666;
+
+
+$map-color:     #d66363;
+$app-color:     #6fa2e4;
+$video-color:   #8da0cb;
+$chart-color:   #a6d854;
+$tool-color:    #ffd92f;
+$library-color: #bea277;
+$methodo-color: #b3b3b3;
+
+$navbar-height: 58px;
+
+
+/* nav bar height */
+* {
+  scroll-margin-top: 75px;
+}
+
+#gotop-button {
+  z-index: 1;
+}
+
+
+$portfolio-colors-map: (
+  "personal-project": $personal-project-color,
+  "personal_project": $personal-project-color,
+  "job": $job-color,
+  "gallery": $gallery-color,
+  "volunteer": $volunteer-color,
+  "education": $education-color,
+  "disabled": $disabled-color,
+  "technics": $technics-color,
+  "themes": $themes-color,
+  "tools": $tools-color,
+  "map": $map-color,
+  "app": $app-color,
+  "video": $video-color,
+  "chart": $chart-color,
+  "methodo": $methodo-color,
+  "tool": $tool-color,
+  "library": $library-color,
+);
+

@@ -1,27 +1,54 @@
-<div class="container-fluid h-100" *ngIf="isDataAvailable" [@fadeInOut]>
-
-  <div class="d-flex flex-column bg-white my-2 rounded">
+<set-article-container *ngIf="isDataAvailable" [@fadeInOut]>
 
     <app-general-info
-      class="mb-2"
       [fragment]="fragment"
       [profilData]="profilData"
       [languagesData]="languagesData"
     ></app-general-info>
 
+
+  <set-section-container>
+    <h5 id="education__degrees" class="title-tick-education">Parcours universitaire</h5>
+
     <app-degrees-bar
-      class="mb-2"
+      class="
+        d-flex flex-xl-row;
+        justify-content-center
+        flex-wrap
+      "
       [fragment]="fragment"
       [degreesData]="degreesData"
-      [publicationsData]="publicationsData"
     ></app-degrees-bar>
+  </set-section-container>
+
+  <set-section-container>
+    <h5 id="education__publish" class="title-tick-warning">Travaux/publications universitaires</h5>
+
+    <app-publication-bar
+      class="
+        d-flex flex-xl-row;
+        justify-content-center
+        flex-wrap
+      "
+      [fragment]="fragment"
+      [publicationsData]="publicationsData"
+    ></app-publication-bar>
+  </set-section-container>
+
+  <set-section-container>
+    <h5 id="education__trainings" class="title-tick-job">Formations professionnelles</h5>
 
     <app-trainings-bar
-      class="mb-2"
+      class="
+        d-flex flex-xl-row;
+        justify-content-center
+        flex-wrap
+      "
       [fragment]="fragment"
       [trainingsData]="trainingsData"
     ></app-trainings-bar>
+  </set-section-container>
+  
 
-  </div>
 
-</div>
+</set-article-container>

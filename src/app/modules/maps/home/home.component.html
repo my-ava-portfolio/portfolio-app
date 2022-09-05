@@ -1,33 +1,7 @@
-<div class="container-fluid g-0" [@fadeInOut]>
-  <div class="d-flex flex-column">
+  <div id="mapsHome" class="gallery" [@fadeInOut]>
 
-    <div class="m-4 grid-container">
-
-      <div class="mb-4 card feat-map bg-white" *ngFor="let app of mapPagesMenus.sub_menus">
-
-        <div class="card-header bg-dark bg-gradient text-white">
-          <span class="fw-bold">{{ app.title }}</span>
-        </div>
-
-        <div class="card-body">
-
-          <div class="text-center mb-3" *ngIf="app.img">
-            <img class="img-fluid rounded mx-auto d-block shadow" [src]="app.img"/>
-          </div>
-
-          <p class="card-text">{{ app.details }}</p>
-          <a *ngIf="!app.route.includes('https')" [routerLink]="[app.route]" class="btn btn-warning mt-auto fw-bold">Accéder</a>
-          <a *ngIf="app.route.includes('https')" [href]="app.route" class="btn btn-warning mt-auto fw-bold" target="_blank" rel="noopener noreferrer">Accéder</a>
-
-        </div>
-
-        <div class="card-footer">
-        </div>
-
-
-      </div>
-
-    </div>
+    <app-grid-container
+      [features]="mapPagesMenus.sub_menus"
+    ></app-grid-container>
 
   </div>
-</div>

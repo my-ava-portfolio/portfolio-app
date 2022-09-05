@@ -1,18 +1,18 @@
-import { AfterViewInit, Component, OnInit, Input, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Input, ElementRef, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
 
 import { Subscription } from 'rxjs';
 
 import { ResumeService } from '@services/resume.service';
-import { expandIcon, navIcon, helpIcon, ungroupIconUnicode, nextIcon } from '@core/inputs';
-import { ActivityActionsService } from '../services/activity-actions.service';
-import { includes } from 'ol/array';
+import { expandIcon, navIcon, helpIcon, ungroupIconUnicode, nextIcon, activitiesMapping, skillsMapping } from '@core/inputs';
+import { ActivityActionsService } from '@modules/experiences/services/activity-actions.service';
 
 @Component({
   selector: 'app-navigate',
   templateUrl: './navigate.component.html',
-  styleUrls: ['./navigate.component.scss']
+  styleUrls: ['./navigate.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() graphInputData!: any;
@@ -56,24 +56,32 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   // circle
   strokeWidth = '0px';
 
-  job_identifier = 'job'
-  personal_project_identifier = 'personal_project'
+  job_identifier: string = 'job'
+  personal_project_identifier = 'personal_project' // api input data... about the '_' vs scss...
   volunteer_identifier = 'volunteer'
-  skill_topics = ['themes', 'technics', 'tools']
+  skillsMapping = skillsMapping;
+  skill_topics = Object.keys(skillsMapping)
 
+  activityGraphDiv = "#activitiesGraph"
+  activityGraphSvgId = "activitiesGraph__svgChart"
+  activityLegendSvgId = "activitiesGraph__svgLegend"
+
+  legendIdDiv = "#legendGraph__themes"
   legendInputTitles = [
-    { id: 'legend_graph_title', label: 'Activités', cx: 5, cy: 15 },
-    { id: 'legend_graph_title', label: 'Compétences', cx: 160, cy: 15 },
+    { id: 'legend-graph-title', label: 'Activités', cx: 5, cy: 15 },
+    { id: 'legend-graph-title', label: 'Compétences', cx: 160, cy: 15 },
   ];
 
-  // here to control topic graph... TODO improve it !
+  // here to control topic graph & text (ex 'missions' shared by neighbors components)... TODO improve it !
+  activitiesMapping = activitiesMapping;
+
   legendInput = [
-    { id: this.job_identifier, status: 'unabled-topic', label: 'Entreprises', cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.personal_project_identifier, status: 'unabled-topic', label: 'Projets personnels', cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.volunteer_identifier, status: 'unabled-topic', label: 'Bénévolat', cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
-    { id: 'themes', status: 'enabled-topic', label: 'Thématiques', cx: 175, cy: 42, text_cx: 190, r: 5, rOver: 10 },
-    { id: 'technics', status: 'enabled-topic', label: 'Techniques', cx: 175, cy: 67, text_cx: 190, r: 5, rOver: 10 },
-    { id: 'tools', status: 'enabled-topic', label: 'Outils', cx: 175, cy: 92, text_cx: 190, r: 5, rOver: 10 }
+    { id: this.job_identifier, status: 'unabled-topic', label: this.activitiesMapping['job'], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.personal_project_identifier, status: 'unabled-topic', label: this.activitiesMapping['personal-project'], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.volunteer_identifier, status: 'unabled-topic', label: this.activitiesMapping['volunteer'], cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
+    { id: 'themes', status: 'enabled-topic', label: this.skillsMapping['themes'], cx: 175, cy: 42, text_cx: 190, r: 5, rOver: 10 },
+    { id: 'technics', status: 'enabled-topic', label: this.skillsMapping['technics'], cx: 175, cy: 67, text_cx: 190, r: 5, rOver: 10 },
+    { id: 'tools', status: 'enabled-topic', label: this.skillsMapping['tools'], cx: 175, cy: 92, text_cx: 190, r: 5, rOver: 10 }
   ];
 
   legendGroupInput = [
@@ -164,16 +172,14 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       // means that activities are grouped
       if ( activityType === this.job_identifier ) {
         // job node grouped
-        this._graphSelectedFiltering('#skillsGraphElements #node-job', false);
+        this._graphSelectedFiltering('#skillsGraphElements #node-' + this.job_identifier, false);
       } else if ( activityType === this.personal_project_identifier ) {
         // personal project node grouped
-        this._graphSelectedFiltering('#skillsGraphElements #node-personal_project', false);
+        this._graphSelectedFiltering('#skillsGraphElements #node-' + this.personal_project_identifier, false);
       } else if ( activityType === this.volunteer_identifier ) {
         // volunteer node grouped
-        this._graphSelectedFiltering('#skillsGraphElements #node-volunteer', false);
+        this._graphSelectedFiltering('#skillsGraphElements #node-' + this.volunteer_identifier, false);
       }
-      // this.nodehighlighter()
-    } else {
     }
   }
 
@@ -187,8 +193,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initSvgGraph(): void {
-    d3.select('.graph-content')
-      .append('svg').attr('id', 'svgSkillsChart')
+    d3.select(this.activityGraphDiv)
+      .append('svg').attr('id', this.activityGraphSvgId)
       .attr('width', '100%')
       .attr('height', this.chartHeight)
       .append('g').lower()
@@ -220,17 +226,17 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isVolunteersGrouped = false
     this.resetLegend();
     this.buildGraphElements();
-    d3.select(`#svgSkillsChart .nodes #node-${nodeToSelect}`).dispatch('click');
+    d3.select(`#${this.activityGraphSvgId} .nodes #node-${nodeToSelect}`).dispatch('click');
   }
 
   resetLegend(): void {
-    d3.select('#svgSkillsLegend').remove();
+    d3.select(`#${this.activityLegendSvgId}`).remove();
     this._buildLegendGraphActivities();
   }
 
   private _buildLegendGraphActivities(): void {
-    const svg = d3.select('.graph-legend')
-      .append('svg').attr('id', 'svgSkillsLegend')
+    const svg = d3.select(this.legendIdDiv)
+      .append('svg').attr('id', this.activityLegendSvgId)
       .attr('width', this.legendWidth)
       .attr('height', this.legendHeight);
 
@@ -319,7 +325,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     LegendElements
       .append('circle')
-        .attr('class', (d) => d.id)
+        .attr('class', (d) => 'svg-color-' + d.id)
         .attr('cx', (d) => d.cx)
         .attr('cy', (d) => d.cy)
         .attr('r', (d) => d.r);
@@ -397,7 +403,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     const svgElements: any = d3.select('#skillsGraphElements');
-    d3.select('#svgSkillsChart .bg-date').remove();
+    d3.select(`#${this.activityGraphSvgId} .bg-date`).remove();
     svgElements.append('g').attr('class', 'bg-date')
       .append('text')
       .attr('x', '50%')
@@ -423,9 +429,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
 
-    d3.select('#svgSkillsChart .links').remove();
-    d3.select('#svgSkillsChart .nodes').remove();
-    d3.select('#svgSkillsChart .nodeLabels').remove();
+    d3.select(`#${this.activityGraphSvgId} .links`).remove();
+    d3.select(`#${this.activityGraphSvgId} .nodes`).remove();
+    d3.select(`#${this.activityGraphSvgId} .nodeLabels`).remove();
 
     const link = svgElements.append('g').attr('class', 'links')
       .selectAll('line')
@@ -441,7 +447,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .enter()
       .append('circle')
       .attr('class', (d: any) => {
-          return `${d.properties.type} unselected`; // to filter from job/project card
+          return `svg-color-${d.properties.type} unselected`; // to filter from job/project card
       })
       .attr('id', (d: any) => {
           return 'node-' + d.properties.id;
@@ -547,14 +553,14 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private _unfocusOnGraph(): void {
-    d3.selectAll('#svgSkillsChart .links line').style('opacity', 1);
+    d3.selectAll(`#${this.activityGraphSvgId} .links line`).style('opacity', 1);
 
-    d3.selectAll('#svgSkillsChart .nodes circle')
+    d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`)
       .style('opacity', 1)
       .style('pointer-events', 'auto')
       .style('cursor', 'pointer');
 
-    d3.selectAll('#svgSkillsChart .nodeLabels text')
+    d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`)
       .attr('display', 'block');
   }
 
@@ -563,7 +569,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     let value: unknown | any;
     value = element.datum();
     const index = value.index;
-    const otherNodes = d3.selectAll('#svgSkillsChart .nodes circle');
+    const otherNodes = d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`);
 
     const nodeDisplayed = otherNodes.filter( (e: any) => {
         return this._neigh(index, e.index);
@@ -579,11 +585,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         return this._neigh(index, o.index) ? 'pointer' : 'unset';
     });
 
-    const labelNodes = d3.selectAll('#svgSkillsChart .nodeLabels text');
+    const labelNodes = d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`);
     labelNodes.attr('display', (o: any) => {
         return this._neigh(index, o.node.index) ? 'block' : 'none';
     });
-    const links = d3.selectAll('#svgSkillsChart .links line');
+    const links = d3.selectAll(`#${this.activityGraphSvgId} .links line`);
     links.style('opacity', (o: any) => {
         return o.source.index === index || o.target.index === index ? 1 : 0.1;
     });
@@ -658,9 +664,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private _ticked(): void {
-    const links: any = d3.selectAll('#svgSkillsChart .links line');
-    const nodes: any = d3.selectAll('#svgSkillsChart .nodes circle');
-    const labelNodes: any = d3.selectAll('#svgSkillsChart .nodeLabels text');
+    const links: any = d3.selectAll(`#${this.activityGraphSvgId} .links line`);
+    const nodes: any = d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`);
+    const labelNodes: any = d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`);
 
     nodes.call(this._updateNode.bind(this));
     links.call(this._updateLink.bind(this));

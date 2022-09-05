@@ -1,75 +1,48 @@
-#sidebar{
-  min-width: 250px;
-  max-width: 250px;
-  transition: all 0.3s;
-  overflow-y: auto;
-  // box-shadow: 4px 1rem 20px 3px rgb(0 0 0 / 54%) !important;
-  box-shadow: 8px 0rem 1rem rgb(0 0 0 / 25%) !important;
+//title-name
+//badge-title-*
+//profil-img
+
+#leftSideBar{
+    min-width: 250px;
+    max-width: 250px;
+    transition: all 0.3s;
+
+    &.active {
+        min-width: 80px;
+        max-width: 80px;
+    }
 }
-
-#sidebar::-webkit-scrollbar {
-  display: none;
-}
-
-#sidebar.active{
-  min-width: 80px;
-  max-width: 80px;
-  text-align: center;
-}
-
-#sidebar ul li:hover{
-  font-weight: 600;
-}
-
-#sidebar ul li a {
-  text-align: left;
-}
-
-
 
 @media (max-width: 960px){
 
-  #sidebar{
-    //margin-top: 3rem !important;
-    position: fixed;
-    //height: 100%;
-    //height: 100vh;
-    min-width: 200px;
-    max-width: 200px;
-    transition: all 0.3s;
-    overflow-y: auto;
-    //top: 0; // sticky behavior
-    //position: sticky; // sticky behavior
-  }
+    #leftSideBar{
+      position: fixed;
+      min-width: 200px;
+      max-width: 200px;
+      padding-top: 60px!important;  // due to navbar height
+    
+        &.active{
+            min-width: 80px;
+            max-width: 80px;
+            text-align: center;
+            margin-left: -80px !important;
+        }
+    }
 
-  #sidebar.active{
-      min-width: 80px;
-      max-width: 80px;
-      text-align: center;
-      margin-left: -80px !important;
-  }
-
-  #nav-header{
-    padding-top: 56px!important;
-  }
-
-  #sidebar {
-      margin-left: 0;
-  }
-
+    [class^="badge-title-"] {
+        font-size:x-small;
+    }
+    
 }
 
-
-.profil-badge {
-  display: inline-block;
-  padding: 5px 25px;
-  font-size: 12px;
-  // line-height: 20px;
-  // font-weight: 500;
-  // margin-bottom: 10px;
+.copyright {
+    word-wrap: break-word;
 }
 
+.page:hover, a.active{
+    font-weight: bold;
+}
 
-.img-fluid {
-  max-width: 60%;
+.profil-img {
+    max-height: 12vh;
 }

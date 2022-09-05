@@ -1,42 +1,76 @@
-<div id="control-bar" class="p-2 d-flex flex-column flex-xl-row justify-content-between navbar-light bg-light shadow border sticky-top">
+<head id="controlBar" class="
+    sticky-top d-flex flex-column
+    bg-light
+    shadow
+  ">
 
-  <div class="d-flex flex-row flex-fill justify-content-between">
-    <button type="button" id="sidebarCollapse" class="btn btn-warning" (click)="sideBarCollapseUpdated()">
+  <div id="controlBar__mainBar" class="
+    d-flex flex-row
+    justify-content-center
+    align-items-center
+    p-2
+  ">
+    
+    <button id="controlBar__mainBar__navBarButton" type="button" (click)="sideBarCollapseUpdated()"
+      class="
+        btn
+        btn-warning
+      "
+    >
       <fa-icon [icon]="navBarIcon"></fa-icon>
     </button>
 
-    <span class="fs-4 fw-bold text-center">{{this.pageTitle}}</span>
-
-    <div class="d-flex flex-row justify-content-end d-none d-xl-block">
-      <ng-container *ngFor="let page of topicPagesSubMenus" class="nav-item">
-
-        <a *ngIf="page.fragment" class="nav-link text-dark float-end" [routerLink]="topicPages.route" [fragment]="page.fragment" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-          <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
-        </a>
-
-        <a *ngIf="page.route" class="nav-link text-dark float-end" [routerLink]="page.route" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-          <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
-        </a>
-      </ng-container>
+    <div id="controlBar__mainBar__pageTitle" class="
+      fs-4 text-center fw-bold mx-auto
+    ">{{this.pageTitle}}</div>
+    
+    <div id="pageAnchors" class="
+        d-flex flex-row
+        d-none d-xl-block
+      ">
+      <ng-container *ngTemplateOutlet="subMenu"></ng-container>
     </div>
 
-    <button class="btn btn-dark d-inline-block d-xl-none" type="button" (click)="showHideSubMenuBar()">
+    <button id="controlBar__mainBar__subBarButton" type="button"  *ngIf="topicPagesSubMenus.length > 0" (click)="showHideSubMenuBar()"
+      class="
+        btn btn-dark
+        d-xl-none
+      "
+    >
       <fa-icon [icon]="subMenuIcon"></fa-icon>
     </button>
+
   </div>
 
-  <div class="d-flex flex-column justify-content-center align-items-center d-block d-xl-none" *ngIf="subMenuBarEnabled">
+  <div id="controlBar__subBar" *ngIf="subMenuBarEnabled"
+    class="
+      d-flex flex-column
+      justify-content-center
+      align-items-center
+      d-xl-none
+      mb-1
+    "
+  >
+    <ng-container *ngTemplateOutlet="subMenu"></ng-container>
+  </div>
 
-    <ng-container *ngFor="let page of topicPagesSubMenus" class="nav-item">
+</head>
 
-      <a *ngIf="page.fragment" class="nav-link text-dark float-end" [routerLink]="topicPages.route" [fragment]="page.fragment" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-        <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
-      </a>
 
-      <a *ngIf="page.route" class="nav-link text-dark float-end" [routerLink]="page.route" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">
-        <fa-icon [icon]="page.icon" class="me-1"></fa-icon>{{page.title}}
-      </a>
+<ng-template #subMenu>
+
+    <ng-container *ngFor="let page of topicPagesSubMenus" >
+
+      <set-icon-text *ngIf="page.fragment"
+      [route]="topicPages.route"
+      [fragment]="page.fragment"
+      [title]="page.title"
+      [iconInput]="page.icon"
+      classes="text-black m-2"
+    ></set-icon-text>
+
+    <!-- not working for map apps because data model is different & it's the right data model -->
     </ng-container>
 
-  </div>
-</div>
+
+</ng-template>

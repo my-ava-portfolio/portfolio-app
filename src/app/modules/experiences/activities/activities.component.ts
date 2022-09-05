@@ -1,12 +1,11 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
-import { apiLogoUrl, assetsImgUrl, galleryPages, githubIcon, mapActivitiesPages, notesIcon, personalBlogUrl, projectIcon, projectPages, websiteIcon } from '@core/inputs';
+import { assetsLogoPath, assetsImagesPath, galleryPages, githubIcon, mapActivitiesPages, notesIcon, personalBlogUrl, projectIcon, projectPages, websiteIcon, activitiesMapping } from '@core/inputs';
 
 import { ResumeService } from '@services/resume.service';
 
 import { arrowsDownIcon, expandIcon, resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '@core/inputs';
-import { ActivatedRoute } from '@angular/router';
 import { ActivityActionsService } from '../services/activity-actions.service';
 
 
@@ -22,8 +21,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() personalProjectsData: any;
   @Input() volunteersData: any;
 
-  apiImgUrl = apiLogoUrl;
-  assetsImgUrl = assetsImgUrl;
+  apiImgUrl = assetsLogoPath;
+  assetsImagesPath = assetsImagesPath;
   mapPages: any = mapActivitiesPages;
   galleryPagesRoute: string = galleryPages.route;
   blogPagesRoute: string = projectPages[0].route;
@@ -42,8 +41,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   notesIcon = notesIcon;
   websiteIcon = websiteIcon;
 
+  hiddenActivitiesDetails: number[] = [];
 
-  activityTitle = "Bénévolat";
   themesTitle = "Thèmes";
   contextTitle = "Contexte";
   missionTitle = "Missions";
@@ -53,19 +52,17 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   detailsTitle = "Détails";
   publicationsTitle = "Publications";
 
-  // tabView = 'companies';
-  availabled_topics = ["job", "personal_project", "volunteer"]
+  activitiesMapping = activitiesMapping;
+  availabled_topics = Object.keys(activitiesMapping)
   tabView = this.availabled_topics[0];
 
   pageLoadingTimeOut: number = 750;
 
   routeQueryParamsSubscription!: Subscription;
-  routeFragmentSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
-    private activatedRoute: ActivatedRoute,
     private activityActionsService: ActivityActionsService
 
   ) {
@@ -73,38 +70,37 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
       (activityId) => {
         this.tabView = activityId
+        // reset to avoid conflict between activity category
+        this.hiddenActivitiesDetails = [];
       }
     )
-
-    this.routeFragmentSubscription = this.activatedRoute.fragment.subscribe((fragment) => {
-      // from the activities map & gallery. we wait the page loading
-      setTimeout(() => {
-
-        if (fragment !== null) {
-          this.tabView = this.findActitivityTypeFromId(fragment)
-
-          // scrolling to the anchor (fragment)
-          setTimeout(() => {
-            const targetElement: any = document.getElementById(fragment);
-            if (targetElement) {
-              targetElement.scrollIntoView();
-            }
-          },this.pageLoadingTimeOut / 2)
-        }
-
-      }, this.pageLoadingTimeOut
-      )
-
-    })
 
   }
 
   ngOnInit(): void {
+    // in order to filter the page regarding an activity
+    if (this.fragment !== null) {
+      this.pushActivityId(this.fragment);
+    }
   }
 
   ngOnDestroy(): void {
-    this.routeFragmentSubscription.unsubscribe()
     this.activityEnablingSubscription.unsubscribe()
+  }
+
+
+
+  addToHiddenDetailsConter(activityIndex: number) {
+    if (this.hiddenActivitiesDetails.includes(activityIndex)) {
+
+      const index = this.hiddenActivitiesDetails.indexOf(activityIndex, 0);
+      if (index > -1) {
+        this.hiddenActivitiesDetails.splice(index, 1);
+      }
+
+    } else {
+      this.hiddenActivitiesDetails.push(activityIndex);
+    }
   }
 
   pushActivityId(activityId: string): void {

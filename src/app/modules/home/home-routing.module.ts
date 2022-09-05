@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LayoutComponent } from '@modules/home/layout/layout.component';
 
-import { ProfilCardComponent } from '@modules/home/profil-card/profil-card.component';
+import { SummaryComponent } from './summary/summary.component';
 
 
 const routes: Routes = [

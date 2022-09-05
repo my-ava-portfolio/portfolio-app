@@ -1,131 +1,26 @@
-.pointer {
-    cursor: pointer;
-}
+// .img-size {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   bottom: 0;
+//   right: 0;
+// }
 
+// @media (orientation: portrait) {
+//   .img-size {
+//       max-width: 100%;
+//   }
+// }
 
-// variables
-$map-color: teal;
-$app-color: blue;
-$video-color: brown;
-$chart-color: grey;
-$tool-color: black;
-$library-color: blue;
-$methodo-color: cyan;
+// @media (orientation: landscape) {
+//   .img-size {
+//       max-height: 90%;
+//   }
+// }
+@use '/src/styles/1-helpers/grid';
+@use '/src/styles/1-helpers/spacing';
 
-
-.map {
-  background-color: $map-color;
-}
-
-.app {
-  background-color: $app-color;
-}
-
-.video {
-  background-color: $video-color;
-}
-
-.chart {
-  background-color: $chart-color;
-}
-
-.tool {
-  background-color: $tool-color;
-}
-
-.library {
-  background-color: $library-color;
-}
-
-.methodo {
-  background-color: $methodo-color;
-}
-
-.modal-dialog {
-  max-height: 100vh;
-  max-width: 100vh;
-
-}
-
-.card-img-top { // TODO renamed to card-img
-  padding: 0.25rem;
-  background-color: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 0.25rem;
-  //max-width: 100%;
-  height: auto;
-}
-
-.modal-body {
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-.modal {
-  background-color: rgba(0,0,0,0.7);
-}
-
-@media (orientation: portrait) {
-  .img-size {
-      max-width: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-  }
-}
-
-@media (orientation: landscape) {
-  .img-size {
-      max-height: 80%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-  }
-
-}
-
-
-.legend-container {
-  position: sticky;
-  bottom: 0;
-  width: stretch;
-}
-
-
-.legend-content {
-  color: "#FFFFF";
-  background-color: #f5f5f5;
-  box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
-  min-height: 2em;
-}
-
-
-.gallery-content {
-  min-height: 100vh;
-}
-
-
-.activities-container {
-  // min-height: 88px; // increase if new activities added in the gallery...
-}
-
-.grid-container {
-  columns: 200px;
-  // -webkit-column-count: 3;
-  // -webkit-column-gap: 3%;
-  // -moz-column-count: 3;
-  // -moz-column-gap: 3%;
-  column-count: 3;
-  column-gap: 3%;
-}
-
-.feat-gallery {
- // display: grid;
-  //grid-template-rows: 1fr auto;
-  break-inside: avoid;
+.gallery-container {
+    @include grid.grid(3, 350px);
 
 }

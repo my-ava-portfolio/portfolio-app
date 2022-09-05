@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { apiLogoUrl } from '@core/inputs';
+import { assetsLogoPath } from '@core/inputs';
 
 import { degreeIcon, languageIcon, locationIcon } from '@core/inputs';
 import { presIcon, expandIcon } from '@core/inputs';
@@ -15,7 +15,7 @@ export class TrainingsBarComponent implements OnInit, OnChanges {
   @Input() fragment: any;
   @Input() trainingsData: any;
 
-  apiLogoUrl = apiLogoUrl;
+  assetsLogoPath = assetsLogoPath;
   inputTrainingsData: any;
 
   // icons

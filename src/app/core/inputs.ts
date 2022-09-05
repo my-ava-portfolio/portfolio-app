@@ -3,12 +3,12 @@ import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortaw
 import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
 
 import { apiBaseUrl } from './constants';
+import { mapActivitiesPagesType } from './data-types';
 
 
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
-export const apiLogoUrl = `./assets/logo/`;
-export const apiMapsUrl = `./assets/maps/`;
-export const assetsImgUrl = `./assets/images/`;
+export const assetsLogoPath = `./assets/logo/`;
+export const assetsImagesPath = `./assets/images/`;
 export const personalBlogUrl = 'https://blog.amaury-valorge.com';
 export const githubUrl = 'https://github.com/amauryval/';
 export const githubBugIssueUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';
@@ -110,20 +110,20 @@ export const educationPages: any = {
   sub_menus: [
     {
       id: "degrees",
-      title: "Diplômes",
-      fragment: "degrees",
+      title: "Parcours universitaire",
+      fragment: "education__degrees",
       icon: degreeIcon
     },
     {
-      id: "languages",
-      title: "Langues",
-      fragment: "languages",
-      icon: languageIcon
+      id: "degrees",
+      title: "Travaux/publications",
+      fragment: "education__publish",
+      icon: degreeIcon  // TODO find a better icon
     },
     {
       id: "trainings",
-      title: "Formation",
-      fragment: "trainings",
+      title: "Formations",
+      fragment: "education__trainings",
       icon: navIcon
     }
   ]
@@ -147,47 +147,75 @@ export const experiencesPages: any = {
   colorType: 'job',
   verbose_title: 'Accès au CV',
   icon: resumeIcon,
-  sub_menus: []
+  sub_menus: [
+    {
+      id: "navigation",
+      title: "Navigation",
+      fragment: "experiences__navigate",
+      icon: navIcon
+    },
+    {
+      id: "activities",
+      title: "Activités",
+      fragment: "experiences__content__activities",
+      icon: jobIcon
+    },
+    {
+      id: "skills",
+      title: "Compétences",
+      fragment: "experiences__content__skills",
+      icon: skillIcon
+    }
+  ]
 };
 
-export const mapActivitiesPages: any = {
+export const mapActivitiesPages: mapActivitiesPagesType = {
   id: 'maps',
   route: '/maps',
   title: 'Cartes',
   verbose_title: 'Accès aux carte',
+  colorType: 'personal-project',
   icon: mapIcon,
   sub_menus: [
     {
       id: "activities",
       title: "Carte des activités",
-      route: "app/activities",
-      img: `${assetsImgUrl}/portfolio_activities.jpg`,
-      icon: mapIcon,  // TODO improve icon
-      details: "Cartographie de mon parcours universitaire et professionnel."
+      type: 'app',
+      content_url: "/maps/app/activities",
+      categories: [],
+      tags: [],
+      image_url: `${assetsImagesPath}/portfolio_activities.jpg`,
+      description: "Cartographie de mon parcours universitaire et professionnel."
     },
     {
       id: "sandbox",
       title: "Bac à sable",
-      route: "app/sandbox",
-      img: `${assetsImgUrl}/sandbox.jpg`,
-      icon: mapIcon,  // TODO improve icon
-      details: "Un bac à sable pour saisir des données géographiques: Points, LineString, Polygons (et à trous). En cours de développement..."
+      type: 'app',
+      content_url: "/maps/app/sandbox",
+      categories: [],
+      tags: [],
+      image_url: `${assetsImagesPath}/sandbox.jpg`,
+      description: "Un bac à sable pour saisir des données géographiques: Points, LineString, Polygons (et à trous). En cours de développement..."
     },
     {
       id: "gtfs-viewer",
       title: "Visualisation de GTFS",
-      route: "app/gtfs-viewer",
-      img: `${assetsImgUrl}/gtfs_viewer.jpg`,
-      icon: mapIcon,  // TODO improve icon
-      details: "Application pour visualiser des GTFS. En cours de développement..."
+      type: 'app',
+      content_url: "/maps/app/gtfs-viewer",
+      categories: [],
+      tags: [],
+      image_url: `${assetsImagesPath}/gtfs_viewer.jpg`,
+      description: "Application pour visualiser des GTFS. En cours de développement..."
     },
     {
       id: "find-my-path",
       title: "Find my path",
-      route: "https://findmypath.amaury-valorge.com/",
-      img: `${assetsImgUrl}/find_my_path.jpg`,
-      icon: mapIcon,  // TODO improve icon
-      details: "Application pour déterminer le meilleur chemin. En cours de refonte..."
+      type: 'website',
+      categories: [],
+      tags: [],
+      content_url: "https://findmypath.amaury-valorge.com/",
+      image_url: `${assetsImagesPath}/find_my_path.jpg`,
+      description: "Application pour déterminer le meilleur chemin. En cours de refonte..."
     }
   ]
 };
@@ -197,6 +225,7 @@ export const galleryPages: any = {
   route: '/gallery',
   title: 'Galerie',
   verbose_title: 'Accès à la galerie',
+  colorType: 'gallery',
   icon: galleryIcon
 };
 
@@ -207,6 +236,7 @@ export const projectPages: any = [
     route: '/blog',
     title: 'Blog',
     verbose_title: 'Accès au blog',
+    colorType: 'secondary',
     icon: notesIcon
   },
   {
@@ -214,6 +244,7 @@ export const projectPages: any = [
     url: githubUrl,
     title: 'Github',
     verbose_title: 'Accès à Github',
+    colorType: 'secondary',
     icon: githubIcon
   }
 ];
@@ -260,4 +291,17 @@ export function chunkArray(array: any[], size: number) {
     outputArray.push(array.slice(i, i+size));
   }
   return outputArray;
+}
+
+
+export const activitiesMapping: { job: string; 'personal-project': string; volunteer: string;} = {
+  "job": "Missions",
+  "personal-project": "Projets personnels",
+  "volunteer": "Bénévolat"
+}
+
+export const skillsMapping: { themes: string; technics: string; tools: string;} = {
+  "themes": "Thématiques",
+  "technics": "Techniques",
+  "tools": "Outils"
 }

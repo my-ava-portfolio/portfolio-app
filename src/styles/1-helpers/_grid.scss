@@ -1,0 +1,5 @@
+@mixin grid($columnCount, $columnsWidth) {
+    columns: $columnsWidth;  // it try to set this width to each grid feature
+    column-count: $columnCount;
+    column-gap: 3%;
+  }

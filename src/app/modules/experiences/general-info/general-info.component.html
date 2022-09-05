@@ -1,27 +1,31 @@
-<div class="d-flex flex-column flex-xxl-row justify-content-around py-3 bg-dark bg-gradient rounded-top shadow align-self-items align-items-center">
+<set-article-header>
 
-  <div class="d-flex flex-column flex-lg-row flex-fill text-center justify-content-around align-self-items align-items-center">
-
-    <div class="d-flex flex-column">
-      <h3 class="fw-bolder text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
-      <div class="bg-white inline-flex rounded-pill text-black profil-badge text-center">{{ inputProfilData.job }}</div>
-    </div>
-
-    <div class="text-black bg-warning rounded-pill profil-badge">{{ inputProfilData.experience_duration }} professionnelle</div>
-
+  <div id="generalInfo__title">
+    <h3 class="text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
+    <div class="badge-title-light">{{ inputProfilData.job }}</div>
   </div>
 
-  <div id="activities-buttons" class="d-flex flex-sm-row flex-column justify-content-center mx-5">
+  <div class="badge-title-warning">{{ inputProfilData.experience_duration }} professionnelle</div>
+
+
+  <div id="generalInfo__activitiesType" class="d-flex flex-xl-row flex-column border border-white rounded-3 p-2 justify-content-center flex-wrap">
       <ng-container *ngFor="let type of activityTypesMetadata">
         <div
-          class="btn activity-button fw-bold text-center m-2 align-items-center"
+          class="activity-button
+            btn btn-light
+            fw-bold
+            my-2 mx-3
+            position-relative
+          "
           [class.active]="tabView == type.id"
           (click)="enableActivity(type.id)">
           {{type.title}}
-          <span [ngClass]="type.id !== 'volunteer' ? 'text-black' : 'text-white'" [class]="'badge bg-color-' + type.id">{{ type.count }}</span>
+          <span [ngClass]="'badge bg-' + type.id" class="position-absolute top-0 start-100 translate-middle p2 border border-3 border-light rounded-circle">
+            {{ type.count }}
+            <span class="visually-hidden"></span>
+          </span>
+          <div ></div>
         </div>
       </ng-container>
   </div>
-
-</div>
-
+</set-article-header>

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { apiLogoUrl, emailIcon, githubIcon, linkedinIcon, pdfFileIcon, phoneIcon, websiteIcon } from '@core/inputs';
+import { assetsLogoPath, emailIcon, githubIcon, linkedinIcon, pdfFileIcon, phoneIcon, websiteIcon } from '@core/inputs';
 import { ControlerService } from '@services/controler.service';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
@@ -24,7 +24,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   websiteIcon = websiteIcon;
   pdfFileIcon = pdfFileIcon;
 
-  apiImgUrl = apiLogoUrl;
+  apiImgUrl = assetsLogoPath;
 
   // resume top bar
   profilData: any;

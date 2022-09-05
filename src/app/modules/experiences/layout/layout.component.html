@@ -1,40 +1,47 @@
-<div class="container-fluid h-100" *ngIf="isDataAvailable" [@fadeInOut]>
+<set-article-container *ngIf="isDataAvailable" [@fadeInOut]>
+  
+  <app-general-info
+    id="experiences__generalInfo" 
+    [profilData]="profilData"
+    [activityTypesMetadata]="activityTypesMetadata"
+  ></app-general-info>
 
+  <set-section-container>
+    <h5 id="experiences__navigate" class="title-tick-education">Navigation</h5>
 
-  <div class="content d-flex flex-column flex-grow-1 bg-white my-2 rounded-top">
+    <app-navigate
+    class="
+      d-flex flex-md-row flex-column
+      justify-content-around
+      align-items-center
+    "
+      [graphInputData]="generalData"
+    ></app-navigate>
+  </set-section-container>
 
-      <app-general-info
-        class="mb-2"
-        [profilData]="profilData"
-        [activityTypesMetadata]="activityTypesMetadata"
-      ></app-general-info>
+  <div id="experiences__content" class="
+    d-flex flex-xl-row flex-column
+    h-100
+    bg-white
+  ">
 
-      <app-navigate
-        [graphInputData]="generalData"
-      ></app-navigate>
+    <set-section-container id="experiences__content__activities" class="w-100">
+      <app-activities
+        [fragment]="fragment"
+        [jobsData]="jobsData"
+        [personalProjectsData]="personalProjectsData"
+        [volunteersData]="volunteersData"
+      ></app-activities>
+    </set-section-container>
 
-    <div class="d-flex flex-column flex-xl-row">
-
-      <div class="col-12 col-xl-7">
-        <app-activities
-          [fragment]="fragment"
-          [jobsData]="jobsData"
-          [personalProjectsData]="personalProjectsData"
-          [volunteersData]="volunteersData"
-        ></app-activities>
-      </div>
-
-      <div class="col-12 col-xl-5">
-        <app-skills
-          [skillsData]="skillsData"
-          [isActivitiesDataAvailable]="isActivitiesDataAvailable"
-        ></app-skills>
-      </div>
-
-    </div>
+    <set-section-container id="experiences__content__skills" class="w-100">
+      <app-skills
+        [skillsData]="skillsData"
+        [isActivitiesDataAvailable]="isActivitiesDataAvailable"
+      ></app-skills>
+    </set-section-container>
 
   </div>
 
-</div>
-
-
+</set-article-container>
+ 

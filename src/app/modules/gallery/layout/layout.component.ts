@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { apiMapsUrl, assetsImgUrl, experiencesPages, minWidthLandscape } from '@core/inputs';
+import { assetsImagesPath, experiencesPages, minWidthLandscape } from '@core/inputs';
 
 import { GalleryService } from '@services/gallery.service';
 import { MainService } from '@services/main.service';
@@ -13,6 +13,7 @@ import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, a
 
 import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
+import { galleryFeature } from '@core/data-types';
 
 
 @Component({
@@ -42,10 +43,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   defaultType: string | null = null;
   currentType: string | null = null;
 
-  apiMapsUrl = apiMapsUrl;
-  galleryItems!: any;
-
-  assetsImgUrl = assetsImgUrl;
+  assetsImagesPath = assetsImagesPath;
+  galleryItems: galleryFeature[] = [];
 
   innerRoutesAvailable: string[] = ['maps/app/']; // to redirect on the routes portolio
   isDataAvailable = false;
@@ -61,12 +60,17 @@ export class LayoutComponent implements OnInit, OnDestroy {
     library: { icon: pythonIcon, title: 'Libraries' },
     methodo: { icon: methodoIcon, title: 'Méthodologies'}
   };
-
   categoriesActivity: any = {
     job: 'Expériences',
     personal_project: 'Projet personnel',
     volunteer: 'Bénévolat'
   };
+  featureTypes: any = { // TODO improvments needed: return info from the API
+    youtube: 'video',
+    url_img: 'modal',
+    url_app: 'website',
+    api_img: 'modal'
+  }
 
   activitiesGallerySubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
@@ -92,9 +96,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     this.activitiesGallerySubscription = this.galleryService.activitiesGalleryData.subscribe(
       (data) => {
-        this.galleryItems = data.items;
+        this.galleryItems = []
+
+        data.items.forEach((feature: any) => {
+          this.galleryItems.push(this.buildFeature(feature))
+        })
         this.mediaTypes = data.media_types_available;
         this.activities = data.activities;
+        console.log(data)
         this.currentCategory = data.current_category;
         this.isDataAvailable = true;
       }
@@ -115,6 +124,43 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([])
+  }
+
+
+  buildFeature(feature: any): galleryFeature {
+    let img_url = feature.media_splash
+    if ([null, 'nan'].includes(img_url)) { // TODO github image return 'nan'... check api
+      img_url = feature.media
+    }
+    if (!img_url.includes('http')) {
+      img_url = assetsImagesPath + img_url
+    }
+    if (!feature.media.includes('http') && this.featureTypes[feature.source] === 'modal') { // TODO use url... OR add it on asset
+      feature.media = assetsImagesPath + feature.media
+    }
+
+    let addons: any = {};
+    if (feature.data) {
+      addons['Données'] = feature.data;
+    }
+    if (feature.tools) {
+      addons['Outils'] = feature.tools;
+    }
+
+    return {
+      id: feature.identifier,
+      title: feature.title,
+      image_url: img_url,
+      content_url: feature.media,
+      categories: [],
+      tags: [],
+      activityType: { name: this.categoriesActivity[feature.category], class: feature.category },
+      experienceName: { name: feature.name, color: feature.color },
+      mediaType: { name: feature.type, icon: this.typeStyleMapping[feature.type]},
+      type: this.featureTypes[feature.source],
+      description: feature.description,
+      addons: addons
+    }
   }
 
   filterFromAnchor(): void {

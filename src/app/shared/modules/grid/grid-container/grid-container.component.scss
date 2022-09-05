@@ -1,0 +1,50 @@
+@use '/src/styles/1-helpers/grid';
+// @use '/src/styles/1-helpers/spacing';
+$columnCount: 4;
+
+.grid-container {
+  min-height: 75vh; // to avoid a floating legend
+  @include grid.grid($columnCount, 350px);
+}
+
+.grid-feature {
+  break-inside: avoid;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  max-height: 90vh;
+}
+
+.body-buttons {
+  a {
+      text-align: right;
+      font-weight: bold;
+  }
+}
+   
+
+
+
+
+// .img-size-modal {
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     bottom: 0;
+//     right: 0;
+//   }
+  
+//   @media (orientation: portrait) {
+//     .img-size-modal {
+//         max-width: 100%;
+//     }
+//   }
+  
+//   @media (orientation: landscape) {
+//     .img-size-modal {
+//         max-height: 90%;
+//     }
+//   }
+  

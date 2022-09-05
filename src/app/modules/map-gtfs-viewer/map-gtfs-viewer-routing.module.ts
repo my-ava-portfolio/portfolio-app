@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: '', component: MapViewComponent,
     data: { title: 'GTFS viewer', page: 'map-gtfs-viewer' },
-    outlet: 'map-gtfs-viewer'
+    outlet: 'map-gtfs-viewer' // remove to be able to use <router-outlet #outlet="outlet" ></router-outlet>
   },
 ]
 

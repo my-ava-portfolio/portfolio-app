@@ -1,18 +1,6 @@
-.profil-badge {
-  display: inline-block;
-  padding: 5px 25px;
-  font-size: 12px;
-  line-height: 20px;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
 .activity-button {
-  --bs-bg-opacity: 1;
-  background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity))!important;
-}
-
-.activity-button:hover, .activity-button.active {
-  --bs-bg-opacity: 1;
-  background-color: rgba(var(--bs-warning-rgb), var(--bs-bg-opacity))!important;
+    &:hover, &.active {
+        background-color: var(--bs-warning)!important;
+      }
+      
 }

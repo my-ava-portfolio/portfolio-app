@@ -21,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 import { locationIcon, tagsIcon, centerIcon, helpIcon, imageProfile, experiencesPages, educationPages } from '@core/inputs';
-import { apiLogoUrl } from '@core/inputs';
+import { assetsLogoPath } from '@core/inputs';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
@@ -60,7 +60,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   zoomInitDone!: boolean;
   defaultActivitieLayerZoom = 9;
 
-  apiImgUrl = apiLogoUrl;
+  apiImgUrl = assetsLogoPath;
 
   locationIcon = locationIcon;
   tagIcon = tagsIcon;
@@ -188,6 +188,11 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.mapService.changeMapInteractionStatus(false)
 
     this.mapService.resetMapView()
+  }
+
+  zoomOnData(): void {
+    // TODO create map components with buttons
+    this.mapService.sendZoomAction();
   }
 
   sendResumeSubMenus(): void {

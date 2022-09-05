@@ -1,0 +1,57 @@
+
+  <div id="summary__card__welcome" class="
+    d-flex flex-column
+    justify-content-around
+    bg-white
+  ">
+
+      <h3 class="title-tick-warning">Bienvenue</h3>
+
+      <set-paragraph-content>
+        Vous voici sur mon site personnel, à la fois pour présenter mon parcours et mes réalisations, mais aussi un bac à sable qui
+        me permet de centraliser mes expérimentations.
+      </set-paragraph-content>
+
+      <h3 class="title-tick-warning">Rubriques</h3>
+
+      <div id="summary__card__welcome__pageLinks" class="
+        text-center
+      ">
+
+        <div class="buttons">
+          <ng-container *ngFor="let page of resumePages">
+            <set-button-content
+              [color]="page.colorType"
+              [title]="page.title"
+              [icon]="page.icon"
+              [route]="page.route"
+            ></set-button-content>
+          </ng-container>
+        </div>
+
+        <div class="buttons">
+          <ng-container *ngFor="let page of projectPages">
+
+            <ng-container *ngIf="page.route">
+                <set-button-content
+                [color]="page.colorType"
+                [title]="page.title"
+                [icon]="page.icon"
+                [route]="page.route"
+              ></set-button-content>
+            </ng-container>
+
+            <ng-container *ngIf="page.url">
+              <set-button-content
+                [color]="page.colorType"
+                [title]="page.title"
+                [icon]="page.icon"
+                [url]="page.url"
+              ></set-button-content>
+            </ng-container>
+
+          </ng-container>
+        </div>
+      </div>
+
+  </div>

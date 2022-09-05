@@ -1,0 +1,15 @@
+<div class="m-3">
+
+    <div [ngClass]="classes + ' py-2 rounded-top text-center fw-bold text-bg-' + colorName">
+        {{ title }}
+    </div>
+
+    <div class="
+        d-flex flex-column
+        p-3
+        border rounded-bottom
+    ">
+        <ng-content></ng-content>
+    </div>
+
+</div>

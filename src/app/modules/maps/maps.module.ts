@@ -7,7 +7,9 @@ import { MapRoutingModule } from './maps-routing.module';
 
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { GridContainerModule } from '@shared/modules/grid/gallery.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { HomeComponent } from './home/home.component';
   imports: [
     CommonModule,
     MapRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    PipesModule,
+    GridContainerModule,
   ]
 })
 export class MapsModule { }

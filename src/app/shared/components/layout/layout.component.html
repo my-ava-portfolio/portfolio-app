@@ -1,21 +1,24 @@
-
-<div id="main" class="d-flex align-items-stretch_DEPRECATED" swipe (next)="navigationBarToRight($event)" (previous)="navigationBarToLeft($event)">
+<div class="d-flex" id="main" swipe (next)="navigationBarToRight($event)" (previous)="navigationBarToLeft($event)">
 
   <app-navigation-bar
   [sideBarCollapsed]="sideBarCollapsed"
   ></app-navigation-bar>
 
-  <div id="overlayContainer" class="overlay" [ngClass]="sideBarCollapsed ? 'active' : 'd-none'" (click)="collaspedSideBarIfNeeded()"></div>
+  <div 
+    id="main__overlay" 
+    [ngClass]="sideBarCollapsed ? 'active' : 'd-none'" 
+    (click)="collaspedSideBarIfNeeded()">
+  </div>
 
 
-  <div #contentSize id="content" class="w-100" >
+  <div #contentSize id="main__content" class="w-100" >
 
     <app-control-bar
     (sideBarCollapsedEmit)="getSideBarCollapseStatus($event)"
     [sideBarCollapsed]="sideBarCollapsed"
     ></app-control-bar>
 
-    <div id="content-container">
+    <div id="mainContent">
       <router-outlet #outlet="outlet" (activate)="updatePage(outlet)"></router-outlet>
     </div>
 

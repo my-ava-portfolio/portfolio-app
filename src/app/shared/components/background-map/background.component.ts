@@ -198,7 +198,7 @@ export class BackgroundComponent implements OnInit {
           source: this.basemap,
         }),
       ],
-      target: 'map',
+      target: 'backgroundMap__map',
       view: this.mainView,
       controls: defaultControls({
         zoom: false,

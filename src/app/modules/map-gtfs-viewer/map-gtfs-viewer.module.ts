@@ -10,7 +10,8 @@ import { MapViewComponent } from '@modules/map-gtfs-viewer/map-view/map-view.com
 import { TimelineService } from '@shared/services/timeline.service';
 import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.service';
 
-import { SharedModule } from '@shared/modules/shared/shared.module';
+import { TimelineModule } from '@shared/modules/timeline/timeline.module';
+import { ItemsModule } from '@shared/modules/items/items.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SharedModule } from '@shared/modules/shared/shared.module';
     CommonModule,
     MapGtfsViewerRoutingModule,
     FontAwesomeModule,
-    SharedModule
+    TimelineModule,
+    ItemsModule
   ],
   providers: [
     TimelineService,

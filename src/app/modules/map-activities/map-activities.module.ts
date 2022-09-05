@@ -9,6 +9,7 @@ import { ThemeLegendComponent } from '@modules/map-activities/theme-legend/theme
 import { TimeLegendComponent } from '@modules/map-activities/time-legend/time-legend.component';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
+import { ItemsModule } from '@shared/modules/items/items.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { DataService } from '@modules/map-activities/shared/services/data.servic
   imports: [
     CommonModule,
     MapActivitiesRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ItemsModule
   ],
   providers: [
     DataService

@@ -18,6 +18,8 @@ import { SkillsComponent } from '@modules/experiences/skills/skills.component';
 import { ClickClassDirective } from '@shared/directives/click-class.directive';
 import { GeneralInfoComponent } from './general-info/general-info.component';
 
+import { ItemsModule } from '@shared/modules/items/items.module';
+
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { GeneralInfoComponent } from './general-info/general-info.component';
     NgbModule,
     FontAwesomeModule,
     PipesModule,
-    ExperiencesRoutingModule
+    ExperiencesRoutingModule,
+    ItemsModule
   ],
   providers: [
     ActivityActionsService

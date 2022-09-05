@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { FormsModule } from '@angular/forms';
 
@@ -9,23 +9,29 @@ import { HomeRoutingModule } from '@modules/home/home-routing.module';
 
 import { LayoutComponent } from '@modules/home/layout/layout.component';
 
-import { ProfilCardComponent } from '@modules/home/profil-card/profil-card.component';
+import { SummaryComponent } from './summary/summary.component';
 
 import { GalleryService } from '@services/gallery.service';
 
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { GeneralInfoComponent } from './general-info/general-info.component';
+
+import { ItemsModule } from '@shared/modules/items/items.module';
+
 @NgModule({
   declarations: [
     LayoutComponent,
-    ProfilCardComponent
+    GeneralInfoComponent,
+    SummaryComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     HomeRoutingModule,
-    FontAwesomeModule,
-    PipesModule
+    PipesModule,
+    NgbModule,
+    ItemsModule
   ],
   providers: [
     GalleryService

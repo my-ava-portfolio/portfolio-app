@@ -1,55 +1,67 @@
-<div class="d-flex flex-column flex-lg-row justify-content-evenly">
+<set-legend-container
+  classes="position-fixed"
+  >
 
-  <div class="d-flex flex-row justify-content-around mx-2">
+  <ng-template #buttonsTemplate>
+    <button class="btn btn-sm btn-warning mx-1" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
+      <fa-icon class="" [icon]="centerIcon"></fa-icon>
+    </button>
+  </ng-template>
+  
+  <div class="d-flex flex-column flex-lg-row justify-content-evenly">
 
-    <div class="mx-2">
-      <h6>GTFS</h6>
+    <div class="d-flex flex-row justify-content-around mx-2">
 
-      <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
-        <ng-container *ngFor="let area of availableArea">
-          <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-' + area" [checked]="currentArea === area" autocomplete="off" (click)="updateData(area)">
-          <label class="w-100 btn border-warning btn-outline-warning p-0" [for]="'btnradio-' + area">
-            <span class="dropdown-item fw-bold">{{ area.charAt(0).toUpperCase() + area.slice(1) }}</span>
-          </label>
-        </ng-container>
+      <div class="mx-2">
+        <h6>GTFS</h6>
+
+        <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+          <ng-container *ngFor="let area of availableArea">
+            <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-' + area" [checked]="currentArea === area" autocomplete="off" (click)="updateData(area)">
+            <label class="w-100 btn border-warning btn-outline-warning p-0" [for]="'btnradio-' + area">
+              <span class="dropdown-item fw-bold">{{ area.charAt(0).toUpperCase() + area.slice(1) }}</span>
+            </label>
+          </ng-container>
+        </div>
+
       </div>
 
+      <div class="mx-2">
+        <h6>Modes de transport</h6>
+
+        <svg id='routeTypeLegend' [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement">
+
+          <g *ngFor="let routeType of routeTypesLegendData.features">
+            <circle
+              [attr.r]="routeTypesLegendData.circleR"
+              [attr.cx]="routeTypesLegendData.circleCxPos"
+              [attr.cy]="routeType.cy"
+              [attr.fill]="routeType.color"
+              [attr.stroke]="routeType.strokeColor">
+            </circle>
+
+            <text
+              [attr.x]="routeTypesLegendData.textXPos"
+              [attr.y]="routeType.cy"
+              [attr.font-size]="routeTypesLegendData.fontSize"
+              class="label">{{ routeType.label }}
+            </text>
+          </g>
+
+        </svg>
+
+      </div>
     </div>
 
-    <div class="mx-2">
-      <h6>Modes de transport</h6>
 
-      <svg id='routeTypeLegend' [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement">
-
-        <g *ngFor="let routeType of routeTypesLegendData.features">
-          <circle
-            [attr.r]="routeTypesLegendData.circleR"
-            [attr.cx]="routeTypesLegendData.circleCxPos"
-            [attr.cy]="routeType.cy"
-            [attr.fill]="routeType.color"
-            [attr.stroke]="routeType.strokeColor">
-          </circle>
-
-          <text
-            [attr.x]="routeTypesLegendData.textXPos"
-            [attr.y]="routeType.cy"
-            [attr.font-size]="routeTypesLegendData.fontSize"
-            class="label">{{ routeType.label }}
-          </text>
-        </g>
-
-      </svg>
-
+    <div class="my-2">
+      <app-time-line
+        timeLineId="timeline-slider"
+        [timeLineSpeedSliderEnabled]="true"
+        [sliderDayStyleEnabled]="true"
+      ></app-time-line>
     </div>
+
   </div>
 
-
-  <div class="my-2">
-    <app-time-line
-      timeLineId="timeline-slider"
-      [timeLineSpeedSliderEnabled]="true"
-      [sliderDayStyleEnabled]="true"
-    ></app-time-line>
-  </div>
-
-</div>
+</set-legend-container>

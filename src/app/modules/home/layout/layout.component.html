@@ -1,10 +1,14 @@
-<div class="container g-0" [@fadeInOut]>
-  <div class="d-flex flex-column">
+<set-article-container>
 
-    <app-profil-card
-    ></app-profil-card>
+    <div class="mx-auto col col-xl-8">
+        
+        <app-general-info [@fadeInOut]></app-general-info>
 
-  </div>
-</div>
+        <set-section-container>
+            <app-summary [@fadeInOut]></app-summary>
+        </set-section-container>
+    </div>
+
+</set-article-container>
 
 
