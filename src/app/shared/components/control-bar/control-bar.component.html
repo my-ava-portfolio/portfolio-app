@@ -11,7 +11,7 @@
     p-2
   ">
     
-    <button id="ccontrolBar__mainBar__navBarButton" type="button" (click)="sideBarCollapseUpdated()"
+    <button id="controlBar__mainBar__navBarButton" type="button" (click)="sideBarCollapseUpdated()"
       class="
         btn
         btn-warning
@@ -21,11 +21,11 @@
     </button>
 
     <div id="controlBar__mainBar__pageTitle" class="
-      fs-4 text-center fw-bold ms-auto
+      fs-4 text-center fw-bold mx-auto
     ">{{this.pageTitle}}</div>
     
     <div id="pageAnchors" class="
-        d-flex flex-row ms-auto
+        d-flex flex-row
         d-none d-xl-block
       ">
       <ng-container *ngTemplateOutlet="subMenu"></ng-container>
@@ -34,7 +34,6 @@
     <button id="controlBar__mainBar__subBarButton" type="button"  *ngIf="topicPagesSubMenus.length > 0" (click)="showHideSubMenuBar()"
       class="
         btn btn-dark
-        ms-auto
         d-xl-none
       "
     >
