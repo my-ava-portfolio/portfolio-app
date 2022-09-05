@@ -13,3 +13,23 @@ function addAlpha(color: string, opacity: number): string {
     const opacityValue = Math.round(Math.min(Math.max(opacity || 1, 0), 1) * 255);
     return color + opacityValue.toString(16).toUpperCase();
 }
+
+export function getConstract(hexColor: string): 'black' | 'white' {
+    const rgbValues: string[] | null = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor)
+
+    if (rgbValues) {
+      const red = parseInt(rgbValues[1]);
+      const green = parseInt(rgbValues[2]);
+      const blue = parseInt(rgbValues[3]);
+  
+      const contrastLimit = Math.round((red * 299 + green * 587 + blue * 114) / 1000);
+  
+      if (contrastLimit > 125) {
+        return 'black';
+      } else {
+        return 'white';
+      }
+    }
+
+    return 'white'
+  }

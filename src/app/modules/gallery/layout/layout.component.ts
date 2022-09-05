@@ -103,6 +103,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         })
         this.mediaTypes = data.media_types_available;
         this.activities = data.activities;
+        console.log(data)
         this.currentCategory = data.current_category;
         this.isDataAvailable = true;
       }
