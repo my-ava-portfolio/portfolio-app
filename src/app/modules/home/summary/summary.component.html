@@ -25,7 +25,8 @@
               [title]="page.title"
               [icon]="page.icon"
               [route]="page.route"
-            ></set-button-content>
+            >{{ page.title }}
+            </set-button-content>
           </ng-container>
         </div>
 
@@ -33,21 +34,21 @@
           <ng-container *ngFor="let page of projectPages">
 
             <ng-container *ngIf="page.route">
-                <set-button-content
+              <set-button-content
                 [color]="page.colorType"
-                [title]="page.title"
                 [icon]="page.icon"
                 [route]="page.route"
-              ></set-button-content>
+              >{{ page.title }}
+              </set-button-content>
             </ng-container>
 
             <ng-container *ngIf="page.url">
               <set-button-content
                 [color]="page.colorType"
-                [title]="page.title"
                 [icon]="page.icon"
                 [url]="page.url"
-              ></set-button-content>
+              >{{ page.title }}
+              </set-button-content>
             </ng-container>
 
           </ng-container>

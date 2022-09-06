@@ -14,8 +14,9 @@
             <set-paragraph-content>{{publication.publication}}</set-paragraph-content>
 
             <div class="
-            infos
-            d-flex flex-column
+                infos
+                d-flex flex-column
+                text-center
                 ">
 
                 <ng-container *ngIf="publication.keywords">
@@ -26,11 +27,11 @@
                     </ng-container>
                 </ng-container>
 
-                <!-- <set-badge-content *ngIf="publication.link"
+                <set-button-content *ngIf="publication.link"
                     [url]="publication.link"
-                    classes="text-primary"
+                    color="danger"
                     [icon]="pdfFileIcon"
-                ></set-badge-content> -->
+                ></set-button-content>
 
             </div>
 

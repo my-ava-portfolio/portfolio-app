@@ -1,21 +1,21 @@
-<a *ngIf="route" class="m-2 btn" 
+<a *ngIf="route" class="m-1 btn" 
     [ngClass]="'btn-' + color" 
-    [title]="title" 
     [routerLink]="route" 
     [routerLinkActive]="['fw-bolder']" 
     [routerLinkActiveOptions]="{exact:true}"
-    >
-    <fa-icon *ngIf="icon" [icon]="icon"></fa-icon>
-    {{ title }}
+  >
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
 </a>
 
-<a *ngIf="url" class="m-2 btn" 
+<a *ngIf="url" class="m-1 btn" 
     [ngClass]="'btn-' + color" 
-    [title]="title" 
     [href]="url"
     target="_blank " rel="noopener noreferrer"
-    >
-    <fa-icon *ngIf="icon" [icon]="icon"></fa-icon>
-    {{ title }}
+  >
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
 </a>
 
+<ng-template #contentTemplate>
+    <fa-icon *ngIf="icon" class="mx-1" [icon]="icon"></fa-icon>
+    <ng-content></ng-content>
+</ng-template>
