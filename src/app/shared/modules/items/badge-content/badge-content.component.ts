@@ -7,8 +7,9 @@ import { getConstract } from '@core/colors';
   styleUrls: ['./badge-content.component.scss']
 })
 export class BadgeContentComponent implements OnInit {
-  @Input() title!: any;
-  @Input() url!: string;
+  @Input() routerLink!: string;
+  @Input() fragment!: string;
+
   @Input() icon!: any;
   @Input() customBgColor!: any;
   @Input() classes: string = '';

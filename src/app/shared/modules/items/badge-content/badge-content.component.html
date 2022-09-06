@@ -1,22 +1,11 @@
-    <div class="badge rounded-pill m-1" *ngIf="!url"
-      [ngClass]="classes" 
-      [ngStyle]="{'background-color': customBgColor ? customBgColor : 'none'}"
-      [style.color]="getConstract(customBgColor)"
-    >
-        <ng-container *ngIf="icon">
-            <fa-icon  [icon]="icon" size="1x"></fa-icon>
-        </ng-container>
-        {{ title }}
-    </div>
-
-    <a class="badge rounded-pill m-1" *ngIf="url"
-      [href]="url" target="_blank" rel="noopener noreferrer"
-      [ngClass]="classes" 
-      [ngStyle]="{'background-color': customBgColor ? customBgColor : 'none'}"
-      [style.color]="getConstract(customBgColor)"
-      >
-        <ng-container *ngIf="icon">
-            <fa-icon  [icon]="icon" size="1x"></fa-icon>
-        </ng-container>
-        {{ title }}
-    </a>
+<a class="badge rounded-pill m-1 text-decoration-none"
+  [routerLink]="routerLink" [fragment]="fragment"
+  [ngClass]="classes" 
+  [ngStyle]="{'background-color': customBgColor ? customBgColor : 'none'}"
+  [style.color]="getConstract(customBgColor)"
+  >
+    <ng-container *ngIf="icon">
+        <fa-icon class="mx-1" [icon]="icon" size="1x"></fa-icon>
+    </ng-container>
+    <ng-content></ng-content>
+</a>

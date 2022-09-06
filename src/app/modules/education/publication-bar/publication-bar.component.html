@@ -21,17 +21,16 @@
                 <ng-container *ngIf="publication.keywords">
                     <ng-container *ngFor="let item of publication.keywords | keyvalue">
                         <set-badge-content
-                            [title]="item.key"
                             [customBgColor]="item.value"
-                        ></set-badge-content>
+                        >{{item.key}}</set-badge-content>
                     </ng-container>
                 </ng-container>
 
-                <set-badge-content *ngIf="publication.link"
+                <!-- <set-badge-content *ngIf="publication.link"
                     [url]="publication.link"
                     classes="text-primary"
                     [icon]="pdfFileIcon"
-                ></set-badge-content>
+                ></set-badge-content> -->
 
             </div>
 

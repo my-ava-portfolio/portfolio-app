@@ -128,9 +128,8 @@
         <div class="badge-keywords" *ngIf="activity.keywords">
           <set-badge-content
           *ngFor="let item of activity.keywords | keyvalue"
-            [title]="item.key"
             [customBgColor]="item.value"
-          ></set-badge-content>
+          >{{item.key}}</set-badge-content>
 
         </div>
 

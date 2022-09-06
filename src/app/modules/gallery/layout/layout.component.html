@@ -13,24 +13,21 @@
           
           <set-badge-content
             *ngIf="feature.activityType"
-            [title]="feature.activityType.name"
-            [classes]="'text-bg-' + feature.activityType.class"
-          ></set-badge-content>
+            [classes]="'pe-none text-bg-' + feature.activityType.class"
+          >{{feature.activityType.name}}</set-badge-content>
 
           <set-badge-content
             *ngIf="feature.experienceName"
-            [routerLink]="[experiencesRoute]" [fragment]="feature.id"
-            [title]="feature.experienceName.name"
+            [routerLink]="experiencesRoute" [fragment]="feature.id"
             classes="pointer"
             [customBgColor]="feature.experienceName.color"
-          ></set-badge-content>
+          >{{feature.experienceName.name}}</set-badge-content>
           
           <set-badge-content
             *ngIf="feature.mediaType"
-            [title]="feature.mediaType.icon.title"
-            [classes]="'text-bg-' + feature.mediaType.name"
+            [classes]="'pe-none text-bg-' + feature.mediaType.name"
             [icon]="feature.mediaType.icon.icon"
-          ></set-badge-content>
+          >{{feature.mediaType.icon.title}}</set-badge-content>
 
       </div>
     </ng-template>
