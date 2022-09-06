@@ -39,18 +39,18 @@ $theme-colors-map: (
   //   color: $less-dark,
   //   text: $white
   // ),
-  // "personal-project": (
-  //   color: $personal-project-color,
-  //   text: $black
-  // ),
-  // "personal_project": (
-  //   color: $personal-project-color,
-  //   text: $black
-  // ),
-  // "job": (
-  //   color: $job-color,
-  //   text: $white
-  // ),
+  "personal-project": (
+    color: $personal-project-color,
+    text: $black
+  ),
+  "personal_project": (
+    color: $personal-project-color,
+    text: $black
+  ),
+  "job": (
+    color: $job-color,
+    text: $white
+  ),
   // "gallery": (
   //   color: $gallery-color,
   //   text: $white
@@ -59,10 +59,10 @@ $theme-colors-map: (
   //   color: $volunteer-color,
   //   text: $white
   // ),
-  // "education": (
-  //   color: $education-color,
-  //   text: $white
-  // ),
+  "education": (
+    color: $education-color,
+    text: $white
+  ),
   // "disabled": (
   //   color: $disabled-color,
   //   text: $white
@@ -107,10 +107,10 @@ $theme-colors-map: (
   //   color: $library-color,
   //   text: $white
   // ),
-  // "skills": (
-  //   color: $skills-color,
-  //   text: $black
-  // )
+  "skills": (
+    color: $skills-color,
+    text: $black
+  )
 );
 
 
