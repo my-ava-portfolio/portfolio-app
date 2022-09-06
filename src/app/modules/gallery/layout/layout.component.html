@@ -88,7 +88,7 @@
           <ng-container *ngFor="let activity of activities | keyvalue">
             <div class="btn-group my-1 me-1" role="group">
 
-              <button  type="button" [id]="activity.key" class="btn btn-sm text-bg-secondary" [ngClass]="{'active': currentActivity === activity.key}">
+              <button  type="button" [id]="activity.key" class="btn btn-sm text-bg-secondary" [ngClass]="{'active': currentActivity === activity.key}" (click)="getGalleryDataByActivity(activity.key)">
                 {{ activity.value}}
               </button>
             </div>
