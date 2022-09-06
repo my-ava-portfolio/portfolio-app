@@ -28,7 +28,7 @@
   <section [id]="'activities-' + activity.identifier" *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod"
   class="activity-feature
     card rounded
-    mb-3 mx-1
+    my-2 mx-3
   ">
     <ng-container *ngTemplateOutlet="ActivityCardFeature; context:{activity: activity, activityType: activitiesType, activityIndex: indexOfActivity}"></ng-container>
   </section>
