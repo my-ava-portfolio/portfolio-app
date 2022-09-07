@@ -36,16 +36,16 @@ export class ResumeService {
 
   activityId: Subject<string> = new Subject<string>();
 
-  activitiesAvailable: Subject<any> = new Subject<any>();
+  // activitiesAvailable: Subject<any> = new Subject<any>();
 
 
   constructor(
       private http: HttpClient
   ) {}
 
-  pullActivitiesAvailable(activities: any[]): void {
-    this.activitiesAvailable.next(activities);
-  }
+  // pullActivitiesAvailable(activities: any[]): void {
+  //   this.activitiesAvailable.next(activities);
+  // }
 
   pullActivityIdToPreselectNodeGraph(activityId: string): void {
     this.activityId.next(activityId);

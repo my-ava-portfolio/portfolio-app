@@ -137,15 +137,16 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
           currentActivities.push(item);
         }
       })
-      if (currentActivities.length > 0 && !currentActivities.includes(this.tabView)) {
-        this.tabView = currentActivities[0];
+    if (currentActivities.length > 0 && !currentActivities.includes(this.tabView)) {
+        // switch to the expected activityId
+        this.activityActionsService.setActivity(currentActivities[0])
       }
   }
 
   private countActivities(): any {
     return {
       'job': this.jobsData?.length,
-      'personal_project': this.personalProjectsData?.length,
+      'personal-project': this.personalProjectsData?.length,
       'volunteer': this.volunteersData?.length
     }
   }

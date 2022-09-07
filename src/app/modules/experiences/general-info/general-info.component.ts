@@ -23,7 +23,13 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
     this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
       (activityId) => {
-        this.tabView = activityId
+        if (activityId === "personal_project") {
+          this.tabView = "personal-project"
+        } else {
+          this.tabView = activityId
+        }
+
+
       }
     )
 

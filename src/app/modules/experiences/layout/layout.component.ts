@@ -80,7 +80,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
     this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
-
         this.jobsData = data.activities_data.jobs;
         this.personalProjectsData = data.activities_data.personal_projects;
         this.volunteersData = data.activities_data.volunteers;
@@ -105,8 +104,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
           }
         ]
 
-
-        this.pushActivitiesAvailable(data.activities_data)
+        // TODO useless
+        // this.pushActivitiesAvailable(data.activities_data)
       }
     );
 
@@ -146,9 +145,9 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.activityIdFromActivityComponents = activityId;
   }
 
-  pushActivitiesAvailable(activities: any[]): void {
-    this.resumeService.pullActivitiesAvailable(activities);
-  }
+  // pushActivitiesAvailable(activities: any[]): void {
+  //   this.resumeService.pullActivitiesAvailable(activities);
+  // }
 
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
