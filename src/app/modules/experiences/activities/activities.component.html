@@ -64,7 +64,7 @@
 
         <div class="abstract
           d-flex flex-column
-          mx-3
+          mx-4
           ">
 
             <h6 *ngIf="activityType !== 'personal-project'" class="fw-bold col-11">{{activity.company}}</h6>
@@ -82,17 +82,18 @@
 
 
           <div class="duration
-              d-flex flex-row flex-wrap
+              d-flex flex-row flex-wrap w-100
               my-2
             ">
-            <div *ngIf="activityType !== 'personal-project'" class="me-1">{{ this.contractValueAlias(activity.contract) }} - </div>
+            <div class="me-1" *ngIf="activityType !== 'personal-project'">{{ this.contractValueAlias(activity.contract) }} - </div>
             <ng-container *ngIf="activity.status !== 'InProgress'">
-                <div>Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }} ({{activity.duration}})</div>
+                <div class="me-1"> Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }}</div>
             </ng-container>
 
             <ng-container *ngIf="activity.status === 'InProgress'">
-                <div>Du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{activity.duration}})</div>
+                <div class="me-1"> Du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
             </ng-container>
+            <div> ({{activity.duration}})</div>
           </div>
 
           <div class="badge-keywords col-11 justify-content-around flex-wrap " *ngIf="activity.keywords">
