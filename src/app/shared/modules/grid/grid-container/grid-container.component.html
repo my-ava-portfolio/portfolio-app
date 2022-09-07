@@ -1,24 +1,17 @@
-<div class="grid-container m-4">
+<div class="grid-container m-4" [ngClass]="'grid-' + columnNb">
 
     <div class="grid-feature
-        card    
         mb-4
-        bg-light
         shadow
         " *ngFor="let feature of features; let idx = index">
 
-        <div class="grid-feature-header
-            card-header
-            p-2
-            bg-dark bg-gradient
-            text-white
-            ">
-            <span class="fw-bold">{{ feature.title }}</span>
-        </div>
+        <set-card-container
+            class=""
+            [title]="feature.title"
+            [headerClass]="featuresHeaderClass"
+         >
 
-        <div class="grid-feature-body
-            card-body
-            ">
+         <ng-template #cardBodyTemplate>
 
             <div class="body-media-container
                 d-flex flex-row
@@ -33,27 +26,9 @@
                 </ng-container>
             </div>
 
-            <!-- TODO refactor gallery blog PART -->
-            <ng-container *ngTemplateOutlet="blogTmplt, context: { $implicit: feature }"></ng-container>
-            <!-- gallery blog PART -->
+            <ng-container *ngTemplateOutlet="descriptionTmplt, context: { $implicit: feature }"></ng-container>
 
-            <!-- TODO refactor gallery experiences PART -->
-            <ng-container *ngTemplateOutlet="galleryTmplt, context: { $implicit: feature }"></ng-container>
-            <!-- gallery experiences PART -->
-
-            <set-paragraph-content>{{ feature.description }}</set-paragraph-content>
-            
-            <!-- TODO gallery addon -->
-            <set-paragraph-content>
-                <ul class="body-addons" *ngIf="feature.addons">
-                    <li *ngFor="let addon of feature.addons | keyvalue" class="">
-                        <span>{{addon.key}} : </span>
-                        <span>{{addon.value}}</span>
-                    </li>
-                </ul>
-            </set-paragraph-content>
-    
-            <div class="body-buttons text-end">
+            <div class="body-buttons text-end mt-2">
 
                 <ng-container *ngIf="feature.type !== 'modal'">
                     <a *ngIf="!feature.content_url.includes('http')" [routerLink]="'../' + feature.content_url" class="btn bg-warning">Accéder</a>
@@ -64,15 +39,12 @@
                     <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: feature.content_url, activityId: feature.id, pictureId: idx}"></ng-container>
                     <a data-bs-toggle="modal" [href]="'#modal-' + feature.id + idx" role="button" class="btn bg-warning">Afficher</a>
                 </ng-container>
-           
+        
             </div>
-            
-        </div>
+                
+         </ng-template>
 
-        <div class="grid-feature-footer
-            card-footer
-            ">
-        </div>
+        </set-card-container>
 
     </div>
 

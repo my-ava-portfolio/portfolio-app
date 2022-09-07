@@ -1,10 +1,12 @@
 <article id="galleryHome" class="gallery" *ngIf="isDataAvailable" [@fadeInOut]>
 
   <app-grid-container
+    columnNb="3"
     [features]="galleryItems"
+    featuresHeaderClass="text-bg-dark"
   >
 
-    <ng-template #galleryTemplate let-feature>
+    <ng-template #descriptionTemplate let-feature>
       <div class="body-activity-badges
           d-flex flex-row flex-wrap
           mt-2
@@ -30,6 +32,18 @@
           >{{feature.mediaType.icon.title}}</set-badge-content>
 
       </div>
+
+      <set-paragraph-content>{{ feature.description }}</set-paragraph-content>
+            
+      <set-paragraph-content>
+          <ul class="body-addons" *ngIf="feature.addons">
+              <li *ngFor="let addon of feature.addons | keyvalue" class="">
+                  <span>{{addon.key}} : </span>
+                  <span>{{addon.value}}</span>
+              </li>
+          </ul>
+      </set-paragraph-content>
+      
     </ng-template>
 
   </app-grid-container>

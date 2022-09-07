@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'set-card-container',
@@ -6,9 +6,14 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./card-container.component.scss']
 })
 export class CardContainerComponent implements OnInit {
+  @ContentChild('cardBodyTemplate') cardBodyTmplt!: TemplateRef<any>;
+  @ContentChild('cardFooterTemplate') cardFooterTmplt!: TemplateRef<any>;
+
+  @Input() cardClass!: string;
+
   @Input() title!: string;
-  @Input() colorName!: string;
-  @Input() classes!: string;
+  @Input() headerClass!: string;
+  @Input() headerNgStyle!: any;
 
   constructor() { }
 

@@ -1,10 +1,24 @@
 @use '/src/styles/1-helpers/grid';
 // @use '/src/styles/1-helpers/spacing';
-$columnCount: 4;
+// $columnCount: 4;
+
+
+$column-counts: (
+   1,
+   2,
+   3,
+   4
+);
+
+@each $count in $column-counts {
+  .grid-container.grid-#{$count} {
+    @include grid.grid($count, 350px);
+  }
+}
 
 .grid-container {
   min-height: 75vh; // to avoid a floating legend
-  @include grid.grid($columnCount, 350px);
+  // @include grid.grid($columnCount, 350px);
 }
 
 .grid-feature {

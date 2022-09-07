@@ -21,12 +21,12 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private defaultNodeIdSelected = null;
 
-  isJobsGrouped: boolean | string = false;
-  isProjectsGrouped: boolean | string = true;
-  isVolunteersGrouped: boolean | string = true;
-  isThemesEnabled: boolean | string = true;
-  isTechnicsEnabled: boolean | string = true;
-  isToolsEnabled: boolean | string = false;
+  isJobsGrouped!: boolean | string;
+  isProjectsGrouped!: boolean | string;
+  isVolunteersGrouped!: boolean | string;
+  isThemesEnabled!: boolean | string;
+  isTechnicsEnabled!: boolean | string;
+  isToolsEnabled!: boolean | string;
 
   // icons
   navIcon = navIcon;

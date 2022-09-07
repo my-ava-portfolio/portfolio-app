@@ -1,15 +1,14 @@
-<div class="m-3">
-
-    <div [ngClass]="classes + ' py-2 rounded-top text-center fw-bold text-bg-' + colorName">
+<div class="card shadow" [ngClass]="cardClass">
+    <div class="card-header rounded-top text-center fw-bold" [ngClass]="headerClass" [ngStyle]="headerNgStyle">
         {{ title }}
     </div>
 
-    <div class="
-        d-flex flex-column
-        p-3
-        border rounded-bottom
-    ">
-        <ng-content></ng-content>
+    <div class="card-body">
+        <ng-container *ngTemplateOutlet="cardBodyTmplt"></ng-container> 
+    </div>
+
+    <div class="card-footer">
+        <ng-container *ngTemplateOutlet="cardFooterTmplt"></ng-container> 
     </div>
 
 </div>

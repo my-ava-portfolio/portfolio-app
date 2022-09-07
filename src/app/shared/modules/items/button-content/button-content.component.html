@@ -1,5 +1,5 @@
 <a *ngIf="route" class="m-1 btn" 
-    [ngClass]="'btn-' + color" 
+    [ngClass]="classes" 
     [routerLink]="route" 
     [routerLinkActive]="['fw-bolder']" 
     [routerLinkActiveOptions]="{exact:true}"
@@ -8,7 +8,7 @@
 </a>
 
 <a *ngIf="url" class="m-1 btn" 
-    [ngClass]="'btn-' + color" 
+    [ngClass]="classes" 
     [href]="url"
     target="_blank " rel="noopener noreferrer"
   >

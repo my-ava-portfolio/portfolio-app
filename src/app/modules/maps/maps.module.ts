@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { GridContainerModule } from '@shared/modules/grid/gallery.module';
+import { ItemsModule } from '@shared/modules/items/items.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { GridContainerModule } from '@shared/modules/grid/gallery.module';
     FontAwesomeModule,
     PipesModule,
     GridContainerModule,
+    ItemsModule
   ]
 })
 export class MapsModule { }

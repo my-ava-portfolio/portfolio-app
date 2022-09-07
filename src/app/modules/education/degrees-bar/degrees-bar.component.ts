@@ -17,7 +17,8 @@ export class DegreesBarComponent implements OnInit {
   @Input() degreesData: any;
 
   locationIcon = locationIcon;
-  
+  isImageValid = true;
+
   mapPages: any = mapActivitiesPages;
 
   assetsLogoPath = assetsLogoPath;

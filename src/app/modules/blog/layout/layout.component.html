@@ -1,9 +1,11 @@
 <div id="blogHome" class="gallery" *ngIf="selectedblogTopics.length > 0" [@fadeInOut]>
 
   <app-grid-container
+    columnNb="4"
     [features]="selectedblogTopics"
+    featuresHeaderClass="text-bg-dark"
   >
-    <ng-template #blogTemplate let-feature>
+    <ng-template #descriptionTemplate let-feature>
 
       <div class="body-generic-badges mt-2">
 
@@ -24,6 +26,9 @@
         </div>
 
       </div>
+
+      <set-paragraph-content>{{ feature.description }}</set-paragraph-content>
+
     </ng-template>
   </app-grid-container>
 
