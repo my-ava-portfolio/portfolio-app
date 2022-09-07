@@ -48,7 +48,7 @@
 <ng-template #ActivityCardFeature let-activity='activity' let-activityType='activityType' let-activityIndex='activityIndex'>
   <div class="d-flex flex-column">
 
-    <div class="d-flex flex-row justify-content-between">
+    <div class="d-flex flex-row justify-content-between position-relative">
 
       <div class="general-infos
           d-flex flex-sm-row flex-column
@@ -67,8 +67,8 @@
           mx-3
           ">
 
-            <h6 *ngIf="activityType !== 'personal-project'" class="fw-bold col-10">{{activity.company}}</h6>
-            <h6 *ngIf="activityType === 'personal-project'" class="fw-bold col-10">{{activity.title}}</h6>
+            <h6 *ngIf="activityType !== 'personal-project'" class="fw-bold col-11">{{activity.company}}</h6>
+            <h6 *ngIf="activityType === 'personal-project'" class="fw-bold col-11">{{activity.title}}</h6>
 
               
             <set-icon-text *ngIf="activityType !== 'personal-project'"
@@ -95,7 +95,7 @@
             </ng-container>
           </div>
 
-          <div class="badge-keywords col justify-content-around flex-wrap " *ngIf="activity.keywords">
+          <div class="badge-keywords col-11 justify-content-around flex-wrap " *ngIf="activity.keywords">
             <set-badge-content
             *ngFor="let item of activity.keywords | keyvalue"
               [customBgColor]="item.value"
@@ -108,7 +108,7 @@
       </div>
 
       <div class="buttons-tools
-          d-flex flex-column
+          d-flex flex-column position-absolute top-0 end-0
         ">
 
         <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
