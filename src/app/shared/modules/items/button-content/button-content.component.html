@@ -15,7 +15,7 @@
     <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
 </a>
 
-<a *ngIf="!url || !route" class="m-1 btn" 
+<a *ngIf="!url && !route" class="m-1 btn" 
     [ngClass]="classes" 
   >
     <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
