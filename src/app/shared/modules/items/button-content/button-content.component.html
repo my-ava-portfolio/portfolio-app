@@ -15,7 +15,14 @@
     <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
 </a>
 
+<a *ngIf="!url || !route" class="m-1 btn" 
+    [ngClass]="classes" 
+  >
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+</a>
+
+
 <ng-template #contentTemplate>
-    <fa-icon *ngIf="icon" class="mx-1" [icon]="icon"></fa-icon>
+    <fa-icon *ngIf="icon" class="mx-1" [ngClass]="iconClasses" [icon]="icon"></fa-icon>
     <ng-content></ng-content>
 </ng-template>

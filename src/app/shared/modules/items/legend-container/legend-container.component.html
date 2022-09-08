@@ -1,9 +1,9 @@
 <div id="legendContainer" [@fadeInOut]
-    [ngClass]="classes"
-    class="
-        d-flex flex-column
-        bottom-0
-    ">
+  [ngClass]="classes"
+  class="
+    d-flex flex-column
+    bottom-0
+  ">
 
     <div class="legend-container-buttons mx-3">
       <button class="btn btn-sm btn-dark mx-1 shadow" type="button" checked autocomplete="off" (click)="showHideLegend()">
@@ -11,33 +11,23 @@
         Légende
       </button>
   
-      <!-- <button class="btn btn-sm btn-warning mx-1 shadow" title="Centrer" type="button" checked autocomplete="off" (click)="zoomOnData()">
-        <fa-icon class="" [icon]="centerIcon"></fa-icon>
-      </button> -->
       <ng-container *ngTemplateOutlet="buttonsTmplt"></ng-container>
 
 
     </div>
   
     <div class="legend-container-content
+        d-flex flex-xl-row flex-column justify-content-around
         text-center
         py-3
         bg-white
-        " [hidden]="!isLegendDisplayed">
+      " 
+      [ngClass]="!isLegendDisplayed ? 'd-none' : ''">
 
         <ng-content></ng-content>
-      <!-- <ng-container *ngIf="currentMapTool === 'activities'"> -->
-        <!-- <router-outlet name="map-activities"></router-outlet> -->
-      <!-- </ng-container> -->
-  
-      <!-- <ng-container *ngIf="currentMapTool === 'gtfs-viewer'"> -->
-        <!-- <router-outlet name="map-gtfs-viewer"></router-outlet> -->
-      <!-- </ng-container> -->
   
     </div>
   
-    <div class="legend-container-content
-      bg-white
-      " [hidden]="isLegendDisplayed"></div>
+    <div class="legend-container-content bg-white" [ngClass]="isLegendDisplayed ? 'd-none' : ''"></div>
   
   </div>
