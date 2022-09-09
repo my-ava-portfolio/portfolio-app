@@ -56,7 +56,7 @@
 
     <set-button-content
       *ngFor="let category of allCategories"
-      classes="btn-sm btn-secondary"
+      [classes]="currentCategory === category.name ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
       [icon]="tagIcon"
       [iconNgStyle]="'color:' + category.color + ';'"
       (click)="selectContentByCategory(category.name)"
@@ -71,7 +71,7 @@
 
     <set-button-content
       *ngFor="let tag of allTags"
-      classes="btn-sm btn-secondary"
+      [classes]="currentTag === tag.name ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
       [icon]="tagIcon"
       [iconNgStyle]="'color:' + tag.color + ';'"
       (click)="selectContentByTag(tag.name)"

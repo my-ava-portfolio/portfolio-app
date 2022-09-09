@@ -35,7 +35,7 @@
            
       <set-paragraph-content>
         {{ feature.description }}
-        <ul class=" mt-2" *ngIf="feature.addons">
+        <ul class="mt-2" *ngIf="feature.addons">
           <li *ngFor="let addon of feature.addons | keyvalue" class="">
             <span>{{addon.key}} : </span>
             <span>{{addon.value}}</span>
@@ -62,14 +62,14 @@
     <h6>Filtrage par catégories</h6>
 
     <set-button-content
-      classes="btn-sm btn-secondary"
+      [classes]="currentCategory === null ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
       [icon]="tagIcon"
       (click)="resetGallery()"
     >Tous
     </set-button-content>
 
     <set-button-content
-      classes="btn-sm btn-secondary"
+      [classes]="currentCategory === 'job' ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
       iconClasses="text-job"
       [icon]="tagIcon"
       (click)="getGalleryDataByCategory('job')"
@@ -77,7 +77,7 @@
     </set-button-content>
 
     <set-button-content
-      classes="btn-sm btn-secondary"
+      [classes]="currentCategory === 'personal_project' ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
       iconClasses="text-personal_project"
       [icon]="tagIcon"
       (click)="getGalleryDataByCategory('personal_project')"
@@ -85,7 +85,7 @@
     </set-button-content>
 
     <set-button-content
-      classes="btn-sm btn-secondary"
+      [classes]="currentCategory === 'volunteer' ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
       iconClasses="text-volunteer"
       [icon]="tagIcon"
       (click)="getGalleryDataByCategory('volunteer')"
@@ -101,7 +101,7 @@
       <ng-container *ngFor="let activity of activities | keyvalue">
 
         <set-button-content
-          classes="btn-sm btn-secondary"
+          [classes]="currentActivity === activity.key ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
           (click)="getGalleryDataByActivity(activity.key)"
         >{{ activity.value}}
         </set-button-content>

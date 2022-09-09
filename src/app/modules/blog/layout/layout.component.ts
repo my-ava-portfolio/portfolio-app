@@ -142,6 +142,7 @@ export class LayoutComponent implements OnDestroy {
       const elementFound = Array.from(feature.categories.values()).filter((item: any) => item.name === category_name);
       return elementFound.length === 1;
     })
+    this.currentCategory = category_name;
     this.selectedblogTopics = topicsFound;
     this.mainService.scrollToTopAction()
   }
@@ -151,6 +152,7 @@ export class LayoutComponent implements OnDestroy {
       const elementFound = Array.from(feature.tags.values()).filter((item: any) => item.name === tag_name);
       return elementFound.length === 1;
     })
+    this.currentTag = tag_name;
     this.selectedblogTopics = topicsFound;
     this.mainService.scrollToTopAction()
   }
