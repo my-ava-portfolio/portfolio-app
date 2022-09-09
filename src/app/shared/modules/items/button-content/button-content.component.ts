@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ButtonContentComponent implements OnInit {
   @Input() classes!: string;
   @Input() iconClasses!: string;
+  @Input() iconNgStyle!: any;
 
   @Input() route?: string;
   @Input() url?: string;

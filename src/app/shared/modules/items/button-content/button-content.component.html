@@ -23,6 +23,6 @@
 
 
 <ng-template #contentTemplate>
-    <fa-icon *ngIf="icon" class="mx-1" [ngClass]="iconClasses" [icon]="icon"></fa-icon>
+    <fa-icon *ngIf="icon" [style]="iconNgStyle" class="mx-1" [ngClass]="iconClasses" [icon]="icon"></fa-icon>
     <ng-content></ng-content>
 </ng-template>

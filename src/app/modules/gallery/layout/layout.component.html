@@ -32,16 +32,15 @@
           >{{feature.mediaType.icon.title}}</set-badge-content>
 
       </div>
-
-      <set-paragraph-content>{{ feature.description }}</set-paragraph-content>
-            
+           
       <set-paragraph-content>
-          <ul class="body-addons" *ngIf="feature.addons">
-              <li *ngFor="let addon of feature.addons | keyvalue" class="">
-                  <span>{{addon.key}} : </span>
-                  <span>{{addon.value}}</span>
-              </li>
-          </ul>
+        {{ feature.description }}
+        <ul class=" mt-2" *ngIf="feature.addons">
+          <li *ngFor="let addon of feature.addons | keyvalue" class="">
+            <span>{{addon.key}} : </span>
+            <span>{{addon.value}}</span>
+          </li>
+        </ul>
       </set-paragraph-content>
       
     </ng-template>
@@ -62,47 +61,43 @@
   <set-section-container>
     <h6>Filtrage par catégories</h6>
 
-    <div class="">
+    <set-button-content
+      classes="btn-sm btn-secondary"
+      [icon]="tagIcon"
+      (click)="resetGallery()"
+    >Tous
+    </set-button-content>
 
-      <set-button-content
-        classes="btn-sm btn-secondary"
-        [icon]="tagIcon"
-        (click)="resetGallery()"
-      >Tous
-      </set-button-content>
+    <set-button-content
+      classes="btn-sm btn-secondary"
+      iconClasses="text-job"
+      [icon]="tagIcon"
+      (click)="getGalleryDataByCategory('job')"
+    >Missions
+    </set-button-content>
 
-      <set-button-content
-        classes="btn-sm btn-secondary"
-        iconClasses="text-job"
-        [icon]="tagIcon"
-        (click)="getGalleryDataByCategory('job')"
-      >Missions
-      </set-button-content>
+    <set-button-content
+      classes="btn-sm btn-secondary"
+      iconClasses="text-personal_project"
+      [icon]="tagIcon"
+      (click)="getGalleryDataByCategory('personal_project')"
+    >Projets personnels
+    </set-button-content>
 
-      <set-button-content
-        classes="btn-sm btn-secondary"
-        iconClasses="text-personal_project"
-        [icon]="tagIcon"
-        (click)="getGalleryDataByCategory('personal_project')"
-      >Projets personnels
-      </set-button-content>
+    <set-button-content
+      classes="btn-sm btn-secondary"
+      iconClasses="text-volunteer"
+      [icon]="tagIcon"
+      (click)="getGalleryDataByCategory('volunteer')"
+    >Bénévolat
+    </set-button-content>
 
-      <set-button-content
-        classes="btn-sm btn-secondary"
-        iconClasses="text-volunteer"
-        [icon]="tagIcon"
-        (click)="getGalleryDataByCategory('volunteer')"
-      >Bénévolat
-      </set-button-content>
-
-    </div>
   </set-section-container>
 
   <set-section-container>
 
     <h6>Filtrage par activités</h6>
 
-    <div class="">
       <ng-container *ngFor="let activity of activities | keyvalue">
 
         <set-button-content
@@ -112,7 +107,6 @@
         </set-button-content>
 
       </ng-container>
-    </div>
 
   </set-section-container>
 
@@ -120,20 +114,17 @@
 
     <h6>Filtrage par types d'illustration</h6>
 
-    <div class="">
-      <ng-container *ngFor="let type of mediaTypes">
+    <ng-container *ngFor="let type of mediaTypes">
 
-        <set-button-content
-          [classes]="' mx-0 rounded-0 btn-sm text-bg-' + type"
-          [icon]="typeStyleMapping[type].icon"
-          (click)="getGalleryDataByType(type)"
-          [title]="typeStyleMapping[type].title"
-        >
-        </set-button-content>
+      <set-button-content
+        [classes]="'mx-0 rounded-0 btn-sm text-bg-' + type"
+        [icon]="typeStyleMapping[type].icon"
+        (click)="getGalleryDataByType(type)"
+        [title]="typeStyleMapping[type].title"
+      >
+      </set-button-content>
 
-      </ng-container>
-    </div>
+    </ng-container>
 
   </set-section-container>
-
 </ng-template>
