@@ -274,7 +274,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         this.mapService.setMapEvent("mapCoords")
 
         d3.select('#popup-feature-' + selectedFeature.get("id"))
-          .style('display', 'block')
+          // .style('display', 'block')
           .style('z-index', '1')
 
         this._handleActivityCircleOnLegend(selectedFeature)
@@ -380,7 +380,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       } else {
         return pixelCoords[1] + positionPixelPadding + 'px';
       }
-    });
+    })
+    .style('display', 'block');
   }
 
 

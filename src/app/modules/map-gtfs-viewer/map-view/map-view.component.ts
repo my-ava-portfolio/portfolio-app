@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -18,7 +18,6 @@ import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
-import * as d3 from 'd3';
 
 
 
