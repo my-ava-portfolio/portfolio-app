@@ -1,10 +1,12 @@
 <article id="galleryHome" class="gallery" *ngIf="isDataAvailable" [@fadeInOut]>
 
   <app-grid-container
+    columnNb="3"
     [features]="galleryItems"
+    featuresHeaderClass="text-bg-dark"
   >
 
-    <ng-template #galleryTemplate let-feature>
+    <ng-template #descriptionTemplate let-feature>
       <div class="body-activity-badges
           d-flex flex-row flex-wrap
           mt-2
@@ -30,6 +32,17 @@
           >{{feature.mediaType.icon.title}}</set-badge-content>
 
       </div>
+           
+      <set-paragraph-content>
+        {{ feature.description }}
+        <ul class="mt-2" *ngIf="feature.addons">
+          <li *ngFor="let addon of feature.addons | keyvalue" class="">
+            <span>{{addon.key}} : </span>
+            <span>{{addon.value}}</span>
+          </li>
+        </ul>
+      </set-paragraph-content>
+      
     </ng-template>
 
   </app-grid-container>
@@ -45,75 +58,73 @@
 
 
 <ng-template #galleryControler>
-  <div class="d-flex flex-column flex-xl-row justify-content-around align-items-center">
-    <div class="col-12 col-xl-3 mx-2">
+  <set-section-container>
+    <h6>Filtrage par catégories</h6>
 
-      <h6>Filtrage par catégories</h6>
+    <set-button-content
+      [classes]="currentCategory === null ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
+      [icon]="tagIcon"
+      (click)="resetGallery()"
+    >Tous
+    </set-button-content>
 
-      <div class="btn-toolbar my-2 d-flex justify-content-center" role="toolbar">
+    <set-button-content
+      [classes]="currentCategory === 'job' ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
+      iconClasses="text-job"
+      [icon]="tagIcon"
+      (click)="getGalleryDataByCategory('job')"
+    >Missions
+    </set-button-content>
 
-        <div class="btn-group my-1 mx-1" role="group">
-          <button class="btn btn-sm text-bg-secondary" type="button" id="allButton" [ngClass]="currentCategory === null ? 'fw-bolde' : 'inactive'" (click)="this.resetGallery()">
-            <fa-icon [icon]="tagIcon"></fa-icon>Tous
-          </button>
-        </div>
+    <set-button-content
+      [classes]="currentCategory === 'personal_project' ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
+      iconClasses="text-personal_project"
+      [icon]="tagIcon"
+      (click)="getGalleryDataByCategory('personal_project')"
+    >Projets personnels
+    </set-button-content>
 
-        <div class="btn-group my-1 mx-1" role="group">
-          <button class="btn btn-sm text-bg-secondary" type="button" [id]="'all' + currentCategory" [ngClass]="currentCategory === 'job' ? 'active' : 'inactive'" (click)="getGalleryDataByCategory('job')">
-            <fa-icon class="text-job mx-1" [icon]="tagIcon"></fa-icon>Expériences
-          </button>
-        </div>
+    <set-button-content
+      [classes]="currentCategory === 'volunteer' ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
+      iconClasses="text-volunteer"
+      [icon]="tagIcon"
+      (click)="getGalleryDataByCategory('volunteer')"
+    >Bénévolat
+    </set-button-content>
 
-        <div class="btn-group my-1 mx-1" role="group">
-          <button class="btn btn-sm text-bg-secondary" type="button" [id]="'all' + currentCategory" [ngClass]="currentCategory === 'personal_project' ? 'active' : 'inactive'" (click)="getGalleryDataByCategory('personal_project')">
-            <fa-icon class="text-personal_project mx-1" [icon]="tagIcon"></fa-icon>Projets personnels
-          </button>
-        </div>
+  </set-section-container>
 
-        <div class="btn-group my-1 mx-1" role="group">
-          <button class="btn btn-sm text-bg-secondary" type="button" [id]="'all' + currentCategory" [ngClass]="currentCategory === 'volunteer' ? 'active' : 'inactive'" (click)="getGalleryDataByCategory('volunteer')">
-            <fa-icon class="text-volunteer mx-1" [icon]="tagIcon"></fa-icon>Bénévolat
-          </button>
-        </div>
+  <set-section-container>
 
-      </div>
-    </div>
+    <h6>Filtrage par activités</h6>
 
-    <div class="col-12 col-xl-4 mx-2">
+      <ng-container *ngFor="let activity of activities | keyvalue">
 
-      <h6>Filtrage par activités</h6>
+        <set-button-content
+          [classes]="currentActivity === activity.key ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
+          (click)="getGalleryDataByActivity(activity.key)"
+        >{{ activity.value}}
+        </set-button-content>
 
-      <div class="my-2 activities-container">
-        <div class="btn-toolbar d-flex justify-content-center" role="toolbar">
-          <ng-container *ngFor="let activity of activities | keyvalue">
-            <div class="btn-group my-1 me-1" role="group">
+      </ng-container>
 
-              <button  type="button" [id]="activity.key" class="btn btn-sm text-bg-secondary" [ngClass]="{'active': currentActivity === activity.key}" (click)="getGalleryDataByActivity(activity.key)">
-                {{ activity.value}}
-              </button>
-            </div>
-          </ng-container>
-        </div>
-      </div>
+  </set-section-container>
 
-    </div>
+  <set-section-container>
 
-    <div class="col-12 col-xl-3 mx-2">
+    <h6>Filtrage par types d'illustration</h6>
 
-      <h6>Filtrage par types d'illustration</h6>
+    <ng-container *ngFor="let type of mediaTypes">
 
-      <div class="d-flex flex-row justify-content-center my-2 mb-1 flex-wrap">
-        <div class="btn-group">
-          <ng-container *ngFor="let type of mediaTypes">
-            <button (click)="getGalleryDataByType(type)" type="button" [title]="typeStyleMapping[type].title" [class]="'btn btn-sm text-bg-' + type" [ngClass]="{'active': currentType === type}">
-              <fa-icon [icon]="typeStyleMapping[type].icon"></fa-icon>
-            </button>
-          </ng-container>
-        </div>
-      </div>
+      <set-button-content
+        [classes]="'mx-0 rounded-0 btn-sm text-bg-' + type"
+        [icon]="typeStyleMapping[type].icon"
+        (click)="getGalleryDataByType(type)"
+        [title]="typeStyleMapping[type].title"
+      >
+      </set-button-content>
 
-    </div>
+    </ng-container>
 
-
-    </div>
+  </set-section-container>
 </ng-template>

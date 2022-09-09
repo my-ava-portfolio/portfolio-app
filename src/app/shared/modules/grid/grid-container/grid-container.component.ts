@@ -1,7 +1,6 @@
 import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
 
 import { galleryFeature } from '@core/data-types';
-import { experiencesPages } from '@core/inputs';
 
 
 @Component({
@@ -10,10 +9,11 @@ import { experiencesPages } from '@core/inputs';
   styleUrls: ['./grid-container.component.scss']
 })
 export class GridContainerComponent implements OnInit {
-  @ContentChild('galleryTemplate') galleryTmplt!: TemplateRef<any>;
-  @ContentChild('blogTemplate') blogTmplt!: TemplateRef<any>;
-
+  @ContentChild('descriptionTemplate') descriptionTmplt!: TemplateRef<any>;
+  
+  @Input() columnNb!: string;
   @Input() features!: galleryFeature[];
+  @Input() featuresHeaderClass!: string;
 
   constructor() { }
 

@@ -1,23 +1,14 @@
-<div id="jobWidget" *ngIf="tabView == 'job'"
-  class="activities-widget
-    d-flex flex-column
-  ">
+<div id="jobWidget" *ngIf="tabView == 'job'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'job', activitiesData: jobsData}"></ng-container>
 </div>
 
-<div id="personal_projectWidget" *ngIf="tabView == 'personal-project'"
-  class="activities-widget
-    d-flex flex-column
-  ">
+<div id="personal_projectWidget" *ngIf="tabView == 'personal-project'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'personal-project', activitiesData: personalProjectsData}"></ng-container>
 </div>
 
-<div id="volunteerWidget" *ngIf="tabView == 'volunteer'"
-  class="activities-widget
-    d-flex flex-column
-  ">
+<div id="volunteerWidget" *ngIf="tabView == 'volunteer'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'volunteer', activitiesData: volunteersData}"></ng-container>
 </div>
@@ -25,13 +16,29 @@
 
 
 <ng-template #activityFeature let-activitiesType='activitiesType' let-activitiesData='activitiesData'>
-  <section [id]="'activities-' + activity.identifier" *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod"
-  class="activity-feature
-    card rounded
-    my-2 mx-3
-  ">
+  <set-card-container 
+    class="feature-degree d-flex flex-row flew-wrap text-center"
+    cardClass="m-3"
+    [title]="activity.title"
+    [id]="'activities-' + activity.identifier" 
+    *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod"
+    class="activity-feature"
+    [headerNgStyle]="buildColorStyle(activity.color)"
+  >
+
+  <ng-template #cardBodyTemplate>
     <ng-container *ngTemplateOutlet="ActivityCardFeature; context:{activity: activity, activityType: activitiesType, activityIndex: indexOfActivity}"></ng-container>
-  </section>
+  </ng-template>
+
+  <ng-template #cardFooterTemplate>
+
+    <div class="text-center" role="button" clickClass="rotate-180" (click)="addToHiddenDetailsConter(indexOfActivity)">
+      <fa-icon [icon]="arrowsDownIcon"></fa-icon>
+    </div>
+
+  </ng-template>
+
+  </set-card-container>
 </ng-template>
 
 
@@ -39,105 +46,95 @@
 
 <!-- ACTIVITY CARD TEMPLATE -->
 <ng-template #ActivityCardFeature let-activity='activity' let-activityType='activityType' let-activityIndex='activityIndex'>
+  <div class="d-flex flex-column">
 
-  <div class="header
-    card-header
-    d-flex flex-row
-    align-items-center
-    " [ngStyle]="buildColorStyle(activity.color)">
+    <div class="d-flex flex-row justify-content-between position-relative">
 
-    <div class="fw-bold">{{activity.title}}</div>
-
-    <div class="buttons-tools
-      d-flex flex-row
-      ms-auto
-      ">
-
-      <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning mx-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
-
-      <ng-container *ngIf="activity.recommendations && countDictObject(activity.recommendations) > 0">
-        <span class="btn btn-sm btn-success mx-1" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <fa-icon [icon]="trophyIcon"></fa-icon>
-        </span>
-        <div class="dropdown-menu" aria-labelledby="dropdownRecomButton" *ngFor="let recommendation of activity.recommendations | keyvalue">
-          <a class="dropdown-item small" [href]="recommendation.value" target="_blank" rel="noopener noreferrer">{{ recommendation.key }}</a>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="activityType == 'personal-project'">
-        <a *ngIf="activity.url_github" class="btn btn-sm btn-secondary mx-1" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
-        <a *ngIf="activity.url_blog != 'nan'" class="btn btn-sm btn-info mx-1" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
-        <a *ngIf="activity.url_website" class="btn btn-sm btn-primary mx-1" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
-      </ng-container>
-
-      <a class="btn btn-sm btn-dark  mx-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
-
-
-    </div>
-  </div>
-
-  <div class="body
-    card-body
-    ">
-
-    <div class="general-infos
-      d-flex flex-sm-row flex-column
-      justify-content-start
-      align-items-center
-      ">
-
-      <div class="activity-img my-2">
-        <img class="img-fluid" *ngIf="activityType === 'personal-project'" [src]="assetsImagesPath + activity.img_company"/>
-        <img class="img-fluid" *ngIf="activityType === 'job'" [src]="apiImgUrl + activity.img_company"/>
-        <img class="img-fluid" *ngIf="activityType === 'volunteer'" [src]="apiImgUrl + activity.img_company"/>
-      </div>
-
-      <div class="abstract
-        d-flex flex-column
-        mx-3
+      <div class="general-infos
+          d-flex flex-sm-row flex-column
+          justify-content-start
+          align-items-center
         ">
 
-          <h6 *ngIf="activityType !== 'personal-project'" class="fw-bold">{{activity.company}}</h6>
-          <h6 *ngIf="activityType === 'personal-project'" class="fw-bold">{{activity.title}}</h6>
-
-            
-          <set-icon-text *ngIf="activityType !== 'personal-project'"
-            [route]="mapPages.sub_menus[0].content_url"
-            [fragment]="activity.identifier"
-            [title]="activity.location"
-            classes="bounce"
-            [iconInput]="locationIcon"
-          ></set-icon-text>
-
-
-
-        <div class="duration
-          d-flex flex-row flex-wrap
-          my-2
-          ">
-          <div *ngIf="activityType !== 'personal-project'" class="me-1">{{ this.contractValueAlias(activity.contract) }} - </div>
-          <ng-container *ngIf="activity.status !== 'InProgress'">
-              <div>Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }} ({{activity.duration}})</div>
-          </ng-container>
-
-          <ng-container *ngIf="activity.status === 'InProgress'">
-              <div>Du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{activity.duration}})</div>
-          </ng-container>
+        <div class="activity-img my-2">
+          <img class="img-fluid" *ngIf="activityType === 'personal-project'" [src]="assetsImagesPath + activity.img_company"/>
+          <img class="img-fluid" *ngIf="activityType === 'job'" [src]="apiImgUrl + activity.img_company"/>
+          <img class="img-fluid" *ngIf="activityType === 'volunteer'" [src]="apiImgUrl + activity.img_company"/>
         </div>
 
-        <div class="badge-keywords" *ngIf="activity.keywords">
-          <set-badge-content
-          *ngFor="let item of activity.keywords | keyvalue"
-            [customBgColor]="item.value"
-          >{{item.key}}</set-badge-content>
+        <div class="abstract
+          d-flex flex-column
+          mx-4
+          ">
+
+            <h6 *ngIf="activityType !== 'personal-project'" class="fw-bold col-11">{{activity.company}}</h6>
+            <h6 *ngIf="activityType === 'personal-project'" class="fw-bold col-11">{{activity.title}}</h6>
+
+              
+            <set-icon-text *ngIf="activityType !== 'personal-project'"
+              [route]="mapPages.sub_menus[0].content_url"
+              [fragment]="activity.identifier"
+              [title]="activity.location"
+              classes="bounce"
+              [iconInput]="locationIcon"
+            ></set-icon-text>
+
+
+
+          <div class="duration
+              d-flex flex-row flex-wrap w-100
+              my-2
+            ">
+            <div class="me-1" *ngIf="activityType !== 'personal-project'">{{ this.contractValueAlias(activity.contract) }} - </div>
+            <ng-container *ngIf="activity.status !== 'InProgress'">
+                <div class="me-1"> Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }}</div>
+            </ng-container>
+
+            <ng-container *ngIf="activity.status === 'InProgress'">
+                <div class="me-1"> Du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
+            </ng-container>
+            <div> ({{activity.duration}})</div>
+          </div>
+
+          <div class="badge-keywords col-11 justify-content-around flex-wrap " *ngIf="activity.keywords">
+            <set-badge-content
+            *ngFor="let item of activity.keywords | keyvalue"
+              [customBgColor]="item.value"
+            >{{item.key}}</set-badge-content>
+
+          </div>
 
         </div>
 
       </div>
 
+      <div class="buttons-tools
+          d-flex flex-column position-absolute top-0 end-0
+        ">
+
+        <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
+
+        <ng-container *ngIf="activity.recommendations && countDictObject(activity.recommendations) > 0">
+          <span class="btn btn-sm btn-success m-1" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <fa-icon [icon]="trophyIcon"></fa-icon>
+          </span>
+          <div class="dropdown-menu" aria-labelledby="dropdownRecomButton" *ngFor="let recommendation of activity.recommendations | keyvalue">
+            <a class="dropdown-item small" [href]="recommendation.value" target="_blank" rel="noopener noreferrer">{{ recommendation.key }}</a>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="activityType == 'personal-project'">
+          <a *ngIf="activity.url_github" class="btn btn-sm btn-secondary m-1" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
+          <a *ngIf="activity.url_blog != 'nan'" class="btn btn-sm btn-info m-1" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
+          <a *ngIf="activity.url_website" class="btn btn-sm btn-primary m-1" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
+        </ng-container>
+
+        <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
+      </div>
     </div>
 
-    <div class="feature-tabs mt-3" *ngIf="hiddenActivitiesDetails.includes(activityIndex)">
+    <div class="d-flex flex-row align-items-center">
+      <div class="feature-tabs mt-3" *ngIf="hiddenActivitiesDetails.includes(activityIndex)">
 
       <ul ngbNav #nav="ngbNav" class="nav-tabs">
 
@@ -184,14 +181,10 @@
 
   </div>
 
-  <div role="button" clickClass="rotate-180" (click)="addToHiddenDetailsConter(activityIndex)"
-  class="footer
-    card-footer
-    text-center
-    m-0
-  ">
-    <fa-icon [icon]="arrowsDownIcon" ></fa-icon>
   </div>
+
+
+
 
 </ng-template>
 <!-- ACTIVITY CARD TEMPLATE -->

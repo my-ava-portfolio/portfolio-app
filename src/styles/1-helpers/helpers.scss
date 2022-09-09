@@ -55,10 +55,10 @@ $theme-colors-map: (
   //   color: $gallery-color,
   //   text: $white
   // ),
-  // "volunteer": (
-  //   color: $volunteer-color,
-  //   text: $white
-  // ),
+  "volunteer": (
+    color: $volunteer-color,
+    text: $white
+  ),
   "education": (
     color: $education-color,
     text: $white
@@ -129,7 +129,8 @@ $theme-colors-map: (
 }
 
 @mixin paragraphTitle($color) {
-    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     position: relative;
     padding-left: 1.5rem;
 

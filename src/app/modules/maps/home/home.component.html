@@ -1,7 +1,16 @@
   <div id="mapsHome" class="gallery" [@fadeInOut]>
 
     <app-grid-container
+      columnNb="4"
       [features]="mapPagesMenus.sub_menus"
-    ></app-grid-container>
+      featuresHeaderClass="text-bg-dark"
+    >
+    
+    <ng-template #descriptionTemplate let-feature>
+      <set-paragraph-content>{{ feature.description }}</set-paragraph-content>
+    </ng-template>
+  
+  
+  </app-grid-container>
 
   </div>

@@ -1,21 +1,24 @@
 <ng-container *ngFor="let training of inputTrainingsData">
   <set-card-container
-    class="feature-training"
+    class="d-flex flex-row"
+    cardClass="m-3"
     [title]="training.year"
-    colorName="job"
+    headerClass="text-bg-job"
   >
+  <ng-template #cardBodyTemplate>
 
-  <div class="
-    details
-    d-flex flex-column
-    text-center
-  ">
-      <div class="my-2" *ngIf="training.img_tool !== 'null'">
-        <img class="img-fluid" [src]="training.img_tool"/>
-      </div>
-      <span class="trainer fw-bold">{{ training.name }}</span>
-      <span class="location">par {{ training.trainer }}</span>
-  </div>
-
+    <div class="
+      details
+      d-flex flex-column 
+      text-center
+    ">
+        <div class="my-2" *ngIf="training.img_tool !== 'null'">
+          <img class="img-fluid" [src]="training.img_tool"/>
+        </div>
+        <span class="trainer fw-bold">{{ training.name }}</span>
+        <span class="location">par {{ training.trainer }}</span>
+    </div>
+  </ng-template>
+  
   </set-card-container>
 </ng-container>

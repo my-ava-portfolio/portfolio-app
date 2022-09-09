@@ -21,12 +21,12 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private defaultNodeIdSelected = null;
 
-  isJobsGrouped: boolean | string = false;
-  isProjectsGrouped: boolean | string = true;
-  isVolunteersGrouped: boolean | string = true;
-  isThemesEnabled: boolean | string = true;
-  isTechnicsEnabled: boolean | string = true;
-  isToolsEnabled: boolean | string = false;
+  isJobsGrouped!: boolean | string;
+  isProjectsGrouped!: boolean | string;
+  isVolunteersGrouped!: boolean | string;
+  isThemesEnabled!: boolean | string;
+  isTechnicsEnabled!: boolean | string;
+  isToolsEnabled!: boolean | string;
 
   // icons
   navIcon = navIcon;
@@ -39,9 +39,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   currentNodeIdSelected: string | null = null;
 
   graphData!: any;
-  currentJobsActivitiesData: any = [];
-  currentPersonalProjectsActivitiesData: any = [];
-  currentVolunteersActivitiesData: any = [];
+  // currentJobsActivitiesData: any = [];
+  // currentPersonalProjectsActivitiesData: any = [];
+  // currentVolunteersActivitiesData: any = [];
 
   adjlist!: any;
   labelLayout!: any;
@@ -92,7 +92,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   activitiesFilteredSubscription!: Subscription;
   activitiesIdSubscription!: Subscription;
-  activitiesJobsAvailableSubscription!: Subscription;
+  // activitiesJobsAvailableSubscription!: Subscription;
   activitiesProjectsAvailableSubscription!: Subscription;
 
   constructor(
@@ -131,14 +131,14 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     )
 
-    this.activitiesJobsAvailableSubscription = this.resumeService.activitiesAvailable.subscribe(
-      (activitiesAvailable) => {
+    // this.activitiesJobsAvailableSubscription = this.resumeService.activitiesAvailable.subscribe(
+      // (activitiesAvailable) => {
         // to display activities list
-        this.currentPersonalProjectsActivitiesData = activitiesAvailable.personal_projects;
-        this.currentJobsActivitiesData = activitiesAvailable.jobs;
-        this.currentVolunteersActivitiesData = activitiesAvailable.volunteers
-      }
-    )
+        // this.currentPersonalProjectsActivitiesData = activitiesAvailable.personal_projects;
+        // this.currentJobsActivitiesData = activitiesAvailable.jobs;
+        // this.currentVolunteersActivitiesData = activitiesAvailable.volunteers
+      // }
+    // )
 
    }
 

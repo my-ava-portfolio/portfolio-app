@@ -1,21 +1,34 @@
-
   <ng-container *ngFor="let degree of inputDegreesData">
+
     <set-card-container
-      class="feature-degree text-center"
+      class="feature-degree d-flex flex-row flew-wrap text-center"
+      cardClass="m-3"
       [title]="getTitle(degree)"
-      colorName="education"
+      headerClass="text-bg-education"
     >
 
-      <div class="degree
-        d-flex flex-row
-        align-items-center
-      ">
-        <img *ngIf="degree.img_school !== 'null'" [src]="assetsLogoPath + degree.img_school"/>
-        <set-paragraph-content class="fw-bold">{{ degree.degree }}</set-paragraph-content>
-      </div>
+      <ng-template #cardBodyTemplate>
 
-      <div class="school">
-        <set-paragraph-content class="d-flex flex-row justify-content-center">{{ degree.school }}</set-paragraph-content>
+        <div class="
+          d-flex flex-column text-center
+          align-items-center
+        ">
+
+          <div class="degree
+            d-flex flex-row
+            align-items-center
+          ">
+            <img *ngIf="degree.img_school !== 'null'" [src]="assetsLogoPath + degree.img_school"/>
+            <set-paragraph-content *ngIf="degree.img_school === 'null'" class="d-flex flex-row justify-content-center">{{ degree.school }}</set-paragraph-content>
+
+            <set-paragraph-content class="fw-bold">{{ degree.degree }}</set-paragraph-content>
+          </div>
+
+        </div>
+      </ng-template>
+
+      <ng-template #cardFooterTemplate>
+
         <set-icon-text
           [route]="mapPages.sub_menus[0].content_url"
           [fragment]="degree.identifier"
@@ -23,12 +36,8 @@
           [title]="degree.location"
           [iconInput]="locationIcon"
         ></set-icon-text>
-      </div>
-
+        
+      </ng-template>
     </set-card-container>
 
-
   </ng-container>
-
-
-
