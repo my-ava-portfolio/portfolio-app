@@ -15,10 +15,9 @@
       <h3 class="title-tick-warning">Rubriques</h3>
 
       <div id="summary__card__welcome__pageLinks" class="
-        text-center
+        text-center mt-2 mb-5
       ">
 
-        <div class="buttons">
           <ng-container *ngFor="let page of resumePages">
             <set-button-content
               [classes]="'btn-' + page.colorType"
@@ -28,9 +27,7 @@
             >{{ page.title }}
             </set-button-content>
           </ng-container>
-        </div>
 
-        <div class="buttons">
           <ng-container *ngFor="let page of projectPages">
 
             <ng-container *ngIf="page.route">
@@ -52,7 +49,6 @@
             </ng-container>
 
           </ng-container>
-        </div>
       </div>
 
   </div>
