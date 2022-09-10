@@ -140,8 +140,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
     
     // for asset type update media attribute path
-    let inputType = feature.source.split('_')[0]
-    if (inputType === "asset") {
+    let inputCat = feature.source.split('_')[0]
+    let inputType = feature.source.split('_')[1]
+
+    if (!['asset_app'].includes(feature.source)) {
       feature.media = assetsImagesPath + feature.media_splash
     }
 
