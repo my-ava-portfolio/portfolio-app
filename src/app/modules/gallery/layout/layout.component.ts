@@ -62,7 +62,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   };
   categoriesActivity: any = {
     job: 'Expériences',
-    personal_project: 'Projet personnel',
+    "personal-project": 'Projet personnel',
     volunteer: 'Bénévolat'
   };
   featureTypes: any = { 
