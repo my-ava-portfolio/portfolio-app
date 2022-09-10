@@ -21,11 +21,11 @@
         "
       >
       <set-badge-content
-        classes="text-bg-primary m-2"
+        classes="text-bg-primary"
       >{{graphInputData.start_date}}</set-badge-content>
       <input class="w-25" type="range" steps="1" [min]="graphInputData.start_date" [max]="graphInputData.end_date" [value]="currentDate"  (change)="updateDate($event)"/>
       <set-badge-content
-        classes="text-bg-primary m-2"
+        classes="text-bg-primary"
       >{{graphInputData.end_date}}</set-badge-content>
     </div>
 

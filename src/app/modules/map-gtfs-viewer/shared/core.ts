@@ -1,6 +1,4 @@
-import { TrainingsBarComponent } from '@modules/education/trainings-bar/trainings-bar.component';
 import { faExpand, faTags, faMapMarkerAlt, faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
-import Feature from "ol/Feature";
 import { Style } from "ol/style";
 import CircleStyle from "ol/style/Circle";
 import Fill from "ol/style/Fill";

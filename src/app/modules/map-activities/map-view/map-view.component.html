@@ -9,7 +9,7 @@
   </ng-template>
 
 
-  <div class="d-flex flex-column flex-xl-row justify-content-around align-items-center">
+  <ng-template #controlersTemplate>
 
     <app-theme-legend
     ></app-theme-legend>
@@ -19,7 +19,8 @@
       [map]="map"
     ></app-time-legend>
 
-  </div>
+  </ng-template>
+  
 </set-legend-container>
 
 <ng-container *ngTemplateOutlet="activitiesPopups; context:{}"></ng-container>

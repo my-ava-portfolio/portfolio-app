@@ -137,5 +137,7 @@
       "style": "scss"
     }
   },
-  "defaultProject": "portfolio"
+  "cli": {
+    "analytics": false
+  }
 }

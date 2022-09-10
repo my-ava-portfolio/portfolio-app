@@ -174,7 +174,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   buildColorStyle(color: string) {
-   return {'background': 'linear-gradient(to left, ' + color +', white)'}
+   return {'background': 'linear-gradient(to right, ' + color +', white)'}
 
   }
 

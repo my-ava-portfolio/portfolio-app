@@ -78,7 +78,7 @@ export class TimeLineComponent implements OnInit {
 
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
   width = 500;
-  height = 90;
+  height = 75;
   private dateRange!: any;
   private selectedDatePosition = 0;  // TODO check type
   private fontSize = '14px';

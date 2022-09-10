@@ -8,6 +8,7 @@ import { TimelineService } from '@shared/services/timeline.service';
 
 import { PipesModule } from '@shared/pipes/pipes.module';
 import {RouterModule} from '@angular/router';
+import { ItemsModule } from '../items/items.module';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {RouterModule} from '@angular/router';
     CommonModule,
     FontAwesomeModule,
     PipesModule,
-    RouterModule
+    RouterModule,
+    ItemsModule
   ],
   exports: [
     TimeLineComponent,

@@ -8,11 +8,10 @@
     </button>
   </ng-template>
   
-  <div class="d-flex flex-column flex-lg-row justify-content-evenly">
+  <ng-template #controlersTemplate>
 
-    <div class="d-flex flex-row justify-content-around mx-2">
-
-      <div class="mx-2">
+    <div class="d-flex flex-row justify-content-around">
+      <set-section-container>
         <h6>GTFS</h6>
 
         <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
@@ -24,9 +23,9 @@
           </ng-container>
         </div>
 
-      </div>
+      </set-section-container>
 
-      <div class="mx-2">
+      <set-section-container>
         <h6>Modes de transport</h6>
 
         <svg id='routeTypeLegend' [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement">
@@ -50,18 +49,17 @@
 
         </svg>
 
-      </div>
+      </set-section-container>
     </div>
 
-
-    <div class="my-2">
+    <set-section-container>
       <app-time-line
         timeLineId="timeline-slider"
         [timeLineSpeedSliderEnabled]="true"
         [sliderDayStyleEnabled]="true"
       ></app-time-line>
-    </div>
+    </set-section-container>
 
-  </div>
+  </ng-template>
 
 </set-legend-container>
