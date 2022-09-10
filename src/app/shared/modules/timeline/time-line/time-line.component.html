@@ -1,45 +1,34 @@
-<div class="d-flex flex-column flex-xxl-row mt-auto justify-content-center" id="theme-legend">
+<div class="d-flex flex-xl-row flex-column">
 
-  <div class="d-flex flex-column justify-content-center align-items-center">
+  <set-section-container>
     <h6>Barre Temporelle</h6>
 
-      <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" [id]="timeLineId">
+    <set-badge-content classes="text-bg-secondary">{{ currentDate | date:'MMMM y' }}</set-badge-content>
+    
+    <div class="d-flex flex-row justify-content-center">
+      <svg [attr.viewBox]="'0 10 ' + width + ' ' + height" [id]="timeLineId">
       </svg>
+    </div>
 
-  </div>
+  </set-section-container>
 
-  <div class="text-center px-5">
-    <div class="d-flex flex-column justify-content-center align-items-center mt-auto">
+  <div class="d-flex flex-column justify-content-center m-2" *ngIf="timeLineSpeedSliderEnabled">
 
-      <div class="mb-2">
-        <span class="fw-bold" id="slider-value">{{ currentDate | date:'dd MMMM y HH:mm' }}</span>
+    <div class="d-flex flex-row justify-content-center align-items-center">
+      <a id="start-button" class="btn btn-sm btn-dark" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
+      <a id="play-button" class="btn btn-dark mx-2" role="button" (click)="startTimeLine()">Play</a>
+      <a id="end-button" class="btn btn-sm btn-dark" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
+    </div>
+
+    <h6 class="mt-3">Vitesse</h6>
+    <div class="d-flex flex-row align-self-center">
+
+      <div class="fw-bold">-</div>
+      <div class="px-1">
+        <input id="speed-slider" class="form-range" type="range" [min]="minStepValue" [max]="maxStepValue" [step]="minStepValue" [value]="stepValue" (change)="updateStepValue($event)"/>
       </div>
-
-      <div class="d-flex flex-column flex-md-row justify-content-center align-items-center mt-auto">
-
-        <div class="d-flex flex-row align-items-center">
-          <a id="start-button" class="btn btn-dark btn-sm" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
-          <a id="play-button" class="btn btn-dark mx-2" role="button" (click)="startTimeLine()">Play</a>
-          <a id="end-button" class="btn btn-dark btn-sm" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
-        </div>
-
-        <div class="d-flex flex-column justify-content-center m-2" *ngIf="timeLineSpeedSliderEnabled">
-          <span class="fw-bold">Vitesse</span>
-
-          <div class="d-flex flex-row align-self-center">
-
-            <div class="fw-bold">-</div>
-            <div class="px-1">
-              <input id="speed-slider" class="form-range" type="range" [min]="minStepValue" [max]="maxStepValue" [step]="minStepValue" [value]="stepValue" (change)="updateStepValue($event)"/>
-            </div>
-            <div class="fw-bold">+</div>
-          </div>
-
-        </div>
-      </div>
-
+      <div class="fw-bold">+</div>
     </div>
 
   </div>
-
 </div>

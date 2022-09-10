@@ -1,29 +1,20 @@
-<div class="d-flex flex-column flex-xxl-row mt-auto py-2 justify-content-center align-items-center" id="theme-legend">
-
   <set-section-container>
     <h6>Barre Temporelle</h6>
 
-    <div class="d-flex flex-row justify-content-around">
-
+    <set-badge-content classes="text-bg-secondary">{{ sliderDate | date:'MMMM y' }}</set-badge-content>
+    
+    <div class="d-flex flex-row justify-content-center">
       <svg
-        [attr.viewBox]="'0 0 ' + width + ' ' + height"
+        [attr.viewBox]="'0 10 ' + width + ' ' + height"
         id="slider-bar"
       >
       </svg>
+    </div>
 
-      <div class="-flex flex-column justify-content-center">
-        <h5 id="slider-value">{{ sliderDate | date:'MMMM y' }}</h5>
-  
-        <div class="d-flex flex-ro">
-          <a id="start-button" class="btn btn-dark" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
-          <a id="play-button" class="btn btn-dark mx-2" role="button" (click)="startTimeLine()">Play</a>
-          <a id="end-button" class="btn btn-dark" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
-        </div>
-      </div>
-  
-
+    <div class="d-flex flex-row justify-content-center align-items-center">
+      <a id="start-button" class="btn btn-sm btn-dark" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
+      <a id="play-button" class="btn btn-dark mx-2" role="button" (click)="startTimeLine()">Play</a>
+      <a id="end-button" class="btn btn-sm btn-dark" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
     </div>
 
   </set-section-container>
-
-</div>

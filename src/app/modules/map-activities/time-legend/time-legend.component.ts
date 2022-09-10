@@ -40,7 +40,7 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
 
   margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
   width = 600;
-  height = 90;
+  height = 70;
   fontSize = '14px';
   sliderNodesSize = 5;
 
