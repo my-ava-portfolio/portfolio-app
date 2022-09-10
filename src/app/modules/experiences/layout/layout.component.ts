@@ -81,7 +81,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
     this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
         this.jobsData = data.activities_data.jobs;
-        this.personalProjectsData = data.activities_data.personal_projects;
+        this.personalProjectsData = data.activities_data['personal-projects'];
         this.volunteersData = data.activities_data.volunteers;
         this.skillsData = data.skills_data;
         this.isActivitiesDataAvailable = true;

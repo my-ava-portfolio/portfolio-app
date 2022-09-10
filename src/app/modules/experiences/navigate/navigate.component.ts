@@ -57,7 +57,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   strokeWidth = '0px';
 
   job_identifier: string = 'job'
-  personal_project_identifier = 'personal_project' // api input data... about the '_' vs scss...
+  personal_project_identifier = 'personal-project' // api input data... about the '_' vs scss...
   volunteer_identifier = 'volunteer'
   skillsMapping = skillsMapping;
   skill_topics = Object.keys(skillsMapping)

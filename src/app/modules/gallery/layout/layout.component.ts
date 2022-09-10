@@ -65,13 +65,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
     personal_project: 'Projet personnel',
     volunteer: 'Bénévolat'
   };
-  featureTypes: any = { // TODO improvments needed: return info from the API
-    youtube: 'video',
+  featureTypes: any = { 
+    url_video: 'video',
     url_img: 'modal',
     url_app: 'website',
-    api_img: 'modal'
+    asset_img: 'modal',
+    asset_app: 'local_website'
   }
-
   activitiesGallerySubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
 
@@ -127,15 +127,22 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
 
   buildFeature(feature: any): galleryFeature {
-    let img_url = feature.media_splash
-    if ([null, 'nan'].includes(img_url)) { // TODO github image return 'nan'... check api
-      img_url = feature.media
+    // some medias does not have a media_splash attribute
+    let img_url!: string;
+    if ([null, 'nan'].includes(feature.media_splash)) {
+      feature.media_splash = feature.media
     }
-    if (!img_url.includes('http')) {
-      img_url = assetsImagesPath + img_url
+
+    // media_splash may be an asset media
+    img_url = feature.media_splash
+    if (!feature.media_splash.includes('http')) {
+      img_url = assetsImagesPath + feature.media_splash
     }
-    if (!feature.media.includes('http') && this.featureTypes[feature.source] === 'modal') { // TODO use url... OR add it on asset
-      feature.media = assetsImagesPath + feature.media
+    
+    // for asset type update media attribute path
+    let inputType = feature.source.split('_')[0]
+    if (inputType === "asset") {
+      feature.media = assetsImagesPath + feature.media_splash
     }
 
     let addons: any = {};
