@@ -13,6 +13,7 @@ export class LegendContainerComponent implements OnInit {
   // WARNING: important to set the element position (ex: fixed for apps map & sticky for grid)
   @Input() classes!: string;
   @ContentChild('buttonsTemplate') buttonsTmplt!: TemplateRef<any>;
+  @ContentChild('controlersTemplate') controlersTmplt!: TemplateRef<any>;
 
   tagIcon = tagIcon;
   centerIcon = centerIcon;

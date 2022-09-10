@@ -24,6 +24,8 @@
       " 
       [ngClass]="!isLegendDisplayed ? 'd-none' : ''">
 
+      <ng-container *ngTemplateOutlet="controlersTmplt"></ng-container>
+
         <ng-content></ng-content>
   
     </div>

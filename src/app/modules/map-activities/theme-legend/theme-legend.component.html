@@ -1,6 +1,6 @@
 <div class="d-flex flex-row py-2 justify-content-around" id="theme-legend">
 
-  <div class="d-flex flex-column mx-2">
+  <set-section-container>
     <h6>Activités</h6>
     <svg
       [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement"
@@ -23,10 +23,10 @@
         [class]="feature.class + ' label'">{{ feature.label }}
       </text>
     </svg>
-  </div>
+  </set-section-container>
 
 
-  <div class="d-flex flex-column mx-2">
+  <set-section-container>
     <h6>Durée</h6>
     <svg
       [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightLegendElement"
@@ -53,9 +53,9 @@
           class="line-dot">
       </line>
     </svg>
-  </div>
+  </set-section-container>
 
-  <div class="d-flex flex-column mx-2">
+  <set-section-container>
     <h6>Déplacements</h6>
     <svg [attr.viewBox]="'0 0 ' + widthLegendElement + ' ' + heightMoveLegendElement">
 
@@ -91,6 +91,6 @@
       </text>
 
     </svg>
-  </div>
+  </set-section-container>
 
 </div>

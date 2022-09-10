@@ -50,7 +50,9 @@
   <set-legend-container
     classes="position-sticky"
   >
-    <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
+    <ng-template #controlersTemplate>
+      <ng-container *ngTemplateOutlet="galleryControler"></ng-container>
+    </ng-template>
   </set-legend-container>
 
 </article>

@@ -36,7 +36,9 @@
   <set-legend-container
     classes="position-sticky"
     >
-    <ng-container *ngTemplateOutlet="controler"></ng-container>
+    <ng-template #controlersTemplate>
+      <ng-container *ngTemplateOutlet="controler"></ng-container>
+    </ng-template>
   </set-legend-container>
 
 </div>
