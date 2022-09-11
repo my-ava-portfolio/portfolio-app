@@ -185,7 +185,7 @@ export const mapActivitiesPages: mapActivitiesPagesType = {
       categories: [],
       tags: [],
       image_url: `${assetsImagesPath}/portfolio_activities.jpg`,
-      description: "Cartographie de mon parcours universitaire et professionnel."
+      description: "Cartographie de mon parcours universitaire et professionnel (OpenLayers et D3js)."
     },
     {
       id: "sandbox",
@@ -195,7 +195,7 @@ export const mapActivitiesPages: mapActivitiesPagesType = {
       categories: [],
       tags: [],
       image_url: `${assetsImagesPath}/sandbox.jpg`,
-      description: "Un bac à sable pour saisir des données géographiques: Points, LineString, Polygons (et à trous). En cours de développement..."
+      description: "Un bac à sable (OpenLayers) pour saisir et exporter des données géographiques: Points, LineString, Polygons (et à trous). En cours de développement..."
     },
     {
       id: "gtfs-viewer",
@@ -205,7 +205,7 @@ export const mapActivitiesPages: mapActivitiesPagesType = {
       categories: [],
       tags: [],
       image_url: `${assetsImagesPath}/gtfs_viewer.jpg`,
-      description: "Application pour visualiser des GTFS. En cours de développement..."
+      description: "Application (OpenLayers, D3js...) pour visualiser la circulation sur une journée des transports en commun (à partir d'un GTFS). En cours de développement..."
     },
     {
       id: "find-my-path",
@@ -215,7 +215,7 @@ export const mapActivitiesPages: mapActivitiesPagesType = {
       tags: [],
       content_url: "https://findmypath.amaury-valorge.com/",
       image_url: `${assetsImagesPath}/find_my_path.jpg`,
-      description: "Application pour déterminer le meilleur chemin. En cours de refonte..."
+      description: "Application Angular (Leaflet, D3js) pour calculer des plus courts chemins à partir des données OpenStreetMap. Le calcul est réalisé à partir de ma librarie Python OsmGT. En cours de refonte..."
     }
   ]
 };
