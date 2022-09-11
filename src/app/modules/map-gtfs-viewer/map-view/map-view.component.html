@@ -14,12 +14,15 @@
       <set-section-container>
         <h6>GTFS</h6>
 
-        <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+        <div class="d-flex flex-xl-row flex-column">
           <ng-container *ngFor="let area of availableArea">
-            <input type="radio" class="border btn-check m-0" name="btnradio" [id]="'btnradio-' + area" [checked]="currentArea === area" autocomplete="off" (click)="updateData(area)">
-            <label class="w-100 btn border-warning btn-outline-warning p-0" [for]="'btnradio-' + area">
-              <span class="dropdown-item fw-bold">{{ area.charAt(0).toUpperCase() + area.slice(1) }}</span>
-            </label>
+
+            <set-button-content
+              [classes]="currentArea === area ? 'btn-sm btn-warning fw-bold' : 'btn-sm btn-warning'"
+              (click)="updateData(area)"
+            >{{ area.charAt(0).toUpperCase() + area.slice(1) }}
+            </set-button-content>
+
           </ng-container>
         </div>
 

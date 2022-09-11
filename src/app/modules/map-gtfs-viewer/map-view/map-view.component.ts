@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -26,7 +26,7 @@ import VectorSource from 'ol/source/Vector';
   templateUrl: './map-view.component.html',
   styleUrls: ['./map-view.component.scss']
 })
-export class MapViewComponent implements OnInit, OnDestroy {
+export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   locationIcon = locationIcon;
   tagIcon = tagsIcon;
@@ -210,12 +210,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
     // the begining of the process
     this.dataService.pullAvailableAreas();
 
-    this.updateData(this.currentArea)
     this.innerWidth = window.screen.width;
     this.innerHeight = window.screen.height;
 
   }
 
+    ngAfterViewInit(): void {
+      this.updateData(this.currentArea)
+
+    }
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
