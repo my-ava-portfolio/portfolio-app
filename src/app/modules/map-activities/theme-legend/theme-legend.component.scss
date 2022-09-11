@@ -13,3 +13,17 @@ svg {
     width: 6em;
   }
 }
+
+.activity-months {
+  fill: white;
+  opacity: 0.7;
+  stroke: black;
+  stroke-width: 2px;
+  stroke-opacity: 1;
+}
+
+.line-dot {
+  stroke: #000000;
+  stroke-width: 1;
+  stroke-dasharray: 5,5;
+}

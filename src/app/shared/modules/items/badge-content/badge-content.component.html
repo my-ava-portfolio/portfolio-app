@@ -1,7 +1,7 @@
 <a class="badge rounded-pill m-1 text-decoration-none"
   [routerLink]="routerLink" [fragment]="fragment"
   [ngClass]="classes" 
-  [ngStyle]="{'background-color': customBgColor ? customBgColor : 'none'}"
+  [style.background-color]="customBgColor ? customBgColor : 'none'"
   [style.color]="getConstract(customBgColor)"
   >
     <fa-icon *ngIf="icon" class="mx-1" [icon]="icon" size="1x"></fa-icon>

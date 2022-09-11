@@ -1,52 +1,25 @@
-// @import "main";
-
-
-
+#OrientationAlert {
+  background-color: rgb(0 0 0 / 80%);
+  z-index: 99999;
+  height: 100vh;
+  position: fixed;
+  overflow-y: hidden;
+  width: 100%;
+}
   
   
-
-  // map-activities //
-  .activity-months {
-    fill: white;
-    opacity: 0.7;
-    stroke: black;
-    stroke-width: 2px;
-    stroke-opacity: 1;
-  }
-  
-  .line-dot {
-    stroke: #000000;
-    stroke-width: 1;
-    stroke-dasharray: 5,5;
-  }
-    // map-activities //
-
-  
-
-  
-  
-  #OrientationAlert {
-    background-color: rgb(0 0 0 / 80%);
-    z-index: 99999;
-    height: 100vh;
-    position: fixed;
-    overflow-y: hidden;
-    width: 100%;
-  }
-  
-  
-  .cursor {
-    cursor: pointer;
-  }
+.cursor {
+  cursor: pointer;
+}
   
   
  
-  #scroll-top-button {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    cursor: pointer;
-    pointer-events: all;
-    opacity: 1;
-   }
+#scroll-top-button {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  cursor: pointer;
+  pointer-events: all;
+  opacity: 1;
+}
   
