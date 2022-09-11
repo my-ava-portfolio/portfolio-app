@@ -317,15 +317,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
       layersFound[0].setSource(vectorSource);
     }
 
-    // l.setSource(vectorSource);
-
-    // // layer.setSource(vectorSource);
   }
-
-
-
-
-
-
 
 }

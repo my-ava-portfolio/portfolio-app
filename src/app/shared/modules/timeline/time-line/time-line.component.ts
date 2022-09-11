@@ -288,7 +288,7 @@ export class TimeLineComponent implements OnInit {
   }
 
   private setMapTileBrightness(value?: number) {
-    const mapTilesDiv = d3.selectAll(".ol-viewport")
+    const mapTilesDiv = d3.selectAll(".ol-layer")
 
     if (typeof value !== 'undefined') {
 
