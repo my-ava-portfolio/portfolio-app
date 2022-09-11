@@ -73,7 +73,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     asset_app: 'local_website'
   }
   activitiesGallerySubscription!: Subscription;
-  activitiesFilteredSubscription!: Subscription;
+  activatedRouteSubscription!: Subscription;
 
   constructor(
     private galleryService: GalleryService,
@@ -86,7 +86,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
-    this.activatedRoute.fragment.subscribe(
+    this.activatedRouteSubscription = this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment !== undefined) {
           this.fragment = fragment;
@@ -119,6 +119,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.activitiesGallerySubscription.unsubscribe();
+    this.activatedRouteSubscription.unsubscribe();
   }
 
   sendResumeSubMenus(): void {
@@ -139,10 +140,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
       img_url = assetsImagesPath + feature.media_splash
     }
     
-    // for asset type update media attribute path
-    let inputCat = feature.source.split('_')[0]
-    let inputType = feature.source.split('_')[1]
-
     if (['asset_img'].includes(feature.source)) {
       feature.media = assetsImagesPath + feature.media_splash
     }

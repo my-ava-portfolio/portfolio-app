@@ -3,7 +3,7 @@
     <div class="grid-feature
         mb-4
         shadow
-        " *ngFor="let feature of features; let idx = index">
+        " *ngFor="let feature of features; let idx = index;trackBy: trackByFn">
 
         <set-card-container
             class=""
@@ -22,7 +22,7 @@
                     </div>
                 </ng-container>
                 <ng-container *ngIf="feature.type !== 'video'">
-                    <img class="img-fluid mx-auto" [src]="feature.image_url | safeUrl">
+                    <img class="img-fluid" [src]="feature.image_url | safeUrl">
                 </ng-container>
             </div>
 

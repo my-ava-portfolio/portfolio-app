@@ -20,4 +20,8 @@ export class GridContainerComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  trackByFn(index: number, item: any) {
+    return index;
+  }
+
 }
