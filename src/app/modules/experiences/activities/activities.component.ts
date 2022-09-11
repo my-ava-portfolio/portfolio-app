@@ -5,7 +5,7 @@ import { assetsLogoPath, assetsImagesPath, galleryPages, githubIcon, mapActiviti
 
 import { ResumeService } from '@services/resume.service';
 
-import { arrowsDownIcon, expandIcon, resumeIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '@core/inputs';
+import { arrowsDownIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '@core/inputs';
 import { ActivityActionsService } from '../services/activity-actions.service';
 
 
@@ -30,11 +30,9 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   // icons
   locationIcon = locationIcon;
-  resumeIcon = resumeIcon;
   galleryIcon = galleryIcon;
   filterIcon = filterIcon;
   trophyIcon = trophyIcon;
-  expandIcon = expandIcon;
   arrowsDownIcon = arrowsDownIcon;
   projectIcon = projectIcon;
   githubIcon = githubIcon;

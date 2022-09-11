@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 
 import { ResumeService } from '@services/resume.service';
-import { expandIcon, navIcon, helpIcon, ungroupIconUnicode, nextIcon, activitiesMapping, skillsMapping } from '@core/inputs';
+import { ungroupIconUnicode, activitiesMapping, skillsMapping } from '@core/inputs';
 import { ActivityActionsService } from '@modules/experiences/services/activity-actions.service';
 
 @Component({
@@ -29,11 +29,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   isToolsEnabled!: boolean | string;
 
   // icons
-  navIcon = navIcon;
-  helpIcon = helpIcon;
   ungroupIconUnicode = ungroupIconUnicode;
-  nextIcon = nextIcon;
-  expandIcon = expandIcon;
 
   currentDate: number = new Date().getFullYear();
   currentNodeIdSelected: string | null = null;
