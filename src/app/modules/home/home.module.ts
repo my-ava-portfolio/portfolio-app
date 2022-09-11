@@ -11,8 +11,6 @@ import { LayoutComponent } from '@modules/home/layout/layout.component';
 
 import { SummaryComponent } from './summary/summary.component';
 
-import { GalleryService } from '@services/gallery.service';
-
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { GeneralInfoComponent } from './general-info/general-info.component';
@@ -34,7 +32,6 @@ import { ItemsModule } from '@shared/modules/items/items.module';
     ItemsModule
   ],
   providers: [
-    GalleryService
   ]
 })
 export class HomeModule { }

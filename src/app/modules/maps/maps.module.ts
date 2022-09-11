@@ -5,8 +5,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MapRoutingModule } from './maps-routing.module';
 
-import { LayoutComponent } from './layout/layout.component';
-import { HomeComponent } from './home/home.component';
+import { MapAppLayoutComponent } from './map-app-layout/map-app-layout.component';
+import { HomeLayoutComponent } from './home-layout/home-layout.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { GridContainerModule } from '@shared/modules/grid/gallery.module';
@@ -14,8 +14,8 @@ import { ItemsModule } from '@shared/modules/items/items.module';
 
 @NgModule({
   declarations: [
-    LayoutComponent,
-    HomeComponent
+    MapAppLayoutComponent,
+    HomeLayoutComponent
   ],
   imports: [
     CommonModule,

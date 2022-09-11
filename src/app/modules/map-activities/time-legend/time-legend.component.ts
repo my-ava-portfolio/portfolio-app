@@ -1,4 +1,4 @@
-import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer } from './../shared/core';
+import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer } from '@modules/map-activities/shared/core';
 import { Component, OnInit, ViewEncapsulation, OnDestroy, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';

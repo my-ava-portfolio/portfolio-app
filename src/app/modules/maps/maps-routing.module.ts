@@ -2,14 +2,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LayoutComponent } from '@modules/maps/layout/layout.component';
-import { HomeComponent } from '@modules/maps/home/home.component';
+import { MapAppLayoutComponent } from './map-app-layout/map-app-layout.component';
+import { HomeLayoutComponent } from './home-layout/home-layout.component';
 
 
 const routes: Routes = [
   {
     path: 'app',
-    component: LayoutComponent,
+    component: MapAppLayoutComponent,
     children: [
       {
         path: 'activities',
@@ -28,7 +28,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: HomeComponent,
+    component: HomeLayoutComponent,
     data: { title: 'Cartes', page: 'home' },
   },
 ]

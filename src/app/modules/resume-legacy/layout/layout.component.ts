@@ -6,7 +6,7 @@ import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-layout',
+  selector: 'app-app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })

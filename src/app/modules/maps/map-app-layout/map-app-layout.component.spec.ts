@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LayoutComponent } from './layout.component';
+import { MapAppLayoutComponent } from '@modules/maps/map-app-layout/app-app-layout.component';
 
-describe('LayoutComponent', () => {
-  let component: LayoutComponent;
-  let fixture: ComponentFixture<LayoutComponent>;
+describe('MapAppLayoutComponent', () => {
+  let component: MapAppLayoutComponent;
+  let fixture: ComponentFixture<MapAppLayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LayoutComponent ]
+      declarations: [ MapAppLayoutComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LayoutComponent);
+    fixture = TestBed.createComponent(MapAppLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

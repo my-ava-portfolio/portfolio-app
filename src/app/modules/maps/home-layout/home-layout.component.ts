@@ -6,12 +6,12 @@ import { ControlerService } from '@services/controler.service';
 
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-home-layout',
+  templateUrl: './home-layout.component.html',
+  styleUrls: ['./home-layout.component.scss'],
   animations: [fadeInOutAnimation]
 })
-export class HomeComponent implements OnInit {
+export class HomeLayoutComponent implements OnInit {
   mapPagesMenus: any = mapActivitiesPages;
 
   constructor(

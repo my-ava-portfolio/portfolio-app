@@ -20,7 +20,6 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
 
 
-
 @Component({
   selector: 'app-map-view',
   templateUrl: './map-view.component.html',

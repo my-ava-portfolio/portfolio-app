@@ -8,13 +8,13 @@ import { ControlerService } from '@services/controler.service';
 
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss'],
+  selector: 'map-app-layout',
+  templateUrl: './map-app-layout.component.html',
+  styleUrls: ['./map-app-layout.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: [fadeInOutAnimation]
 })
-export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MapAppLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isLegendDisplayed: boolean = true;
 

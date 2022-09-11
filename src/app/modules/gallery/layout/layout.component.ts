@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { assetsImagesPath, experiencesPages, minWidthLandscape } from '@core/inputs';
 
-import { GalleryService } from '@services/gallery.service';
+import { GalleryService } from '@modules/gallery/shared/services/gallery.service';
 import { MainService } from '@services/main.service';
 
 import { Subscription } from 'rxjs';
@@ -17,7 +17,7 @@ import { galleryFeature } from '@core/data-types';
 
 
 @Component({
-  selector: 'app-layout',
+  selector: 'app-app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
   animations: [fadeInOutAnimation]

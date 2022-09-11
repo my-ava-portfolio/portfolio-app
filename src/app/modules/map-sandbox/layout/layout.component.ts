@@ -14,7 +14,7 @@ import View from 'ol/View';
 import { InteractionsService } from '../shared/service/interactions.service';
 
 @Component({
-  selector: 'app-layout',
+  selector: 'app-app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })

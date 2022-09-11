@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { BlogService } from '@services/blog.service';
+import { BlogService } from '@modules/blog/shared/services/blog.service';
 
 import { minWidthLandscape, personalBlogUrl, stringToColor, tagIcon, tagsIcon } from '@core/inputs';
 
@@ -15,7 +15,7 @@ import { badge, galleryFeature } from '@core/data-types';
 
 
 @Component({
-  selector: 'app-layout',
+  selector: 'app-app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
   animations: [fadeInOutAnimation]
