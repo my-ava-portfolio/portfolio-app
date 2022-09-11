@@ -57,7 +57,7 @@ svg #trace {
 }
 
 
-circle.preselected {
+circle.preselected, circle.selected {
   stroke: black!important;
   stroke-width: 2px!important;
 }

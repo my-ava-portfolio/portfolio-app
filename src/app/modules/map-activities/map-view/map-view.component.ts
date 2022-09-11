@@ -32,8 +32,7 @@ import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFr
 @Component({
   selector: 'app-map-view',
   templateUrl: './map-view.component.html',
-  styleUrls: ['./map-view.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./map-view.component.scss']
 })
 export class MapViewComponent implements OnInit, OnDestroy  {
   imageProfile: string = imageProfile;
@@ -50,7 +49,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   geoFeaturesData!: any[];
   travelId: string | null = null;
-  //////
 
   isLegendDisplayed = true;
 
@@ -114,7 +112,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
         this.mapService.removeLayerByName(activityLayerName)
         this.geoFeaturesData = geoFeaturesData[0];
-
+        console.log(this.geoFeaturesData)
         this.buildActivityLayer(this.geoFeaturesData)
 
         // if a click is done on experience location icon

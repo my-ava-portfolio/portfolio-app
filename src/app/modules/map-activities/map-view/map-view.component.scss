@@ -22,27 +22,3 @@
 .mini-img-thumbnail {
   width: 15vw;
 }
-
-
-// used on map-view.component & theme-legend.component
-.train-line {
-  stroke: black;
-  stroke-width: 3px;
-}
-
-.train-marker {
-  fill: yellow;
-  stroke: black;
-  stroke-width: 3px;
-  color: black;
-}
-
-.train-marker-text {
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  color: black;
-  text-anchor: middle;
-  dominant-baseline: middle;
-  pointer-events: none;
-}
-// used on map-view.component & theme-legend.component

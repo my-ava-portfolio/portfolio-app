@@ -27,7 +27,8 @@
 
 
 <ng-template #activitiesPopups>
-<div [id]="'popup-feature-' + feature.properties.id" class="item card shadow map-popup" *ngFor="let feature of geoFeaturesData">
+<div [id]="'popup-feature-' + feature.properties.id" class="card shadow-lg map-popup border border-3 border-secondary" *ngFor="let feature of geoFeaturesData"
+  >
   <div class="card-body">
     <div class="d-flex flex-row justify-content-around mb-1">
       <h5 class="fw-bolder small">{{feature.properties.title}}</h5>
@@ -46,14 +47,14 @@
             {{feature.properties.location}}
           </span>
 
-            <div *ngIf="feature.properties.status === 'InProgress'; then currentJob else pastJob"></div>
-              <ng-template #pastJob>
-                <div class="small">Du {{ feature.properties.start_date | date: 'MM-yyyy' }} au {{ feature.properties.end_date | date: 'MM-yyyy' }}</div>
-              </ng-template>
+          <div *ngIf="feature.properties.status === 'InProgress'; then currentJob else pastJob"></div>
+          <ng-template #pastJob>
+            <div class="small">Du {{ feature.properties.start_date | date: 'MM-yyyy' }} au {{ feature.properties.end_date | date: 'MM-yyyy' }}</div>
+          </ng-template>
 
-              <ng-template #currentJob>
-                <div class="small">Du {{ feature.properties.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
-              </ng-template>
+          <ng-template #currentJob>
+            <div class="small">Du {{ feature.properties.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
+          </ng-template>
       </div>
     </div>
   </div>
