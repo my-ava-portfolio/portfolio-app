@@ -9,6 +9,7 @@
       "@services/*": ["src/app/services/*"],
       "@directives/*": ["src/app/directives/*"],
       "@core-helpers/*": ["src/app/core/helpers/*"],
+      "@bases/*": ["src/app/bases/*"],
       "@shared/*": ["src/app/shared/*"],
       "@modules/*": ["src/app/modules/*"],
       "@core/*": ["src/app/core/*"],

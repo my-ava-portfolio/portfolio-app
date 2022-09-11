@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
+import { LayoutComponent } from '@bases/layout/layout.component';
 
 import { Observable, of } from 'rxjs';
 
-import { LayoutComponent } from '@shared/components/layout/layout.component';
 
 
 export class CustomPreloadingStrategy implements PreloadingStrategy {

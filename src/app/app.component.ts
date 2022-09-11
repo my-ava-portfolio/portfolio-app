@@ -2,13 +2,12 @@ import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/cor
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { bugIcon, loadingIcon, mobileIcon, minWidthLandscape, minHeightLandscape, arrowUpIcon } from './core/inputs';
+import { bugIcon, loadingIcon, mobileIcon, minWidthLandscape, minHeightLandscape, arrowUpIcon } from '@core/inputs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
 

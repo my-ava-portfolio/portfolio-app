@@ -19,11 +19,12 @@ import { MainService } from '@services/main.service';
 import { SwipeDirective } from '@shared/directives/swipe.directive';
 import { HoverClassDirective } from '@shared/directives/hover-class.directive';
 
-import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { BackgroundComponent } from '@shared/components/background-map/background.component';
-import { NavigationBarComponent } from '@shared/components/navigation-bar/navigation-bar.component';
-import { ControlBarComponent } from '@shared/components/control-bar/control-bar.component';
 import { ItemsModule } from '@shared/modules/items/items.module';
+
+import { LayoutComponent } from '@bases/layout/layout.component';
+import { BackgroundComponent } from '@bases/background-map/background.component';
+import { ControlBarComponent } from '@bases/control-bar/control-bar.component';
+import { NavigationBarComponent } from '@bases/navigation-bar/navigation-bar.component';
 
 registerLocaleData(localeFr);
 

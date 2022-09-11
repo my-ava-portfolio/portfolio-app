@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener, ElementRef, ViewChild  } from '@angula
 
 import { minWidthLandscape } from '@core/inputs';
 
-import { ControlerService } from 'src/app/services/controler.service';
+import { ControlerService } from '@services/controler.service';
 
 import { navBarIcon } from '@core/inputs';
 
@@ -26,10 +26,7 @@ export class LayoutComponent implements OnInit {
 
   constructor(
     private controlerService: ControlerService,
-  ) {
-
-
-  }
+  ) {  }
 
   ngOnInit(): void {
     // the place to control the navbar
@@ -64,7 +61,5 @@ export class LayoutComponent implements OnInit {
   collaspedSideBarIfNeeded(): void {
     this.sideBarCollapsed = !this.sideBarCollapsed;
   }
-
-
 
 }
