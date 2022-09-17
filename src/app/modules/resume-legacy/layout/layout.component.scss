@@ -17,12 +17,12 @@
 // }
 
 
-.content{
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-}
+// .content{
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-start;
+//   align-items: center;
+// }
 
 #legacy_resume{
   transform-origin: top center;
@@ -57,4 +57,9 @@
     margin-top: 0!important;
     margin-bottom: 0!important;
   }
+}
+
+img {
+  // height: auto;
+  max-height: 10vh;
 }

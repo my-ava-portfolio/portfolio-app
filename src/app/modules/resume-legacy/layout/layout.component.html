@@ -1,14 +1,14 @@
 <div #content class="content">
 
 
-  <div class="d-flex flex-row align-items-center justify-content-center mt-3">
+  <div class="d-flex flex-row align-items-center justify-content-center my-3">
     <button type="button" class="btn btn-lg btn-warning fw-bold" type="button" (click)="printDiv('legacy_resume')">Imprimer/export en pdf</button>
   </div>
 
 
-  <div #legacyResume id="legacy_resume"  class="d-flex flex-column justify-content-center">
+  <div #legacyResume id="legacy_resume" class="d-flex flex-column justify-content-center">
 
-    <section class="page bg-white px-2 py-4 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
+    <section class="page bg-white px-3 pt-4 pb-5 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
 
       <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3">
 
@@ -46,9 +46,7 @@
 
 
       <div id="degrees" class="d-flex flex-column mx-4 pt-3">
-        <div class="">
-          <h5 class="">Diplômes</h5>
-        </div>
+        <h5 class="">Diplômes</h5>
 
         <div class="d-flex flex-column mx-4">
           <div class="" *ngFor="let degree of degreesData">
@@ -62,9 +60,7 @@
       <div class="d-flex flex-row mx-4 pt-3">
 
         <div id="degrees" class="d-flex flex-column">
-          <div class="">
-            <h5 class="">Formations</h5>
-          </div>
+          <h5 class="">Formations</h5>
 
           <div class="d-flex flex-column mx-4">
             <div class="small" *ngFor="let training of trainingsData">
@@ -75,9 +71,7 @@
         </div>
 
         <div id="languages" class="d-flex flex-column">
-          <div class="">
-            <h5 class="">Langues</h5>
-          </div>
+          <h5 class="">Langues</h5>
 
           <div class="d-flex flex-column mx-4">
             <div class="" *ngFor="let language of languagesData">
@@ -114,45 +108,40 @@
 
     <br clear="all" style="page-break-before:always" />
 
-    <section class="page bg-white px-2 py-4 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
+    <section class="page bg-white px-3 pt-4 pb-5 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
 
       <div id="jobs" class="d-flex flex-column mx-4">
 
-        <div class="">
-          <h5 class="">Expériences</h5>
-        </div>
+        <h5 class="">Expériences</h5>
 
-        <div class="d-flex flex-column" *ngFor="let job of jobsData">
+        <div class="ms-2 d-flex flex-column my-2" *ngFor="let job of jobsData">
 
-          <div class="d-flex flex-row align-items-center justify-content-start mb-2 mx-4" [ngClass]="job.status === 'InProgress' ? 'border rounded border-danger': 'border rounded'">
+          <div class="d-flex flex-row justify-content-between fw-bold" [ngClass]="job.status === 'InProgress' ? 'text-danger': 'text-dark'">
+            {{job.title}}
+            <div *ngIf="job.status === 'InProgress'; then currentJob else pastJob"></div>
+              <ng-template #pastJob>
+                <span class="">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }}  - {{job.contract}} - {{job.duration}}</span>
+              </ng-template>
+              <ng-template #currentJob>
+                <span class=""> Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui - {{job.contract}} - {{job.duration}}</span>
+              </ng-template>
+          </div>
 
-            <div class="m-1">
-              <img class="rounded img-thumbnail shadow img_company" [src]="apiImgUrl + job.img_company"/>
+          <div class="d-flex flex-row align-items-center justify-content-start my-2 mx-5">
+
+            <div class="w-25 d-flex flex-row justify-content-center align-items-center">
+              <img class="rounded img-fluid shadow img_company" [src]="apiImgUrl + job.img_company"/>
             </div>
 
-            <div class="d-flex flex-column ms-2">
+            <div class="w-75 d-flex flex-column ms-4">
 
-              <div class="fw-bold" [ngClass]="job.status === 'InProgress' ? 'text-danger': 'text-dark'">
-                <span>{{job.title}}</span>
-              </div>
-
-              <div class="small">
-                <span class=""> {{job.company}} à {{job.location}}</span>
-              </div>
-
-              <div class="small">
-                <div *ngIf="job.status === 'InProgress'; then currentJob else pastJob"></div>
-                  <ng-template #pastJob>
-                    <span class="">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }} ({{job.contract}} - {{job.duration}})</span>
-                  </ng-template>
-                  <ng-template #currentJob>
-                    <span class=""> Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui ({{job.contract}} - {{job.duration}})</span>
-                  </ng-template>
-              </div>
+              <div class="my-1">{{job.company}} à {{job.location}}</div>
 
               <div class="" *ngIf="job.keywords">
                 <span class="badge rounded-pill m-1" [style.border]="'1px solid ' + item.value" [style.color]="item.value" *ngFor="let item of job.keywords | keyvalue">{{ item.key }}</span>
               </div>
+
+
             </div>
 
 
@@ -174,7 +163,7 @@
 
     <br clear="all" style="page-break-before:always" />
 
-    <section class="page bg-white px-2 py-4 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
+    <section class="page bg-white px-3 pt-4 pb-5 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
 
       <div id="projects" class="d-flex flex-column mx-4">
 
