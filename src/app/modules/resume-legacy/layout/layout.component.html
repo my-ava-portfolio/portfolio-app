@@ -107,7 +107,7 @@
 
         <h5 class="">Expériences</h5>
 
-        <div class="d-flex flex-column" *ngFor="let job of jobsData">
+        <div class="d-flex flex-column mb3" *ngFor="let job of jobsData ;let last = last;">
 
           <div class="d-flex flex-row justify-content-between" [ngClass]="job.status === 'InProgress' ? 'text-danger': 'text-dark'">
             <div class="fw-bold small w-75">{{job.title}} @ {{job.company}}</div>
@@ -122,27 +122,21 @@
             <div class="small"> Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui - {{job.contract}} ({{job.duration}})</div>
           </ng-template>
 
-          <div class="d-flex flex-row justify-content-between">
+          <div class="d-flex flex-row align-items-center mx-1">
 
-            <div class="w-25 d-flex flex-row justify-content-center align-items-center">
-              <img class="position-relative rounded img-fluid shadow img_company" [src]="apiImgUrl + job.img_company"/>
+            <div class="col-2 text-center">
+              <img class="img-fluid " [src]="apiImgUrl + job.img_company"/>
+            </div>
+            <div class="col-10">
+              <set-paragraph-content class="small">{{ job.presentation }}</set-paragraph-content>
             </div>
 
-
-              <set-paragraph-content class="small">{{ job.presentation }}</set-paragraph-content>
-
-
-
-
-
-
-
-
           </div>
 
-          <div class="small text-justify ">
-            <p class="">{{job.__}}</p>
+          <div *ngIf="!last" class="d-flex flex-row justify-content-center">
+            <hr class="w-25 m-2 border-2 border-top border-dark">
           </div>
+
 
         </div>
 
