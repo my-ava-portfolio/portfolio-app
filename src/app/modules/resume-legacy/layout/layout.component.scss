@@ -2,7 +2,7 @@
   background: white;
   display: block;
   margin: 0 auto;
-  margin-bottom: 0.5cm;
+  //margin-bottom: 0.5cm;
   //box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
 }
 
@@ -46,7 +46,7 @@
     margin-top: 0;
     margin-bottom: 0;
     size: auto;
-    margin: 1cm;
+    margin: 0cm;
   }
   // header,footer {
   //   display: none;
@@ -65,45 +65,19 @@ img {
 }
 
 
-header,
-footer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  padding-right: 1.5cm;
-  padding-left: 1.5cm;
-}
-header:after{
-}
-footer:after{
-}
+// @media print {
+//   #legacy_resume .page {
+//     margin: 0;
+//     box-shadow: 0;
 
-header {
-  top: 0;
-  padding-top: 5mm;
-  padding-bottom: 3mm;
-}
-footer {
-  bottom: 0;
-  color: #000;
-  padding-top: 3mm;
-  padding-bottom: 5mm;
-}
+//       header,
+//   footer {
+//     position: fixed;
+//     left: 0;
+//     right: 0;
+//     padding-right: 1.5cm;
+//     padding-left: 1.5cm;
+//   }
+//   }
 
-
-@media print {
-  #legacy_resume .page {
-    margin: 0;
-    box-shadow: 0;
-
-      header,
-  footer {
-    position: fixed;
-    left: 0;
-    right: 0;
-    padding-right: 1.5cm;
-    padding-left: 1.5cm;
-  }
-  }
-
-}
+// }

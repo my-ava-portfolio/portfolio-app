@@ -6,9 +6,9 @@
   </div>
 
 
-  <div #legacyResume id="legacy_resume" class="d-flex flex-column justify-content-center my-2" *ngIf="dataAvailable">
+  <div #legacyResume id="legacy_resume" class="d-flex flex-column justify-content-center" *ngIf="dataAvailable">
 
-    <div class="page p-4 d-flex flex-column" size="A4" layout="">
+    <div class="page d-flex flex-column" [ngClass]="isPrinting ? 'p-0' : 'p-4 mb-2'" size="A4" layout="">
 
       <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3">
 
@@ -40,9 +40,7 @@
 
       </div>
 
-      <div id="resume_summary" class="d-flex flex-row">
-        <set-paragraph-content class="text-justify small">{{ summaryData }} </set-paragraph-content>
-      </div>
+      <set-paragraph-content class="text-justify small">{{ summaryData }} </set-paragraph-content>
 
 
       <div id="degrees" class="d-flex flex-column mx-2 pt-2">
@@ -93,18 +91,15 @@
         </div>
       </div>
 
-      <footer>
-        <div class="mt-auto text-center">
-          <div class="small">Page 1</div>
-        </div>
-      </footer>
+      <div class="mt-auto text-center">
+        <div class="small">Page 1</div>
+      </div>
 
 
     </div>
 
-    <br clear="all" style="page-break-before:always" />
 
-    <section class="page p-4 d-flex flex-column" size="A4" layout="">
+    <section class="page d-flex flex-column" [ngClass]="isPrinting ? 'p-0' : 'p-4 mb-2'" size="A4" layout="">
 
       <div id="jobs" class="d-flex flex-column mx-2">
 
@@ -145,17 +140,14 @@
 
       </div>
 
-      <footer>
-        <div class="mt-auto text-center">
-          <div class="small">Page 2</div>
-        </div>
-      </footer>
+      <div class="mt-auto text-center">
+        <div class="small">Page 2</div>
+      </div>
 
     </section>
 
-    <br clear="all" style="page-break-before:always" />
 
-    <section class="page p-4 d-flex flex-column" size="A4" layout="">
+    <section class="page d-flex flex-column" [ngClass]="isPrinting ? 'p-0' : 'p-4 mb-2'" size="A4" layout="">
 
       <div id="projects" class="d-flex flex-column mx-2">
 
@@ -208,11 +200,9 @@
         </ng-container>
       </div>
 
-      <footer>
-        <div class="mt-auto text-center">
-          <div class="small">Page 3</div>
-        </div>
-      </footer>
+      <div class="mt-auto text-center">
+        <div class="small">Page 3</div>
+      </div>
 
     </section>
 

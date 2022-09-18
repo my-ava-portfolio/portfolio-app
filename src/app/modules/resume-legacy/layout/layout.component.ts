@@ -46,6 +46,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   personalProjectsData!: any;
 
   dataAvailable = false;
+  isPrinting = false;
 
   generalDataSubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
@@ -123,11 +124,13 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   printDiv(divId: string): void {
+    this.isPrinting = true;
     let printContents = document.getElementById(divId)
     if (printContents?.innerHTML ) {
       let originalContents = document.body.innerHTML;
       document.body.innerHTML = printContents?.innerHTML;
       window.print();
+      this.isPrinting = false;
       window.location.reload();
     }
 
