@@ -141,12 +141,17 @@
 
         <li ngbNavItem>
           <a ngbNavLink class="fw-bold">{{ this.contextTitle }}</a>
-          <ng-template ngbNavContent>
+          <ng-template ngbNavContent *ngIf="activityType !== 'personal-project'">
             <ng-container *ngTemplateOutlet="ngbNavPresentationContent; context:{data: activity}"></ng-container>
           </ng-template>
+
+          <ng-template ngbNavContent *ngIf="activityType === 'personal-project'">
+            <ng-container *ngTemplateOutlet="ngbNavDescriptionContent; context:{data: activity}"></ng-container>
+          </ng-template>
+
         </li>
 
-        <li ngbNavItem>
+        <li ngbNavItem *ngIf="activityType !== 'personal-project'">
           <a ngbNavLink class="fw-bold">{{ this.missionTitle }}</a>
           <ng-template ngbNavContent>
             <ng-container *ngTemplateOutlet="ngbNavDescriptionContent; context:{data: activity}"></ng-container>
@@ -199,12 +204,14 @@
 
 <ng-template #ngbNavDescriptionContent let-data='data'>
   <ng-container *ngFor="let task of data.description | keyvalue: keyDescOrder">
+
     <set-paragraph-content class="tab-content">
       <div class="fw-bold" *ngIf="task.key !== 'NoTitle'">{{ task.key }}</div>
-      <ul>
+      <ul [ngClass]="forceArrayType(task.value).length > 1 ? '' : 'list-unstyled'">
         <li class="text-justify" *ngFor="let description_element of forceArrayType(task.value)">{{ description_element }}</li>
       </ul>
     </set-paragraph-content>
+
   </ng-container>
 </ng-template>
 
