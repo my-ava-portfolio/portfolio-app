@@ -16,11 +16,10 @@
 
 
 <ng-template #activityFeature let-activitiesType='activitiesType' let-activitiesData='activitiesData'>
-  <set-card-container 
-    class="feature-degree d-flex flex-row flew-wrap text-center"
+  <set-card-container
     cardClass="m-3"
     [title]="activity.title"
-    [id]="'activities-' + activity.identifier" 
+    [id]="'activities-' + activity.identifier"
     *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod"
     class="activity-feature"
     [headerNgStyle]="buildColorStyle(activity.color)"
@@ -70,7 +69,7 @@
             <h6 *ngIf="activityType !== 'personal-project'" class="fw-bold col-11">{{activity.company}}</h6>
             <h6 *ngIf="activityType === 'personal-project'" class="fw-bold col-11">{{activity.title}}</h6>
 
-              
+
             <set-icon-text *ngIf="activityType !== 'personal-project'"
               [route]="mapPages.sub_menus[0].content_url"
               [fragment]="activity.identifier"
@@ -193,13 +192,13 @@
 
 <!-- TAB CONTENT TEMPLATES -->
 <ng-template #ngbNavPresentationContent let-data='data'>
-  <set-paragraph-content>{{ data.presentation }}</set-paragraph-content>
+  <set-paragraph-content class="tab-content">{{ data.presentation }}</set-paragraph-content>
 </ng-template>
 
 <ng-template #ngbNavDescriptionContent let-data='data'>
-  <ng-container *ngFor="let task of data.description | keyvalue">
-    <set-paragraph-content>
-      <h6 *ngIf="task.key !== 'NoTitle'">{{ task.key }}</h6>
+  <ng-container *ngFor="let task of data.description | keyvalue: keyDescOrder">
+    <set-paragraph-content class="tab-content">
+      <div class="fw-bold" *ngIf="task.key !== 'NoTitle'">{{ task.key }}</div>
       <ul>
         <li class="text-justify" *ngFor="let description_element of forceArrayType(task.value)">{{ description_element }}</li>
       </ul>
@@ -208,7 +207,9 @@
 </ng-template>
 
 <ng-template #ngbNavSkillsContent let-data='data'>
+  <set-paragraph-content>
     <ng-container *ngTemplateOutlet="skillDetails; context:{data: data.tools}"></ng-container>
+  </set-paragraph-content>
 </ng-template>
 
 <ng-template #ngbNavTrainingsContent let-data='data'>
