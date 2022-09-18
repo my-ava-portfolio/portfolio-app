@@ -116,7 +116,7 @@ $theme-colors-map: (
 
 @mixin badgeTitle($bg_color, $text_color) {
     display: inline-block;
-    padding: 5px 25px;
+    padding: 5px 15px;
     font-size: 12px;
     line-height: 20px;
     font-weight: 500;

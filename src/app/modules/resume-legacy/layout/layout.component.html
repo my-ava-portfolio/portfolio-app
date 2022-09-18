@@ -6,7 +6,7 @@
   </div>
 
 
-  <div #legacyResume id="legacy_resume" class="d-flex flex-column justify-content-center" *ngIf="dataAvailable">
+  <div #legacyResume id="legacy_resume" class="d-flex flex-column justify-content-center d-none d-md-block" *ngIf="dataAvailable">
 
     <div class="page d-flex flex-column" [ngClass]="isPrinting ? 'p-0' : 'p-4 mb-2'" size="A4" layout="">
 
