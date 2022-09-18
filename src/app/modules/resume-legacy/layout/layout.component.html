@@ -8,7 +8,7 @@
 
   <div #legacyResume id="legacy_resume" class="d-flex flex-column justify-content-center my-2">
 
-    <section class="page bg-white px-3 pt-4 pb-5 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
+    <section class="page bg-white px-3 pt-4 pb-2 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
 
       <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3">
 
@@ -45,7 +45,7 @@
       </div>
 
 
-      <div id="degrees" class="d-flex flex-column mx-4 pt-3">
+      <div id="degrees" class="d-flex flex-column mx-2 pt-2">
         <h5 class="">Diplômes</h5>
 
         <div class="d-flex flex-column">
@@ -57,10 +57,10 @@
 
       </div>
 
-      <div class="d-flex flex-row mx-4 pt-3">
+      <div class="d-flex flex-row mx-2 pt-2">
 
         <div id="degrees" class="d-flex flex-column">
-          <h6 class="">Formations</h6>
+          <h5 class="">Formations</h5>
           <set-paragraph-content class="" *ngFor="let training of trainingsData">
             <div class="fw-bold">{{ training.year }} - {{ training.name }}</div>
             <div class="fw-light ms-3"> par {{ training.trainer }}</div>
@@ -68,7 +68,7 @@
         </div>
 
         <div id="languages" class="d-flex flex-column">
-          <h6 class="">Langues</h6>
+          <h5 class="">Langues</h5>
 
           <div class="d-flex flex-column mx-4">
             <set-paragraph-content *ngFor="let language of languagesData">
@@ -79,13 +79,13 @@
 
       </div>
 
-      <div id="publication" class="d-flex flex-column mx-4 pt-3">
-        <h6 class="">Recherches et publications</h6>
+      <div id="publication" class="d-flex flex-column mx-2 pt-2">
+        <h5 class="">Recherches et publications</h5>
 
         <div class="d-flex flex-column">
-          <set-paragraph-content class="small" *ngFor="let publication of publicationsData">
+          <set-paragraph-content *ngFor="let publication of publicationsData">
             <div class="fw-bold">{{ publication.year }} - {{ publication.editor }}</div>
-            <div class="fw-light ms-3 text-justify">
+            <div class="fw-light ms-3 text-justify small">
               {{publication.publication}}
             </div>
           </set-paragraph-content>
@@ -93,7 +93,7 @@
         </div>
       </div>
 
-      <div class="mt-auto d-flex flex-row justify-content-center">
+      <div class="mt-auto text-center">
         <span class="small">Page 1</span>
       </div>
 
@@ -101,13 +101,13 @@
 
     <br clear="all" style="page-break-before:always" />
 
-    <section class="page bg-white px-3 pt-4 pb-5 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
+    <section class="page bg-white px-3 pt-4 pb-2 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
 
-      <div id="jobs" class="d-flex flex-column mx-4">
+      <div id="jobs" class="d-flex flex-column mx-2">
 
         <h5 class="">Expériences</h5>
 
-        <div class="d-flex flex-column mb3" *ngFor="let job of jobsData ;let last = last;">
+        <div class="d-flex flex-column mx-2" *ngFor="let job of jobsData ;let last = last;">
 
           <div class="d-flex flex-row justify-content-between" [ngClass]="job.status === 'InProgress' ? 'text-danger': 'text-dark'">
             <div class="fw-bold small w-75">{{job.title}} @ {{job.company}}</div>
@@ -142,7 +142,7 @@
 
       </div>
 
-      <div class="mt-auto d-flex flex-row justify-content-center">
+      <div class="mt-auto text-center">
         <span class="small">Page 2</span>
       </div>
 
@@ -150,19 +150,16 @@
 
     <br clear="all" style="page-break-before:always" />
 
-    <section class="page bg-white px-3 pt-4 pb-5 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
+    <section class="page bg-white px-3 pt-4 pb-2 my-2 mx-auto d-flex flex-column" size="A4" layout="" *ngIf="dataAvailable">
 
-      <div id="projects" class="d-flex flex-column mx-4">
+      <div id="projects" class="d-flex flex-column mx-2">
 
-        <div class="">
-          <h5 class="">Projets personnels</h5>
-        </div>
+        <h5 class="">Projets personnels</h5>
 
+        <div class="d-flex flex-column mt-2 mx-2"  *ngFor="let project of personalProjectsData">
+          <div class="d-flex flex-row justify-content-between small">
 
-        <div class="d-flex flex-column mt-2 mx-4"  *ngFor="let project of personalProjectsData">
-          <div class="d-flex flex-row justify-content-between">
-
-            <h6 class="fw-bold">{{project.title}}</h6>
+            <div class="fw-bold">{{project.title}}</div>
 
               <div *ngIf="project.url_github; then projectsShorcutGithub"></div>
               <ng-template #projectsShorcutGithub>
@@ -175,24 +172,20 @@
               </ng-template>
           </div>
 
-          <div class="d-flex flex-row">
-            <div class="mx-4 text-justify small">{{project.presentation}}</div>
-          </div>
+            <set-paragraph-content class="small text-justify">{{project.presentation}}</set-paragraph-content>
 
         </div>
       </div>
 
-      <div id="skills" class="d-flex flex-column mx-4 pt-3">
+      <div id="skills" class="d-flex flex-column mx-2 pt-2">
 
-        <div class="">
-          <h5 class="">Compétences</h5>
-        </div>
+        <h5 class="">Compétences</h5>
 
         <ng-container *ngIf="skillsData">
 
-          <div class="d-flex flex-row ms-3 mt-2 mx-4">
+          <div class="d-flex flex-row mt-2 mx-2">
             <ng-container *ngIf="skillsData.themes">
-              <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.themes, title: 'Thématiques'}"></ng-container>
+              <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.themes, title: 'Secteurs d\'activité'}"></ng-container>
             </ng-container>
 
             <ng-container *ngIf="skillsData.technics">
@@ -210,7 +203,7 @@
         </ng-container>
       </div>
 
-      <div class="mt-auto d-flex flex-row justify-content-center">
+      <div class="mt-auto text-center">
         <span class="small">Page 3</span>
       </div>
 
@@ -231,13 +224,13 @@
 
 <ng-template #skillsFeature let-data=data let-title=title>
   <div class="d-flex flex-column skills mb-2">
-    <div class="">
-      <h6 class="">{{title}}</h6>
-    </div>
-    <div class="mx-3 small" *ngFor="let feature of data">
-      <span class="fw-bold">{{feature.name}}:</span>
-      <span class="fw-regular ms-1">{{ feature.details | join }}.</span>
-    </div>
+    <div class="small fw-bold">{{title}}</div>
+    <ul class="text-no-decoration small m-0" *ngFor="let feature of data">
+      <li>
+        <span class="text-decoration-underline">{{feature.name}}</span>  :
+        <span class=" ms-1">{{ feature.details | join }}.</span>
+      </li>
+    </ul>
   </div>
 
 </ng-template>

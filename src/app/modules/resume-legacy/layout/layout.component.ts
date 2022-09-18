@@ -136,26 +136,5 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   forceArrayType(input: any): string[] {
     return input
   }
-  // @HostListener('window:resize', ['$event'])
-  //  adjustZoom(): void {
-  //   let documentWidth = window.innerWidth;
-  //   let documentHeight = window.innerHeight;
-  //   // console.log(documentWidth, documentHeight)
-
-  //   // 1cm = 37.795276px;
-  //   // 21cm width + 1cm of margins each sides
-  //   // 29.7cm height + 1cm of margins each sides
-  //   let zoomWidth = documentWidth / (23 * 37.795276);
-  //   let zoomHeight = documentHeight / (31.7 * 37.795276);
-  //   let zoomLevel = Math.min(zoomWidth, zoomHeight);
-  //   // stop zooming when book fits page
-  //   if (zoomLevel >= 1 ) {
-  //     // this.legacyResume.nativeElement.style.transform = "scale(1)"
-  //     return
-  //   };
-  //   // zoomLevel = 0.5
-  //   this.legacyResume.nativeElement.style.transform = "scale(" + zoomLevel + ")"
-  //   // console.log(zoomLevel)
-  // }
 
 }
