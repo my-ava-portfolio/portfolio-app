@@ -36,6 +36,11 @@ export class AppComponent implements OnInit {
   isLandscapeDeviceMode!: boolean;
   currentPage!: string;
 
+  cookieMessage = "Ce site web ne stocke aucune donnée et ne surveille pas votre activité."
+  cookieDismiss = "Fermer"
+  cookieLinkText = ""
+  pageUrl = "/dataprivacy"
+
   constructor(
     private router: Router,
     private location: Location,
@@ -55,6 +60,27 @@ export class AppComponent implements OnInit {
     // to return to the home page on refresh
     // this.router.navigate([''])
     this.isLandscapeDeviceMode = false;
+
+    let cc = window as any;
+    cc.cookieconsent.initialise({
+      palette: {
+        popup: {
+          background: "#000000ad"
+        },
+        button: {
+          background: "#ffc107",
+          text: "black"
+        }
+      },
+      theme: "black",
+      content: {
+        message: this.cookieMessage,
+        dismiss: this.cookieDismiss,
+        link: this.cookieLinkText,
+        href: this.pageUrl
+      }
+    });
+
   }
 
   ngOnDestroy(): void {
