@@ -17,13 +17,6 @@
 // }
 
 
-// .content{
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: flex-start;
-//   align-items: center;
-// }
-
 #legacy_resume{
   transform-origin: top center;
 }
@@ -60,24 +53,5 @@
 }
 
 img {
-  // height: auto;
   max-height: 10vh;
 }
-
-
-// @media print {
-//   #legacy_resume .page {
-//     margin: 0;
-//     box-shadow: 0;
-
-//       header,
-//   footer {
-//     position: fixed;
-//     left: 0;
-//     right: 0;
-//     padding-right: 1.5cm;
-//     padding-left: 1.5cm;
-//   }
-//   }
-
-// }
