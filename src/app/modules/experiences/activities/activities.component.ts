@@ -176,6 +176,22 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
+  keepOrder(): any {
+    // check https://stackoverflow.com/a/72286062/13168168
+  }
+
+  originalOrder(a: any, b: any): any {
+    return 0;
+  }
+
+  valueAscOrder(a: any, b: any): any {
+    return a.value.localeCompare(b.value);
+  }
+
+  keyDescOrder(a: any, b: any): any {
+    return a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
+  }
+
 }
 
 

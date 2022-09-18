@@ -1,3 +1,4 @@
+import { ItemsModule } from '@shared/modules/items/items.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -18,7 +19,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     CommonModule,
     FontAwesomeModule,
     ResumeLegacyRoutingModule,
-    PipesModule
+    PipesModule,
+    ItemsModule
   ]
 })
 export class ResumeLegacyModule { }

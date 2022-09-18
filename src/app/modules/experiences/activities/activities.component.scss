@@ -37,3 +37,7 @@ img {
         background-color: var(--bs-warning)
     }
 }
+
+.tab-content {
+  @include spacing.my(3);
+}

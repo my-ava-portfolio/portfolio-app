@@ -1,6 +1,6 @@
-<nav 
-  id="leftSideBar" 
-  *ngIf="generalData" 
+<nav
+  id="leftSideBar"
+  *ngIf="generalData"
   [ngClass]="sideBarCollapsed ? 'inactive' : 'active'"
   class="
     sticky-top
@@ -8,8 +8,8 @@
     bg-dark bg-gradient
   "
   >
-  
-  <div 
+
+  <div
     id="leftSideBar__container"
     class="
       d-flex flex-column
@@ -20,7 +20,7 @@
   >
     <div id="leftSideBar__container__header">
 
-      <img 
+      <img
         [src]="imageProfile"
         class="img-fluid
           p-3
@@ -32,9 +32,9 @@
         <h4 class="title-name">{{ generalData.first_name }} {{ generalData.last_name }}</h4>
         <div class="badge-title-light">{{ generalData.job }}</div>
 
-        <a class="badge-title-warning" [title]="legacyResumePage.title" [routerLink]="legacyResumePage.route">
+        <div type="button" class="badge-title-warning" [title]="legacyResumePage.title" [routerLink]="legacyResumePage.route">
           {{legacyResumePage.verbose_title}}
-        </a>
+        </div>
 
       </div>
 
@@ -46,21 +46,21 @@
 
       <div id="leftSideBar__container__header__contact" *ngIf="contactData">
         <a class="
-            badge text-bg-light 
+            badge text-bg-light
             m-1
           " [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="text-black" [icon]="emailIcon" size="1x"></fa-icon>
         </a>
 
         <a class="
-            badge text-bg-light 
+            badge text-bg-light
             m-1
           " [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="text-black" [icon]="linkedinIcon" size="1x"></fa-icon>
         </a>
 
         <a class="
-            badge text-bg-light 
+            badge text-bg-light
             m-1
           " [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="text-black" [icon]="githubIcon" size="1x"></fa-icon>

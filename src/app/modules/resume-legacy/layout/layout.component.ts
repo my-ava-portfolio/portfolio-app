@@ -46,6 +46,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   personalProjectsData!: any;
 
   dataAvailable = false;
+  isPrinting = false;
 
   generalDataSubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
@@ -67,7 +68,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.publicationsData = data.publications;
 
         this.dataAvailable = true;
-        // console.log(data)
+        console.log(data)
         // console.log(this.PageContent.nativeElement.clientWidth)
       }
     );
@@ -75,7 +76,9 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
         this.jobsData = data.activities_data.jobs;
-        this.personalProjectsData = data.activities_data.personal_projects.reverse();
+        console.log(data)
+
+        this.personalProjectsData = data.activities_data["personal-projects"].reverse();
         this.skillsData = data.skills_data;
       }
     );
@@ -97,7 +100,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.adjustZoom();
+    // this.adjustZoom();
   }
 
 
@@ -121,35 +124,20 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   printDiv(divId: string): void {
+    this.isPrinting = true;
     let printContents = document.getElementById(divId)
     if (printContents?.innerHTML ) {
       let originalContents = document.body.innerHTML;
       document.body.innerHTML = printContents?.innerHTML;
       window.print();
+      this.isPrinting = false;
       window.location.reload();
     }
 
   }
 
-  @HostListener('window:resize', ['$event']) adjustZoom(): void {
-    let documentWidth = window.innerWidth;
-    let documentHeight = window.innerHeight;
-    // console.log(documentWidth, documentHeight)
-
-    // 1cm = 37.795276px;
-    // 21cm width + 1cm of margins each sides
-    // 29.7cm height + 1cm of margins each sides
-    let zoomWidth = documentWidth / (23 * 37.795276);
-    let zoomHeight = documentHeight / (31.7 * 37.795276);
-    let zoomLevel = Math.min(zoomWidth, zoomHeight);
-    // stop zooming when book fits page
-    if (zoomLevel >= 1 ) {
-      // this.legacyResume.nativeElement.style.transform = "scale(1)"
-      return
-    };
-    // zoomLevel = 0.5
-    this.legacyResume.nativeElement.style.transform = "scale(" + zoomLevel + ")"
-    // console.log(zoomLevel)
+  forceArrayType(input: any): string[] {
+    return input
   }
 
 }
