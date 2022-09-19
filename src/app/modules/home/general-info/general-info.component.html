@@ -7,13 +7,13 @@
       ">
 
       <h2 class="title-name">{{ generalData.first_name }} {{ generalData.last_name }}</h2>
-      
-      <div class="my-3">
+
+      <div class="my-2 d-flex flex-column flex-md-row justify-content-center mx-auto">
         <div class="badge-title-light">{{ generalData.job }}</div>
         <div class="badge-title-warning">{{ generalData.experience_duration }}</div>
       </div>
 
-      <set-paragraph-content class="text-white my-3">
+      <set-paragraph-content class="text-white">
         {{ generalData.carrier_summary}}
       </set-paragraph-content>
 
