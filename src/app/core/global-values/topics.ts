@@ -47,8 +47,7 @@ export const legacyResumePage: activitiesPagesType = {
   title: 'CV',
   verbose_title: 'Télécharger mon CV',
   icon: faAddressCard,
-  sub_menus: [
-  ]
+  sub_menus: []
 };
 
 export const experiencesPages: activitiesPagesType = {
