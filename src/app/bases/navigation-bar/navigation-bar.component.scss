@@ -16,7 +16,7 @@
       min-width: 200px;
       max-width: 200px;
       padding-top: 60px!important;  // due to navbar height
-    
+
         &.active{
             min-width: 80px;
             max-width: 80px;
@@ -28,7 +28,7 @@
     [class^="badge-title-"] {
         font-size: x-small;
     }
-    
+
 }
 
 .copyright {
@@ -39,3 +39,10 @@
     font-weight: bold;
 }
 
+.img-tech {
+  max-width: 10vh;
+}
+
+.tech-modal .modal-content {
+  background-color: transparent!important;
+}
