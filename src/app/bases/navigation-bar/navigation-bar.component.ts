@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { share } from 'rxjs/operators';
 
-import { checkIfScreenPortraitOrientation, homePages, infoIcon, legacyResumePage, pythonIcon } from '@core/inputs';
+import { homePages, infoIcon, legacyResumePage, pythonIcon } from '@core/inputs';
 import { githubIcon, linkedinIcon, emailIcon } from '@core/inputs';
 import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '@core/inputs';
 import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '@core/inputs';
@@ -14,11 +14,13 @@ import { currentYear, mainTopicsPages, imageProfile } from '@core/inputs';
 
 import { ResumeService } from 'src/app/services/resume.service';
 import { Subscription } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { backEndInfo, dataProcessingInfo, frontEndInfo } from '@core/global_values/general-infos';
 
 @Component({
   selector: 'app-navigation-bar',
   templateUrl: './navigation-bar.component.html',
-  styleUrls: ['./navigation-bar.component.scss']
+  styleUrls: ['./navigation-bar.component.scss'],
 })
 export class NavigationBarComponent implements OnInit, OnDestroy {
   @Input() sideBarCollapsed: any;
@@ -55,22 +57,10 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 
   currentYear = currentYear;
 
-  pythonVersion = '3';
-  lib1Name = 'Flask';
-  lib1Version = '';
-  lib1RepoUrl = 'https://github.com/pallets/flask';
 
-  angularVersion!: string;
-  angularRepoUrl = 'https://github.com/angular/angular';
-
-  bootstrapVersion!: string;
-  bootstrapRepoUrl = 'https://ng-bootstrap.github.io/#/home';
-
-  openLayersVersion!: string;
-  openLayersRepoUrl = 'https://openlayers.org/';
-
-  d3Version!: string;
-  d3RepoUrl = 'https://github.com/d3/d3';
+  dataProcessing = dataProcessingInfo;
+  backEnd = backEndInfo;
+  frontEnd = frontEndInfo;
 
   // https://stackoverflow.com/questions/63468292/how-to-add-active-class-to-link-which-has-fragmment-in-angular
   activeFragment = this.route.fragment.pipe(share());
@@ -90,6 +80,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
     private location: Location,
     public route: ActivatedRoute,
     private resumeService: ResumeService,
+    private modalService: NgbModal
   ) {
 
     // to get the current page opened and adapt content regarding orientation
@@ -133,4 +124,10 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
     this.linkBuilt = output;
   }
 
+  openPortoflioTechDetails(content: any) {
+    this.modalService.open(
+      content,
+      { centered: true, size: 'lg', modalDialogClass: 'tech-modal' }
+    );
+  }
 }
