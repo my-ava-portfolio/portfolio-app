@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnDestroy, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { BlogService } from '@modules/blog/shared/services/blog.service';
@@ -12,7 +12,6 @@ import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { MainService } from '@services/main.service';
 import { badge, galleryFeature } from '@core/data-types';
-import { personalBlogUrl } from '@core/global-values/main';
 
 
 @Component({
@@ -23,7 +22,6 @@ import { personalBlogUrl } from '@core/global-values/main';
 })
 export class LayoutComponent implements OnDestroy {
   pageTitle!: string;
-  pageUrlToLoad = personalBlogUrl;
   topicsDataSubscription!: Subscription;
   isLegendDisplayed = true;
 
