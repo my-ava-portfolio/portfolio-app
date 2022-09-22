@@ -1,10 +1,10 @@
-import { mapActivitiesPagesType } from "@core/data-types";
+import { activitiesPagesType } from "@core/data-types";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faHome, faUserGraduate, faGlobeEurope, faAddressCard, faBuilding, faStar, faMap, faImages, faFileAlt } from "@fortawesome/free-solid-svg-icons";
 import { assetsImagesPath, githubUrl } from "./main";
 
 
-export const homePages: any = {
+export const homePages: activitiesPagesType = {
   id: 'home',
   route: '/home/about_me',
   title: 'A propos...',
@@ -12,7 +12,7 @@ export const homePages: any = {
   sub_menus: []
 };
 
-export const educationPages: any = {
+export const educationPages: activitiesPagesType = {
   id: 'education',
   route: '/education',
   title: 'Formation',
@@ -41,18 +41,17 @@ export const educationPages: any = {
   ]
 };
 
-export const legacyResumePage: any = {
+export const legacyResumePage: activitiesPagesType = {
   id: 'legacyResume',
   route: '/resume',
   title: 'CV',
-  colorType: null,
   verbose_title: 'Télécharger mon CV',
   icon: faAddressCard,
   sub_menus: [
   ]
 };
 
-export const experiencesPages: any = {
+export const experiencesPages: activitiesPagesType = {
   id: 'experiences',
   route: '/experiences',
   title: 'Expériences',
@@ -81,7 +80,7 @@ export const experiencesPages: any = {
   ]
 };
 
-export const mapActivitiesPages: mapActivitiesPagesType = {
+export const mapActivitiesPages: activitiesPagesType = {
   id: 'maps',
   route: '/maps',
   title: 'Cartes',
@@ -132,32 +131,26 @@ export const mapActivitiesPages: mapActivitiesPagesType = {
   ]
 };
 
-export const galleryPages: any = {
+export const galleryPages: activitiesPagesType = {
   id: 'gallery',
   route: '/gallery',
   title: 'Galerie',
   verbose_title: 'Accès à la galerie',
   colorType: 'gallery',
-  icon: faImages
+  icon: faImages,
+  sub_menus: []
 };
 
 
-export const projectPages: any = [
+export const projectPages: activitiesPagesType[] = [
   {
     id: 'blog',
     route: '/blog',
     title: 'Blog',
     verbose_title: 'Accès au blog',
     colorType: 'secondary',
-    icon: faFileAlt
-  },
-  {
-    id: 'github',
-    url: githubUrl,
-    title: 'Github',
-    verbose_title: 'Accès à Github',
-    colorType: 'secondary',
-    icon: faGithub
+    icon: faFileAlt,
+    sub_menus: []
   }
 ];
 

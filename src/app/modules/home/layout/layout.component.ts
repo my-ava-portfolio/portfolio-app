@@ -16,7 +16,7 @@ import { ControlerService } from '@services/controler.service';
 })
 export class LayoutComponent implements OnInit {
 
-  homeTopics: any[] = homePages;
+  homeTopics = homePages;
 
   isWelcomeCardDisplayed = true;
 
@@ -40,7 +40,7 @@ export class LayoutComponent implements OnInit {
   }
 
   sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus(this.homeTopics)
+    this.controlerService.pullSubMenus(this.homeTopics.sub_menus)
   }
 
 }

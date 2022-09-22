@@ -17,6 +17,7 @@ import { githubBugIssueUrl, githubQuestionUrl, githubEnhancementUrl } from '@cor
 import { faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { faBug, faQuestionCircle, faExclamationCircle, faCogs, faBars, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { homePages, legacyResumePage, mainTopicsPages } from '@core/global-values/topics';
+import { activitiesPagesType } from '@core/data-types';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -29,7 +30,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   currentPage!: string;
 
   topicPages: any = mainTopicsPages;
-  homePages: any = homePages[0];
+  homePages = homePages;
   legacyResumePage: any = legacyResumePage;
 
   bugIcon = faBug;

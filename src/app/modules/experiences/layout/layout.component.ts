@@ -49,7 +49,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   isDataAvailable = false;
 
-  experiencesTopics: any[] = experiencesPages;
+  experiencesTopics = experiencesPages;
 
 
   isAnchorExistsChecker = interval(1000); // observable which run all the time
@@ -139,7 +139,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   }
 
   sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus(this.experiencesTopics)
+    this.controlerService.pullSubMenus(this.experiencesTopics.sub_menus)
   }
 
   sendActivityId(activityId: string): void {

@@ -16,7 +16,7 @@ import { educationPages } from '@core/global-values/topics';
   selector: 'app-app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
-  animations: [fadeInOutAnimation ],
+  animations: [fadeInOutAnimation],
 })
 export class LayoutComponent implements OnInit {
   fragment!: string | null;
@@ -37,7 +37,7 @@ export class LayoutComponent implements OnInit {
 
   isDataAvailable = false;
 
-  educationTopics: any[] = educationPages;
+  educationTopics = educationPages;
 
   isAnchorExistsChecker = interval(1000); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
@@ -107,7 +107,7 @@ export class LayoutComponent implements OnInit {
   }
 
   sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus(this.educationTopics)
+    this.controlerService.pullSubMenus(this.educationTopics.sub_menus)
   }
 
   checkAndScrollToAnchorIfNeeded(): void {

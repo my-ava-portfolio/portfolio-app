@@ -35,12 +35,12 @@ export interface galleryFeature {
 
 
 // items //
-export interface mapActivitiesPagesType {
+export interface activitiesPagesType {
   id: string,
   route: string,
   title: string,
-  verbose_title: string,
-  colorType: string,
+  verbose_title?: string,
+  colorType?: string,
   icon: any,
-  sub_menus: galleryFeature[]
+  sub_menus: galleryFeature[] | any[]
 }
