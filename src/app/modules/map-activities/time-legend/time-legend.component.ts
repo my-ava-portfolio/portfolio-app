@@ -3,7 +3,7 @@ import { Component, OnInit, ViewEncapsulation, OnDestroy, Input } from '@angular
 
 import { Subscription } from 'rxjs';
 
-import { currentYear, currentDate } from '@core/inputs';
+import { currentYear, currentDate } from '@core/misc';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { MapService } from '@services/map.service';

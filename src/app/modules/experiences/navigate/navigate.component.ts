@@ -5,9 +5,9 @@ import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 
 import { ResumeService } from '@services/resume.service';
-import { activitiesMapping, skillsMapping } from '@core/inputs';
 import { ActivityActionsService } from '@modules/experiences/services/activity-actions.service';
 import { ungroupIconUnicode } from '@core/styles/icons';
+import { skillsMapping, activitiesMapping } from '@core/global-values/main';
 
 @Component({
   selector: 'app-navigate',
@@ -36,9 +36,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   currentNodeIdSelected: string | null = null;
 
   graphData!: any;
-  // currentJobsActivitiesData: any = [];
-  // currentPersonalProjectsActivitiesData: any = [];
-  // currentVolunteersActivitiesData: any = [];
 
   adjlist!: any;
   labelLayout!: any;

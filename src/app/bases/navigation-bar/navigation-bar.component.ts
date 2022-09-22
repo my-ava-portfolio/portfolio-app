@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { share } from 'rxjs/operators';
 
-import { currentYear } from '@core/inputs';
+import { currentYear } from '@core/misc';
 
 import { ResumeService } from 'src/app/services/resume.service';
 import { Subscription } from 'rxjs';

@@ -3,8 +3,6 @@ import { Subscription } from 'rxjs';
 
 import { BlogService } from '@modules/blog/shared/services/blog.service';
 
-import { stringToColor } from '@core/inputs';
-
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ControlerService } from '@services/controler.service';
@@ -14,6 +12,7 @@ import { MainService } from '@services/main.service';
 import { badge, galleryFeature } from '@core/data-types';
 import { minWidthLandscape } from '@core/styles/screen';
 import { faTags, faTag } from '@fortawesome/free-solid-svg-icons';
+import { stringToColor } from '@core/styles/colors';
 
 
 @Component({

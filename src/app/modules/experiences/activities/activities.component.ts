@@ -1,12 +1,10 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
-import { activitiesMapping } from '@core/inputs';
-
 import { ResumeService } from '@services/resume.service';
 
 import { ActivityActionsService } from '../services/activity-actions.service';
-import { assetsLogoPath, assetsImagesPath, personalBlogUrl } from '@core/global-values/main';
+import { assetsLogoPath, assetsImagesPath, personalBlogUrl, activitiesMapping } from '@core/global-values/main';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faMapMarkerAlt, faImages, faFilter, faTrophy, faAngleDoubleDown, faPaintBrush, faFileAlt, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { mapActivitiesPages, galleryPages, projectPages } from '@core/global-values/topics';

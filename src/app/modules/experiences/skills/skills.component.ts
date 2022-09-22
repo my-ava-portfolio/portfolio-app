@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { skillsMapping } from '@core/global-values/main';
 
-import { skillsMapping } from '@core/inputs';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 
 
