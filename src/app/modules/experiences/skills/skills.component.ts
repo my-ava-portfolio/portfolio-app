@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { skillIcon, skillsMapping } from '@core/inputs';
+import { skillsMapping } from '@core/inputs';
+import { faStar } from '@fortawesome/free-regular-svg-icons';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class SkillsComponent implements OnInit {
 
   skillsCategories = skillsMapping;
 
-  skillIcon = skillIcon;
+  skillIcon = faStar;
 
   constructor(  ) {  }
 

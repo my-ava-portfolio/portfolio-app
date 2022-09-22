@@ -2,8 +2,8 @@ import { Component, OnInit, HostListener, ElementRef, ViewChild  } from '@angula
 
 import { ControlerService } from '@services/controler.service';
 
-import { navBarIcon } from '@core/inputs';
 import { minWidthLandscape } from '@core/styles/screen';
+import { faAlignLeft } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -19,7 +19,7 @@ export class LayoutComponent implements OnInit {
   sideBarCollapsed: boolean = true;
 
 
-  navBarIcon = navBarIcon;
+  navBarIcon = faAlignLeft;
 
   isNavBarDisplayed!: boolean;
 

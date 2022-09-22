@@ -3,7 +3,7 @@ import { Component, OnInit, ViewEncapsulation, OnDestroy, Input } from '@angular
 
 import { Subscription } from 'rxjs';
 
-import { currentYear, currentDate, backwardIcon, forwardIcon } from '@core/inputs';
+import { currentYear, currentDate } from '@core/inputs';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { MapService } from '@services/map.service';
@@ -14,6 +14,8 @@ import { educationColor, jobColor, volunteerColor } from "@core/styles/colors";
 
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
+
+import { faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -33,8 +35,8 @@ export class TimeLegendComponent implements OnInit, OnDestroy {
   geoTripsData!: any;
 
   // icons
-  backwardIcon = backwardIcon;
-  forwardIcon = forwardIcon;
+  backwardIcon = faStepBackward;
+  forwardIcon = faStepForward;
 
   sliderBarId = '#' + sliderBarId;
 

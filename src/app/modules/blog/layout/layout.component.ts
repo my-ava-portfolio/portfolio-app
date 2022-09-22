@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { BlogService } from '@modules/blog/shared/services/blog.service';
 
-import { stringToColor, tagIcon, tagsIcon } from '@core/inputs';
+import { stringToColor } from '@core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -13,6 +13,7 @@ import { fadeInOutAnimation } from '@core/animation_routes';
 import { MainService } from '@services/main.service';
 import { badge, galleryFeature } from '@core/data-types';
 import { minWidthLandscape } from '@core/styles/screen';
+import { faTags, faTag } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -26,8 +27,8 @@ export class LayoutComponent implements OnDestroy {
   topicsDataSubscription!: Subscription;
   isLegendDisplayed = true;
 
-  tagsIcon = tagsIcon;
-  tagIcon = tagIcon;
+  tagsIcon = faTags;
+  tagIcon = faTag;
 
   allCategories: badge[] = [];
   currentCategory!: string;

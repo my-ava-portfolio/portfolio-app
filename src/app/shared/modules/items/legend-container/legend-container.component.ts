@@ -1,6 +1,6 @@
 import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
 import { fadeInOutAnimation } from '@core/animation_routes';
-import { tagIcon, centerIcon } from '@core/inputs';
+import { faExpand, faTag } from '@fortawesome/free-solid-svg-icons';
 import { MapService } from '@services/map.service';
 
 @Component({
@@ -15,9 +15,9 @@ export class LegendContainerComponent implements OnInit {
   @ContentChild('buttonsTemplate') buttonsTmplt!: TemplateRef<any>;
   @ContentChild('controlersTemplate') controlersTmplt!: TemplateRef<any>;
 
-  tagIcon = tagIcon;
-  centerIcon = centerIcon;
-  
+  tagIcon = faTag;
+  centerIcon = faExpand;
+
   isLegendDisplayed: boolean = true;
 
   constructor(

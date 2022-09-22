@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
-import { emailIcon, githubIcon, linkedinIcon, pdfFileIcon, phoneIcon, websiteIcon } from '@core/inputs';
+
+import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope, faPhone, faGlobe, faFilePdf } from '@fortawesome/free-solid-svg-icons';
+
 import { ControlerService } from '@services/controler.service';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
@@ -17,12 +20,12 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   currentDate: number = new Date().getFullYear();
 
   // icons
-  githubIcon = githubIcon;
-  linkedinIcon = linkedinIcon;
-  emailIcon = emailIcon;
-  phoneIcon = phoneIcon;
-  websiteIcon = websiteIcon;
-  pdfFileIcon = pdfFileIcon;
+  githubIcon = faGithub;
+  linkedinIcon = faLinkedinIn;
+  emailIcon = faEnvelope;
+  phoneIcon = faPhone;
+  websiteIcon = faGlobe;
+  pdfFileIcon = faFilePdf;
 
   apiImgUrl = assetsLogoPath;
 

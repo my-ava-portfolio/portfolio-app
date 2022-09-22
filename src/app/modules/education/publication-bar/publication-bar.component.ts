@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { pdfFileIcon, publishIcon } from '@core/inputs';
+
+import { faBook, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-publication-bar',
@@ -10,8 +11,8 @@ export class PublicationBarComponent implements OnInit {
   @Input() fragment: any;
   @Input() publicationsData: any;
 
-  publishIcon = publishIcon;
-  pdfFileIcon = pdfFileIcon;
+  publishIcon = faBook;
+  pdfFileIcon = faFilePdf;
 
   constructor() { }
 

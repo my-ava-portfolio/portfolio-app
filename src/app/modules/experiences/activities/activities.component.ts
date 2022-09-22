@@ -1,13 +1,14 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
-import { galleryPages, githubIcon, mapActivitiesPages, notesIcon, projectIcon, projectPages, websiteIcon, activitiesMapping } from '@core/inputs';
+import { galleryPages, mapActivitiesPages, projectPages, activitiesMapping } from '@core/inputs';
 
 import { ResumeService } from '@services/resume.service';
 
-import { arrowsDownIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '@core/inputs';
 import { ActivityActionsService } from '../services/activity-actions.service';
 import { assetsLogoPath, assetsImagesPath, personalBlogUrl } from '@core/global-values/main';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faMapMarkerAlt, faImages, faFilter, faTrophy, faAngleDoubleDown, faPaintBrush, faFileAlt, faGlobe } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -30,15 +31,15 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   blogUrl = personalBlogUrl;
 
   // icons
-  locationIcon = locationIcon;
-  galleryIcon = galleryIcon;
-  filterIcon = filterIcon;
-  trophyIcon = trophyIcon;
-  arrowsDownIcon = arrowsDownIcon;
-  projectIcon = projectIcon;
-  githubIcon = githubIcon;
-  notesIcon = notesIcon;
-  websiteIcon = websiteIcon;
+  locationIcon = faMapMarkerAlt;
+  galleryIcon = faImages;
+  filterIcon = faFilter;
+  trophyIcon = faTrophy;
+  arrowsDownIcon = faAngleDoubleDown;
+  projectIcon = faPaintBrush;
+  githubIcon = faGithub;
+  notesIcon = faFileAlt;
+  websiteIcon = faGlobe;
 
   hiddenActivitiesDetails: number[] = [];
 

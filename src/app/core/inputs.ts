@@ -1,84 +1,10 @@
-import { faChevronRight, faChevronLeft, faTrashCan, faSquarePlus, faWaveSquare, faDrawPolygon, faGear, faPenSquare, faMicrochip, faTerminal, faChartLine, faDatabase, faAngleDoubleDown, faAlignJustify, faAlignLeft, faBars, faHome, faCaretRight, faTrophy, faAddressBook, faBuilding, faUserCog, faBook, faPaintBrush, faExclamationCircle, faBug, faSpinner, faAngleRight, faProjectDiagram, faExpand, faTools, faMobileAlt, faTags, faTag, faCogs, faStepBackward, faStepForward, faPrint, faStar, faArrowAltCircleDown, faPhone, faFilter, faGlobeEurope, faQuestionCircle, faMapMarkerAlt, faArrowAltCircleUp, faGlobe, faFilePdf, faUserGraduate, faLanguage } from '@fortawesome/free-solid-svg-icons';
-import { faAppStore, faYoutube, faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } from '@fortawesome/free-regular-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faAddressCard, faImages, faMap, faFileAlt, faBuilding, faStar } from '@fortawesome/free-regular-svg-icons';
+import { faHome, faUserGraduate, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 
 import { mapActivitiesPagesType } from './data-types';
 import { assetsImagesPath, githubUrl } from './global-values/main';
 import { minWidthLandscape, minHeightLandscape } from './styles/screen';
-
-
-
-
-
-
-export const resumeIcon = faAddressCard;
-export const galleryIcon = faImages;
-export const notesIcon = faFileAlt;
-export const githubIcon = faGithub;
-export const navIcon = faGlobeEurope;
-export const helpIcon = faQuestionCircle;
-export const exclamationIcon = faExclamationCircle;
-export const locationIcon = faMapMarkerAlt;
-export const arrowUpIcon = faArrowAltCircleUp;
-export const websiteIcon = faGlobe;
-export const pdfFileIcon = faFilePdf;
-export const degreeIcon = faUserGraduate;
-export const languageIcon = faLanguage;
-export const skillIcon = faStar;
-export const arrowDownIcon = faArrowAltCircleDown;
-export const printIcon = faPrint;
-export const linkedinIcon = faLinkedinIn;
-export const emailIcon = faEnvelope;
-export const phoneIcon = faPhone;
-export const mapIcon = faMap;
-export const backwardIcon = faStepBackward;
-export const forwardIcon = faStepForward;
-export const infoIcon = faCogs;
-export const pythonIcon = faPython;
-export const tagsIcon = faTags;
-export const tagIcon = faTag;
-export const mobileIcon = faMobileAlt;
-export const centerIcon = faExpand;
-export const filterIcon = faFilter;
-export const methodoIcon = faProjectDiagram;
-export const nextIcon = faAngleRight;
-export const loadingIcon = faSpinner;
-export const chartItemIcon = faChartBar;
-export const videoItemIcon = faYoutube;
-export const appItemIcon = faAppStore;
-export const toolItemIcon = faTools;
-export const bugIcon = faBug;
-export const expandIcon = faExpand;
-export const projectIcon = faPaintBrush;
-export const publishIcon = faBook;
-export const volunteerIcon = faUserCog;
-export const jobIcon = faBuilding;
-export const presIcon = faAddressBook;
-export const trophyIcon = faTrophy
-export const caretRightIcon = faCaretRight;
-export const homeIcon = faHome;
-export const menuIcon = faBars;
-export const navBarIcon = faAlignLeft;
-export const subMenuIcon = faAlignJustify;
-export const arrowsDownIcon = faAngleDoubleDown;
-export const databaseIcon = faDatabase;
-export const dataVizIcon = faChartLine;
-export const codingIcon = faTerminal;
-export const integrationIcon = faTools;
-export const modelingIcon = faMicrochip;
-export const specIcon = faPenSquare;
-export const editIcon = faPenSquare;
-export const toolsIcon = faGear;
-export const lineIcon = faWaveSquare;
-export const PolygonIcon = faDrawPolygon;
-export const addIcon = faSquarePlus;
-export const removeIcon = faTrashCan;
-export const arrowRightIcon = faChevronRight;
-export const arrowLeftIcon = faChevronLeft;
-
-// font awesome unicode
-export const ungroupIconUnicode = '\uf247';
-
 
 
 export const currentYear: number = new Date().getFullYear();
@@ -88,7 +14,7 @@ export const homePages: any = {
   id: 'home',
   route: '/home/about_me',
   title: 'A propos...',
-  icon: homeIcon,
+  icon: faHome,
   sub_menus: []
 };
 
@@ -98,25 +24,25 @@ export const educationPages: any = {
   title: 'Formation',
   colorType: 'education',
   verbose_title: 'Accès à mes formations',
-  icon: degreeIcon,
+  icon: faUserGraduate,
   sub_menus: [
     {
       id: "degrees",
       title: "Parcours universitaire",
       fragment: "education__degrees",
-      icon: degreeIcon
+      icon: faUserGraduate
     },
     {
       id: "degrees",
       title: "Travaux/publications",
       fragment: "education__publish",
-      icon: degreeIcon  // TODO find a better icon
+      icon: faUserGraduate  // TODO find a better icon
     },
     {
       id: "trainings",
       title: "Formations",
       fragment: "education__trainings",
-      icon: navIcon
+      icon: faGlobeEurope
     }
   ]
 };
@@ -127,7 +53,7 @@ export const legacyResumePage: any = {
   title: 'CV',
   colorType: null,
   verbose_title: 'Télécharger mon CV',
-  icon: resumeIcon,
+  icon: faAddressCard,
   sub_menus: [
   ]
 };
@@ -138,25 +64,25 @@ export const experiencesPages: any = {
   title: 'Expériences',
   colorType: 'job',
   verbose_title: 'Accès au CV',
-  icon: resumeIcon,
+  icon: faAddressCard,
   sub_menus: [
     {
       id: "navigation",
       title: "Navigation",
       fragment: "experiences__navigate",
-      icon: navIcon
+      icon: faGlobeEurope
     },
     {
       id: "activities",
       title: "Activités",
       fragment: "experiences__content__activities",
-      icon: jobIcon
+      icon: faBuilding
     },
     {
       id: "skills",
       title: "Compétences",
       fragment: "experiences__content__skills",
-      icon: skillIcon
+      icon: faStar
     }
   ]
 };
@@ -167,7 +93,7 @@ export const mapActivitiesPages: mapActivitiesPagesType = {
   title: 'Cartes',
   verbose_title: 'Accès aux carte',
   colorType: 'personal-project',
-  icon: mapIcon,
+  icon: faMap,
   sub_menus: [
     {
       id: "activities",
@@ -218,7 +144,7 @@ export const galleryPages: any = {
   title: 'Galerie',
   verbose_title: 'Accès à la galerie',
   colorType: 'gallery',
-  icon: galleryIcon
+  icon: faImages
 };
 
 
@@ -229,7 +155,7 @@ export const projectPages: any = [
     title: 'Blog',
     verbose_title: 'Accès au blog',
     colorType: 'secondary',
-    icon: notesIcon
+    icon: faFileAlt
   },
   {
     id: 'github',
@@ -237,7 +163,7 @@ export const projectPages: any = [
     title: 'Github',
     verbose_title: 'Accès à Github',
     colorType: 'secondary',
-    icon: githubIcon
+    icon: faGithub
   }
 ];
 

@@ -6,9 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { share } from 'rxjs/operators';
 
-import { homePages, infoIcon, legacyResumePage, pythonIcon } from '@core/inputs';
-import { githubIcon, linkedinIcon, emailIcon } from '@core/inputs';
-import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '@core/inputs';
+import { homePages, legacyResumePage } from '@core/inputs';
 import { currentYear, mainTopicsPages } from '@core/inputs';
 
 import { ResumeService } from 'src/app/services/resume.service';
@@ -17,6 +15,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { backEndInfo, dataProcessingInfo, frontEndInfo } from '@core/global-values/tech-infos';
 import { imageProfile } from '@core/global-values/main';
 import { githubBugIssueUrl, githubQuestionUrl, githubEnhancementUrl } from '@core/global-values/navigation-links';
+import { faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { faBug, faQuestionCircle, faExclamationCircle, faCogs, faBars, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -32,9 +32,9 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   homePages: any = homePages[0];
   legacyResumePage: any = legacyResumePage;
 
-  bugIcon = bugIcon;
-  helpIcon = helpIcon;
-  exclamationIcon = exclamationIcon;
+  bugIcon = faBug;
+  helpIcon = faQuestionCircle;
+  exclamationIcon = faExclamationCircle;
   GithubBugIssueLink = githubBugIssueUrl;
   GithubQuestionIssueLink = githubQuestionUrl;
   GithubEnhancementIssueLink = githubEnhancementUrl;
@@ -47,12 +47,12 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   issueSufixTitle = ' page:';
 
   // icons
-  infoIcon = infoIcon;
-  pythonIcon = pythonIcon;
-  githubIcon = githubIcon;
-  menuIcon = menuIcon;
-  linkedinIcon = linkedinIcon;
-  emailIcon = emailIcon;
+  infoIcon = faCogs;
+  pythonIcon = faPython;
+  githubIcon = faGithub;
+  menuIcon = faBars;
+  linkedinIcon = faLinkedinIn;
+  emailIcon = faEnvelope;
 
   authorRepoUrl = 'https://github.com/amauryval/portfolio';
 

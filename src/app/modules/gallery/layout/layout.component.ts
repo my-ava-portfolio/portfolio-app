@@ -9,13 +9,15 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '@core/inputs';
-
 import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { galleryFeature } from '@core/data-types';
 import { assetsImagesPath } from '@core/global-values/main';
+
 import { minWidthLandscape } from '@core/styles/screen';
+
+import { faYoutube, faAppStore, faPython } from '@fortawesome/free-brands-svg-icons';
+import { faTags, faTag, faChartBar, faMap, faTools, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -36,8 +38,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   currentCategory: string | null = null;
 
   isLegendDisplayed = true;
-  tagsIcon = tagsIcon;
-  tagIcon = tagIcon;
+  tagsIcon = faTags;
+  tagIcon = faTag;
 
   category!: string | null;
   activities!: string[];
@@ -54,13 +56,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
   fragment: string | null = null;
 
   typeStyleMapping: any = {
-    chart: { icon: chartItemIcon, title: 'Graphiques & tableaux' },
-    video: { icon: videoItemIcon, title: 'Vidéos' },
-    map: { icon: mapIcon, title: 'Cartes' },
-    app: { icon: appItemIcon, title: 'Applications' },
-    tool: { icon: toolItemIcon, title: 'Outils' },
-    library: { icon: pythonIcon, title: 'Libraries' },
-    methodo: { icon: methodoIcon, title: 'Méthodologies'}
+    chart: { icon: faChartBar, title: 'Graphiques & tableaux' },
+    video: { icon: faYoutube, title: 'Vidéos' },
+    map: { icon: faMap, title: 'Cartes' },
+    app: { icon: faAppStore, title: 'Applications' },
+    tool: { icon: faTools, title: 'Outils' },
+    library: { icon: faPython, title: 'Libraries' },
+    methodo: { icon: faProjectDiagram, title: 'Méthodologies'}
   };
   categoriesActivity: any = {
     job: 'Expériences',

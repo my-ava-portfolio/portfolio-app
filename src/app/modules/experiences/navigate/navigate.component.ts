@@ -5,8 +5,9 @@ import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 
 import { ResumeService } from '@services/resume.service';
-import { ungroupIconUnicode, activitiesMapping, skillsMapping } from '@core/inputs';
+import { activitiesMapping, skillsMapping } from '@core/inputs';
 import { ActivityActionsService } from '@modules/experiences/services/activity-actions.service';
+import { ungroupIconUnicode } from '@core/styles/icons';
 
 @Component({
   selector: 'app-navigate',

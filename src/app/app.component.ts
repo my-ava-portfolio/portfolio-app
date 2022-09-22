@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { bugIcon, loadingIcon, mobileIcon, arrowUpIcon } from '@core/inputs';
 import { minWidthLandscape, minHeightLandscape } from '@core/styles/screen';
+import { faMobileAlt, faSpinner, faBug, faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +12,10 @@ import { minWidthLandscape, minHeightLandscape } from '@core/styles/screen';
 })
 export class AppComponent implements OnInit {
 
-  mobileIcon = mobileIcon;
-  loadingIcon = loadingIcon;
-  bugIcon = bugIcon;
-  arrowUpIcon = arrowUpIcon;
+  mobileIcon = faMobileAlt;
+  loadingIcon = faSpinner;
+  bugIcon = faBug;
+  arrowUpIcon = faArrowAltCircleUp;
 
   scrolltoTopDisabledForced: boolean = false;
   scrolltoTopActivated: boolean = false

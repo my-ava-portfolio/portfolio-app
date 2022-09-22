@@ -3,7 +3,6 @@ import { Component, OnInit, OnDestroy, AfterViewInit, HostListener  } from '@ang
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
 
-import { tagsIcon } from '@core/inputs';
 import { experiencesPages } from '@core/inputs';
 
 import { interval, Subscription } from 'rxjs';
@@ -11,10 +10,11 @@ import { interval, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { navIcon } from '@core/inputs';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { assetsLogoPath } from '@core/global-values/main';
 import { minWidthLandscape } from '@core/styles/screen';
+
+import { faGlobeEurope, faTags } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -25,7 +25,6 @@ import { minWidthLandscape } from '@core/styles/screen';
 })
 export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
-  navIcon = navIcon;
 
   fragment: string = '';
 
@@ -33,7 +32,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   activityIdFromActivityComponents!: string;
   isLegendDisplayed = true;
 
-  tagsIcon = tagsIcon;
+  navIcon = faGlobeEurope;
+  tagsIcon = faTags;
 
   // resume center bar
   generalData: any;
