@@ -20,14 +20,14 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import {experiencesPages, educationPages } from '@core/inputs';
-
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from '@services/map.service';
 import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer, legendActivitiesId, travelLayerName, travelNodespeed, travelStyles } from '../shared/core';
 import { assetsLogoPath, imageProfile } from '@core/global-values/main';
 import { faMapMarkerAlt, faTags, faExpand, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+
+import { experiencesPages, educationPages } from '@core/global-values/topics';
 
 
 @Component({

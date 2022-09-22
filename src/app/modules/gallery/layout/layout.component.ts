@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { experiencesPages } from '@core/inputs';
 
 import { GalleryService } from '@modules/gallery/shared/services/gallery.service';
 import { MainService } from '@services/main.service';
@@ -18,6 +17,7 @@ import { minWidthLandscape } from '@core/styles/screen';
 
 import { faYoutube, faAppStore, faPython } from '@fortawesome/free-brands-svg-icons';
 import { faTags, faTag, faChartBar, faMap, faTools, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
+import { experiencesPages } from '@core/global-values/topics';
 
 
 @Component({

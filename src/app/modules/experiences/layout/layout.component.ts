@@ -3,8 +3,6 @@ import { Component, OnInit, OnDestroy, AfterViewInit, HostListener  } from '@ang
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
 
-import { experiencesPages } from '@core/inputs';
-
 import { interval, Subscription } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
@@ -15,6 +13,7 @@ import { assetsLogoPath } from '@core/global-values/main';
 import { minWidthLandscape } from '@core/styles/screen';
 
 import { faGlobeEurope, faTags } from '@fortawesome/free-solid-svg-icons';
+import { experiencesPages } from '@core/global-values/topics';
 
 
 @Component({

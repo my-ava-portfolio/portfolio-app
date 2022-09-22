@@ -3,8 +3,6 @@ import { Component, OnInit, OnDestroy, AfterViewInit, ViewEncapsulation  } from 
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
 
-import { educationPages } from '@core/inputs';
-
 import { interval, Subscription } from 'rxjs';
 import { startWith  } from 'rxjs/operators';
 
@@ -12,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { assetsLogoPath } from '@core/global-values/main';
+import { educationPages } from '@core/global-values/topics';
 
 @Component({
   selector: 'app-app-layout',

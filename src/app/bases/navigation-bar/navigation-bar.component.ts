@@ -6,8 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { share } from 'rxjs/operators';
 
-import { homePages, legacyResumePage } from '@core/inputs';
-import { currentYear, mainTopicsPages } from '@core/inputs';
+import { currentYear } from '@core/inputs';
 
 import { ResumeService } from 'src/app/services/resume.service';
 import { Subscription } from 'rxjs';
@@ -17,6 +16,7 @@ import { imageProfile } from '@core/global-values/main';
 import { githubBugIssueUrl, githubQuestionUrl, githubEnhancementUrl } from '@core/global-values/navigation-links';
 import { faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { faBug, faQuestionCircle, faExclamationCircle, faCogs, faBars, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { homePages, legacyResumePage, mainTopicsPages } from '@core/global-values/topics';
 
 @Component({
   selector: 'app-navigation-bar',

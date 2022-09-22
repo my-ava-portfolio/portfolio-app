@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
-
-
-import { mapActivitiesPages } from '@core/inputs';
+import { mapActivitiesPages } from '@core/global-values/topics';
 
 import { faLanguage } from '@fortawesome/free-solid-svg-icons';
 

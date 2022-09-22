@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInOutAnimation } from '@core/animation_routes';
+import { homePages } from '@core/global-values/topics';
 
-import { homePages } from '@core/inputs';
 
 import { ControlerService } from '@services/controler.service';
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
+import { mapActivitiesPages } from '@core/global-values/topics';
 
-import { mapActivitiesPages } from '@core/inputs';
 import { faUserGraduate, faLanguage, faAddressBook, faExpand, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 
