@@ -20,11 +20,11 @@
 
         <div class="my-auto">
           <ul class="list-unstyled">
-            <ng-container *ngIf="contactData.mail">
+            <ng-container *ngIf="contactData.mail && isPrinting">
               <ng-container *ngTemplateOutlet="contactListElement; context: {icon: emailIcon, data: contactData.mail}"></ng-container>
             </ng-container>
 
-            <ng-container *ngIf="contactData.phone">
+            <ng-container *ngIf="contactData.phone && isPrinting">
               <ng-container *ngTemplateOutlet="contactListElement; context: {icon: phoneIcon, data: contactData.phone}"></ng-container>
             </ng-container>
 

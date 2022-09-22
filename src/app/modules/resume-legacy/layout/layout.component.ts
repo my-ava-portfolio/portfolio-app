@@ -68,8 +68,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.publicationsData = data.publications;
 
         this.dataAvailable = true;
-        console.log(data)
-        // console.log(this.PageContent.nativeElement.clientWidth)
       }
     );
 
@@ -125,9 +123,9 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   printDiv(divId: string): void {
     this.isPrinting = true;
+
     let printContents = document.getElementById(divId)
     if (printContents?.innerHTML ) {
-      let originalContents = document.body.innerHTML;
       document.body.innerHTML = printContents?.innerHTML;
       window.print();
       this.isPrinting = false;
