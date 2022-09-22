@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { getConstract } from '@core/colors';
+import { getConstract } from '@core/styles/colors';
 
 @Component({
   selector: 'set-badge-content',
@@ -13,7 +13,7 @@ export class BadgeContentComponent implements OnInit {
   @Input() icon!: any;
   @Input() customBgColor!: any;
   @Input() classes: string = '';
-  
+
   constructor() { }
 
   ngOnInit(): void {

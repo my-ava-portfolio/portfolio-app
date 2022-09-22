@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, HostListener  } from '@ang
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
 
-import { minWidthLandscape, tagsIcon } from '@core/inputs';
+import { tagsIcon } from '@core/inputs';
 import { experiencesPages } from '@core/inputs';
 
 import { interval, Subscription } from 'rxjs';
@@ -14,6 +14,7 @@ import { Title } from '@angular/platform-browser';
 import { navIcon } from '@core/inputs';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { assetsLogoPath } from '@core/global-values/main';
+import { minWidthLandscape } from '@core/styles/screen';
 
 
 @Component({

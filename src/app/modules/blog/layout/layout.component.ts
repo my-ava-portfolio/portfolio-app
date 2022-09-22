@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { BlogService } from '@modules/blog/shared/services/blog.service';
 
-import { minWidthLandscape, stringToColor, tagIcon, tagsIcon } from '@core/inputs';
+import { stringToColor, tagIcon, tagsIcon } from '@core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -12,6 +12,7 @@ import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { MainService } from '@services/main.service';
 import { badge, galleryFeature } from '@core/data-types';
+import { minWidthLandscape } from '@core/styles/screen';
 
 
 @Component({

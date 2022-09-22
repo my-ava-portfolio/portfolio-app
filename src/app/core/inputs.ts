@@ -4,12 +4,12 @@ import { faEnvelope, faChartBar, faAddressCard, faImages, faMap, faFileAlt } fro
 
 import { mapActivitiesPagesType } from './data-types';
 import { assetsImagesPath, githubUrl } from './global-values/main';
+import { minWidthLandscape, minHeightLandscape } from './styles/screen';
 
 
 
 
-export const minWidthLandscape = 1024;
-export const minHeightLandscape = 768;
+
 
 export const resumeIcon = faAddressCard;
 export const galleryIcon = faImages;

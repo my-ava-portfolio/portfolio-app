@@ -10,7 +10,7 @@ import { MapService } from '@services/map.service';
 
 import * as d3 from 'd3';
 import { legendActivitiesId, sliderBarId, } from '@modules/map-activities/shared/core';
-import { educationColor, jobColor, volunteerColor } from "@core/colors";
+import { educationColor, jobColor, volunteerColor } from "@core/styles/colors";
 
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';

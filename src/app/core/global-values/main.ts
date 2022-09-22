@@ -1,4 +1,4 @@
-import { apiBaseUrl } from "@core/global-values/back-url";
+import { apiBaseUrl } from "@core/global-values/svr-url";
 
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
 export const assetsLogoPath = `./assets/logo/`;

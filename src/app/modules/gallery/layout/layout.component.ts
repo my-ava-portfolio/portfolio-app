@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { experiencesPages, minWidthLandscape } from '@core/inputs';
+import { experiencesPages } from '@core/inputs';
 
 import { GalleryService } from '@modules/gallery/shared/services/gallery.service';
 import { MainService } from '@services/main.service';
@@ -15,6 +15,7 @@ import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { galleryFeature } from '@core/data-types';
 import { assetsImagesPath } from '@core/global-values/main';
+import { minWidthLandscape } from '@core/styles/screen';
 
 
 @Component({

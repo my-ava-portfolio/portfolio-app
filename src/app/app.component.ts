@@ -2,7 +2,8 @@ import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/cor
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { bugIcon, loadingIcon, mobileIcon, minWidthLandscape, minHeightLandscape, arrowUpIcon } from '@core/inputs';
+import { bugIcon, loadingIcon, mobileIcon, arrowUpIcon } from '@core/inputs';
+import { minWidthLandscape, minHeightLandscape } from '@core/styles/screen';
 
 @Component({
   selector: 'app-root',

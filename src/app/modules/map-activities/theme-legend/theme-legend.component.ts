@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { legendActivitiesId, sliderBarId, strokeColor, travelMovingNodeColor, travelNodeStrokeColor } from '@modules/map-activities/shared/core';
 
-import { educationColor, jobColor, volunteerColor } from "@core/colors";
+import { educationColor, jobColor, volunteerColor } from "@core/styles/colors";
 
 
 @Component({
