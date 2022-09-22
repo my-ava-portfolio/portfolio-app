@@ -1,7 +1,6 @@
 import { activitiesPagesType } from "@core/data-types";
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faHome, faUserGraduate, faGlobeEurope, faAddressCard, faBuilding, faStar, faMap, faImages, faFileAlt } from "@fortawesome/free-solid-svg-icons";
-import { assetsImagesPath, githubUrl } from "./main";
+import { assetsImagesPath } from "./main";
 
 
 export const homePages: activitiesPagesType = {

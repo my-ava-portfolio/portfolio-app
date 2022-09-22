@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
+import { currentYear } from '@core/misc';
 
 import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faPhone, faGlobe, faFilePdf } from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +18,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('content') PageContent!: ElementRef;
   @ViewChild('legacyResume') legacyResume: any;
 
-  currentDate: number = new Date().getFullYear();
+  currentDate: number = currentYear;
 
   // icons
   githubIcon = faGithub;

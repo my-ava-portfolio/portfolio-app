@@ -11,7 +11,7 @@ import { Title } from '@angular/platform-browser';
 import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { galleryFeature } from '@core/data-types';
-import { assetsImagesPath } from '@core/global-values/main';
+import { activitiesMapping, assetsImagesPath } from '@core/global-values/main';
 
 import { minWidthLandscape } from '@core/styles/screen';
 
@@ -50,6 +50,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   assetsImagesPath = assetsImagesPath;
   galleryItems: galleryFeature[] = [];
 
+  activitiesMapping = activitiesMapping
+
   innerRoutesAvailable: string[] = ['maps/app/']; // to redirect on the routes portolio
   isDataAvailable = false;
 
@@ -64,11 +66,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     library: { icon: faPython, title: 'Libraries' },
     methodo: { icon: faProjectDiagram, title: 'Méthodologies'}
   };
-  categoriesActivity: any = {
-    job: 'Expériences',
-    "personal-project": 'Projet personnel',
-    volunteer: 'Bénévolat'
-  };
+
   featureTypes: any = {
     url_video: 'video',
     url_img: 'modal',
@@ -155,7 +153,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     if (feature.tools) {
       addons['Outils'] = feature.tools;
     }
-
+    // feature.category: 'job' | 'personal-project' | 'volunteer' = feature.category
     return {
       id: feature.identifier,
       title: feature.title,
@@ -163,9 +161,18 @@ export class LayoutComponent implements OnInit, OnDestroy {
       content_url: feature.media,
       categories: [],
       tags: [],
-      activityType: { name: this.categoriesActivity[feature.category], class: feature.category },
-      experienceName: { name: feature.name, color: feature.color },
-      mediaType: { name: feature.type, icon: this.typeStyleMapping[feature.type]},
+      activityType: {
+        name: activitiesMapping[feature.category as keyof typeof activitiesMapping],
+        class: feature.category
+      },
+      experienceName: {
+        name: feature.name,
+        color: feature.color
+      },
+      mediaType: {
+        name: feature.type,
+        icon: this.typeStyleMapping[feature.type]
+      },
       type: this.featureTypes[feature.source],
       description: feature.description,
       addons: addons
