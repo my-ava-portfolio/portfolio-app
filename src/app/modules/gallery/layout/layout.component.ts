@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { assetsImagesPath, experiencesPages, minWidthLandscape } from '@core/inputs';
+import { experiencesPages, minWidthLandscape } from '@core/inputs';
 
 import { GalleryService } from '@modules/gallery/shared/services/gallery.service';
 import { MainService } from '@services/main.service';
@@ -14,6 +14,7 @@ import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, a
 import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { galleryFeature } from '@core/data-types';
+import { assetsImagesPath } from '@core/global-values/main';
 
 
 @Component({
@@ -65,7 +66,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     "personal-project": 'Projet personnel',
     volunteer: 'Bénévolat'
   };
-  featureTypes: any = { 
+  featureTypes: any = {
     url_video: 'video',
     url_img: 'modal',
     url_app: 'website',
@@ -139,7 +140,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     if (!feature.media_splash.includes('http')) {
       img_url = assetsImagesPath + feature.media_splash
     }
-    
+
     if (['asset_img'].includes(feature.source)) {
       feature.media = assetsImagesPath + feature.media_splash
     }

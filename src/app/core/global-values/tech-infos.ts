@@ -1,3 +1,18 @@
+const dbLibs = [
+  {
+    "name": "SQLAlchemy",
+    "url": "https://www.sqlalchemy.org/",
+    "icon": "https://www.sqlalchemy.org/img/sqla_logo.png"
+  },
+  {
+    "name": "GeoAlchemy",
+    "url": "https://geoalchemy-2.readthedocs.io/en/0.3/orm_tutorial.html",
+    "img": "https://geoalchemy-2.readthedocs.io/en/latest/_static/geoalchemy.png"
+  },
+]
+
+
+
 export const dataProcessingInfo = {
   "title": "Pre-processing",
   "color": "dark",
@@ -5,6 +20,7 @@ export const dataProcessingInfo = {
   "language_icon": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
   "framework": null,
   "libs": [
+    ...dbLibs,
     {
       "name": "Pandas",
       "url": "https://pandas.pydata.org/docs/getting_started/overview.html",
@@ -14,16 +30,6 @@ export const dataProcessingInfo = {
       "name": "GeoPandas",
       "url": "https://geopandas.org/en/stable/",
       "icon": "https://geopandas.org/en/stable/_static/geopandas_logo_web.svg"
-    },
-    {
-      "name": "SQLAlchemy",
-      "url": "https://www.sqlalchemy.org/",
-      "icon": "https://www.sqlalchemy.org/img/sqla_logo.png"
-    },
-    {
-      "name": "GeoAlchemy",
-      "url": "https://geoalchemy-2.readthedocs.io/en/0.3/orm_tutorial.html",
-      "img": "https://geoalchemy-2.readthedocs.io/en/latest/_static/geoalchemy.png"
     },
     {
       "name": "psycopg2",
@@ -46,16 +52,7 @@ export const backEndInfo = {
     }
   ],
   "libs": [
-    {
-      "name": "SQLAlchemy",
-      "url": "https://www.sqlalchemy.org/",
-      "icon": "https://www.sqlalchemy.org/img/sqla_logo.png"
-    },
-    {
-      "name": "GeoAlchemy",
-      "url": "https://geoalchemy-2.readthedocs.io/en/0.3/orm_tutorial.html",
-      "icon": "https://geoalchemy-2.readthedocs.io/en/latest/_static/geoalchemy.png"
-    },
+    ...dbLibs,
     {
       "name": "BeautifulSoup4",
       "url": "https://www.crummy.com/software/BeautifulSoup/bs4/doc/#",

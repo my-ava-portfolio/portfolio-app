@@ -1,9 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { assetsLogoPath } from '@core/global-values/main';
 
-import { assetsLogoPath, pdfFileIcon, publishIcon } from '@core/inputs';
 
-import { degreeIcon, locationIcon } from '@core/inputs';
-import { presIcon, expandIcon, languageIcon } from '@core/inputs';
+import { languageIcon } from '@core/inputs';
 import { mapActivitiesPages } from '@core/inputs';
 
 @Component({

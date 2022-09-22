@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -9,13 +9,14 @@ import { share } from 'rxjs/operators';
 import { homePages, infoIcon, legacyResumePage, pythonIcon } from '@core/inputs';
 import { githubIcon, linkedinIcon, emailIcon } from '@core/inputs';
 import { menuIcon, helpIcon, exclamationIcon, bugIcon } from '@core/inputs';
-import { githubBugIssueUrl, githubEnhancementUrl, githubQuestionUrl } from '@core/inputs';
-import { currentYear, mainTopicsPages, imageProfile } from '@core/inputs';
+import { currentYear, mainTopicsPages } from '@core/inputs';
 
 import { ResumeService } from 'src/app/services/resume.service';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { backEndInfo, dataProcessingInfo, frontEndInfo } from '@core/global_values/general-infos';
+import { backEndInfo, dataProcessingInfo, frontEndInfo } from '@core/global-values/tech-infos';
+import { imageProfile } from '@core/global-values/main';
+import { githubBugIssueUrl, githubQuestionUrl, githubEnhancementUrl } from '@core/global-values/navigation-links';
 
 @Component({
   selector: 'app-navigation-bar',

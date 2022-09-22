@@ -20,13 +20,13 @@ import * as d3 from 'd3';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { locationIcon, tagsIcon, centerIcon, helpIcon, imageProfile, experiencesPages, educationPages } from '@core/inputs';
-import { assetsLogoPath } from '@core/inputs';
+import { locationIcon, tagsIcon, centerIcon, helpIcon, experiencesPages, educationPages } from '@core/inputs';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from '@services/map.service';
 import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer, legendActivitiesId, travelLayerName, travelNodespeed, travelStyles } from '../shared/core';
+import { assetsLogoPath, imageProfile } from '@core/global-values/main';
 
 
 @Component({

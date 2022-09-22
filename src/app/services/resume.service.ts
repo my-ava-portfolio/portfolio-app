@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { apiUrl } from '@core/inputs';
+import { apiUrl } from '@core/global-values/main';
 
 
 @Injectable({

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
-import { assetsLogoPath, pdfFileIcon, publishIcon } from '@core/inputs';
+import { assetsLogoPath } from '@core/global-values/main';
 
 import { degreeIcon, locationIcon } from '@core/inputs';
 import { presIcon, expandIcon, languageIcon } from '@core/inputs';

@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { assetsLogoPath, emailIcon, githubIcon, linkedinIcon, pdfFileIcon, phoneIcon, websiteIcon } from '@core/inputs';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { assetsLogoPath } from '@core/global-values/main';
+import { emailIcon, githubIcon, linkedinIcon, pdfFileIcon, phoneIcon, websiteIcon } from '@core/inputs';
 import { ControlerService } from '@services/controler.service';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';

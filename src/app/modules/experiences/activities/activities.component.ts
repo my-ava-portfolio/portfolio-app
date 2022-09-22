@@ -1,12 +1,13 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
-import { assetsLogoPath, assetsImagesPath, galleryPages, githubIcon, mapActivitiesPages, notesIcon, personalBlogUrl, projectIcon, projectPages, websiteIcon, activitiesMapping } from '@core/inputs';
+import { galleryPages, githubIcon, mapActivitiesPages, notesIcon, projectIcon, projectPages, websiteIcon, activitiesMapping } from '@core/inputs';
 
 import { ResumeService } from '@services/resume.service';
 
 import { arrowsDownIcon, galleryIcon, locationIcon, filterIcon, trophyIcon } from '@core/inputs';
 import { ActivityActionsService } from '../services/activity-actions.service';
+import { assetsLogoPath, assetsImagesPath, personalBlogUrl } from '@core/global-values/main';
 
 
 @Component({

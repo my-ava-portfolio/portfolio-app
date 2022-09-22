@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { apiUrl } from '@core/inputs';
+import { apiUrl } from '@core/global-values/main';
 import { Subject } from 'rxjs';
 
 @Injectable({
