@@ -17,6 +17,10 @@
       max-width: 200px;
       padding-top: 60px!important;  // due to navbar height
 
+        img {
+          width: 20vh;
+        }
+
         &.active{
             min-width: 80px;
             max-width: 80px;

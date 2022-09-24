@@ -6,6 +6,7 @@
     sticky-top
     vh-100
     bg-dark bg-gradient
+    overflow-auto
   "
   >
 
@@ -43,27 +44,17 @@
       </h4>
 
       <h5 *ngIf="sideBarCollapsed" class="text-white">Contact</h5>
-
-      <div id="leftSideBar__container__header__contact" *ngIf="contactData">
-        <a class="
-            badge text-bg-light
-            m-1
-          " [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="emailIcon" size="2x"></fa-icon>
+      <div class="" id="leftSideBar__container__header__contact" *ngIf="contactData">
+        <a class="btn btn-sm text-bg-light m-1" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+          <fa-icon class="text-black" [icon]="emailIcon" size="xl"></fa-icon>
         </a>
 
-        <a class="
-            badge text-bg-light
-            m-1
-          " [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="linkedinIcon" size="2x"></fa-icon>
+        <a class="btn btn-sm text-bg-light m-1" [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+          <fa-icon class="text-black" [icon]="linkedinIcon" size="xl"></fa-icon>
         </a>
 
-        <a class="
-            badge text-bg-light
-            m-1
-          " [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="githubIcon" size="2x"></fa-icon>
+        <a class="btn btn-sm text-bg-light m-1" [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+          <fa-icon class="text-black" [icon]="githubIcon" size="xl"></fa-icon>
         </a>
 
       </div>
@@ -154,7 +145,7 @@
 
 
   <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-">
       <div class="modal-body">
         <ng-container *ngTemplateOutlet="techCard; context:{content: dataProcessing}"></ng-container>
         <ng-container *ngTemplateOutlet="techCard; context:{content: backEnd}"></ng-container>
@@ -180,9 +171,9 @@
   >
 
     <ng-template #cardBodyTemplate>
-      <div class="d-flex flex-row justify-content-between align-items-center">
+      <div class="d-flex flex-column flex-sm-row justify-content-start align-items-center">
 
-        <div class="w-25 d-flex flex-column justify-content-around align-items-center">
+        <div class="mx-3 d-flex flex-column justify-content-around align-items-center">
 
           <a class="" [title]="content.language">
             <img class="img-tech" [src]="content.language_icon">
@@ -191,11 +182,11 @@
         </div>
 
 
-        <div class="mx-3 w-75 d-flex flex-column justify-content- align-items-">
+        <div class="m-3 d-flex flex-column justify-content-start align-items-">
 
             <ng-container *ngIf="content.framework">
               <div class="fw-bold">Framework</div>
-              <div class="mx-2 d-flex flex-row justify-content- align-items-center">
+              <div class="mx-2 d-flex justify-content- align-items-center">
                 <set-button-content
                   *ngFor="let lib of content.framework"
                   [classes]="'btn btn-sm btn-outline-' + content.color"
@@ -205,11 +196,11 @@
               </div>
             </ng-container>
 
-            <div class="fw-bold">Librairies principales</div>
-            <div class="mx-2 d-flex flex-row justify-content- align-items-center">
+            <div class="mt-2 fw-bold">Librairies principales</div>
+            <div class="mx-2 d-flex flex-wrap justify-content- align-items-center">
               <set-button-content
                 *ngFor="let lib of content.libs"
-                [classes]="'btn btn-sm btn-outline-' + content.color"
+                [classes]="'col-auto btn btn-sm btn-outline-' + content.color"
                 [url]="lib.url"
               >{{ lib.name }}
               </set-button-content>
