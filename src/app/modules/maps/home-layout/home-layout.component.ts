@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInOutAnimation } from '@core/animation_routes';
+import { mapActivitiesPages } from '@core/global-values/topics';
 
-import { mapActivitiesPages } from '@core/inputs';
 import { ControlerService } from '@services/controler.service';
 
 
@@ -12,6 +12,7 @@ import { ControlerService } from '@services/controler.service';
   animations: [fadeInOutAnimation]
 })
 export class HomeLayoutComponent implements OnInit {
+  
   mapPagesMenus: any = mapActivitiesPages;
 
   constructor(

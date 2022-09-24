@@ -1,4 +1,4 @@
-import { educationColor, jobColor, volunteerColor } from "@core/colors";
+import { educationColor, jobColor, volunteerColor } from "@core/styles/colors";
 import Feature from "ol/Feature";
 import { Style } from "ol/style";
 import CircleStyle from "ol/style/Circle";

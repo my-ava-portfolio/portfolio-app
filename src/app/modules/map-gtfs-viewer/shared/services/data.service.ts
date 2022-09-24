@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
-import { apiBaseUrl } from '@core/constants';
+import { apiBaseUrl } from '@core/global-values/svr-url';
 
 
 @Injectable({

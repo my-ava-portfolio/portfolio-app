@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { imageProfile } from '@core/inputs';
+import { imageProfile } from '@core/global-values/main';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
 
@@ -28,7 +28,7 @@ export class GeneralInfoComponent implements OnInit {
     );
 
   }
-  
+
   ngOnInit(): void {
     this.resumeService.pullGeneralData();
   }

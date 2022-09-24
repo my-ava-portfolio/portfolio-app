@@ -49,21 +49,21 @@
             badge text-bg-light
             m-1
           " [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="emailIcon" size="1x"></fa-icon>
+          <fa-icon class="text-black" [icon]="emailIcon" size="2x"></fa-icon>
         </a>
 
         <a class="
             badge text-bg-light
             m-1
           " [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="linkedinIcon" size="1x"></fa-icon>
+          <fa-icon class="text-black" [icon]="linkedinIcon" size="2x"></fa-icon>
         </a>
 
         <a class="
             badge text-bg-light
             m-1
           " [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="githubIcon" size="1x"></fa-icon>
+          <fa-icon class="text-black" [icon]="githubIcon" size="2x"></fa-icon>
         </a>
 
       </div>
@@ -135,15 +135,6 @@
             d-flex flex-row p-2
             text-start
           " [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']">
-            <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
-          </a>
-        </ng-container>
-        <ng-container *ngIf="page.url">
-          <a class="
-            text-warning text-decoration-none
-            d-flex flex-row p-2
-            text-start
-          " [href]="page.url" target="_blank" rel="noopener noreferrer">
             <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
           </a>
         </ng-container>

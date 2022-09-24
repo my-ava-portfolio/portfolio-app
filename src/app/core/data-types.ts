@@ -31,16 +31,33 @@ export interface galleryFeature {
 }
 // GALLERY TYPES //
 
+export interface mapFeature {
+  id: string,
+  title: string,
+  image_url: string,
+  type: 'app' | 'modal' | 'website' | 'video',
+  content_url: string,
+  categories: badge[], // map home & blog page (color compute dynamically)
+  tags: badge[], // map home & blog page (color compute dynamically)
+  description: string,
+}
+
+export interface activityFeature {
+  id: string,
+  title: string,
+  fragment: string,
+  icon: any,
+}
 
 
 
 // items //
-export interface mapActivitiesPagesType {
+export interface activitiesPagesType {
   id: string,
   route: string,
   title: string,
-  verbose_title: string,
-  colorType: string,
+  verbose_title?: string,
+  colorType?: string,
   icon: any,
-  sub_menus: galleryFeature[]
+  sub_menus: galleryFeature[] | mapFeature[] | activityFeature[]
 }

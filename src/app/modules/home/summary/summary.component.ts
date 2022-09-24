@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { projectPages, resumeTopicsPages } from '@core/inputs';
-
+import { projectPages, resumeTopicsPages } from '@core/global-values/topics';
 
 
 @Component({
@@ -14,13 +13,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
   projectPages: any[] = projectPages;
 
 
-
-  constructor(
-  ) {
-
-
-
-  }
+  constructor( ) { }
 
   ngOnInit(): void {
   }

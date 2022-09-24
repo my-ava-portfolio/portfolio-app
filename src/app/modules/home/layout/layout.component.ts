@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInOutAnimation } from '@core/animation_routes';
+import { homePages } from '@core/global-values/topics';
 
-import { homePages } from '@core/inputs';
 
 import { ControlerService } from '@services/controler.service';
 
@@ -16,7 +16,7 @@ import { ControlerService } from '@services/controler.service';
 })
 export class LayoutComponent implements OnInit {
 
-  homeTopics: any[] = homePages;
+  homeTopics = homePages;
 
   isWelcomeCardDisplayed = true;
 
@@ -40,7 +40,7 @@ export class LayoutComponent implements OnInit {
   }
 
   sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus(this.homeTopics)
+    this.controlerService.pullSubMenus(this.homeTopics.sub_menus)
   }
 
 }

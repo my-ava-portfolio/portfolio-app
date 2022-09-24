@@ -12,7 +12,7 @@ import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.servi
 import { locationIcon, tagsIcon, centerIcon, gtfsLayerName, gtfsStyle, circleRadius, metroColor, strokeWidth, trainColor, tramColor, strokeColor } from '@modules/map-gtfs-viewer/shared/core';
 import { MapService } from '@services/map.service';
 import { ControlerService } from '@services/controler.service';
-import { currentDate } from '@core/inputs';
+import { currentDate } from '@core/misc';
 import { TimelineService } from '@shared/services/timeline.service';
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
@@ -246,7 +246,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.mapService.resetMapView()
 
   }
-  
+
   zoomOnData(): void {
     // TODO create map components with buttons
     this.mapService.sendZoomAction();

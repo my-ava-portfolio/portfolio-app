@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { navBarIcon, subMenuIcon } from '@core/inputs';
 
 import { ControlerService } from '@services/controler.service';
 import { Router } from '@angular/router';
+import { faAlignLeft, faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -16,8 +16,8 @@ export class ControlBarComponent implements OnInit, OnDestroy {
   @Input() sideBarCollapsed!: boolean;
   @Input() subMenuBarEnabled!: boolean;
 
-  navBarIcon = navBarIcon;
-  subMenuIcon = subMenuIcon;
+  navBarIcon = faAlignLeft;
+  subMenuIcon = faAlignJustify;
 
   pageTitle!: string;
   topicPages!: any;
