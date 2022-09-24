@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
 import { currentYear } from '@core/misc';
 
@@ -58,6 +58,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private resumeService: ResumeService,
     private controlerService: ControlerService,
+    private cdRef: ChangeDetectorRef
   ) {
 
     this.generalDataSubscription = this.resumeService.resumeData.subscribe(
@@ -127,7 +128,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   printDiv(divId: string): void {
     this.isPrinting = true;
-
+    this.cdRef.detectChanges()
     let printContents = document.getElementById(divId)
     if (printContents?.innerHTML ) {
       document.body.innerHTML = printContents?.innerHTML;

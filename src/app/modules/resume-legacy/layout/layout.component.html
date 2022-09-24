@@ -107,7 +107,7 @@
 
         <div class="d-flex flex-column mx-2" *ngFor="let job of jobsData ;let last = last;">
 
-          <div class="d-flex flex-row justify-content-between" [ngClass]="job.status === 'InProgress' ? 'text-danger': 'text-dark'">
+          <div class="d-flex flex-row justify-content-between mt-1" [ngClass]="job.status === 'InProgress' ? 'text-danger': 'text-dark'">
             <div class="fw-bold small w-75">{{job.title}} @ {{job.company}}</div>
             <div class="small">{{job.location}}</div>
           </div>
@@ -132,7 +132,7 @@
           </div>
 
           <div *ngIf="!last" class="d-flex flex-row justify-content-center">
-            <hr class="w-25 m-2 border-2 border-top border-dark">
+            <hr class="w-25 my-2 border-2 border-top border-dark">
           </div>
 
 
