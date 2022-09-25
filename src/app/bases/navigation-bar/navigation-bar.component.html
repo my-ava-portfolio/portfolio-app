@@ -6,6 +6,7 @@
     sticky-top
     vh-100
     bg-dark bg-gradient
+    overflow-auto
   "
   >
 
@@ -43,27 +44,17 @@
       </h4>
 
       <h5 *ngIf="sideBarCollapsed" class="text-white">Contact</h5>
-
-      <div id="leftSideBar__container__header__contact" *ngIf="contactData">
-        <a class="
-            badge text-bg-light
-            m-1
-          " [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="emailIcon" size="1x"></fa-icon>
+      <div class="" id="leftSideBar__container__header__contact" *ngIf="contactData">
+        <a class="btn btn-sm text-bg-light m-1" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+          <fa-icon class="text-black" [icon]="emailIcon" size="xl"></fa-icon>
         </a>
 
-        <a class="
-            badge text-bg-light
-            m-1
-          " [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="linkedinIcon" size="1x"></fa-icon>
+        <a class="btn btn-sm text-bg-light m-1" [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+          <fa-icon class="text-black" [icon]="linkedinIcon" size="xl"></fa-icon>
         </a>
 
-        <a class="
-            badge text-bg-light
-            m-1
-          " [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
-          <fa-icon class="text-black" [icon]="githubIcon" size="1x"></fa-icon>
+        <a class="btn btn-sm text-bg-light m-1" [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+          <fa-icon class="text-black" [icon]="githubIcon" size="xl"></fa-icon>
         </a>
 
       </div>
@@ -81,7 +72,7 @@
       <ul class="list-unstyled list-group justify-content-center mb-2" [ngClass]="sideBarCollapsed ? 'list-group-horizontal' : ''">
 
         <li>
-          <a class="text-white mx-1" id="infosLink" data-bs-toggle="modal" data-bs-target="#websiteInfos">
+          <a role="button" class="text-white mx-1" id="infosLink" data-bs-toggle="modal" data-bs-target="#infoModal">
             <fa-icon [icon]="infoIcon" size="1x"></fa-icon>
           </a>
         </li>
@@ -138,15 +129,6 @@
             <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
           </a>
         </ng-container>
-        <ng-container *ngIf="page.url">
-          <a class="
-            text-warning text-decoration-none
-            d-flex flex-row p-2
-            text-start
-          " [href]="page.url" target="_blank" rel="noopener noreferrer">
-            <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
-          </a>
-        </ng-container>
       </li>
 
   </ng-container>
@@ -162,6 +144,15 @@
 
 
 
+  <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-">
+      <div class="modal-body">
+        <ng-container *ngTemplateOutlet="techCard; context:{content: dataProcessing}"></ng-container>
+        <ng-container *ngTemplateOutlet="techCard; context:{content: backEnd}"></ng-container>
+        <ng-container *ngTemplateOutlet="techCard; context:{content: frontEnd}"></ng-container>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -171,4 +162,55 @@
 
 
 
+<ng-template #techCard let-content='content'>
+  <set-card-container
+    class=""
+    cardClass="m-3 shadow-none"
+    [title]="content.title"
+    [headerClass]="'text-bg-' + content.color"
+  >
+
+    <ng-template #cardBodyTemplate>
+      <div class="d-flex flex-column flex-sm-row justify-content-start align-items-center">
+
+        <div class="mx-3 d-flex flex-column justify-content-around align-items-center">
+
+          <a class="" [title]="content.language">
+            <img class="img-tech" [src]="content.language_icon">
+          </a>
+          <span class="fw-bold">{{content.language}}</span>
+        </div>
+
+
+        <div class="m-3 d-flex flex-column justify-content-start align-items-">
+
+            <ng-container *ngIf="content.framework">
+              <div class="fw-bold">Framework</div>
+              <div class="mx-2 d-flex justify-content- align-items-center">
+                <set-button-content
+                  *ngFor="let lib of content.framework"
+                  [classes]="'btn btn-sm btn-outline-' + content.color"
+                  [url]="lib.url"
+                >{{ lib.name }}
+                </set-button-content>
+              </div>
+            </ng-container>
+
+            <div class="mt-2 fw-bold">Librairies principales</div>
+            <div class="mx-2 d-flex flex-wrap justify-content- align-items-center">
+              <set-button-content
+                *ngFor="let lib of content.libs"
+                [classes]="'col-auto btn btn-sm btn-outline-' + content.color"
+                [url]="lib.url"
+              >{{ lib.name }}
+              </set-button-content>
+            </div>
+
+        </div>
+
+      </div>
+    </ng-template>
+  </set-card-container>
+
+</ng-template>
 

@@ -1,10 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { assetsLogoPath } from '@core/global-values/main';
+import { mapActivitiesPages } from '@core/global-values/topics';
 
-import { assetsLogoPath, pdfFileIcon, publishIcon } from '@core/inputs';
-
-import { degreeIcon, locationIcon } from '@core/inputs';
-import { presIcon, expandIcon, languageIcon } from '@core/inputs';
-import { mapActivitiesPages } from '@core/inputs';
+import { faLanguage } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-general-info',
@@ -24,7 +22,7 @@ export class GeneralInfoComponent implements OnInit {
   inputLanguagesData: any;
   inputProfilData: any;
   // icons
-  languageIcon = languageIcon;
+  languageIcon = faLanguage;
 
 
   constructor() { }

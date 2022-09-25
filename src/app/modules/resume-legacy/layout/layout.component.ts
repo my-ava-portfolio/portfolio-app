@@ -1,6 +1,10 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { assetsLogoPath, emailIcon, githubIcon, linkedinIcon, pdfFileIcon, phoneIcon, websiteIcon } from '@core/inputs';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { assetsLogoPath } from '@core/global-values/main';
+import { currentYear } from '@core/misc';
+
+import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope, faPhone, faGlobe, faFilePdf } from '@fortawesome/free-solid-svg-icons';
+
 import { ControlerService } from '@services/controler.service';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
@@ -14,15 +18,15 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('content') PageContent!: ElementRef;
   @ViewChild('legacyResume') legacyResume: any;
 
-  currentDate: number = new Date().getFullYear();
+  currentDate: number = currentYear;
 
   // icons
-  githubIcon = githubIcon;
-  linkedinIcon = linkedinIcon;
-  emailIcon = emailIcon;
-  phoneIcon = phoneIcon;
-  websiteIcon = websiteIcon;
-  pdfFileIcon = pdfFileIcon;
+  githubIcon = faGithub;
+  linkedinIcon = faLinkedinIn;
+  emailIcon = faEnvelope;
+  phoneIcon = faPhone;
+  websiteIcon = faGlobe;
+  pdfFileIcon = faFilePdf;
 
   apiImgUrl = assetsLogoPath;
 
@@ -54,6 +58,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private resumeService: ResumeService,
     private controlerService: ControlerService,
+    private cdRef: ChangeDetectorRef
   ) {
 
     this.generalDataSubscription = this.resumeService.resumeData.subscribe(
@@ -68,8 +73,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.publicationsData = data.publications;
 
         this.dataAvailable = true;
-        console.log(data)
-        // console.log(this.PageContent.nativeElement.clientWidth)
       }
     );
 
@@ -125,9 +128,9 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   printDiv(divId: string): void {
     this.isPrinting = true;
+    this.cdRef.detectChanges()
     let printContents = document.getElementById(divId)
     if (printContents?.innerHTML ) {
-      let originalContents = document.body.innerHTML;
       document.body.innerHTML = printContents?.innerHTML;
       window.print();
       this.isPrinting = false;

@@ -1,9 +1,7 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnDestroy, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { BlogService } from '@modules/blog/shared/services/blog.service';
-
-import { minWidthLandscape, personalBlogUrl, stringToColor, tagIcon, tagsIcon } from '@core/inputs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -12,6 +10,9 @@ import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { MainService } from '@services/main.service';
 import { badge, galleryFeature } from '@core/data-types';
+import { minWidthLandscape } from '@core/styles/screen';
+import { faTags, faTag } from '@fortawesome/free-solid-svg-icons';
+import { stringToColor } from '@core/styles/colors';
 
 
 @Component({
@@ -22,12 +23,11 @@ import { badge, galleryFeature } from '@core/data-types';
 })
 export class LayoutComponent implements OnDestroy {
   pageTitle!: string;
-  pageUrlToLoad = personalBlogUrl;
   topicsDataSubscription!: Subscription;
   isLegendDisplayed = true;
 
-  tagsIcon = tagsIcon;
-  tagIcon = tagIcon;
+  tagsIcon = faTags;
+  tagIcon = faTag;
 
   allCategories: badge[] = [];
   currentCategory!: string;

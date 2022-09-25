@@ -1,18 +1,19 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, HostListener  } from '@angular/core';
+import { Component, OnInit, OnDestroy  } from '@angular/core';
 
 import { ResumeService } from '@services/resume.service';
 import { ControlerService } from '@services/controler.service';
-
-import { assetsLogoPath, minWidthLandscape, tagsIcon } from '@core/inputs';
-import { experiencesPages } from '@core/inputs';
 
 import { interval, Subscription } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { navIcon } from '@core/inputs';
 import { fadeInOutAnimation } from '@core/animation_routes';
+import { activitiesMapping, assetsLogoPath } from '@core/global-values/main';
+import { minWidthLandscape } from '@core/styles/screen';
+
+import { faGlobeEurope, faTags } from '@fortawesome/free-solid-svg-icons';
+import { experiencesPages } from '@core/global-values/topics';
 
 
 @Component({
@@ -21,9 +22,8 @@ import { fadeInOutAnimation } from '@core/animation_routes';
   styleUrls: ['./layout.component.scss'],
   animations: [fadeInOutAnimation]
 })
-export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
+export class LayoutComponent implements OnInit, OnDestroy  {
 
-  navIcon = navIcon;
 
   fragment: string = '';
 
@@ -31,7 +31,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   activityIdFromActivityComponents!: string;
   isLegendDisplayed = true;
 
-  tagsIcon = tagsIcon;
+  navIcon = faGlobeEurope;
+  tagsIcon = faTags;
 
   // resume center bar
   generalData: any;
@@ -48,7 +49,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   isDataAvailable = false;
 
-  experiencesTopics: any[] = experiencesPages;
+  experiencesTopics = experiencesPages;
 
 
   isAnchorExistsChecker = interval(1000); // observable which run all the time
@@ -89,17 +90,17 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
         this.activityTypesMetadata = [
           {
             id: "job",
-            title: "Missions",
+            title: activitiesMapping["job"],
             count: this.jobsData.length
           },
           {
             id: "personal-project",
-            title: "Projets personnels",
+            title: activitiesMapping["personal-project"],
             count: this.personalProjectsData.length
           },
           {
             id: "volunteer",
-            title: "Bénévolat",
+            title: activitiesMapping["volunteer"],
             count: this.volunteersData.length
           }
         ]
@@ -126,11 +127,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   }
 
-  ngAfterViewInit(): void {
-    this.displayContentRegardingDeviceScreen()
-
-  }
-
   ngOnDestroy(): void {
     this.generalDataSubscription.unsubscribe();
     this.activitiesFilteredSubscription.unsubscribe();
@@ -138,7 +134,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   }
 
   sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus(this.experiencesTopics)
+    this.controlerService.pullSubMenus(this.experiencesTopics.sub_menus)
   }
 
   sendActivityId(activityId: string): void {
@@ -148,17 +144,5 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit  {
   // pushActivitiesAvailable(activities: any[]): void {
   //   this.resumeService.pullActivitiesAvailable(activities);
   // }
-
-  showHideLegend(): void {
-    this.isLegendDisplayed = !this.isLegendDisplayed;
-  }
-
-  @HostListener('window:orientationchange', ['$event'])
-  displayContentRegardingDeviceScreen(): void {
-    // if mode portrait and width screen <= 1024...
-    if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
-      this.isLegendDisplayed = false;
-    }
-  }
 
 }

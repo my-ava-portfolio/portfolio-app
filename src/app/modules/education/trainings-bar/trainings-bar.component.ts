@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { assetsLogoPath } from '@core/global-values/main';
 
-import { assetsLogoPath } from '@core/inputs';
-
-import { degreeIcon, languageIcon, locationIcon } from '@core/inputs';
-import { presIcon, expandIcon } from '@core/inputs';
+import { faUserGraduate, faMapMarkerAlt, faLanguage, faAddressBook, faExpand } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -19,11 +17,11 @@ export class TrainingsBarComponent implements OnInit, OnChanges {
   inputTrainingsData: any;
 
   // icons
-  degreeIcon = degreeIcon;
-  locationIcon = locationIcon;
-  languageIcon = languageIcon;
-  presIcon = presIcon;
-  expandIcon = expandIcon;
+  degreeIcon = faUserGraduate;
+  locationIcon = faMapMarkerAlt;
+  languageIcon = faLanguage;
+  presIcon = faAddressBook;
+  expandIcon = faExpand;
 
   availabled_topics = ["trainings"]
   defaultTabView = this.availabled_topics[0];

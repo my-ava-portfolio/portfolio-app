@@ -5,8 +5,10 @@ import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 
 import { ResumeService } from '@services/resume.service';
-import { ungroupIconUnicode, activitiesMapping, skillsMapping } from '@core/inputs';
 import { ActivityActionsService } from '@modules/experiences/services/activity-actions.service';
+import { ungroupIconUnicode } from '@core/styles/icons';
+import { skillsMapping, activitiesMapping } from '@core/global-values/main';
+import { currentYear } from '@core/misc';
 
 @Component({
   selector: 'app-navigate',
@@ -31,13 +33,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   // icons
   ungroupIconUnicode = ungroupIconUnicode;
 
-  currentDate: number = new Date().getFullYear();
+  currentDate: number = currentYear;
   currentNodeIdSelected: string | null = null;
 
   graphData!: any;
-  // currentJobsActivitiesData: any = [];
-  // currentPersonalProjectsActivitiesData: any = [];
-  // currentVolunteersActivitiesData: any = [];
 
   adjlist!: any;
   labelLayout!: any;
@@ -69,12 +68,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   // here to control topic graph & text (ex 'missions' shared by neighbors components)... TODO improve it !
-  activitiesMapping = activitiesMapping;
 
   legendInput = [
-    { id: this.job_identifier, status: 'unabled-topic', label: this.activitiesMapping['job'], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.personal_project_identifier, status: 'unabled-topic', label: this.activitiesMapping['personal-project'], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.volunteer_identifier, status: 'unabled-topic', label: this.activitiesMapping['volunteer'], cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.job_identifier, status: 'unabled-topic', label: activitiesMapping['job'], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.personal_project_identifier, status: 'unabled-topic', label: activitiesMapping['personal-project'], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.volunteer_identifier, status: 'unabled-topic', label: activitiesMapping['volunteer'], cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
     { id: 'themes', status: 'enabled-topic', label: this.skillsMapping['themes'], cx: 175, cy: 42, text_cx: 190, r: 5, rOver: 10 },
     { id: 'technics', status: 'enabled-topic', label: this.skillsMapping['technics'], cx: 175, cy: 67, text_cx: 190, r: 5, rOver: 10 },
     { id: 'tools', status: 'enabled-topic', label: this.skillsMapping['tools'], cx: 175, cy: 92, text_cx: 190, r: 5, rOver: 10 }

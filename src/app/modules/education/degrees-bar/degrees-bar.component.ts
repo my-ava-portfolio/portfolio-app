@@ -1,10 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { assetsLogoPath } from '@core/global-values/main';
+import { mapActivitiesPages } from '@core/global-values/topics';
 
-import { assetsLogoPath, pdfFileIcon, publishIcon } from '@core/inputs';
-
-import { degreeIcon, locationIcon } from '@core/inputs';
-import { presIcon, expandIcon, languageIcon } from '@core/inputs';
-import { mapActivitiesPages } from '@core/inputs';
+import { faUserGraduate, faLanguage, faAddressBook, faExpand, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -16,7 +14,6 @@ export class DegreesBarComponent implements OnInit {
   @Input() fragment: any;
   @Input() degreesData: any;
 
-  locationIcon = locationIcon;
   isImageValid = true;
 
   mapPages: any = mapActivitiesPages;
@@ -26,10 +23,11 @@ export class DegreesBarComponent implements OnInit {
   inputDegreesData: any;
 
   // icons
-  degreeIcon = degreeIcon;
-  languageIcon = languageIcon;
-  presIcon = presIcon;
-  expandIcon = expandIcon;
+  locationIcon = faMapMarkerAlt;
+  degreeIcon = faUserGraduate;
+  languageIcon = faLanguage;
+  presIcon = faAddressBook;
+  expandIcon = faExpand;
 
 
   constructor() { }

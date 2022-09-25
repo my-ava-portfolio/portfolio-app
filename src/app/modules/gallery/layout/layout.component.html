@@ -12,7 +12,7 @@
           mt-2
           align-items-center
         ">
-          
+
           <set-badge-content
             *ngIf="feature.activityType"
             [classes]="'pe-none text-bg-' + feature.activityType.class"
@@ -24,7 +24,7 @@
             classes="pointer"
             [customBgColor]="feature.experienceName.color"
           >{{feature.experienceName.name}}</set-badge-content>
-          
+
           <set-badge-content
             *ngIf="feature.mediaType"
             [classes]="'pe-none text-bg-' + feature.mediaType.name"
@@ -32,7 +32,7 @@
           >{{feature.mediaType.icon.title}}</set-badge-content>
 
       </div>
-           
+
       <set-paragraph-content>
         {{ feature.description }}
         <ul class="mt-2" *ngIf="feature.addons">
@@ -42,7 +42,7 @@
           </li>
         </ul>
       </set-paragraph-content>
-      
+
     </ng-template>
 
   </app-grid-container>
@@ -75,7 +75,7 @@
       iconClasses="text-job"
       [icon]="tagIcon"
       (click)="getGalleryDataByCategory('job')"
-    >Missions
+    >{{activitiesMapping['job']}}
     </set-button-content>
 
     <set-button-content
@@ -83,7 +83,7 @@
       iconClasses="text-personal-project"
       [icon]="tagIcon"
       (click)="getGalleryDataByCategory('personal-project')"
-    >Projets personnels
+    >{{activitiesMapping['personal-project']}}
     </set-button-content>
 
     <set-button-content
@@ -91,7 +91,7 @@
       iconClasses="text-volunteer"
       [icon]="tagIcon"
       (click)="getGalleryDataByCategory('volunteer')"
-    >Bénévolat
+    >{{activitiesMapping['volunteer']}}
     </set-button-content>
 
   </set-section-container>

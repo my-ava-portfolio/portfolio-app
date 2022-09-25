@@ -21,9 +21,9 @@ export function getConstract(hexColor: string): 'black' | 'white' {
       const red = parseInt(rgbValues[1]);
       const green = parseInt(rgbValues[2]);
       const blue = parseInt(rgbValues[3]);
-  
+
       const contrastLimit = Math.round((red * 299 + green * 587 + blue * 114) / 1000);
-  
+
       if (contrastLimit > 125) {
         return 'black';
       } else {
@@ -32,4 +32,16 @@ export function getConstract(hexColor: string): 'black' | 'white' {
     }
 
     return 'white'
+}
+
+export function stringToColor(inputText: string, seed: number): string {
+
+  let hash = 0;
+  for (let i = 0; i < inputText.length; i++) {
+     hash = inputText.charCodeAt(i) + ((hash << seed) - hash);
   }
+  let temp_color = (hash & 0x00FFFFFF).toString(16).toUpperCase();
+
+  return "#" + "00000".substring(0, 6 - temp_color.length) + temp_color;
+
+}

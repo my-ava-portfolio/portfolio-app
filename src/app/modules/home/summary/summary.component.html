@@ -20,7 +20,7 @@
 
           <ng-container *ngFor="let page of resumePages">
             <set-button-content
-              [classes]="'btn-' + page.colorType"
+              [classes]="'text-white btn-' + page.colorType"
               [title]="page.title"
               [icon]="page.icon"
               [route]="page.route"
@@ -35,15 +35,6 @@
                 [classes]="'btn-' + page.colorType"
                 [icon]="page.icon"
                 [route]="page.route"
-              >{{ page.title }}
-              </set-button-content>
-            </ng-container>
-
-            <ng-container *ngIf="page.url">
-              <set-button-content
-                [classes]="'btn-' + page.colorType"
-                [icon]="page.icon"
-                [url]="page.url"
               >{{ page.title }}
               </set-button-content>
             </ng-container>

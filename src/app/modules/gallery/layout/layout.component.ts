@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { assetsImagesPath, experiencesPages, minWidthLandscape } from '@core/inputs';
 
 import { GalleryService } from '@modules/gallery/shared/services/gallery.service';
 import { MainService } from '@services/main.service';
@@ -9,11 +8,16 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { pythonIcon, tagsIcon, tagIcon, chartItemIcon, mapIcon, videoItemIcon, appItemIcon, toolItemIcon, methodoIcon } from '@core/inputs';
-
 import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { galleryFeature } from '@core/data-types';
+import { activitiesMapping, assetsImagesPath } from '@core/global-values/main';
+
+import { minWidthLandscape } from '@core/styles/screen';
+
+import { faYoutube, faAppStore, faPython } from '@fortawesome/free-brands-svg-icons';
+import { faTags, faTag, faChartBar, faMap, faTools, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
+import { experiencesPages } from '@core/global-values/topics';
 
 
 @Component({
@@ -34,8 +38,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   currentCategory: string | null = null;
 
   isLegendDisplayed = true;
-  tagsIcon = tagsIcon;
-  tagIcon = tagIcon;
+  tagsIcon = faTags;
+  tagIcon = faTag;
 
   category!: string | null;
   activities!: string[];
@@ -46,26 +50,24 @@ export class LayoutComponent implements OnInit, OnDestroy {
   assetsImagesPath = assetsImagesPath;
   galleryItems: galleryFeature[] = [];
 
+  activitiesMapping = activitiesMapping
+
   innerRoutesAvailable: string[] = ['maps/app/']; // to redirect on the routes portolio
   isDataAvailable = false;
 
   fragment: string | null = null;
 
   typeStyleMapping: any = {
-    chart: { icon: chartItemIcon, title: 'Graphiques & tableaux' },
-    video: { icon: videoItemIcon, title: 'Vidéos' },
-    map: { icon: mapIcon, title: 'Cartes' },
-    app: { icon: appItemIcon, title: 'Applications' },
-    tool: { icon: toolItemIcon, title: 'Outils' },
-    library: { icon: pythonIcon, title: 'Libraries' },
-    methodo: { icon: methodoIcon, title: 'Méthodologies'}
+    chart: { icon: faChartBar, title: 'Graphiques & tableaux' },
+    video: { icon: faYoutube, title: 'Vidéos' },
+    map: { icon: faMap, title: 'Cartes' },
+    app: { icon: faAppStore, title: 'Applications' },
+    tool: { icon: faTools, title: 'Outils' },
+    library: { icon: faPython, title: 'Libraries' },
+    methodo: { icon: faProjectDiagram, title: 'Méthodologies'}
   };
-  categoriesActivity: any = {
-    job: 'Expériences',
-    "personal-project": 'Projet personnel',
-    volunteer: 'Bénévolat'
-  };
-  featureTypes: any = { 
+
+  featureTypes: any = {
     url_video: 'video',
     url_img: 'modal',
     url_app: 'website',
@@ -139,7 +141,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     if (!feature.media_splash.includes('http')) {
       img_url = assetsImagesPath + feature.media_splash
     }
-    
+
     if (['asset_img'].includes(feature.source)) {
       feature.media = assetsImagesPath + feature.media_splash
     }
@@ -151,7 +153,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     if (feature.tools) {
       addons['Outils'] = feature.tools;
     }
-
+    // feature.category: 'job' | 'personal-project' | 'volunteer' = feature.category
     return {
       id: feature.identifier,
       title: feature.title,
@@ -159,9 +161,18 @@ export class LayoutComponent implements OnInit, OnDestroy {
       content_url: feature.media,
       categories: [],
       tags: [],
-      activityType: { name: this.categoriesActivity[feature.category], class: feature.category },
-      experienceName: { name: feature.name, color: feature.color },
-      mediaType: { name: feature.type, icon: this.typeStyleMapping[feature.type]},
+      activityType: {
+        name: activitiesMapping[feature.category as keyof typeof activitiesMapping],
+        class: feature.category
+      },
+      experienceName: {
+        name: feature.name,
+        color: feature.color
+      },
+      mediaType: {
+        name: feature.type,
+        icon: this.typeStyleMapping[feature.type]
+      },
       type: this.featureTypes[feature.source],
       description: feature.description,
       addons: addons
