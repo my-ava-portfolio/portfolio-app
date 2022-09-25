@@ -126,7 +126,7 @@
 
         <ng-container *ngIf="activityType == 'personal-project'">
           <a *ngIf="activity.url_github" class="btn btn-sm btn-secondary m-1" [href]="activity.url_github" target="_blank" rel="noopener noreferrer" title="Github"><fa-icon [icon]="githubIcon"></fa-icon></a>
-          <a *ngIf="activity.url_blog != 'nan'" class="btn btn-sm btn-info m-1" [href]="blogUrl + activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
+          <a *ngIf="activity.url_blog !== 'nan'" class="btn btn-sm btn-info m-1" [href]="activity.url_blog" target="_blank" rel="noopener noreferrer" title="Ce sujet sur le blog"><fa-icon [icon]="notesIcon"></fa-icon></a>
           <a *ngIf="activity.url_website" class="btn btn-sm btn-primary m-1" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
         </ng-container>
 
