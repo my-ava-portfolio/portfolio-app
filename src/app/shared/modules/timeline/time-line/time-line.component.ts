@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { MapService } from '@services/map.service';
 
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
