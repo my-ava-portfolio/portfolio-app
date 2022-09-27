@@ -89,8 +89,6 @@ export class TimeLineComponent implements OnInit {
   maxStepValue!: number
   private timerStep = 25;
 
-  private map!: any;
-
   mapContainerSubscription!: Subscription;
   pullRangeDateDataSubscription!: Subscription;
   notifyTimelineSubscription!: Subscription;
@@ -101,12 +99,6 @@ export class TimeLineComponent implements OnInit {
     private mapService: MapService,
     private timelineService: TimelineService,
   ) {
-
-    this.mapContainerSubscription = this.mapService.map.subscribe(
-      (map: Map) => {
-        this.map = map;
-      }
-    );
 
     this.defaultSpeedValueSubscription = this.timelineService.defaultSpeedValue.subscribe(
       (defaultSpeedValue: number) => {
@@ -138,11 +130,9 @@ export class TimeLineComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mapService.getMap()
   }
 
   ngOnDestroy(): void {
-    this.mapContainerSubscription.unsubscribe();
     this.notifyTimelineSubscription.unsubscribe();
     this.setMapTileBrightness()
 
