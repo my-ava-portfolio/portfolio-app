@@ -135,9 +135,12 @@ export class TimeLineComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.startDate = changes.startDate.currentValue
-    this.endDate = changes.endDate.currentValue
-    this.buildTimeline()
+    if (changes.startDate.currentValue < changes.endDate.currentValue) {
+      this.startDate = changes.startDate.currentValue
+      this.endDate = changes.endDate.currentValue
+      this.buildTimeline()
+    }
+
 
   }
 
@@ -152,7 +155,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
   }
 
   buildTimeline(): void {
-
+    console.log("yoyo")
     // clean existing slide bar
     d3.selectAll('.slider-bar').remove()
 
