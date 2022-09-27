@@ -9,6 +9,7 @@ import { ControlerService } from '@services/controler.service';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
 
+
 @Component({
   selector: 'app-app-layout',
   templateUrl: './layout.component.html',
@@ -103,7 +104,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // this.adjustZoom();
   }
 
 

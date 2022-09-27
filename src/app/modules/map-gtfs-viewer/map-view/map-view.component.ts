@@ -13,11 +13,11 @@ import { locationIcon, tagsIcon, centerIcon, gtfsLayerName, gtfsStyle, circleRad
 import { MapService } from '@services/map.service';
 import { ControlerService } from '@services/controler.service';
 import { currentDate } from '@core/misc';
-import { TimelineService } from '@shared/services/timeline.service';
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
+import { TimelineService } from '@shared/modules/timeline/shared/services/timeline.service';
 
 
 @Component({

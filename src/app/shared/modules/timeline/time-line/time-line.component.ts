@@ -6,7 +6,7 @@ import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 
 import { backwardIcon, forwardIcon, tagsIcon } from '@modules/map-gtfs-viewer/shared/core';
-import { TimelineService } from '@shared/services/timeline.service';
+import { TimelineService } from '../shared/services/timeline.service';
 
 @Component({
   selector: 'app-time-line',
