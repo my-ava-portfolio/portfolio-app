@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { MapService } from '@services/map.service';
-import Map from 'ol/Map';
 
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
@@ -22,6 +21,9 @@ export class TimeLineComponent implements OnInit {
   startDate!: Date | null;
   endDate!: Date | null;
   currentDate!: Date | null;
+
+  @Output() currentDateEvent = new EventEmitter<string>();
+
 
   // icons
   backwardIcon = backwardIcon;
@@ -96,7 +98,6 @@ export class TimeLineComponent implements OnInit {
   updatedSpeedValueSubscription!: Subscription;
 
   constructor(
-    private mapService: MapService,
     private timelineService: TimelineService,
   ) {
 
@@ -315,6 +316,7 @@ export class TimeLineComponent implements OnInit {
     if (h !== null) {
 
       // return an event to indicate that the date has been updated, so we'll update the data
+      this.currentDateEvent.emit(this.formatDate(h))
       this.timelineService.pushDateUpdated(this.formatDate(h))
 
      // update position and text of label according to slider scale

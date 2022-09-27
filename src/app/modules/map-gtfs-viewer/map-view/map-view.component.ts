@@ -152,9 +152,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
 
-
-
-
     this.pullBoundingBoxDataSubscription = this.dataService.rangeDateData.subscribe(
       (element) => {
         this.dataBoundingBox = element.data_bounds;
@@ -170,14 +167,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
-
-    this.dateUpdatedSubscription = this.timelineService.dateUpdated.subscribe(
-      (date) => {
-        this.currentDate = date
-        this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
-
-      }
-    )
 
     this.pullGeoDataSubscription = this.dataService.GeoData.subscribe(
       (element) => {
@@ -214,10 +203,16 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-    ngAfterViewInit(): void {
-      this.updateData(this.currentArea)
+  ngAfterViewInit(): void {
+    this.updateData(this.currentArea)
 
-    }
+  }
+
+  getCurrentDate(date: string): void {
+    this.currentDate = date
+    this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
+    console.log("aaa", date)
+  }
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);

@@ -60,6 +60,7 @@
         timeLineId="timeline-slider"
         [timeLineSpeedSliderEnabled]="true"
         [sliderDayStyleEnabled]="true"
+        (currentDateEvent)="getCurrentDate($event)"
       ></app-time-line>
     </set-section-container>
 
