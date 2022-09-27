@@ -84,9 +84,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   popupHeight = 100;
   geoFeaturesData!: any[];
 
-
-  geoData!: any;
-
   mapSubscription!: Subscription;
   pullGeoDataToMapSubscription!: Subscription;
   pullAvailableRouteTypeSubscription!: Subscription;
@@ -145,10 +142,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.pullAvailableRouteTypeSubscription = this.dataService.availableRouteTypes.subscribe(
       (routeType: string[]) => {
-
         this.currentRouteTypes = routeType;
-        // TODO build legend with D3
-
       }
     );
 
@@ -169,11 +163,8 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     this.pullGeoDataSubscription = this.dataService.GeoData.subscribe(
-      (element) => {
-        this.geoData = element;
-        if (this.geoData !== null && this.currentDate !== null) {
-          this.dataService.pullGeoDataToMap(this.geoData);
-        }
+      (geoData) => {
+        this.dataService.pullGeoDataToMap(geoData);
 
       }
     );
