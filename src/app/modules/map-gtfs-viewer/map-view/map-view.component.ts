@@ -150,8 +150,9 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
       (element) => {
         this.dataBoundingBox = element.data_bounds;
         this.startDate = this.parseTime(element.start_date);
-        if (this.startDate !== null) {
-          this.endDate = this.parseTime(element.end_date);
+        this.endDate = this.parseTime(element.end_date);
+        console.log(this.startDate, this.endDate)
+        if (this.startDate !== null && this.endDate !== null) {
 
           // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
           const now = new Date()

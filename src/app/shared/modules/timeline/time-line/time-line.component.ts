@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
@@ -12,13 +12,13 @@ import { TimelineService } from '../shared/services/timeline.service';
   styleUrls: ['./time-line.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TimeLineComponent implements OnInit {
+export class TimeLineComponent implements OnInit, OnChanges {
   @Input() timeLineId!: string;
   @Input() timeLineSpeedSliderEnabled!: Boolean;
   @Input() sliderDayStyleEnabled!: Boolean;
 
-  startDate!: Date | null;
-  endDate!: Date | null;
+  @Input() startDate!: Date | null;
+  @Input() endDate!: Date | null;
   currentDate!: Date | null;
 
   @Output() currentDateEvent = new EventEmitter<string>();
@@ -119,19 +119,26 @@ export class TimeLineComponent implements OnInit {
     // MANDATORY, we need these 3 variables to init the timeline
     this.notifyTimelineSubscription = this.timelineService.timeLineInputs.subscribe(
       (element: any) => {
-        this.startDate = element.startDate;
-        this.endDate = element.endDate;
+
+        console.log(this.startDate)
 
         const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
         this.currentDate = tParser(element.currentDate);
 
-        this.buildTimeline()
       }
     )
 
   }
 
   ngOnInit(): void {
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.startDate = changes.startDate.currentValue
+    this.endDate = changes.endDate.currentValue
+    this.buildTimeline()
+
   }
 
   ngOnDestroy(): void {
