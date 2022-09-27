@@ -64,8 +64,8 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   currentstepValue = this.input_data[1].default_step_value;
   currentZoomValue = this.input_data[1].zoom;
 
-  endDate: Date | null = currentDate;
-  startDate: Date | null = currentDate;
+  endDate: Date = currentDate;
+  startDate: Date = currentDate;
   currentDate!: string;
   dataBoundingBox!: number[];
 
@@ -149,16 +149,17 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pullBoundingBoxDataSubscription = this.dataService.rangeDateData.subscribe(
       (element) => {
         this.dataBoundingBox = element.data_bounds;
-        this.startDate = this.parseTime(element.start_date);
-        this.endDate = this.parseTime(element.end_date);
+        const startDate = this.parseTime(element.start_date);
+        const endDate = this.parseTime(element.end_date);
         console.log(this.startDate, this.endDate)
-        if (this.startDate !== null && this.endDate !== null) {
-
+        if (startDate !== null && endDate !== null) {
+          this.startDate = startDate
+          this.endDate = endDate
           // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
           const now = new Date()
           this.currentDate = `${element.start_date.split(" ")[0]} ${now.toISOString().split('T')[1].split(".")[0]}`
 
-          this.timelineService.pushTimeLineInputs(this.startDate, this.endDate, this.currentDate)
+          // this.timelineService.pushTimeLineInputs(this.startDate, this.endDate, this.currentDate)
         }
       }
     );
@@ -166,8 +167,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pullGeoDataSubscription = this.dataService.GeoData.subscribe(
       (geoData) => {
         this.dataService.pullGeoDataToMap(geoData);
-
-      }
+      },
     );
 
     this.pullAvailableAreasSubscription = this.dataService.availableAreas.subscribe(
@@ -203,7 +203,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   getCurrentDate(date: string): void {
     this.currentDate = date
     this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
-    console.log("aaa", date)
   }
 
   sendResumeSubMenus(): void {
@@ -256,7 +255,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     // TODO build dynamic routeType legend with d3
     // this.dataService.pullAvailableRouteTypes(this.currentArea)
 
-    this.timelineService.pushDefaultSpeedValue(this.currentstepValue)
+    // this.timelineService.pushDefaultSpeedValue(this.currentstepValue)
 
   }
 

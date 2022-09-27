@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
@@ -17,11 +17,19 @@ export class TimeLineComponent implements OnInit, OnChanges {
   @Input() timeLineSpeedSliderEnabled!: Boolean;
   @Input() sliderDayStyleEnabled!: Boolean;
 
-  @Input() startDate!: Date | null;
-  @Input() endDate!: Date | null;
-  currentDate!: Date | null;
+  @Input() startDate!: Date;
+  @Input() endDate!: Date;
+  @Input() currentDate!: string;
+
+  @Input() stepValue: number = 4000
+
+  // speed
+  minStepValue = 50;
+  private timerStep = 25;
+  maxStepValue!: number;
 
   @Output() currentDateEvent = new EventEmitter<string>();
+  @Input() displayedDate!: Date;
 
   // icons
   backwardIcon = backwardIcon;
@@ -83,69 +91,34 @@ export class TimeLineComponent implements OnInit, OnChanges {
   height = 75;
   private maxDatePosition: number = this.width - this.margin.left - this.margin.right;
 
-  // speed
-  stepValue = 4000;
-  minStepValue = 50;
-  maxStepValue!: number
-  private timerStep = 25;
-
   private timer!: any;
 
-
-  mapContainerSubscription!: Subscription;
-  pullRangeDateDataSubscription!: Subscription;
-  notifyTimelineSubscription!: Subscription;
-  defaultSpeedValueSubscription!: Subscription;
-  updatedSpeedValueSubscription!: Subscription;
-
   constructor(
-    private timelineService: TimelineService,
-  ) {
-
-    this.defaultSpeedValueSubscription = this.timelineService.defaultSpeedValue.subscribe(
-      (defaultSpeedValue: number) => {
-        this.stepValue = defaultSpeedValue
-        this.maxStepValue = defaultSpeedValue * 2 - this.minStepValue
-
-      }
-    )
-
-    this.updatedSpeedValueSubscription = this.timelineService.updatedSpeedValue.subscribe(
-      (speedValueUpdated: number) => {
-        this.stepValue = speedValueUpdated
-      }
-    )
-
-    // MANDATORY, we need these 3 variables to init the timeline
-    this.notifyTimelineSubscription = this.timelineService.timeLineInputs.subscribe(
-      (element: any) => {
-
-        console.log(this.startDate)
-
-        const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
-        this.currentDate = tParser(element.currentDate);
-
-      }
-    )
-
-  }
+  ) { }
 
   ngOnInit(): void {
-
+    this.maxStepValue = this.stepValue * 2 - this.minStepValue
   }
 
+
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.startDate.currentValue < changes.endDate.currentValue) {
-      this.startDate = changes.startDate.currentValue
-      this.endDate = changes.endDate.currentValue
-      this.buildTimeline()
+    const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
+    const currentDate = tParser(changes.currentDate.currentValue);
+    if (currentDate !== null) {
+      this.displayedDate = currentDate
     }
 
+    if (changes.startDate || changes.enDate) {
+      if (changes.startDate.currentValue < changes.endDate.currentValue) {
+        this.startDate = changes.startDate.currentValue
+        this.endDate = changes.endDate.currentValue
+        this.buildTimeline()
+      }
+    }
 
   }
 
   ngOnDestroy(): void {
-    this.notifyTimelineSubscription.unsubscribe();
     this.setMapTileBrightness()
 
   }
@@ -155,7 +128,6 @@ export class TimeLineComponent implements OnInit, OnChanges {
   }
 
   buildTimeline(): void {
-    console.log("yoyo")
     // clean existing slide bar
     d3.selectAll('.slider-bar').remove()
 
@@ -268,7 +240,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
     // update to current date ; in the past it was the end date (with this.endDate)
     // these 2 lines are mandatory to initialize the slider regarding current date
-    this.update(this.currentDate);
+    this.update(this.displayedDate);
     this.selectedDatePosition = parseInt(trace.attr("x2"));  // to set the currendDate pixel value
   };
 
@@ -320,7 +292,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
     return d3.timeFormat('%Y-%m-%d %H:%M:%S')(time);
   };
 
-  update(h: any): void {
+  update(h: Date): void {
 
 
     // call api only if last count is different from the current count feature
@@ -328,12 +300,11 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
       // return an event to indicate that the date has been updated, so we'll update the data
       this.currentDateEvent.emit(this.formatDate(h))
-      this.timelineService.pushDateUpdated(this.formatDate(h))
+      // this.timelineService.pushDateUpdated(this.formatDate(h))
 
      // update position and text of label according to slider scale
       d3.select('#trace').attr('x2', this.dateRange(h)); // trace
 
-      this.currentDate = h
       if (this.sliderDayStyleEnabled) {
         // we have to use a svg text object
         d3.select('#handle-timeline').attr('x', this.dateRange(h)); // handle
@@ -377,8 +348,6 @@ export class TimeLineComponent implements OnInit, OnChanges {
   resetTimeLine(): void {
     // reset action
     d3.select('#play-button').html('Start');
-    // update to start date
-    this.currentDate = this.startDate
     this.update(this.startDate);
 
     this.selectedDatePosition = 0;
@@ -387,8 +356,6 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
   forwardTimeLine(): void {
     d3.select('#play-button').html('Play');
-    // update to start date
-    this.currentDate = this.startDate
     this.update(this.endDate);
 
     this.selectedDatePosition = 0;
