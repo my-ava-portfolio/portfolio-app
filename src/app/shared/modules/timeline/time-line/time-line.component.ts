@@ -23,12 +23,12 @@ export class TimeLineComponent implements OnInit {
 
   @Output() currentDateEvent = new EventEmitter<string>();
 
-
   // icons
   backwardIcon = backwardIcon;
   forwardIcon = forwardIcon;
   tagIcon = tagsIcon;
 
+  // var svg style
   timelineMarkerFontSize = "35"
   sliderHandleTimeStyle = [
     {
@@ -75,20 +75,22 @@ export class TimeLineComponent implements OnInit {
     }
   ]
   brightnessValuesAtEachHours = [0.50, 0.50, 0.50, 0.50, 0.50, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.50, 0.50]
-
-
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
-  width = 500;
-  height = 75;
   private dateRange!: any;
   private selectedDatePosition = 0;  // TODO check type
   private fontSize = '14px';
+  width = 500;
+  height = 75;
   private maxDatePosition: number = this.width - this.margin.left - this.margin.right;
-  private timer!: any;
+
+  // speed
   stepValue = 4000;
   minStepValue = 50;
   maxStepValue!: number
   private timerStep = 25;
+
+  private timer!: any;
+
 
   mapContainerSubscription!: Subscription;
   pullRangeDateDataSubscription!: Subscription;
