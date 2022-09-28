@@ -113,7 +113,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
         this.mapService.removeLayerByName(activityLayerName)
         this.geoFeaturesData = geoFeaturesData[0];
-        console.log(this.geoFeaturesData)
         this.buildActivityLayer(this.geoFeaturesData)
 
         // if a click is done on experience location icon
