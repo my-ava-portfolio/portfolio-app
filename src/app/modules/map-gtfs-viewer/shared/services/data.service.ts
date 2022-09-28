@@ -32,7 +32,8 @@ export class DataService {
 
 
   pullGeoData(area: string, current_date: Date, bounds: number[]): void {
-    const currentDate = formatDate(current_date, 'yyyy-MM-dd hh:mm:ss', 'fr_FR')
+    const currentDate = formatDate(current_date, 'yyyy-MM-dd HH:mm:ss', 'fr_FR')
+    console.log(current_date, currentDate)
     this.http.get<any>(this.apiUrl + area.toLowerCase() + '/moving_nodes_by_date?current_date=' + currentDate + "&bounds=" + bounds).subscribe({
       complete: () => {
       },
