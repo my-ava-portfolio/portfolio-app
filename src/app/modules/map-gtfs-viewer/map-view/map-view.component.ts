@@ -12,12 +12,10 @@ import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.servi
 import { locationIcon, tagsIcon, centerIcon, gtfsLayerName, gtfsStyle, circleRadius, metroColor, strokeWidth, trainColor, tramColor, strokeColor } from '@modules/map-gtfs-viewer/shared/core';
 import { MapService } from '@services/map.service';
 import { ControlerService } from '@services/controler.service';
-import { currentDate } from '@core/misc';
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
-import { TimelineService } from '@shared/modules/timeline/shared/services/timeline.service';
 
 
 @Component({
