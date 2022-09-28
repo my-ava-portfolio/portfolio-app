@@ -72,8 +72,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   currentFeatureSelectedId!: string | null;
   currentRouteTypes: string[] = [];
   gtfsLayer!: any
-  innerWidth!: any;
-  innerHeight!: any;
 
   map!: Map;
 
@@ -143,19 +141,17 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.pullBoundingBoxDataSubscription = this.dataService.rangeDateData.subscribe(
       (element) => {
+
         this.dataBoundingBox = element.data_bounds;
-        const startDate = this.parseTime(element.start_date);
-        const endDate = this.parseTime(element.end_date);
-        console.log(this.startDate, this.endDate)
-        if (startDate !== null && endDate !== null) {
-          this.startDate = startDate
-          this.endDate = endDate
-          // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
-          const now = new Date()
-          this.currentDate = new Date(
-            `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
-          )
-        }
+        this.startDate = this.parseTime(element.start_date);
+        this.endDate = this.parseTime(element.end_date)
+
+        // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
+        const now = new Date()
+        this.currentDate = new Date(
+          `${this.startDate.getFullYear()}-${this.startDate.getMonth() + 1}-${this.startDate.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+        )
+        // TIPS call this.getCurrentDate(this.currentDate) to display data without timeline
       }
     );
 
@@ -184,9 +180,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // the begining of the process
     this.dataService.pullAvailableAreas();
-
-    this.innerWidth = window.screen.width;
-    this.innerHeight = window.screen.height;
 
   }
 
@@ -232,7 +225,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.mapService.sendZoomAction();
   }
 
-  private parseTime(time: string): Date | null {
+  private parseTime(time: string): Date {
     return new Date(time);
   }
 
@@ -246,11 +239,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentZoomValue = data_found[0]["zoom"]
 
     this.dataService.pullRangeDateData(this.currentArea);
-    // TODO build dynamic routeType legend with d3
-    // this.dataService.pullAvailableRouteTypes(this.currentArea)
-
-    // this.timelineService.pushDefaultSpeedValue(this.currentstepValue)
-
   }
 
   showHideLegend(): void {
@@ -287,8 +275,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
         route_long_name: feature.route_long_name,
       })
       featuresToAdd.push(iconFeature)
-      // iconFeature.setStyle(style(feature))
-      // vectorSource.addFeature(iconFeature)
+
     })
     vectorSource.addFeatures(featuresToAdd)
     const layers = this.map.getLayers().getArray()
