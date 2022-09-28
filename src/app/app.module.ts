@@ -26,7 +26,7 @@ import { BackgroundComponent } from '@bases/background-map/background.component'
 import { ControlBarComponent } from '@bases/control-bar/control-bar.component';
 import { NavigationBarComponent } from '@bases/navigation-bar/navigation-bar.component';
 
-registerLocaleData(localeFr);
+registerLocaleData(localeFr, 'fr');
 
 @NgModule({
   declarations: [
@@ -51,7 +51,7 @@ registerLocaleData(localeFr);
     MainService,
     ResumeService,
     MapService,
-    {provide: LOCALE_ID, useValue: 'fr'}
+    {provide: LOCALE_ID, useValue: 'fr-FR'}
   ],
   bootstrap: [AppComponent]
 })

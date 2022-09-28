@@ -66,7 +66,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   endDate!: Date;
   startDate!: Date;
-  currentDate!: string;
+  currentDate!: Date;
   dataBoundingBox!: number[];
 
   isGeodataCanBeDisplayed = false;
@@ -100,7 +100,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
-    private timelineService: TimelineService,
   ) {
 
     this.zoomEventSubscription = this.mapService.zoomEvent.subscribe(
@@ -157,9 +156,9 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
           this.endDate = endDate
           // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
           const now = new Date()
-          this.currentDate = `${element.start_date.split(" ")[0]} ${now.toISOString().split('T')[1].split(".")[0]}`
-
-          // this.timelineService.pushTimeLineInputs(this.startDate, this.endDate, this.currentDate)
+          this.currentDate = new Date(
+            `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+          )
         }
       }
     );
@@ -200,7 +199,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  getCurrentDate(date: string): void {
+  getCurrentDate(date: Date): void {
     this.currentDate = date
     this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
   }

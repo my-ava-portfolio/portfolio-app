@@ -18,11 +18,11 @@ export class TimeLineComponent implements OnInit, OnChanges {
   @Input() sliderDayStyleEnabled!: Boolean;
   @Input() startDate!: Date;
   @Input() endDate!: Date;
-  @Input() currentDate!: string; // optional: startDate will be used
+  @Input() currentDate!: Date; // optional: startDate will be used
   @Input() defaultDate!: Date;
   @Input() stepValue: number = 4000
 
-  @Output() currentDateEvent = new EventEmitter<string>();
+  @Output() currentDateEvent = new EventEmitter<Date>();
 
   // icons
   backwardIcon = backwardIcon;
@@ -102,11 +102,8 @@ export class TimeLineComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes.currentDate) {
-      const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
-      const currentDate = tParser(changes.currentDate.currentValue);
-      if (currentDate !== null) {
-        this.defaultDate = currentDate
-      }
+      // const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
+      this.defaultDate = changes.currentDate.currentValue
     }
 
     if (changes.startDate || changes.enDate) {
@@ -294,11 +291,10 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
   update(date: Date): void {
 
-    const textDate: string = this.formatDate(date)
     const pixelDate: number = this.dateRange(date)
 
     // return an event to indicate that the date has been updated, so we'll update the data
-    this.currentDateEvent.emit(textDate)
+    this.currentDateEvent.emit(date)
 
     // update position and text of label according to slider scale
     d3.select('#trace').attr('x2', pixelDate); // trace
@@ -311,7 +307,6 @@ export class TimeLineComponent implements OnInit, OnChanges {
       // we have to use a svg circle object
       d3.select('#handle-timeline').attr('cx', pixelDate); // handle
     }
-
 
   };
 
