@@ -90,7 +90,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   zoomEventSubscription!: Subscription;
   screenMapBoundSubscription!: Subscription;
   pullAvailableAreasSubscription!: Subscription;
-  dateUpdatedSubscription!: Subscription;
 
   constructor(
     private dataService: DataService,
@@ -103,7 +102,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.zoomEventSubscription = this.mapService.zoomEvent.subscribe(
       (_: boolean) => {
         this.mapService.zoomToExtent(this.gtfsLayer.getSource().getExtent(), this.currentZoomValue)
-
       }
     );
 
@@ -219,7 +217,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.zoomEventSubscription.unsubscribe();
     this.screenMapBoundSubscription.unsubscribe();
     this.pullAvailableAreasSubscription.unsubscribe();
-    this.dateUpdatedSubscription.unsubscribe();
     this.pullAvailableRouteTypeSubscription.unsubscribe();
 
 
