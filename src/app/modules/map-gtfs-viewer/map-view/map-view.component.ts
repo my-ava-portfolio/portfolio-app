@@ -64,8 +64,8 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   currentstepValue = this.input_data[1].default_step_value;
   currentZoomValue = this.input_data[1].zoom;
 
-  endDate: Date = currentDate;
-  startDate: Date = currentDate;
+  endDate!: Date;
+  startDate!: Date;
   currentDate!: string;
   dataBoundingBox!: number[];
 

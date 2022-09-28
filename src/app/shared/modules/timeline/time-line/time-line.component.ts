@@ -1,10 +1,9 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
-import { Subscription } from 'rxjs';
 
 import { backwardIcon, forwardIcon, tagsIcon } from '@modules/map-gtfs-viewer/shared/core';
-import { TimelineService } from '../shared/services/timeline.service';
+
 
 @Component({
   selector: 'app-time-line',
@@ -13,28 +12,27 @@ import { TimelineService } from '../shared/services/timeline.service';
   encapsulation: ViewEncapsulation.None
 })
 export class TimeLineComponent implements OnInit, OnChanges {
+
   @Input() timeLineId!: string;
   @Input() timeLineSpeedSliderEnabled!: Boolean;
   @Input() sliderDayStyleEnabled!: Boolean;
-
   @Input() startDate!: Date;
   @Input() endDate!: Date;
-  @Input() currentDate!: string;
-
+  @Input() currentDate!: string; // optional: startDate will be used
+  @Input() defaultDate!: Date;
   @Input() stepValue: number = 4000
 
-  // speed
-  minStepValue = 50;
-  private timerStep = 25;
-  maxStepValue!: number;
-
   @Output() currentDateEvent = new EventEmitter<string>();
-  @Input() displayedDate!: Date;
 
   // icons
   backwardIcon = backwardIcon;
   forwardIcon = forwardIcon;
   tagIcon = tagsIcon;
+
+  // speed
+  minStepValue = 50;
+  private timerStep = 25;
+  maxStepValue!: number;
 
   // var svg style
   timelineMarkerFontSize = "35"
@@ -85,7 +83,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
   brightnessValuesAtEachHours = [0.50, 0.50, 0.50, 0.50, 0.50, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.50, 0.50]
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
   private dateRange!: any;
-  private selectedDatePosition = 0;  // TODO check type
+  private displayedDatePixelValue: number = 0;
   private fontSize = '14px';
   width = 500;
   height = 75;
@@ -102,16 +100,24 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
-    const currentDate = tParser(changes.currentDate.currentValue);
-    if (currentDate !== null) {
-      this.displayedDate = currentDate
+
+    if (changes.currentDate) {
+      const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
+      const currentDate = tParser(changes.currentDate.currentValue);
+      if (currentDate !== null) {
+        this.defaultDate = currentDate
+      }
     }
 
     if (changes.startDate || changes.enDate) {
       if (changes.startDate.currentValue < changes.endDate.currentValue) {
         this.startDate = changes.startDate.currentValue
         this.endDate = changes.endDate.currentValue
+
+        if (!changes.currentDate) {
+          this.defaultDate = changes.startDate.currentValue;
+        }
+
         this.buildTimeline()
       }
     }
@@ -157,8 +163,9 @@ export class TimeLineComponent implements OnInit, OnChanges {
           playButton.text('Pause');
           playButton.dispatch('click')
 
-          this.selectedDatePosition = e.x;
-          this.update(this.dateRange.invert(this.selectedDatePosition));
+
+          this.displayedDatePixelValue = e.x;
+          this.update(this.dateRange.invert(this.displayedDatePixelValue));
 
           // disable timeline node selection
           d3.select('#timeline-slider .events')
@@ -175,8 +182,8 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
           // reset button play if animation is done and play button == continue
           if (this.startDate !== null && this.endDate !== null) {
-            if (this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.endDate.toTimeString()
-              || this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.startDate.toTimeString()
+            if (this.dateRange.invert(this.displayedDatePixelValue).toTimeString() === this.endDate.toTimeString()
+              || this.dateRange.invert(this.displayedDatePixelValue).toTimeString() === this.startDate.toTimeString()
             ) {
               playButton.text('Play');
             } else {
@@ -197,7 +204,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
       .attr('y', 0)
       .style('font-size', this.fontSize)
       .attr('text-anchor', 'middle')
-      .text((d: any) => this.formatDateToTimeString(d));
+      .text((d: any) => d.getHours() + 'h.');
 
     slider.insert('g', '.track-overlay')
       .attr('class', 'ticks-line')
@@ -225,23 +232,21 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
     if ( this.sliderDayStyleEnabled ) {
       const handle = slider.insert('text', '.track-overlay')
-      .attr('id', 'handle-timeline')
-      .attr('class', "marker-fontawesome fa-solid")
-      .attr("font-size", this.timelineMarkerFontSize)
+        .attr('id', 'handle-timeline')
+        .attr('class', "marker-fontawesome fa-solid")
+        .attr("font-size", this.timelineMarkerFontSize)
     } else {
       const handle = slider.insert('circle', '.track-overlay')
-      .attr('id', 'handle-timeline')
-      .attr('r', 10);
+        .attr('id', 'handle-timeline')
+        .attr('r', 10);
     }
 
     // events
     const events = slider.append('g')
       .attr('class', 'events');
 
-    // update to current date ; in the past it was the end date (with this.endDate)
-    // these 2 lines are mandatory to initialize the slider regarding current date
-    this.update(this.displayedDate);
-    this.selectedDatePosition = parseInt(trace.attr("x2"));  // to set the currendDate pixel value
+    // update to current date ; in the past it was the end date (with endDate attribute)
+    this.update(this.defaultDate);
   };
 
   private updateHandleTimelineStyleFromTime(date: any): void {
@@ -283,44 +288,37 @@ export class TimeLineComponent implements OnInit, OnChanges {
     }
   };
 
-
-  private formatDateToTimeString(time: Date): string {
-    return parseInt(d3.timeFormat('%H')(time)) + ' h.';
-  };
-
   private formatDate(time: Date): string {
     return d3.timeFormat('%Y-%m-%d %H:%M:%S')(time);
   };
 
-  update(h: Date): void {
+  update(date: Date): void {
 
+    const textDate: string = this.formatDate(date)
+    const pixelDate: number = this.dateRange(date)
 
-    // call api only if last count is different from the current count feature
-    if (h !== null) {
+    // return an event to indicate that the date has been updated, so we'll update the data
+    this.currentDateEvent.emit(textDate)
 
-      // return an event to indicate that the date has been updated, so we'll update the data
-      this.currentDateEvent.emit(this.formatDate(h))
-      // this.timelineService.pushDateUpdated(this.formatDate(h))
+    // update position and text of label according to slider scale
+    d3.select('#trace').attr('x2', pixelDate); // trace
 
-     // update position and text of label according to slider scale
-      d3.select('#trace').attr('x2', this.dateRange(h)); // trace
-
-      if (this.sliderDayStyleEnabled) {
-        // we have to use a svg text object
-        d3.select('#handle-timeline').attr('x', this.dateRange(h)); // handle
-        this.updateHandleTimelineStyleFromTime(h)
-      } else {
-        // we have to use a svg circle object
-        d3.select('#handle-timeline').attr('cx', this.dateRange(h)); // handle
-      }
-
+    if (this.sliderDayStyleEnabled) {
+      // we have to use a svg text object
+      d3.select('#handle-timeline').attr('x', pixelDate); // handle
+      this.updateHandleTimelineStyleFromTime(date)
+    } else {
+      // we have to use a svg circle object
+      d3.select('#handle-timeline').attr('cx', pixelDate); // handle
     }
+
+
   };
 
   step(): void {
-    this.update(this.dateRange.invert(this.selectedDatePosition));
-    this.selectedDatePosition = this.selectedDatePosition + (this.maxDatePosition / this.stepValue);
-    if (this.selectedDatePosition > this.maxDatePosition) {
+    this.update(this.dateRange.invert(this.displayedDatePixelValue));
+    this.displayedDatePixelValue = this.displayedDatePixelValue + (this.maxDatePosition / this.stepValue);
+    if (this.displayedDatePixelValue > this.maxDatePosition) {
       this.forwardTimeLine()
     }
   };
@@ -350,7 +348,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
     d3.select('#play-button').html('Start');
     this.update(this.startDate);
 
-    this.selectedDatePosition = 0;
+    this.displayedDatePixelValue = 0;
     clearInterval(this.timer);
   }
 
@@ -358,7 +356,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
     d3.select('#play-button').html('Play');
     this.update(this.endDate);
 
-    this.selectedDatePosition = 0;
+    this.displayedDatePixelValue = 0;
     clearInterval(this.timer);
   }
 
