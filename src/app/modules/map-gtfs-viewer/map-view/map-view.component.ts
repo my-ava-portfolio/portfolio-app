@@ -148,16 +148,24 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
         const now = new Date()
-        this.currentDate = new Date(
+        let currentDate = new Date(
           `${this.startDate.getFullYear()}-${this.startDate.getMonth() + 1}-${this.startDate.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
         )
+        if (currentDate < this.startDate) {
+          // to avoid case where current time is out of the data time bounds
+          this.currentDate = this.startDate
+        } else {
+          this.currentDate = currentDate
+        }
         // TIPS call this.getCurrentDate(this.currentDate) to display data without timeline
       }
     );
 
     this.pullGeoDataSubscription = this.dataService.GeoData.subscribe(
       (geoData) => {
-        this.dataService.pullGeoDataToMap(geoData);
+        if (geoData.length > 0) {
+          this.dataService.pullGeoDataToMap(geoData);
+        }
       },
     );
 
