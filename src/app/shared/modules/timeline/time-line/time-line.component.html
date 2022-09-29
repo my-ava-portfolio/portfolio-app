@@ -12,7 +12,7 @@
 
   </set-section-container>
 
-  <div class="d-flex flex-column justify-content-center m-2" *ngIf="timeLineSpeedSliderEnabled">
+  <div class="d-flex flex-column justify-content-center m-2">
 
     <div class="d-flex flex-row justify-content-center align-items-center">
       <a id="start-button" class="btn btn-sm btn-dark" role="button" (click)="resetTimeLine()"><fa-icon [icon]="backwardIcon"></fa-icon></a>
@@ -20,15 +20,17 @@
       <a id="end-button" class="btn btn-sm btn-dark" role="button" (click)="forwardTimeLine()"><fa-icon [icon]="forwardIcon"></fa-icon></a>
     </div>
 
-    <h6 class="mt-3">Vitesse</h6>
-    <div class="d-flex flex-row align-self-center">
+    <ng-container *ngIf="timeLineSpeedSliderEnabled">
+      <h6 class="mt-3">Vitesse</h6>
+      <div class="d-flex flex-row align-self-center">
 
-      <div class="fw-bold">-</div>
-      <div class="px-1">
-        <input id="speed-slider" class="form-range" type="range" [min]="minStepValue" [max]="maxStepValue" [step]="minStepValue" [value]="stepValue" (change)="updateStepValue($event)"/>
+        <div class="fw-bold">-</div>
+        <div class="px-1">
+          <input id="speed-slider" class="form-range" type="range" [min]="minStepValue" [max]="maxStepValue" [step]="minStepValue" [value]="stepValue" (change)="updateStepValue($event)"/>
+        </div>
+        <div class="fw-bold">+</div>
       </div>
-      <div class="fw-bold">+</div>
-    </div>
-
+    </ng-container>
+    
   </div>
 </div>
