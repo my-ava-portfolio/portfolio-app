@@ -180,7 +180,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.dataService.pullActivitiesGeoData();
 
-
     this.zoomInitDone = false;
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
@@ -207,13 +206,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     const newData = this.geoFeaturesData.filter((d: any) => {
       const selectedDate = new Date(d.properties.start_date);
-      // return parseDate(d.properties.end_date) >= h && parseDate(d.properties.start_date) < h;
-      // filter by current slider date and slider start date
-      if (selectedDate !== null) {
-        // return selectedDate >= this.startDate && selectedDate < h;
         return selectedDate <= this.currentDate;
-      }
-      return false;
     });
     this.addLayerFeatures(newData, activitiesStyle)
 
