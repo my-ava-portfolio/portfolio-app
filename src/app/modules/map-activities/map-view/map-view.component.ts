@@ -113,27 +113,30 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     );
 
 
-    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoData.pipe(map((val, index) => [val, index])) // here we transform event to array (call it tuple if you like)
-     .subscribe(
-       (geoFeaturesData: any[]) => {
-          this.geoFeaturesData = geoFeaturesData[0].activities_geojson.features;
+    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoData.subscribe(
+      (geoFeaturesData: any) => {
+        console.log(this.geoFeaturesData)
+        this.geoFeaturesData = geoFeaturesData.activities_geojson.features;
 
-          this.startDate = new Date(geoFeaturesData[0].start_date)
-          this.endDate = new Date()
-          console.log(this.endDate)
-          this.currentDate = this.endDate
+        this.startDate = new Date(geoFeaturesData.start_date)
+        this.endDate = new Date()
+        //  this.currentDate = this.endDate
+        this.getCurrentDate(this.endDate)
 
-          // if a click is done on experience location icon
-          // if (this.fragment !== null) {
-          // const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, this.fragment, 'id')
-          // const featureGeom = feature.getGeometry()
-          //   if (featureGeom !== undefined ) {
-          //     this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
-          //   }
-          // } else if (geoFeaturesData[1] === 0) {
-          //   // check if the zoom is needed, it means only at the start !
-          //   this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
-          // }
+
+        // if a click is done on experience location icon
+        if (this.fragment !== null) {
+          const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, this.fragment, 'id')
+          const featureGeom = feature.getGeometry()
+          if (featureGeom !== undefined) {
+            this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
+          }
+          
+        } else {
+          // check if the zoom is needed, it means only at the start !
+          this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
+        }
+
 
       });
 
