@@ -26,6 +26,8 @@ export class TimeLineComponent implements OnInit, OnChanges {
   @Input() defaultDate!: Date;
   @Input() stepValue: number = 4000
 
+  @Input() timelineDataViz!: any;
+
   @Output() currentDateEvent = new EventEmitter<Date>();
 
   // icons
@@ -123,6 +125,28 @@ export class TimeLineComponent implements OnInit, OnChanges {
       }
     }
 
+    if (changes.timelineDataViz) {
+      console.log(changes.timelineDataViz.currentValue)
+      // need to support various viz mode...
+      const circleEvents = d3.select('.circle-events')
+      circleEvents.selectAll('circle').data(this.timelineDataViz).enter()
+      .append('circle')
+        .attr('class', (d: any) => {
+          const featureDate = new Date(d.properties.start_date);
+          if (featureDate <= this.currentDate) {
+            return 'pointer svg-color-' + d.properties.type;
+          } else {
+            return 'trace'
+          }
+        })
+      .attr('r', "4")
+      .attr('cx', (d: any) => {
+        const startDate = new Date(d.properties.start_date);
+        return this.dateRange(startDate);
+      });
+
+    }
+
   }
 
   ngOnDestroy(): void {
@@ -160,6 +184,20 @@ export class TimeLineComponent implements OnInit, OnChanges {
       .call(d3.drag()
         .on('drag start', (e: any) => {
 
+          // TODO set condition for this specifc dataviz mode
+            // console.log(this.timelineDataViz)
+            // circleEvents
+            //   .attr('class', (d: any) => {
+            //     const featureDate = new Date(d.properties.start_date);
+            //     if (featureDate <= this.currentDate) {
+            //       return 'pointer svg-color-' + d.properties.type;
+            //     } else {
+            //       return 'trace'
+            //     }
+            //   })
+
+
+
           // to avoid cursor running if a click is done on the slider bar...
           playButton.text('Pause');
           playButton.dispatch('click')
@@ -168,18 +206,8 @@ export class TimeLineComponent implements OnInit, OnChanges {
           this.displayedDatePixelValue = e.x;
           this.update(this.dateRange.invert(this.displayedDatePixelValue));
 
-          // disable timeline node selection
-          d3.select('#timeline-slider .events')
-            .selectAll('circle')
-            .style('pointer-events', 'none');
         })
         .on('end', (e: any) => {
-          // at the drag end we enable the drap map
-
-          // enable timeline node selection
-          d3.select('#timeline-slider .events')
-            .selectAll('circle')
-            .style('pointer-events', 'all');
 
           // reset button play if animation is done and play button == continue
           if (this.startDate !== null && this.endDate !== null) {
@@ -221,10 +249,6 @@ export class TimeLineComponent implements OnInit, OnChanges {
       .style('stroke', 'grey')
       .style('stroke-width', '2px');
 
-    // node trace events from geojson source
-    const traceEvents = slider.insert('g', '.track-overlay')
-      .attr('class', 'trace-events');
-
     const trace = slider.insert('line', '.track-overlay')
       .attr('id', 'trace')
       .attr('x1', this.dateRange(this.startDate))
@@ -242,9 +266,10 @@ export class TimeLineComponent implements OnInit, OnChanges {
         .attr('r', 10);
     }
 
+    // Here to avoid cursor conflict between timeline and dataViz object
     // events
-    const events = slider.append('g')
-      .attr('class', 'events');
+    const circleEvents = slider.append('g')
+      .attr('class', 'circle-events')
 
     // update to current date ; in the past it was the end date (with endDate attribute)
     this.update(this.defaultDate);
