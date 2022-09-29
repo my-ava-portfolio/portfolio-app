@@ -77,7 +77,7 @@ export function activitiesStyle(properties: any): Style {
 export function activitySelectedStyle(radius: number): Style {
   return new Style({
     image: new CircleStyle({
-      radius: radius,
+      radius: radius * radiusMultiplier,
       fill: new Fill({
         color: 'rgba(255, 215, 0, 0.6)',
       }),

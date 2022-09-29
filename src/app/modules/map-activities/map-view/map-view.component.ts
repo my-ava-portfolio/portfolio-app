@@ -124,16 +124,16 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           this.currentDate = this.endDate
 
           // if a click is done on experience location icon
-          if (this.fragment !== null) {
-          const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, this.fragment, 'id')
-          const featureGeom = feature.getGeometry()
-            if (featureGeom !== undefined ) {
-              this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
-            }
-          } else if (geoFeaturesData[1] === 0) {
-            // check if the zoom is needed, it means only at the start !
-            this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
-          }
+          // if (this.fragment !== null) {
+          // const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, this.fragment, 'id')
+          // const featureGeom = feature.getGeometry()
+          //   if (featureGeom !== undefined ) {
+          //     this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
+          //   }
+          // } else if (geoFeaturesData[1] === 0) {
+          //   // check if the zoom is needed, it means only at the start !
+          //   this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
+          // }
 
       });
 
@@ -242,12 +242,58 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     const vectorLayer = new VectorLayer({
       source: this.sourceFeatures,
       style: (feature: any, _: any): any => {
-        console.log(feature, 'caca')
         return style(feature)
       }
     });
     vectorLayer.set("name", layerName)
+
     this.map.addLayer(vectorLayer)
+
+    // add mouse interaction
+    let activityLayerSelector = new Select({
+      condition: pointerMove,
+      multi: false,
+      layers: [vectorLayer],
+      style: (feature: any) => {
+        let radius = feature.get("radius")
+        var selectedStyle = activitySelectedStyle(radius)
+        return selectedStyle;
+      }
+    });
+
+    activityLayerSelector.on('select', (evt: any) => {
+      const selected = evt.selected
+      const deSelected = evt.deselected
+      // WARNING not refactoring needed ! because we can have both selected and deselected
+      if (deSelected.length === 1) {
+        let deSelectedFeature = deSelected[0]
+        this.currentFeatureSelectedId = null
+        this.mapService.unsetMapEvent("mapCoords")
+        d3.select('#popup-feature-' + deSelectedFeature.get("id"))
+          .style('display', 'none')
+          .style('right', 'unset')
+          .style('top', 'unset')
+          .style('left', 'unset');
+        // this._handleActivityCircleOnLegend(deSelectedFeature)
+
+
+      }
+      if (selected.length === 1) {
+        let selectedFeature = selected[0]
+        this.currentFeatureSelectedId = selectedFeature.get("id")
+        this.mapService.setMapEvent("mapCoords")
+
+        d3.select('#popup-feature-' + selectedFeature.get("id"))
+          // .style('display', 'block')
+          .style('z-index', '1')
+
+        // this._handleActivityCircleOnLegend(selectedFeature)
+      }
+
+    });
+
+    this.map.addInteraction(activityLayerSelector);
+
 
   };
 
@@ -267,62 +313,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.sourceFeatures.clear()
     this.sourceFeatures.addFeatures(featuresBuilt)
-    console.log(this.sourceFeatures.getFeatures())
   };
-
-
-
-  buildActivityLayer(data: any[]): void {
-    // let activitiesLayer = this.buildLayerFromFeatures(activityLayerName, data, activitiesStyle)
-
-    // this.map.addLayer(activitiesLayer)
-
-    // let activityLayerSelector = new Select({
-    //   condition: pointerMove,
-    //   multi: false,
-    //   layers: [activitiesLayer],
-    //   style: (feature: any) => {
-    //     let radius = feature.get("radius")
-    //     var selectedStyle = activitySelectedStyle(radius)
-    //     return selectedStyle;
-    //   }
-    // });
-
-    // activityLayerSelector.on('select', (evt: any) => {
-    //   const selected = evt.selected
-    //   const deSelected = evt.deselected
-
-    //   // WARNING not refactoring needed ! because we can have both selected and deselected
-    //   if (deSelected.length === 1) {
-    //     let deSelectedFeature = deSelected[0]
-    //     this.currentFeatureSelectedId = null
-    //     this.mapService.unsetMapEvent("mapCoords")
-    //     d3.select('#popup-feature-' + deSelectedFeature.get("id"))
-    //       .style('display', 'none')
-    //       .style('right', 'unset')
-    //       .style('top', 'unset')
-    //       .style('left', 'unset');
-    //     this._handleActivityCircleOnLegend(deSelectedFeature)
-
-
-    //   }
-    //   if (selected.length === 1) {
-    //     let selectedFeature = selected[0]
-    //     this.currentFeatureSelectedId = selectedFeature.get("id")
-    //     this.mapService.setMapEvent("mapCoords")
-
-    //     d3.select('#popup-feature-' + selectedFeature.get("id"))
-    //       // .style('display', 'block')
-    //       .style('z-index', '1')
-
-    //     this._handleActivityCircleOnLegend(selectedFeature)
-    //   }
-
-    // });
-
-    // this.map.addInteraction(activityLayerSelector);
-
-  }
 
   _handleActivityCircleOnLegend(feature: Feature): void {
     const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + feature.get("type"));
