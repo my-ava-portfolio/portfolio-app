@@ -49,6 +49,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   activitiesStyle!: Style;
 
   geoFeaturesData!: any;
+  geoTripsData!: any[];
+
   travelId: string | null = null;
   startDate!: Date;
   endDate!: Date;
@@ -115,8 +117,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoData.subscribe(
       (geoFeaturesData: any) => {
-        console.log(this.geoFeaturesData)
+        console.log(geoFeaturesData)
         this.geoFeaturesData = geoFeaturesData.activities_geojson.features;
+        this.geoTripsData = geoFeaturesData.trips_data
 
         this.startDate = new Date(geoFeaturesData.start_date)
         this.endDate = new Date()
@@ -131,7 +134,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           if (featureGeom !== undefined) {
             this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
           }
-          
+
         } else {
           // check if the zoom is needed, it means only at the start !
           this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
@@ -141,19 +144,17 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       });
 
     this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
-      (geoFeaturesData: any[]) => {
-
-        if (geoFeaturesData.length === 1 && this.travelId !== geoFeaturesData[0].name) {
+      (tripData: any[]) => {
+        // TODO simplifiy...
+        if (tripData.length === 1 && this.travelId !== tripData[0].name) {
           this.mapService.removeLayerByName(travelLayerName)
-          this.travelId = geoFeaturesData[0].name
-          this.buildTravelLayer(geoFeaturesData[0])
-
-          }
-        if (geoFeaturesData.length === 0) {
+          this.travelId = tripData[0].name
+          this.buildTravelLayer(tripData[0])
+        }
+        if (tripData.length === 0) {
           this.travelId = null
           this.mapService.removeLayerByName(travelLayerName)
-
-          }
+        }
 
       }
     );
@@ -207,11 +208,26 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   getCurrentDate(date: Date): void {
     this.currentDate = date
 
+    // manage activities
     const newData = this.geoFeaturesData.filter((d: any) => {
       const selectedDate = new Date(d.properties.start_date);
         return selectedDate <= this.currentDate;
     });
     this.addLayerFeatures(newData, activitiesStyle)
+
+    // manage trips
+    let tripFound: any[] = []
+    this.geoTripsData.forEach((item: any) => {
+      const startDate: string = item.start_date;
+      const endDate: string = item.end_date;
+      const tripStartDate: Date = new Date(startDate);
+      const tripEndDate: Date = new Date(endDate);
+
+      if (this.currentDate >= tripStartDate && this.currentDate < tripEndDate) {
+        tripFound.push(item)
+      }
+    });
+    this.dataService.pullTripsGeoDataToMap(tripFound);
 
   }
 
