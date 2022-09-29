@@ -1,3 +1,4 @@
+import { TimelineModule } from '@shared/modules/timeline/timeline.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -22,7 +23,8 @@ import { ItemsModule } from '@shared/modules/items/items.module';
     CommonModule,
     MapActivitiesRoutingModule,
     FontAwesomeModule,
-    ItemsModule
+    ItemsModule,
+    TimelineModule
   ],
   providers: [
     DataService
