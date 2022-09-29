@@ -18,7 +18,11 @@ export class TimeLineComponent implements OnInit, OnChanges {
   @Input() sliderDayStyleEnabled!: Boolean;
   @Input() startDate!: Date;
   @Input() endDate!: Date;
+  @Input() timelineDateFormat: string = 'year';
+
   @Input() currentDate!: Date; // optional: startDate will be used
+  @Input() currentDateFormat: string = 'dd MMMM y HH:mm';
+
   @Input() defaultDate!: Date;
   @Input() stepValue: number = 4000
 
@@ -201,7 +205,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
       .attr('y', 0)
       .style('font-size', this.fontSize)
       .attr('text-anchor', 'middle')
-      .text((d: any) => d.getHours() + 'h.');
+      .text((d: any) => this.formatTimeLineDate(d));
 
     slider.insert('g', '.track-overlay')
       .attr('class', 'ticks-line')
@@ -284,6 +288,16 @@ export class TimeLineComponent implements OnInit, OnChanges {
       .clamp(true);
     }
   };
+
+  private formatTimeLineDate(time: Date): string {
+    if (this.timelineDateFormat === 'hour') {
+      return time.getHours() + 'h.'
+    } else if (this.timelineDateFormat === 'year') {
+      return time.getFullYear().toString();
+    }
+    return time.getFullYear().toString();
+  };
+
 
   private formatDate(time: Date): string {
     return d3.timeFormat('%Y-%m-%d %H:%M:%S')(time);
