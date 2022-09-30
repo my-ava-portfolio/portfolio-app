@@ -80,7 +80,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
         this.jobsData = data.activities_data.jobs;
-        console.log(data)
 
         this.personalProjectsData = data.activities_data["personal-projects"].reverse();
         this.skillsData = data.skills_data;

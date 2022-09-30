@@ -57,7 +57,6 @@ export class TimeLegendComponent extends TimeLineComponent implements OnInit, On
       .append('circle')
         .attr('class', (d: any) => {
           const featureDate = new Date(d.properties.start_date);
-          console.log(this.currentDate)
           if (featureDate <= this.currentDate) {
             return 'pointer svg-color-' + d.properties.type;
           } else {
@@ -103,7 +102,6 @@ export class TimeLegendComponent extends TimeLineComponent implements OnInit, On
       d3.selectAll('.circle-events circle')
       .attr('class', (d: any) => {
         const featureDate = new Date(d.properties.start_date);
-        console.log(this.currentDate)
         if (featureDate <= this.currentDate) {
           return 'pointer svg-color-' + d.properties.type;
         } else {
