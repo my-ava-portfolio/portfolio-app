@@ -26,8 +26,6 @@ export class TimeLineComponent implements OnInit, OnChanges {
   @Input() defaultDate!: Date;
   @Input() stepValue: number = 4000
 
-  @Input() timelineDataViz!: any;
-
   @Output() currentDateEvent = new EventEmitter<Date>();
 
   // icons
@@ -88,7 +86,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
   ]
   brightnessValuesAtEachHours = [0.50, 0.50, 0.50, 0.50, 0.50, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.50, 0.50]
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
-  private dateRange!: any;
+  dateRange!: any;
   private displayedDatePixelValue: number = 0;
   private fontSize = '14px';
   width = 500;
@@ -97,8 +95,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
   private timer!: any;
 
-  constructor(
-  ) { }
+  constructor( ) { }
 
   ngOnInit(): void {
     this.maxStepValue = this.stepValue * 2 - this.minStepValue
@@ -106,8 +103,9 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges) {
-
     if (changes.currentDate) {
+      console.log(changes.currentDate)
+
       // const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
       this.defaultDate = changes.currentDate.currentValue
     }
@@ -123,28 +121,6 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
         this.buildTimeline()
       }
-    }
-
-    if (changes.timelineDataViz) {
-      console.log(changes.timelineDataViz.currentValue)
-      // need to support various viz mode...
-      const circleEvents = d3.select('.circle-events')
-      circleEvents.selectAll('circle').data(this.timelineDataViz).enter()
-      .append('circle')
-        .attr('class', (d: any) => {
-          const featureDate = new Date(d.properties.start_date);
-          if (featureDate <= this.currentDate) {
-            return 'pointer svg-color-' + d.properties.type;
-          } else {
-            return 'trace'
-          }
-        })
-      .attr('r', "4")
-      .attr('cx', (d: any) => {
-        const startDate = new Date(d.properties.start_date);
-        return this.dateRange(startDate);
-      });
-
     }
 
   }
@@ -184,24 +160,9 @@ export class TimeLineComponent implements OnInit, OnChanges {
       .call(d3.drag()
         .on('drag start', (e: any) => {
 
-          // TODO set condition for this specifc dataviz mode
-            // console.log(this.timelineDataViz)
-            // circleEvents
-            //   .attr('class', (d: any) => {
-            //     const featureDate = new Date(d.properties.start_date);
-            //     if (featureDate <= this.currentDate) {
-            //       return 'pointer svg-color-' + d.properties.type;
-            //     } else {
-            //       return 'trace'
-            //     }
-            //   })
-
-
-
           // to avoid cursor running if a click is done on the slider bar...
           playButton.text('Pause');
           playButton.dispatch('click')
-
 
           this.displayedDatePixelValue = e.x;
           this.update(this.dateRange.invert(this.displayedDatePixelValue));
