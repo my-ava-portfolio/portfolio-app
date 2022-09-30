@@ -26,9 +26,9 @@ import { faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons
     './time-legend.component.scss',
     './../../../shared/modules/timeline/time-line/time-line.component.scss'
   ],
-  encapsulation: ViewEncapsulation.None  // TODO avoid this
+  encapsulation: ViewEncapsulation.None
 })
-export class TimeLegendComponent extends TimeLineComponent  implements OnInit, OnChanges  {
+export class TimeLegendComponent extends TimeLineComponent implements OnInit, OnChanges  {
   @Input() timelineDataViz!: any;
 
   map!: Map;

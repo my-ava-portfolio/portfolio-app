@@ -9,13 +9,12 @@ import { backwardIcon, forwardIcon, tagsIcon } from '@modules/map-gtfs-viewer/sh
   selector: 'app-time-line',
   templateUrl: './time-line.component.html',
   styleUrls: ['./time-line.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  // encapsulation: ViewEncapsulation.None
 })
 export class TimeLineComponent implements OnInit, OnChanges {
 
   @Input() timeLineId!: string;
   @Input() timeLineSpeedSliderEnabled!: Boolean;
-  @Input() sliderDayStyleEnabled!: Boolean;
   @Input() startDate!: Date;
   @Input() endDate!: Date;
   @Input() timelineDateFormat: string = 'year';
@@ -38,52 +37,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
   private timerStep = 25;
   maxStepValue!: number;
 
-  // var svg style
-  timelineMarkerFontSize = "35"
-  sliderHandleTimeStyle = [
-    {
-      "from": 0,
-      "to": 7,
-      "font_unicode": '\uf186',
-      "color": "#4575b4",
-      "stroke": "white",
-      "description": "La nuit",
-      "brightness": 60
-    },
-    {
-      "from": 7,
-      "to": 11,
-      "font_unicode": '\uf185',
-      "color": "#fdae61",
-      "stroke": "black",
-      "description": "Le matin"
-    },
-    {
-      "from": 11,
-      "to": 14,
-      "font_unicode": '\uf185',
-      "color": "#d73027",
-      "stroke": "black",
-      "description": "Le milieu de journée"
-    },
-    {
-      "from": 14,
-      "to": 19,
-      "font_unicode": '\uf185',
-      "color": "#fdae61",
-      "stroke": "black",
-      "description": "L'après midi"
-    },
-    {
-      "from": 19,
-      "to": 24,
-      "font_unicode": '\uf186',
-      "color": "#4575b4",
-      "stroke": "white",
-      "description": "Le soir"
 
-    }
-  ]
   brightnessValuesAtEachHours = [0.50, 0.50, 0.50, 0.50, 0.50, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.50, 0.50]
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
   dateRange!: any;
@@ -104,9 +58,6 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.currentDate) {
-      console.log(changes.currentDate)
-
-      // const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
       this.defaultDate = changes.currentDate.currentValue
     }
 
@@ -125,10 +76,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
   }
 
-  ngOnDestroy(): void {
-    this.setMapTileBrightness()
 
-  }
 
   updateStepValue(event: any): void {
     this.stepValue = event.target.value;
@@ -215,17 +163,10 @@ export class TimeLineComponent implements OnInit, OnChanges {
       .attr('x1', this.dateRange(this.startDate))
       .attr('x2', this.dateRange(this.currentDate));
 
-
-    if ( this.sliderDayStyleEnabled ) {
-      const handle = slider.insert('text', '.track-overlay')
-        .attr('id', 'handle-timeline')
-        .attr('class', "marker-fontawesome fa-solid")
-        .attr("font-size", this.timelineMarkerFontSize)
-    } else {
       const handle = slider.insert('circle', '.track-overlay')
         .attr('id', 'handle-timeline')
         .attr('r', 10);
-    }
+
 
     // Here to avoid cursor conflict between timeline and dataViz object
     // events
@@ -235,36 +176,6 @@ export class TimeLineComponent implements OnInit, OnChanges {
     // update to current date ; in the past it was the end date (with endDate attribute)
     this.update(this.defaultDate);
   };
-
-  private updateHandleTimelineStyleFromTime(date: any): void {
-
-    let hour = date.getHours()
-    let style = this.sliderHandleTimeStyle.filter((e) => {
-      return hour >= e.from && hour < e.to;
-    })[0];
-
-    d3.select("#handle-timeline")
-      .style("fill", style.color)
-      .style("stroke", style.stroke)
-      .style("stroke-width", "1px")
-      .text(style.font_unicode);
-
-    this.setMapTileBrightness(hour)
-
-  }
-
-  private setMapTileBrightness(value?: number) {
-    const mapTilesDiv = d3.selectAll(".ol-layer")
-
-    if (typeof value !== 'undefined') {
-
-      mapTilesDiv.style("filter", `brightness(${this.brightnessValuesAtEachHours[value]})`);
-    } else {
-      mapTilesDiv.style("filter", "unset");
-
-    };
-  }
-
 
   private initDateRange(): void {
     if (this.startDate !== null && this.endDate !== null) {
@@ -297,16 +208,14 @@ export class TimeLineComponent implements OnInit, OnChanges {
     this.currentDateEvent.emit(date)
 
     // update position and text of label according to slider scale
-    d3.select('#trace').attr('x2', pixelDate); // trace
+    d3.select('#trace')
+      .attr('x2', pixelDate)
+      .style('stroke', '#6c6c6c')
+      .style('stroke-width', '4')
+    ;
 
-    if (this.sliderDayStyleEnabled) {
-      // we have to use a svg text object
-      d3.select('#handle-timeline').attr('x', pixelDate); // handle
-      this.updateHandleTimelineStyleFromTime(date)
-    } else {
       // we have to use a svg circle object
       d3.select('#handle-timeline').attr('cx', pixelDate); // handle
-    }
 
   };
 

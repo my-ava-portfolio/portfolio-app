@@ -56,17 +56,16 @@
     </div>
 
     <set-section-container>
-      <app-time-line
+      <app-time-legend
         timeLineId="timeline-slider"
         [timeLineSpeedSliderEnabled]="true"
-        [sliderDayStyleEnabled]="true"
         (currentDateEvent)="getCurrentDate($event)"
         [startDate]="startDate"
         [endDate]="endDate"
         timelineDateFormat="hour"
         [currentDate]="currentDate"
         [stepValue]="currentstepValue"
-      ></app-time-line>
+      ></app-time-legend>
     </set-section-container>
 
   </ng-template>

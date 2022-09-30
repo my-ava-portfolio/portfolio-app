@@ -11,10 +11,12 @@ import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.servi
 
 import { TimelineModule } from '@shared/modules/timeline/timeline.module';
 import { ItemsModule } from '@shared/modules/items/items.module';
+import { TimeLegendComponent } from './time-legend/time-legend.component';
 
 @NgModule({
   declarations: [
     MapViewComponent,
+    TimeLegendComponent,
   ],
   imports: [
     CommonModule,
