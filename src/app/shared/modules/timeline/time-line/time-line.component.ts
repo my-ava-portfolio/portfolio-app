@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -9,11 +9,10 @@ import { backwardIcon, forwardIcon, tagsIcon } from '@modules/map-gtfs-viewer/sh
   selector: 'app-time-line',
   templateUrl: './time-line.component.html',
   styleUrls: ['./time-line.component.scss'],
-  // encapsulation: ViewEncapsulation.None
 })
 export class TimeLineComponent implements OnInit, OnChanges {
 
-  @Input() timeLineId!: string;
+  @Input() timeLineId: string = 'timeline-slider';
   @Input() timeLineSpeedSliderEnabled!: Boolean;
   @Input() startDate!: Date;
   @Input() endDate!: Date;

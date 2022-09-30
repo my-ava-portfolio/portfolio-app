@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { TimeLineComponent } from '@shared/modules/timeline/time-line/time-line.component';
 import * as d3 from 'd3';
 

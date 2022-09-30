@@ -1,23 +1,16 @@
-import { TimeLineComponent } from './../../../shared/modules/timeline/time-line/time-line.component';
+import { TimeLineComponent } from '@shared/modules/timeline/time-line/time-line.component';
 import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer } from '@modules/map-activities/shared/core';
-import { Component, OnInit, ViewEncapsulation, OnDestroy, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, SimpleChanges, OnChanges } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { currentYear, currentDate } from '@core/misc';
 
-import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { MapService } from '@services/map.service';
 
 import * as d3 from 'd3';
-import { legendActivitiesId, sliderBarId, } from '@modules/map-activities/shared/core';
-import { educationColor, jobColor, volunteerColor } from "@core/styles/colors";
+import { legendActivitiesId } from '@modules/map-activities/shared/core';
 
-import Feature from 'ol/Feature';
 import Map from 'ol/Map';
-
-import { faStepBackward, faStepForward } from '@fortawesome/free-solid-svg-icons';
-
 
 @Component({
   selector: 'app-time-legend',
