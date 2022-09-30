@@ -41,7 +41,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
   dateRange!: any;
   private displayedDatePixelValue: number = 0;
-  private fontSize = '14px';
+  private fontSize = '11px';
   width = 500;
   height = 75;
   private maxDatePosition: number = this.width - this.margin.left - this.margin.right;
@@ -144,7 +144,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
       .text((d: any) => this.formatTimeLineDate(d));
 
     slider.insert('g', '.track-overlay')
-      .attr('class', 'ticks-line')
+      .attr('class', 'ticks-bound')
       .attr('transform', 'translate(0,-6)')
       .selectAll('line')
       .data(this.dateRange.ticks(10)) // number of label on the slider
@@ -155,7 +155,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
       .attr('y1', 0)
       .attr('y2', 12)
       .style('stroke', 'grey')
-      .style('stroke-width', '2px');
+      .style('stroke-width', '1px');
 
     const trace = slider.insert('line', '.track-overlay')
       .attr('id', 'trace')
