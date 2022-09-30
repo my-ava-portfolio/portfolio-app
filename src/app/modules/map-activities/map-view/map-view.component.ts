@@ -117,7 +117,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoData.subscribe(
       (geoFeaturesData: any) => {
-        console.log(geoFeaturesData)
         this.geoFeaturesData = geoFeaturesData.activities_geojson.features;
         this.geoTripsData = geoFeaturesData.trips_data
 

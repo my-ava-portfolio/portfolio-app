@@ -54,7 +54,7 @@ export class layerHandler {
 
   deleted = false;
   locked = false;
-  
+
   featuresSelected: any[] = []
   featuresDeselected: any[] = []
 
@@ -357,7 +357,6 @@ export class layerHandler {
     if (featureFound !== null) {
       const newFeature = this.addProperties(featureFound.clone())
       this.sourceFeatures.addFeature(newFeature)
-      console.log(newFeature)
     }
   }
 
