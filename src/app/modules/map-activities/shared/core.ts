@@ -57,15 +57,15 @@ const volunteerCircleStyle = new CircleStyle({
 export function activitiesStyle(properties: any): Style {
   let styleBuilt!: CircleStyle;
 
-  if (properties.type === "job") {
+  if (properties.get('type') === "job") {
     styleBuilt = jobCircleStyle.clone()
-  } else if (properties.type === "education") {
+  } else if (properties.get('type') === "education") {
     styleBuilt = educationCircleStyle.clone()
   } else {
     styleBuilt = volunteerCircleStyle.clone()
   }
 
-  let radius = properties.months * radiusMultiplier
+  let radius = properties.get('radius') * radiusMultiplier
   styleBuilt.setRadius(radius)
 
   return new Style({
@@ -77,7 +77,7 @@ export function activitiesStyle(properties: any): Style {
 export function activitySelectedStyle(radius: number): Style {
   return new Style({
     image: new CircleStyle({
-      radius: radius,
+      radius: radius * radiusMultiplier,
       fill: new Fill({
         color: 'rgba(255, 215, 0, 0.6)',
       }),

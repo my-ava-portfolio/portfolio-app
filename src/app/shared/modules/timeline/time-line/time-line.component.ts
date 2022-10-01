@@ -1,159 +1,87 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { MapService } from '@services/map.service';
-import Map from 'ol/Map';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 import * as d3 from 'd3';
-import { Subscription } from 'rxjs';
 
 import { backwardIcon, forwardIcon, tagsIcon } from '@modules/map-gtfs-viewer/shared/core';
-import { TimelineService } from '@shared/services/timeline.service';
+
 
 @Component({
   selector: 'app-time-line',
   templateUrl: './time-line.component.html',
   styleUrls: ['./time-line.component.scss'],
-  encapsulation: ViewEncapsulation.None
 })
-export class TimeLineComponent implements OnInit {
-  @Input() timeLineId!: string;
-  @Input() timeLineSpeedSliderEnabled!: Boolean;
-  @Input() sliderDayStyleEnabled!: Boolean;
+export class TimeLineComponent implements OnInit, OnChanges {
 
-  startDate!: Date | null;
-  endDate!: Date | null;
-  currentDate!: Date | null;
+  @Input() timeLineId: string = 'timeline-slider';
+  @Input() timeLineSpeedSliderEnabled!: Boolean;
+  @Input() startDate!: Date;
+  @Input() endDate!: Date;
+  @Input() timelineDateFormat: string = 'year';
+
+  @Input() currentDate!: Date; // optional: startDate will be used
+  @Input() currentDateFormat: string = 'dd MMMM y HH:mm';
+
+  @Input() defaultDate!: Date;
+  @Input() stepValue: number = 4000
+
+  @Output() currentDateEvent = new EventEmitter<Date>();
 
   // icons
   backwardIcon = backwardIcon;
   forwardIcon = forwardIcon;
   tagIcon = tagsIcon;
 
-  timelineMarkerFontSize = "35"
-  sliderHandleTimeStyle = [
-    {
-      "from": 0,
-      "to": 7,
-      "font_unicode": '\uf186',
-      "color": "#4575b4",
-      "stroke": "white",
-      "description": "La nuit",
-      "brightness": 60
-    },
-    {
-      "from": 7,
-      "to": 11,
-      "font_unicode": '\uf185',
-      "color": "#fdae61",
-      "stroke": "black",
-      "description": "Le matin"
-    },
-    {
-      "from": 11,
-      "to": 14,
-      "font_unicode": '\uf185',
-      "color": "#d73027",
-      "stroke": "black",
-      "description": "Le milieu de journée"
-    },
-    {
-      "from": 14,
-      "to": 19,
-      "font_unicode": '\uf185',
-      "color": "#fdae61",
-      "stroke": "black",
-      "description": "L'après midi"
-    },
-    {
-      "from": 19,
-      "to": 24,
-      "font_unicode": '\uf186',
-      "color": "#4575b4",
-      "stroke": "white",
-      "description": "Le soir"
+  // speed
+  minStepValue = 50;
+  private timerStep = 25;
+  maxStepValue!: number;
 
-    }
-  ]
+
   brightnessValuesAtEachHours = [0.50, 0.50, 0.50, 0.50, 0.50, 0.65, 0.74, 0.83, 0.93, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.93, 0.83, 0.72, 0.65, 0.50, 0.50]
-
-
   private margin: any = { top: 10, right: 15, bottom: 0, left: 15 };
+  dateRange!: any;
+  private displayedDatePixelValue: number = 0;
+  private fontSize = '11px';
   width = 500;
   height = 75;
-  private dateRange!: any;
-  private selectedDatePosition = 0;  // TODO check type
-  private fontSize = '14px';
   private maxDatePosition: number = this.width - this.margin.left - this.margin.right;
+
   private timer!: any;
-  stepValue = 4000;
-  minStepValue = 50;
-  maxStepValue!: number
-  private timerStep = 25;
 
-  private map!: any;
+  constructor( ) { }
 
-  mapContainerSubscription!: Subscription;
-  pullRangeDateDataSubscription!: Subscription;
-  notifyTimelineSubscription!: Subscription;
-  defaultSpeedValueSubscription!: Subscription;
-  updatedSpeedValueSubscription!: Subscription;
+  ngOnInit(): void {
+    this.maxStepValue = this.stepValue * 2 - this.minStepValue
+  }
 
-  constructor(
-    private mapService: MapService,
-    private timelineService: TimelineService,
-  ) {
 
-    this.mapContainerSubscription = this.mapService.map.subscribe(
-      (map: Map) => {
-        this.map = map;
-      }
-    );
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.currentDate) {
+      this.defaultDate = changes.currentDate.currentValue
+    }
 
-    this.defaultSpeedValueSubscription = this.timelineService.defaultSpeedValue.subscribe(
-      (defaultSpeedValue: number) => {
-        this.stepValue = defaultSpeedValue
-        this.maxStepValue = defaultSpeedValue * 2 - this.minStepValue
+    if (changes.startDate || changes.enDate) {
+      if (changes.startDate.currentValue < changes.endDate.currentValue) {
+        this.startDate = changes.startDate.currentValue
+        this.endDate = changes.endDate.currentValue
 
-      }
-    )
-
-    this.updatedSpeedValueSubscription = this.timelineService.updatedSpeedValue.subscribe(
-      (speedValueUpdated: number) => {
-        this.stepValue = speedValueUpdated
-      }
-    )
-
-    // MANDATORY, we need these 3 variables to init the timeline
-    this.notifyTimelineSubscription = this.timelineService.timeLineInputs.subscribe(
-      (element: any) => {
-        this.startDate = element.startDate;
-        this.endDate = element.endDate;
-
-        const tParser = d3.timeParse("%Y-%m-%d %H:%M:%S")
-        this.currentDate = tParser(element.currentDate);
+        if (!changes.currentDate) {
+          this.defaultDate = changes.startDate.currentValue;
+        }
 
         this.buildTimeline()
       }
-    )
+    }
 
   }
 
-  ngOnInit(): void {
-    this.mapService.getMap()
-  }
 
-  ngOnDestroy(): void {
-    this.mapContainerSubscription.unsubscribe();
-    this.notifyTimelineSubscription.unsubscribe();
-    this.setMapTileBrightness()
-
-  }
 
   updateStepValue(event: any): void {
     this.stepValue = event.target.value;
   }
 
   buildTimeline(): void {
-
     // clean existing slide bar
     d3.selectAll('.slider-bar').remove()
 
@@ -183,26 +111,16 @@ export class TimeLineComponent implements OnInit {
           playButton.text('Pause');
           playButton.dispatch('click')
 
-          this.selectedDatePosition = e.x;
-          this.update(this.dateRange.invert(this.selectedDatePosition));
+          this.displayedDatePixelValue = e.x;
+          this.update(this.dateRange.invert(this.displayedDatePixelValue));
 
-          // disable timeline node selection
-          d3.select('#timeline-slider .events')
-            .selectAll('circle')
-            .style('pointer-events', 'none');
         })
         .on('end', (e: any) => {
-          // at the drag end we enable the drap map
-
-          // enable timeline node selection
-          d3.select('#timeline-slider .events')
-            .selectAll('circle')
-            .style('pointer-events', 'all');
 
           // reset button play if animation is done and play button == continue
           if (this.startDate !== null && this.endDate !== null) {
-            if (this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.endDate.toTimeString()
-              || this.dateRange.invert(this.selectedDatePosition).toTimeString() === this.startDate.toTimeString()
+            if (this.dateRange.invert(this.displayedDatePixelValue).toTimeString() === this.endDate.toTimeString()
+              || this.dateRange.invert(this.displayedDatePixelValue).toTimeString() === this.startDate.toTimeString()
             ) {
               playButton.text('Play');
             } else {
@@ -223,10 +141,10 @@ export class TimeLineComponent implements OnInit {
       .attr('y', 0)
       .style('font-size', this.fontSize)
       .attr('text-anchor', 'middle')
-      .text((d: any) => this.formatDateToTimeString(d));
+      .text((d: any) => this.formatTimeLineDate(d));
 
     slider.insert('g', '.track-overlay')
-      .attr('class', 'ticks-line')
+      .attr('class', 'ticks-bound')
       .attr('transform', 'translate(0,-6)')
       .selectAll('line')
       .data(this.dateRange.ticks(10)) // number of label on the slider
@@ -237,68 +155,26 @@ export class TimeLineComponent implements OnInit {
       .attr('y1', 0)
       .attr('y2', 12)
       .style('stroke', 'grey')
-      .style('stroke-width', '2px');
-
-    // node trace events from geojson source
-    const traceEvents = slider.insert('g', '.track-overlay')
-      .attr('class', 'trace-events');
+      .style('stroke-width', '1px');
 
     const trace = slider.insert('line', '.track-overlay')
       .attr('id', 'trace')
       .attr('x1', this.dateRange(this.startDate))
       .attr('x2', this.dateRange(this.currentDate));
 
-
-    if ( this.sliderDayStyleEnabled ) {
-      const handle = slider.insert('text', '.track-overlay')
-      .attr('id', 'handle-timeline')
-      .attr('class', "marker-fontawesome fa-solid")
-      .attr("font-size", this.timelineMarkerFontSize)
-    } else {
       const handle = slider.insert('circle', '.track-overlay')
-      .attr('id', 'handle-timeline')
-      .attr('r', 10);
-    }
+        .attr('id', 'handle-timeline')
+        .attr('r', 10);
 
+
+    // Here to avoid cursor conflict between timeline and dataViz object
     // events
-    const events = slider.append('g')
-      .attr('class', 'events');
+    const circleEvents = slider.append('g')
+      .attr('class', 'circle-events')
 
-    // update to current date ; in the past it was the end date (with this.endDate)
-    // these 2 lines are mandatory to initialize the slider regarding current date
-    this.update(this.currentDate);
-    this.selectedDatePosition = parseInt(trace.attr("x2"));  // to set the currendDate pixel value
+    // update to current date ; in the past it was the end date (with endDate attribute)
+    this.update(this.defaultDate);
   };
-
-  private updateHandleTimelineStyleFromTime(date: any): void {
-
-    let hour = date.getHours()
-    let style = this.sliderHandleTimeStyle.filter((e) => {
-      return hour >= e.from && hour < e.to;
-    })[0];
-
-    d3.select("#handle-timeline")
-      .style("fill", style.color)
-      .style("stroke", style.stroke)
-      .style("stroke-width", "1px")
-      .text(style.font_unicode);
-
-    this.setMapTileBrightness(hour)
-
-  }
-
-  private setMapTileBrightness(value?: number) {
-    const mapTilesDiv = d3.selectAll(".ol-layer")
-
-    if (typeof value !== 'undefined') {
-
-      mapTilesDiv.style("filter", `brightness(${this.brightnessValuesAtEachHours[value]})`);
-    } else {
-      mapTilesDiv.style("filter", "unset");
-
-    };
-  }
-
 
   private initDateRange(): void {
     if (this.startDate !== null && this.endDate !== null) {
@@ -309,44 +185,43 @@ export class TimeLineComponent implements OnInit {
     }
   };
 
-
-  private formatDateToTimeString(time: Date): string {
-    return parseInt(d3.timeFormat('%H')(time)) + ' h.';
+  private formatTimeLineDate(time: Date): string {
+    if (this.timelineDateFormat === 'hour') {
+      return time.getHours() + 'h.'
+    } else if (this.timelineDateFormat === 'year') {
+      return time.getFullYear().toString();
+    }
+    return time.getFullYear().toString();
   };
+
 
   private formatDate(time: Date): string {
     return d3.timeFormat('%Y-%m-%d %H:%M:%S')(time);
   };
 
-  update(h: any): void {
+  update(date: Date): void {
 
+    const pixelDate: number = this.dateRange(date)
 
-    // call api only if last count is different from the current count feature
-    if (h !== null) {
+    // return an event to indicate that the date has been updated, so we'll update the data
+    this.currentDateEvent.emit(date)
 
-      // return an event to indicate that the date has been updated, so we'll update the data
-      this.timelineService.pushDateUpdated(this.formatDate(h))
+    // update position and text of label according to slider scale
+    d3.select('#trace')
+      .attr('x2', pixelDate)
+      .style('stroke', '#6c6c6c')
+      .style('stroke-width', '4')
+    ;
 
-     // update position and text of label according to slider scale
-      d3.select('#trace').attr('x2', this.dateRange(h)); // trace
+      // we have to use a svg circle object
+      d3.select('#handle-timeline').attr('cx', pixelDate); // handle
 
-      this.currentDate = h
-      if (this.sliderDayStyleEnabled) {
-        // we have to use a svg text object
-        d3.select('#handle-timeline').attr('x', this.dateRange(h)); // handle
-        this.updateHandleTimelineStyleFromTime(h)
-      } else {
-        // we have to use a svg circle object
-        d3.select('#handle-timeline').attr('cx', this.dateRange(h)); // handle
-      }
-
-    }
   };
 
   step(): void {
-    this.update(this.dateRange.invert(this.selectedDatePosition));
-    this.selectedDatePosition = this.selectedDatePosition + (this.maxDatePosition / this.stepValue);
-    if (this.selectedDatePosition > this.maxDatePosition) {
+    this.update(this.dateRange.invert(this.displayedDatePixelValue));
+    this.displayedDatePixelValue = this.displayedDatePixelValue + (this.maxDatePosition / this.stepValue);
+    if (this.displayedDatePixelValue > this.maxDatePosition) {
       this.forwardTimeLine()
     }
   };
@@ -374,21 +249,17 @@ export class TimeLineComponent implements OnInit {
   resetTimeLine(): void {
     // reset action
     d3.select('#play-button').html('Start');
-    // update to start date
-    this.currentDate = this.startDate
     this.update(this.startDate);
 
-    this.selectedDatePosition = 0;
+    this.displayedDatePixelValue = 0;
     clearInterval(this.timer);
   }
 
   forwardTimeLine(): void {
     d3.select('#play-button').html('Play');
-    // update to start date
-    this.currentDate = this.startDate
     this.update(this.endDate);
 
-    this.selectedDatePosition = 0;
+    this.displayedDatePixelValue = 0;
     clearInterval(this.timer);
   }
 

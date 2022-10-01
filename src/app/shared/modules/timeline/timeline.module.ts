@@ -4,8 +4,6 @@ import { TimeLineComponent } from './time-line/time-line.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { TimelineService } from '@shared/services/timeline.service';
-
 import { PipesModule } from '@shared/pipes/pipes.module';
 import {RouterModule} from '@angular/router';
 import { ItemsModule } from '../items/items.module';
@@ -25,8 +23,6 @@ import { ItemsModule } from '../items/items.module';
   exports: [
     TimeLineComponent,
   ],
-  providers: [
-    TimelineService
-  ]
+  providers: []
 })
 export class TimelineModule { }

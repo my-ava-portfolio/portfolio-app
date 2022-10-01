@@ -11,7 +11,7 @@ import Point from 'ol/geom/Point';
 import Select from 'ol/interaction/Select';
 import {pointerMove} from 'ol/events/condition';
 import { getVectorContext } from 'ol/render';
-import {LineString} from 'ol/geom';
+import {Geometry, LineString} from 'ol/geom';
 import { Style } from 'ol/style';
 import { transform } from 'ol/proj';
 
@@ -48,8 +48,14 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   activitiesStyle!: Style;
 
-  geoFeaturesData!: any[];
+  geoFeaturesData!: any;
+  geoTripsData!: any[];
+
   travelId: string | null = null;
+  startDate!: Date;
+  endDate!: Date;
+  currentDate!: Date;
+  sourceFeatures!: VectorSource;
 
   isLegendDisplayed = true;
 
@@ -74,6 +80,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   mapSubscription!: Subscription;
   pullActivitiesGeoDataToMapSubscription!: Subscription;
+  pullGeoDataSubscription!: Subscription;
   pullTripsGeoDataToMapSubscription!: Subscription;
   zoomEventSubscription!: Subscription;
   routeSubscription!: Subscription;
@@ -107,43 +114,46 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       }
     );
 
-    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoDataToMap.pipe(map((val, index) => [val, index])) // here we transform event to array (call it tuple if you like)
-     .subscribe(
-      (geoFeaturesData: any[]) => {
 
-        this.mapService.removeLayerByName(activityLayerName)
-        this.geoFeaturesData = geoFeaturesData[0];
-        console.log(this.geoFeaturesData)
-        this.buildActivityLayer(this.geoFeaturesData)
+    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoData.subscribe(
+      (geoFeaturesData: any) => {
+        this.geoFeaturesData = geoFeaturesData.activities_geojson.features;
+        this.geoTripsData = geoFeaturesData.trips_data
+
+        this.startDate = new Date(geoFeaturesData.start_date)
+        this.endDate = new Date()
+        //  this.currentDate = this.endDate
+        this.getCurrentDate(this.endDate)
+
 
         // if a click is done on experience location icon
         if (this.fragment !== null) {
-        const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, this.fragment, 'id')
-        const featureGeom = feature.getGeometry()
-          if (featureGeom !== undefined ) {
+          const feature: Feature = getFeatureFromLayer(this.map, activityLayerName, this.fragment, 'id')
+          const featureGeom = feature.getGeometry()
+          if (featureGeom !== undefined) {
             this.mapService.zoomToExtent(featureGeom.getExtent(), 13)
           }
-        } else if (geoFeaturesData[1] === 0) {
-           // check if the zoom is needed, it means only at the start !
+
+        } else {
+          // check if the zoom is needed, it means only at the start !
           this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
-         }
+        }
+
 
       });
 
     this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
-      (geoFeaturesData: any[]) => {
-
-        if (geoFeaturesData.length === 1 && this.travelId !== geoFeaturesData[0].name) {
+      (tripData: any[]) => {
+        // TODO simplifiy...
+        if (tripData.length === 1 && this.travelId !== tripData[0].name) {
           this.mapService.removeLayerByName(travelLayerName)
-          this.travelId = geoFeaturesData[0].name
-          this.buildTravelLayer(geoFeaturesData[0])
-
-          }
-        if (geoFeaturesData.length === 0) {
+          this.travelId = tripData[0].name
+          this.buildTravelLayer(tripData[0])
+        }
+        if (tripData.length === 0) {
           this.travelId = null
           this.mapService.removeLayerByName(travelLayerName)
-
-          }
+        }
 
       }
     );
@@ -168,6 +178,11 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     this.sendResumeSubMenus();
 
+    // set the layer container
+    this.initLayer(activityLayerName, activitiesStyle)
+
+    this.dataService.pullActivitiesGeoData();
+
     this.zoomInitDone = false;
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
@@ -189,6 +204,33 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.mapService.resetMapView()
   }
 
+  getCurrentDate(date: Date): void {
+    this.currentDate = date
+
+    // manage activities
+    const newData = this.geoFeaturesData.filter((d: any) => {
+      const selectedDate = new Date(d.properties.start_date);
+        return selectedDate <= this.currentDate;
+    });
+    this.addLayerFeatures(newData, activitiesStyle)
+
+    // manage trips
+    let tripFound: any[] = []
+    this.geoTripsData.forEach((item: any) => {
+      const startDate: string = item.start_date;
+      const endDate: string = item.end_date;
+      const tripStartDate: Date = new Date(startDate);
+      const tripEndDate: Date = new Date(endDate);
+
+      if (this.currentDate >= tripStartDate && this.currentDate < tripEndDate) {
+        tripFound.push(item)
+      }
+    });
+    this.dataService.pullTripsGeoDataToMap(tripFound);
+
+  }
+
+
   zoomOnData(): void {
     // TODO create map components with buttons
     this.mapService.sendZoomAction();
@@ -205,43 +247,24 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
-  buildLayerFromFeatures(layerName: string, features: any[], style: Function): any {
+  initLayer(layerName: string, style: Function): void  {
+    this.sourceFeatures = new VectorSource();
 
-    let vectorSource = new VectorSource({
-      features: []
+    const vectorLayer = new VectorLayer({
+      source: this.sourceFeatures,
+      style: (feature: any, _: any): any => {
+        return style(feature)
+      }
     });
-    let vectorLayer = new VectorLayer({
-      source: vectorSource,
-    });
-
-    features.forEach((data: any, index: number) => {
-      let iconFeature = new Feature({
-        geometry: new Point(data.geometry.coordinates).transform('EPSG:4326', 'EPSG:3857'),
-        id: data.properties.id,
-        type: data.properties.type,
-        name: data.properties.name,
-        radius: data.properties.months * 2,
-      })
-
-      iconFeature.setStyle(style(data.properties))
-      vectorSource.addFeature(iconFeature)
-    })
     vectorLayer.set("name", layerName)
 
-    return vectorLayer
+    this.map.addLayer(vectorLayer)
 
-  };
-
-
-  buildActivityLayer(data: any): void {
-    let activitiesLayer = this.buildLayerFromFeatures(activityLayerName, data, activitiesStyle)
-
-    this.map.addLayer(activitiesLayer)
-
+    // add mouse interaction
     let activityLayerSelector = new Select({
       condition: pointerMove,
       multi: false,
-      layers: [activitiesLayer],
+      layers: [vectorLayer],
       style: (feature: any) => {
         let radius = feature.get("radius")
         var selectedStyle = activitySelectedStyle(radius)
@@ -252,7 +275,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     activityLayerSelector.on('select', (evt: any) => {
       const selected = evt.selected
       const deSelected = evt.deselected
-
       // WARNING not refactoring needed ! because we can have both selected and deselected
       if (deSelected.length === 1) {
         let deSelectedFeature = deSelected[0]
@@ -263,7 +285,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           .style('right', 'unset')
           .style('top', 'unset')
           .style('left', 'unset');
-        this._handleActivityCircleOnLegend(deSelectedFeature)
+        // this._handleActivityCircleOnLegend(deSelectedFeature)
 
 
       }
@@ -276,14 +298,33 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           // .style('display', 'block')
           .style('z-index', '1')
 
-        this._handleActivityCircleOnLegend(selectedFeature)
+        // this._handleActivityCircleOnLegend(selectedFeature)
       }
 
     });
 
     this.map.addInteraction(activityLayerSelector);
 
-  }
+
+  };
+
+  addLayerFeatures(features: any[], style: Function): any {
+    let featuresBuilt: Feature[] = []
+
+    features.forEach((data: any, index: number) => {
+      let featureBuild = new Feature({
+        geometry: new Point(data.geometry.coordinates).transform('EPSG:4326', 'EPSG:3857'),
+        id: data.properties.id,
+        type: data.properties.type,
+        name: data.properties.name,
+        radius: data.properties.months,
+      })
+      featuresBuilt.push(featureBuild)
+    })
+
+    this.sourceFeatures.clear()
+    this.sourceFeatures.addFeatures(featuresBuilt)
+  };
 
   _handleActivityCircleOnLegend(feature: Feature): void {
     const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + feature.get("type"));

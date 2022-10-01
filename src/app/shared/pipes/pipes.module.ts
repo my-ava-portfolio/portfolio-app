@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { Pipe, PipeTransform } from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
@@ -32,6 +32,16 @@ export class JoinPipe implements PipeTransform {
 export class ReversePipe implements PipeTransform {
   transform(value: Array<any>): Array<any> {
     return value.slice().reverse();
+  }
+}
+
+@Pipe({
+  name: 'dateFormat'
+})
+export class DateFormatPipe extends DatePipe implements PipeTransform {
+  // https://angular.io/api/common/DatePipe
+  transform(value: any, args?: any): any {
+     return super.transform(value, "y-M-d H:mm:ss");
   }
 }
 

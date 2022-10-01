@@ -7,15 +7,16 @@ import { MapGtfsViewerRoutingModule } from './map-gtfs-viewer-routing.module';
 
 import { MapViewComponent } from '@modules/map-gtfs-viewer/map-view/map-view.component';
 
-import { TimelineService } from '@shared/services/timeline.service';
 import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.service';
 
 import { TimelineModule } from '@shared/modules/timeline/timeline.module';
 import { ItemsModule } from '@shared/modules/items/items.module';
+import { TimeLegendComponent } from './time-legend/time-legend.component';
 
 @NgModule({
   declarations: [
     MapViewComponent,
+    TimeLegendComponent,
   ],
   imports: [
     CommonModule,
@@ -25,7 +26,6 @@ import { ItemsModule } from '@shared/modules/items/items.module';
     ItemsModule
   ],
   providers: [
-    TimelineService,
     DataService
   ]
 })
