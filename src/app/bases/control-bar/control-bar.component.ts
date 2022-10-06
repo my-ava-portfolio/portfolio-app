@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ControlerService } from '@services/controler.service';
 import { Router } from '@angular/router';
 import { faAlignLeft, faAlignJustify } from '@fortawesome/free-solid-svg-icons';
+import { activityFeature } from '@core/data-types';
 
 
 @Component({
@@ -21,7 +22,8 @@ export class ControlBarComponent implements OnInit, OnDestroy {
 
   pageTitle!: string;
   topicPages!: any;
-  topicPagesSubMenus: any[] = [];
+  topicPagesSubMenus: activityFeature[] = [];
+  mainRoute!: string;
 
   controlerPageTitleSubscription!: Subscription;
   controlerSubMenusSubscription!: Subscription;
@@ -38,8 +40,9 @@ export class ControlBarComponent implements OnInit, OnDestroy {
     this.controlerSubMenusSubscription = this.controlerService.subMenuFeatures.subscribe(
       (data) => {
         this.topicPages = data;
-        if (data.sub_menus) {
-          this.topicPagesSubMenus = data.sub_menus;
+        if (data.length > 0) {
+          this.mainRoute = this.router.url;
+          this.topicPagesSubMenus = data;
         } else {
           // to reset the control bar anchors
           this.topicPagesSubMenus = data
