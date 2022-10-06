@@ -12,8 +12,6 @@ import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.servi
 import { locationIcon, tagsIcon, centerIcon, gtfsLayerName, gtfsStyle, circleRadius, metroColor, strokeWidth, trainColor, tramColor, strokeColor } from '@modules/map-gtfs-viewer/shared/core';
 import { MapService } from '@services/map.service';
 import { ControlerService } from '@services/controler.service';
-import { currentDate } from '@core/misc';
-import { TimelineService } from '@shared/services/timeline.service';
 import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
 import VectorImageLayer from 'ol/layer/VectorImage';
@@ -64,9 +62,9 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   currentstepValue = this.input_data[1].default_step_value;
   currentZoomValue = this.input_data[1].zoom;
 
-  endDate: Date | null = currentDate;
-  startDate: Date | null = currentDate;
-  currentDate!: string;
+  endDate!: Date;
+  startDate!: Date;
+  currentDate!: Date;
   dataBoundingBox!: number[];
 
   isGeodataCanBeDisplayed = false;
@@ -74,8 +72,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   currentFeatureSelectedId!: string | null;
   currentRouteTypes: string[] = [];
   gtfsLayer!: any
-  innerWidth!: any;
-  innerHeight!: any;
 
   map!: Map;
 
@@ -83,9 +79,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   popupWidth = 100;
   popupHeight = 100;
   geoFeaturesData!: any[];
-
-
-  geoData!: any;
 
   mapSubscription!: Subscription;
   pullGeoDataToMapSubscription!: Subscription;
@@ -95,7 +88,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   zoomEventSubscription!: Subscription;
   screenMapBoundSubscription!: Subscription;
   pullAvailableAreasSubscription!: Subscription;
-  dateUpdatedSubscription!: Subscription;
 
   constructor(
     private dataService: DataService,
@@ -103,13 +95,11 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private controlerService: ControlerService,
-    private timelineService: TimelineService,
   ) {
 
     this.zoomEventSubscription = this.mapService.zoomEvent.subscribe(
       (_: boolean) => {
         this.mapService.zoomToExtent(this.gtfsLayer.getSource().getExtent(), this.currentZoomValue)
-
       }
     );
 
@@ -145,48 +135,38 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.pullAvailableRouteTypeSubscription = this.dataService.availableRouteTypes.subscribe(
       (routeType: string[]) => {
-
         this.currentRouteTypes = routeType;
-        // TODO build legend with D3
-
       }
     );
-
-
-
 
     this.pullBoundingBoxDataSubscription = this.dataService.rangeDateData.subscribe(
       (element) => {
+
         this.dataBoundingBox = element.data_bounds;
         this.startDate = this.parseTime(element.start_date);
-        if (this.startDate !== null) {
-          this.endDate = this.parseTime(element.end_date);
+        this.endDate = this.parseTime(element.end_date)
 
-          // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
-          const now = new Date()
-          this.currentDate = `${element.start_date.split(" ")[0]} ${now.toISOString().split('T')[1].split(".")[0]}`
-
-          this.timelineService.pushTimeLineInputs(this.startDate, this.endDate, this.currentDate)
+        // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
+        const now = new Date()
+        let currentDate = new Date(
+          `${this.startDate.getFullYear()}-${this.startDate.getMonth() + 1}-${this.startDate.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+        )
+        if (currentDate < this.startDate) {
+          // to avoid case where current time is out of the data time bounds
+          this.currentDate = this.startDate
+        } else {
+          this.currentDate = currentDate
         }
+        // TIPS call this.getCurrentDate(this.currentDate) to display data without timeline
       }
     );
 
-    this.dateUpdatedSubscription = this.timelineService.dateUpdated.subscribe(
-      (date) => {
-        this.currentDate = date
-        this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
-
-      }
-    )
-
     this.pullGeoDataSubscription = this.dataService.GeoData.subscribe(
-      (element) => {
-        this.geoData = element;
-        if (this.geoData !== null && this.currentDate !== null) {
-          this.dataService.pullGeoDataToMap(this.geoData);
+      (geoData) => {
+        if (geoData.length > 0) {
+          this.dataService.pullGeoDataToMap(geoData);
         }
-
-      }
+      },
     );
 
     this.pullAvailableAreasSubscription = this.dataService.availableAreas.subscribe(
@@ -209,15 +189,17 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     // the begining of the process
     this.dataService.pullAvailableAreas();
 
-    this.innerWidth = window.screen.width;
-    this.innerHeight = window.screen.height;
+  }
+
+  ngAfterViewInit(): void {
+    this.updateData(this.currentArea)
 
   }
 
-    ngAfterViewInit(): void {
-      this.updateData(this.currentArea)
-
-    }
+  getCurrentDate(date: Date): void {
+    this.currentDate = date
+    this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
+  }
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
@@ -236,7 +218,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.zoomEventSubscription.unsubscribe();
     this.screenMapBoundSubscription.unsubscribe();
     this.pullAvailableAreasSubscription.unsubscribe();
-    this.dateUpdatedSubscription.unsubscribe();
     this.pullAvailableRouteTypeSubscription.unsubscribe();
 
 
@@ -252,7 +233,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.mapService.sendZoomAction();
   }
 
-  private parseTime(time: string): Date | null {
+  private parseTime(time: string): Date {
     return new Date(time);
   }
 
@@ -266,11 +247,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentZoomValue = data_found[0]["zoom"]
 
     this.dataService.pullRangeDateData(this.currentArea);
-    // TODO build dynamic routeType legend with d3
-    // this.dataService.pullAvailableRouteTypes(this.currentArea)
-
-    this.timelineService.pushDefaultSpeedValue(this.currentstepValue)
-
   }
 
   showHideLegend(): void {
@@ -307,8 +283,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
         route_long_name: feature.route_long_name,
       })
       featuresToAdd.push(iconFeature)
-      // iconFeature.setStyle(style(feature))
-      // vectorSource.addFeature(iconFeature)
+
     })
     vectorSource.addFeatures(featuresToAdd)
     const layers = this.map.getLayers().getArray()

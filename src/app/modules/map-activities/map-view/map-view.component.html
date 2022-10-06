@@ -14,13 +14,25 @@
     <app-theme-legend
     ></app-theme-legend>
 
-    <app-time-legend
+    <!-- <app-time-legend
       [currentActivityIdSelected]="fragment"
       [map]="map"
-    ></app-time-legend>
+    ></app-time-legend> -->
+
+    <app-time-legend
+    [timeLineSpeedSliderEnabled]="false"
+    (currentDateEvent)="getCurrentDate($event)"
+    [startDate]="startDate"
+    [endDate]="endDate"
+    [currentDate]="currentDate"
+    currentDateFormat="MMMM y"
+    [stepValue]="800"
+    [timelineDataViz]="geoFeaturesData"
+  ></app-time-legend>
+
 
   </ng-template>
-  
+
 </set-legend-container>
 
 <ng-container *ngTemplateOutlet="activitiesPopups; context:{}"></ng-container>

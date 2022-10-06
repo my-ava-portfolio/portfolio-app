@@ -7,7 +7,7 @@
       <fa-icon class="" [icon]="centerIcon"></fa-icon>
     </button>
   </ng-template>
-  
+
   <ng-template #controlersTemplate>
 
     <div class="d-flex flex-row justify-content-around">
@@ -56,11 +56,15 @@
     </div>
 
     <set-section-container>
-      <app-time-line
-        timeLineId="timeline-slider"
+      <app-time-legend
         [timeLineSpeedSliderEnabled]="true"
-        [sliderDayStyleEnabled]="true"
-      ></app-time-line>
+        (currentDateEvent)="getCurrentDate($event)"
+        [startDate]="startDate"
+        [endDate]="endDate"
+        timelineDateFormat="hour"
+        [currentDate]="currentDate"
+        [stepValue]="currentstepValue"
+      ></app-time-legend>
     </set-section-container>
 
   </ng-template>

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 import { apiBaseUrl } from '@core/global-values/svr-url';
+import { formatDate } from '@angular/common';
 
 
 @Injectable({
@@ -30,8 +31,9 @@ export class DataService {
 
 
 
-  pullGeoData(area: string, current_date: string, bounds: number[]): void {
-    this.http.get<any>(this.apiUrl + area.toLowerCase() + '/moving_nodes_by_date?current_date=' + current_date + "&bounds=" + bounds).subscribe({
+  pullGeoData(area: string, current_date: Date, bounds: number[]): void {
+    const currentDate = formatDate(current_date, 'yyyy-MM-dd HH:mm:ss', 'fr_FR')
+    this.http.get<any>(this.apiUrl + area.toLowerCase() + '/moving_nodes_by_date?current_date=' + currentDate + "&bounds=" + bounds).subscribe({
       complete: () => {
       },
       error: error => {

@@ -9,6 +9,7 @@ import { ControlerService } from '@services/controler.service';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
 
+
 @Component({
   selector: 'app-app-layout',
   templateUrl: './layout.component.html',
@@ -79,7 +80,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
       (data) => {
         this.jobsData = data.activities_data.jobs;
-        console.log(data)
 
         this.personalProjectsData = data.activities_data["personal-projects"].reverse();
         this.skillsData = data.skills_data;
@@ -103,7 +103,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // this.adjustZoom();
   }
 
 
