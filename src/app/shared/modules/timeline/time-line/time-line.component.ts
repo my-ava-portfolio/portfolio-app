@@ -90,7 +90,7 @@ export class TimeLineComponent implements OnInit, OnChanges {
     const playButton: any = d3.select('#play-button');
 
     this.initDateRange();
-
+    
     const slider = svg.append('g')
       .attr('class', 'slider-bar')
       .attr('transform', `translate(${this.margin.left},${this.height / 2})`);
@@ -118,14 +118,13 @@ export class TimeLineComponent implements OnInit, OnChanges {
         .on('end', (e: any) => {
 
           // reset button play if animation is done and play button == continue
-          if (this.startDate !== null && this.endDate !== null) {
-            if (this.dateRange.invert(this.displayedDatePixelValue).toTimeString() === this.endDate.toTimeString()
-              || this.dateRange.invert(this.displayedDatePixelValue).toTimeString() === this.startDate.toTimeString()
-            ) {
-              playButton.text('Play');
-            } else {
-              playButton.text('Continue');
-            }
+          if (this.dateRange.invert(this.displayedDatePixelValue).toTimeString() === this.endDate.toTimeString()
+            || this.dateRange.invert(this.displayedDatePixelValue).toTimeString() === this.startDate.toTimeString()
+          ) {
+            playButton.text('Play');
+          } else {
+            playButton.text('Continue');
+            
           }
       })
     );
@@ -172,17 +171,18 @@ export class TimeLineComponent implements OnInit, OnChanges {
     const circleEvents = slider.append('g')
       .attr('class', 'circle-events')
 
+    // synchro timeline with the defaultDate
+    this.displayedDatePixelValue = this.dateRange(this.defaultDate);
     // update to current date ; in the past it was the end date (with endDate attribute)
     this.update(this.defaultDate);
+
   };
 
   private initDateRange(): void {
-    if (this.startDate !== null && this.endDate !== null) {
-      this.dateRange = d3.scaleTime()
-      .domain([this.startDate, this.endDate])
-      .range([0, this.maxDatePosition])
-      .clamp(true);
-    }
+    this.dateRange = d3.scaleTime()
+    .domain([this.startDate, this.endDate])
+    .range([0, this.maxDatePosition])
+    .clamp(true);
   };
 
   private formatTimeLineDate(time: Date): string {
