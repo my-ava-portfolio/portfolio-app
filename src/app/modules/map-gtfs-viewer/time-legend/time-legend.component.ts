@@ -71,14 +71,6 @@ export class TimeLegendComponent extends TimeLineComponent implements OnDestroy 
     super.update(date);
     this.updateHandleTimelineStyleFromTime(date)
 
-    // if (this.sliderDayStyleEnabled) {
-    //   // we have to use a svg text object
-    //   const pixelDate: number = this.dateRange(date)
-    //   d3.select('#handle-timeline').attr('x', pixelDate);
-    //   this.updateHandleTimelineStyleFromTime(date)
-    // } else {
-    //   // we have to use a svg circle object
-    // }
   }
 
   updateHandleTimelineStyleFromTime(date: any): void {

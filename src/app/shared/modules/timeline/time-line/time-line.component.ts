@@ -51,7 +51,6 @@ export class TimeLineComponent implements OnInit, OnChanges {
   constructor( ) { }
 
   ngOnInit(): void {
-    this.maxStepValue = this.stepValue * 2 - this.minStepValue
   }
 
 
@@ -71,6 +70,11 @@ export class TimeLineComponent implements OnInit, OnChanges {
 
         this.buildTimeline()
       }
+    }
+
+    if (changes.stepValue) {
+      this.maxStepValue = this.stepValue * 2 - this.minStepValue
+
     }
 
   }
