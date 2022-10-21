@@ -93,6 +93,7 @@ export const mapActivitiesPages: activitiesPagesType = {
       content_url: "/maps/app/activities",
       categories: [],
       tags: [],
+      status: 'Done',
       image_url: `${assetsImagesPath}/portfolio_activities.jpg`,
       description: `Cartographie de mon parcours universitaire et professionnel. Le front utilise Angular avec notamment 
           les libraries OpenLayers pour la gestion des objets géographiques et D3js pour la légende temporelles. Les données 
@@ -105,6 +106,7 @@ export const mapActivitiesPages: activitiesPagesType = {
       content_url: "/maps/app/sandbox",
       categories: [],
       tags: [],
+      status: 'Dev',
       image_url: `${assetsImagesPath}/sandbox.jpg`,
       description: `Un bac à sable pour saisir et exporter des données géographiques: Points, LineString, Polygons (et à trous). 
         L'ensemble est totalement géré par le front avec OpenLayers principalement. En cours de développement...`
@@ -116,6 +118,7 @@ export const mapActivitiesPages: activitiesPagesType = {
       content_url: "/maps/app/gtfs-viewer",
       categories: [],
       tags: [],
+      status: 'Dev',
       image_url: `${assetsImagesPath}/gtfs_viewer.jpg`,
       description: `Application pour visualiser la circulation sur une journée des transports en commun à partir d'un GTFS. 
         On propose ainsi une cartographie spatio-temporelle des TER de la SNCF sur l'ensemble du territoire et les lignes de trams 
@@ -128,6 +131,7 @@ export const mapActivitiesPages: activitiesPagesType = {
       type: 'website',
       categories: [],
       tags: [],
+      status: 'Dev',
       content_url: "https://findmypath.amaury-valorge.com/",
       image_url: `${assetsImagesPath}/find_my_path.jpg`,
       description: `Application Angular (Leaflet, D3js) pour déterminer des plus courts chemins à partir des données OpenStreetMap. 

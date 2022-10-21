@@ -36,6 +36,7 @@ export interface mapFeature {
   title: string,
   image_url: string,
   type: 'app' | 'modal' | 'website' | 'video',
+  status?: 'Done' | 'Dev',
   content_url: string,
   categories: badge[], // map home & blog page (color compute dynamically)
   tags: badge[], // map home & blog page (color compute dynamically)
