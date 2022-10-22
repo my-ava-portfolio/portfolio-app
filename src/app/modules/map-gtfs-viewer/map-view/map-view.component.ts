@@ -32,9 +32,9 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   // TODO improve API to return the areas list
   availableArea!: string[];
   input_data: any[] = [
-    { "area": "lyon", "default_step_value": 4000, "zoom": 12 },
-    { "area": "ter", "default_step_value": 1500, "zoom": 6 },
-    { "area": "toulouse", "default_step_value": 4000, "zoom": 12 }
+    { "area": "lyon", "default_step_value": 4000, "zoom": 12, "source": "Métropole de Lyon" },
+    { "area": "ter", "default_step_value": 1500, "zoom": 6, "source": "SNCF" },
+    { "area": "toulouse", "default_step_value": 4000, "zoom": 12, "source": "Toulouse métropole" }
   ]
 
   widthLegendElement = 100;
@@ -61,6 +61,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   currentArea = this.input_data[1].area;
   currentstepValue = this.input_data[1].default_step_value;
   currentZoomValue = this.input_data[1].zoom;
+  currentAttributionValue = this.input_data[1].source;
 
   endDate!: Date;
   startDate!: Date;
@@ -123,7 +124,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.geoFeaturesData = geoFeaturesData;
 
-        this.refreshSourceLayer(this.gtfsLayer, geoFeaturesData, gtfsStyle)
+        this.refreshSourceLayer(geoFeaturesData)
 
         // we zoom to the area only once
         if (this.previousArea !== this.currentArea) {
@@ -245,6 +246,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentArea = data
     this.currentstepValue = data_found[0]["default_step_value"]
     this.currentZoomValue = data_found[0]["zoom"]
+    this.currentAttributionValue = data_found[0]["source"]
 
     this.dataService.pullRangeDateData(this.currentArea);
   }
@@ -271,10 +273,13 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   };
 
 
-  refreshSourceLayer(layer: any, features: any[], style: Function): void {
+  refreshSourceLayer(features: any[]): void {
     let vectorSource = new VectorSource({
       features: [],
+      attributions: this.currentAttributionValue  // sources will be added
     });
+
+
     let featuresToAdd: any[] = []
     features.forEach((feature: any, index: number) => {
       let iconFeature = new Feature({
