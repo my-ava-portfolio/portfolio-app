@@ -32,12 +32,12 @@
 
                 <ng-container *ngIf="feature.type !== 'modal'">
                     <a *ngIf="!feature.content_url.includes('http')" [routerLink]="'../' + feature.content_url" class="btn bg-warning">Accéder</a>
-                    <a *ngIf="feature.content_url.includes('http')" [href]="feature.content_url" class="btn bg-warning" target="_blank" rel="noopener noreferrer">Accéder</a>
+                    <a *ngIf="feature.content_url.includes('http')" [href]="feature.content_url" class="btn btn-sm bg-warning" target="_blank" rel="noopener noreferrer">Accéder</a>
                 </ng-container>
 
                 <ng-container *ngIf="feature.type === 'modal'">
                     <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: feature.content_url, activityId: feature.id, pictureId: idx}"></ng-container>
-                    <a data-bs-toggle="modal" [href]="'#modal-' + feature.id + idx" role="button" class="btn bg-warning">Afficher</a>
+                    <a data-bs-toggle="modal" [href]="'#modal-' + feature.id + idx" role="button" class="btn btn-sm bg-warning">Afficher</a>
                 </ng-container>
         
             </div>
