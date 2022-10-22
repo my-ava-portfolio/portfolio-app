@@ -323,6 +323,14 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         .attr('cx', (d) => d.cx)
         .attr('cy', (d) => d.cy)
         .attr('r', (d) => d.r);
+    
+    // create line to display that object is disabled
+    let skillsButtons = LegendElements.filter((d) => ['themes', 'technics', 'tools'].includes(d.id))
+      .append("line")
+      .attr('x1', (d) => d.cx - d.r - 2)
+      .attr('x2', (d) => d.cx + d.r + 2)
+      .attr('y1', (d) => d.cy - d.r - 2)
+      .attr('y2', (d) => d.cy + d.r + 2)
 
     LegendElements
       .append('text')

@@ -53,12 +53,17 @@ $disabled-color: grey;
     user-select: none;
 }
 
-.disabled-node circle {
-    stroke: $disabled-color;
-    stroke-width: 3;
-    fill: white !important;
+// .disabled-node circle {
+//     stroke: $disabled-color;
+//     stroke-width: 3;
+//     fill: white !important;
+// }
+
+.skillsLegend .disabled-node line {
+    stroke: red;
+    stroke-width: 2;
 }
-  
+
 .disabled-group {
     color: #aeaeae!important;
 }

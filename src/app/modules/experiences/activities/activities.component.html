@@ -85,6 +85,7 @@
               d-flex flex-row flex-wrap w-100
               my-2
             ">
+            
             <div class="me-1" *ngIf="activityType !== 'personal-project'">{{ this.contractValueAlias(activity.contract) }} - </div>
             <ng-container *ngIf="activity.status !== 'InProgress'">
                 <div class="me-1">Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }}</div>
