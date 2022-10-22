@@ -19,10 +19,10 @@ $theme-colors-map: (
     color: $warning,
     text: $black
   ),
-  // "danger": (
-  //   color: $danger,
-  //   text: $white
-  // ),
+  "danger": (
+    color: $danger,
+    text: $white
+  ),
   "light": (
     color: $light,
     text: $black
@@ -173,6 +173,7 @@ $theme-colors-map: (
     --color:#{map-get($colorSettings, 'color')};
     /**/
 
+    z-index: 100;
     position: absolute;
     top: 0;
     right: 0;

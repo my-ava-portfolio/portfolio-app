@@ -46,6 +46,7 @@
 <!-- ACTIVITY CARD TEMPLATE -->
 <ng-template #ActivityCardFeature let-activity='activity' let-activityType='activityType' let-activityIndex='activityIndex'>
   <div class="d-flex flex-column">
+    <div *ngIf="activity.status === 'InProgress'" class="stack-top-danger">Actuellement</div>
 
     <div class="d-flex flex-row justify-content-between position-relative">
 
@@ -80,19 +81,17 @@
               [iconInput]="locationIcon"
             ></set-icon-text>
 
-
-
           <div class="duration
               d-flex flex-row flex-wrap w-100
               my-2
             ">
             <div class="me-1" *ngIf="activityType !== 'personal-project'">{{ this.contractValueAlias(activity.contract) }} - </div>
             <ng-container *ngIf="activity.status !== 'InProgress'">
-                <div class="me-1"> Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }}</div>
+                <div class="me-1">Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }}</div>
             </ng-container>
 
             <ng-container *ngIf="activity.status === 'InProgress'">
-                <div class="me-1"> Du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
+                <div class="me-1">Du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
             </ng-container>
             <div> ({{activity.duration}})</div>
           </div>
