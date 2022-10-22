@@ -3,6 +3,7 @@ import { assetsLogoPath } from '@core/global-values/main';
 import { mapActivitiesPages } from '@core/global-values/topics';
 
 import { faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { backgroundTitle, specializationTitle } from '../core';
 
 @Component({
   selector: 'app-general-info',
@@ -15,6 +16,9 @@ export class GeneralInfoComponent implements OnInit {
   @Input() profilData: any;
 
   mapPages: any = mapActivitiesPages;
+
+  backgroundTitle = backgroundTitle;
+  specializationTitle = specializationTitle;
 
   assetsLogoPath = assetsLogoPath;
   cardTitle!: string;
