@@ -107,6 +107,7 @@ export class ResumeService {
 
 
   pullFullSkillsData(): void {
+    // not used
 
     this.http.get<any>(`${this.apiUrlFullSkillsData}`).subscribe({
       complete: () => {
