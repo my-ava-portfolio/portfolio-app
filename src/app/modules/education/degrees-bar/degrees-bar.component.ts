@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
 import { mapActivitiesPages } from '@core/global-values/topics';
 
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './degrees-bar.component.html',
   styleUrls: ['./degrees-bar.component.scss'],
 })
-export class DegreesBarComponent implements OnInit {
+export class DegreesBarComponent implements OnInit, OnDestroy {
 
   activityType = "education"
   isImageValid = true;
@@ -39,17 +39,20 @@ export class DegreesBarComponent implements OnInit {
     this.activitiesDataSubscription = this.resumeService.activitiesDataSubject.subscribe(
       (data: any) => {
         this.activityData = data;
-        console.log(data)
       }
     );
-
   }
 
   ngOnInit(): void {
     this.resumeService.queryActivitiesFromApi(this.activityType)
   }
 
+  ngOnDestroy(): void {
+    this.activitiesDataSubscription.unsubscribe();
+  }
+
   getTitle(data: any): string {
+    // TODO do it on html directly
     return (new Date(data.start_date)).getFullYear() + ' - ' +
      (new Date(data.end_date)).getFullYear();
   }

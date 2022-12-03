@@ -1,54 +1,56 @@
-<ng-container *ngFor="let publication of publicationsData">
-    <set-card-container
-        class="feature-publication col col-lg-5"
-        cardClass="m-3"
-        [title]="getTitle(publication)"
-        headerClass="text-bg-warning"
-        >
+<ng-container *ngIf="publicationsData">
+    <ng-container *ngFor="let publication of publicationsData">
+        <set-card-container
+            class="feature-publication col col-lg-5"
+            cardClass="m-3"
+            [title]="getTitle(publication)"
+            headerClass="text-bg-warning"
+            >
 
-        <ng-template #cardBodyTemplate>
-            <div class="
-                article
-                d-flex flex-row
-                align-items-center
-              ">
-
-                <set-paragraph-content>{{publication.publication}}</set-paragraph-content>
-
+            <ng-template #cardBodyTemplate>
                 <div class="
-                    infos
-                    d-flex flex-column
-                    text-center
-                    m-2
-                    ">
+                    article
+                    d-flex flex-row
+                    align-items-center
+                ">
 
-                    <ng-container *ngIf="publication.keywords">
-                        <ng-container *ngFor="let item of publication.keywords | keyvalue">
-                            <set-badge-content
-                                [customBgColor]="item.value"
-                            >{{item.key}}</set-badge-content>
+                    <set-paragraph-content>{{publication.publication}}</set-paragraph-content>
+
+                    <div class="
+                        infos
+                        d-flex flex-column
+                        text-center
+                        m-2
+                        ">
+
+                        <ng-container *ngIf="publication.keywords">
+                            <ng-container *ngFor="let item of publication.keywords | keyvalue">
+                                <set-badge-content
+                                    [customBgColor]="item.value"
+                                >{{item.key}}</set-badge-content>
+                            </ng-container>
                         </ng-container>
-                    </ng-container>
+
+                    </div>
 
                 </div>
 
-            </div>
+                <h6>Présentation</h6>
+                <set-paragraph-content class="footer">{{publication.description}}</set-paragraph-content>
+            </ng-template>
 
-            <h6>Présentation</h6>
-            <set-paragraph-content class="footer">{{publication.description}}</set-paragraph-content>
-        </ng-template>
+            <ng-template #cardFooterTemplate>
 
-        <ng-template #cardFooterTemplate>
+                <set-button-content *ngIf="publication.link"
+                class="small d-flex flex-row justify-content-center"
+                [url]="publication.link"
+                classes="btn-sm btn-danger"
+                color="danger"
+                [icon]="pdfFileIcon"
+                >Accès</set-button-content>
+            </ng-template>
 
-            <set-button-content *ngIf="publication.link"
-              class="small d-flex flex-row justify-content-center"
-              [url]="publication.link"
-              classes="btn-sm btn-danger"
-              color="danger"
-              [icon]="pdfFileIcon"
-            >Accès</set-button-content>
-        </ng-template>
-
-    </set-card-container>
+        </set-card-container>
+    </ng-container>
 
 </ng-container>

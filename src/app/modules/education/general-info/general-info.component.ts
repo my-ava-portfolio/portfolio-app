@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
 import { mapActivitiesPages } from '@core/global-values/topics';
 
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
   templateUrl: './general-info.component.html',
   styleUrls: ['./general-info.component.scss']
 })
-export class GeneralInfoComponent implements OnInit {
+export class GeneralInfoComponent implements OnInit, OnDestroy {
 
   mapPages: any = mapActivitiesPages;
 
@@ -46,11 +46,16 @@ export class GeneralInfoComponent implements OnInit {
         this.languagesData = data;
       }
     );
-
   }
+
   ngOnInit(): void {
-    this.resumeService.queryUserInfoFromApi()
-    this.resumeService.queryLanguagesFromApi()
+    this.resumeService.queryUserInfoFromApi();
+    this.resumeService.queryLanguagesFromApi();
+  }
+
+  ngOnDestroy(): void {
+    this.userInfoDataSubscription.unsubscribe();
+    this.languagesDataSubscription.unsubscribe();
   }
 
 }

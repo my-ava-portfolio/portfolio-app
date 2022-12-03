@@ -25,14 +25,20 @@ export class ResumeService {
   private acitvitiesRoute = apiUrl + 'activities';
   activitiesDataSubject: Subject<any> = new Subject<any>();
 
+  private publicationsRoute = apiUrl + 'publications';
+  publicationsDataSubject: Subject<any> = new Subject<any>();
+
+  private trainingsRoute = apiUrl + 'trainings';
+  trainingsDataSubject: Subject<any> = new Subject<any>();
+
+
 
   /////
   private apiUrlResumeData = apiUrl + 'resume_static_data';
   resumeData: Subject<any> = new Subject<any>();
   private apiUrlContactData = apiUrl + 'contact_data';
   contactData: Subject<any> = new Subject<any>();
-  // private apiUrlGeneralData = apiUrl + 'general_data';
-  // generalData: Subject<any> = new Subject<any>();
+
   private apiUrlFullSkillsData = apiUrl + 'full_skills_data';
   fullSkillsData: Subject<any> = new Subject<any>();
 
@@ -85,7 +91,6 @@ export class ResumeService {
   }
 
   queryLanguagesFromApi(): void {
-
     this.http.get<any>(`${this.languagesRoute}`).subscribe({
       complete: () => {
       },
@@ -103,7 +108,6 @@ export class ResumeService {
   }
 
   queryUserInfoFromApi(): void {
-
     this.http.get<any>(`${this.userInfoRoute}`).subscribe({
       complete: () => {
       },
@@ -121,7 +125,6 @@ export class ResumeService {
   }
 
   queryUserContactFromApi(): void {
-
     this.http.get<any>(`${this.userContactRoute}`).subscribe({
       complete: () => {
       },
@@ -139,7 +142,6 @@ export class ResumeService {
   }
 
   queryActivitiesFromApi(activityType: string): void {
-
     this.http.get<any>(`${this.acitvitiesRoute}/${activityType}`).subscribe({
       complete: () => {
       },
@@ -156,10 +158,8 @@ export class ResumeService {
     });
   }
 
-  pullFullSkillsData(): void {
-    // not used
-
-    this.http.get<any>(`${this.apiUrlFullSkillsData}`).subscribe({
+  queryPublicationsFromApi(activityType: string): void {
+    this.http.get<any>(`${this.publicationsRoute}/${activityType}`).subscribe({
       complete: () => {
       },
       error: error => {
@@ -169,13 +169,32 @@ export class ResumeService {
       next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-          this.fullSkillsData.next(response);
+          this.publicationsDataSubject.next(response);
         }
       },
     });
   }
-
-
+  
+  queryTrainingsFromApi(parameters: any = {}): void {
+    this.http.get<any>(
+      `${this.trainingsRoute}`,
+      parameters
+    
+    ).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.trainingsDataSubject.next(response);
+        }
+      },
+    });
+  }
 
   pullActivitiesGraphData(
     isTechnics: boolean | string,

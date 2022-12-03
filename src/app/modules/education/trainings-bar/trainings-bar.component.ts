@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
 
 import { faUserGraduate, faMapMarkerAlt, faLanguage, faAddressBook, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { ResumeService } from '@services/resume.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -9,12 +11,12 @@ import { faUserGraduate, faMapMarkerAlt, faLanguage, faAddressBook, faExpand } f
   templateUrl: './trainings-bar.component.html',
   styleUrls: ['./trainings-bar.component.scss'],
 })
-export class TrainingsBarComponent implements OnInit, OnChanges {
-  @Input() fragment: any;
-  @Input() trainingsData: any;
+export class TrainingsBarComponent implements OnInit, OnDestroy {
+
+  activityType = "education"
 
   assetsLogoPath = assetsLogoPath;
-  inputTrainingsData: any;
+  trainingsData: any;
 
   // icons
   degreeIcon = faUserGraduate;
@@ -23,29 +25,28 @@ export class TrainingsBarComponent implements OnInit, OnChanges {
   presIcon = faAddressBook;
   expandIcon = faExpand;
 
-  availabled_topics = ["trainings"]
-  defaultTabView = this.availabled_topics[0];
-  tabView!: string;
+  trainingsDataSubscription!: Subscription;
 
-  constructor() { }
+  constructor(
+    private resumeService: ResumeService,
+  ) {
+
+    this.trainingsDataSubscription = this.resumeService.trainingsDataSubject.subscribe(
+      (data: any) => {
+        this.trainingsData = data;
+        // TODO create a component in order to display badges with route
+      }
+    );
+
+  }
+
 
   ngOnInit(): void {
-    this.tabView = this.defaultTabView;
-    this.inputTrainingsData = this.trainingsData;
+    this.resumeService.queryTrainingsFromApi();
   }
 
-  changeTab(topic: string): void {
-    this.tabView = topic;
+  ngOnDestroy(): void {
+    this.trainingsDataSubscription.unsubscribe();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-
-    if (changes.fragment.currentValue !== undefined) {
-      let fragmentCurrentValue: string = changes.fragment.currentValue
-      if (this.availabled_topics.includes(fragmentCurrentValue)) {
-        this.tabView = changes.fragment.currentValue;
-      }
-    }
-
-  }
 }

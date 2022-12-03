@@ -1,22 +1,44 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { faBook, faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import { ResumeService } from '@services/resume.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-publication-bar',
   templateUrl: './publication-bar.component.html',
   styleUrls: ['./publication-bar.component.scss']
 })
-export class PublicationBarComponent implements OnInit {
-  @Input() fragment: any;
-  @Input() publicationsData: any;
+export class PublicationBarComponent implements OnInit, OnDestroy {
+
+  activityType = "education"
 
   publishIcon = faBook;
   pdfFileIcon = faFilePdf;
 
-  constructor() { }
+  publicationsData!: any;
+  
+  publicationsDataSubscription!: Subscription
+
+  constructor(
+    private resumeService: ResumeService,
+  ) {
+
+    this.publicationsDataSubscription = this.resumeService.publicationsDataSubject.subscribe(
+      (data: any) => {
+        this.publicationsData = data;
+        // TODO create a component in order to display badges with route
+      }
+    );
+
+  }
 
   ngOnInit(): void {
+    this.resumeService.queryPublicationsFromApi(this.activityType)
+  }
+
+  ngOnDestroy(): void {
+    this.publicationsDataSubscription.unsubscribe();
   }
 
   getTitle(data: any): string {
