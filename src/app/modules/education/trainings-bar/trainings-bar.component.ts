@@ -12,7 +12,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./trainings-bar.component.scss'],
 })
 export class TrainingsBarComponent implements OnInit, OnDestroy {
-  @Input() activityType: any;
 
   assetsLogoPath = assetsLogoPath;
   trainingsData: any;
