@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
 import { mapActivitiesPages } from '@core/global-values/topics';
 

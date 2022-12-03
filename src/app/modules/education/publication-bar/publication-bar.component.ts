@@ -10,8 +10,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./publication-bar.component.scss']
 })
 export class PublicationBarComponent implements OnInit, OnDestroy {
-
-  activityType = "education"
+  @Input() activityType: any;
 
   publishIcon = faBook;
   pdfFileIcon = faFilePdf;

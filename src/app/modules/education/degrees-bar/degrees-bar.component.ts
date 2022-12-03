@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
 import { mapActivitiesPages } from '@core/global-values/topics';
 
@@ -13,8 +13,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./degrees-bar.component.scss'],
 })
 export class DegreesBarComponent implements OnInit, OnDestroy {
+  @Input() activityType: any;
 
-  activityType = "education"
   isImageValid = true;
 
   mapPages: any = mapActivitiesPages;

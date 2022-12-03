@@ -22,6 +22,7 @@ export class LayoutComponent implements OnInit {
   fragment!: string | null;
   apiImgUrl = assetsLogoPath;
 
+  activityType = "education"
 
   activityIdFromActivityComponents!: string;
 
@@ -42,7 +43,6 @@ export class LayoutComponent implements OnInit {
   isAnchorExistsChecker = interval(1000); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
 
-  resumeDataSubscription!: Subscription;
   activitiesFilteredSubscription!: Subscription;
 
   constructor(
@@ -55,34 +55,10 @@ export class LayoutComponent implements OnInit {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
-    // TODO add a dedicated route to get education data
-    // TODO get linked publications
-    this.resumeDataSubscription = this.resumeService.resumeData.subscribe(
-      (data) => {
-        this.degreesData = data.education;
-        // this.generalData = data.general;
-        this.languagesData = data.languages;
-        this.profilData = data.profil;
-        this.trainingsData = data.trainings;
-        // this.summaryData = data.profil.carrier_summary;
-        // this.qualitiesData = data.profil.qualities;
-        data.education.forEach((element: { publications: null; }) => {
-          if (element.publications !== null) {
-            this.publicationsData = [ ...this.publicationsData, ...element.publications]
-          }
-        });
-
-        this.isDataAvailable = true;
-      },
-      (error) => {
-      }
-    );
 
    }
 
   ngOnInit(): void {
-    // this.fragment = null
-    // this.resumeService.pullResumeGeneralData();
     this.sendResumeSubMenus()
   }
 
@@ -103,7 +79,6 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.resumeDataSubscription.unsubscribe();
   }
 
   sendResumeSubMenus(): void {

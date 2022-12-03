@@ -28,7 +28,7 @@ export class ResumeService {
   private publicationsRoute = apiUrl + 'publications';
   publicationsDataSubject: Subject<any> = new Subject<any>();
 
-  private trainingsRoute = apiUrl + 'trainings';
+  private trainingsRoute = apiUrl + 'trainings/';
   trainingsDataSubject: Subject<any> = new Subject<any>();
 
 
@@ -91,7 +91,8 @@ export class ResumeService {
   }
 
   queryLanguagesFromApi(): void {
-    this.http.get<any>(`${this.languagesRoute}`).subscribe({
+    console.log(this.languagesRoute)
+    this.http.get<any>(`${this.languagesRoute}/`).subscribe({
       complete: () => {
       },
       error: error => {
@@ -175,12 +176,8 @@ export class ResumeService {
     });
   }
   
-  queryTrainingsFromApi(parameters: any = {}): void {
-    this.http.get<any>(
-      `${this.trainingsRoute}`,
-      parameters
-    
-    ).subscribe({
+  queryTrainingsFromApi(): void {
+    this.http.get<any>(this.trainingsRoute).subscribe({
       complete: () => {
       },
       error: error => {

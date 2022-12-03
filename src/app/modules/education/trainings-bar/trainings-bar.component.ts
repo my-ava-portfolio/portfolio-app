@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
 
 import { faUserGraduate, faMapMarkerAlt, faLanguage, faAddressBook, faExpand } from '@fortawesome/free-solid-svg-icons';
@@ -12,8 +12,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./trainings-bar.component.scss'],
 })
 export class TrainingsBarComponent implements OnInit, OnDestroy {
-
-  activityType = "education"
+  @Input() activityType: any;
 
   assetsLogoPath = assetsLogoPath;
   trainingsData: any;
@@ -34,6 +33,7 @@ export class TrainingsBarComponent implements OnInit, OnDestroy {
     this.trainingsDataSubscription = this.resumeService.trainingsDataSubject.subscribe(
       (data: any) => {
         this.trainingsData = data;
+        console.log(data)
         // TODO create a component in order to display badges with route
       }
     );
