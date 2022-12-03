@@ -3,6 +3,8 @@ import { assetsLogoPath } from '@core/global-values/main';
 import { mapActivitiesPages } from '@core/global-values/topics';
 
 import { faUserGraduate, faLanguage, faAddressBook, faExpand, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { ResumeService } from '@services/resume.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -11,16 +13,15 @@ import { faUserGraduate, faLanguage, faAddressBook, faExpand, faMapMarkerAlt } f
   styleUrls: ['./degrees-bar.component.scss'],
 })
 export class DegreesBarComponent implements OnInit {
-  @Input() fragment: any;
-  @Input() degreesData: any;
 
+  activityType = "education"
   isImageValid = true;
 
   mapPages: any = mapActivitiesPages;
 
   assetsLogoPath = assetsLogoPath;
-  cardTitle!: string;
-  inputDegreesData: any;
+
+  activityData: any;
 
   // icons
   locationIcon = faMapMarkerAlt;
@@ -29,12 +30,23 @@ export class DegreesBarComponent implements OnInit {
   presIcon = faAddressBook;
   expandIcon = faExpand;
 
+  activitiesDataSubscription!: Subscription
 
-  constructor() { }
+  constructor(
+    private resumeService: ResumeService,
+  ) {
+
+    this.activitiesDataSubscription = this.resumeService.activitiesDataSubject.subscribe(
+      (data: any) => {
+        this.activityData = data;
+        console.log(data)
+      }
+    );
+
+  }
 
   ngOnInit(): void {
-
-    this.inputDegreesData = this.degreesData;
+    this.resumeService.queryActivitiesFromApi(this.activityType)
   }
 
   getTitle(data: any): string {

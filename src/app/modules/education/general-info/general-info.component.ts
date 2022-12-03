@@ -13,7 +13,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
   styleUrls: ['./general-info.component.scss']
 })
 export class GeneralInfoComponent implements OnInit {
-  @Input() fragment: any;
 
   mapPages: any = mapActivitiesPages;
 
@@ -45,8 +44,6 @@ export class GeneralInfoComponent implements OnInit {
     this.languagesDataSubscription = this.resumeService.languagesDataSubject.subscribe(
       (data) => {
         this.languagesData = data;
-        console.log(this.languagesData)
-
       }
     );
 
