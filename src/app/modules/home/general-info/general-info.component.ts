@@ -9,31 +9,32 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./general-info.component.scss']
 })
 export class GeneralInfoComponent implements OnInit {
-  generalData!: any;
+  
+  userInfoData!: any;
 
   imageProfile: string = imageProfile;
 
 
-  generalDataSubscription!: Subscription;
+  userInfoDataSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
   ) {
 
 
-    this.generalDataSubscription = this.resumeService.generalData.subscribe(
+    this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
       (data) => {
-        this.generalData = data;
+        this.userInfoData = data;
       }
     );
 
   }
 
   ngOnInit(): void {
-    this.resumeService.pullGeneralData();
+    this.resumeService.queryUserInfoFromApi();
   }
 
   ngOnDestroy(): void {
-    this.generalDataSubscription.unsubscribe();
+    this.userInfoDataSubscription.unsubscribe();
   }
 }

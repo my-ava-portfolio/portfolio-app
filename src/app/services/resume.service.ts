@@ -12,12 +12,20 @@ export class ResumeService {
 
   ErrorResumeDataApiFound: Subject<string> = new Subject<string>();
 
+  private userInfoRoute = apiUrl + 'user/info';
+  userInfoDataSubject: Subject<any> = new Subject<any>();
+
+  private userContactRoute = apiUrl + 'user/contact';
+  userContactDataSubject: Subject<any> = new Subject<any>();
+
+
+  /////
   private apiUrlResumeData = apiUrl + 'resume_static_data';
   resumeData: Subject<any> = new Subject<any>();
   private apiUrlContactData = apiUrl + 'contact_data';
   contactData: Subject<any> = new Subject<any>();
-  private apiUrlGeneralData = apiUrl + 'general_data';
-  generalData: Subject<any> = new Subject<any>();
+  // private apiUrlGeneralData = apiUrl + 'general_data';
+  // generalData: Subject<any> = new Subject<any>();
   private apiUrlFullSkillsData = apiUrl + 'full_skills_data';
   fullSkillsData: Subject<any> = new Subject<any>();
 
@@ -69,9 +77,9 @@ export class ResumeService {
     });
   }
 
-  pullContactData(): void {
+  queryUserContactFromApi(): void {
 
-    this.http.get<any>(`${this.apiUrlContactData}`).subscribe({
+    this.http.get<any>(`${this.userContactRoute}`).subscribe({
       complete: () => {
       },
       error: error => {
@@ -81,15 +89,15 @@ export class ResumeService {
       next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-          this.contactData.next(response);
+          this.userContactDataSubject.next(response);
         }
       },
     });
   }
 
-  pullGeneralData(): void {
+  queryUserInfoFromApi(): void {
 
-    this.http.get<any>(`${this.apiUrlGeneralData}`).subscribe({
+    this.http.get<any>(`${this.userInfoRoute}`).subscribe({
       complete: () => {
       },
       error: error => {
@@ -99,7 +107,7 @@ export class ResumeService {
       next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-          this.generalData.next(response);
+          this.userInfoDataSubject.next(response);
         }
       },
     });

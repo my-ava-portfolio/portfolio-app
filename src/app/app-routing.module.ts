@@ -24,30 +24,30 @@ const appRoutes: Routes = [
         loadChildren: () => import('@modules/home/home.module').then(m => m.HomeModule),
         data: {preload: true}
       },
-      {
-        path: 'experiences',
-        loadChildren: () => import('@modules/experiences/experiences.module').then(m => m.ExperiencesModule),
-      },
-      {
-        path: 'resume',
-        loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
-      },
-      {
-        path: 'education',
-        loadChildren: () => import('@modules/education/education.module').then(m => m.EducationModule),
-      },
-      {
-        path: 'gallery',
-        loadChildren: () => import('@modules/gallery/gallery.module').then(m => m.GalleryModule),
-      },
-      {
-        path: 'maps',
-        loadChildren: () => import('@modules/maps/maps.module').then(m => m.MapsModule),
-      },
-      {
-        path: 'blog',
-        loadChildren: () => import('@modules/blog/blog.module').then(m => m.BlogModule),
-      },
+      // {
+      //   path: 'experiences',
+      //   loadChildren: () => import('@modules/experiences/experiences.module').then(m => m.ExperiencesModule),
+      // },
+      // {
+      //   path: 'resume',
+      //   loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
+      // },
+      // {
+      //   path: 'education',
+      //   loadChildren: () => import('@modules/education/education.module').then(m => m.EducationModule),
+      // },
+      // {
+      //   path: 'gallery',
+      //   loadChildren: () => import('@modules/gallery/gallery.module').then(m => m.GalleryModule),
+      // },
+      // {
+      //   path: 'maps',
+      //   loadChildren: () => import('@modules/maps/maps.module').then(m => m.MapsModule),
+      // },
+      // {
+      //   path: 'blog',
+      //   loadChildren: () => import('@modules/blog/blog.module').then(m => m.BlogModule),
+      // },
       { path: '**', redirectTo: '/home', pathMatch : 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },
