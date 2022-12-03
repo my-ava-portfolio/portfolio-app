@@ -15,8 +15,6 @@ import { Subscription } from 'rxjs';
 export class DegreesBarComponent implements OnInit, OnDestroy {
   @Input() activityType: any;
 
-  isImageValid = true;
-
   mapPages: any = mapActivitiesPages;
 
   assetsLogoPath = assetsLogoPath;
