@@ -70,7 +70,7 @@ export class LayoutComponent implements OnInit, OnDestroy  {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
-    this.generalDataSubscription = this.resumeService.generalData.subscribe(
+    this.generalDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
       (data) => {
         this.profilData = data
         this.generalData = data.resume_validity_range;
@@ -122,7 +122,7 @@ export class LayoutComponent implements OnInit, OnDestroy  {
    }
 
   ngOnInit(): void {
-    this.resumeService.pullGeneralData();
+    this.resumeService.queryUserInfoFromApi();
     this.sendResumeSubMenus()
 
   }

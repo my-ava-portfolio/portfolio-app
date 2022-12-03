@@ -32,10 +32,10 @@ const appRoutes: Routes = [
       //   path: 'resume',
       //   loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
       // },
-      // {
-      //   path: 'education',
-      //   loadChildren: () => import('@modules/education/education.module').then(m => m.EducationModule),
-      // },
+      {
+        path: 'education',
+        loadChildren: () => import('@modules/education/education.module').then(m => m.EducationModule),
+      },
       // {
       //   path: 'gallery',
       //   loadChildren: () => import('@modules/gallery/gallery.module').then(m => m.GalleryModule),

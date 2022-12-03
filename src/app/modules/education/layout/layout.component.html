@@ -1,13 +1,11 @@
-<set-article-container *ngIf="isDataAvailable" [@fadeInOut]>
+<set-article-container [@fadeInOut]>
 
     <app-general-info
       [fragment]="fragment"
-      [profilData]="profilData"
-      [languagesData]="languagesData"
     ></app-general-info>
 
 
-  <set-section-container>
+  <!-- <set-section-container>
     <h5 id="education__degrees" class="title-tick-education">Parcours universitaire</h5>
 
     <app-degrees-bar
@@ -48,7 +46,7 @@
       [trainingsData]="trainingsData"
     ></app-trainings-bar>
   </set-section-container>
-  
+   -->
 
 
 </set-article-container>

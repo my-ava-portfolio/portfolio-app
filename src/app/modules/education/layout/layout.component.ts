@@ -82,7 +82,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     // this.fragment = null
-    this.resumeService.pullResumeGeneralData();
+    // this.resumeService.pullResumeGeneralData();
     this.sendResumeSubMenus()
   }
 

@@ -1,8 +1,8 @@
 <set-article-header>
 
-  <div id="education__generalInfo__title">
-    <h3 class="title-name">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
-    <div class="badge-title-light">{{ inputProfilData.job }}</div>
+  <div *ngIf="userInfoData" id="education__generalInfo__title">
+    <h3 class="title-name">{{ userInfoData.first_name }} {{ userInfoData.last_name }}</h3>
+    <div class="badge-title-light">{{ userInfoData.job }}</div>
   </div>
 
   <div class="d-flex flex-row justify-content-center flex-wrap my-2">
@@ -10,7 +10,7 @@
     <div class="badge-title-warning">{{specializationTitle}}</div>
   </div>
 
-  <div id="education__generalInfo__languages" class="
+  <div *ngIf="languagesData" id="education__generalInfo__languages" class="
     d-flex flex-row
     justify-content-center
     border border-white rounded-3 p-2 
@@ -20,9 +20,9 @@
       btn btn-light
       my-1 mx-2
       pe-none
-    " *ngFor="let language of inputLanguagesData">
-        <div class="fw-bold small">{{language.language}}</div>
-      <div class="small">{{language.level}}</div>
+    " *ngFor="let feature of languagesData">
+        <div class="fw-bold small">{{feature.language}}</div>
+      <div class="small">{{feature.level}}</div>
     </div>
 
   </div>

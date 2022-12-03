@@ -19,6 +19,13 @@ export class ResumeService {
   userContactDataSubject: Subject<any> = new Subject<any>();
 
 
+  private languagesRoute = apiUrl + 'languages';
+  languagesDataSubject: Subject<any> = new Subject<any>();
+
+  private acitvitiesRoute = apiUrl + 'activities';
+  activitiesDataSubject: Subject<any> = new Subject<any>();
+
+
   /////
   private apiUrlResumeData = apiUrl + 'resume_static_data';
   resumeData: Subject<any> = new Subject<any>();
@@ -77,9 +84,9 @@ export class ResumeService {
     });
   }
 
-  queryUserContactFromApi(): void {
+  queryLanguagesFromApi(): void {
 
-    this.http.get<any>(`${this.userContactRoute}`).subscribe({
+    this.http.get<any>(`${this.languagesRoute}`).subscribe({
       complete: () => {
       },
       error: error => {
@@ -89,7 +96,7 @@ export class ResumeService {
       next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-          this.userContactDataSubject.next(response);
+          this.languagesDataSubject.next(response);
         }
       },
     });
@@ -113,6 +120,41 @@ export class ResumeService {
     });
   }
 
+  queryUserContactFromApi(): void {
+
+    this.http.get<any>(`${this.userContactRoute}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.userContactDataSubject.next(response);
+        }
+      },
+    });
+  }
+
+  queryActivitiesFromApi(activityType: string): void {
+
+    this.http.get<any>(`${this.acitvitiesRoute}/${activityType}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.activitiesDataSubject.next(response);
+        }
+      },
+    });
+  }
 
   pullFullSkillsData(): void {
     // not used
