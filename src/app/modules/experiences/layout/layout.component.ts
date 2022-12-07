@@ -79,37 +79,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
       }
     );
 
-    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
-      (data) => {
-        this.jobsData = data.activities_data.job;
-        this.personalProjectsData = data.activities_data['personal-project'];
-        this.volunteersData = data.activities_data.volunteer;
-        this.skillsData = data.skills_data;
-        this.isActivitiesDataAvailable = true;
-
-        this.activityTypesMetadata = [
-          {
-            id: "job",
-            title: activitiesMapping["job"],
-            count: this.jobsData.length
-          },
-          {
-            id: "personal-project",
-            title: activitiesMapping["personal-project"],
-            count: this.personalProjectsData.length
-          },
-          {
-            id: "volunteer",
-            title: activitiesMapping["volunteer"],
-            count: this.volunteersData.length
-          }
-        ]
-
-        // TODO useless
-        // this.pushActivitiesAvailable(data.activities_data)
-      }
-    );
-
     this.routeSubscription = this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment) {

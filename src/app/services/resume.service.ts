@@ -18,12 +18,15 @@ export class ResumeService {
   private userContactRoute = apiUrl + 'user/contact';
   userContactDataSubject: Subject<any> = new Subject<any>();
 
-
   private languagesRoute = apiUrl + 'languages';
   languagesDataSubject: Subject<any> = new Subject<any>();
 
   private acitvitiesRoute = apiUrl + 'activities';
   activitiesDataSubject: Subject<any> = new Subject<any>();
+  private acitvitiesJobDurationRoute = apiUrl + 'activities/job/duration';
+  activitiesJobDurationDataSubject: Subject<any> = new Subject<any>();
+  private acitvitiesCountRoute = apiUrl + 'activities/count';
+  activitiesCountDataSubject: Subject<any> = new Subject<any>();
 
   private publicationsRoute = apiUrl + 'publications';
   publicationsDataSubject: Subject<any> = new Subject<any>();
@@ -154,6 +157,40 @@ export class ResumeService {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
           this.activitiesDataSubject.next(response);
+        }
+      },
+    });
+  }
+
+  queryActivitiesJobDurationFromApi(): void {
+    this.http.get<any>(`${this.acitvitiesJobDurationRoute}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.activitiesJobDurationDataSubject.next(response);
+        }
+      },
+    });
+  }
+
+  queryActivitiesCountFromApi(date: number): void {
+    this.http.get<any>(`${this.acitvitiesCountRoute}/${date}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.activitiesCountDataSubject.next(response);
         }
       },
     });

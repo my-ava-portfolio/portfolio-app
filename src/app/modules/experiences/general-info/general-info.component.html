@@ -1,11 +1,11 @@
 <set-article-header>
 
-  <div id="generalInfo__title" class="text-center">
-    <h3 class="text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
-    <div class="badge-title-light">{{ inputProfilData.job }}</div>
+  <div *ngIf="userInfoData" id="generalInfo__title" class="text-center">
+    <h3 class="text-white">{{ userInfoData.first_name }} {{ userInfoData.last_name }}</h3>
+    <div class="badge-title-light">{{ userInfoData.job }}</div>
   </div>
 
-  <div class="badge-title-warning">{{ inputProfilData.experience_duration }} professionnelle</div>
+  <div *ngIf="jobDuration" class="badge-title-warning">{{ jobDuration.years }} années et {{ jobDuration.months }} mois professionnelle</div>
 
 
   <div id="generalInfo__activitiesType" class="d-flex flex-sm-row flex-column border border-white rounded-3 p-2 justify-content-center flex-wrap">

@@ -24,10 +24,10 @@ const appRoutes: Routes = [
         loadChildren: () => import('@modules/home/home.module').then(m => m.HomeModule),
         data: {preload: true}
       },
-      // {
-      //   path: 'experiences',
-      //   loadChildren: () => import('@modules/experiences/experiences.module').then(m => m.ExperiencesModule),
-      // },
+      {
+        path: 'experiences',
+        loadChildren: () => import('@modules/experiences/experiences.module').then(m => m.ExperiencesModule),
+      },
       // {
       //   path: 'resume',
       //   loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
@@ -40,10 +40,10 @@ const appRoutes: Routes = [
       //   path: 'gallery',
       //   loadChildren: () => import('@modules/gallery/gallery.module').then(m => m.GalleryModule),
       // },
-      // {
-      //   path: 'maps',
-      //   loadChildren: () => import('@modules/maps/maps.module').then(m => m.MapsModule),
-      // },
+      {
+        path: 'maps',
+        loadChildren: () => import('@modules/maps/maps.module').then(m => m.MapsModule),
+      },
       // {
       //   path: 'blog',
       //   loadChildren: () => import('@modules/blog/blog.module').then(m => m.BlogModule),
