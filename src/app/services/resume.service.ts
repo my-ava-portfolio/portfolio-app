@@ -34,7 +34,10 @@ export class ResumeService {
   private trainingsRoute = apiUrl + 'trainings/';
   trainingsDataSubject: Subject<any> = new Subject<any>();
 
-
+  private graphRoute = apiUrl + 'graph'
+  graphDataSubject: Subject<any> = new Subject<any>();
+  private validityRangeActivitisJobRoute = apiUrl + 'activities/job/validity_range'
+  validityRangeActivitisJobDataSubject: Subject<any> = new Subject<any>();
 
   /////
   private apiUrlResumeData = apiUrl + 'resume_static_data';
@@ -229,6 +232,45 @@ export class ResumeService {
       },
     });
   }
+
+  queryGraphFromApi(queryParams: any): void {
+    this.http.get<any>(
+      this.graphRoute,
+      {params: queryParams}
+    ).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.trainingsDataSubject.next(response);
+        }
+      },
+    });
+  }
+
+  queryValidityRangeActivitisJobRouteFromApi(): void {
+    this.http.get<any>(this.validityRangeActivitisJobRoute).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.validityRangeActivitisJobDataSubject.next(response);
+        }
+      },
+    });
+  }
+
+  
 
   pullActivitiesGraphData(
     isTechnics: boolean | string,

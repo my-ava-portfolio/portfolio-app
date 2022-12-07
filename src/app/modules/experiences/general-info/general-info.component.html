@@ -9,7 +9,7 @@
 
 
   <div id="generalInfo__activitiesType" class="d-flex flex-sm-row flex-column border border-white rounded-3 p-2 justify-content-center flex-wrap">
-      <ng-container *ngFor="let type of activityTypesMetadata">
+      <ng-container *ngFor="let activity of activityTypesMetadata">
         <div
           class="activity-button
             btn btn-light
@@ -17,11 +17,11 @@
             my-2 mx-3
             position-relative
           "
-          [class.active]="tabView == type.id"
-          (click)="enableActivity(type.id)">
-          {{type.title}}
-          <span [ngClass]="'badge bg-' + type.id" class="position-absolute top-0 start-100 translate-middle p2 border border-3 border-light rounded-circle">
-            {{ type.count }}
+          [class.active]="tabView == activity.type"
+          (click)="enableActivity(activity.type)">
+          {{activitiesMapping[activity.type]}}
+          <span [ngClass]="'badge bg-' + activity.type" class="position-absolute top-0 start-100 translate-middle p2 border border-3 border-light rounded-circle">
+            {{ activity.count }}
             <span class="visually-hidden"></span>
           </span>
           <div ></div>

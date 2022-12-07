@@ -1,8 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { activitiesMapping } from '@core/global-values/main';
+import { activitiesCountOutput } from '@core/global-values/route-output-types';
 import { ResumeService } from '@services/resume.service';
 import { tickStep } from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActivityActionsService } from '../services/activity-actions.service';
+import { activities } from '../../../core/data-types';
 
 @Component({
   selector: 'app-general-info',
@@ -10,14 +13,15 @@ import { ActivityActionsService } from '../services/activity-actions.service';
   styleUrls: ['./general-info.component.scss']
 })
 export class GeneralInfoComponent implements OnInit, OnDestroy {
+  activitiesMapping: any = activitiesMapping;
 
-  userInfoData: any;
+  userInfoData!: any;
   jobDuration!: any;
   
-  jobCategory = "job";
+  jobCategory: string = "job";
 
-  activityTypesMetadata: any[] = []
-  tabView = this.jobCategory;
+  activityTypesMetadata: activitiesCountOutput[] = []
+  tabView: string = this.jobCategory;
 
   userInfoDataSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
@@ -28,7 +32,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   ) {
 
     this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
-      (data: any) => {
+      (data) => {
         this.userInfoData = data;
       }
     );
@@ -46,8 +50,11 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
     )
 
     this.resumeService.activitiesCountDataSubject.subscribe(
-      (data: any) => {
-        this.activityTypesMetadata = data
+      (data: activitiesCountOutput[]) => {
+        this.activityTypesMetadata = data.filter((feature: any) => {
+          return feature.type !== 'education';
+        });
+        console.log(data)
       }
     )
 

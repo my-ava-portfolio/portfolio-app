@@ -9,6 +9,7 @@ import { ActivityActionsService } from '@modules/experiences/services/activity-a
 import { ungroupIconUnicode } from '@core/styles/icons';
 import { skillsMapping, activitiesMapping } from '@core/global-values/main';
 import { currentYear } from '@core/misc';
+import { activities } from '@core/data-types';
 
 @Component({
   selector: 'app-navigate',
@@ -17,11 +18,13 @@ import { currentYear } from '@core/misc';
   encapsulation: ViewEncapsulation.None
 })
 export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() graphInputData!: any;
 
   @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
 
   private defaultNodeIdSelected = null;
+
+  startDate!: number;
+  endDate!: number;
 
   isJobsGrouped!: boolean | string;
   isProjectsGrouped!: boolean | string;
@@ -51,9 +54,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   // circle
   strokeWidth = '0px';
 
-  job_identifier: string = 'job'
-  personal_project_identifier = 'personal-project' // api input data... about the '_' vs scss...
-  volunteer_identifier = 'volunteer'
+  job_identifier: activities = 'job'
+  personal_project_identifier: activities = 'personal-project' // api input data... about the '_' vs scss...
+  volunteer_identifier: activities = 'volunteer'
   skillsMapping = skillsMapping;
   skill_topics = Object.keys(skillsMapping)
 
@@ -84,7 +87,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     { id: 'grouper_volunteers', label: 'grouper volunteers', cy: 82, cx: 35 }
   ];
 
-  activitiesFilteredSubscription!: Subscription;
+  ActivitiesValidityRangeSubscription!: Subscription;
+  graphSubscription!: Subscription;
   activitiesIdSubscription!: Subscription;
   // activitiesJobsAvailableSubscription!: Subscription;
   activitiesProjectsAvailableSubscription!: Subscription;
@@ -94,7 +98,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     private activityActionsService: ActivityActionsService
   ) {
 
-    this.activitiesFilteredSubscription = this.resumeService.ActivitiesChartData.subscribe(
+    this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
       (data) => {
         this.graphData = data;
 
@@ -103,6 +107,14 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
       }
     );
+
+    this.ActivitiesValidityRangeSubscription = this.resumeService.validityRangeActivitisJobDataSubject.subscribe(
+      (data: any) => {
+        this.startDate = data.start_date;
+        this.endDate = data.end_date;
+        this.updateDatefromTemporalBar(this.endDate)
+      }
+    )
 
     this.activitiesIdSubscription = this.resumeService.activityId.subscribe(
       (activityId) => {
@@ -137,6 +149,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
    }
 
   ngOnInit(): void {
+    this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
 
     this.resetChart();
 
@@ -152,7 +165,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.activitiesFilteredSubscription.unsubscribe();
+    this.graphSubscription.unsubscribe();
     this.activitiesIdSubscription.unsubscribe();
   }
 
@@ -181,9 +194,14 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     this._defaultDisplayingByDate();
   }
 
-  updateDate(event: any): void {
-    this.currentDate = event.target.value;
+  updateDatefromTemporalBar(date: number): void {
+    this.currentDate = date;
+    this.resumeService.queryActivitiesCountFromApi(date)
     this.buildGraphElements();
+  }
+
+  updateDate(event: any): void {
+    this.updateDatefromTemporalBar(event.target.value)
   }
 
   private initSvgGraph(): void {
@@ -198,7 +216,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   // here to control default topic graph.
   resetChart(): void {
     this.currentNodeIdSelected = this.defaultNodeIdSelected;
-    this.currentDate = this.graphInputData.end_date;
+    this.currentDate = this.endDate;
+    console.log(this.currentDate)
     this.isThemesEnabled = true;
     this.isTechnicsEnabled = true;
     this.isToolsEnabled = false;
@@ -211,7 +230,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   rebuildActivitiesChartWithAPreselection(nodeToSelect: string): void {
     this.currentNodeIdSelected = nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
-    this.currentDate = this.graphInputData.end_date;
+    this.currentDate = this.endDate;
     this.isThemesEnabled = true;
     this.isTechnicsEnabled = true;
     this.isToolsEnabled = false;
@@ -325,7 +344,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         .attr('r', (d) => d.r);
     
     // create line to display that object is disabled
-    let skillsButtons = LegendElements.filter((d) => ['themes', 'technics', 'tools'].includes(d.id))
+    let skillsButtons = LegendElements.filter((d: any) => ['themes', 'technics', 'tools'].includes(d.id))
       .append("line")
       .attr('x1', (d) => d.cx - d.r - 2)
       .attr('x2', (d) => d.cx + d.r + 2)
@@ -370,15 +389,15 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isToolsEnabled = '';
     }
 
-    this.resumeService.pullActivitiesGraphData(
-      this.isTechnicsEnabled,
-      this.isThemesEnabled,
-      this.isToolsEnabled,
-      this.currentDate,
-      this.isProjectsGrouped,
-      this.isJobsGrouped,
-      this.isVolunteersGrouped,
-    );
+    // this.resumeService.pullActivitiesGraphData(
+    //   this.isTechnicsEnabled,
+    //   this.isThemesEnabled,
+    //   this.isToolsEnabled,
+    //   this.currentDate,
+    //   this.isProjectsGrouped,
+    //   this.isJobsGrouped,
+    //   this.isVolunteersGrouped,
+    // );
   }
 
   private _initLabel(): void {
@@ -610,12 +629,21 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // then we want to regenerate activities and skill components
-    this.resumeService.pullActivitiesResumeFromGraph(
-      this.currentDate,
-      this.isThemesEnabled,
-      this.isTechnicsEnabled,
-      this.isToolsEnabled,
-      null
+    let skill_categories = []
+    if (this.isThemesEnabled) {
+      skill_categories.push('themes')
+    }
+    if (this.isTechnicsEnabled) {
+      skill_categories.push('technics')
+    }
+    if (this.isToolsEnabled) {
+      skill_categories.push('tools')
+    }
+    this.resumeService.queryGraphFromApi({
+        date: this.currentDate,
+        skillsCategories: skill_categories,
+        activity_group: []
+      }
     );
   }
 
@@ -632,25 +660,25 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         const elementData: any = d3.select(element).data()[0];
         // check origin node type
 
-        this.resumeService.pullActivitiesResumeFromGraph(
-          this.currentDate,
-          this.isThemesEnabled,
-          this.isTechnicsEnabled,
-          this.isToolsEnabled,
-          elementData.properties.id
-        );
+        // this.resumeService.pullActivitiesResumeFromGraph(
+        //   this.currentDate,
+        //   this.isThemesEnabled,
+        //   this.isTechnicsEnabled,
+        //   this.isToolsEnabled,
+        //   elementData.properties.id
+        // );
       }
 
 
     } else {
 
-      this.resumeService.pullActivitiesResumeFromGraph(
-        this.currentDate,
-        this.isThemesEnabled,
-        this.isTechnicsEnabled,
-        this.isToolsEnabled,
-        null
-      );
+      // this.resumeService.pullActivitiesResumeFromGraph(
+      //   this.currentDate,
+      //   this.isThemesEnabled,
+      //   this.isTechnicsEnabled,
+      //   this.isToolsEnabled,
+      //   null
+      // );
     }
   }
 
