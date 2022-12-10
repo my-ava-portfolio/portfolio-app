@@ -100,8 +100,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
       (graphData: any) => {
-        console.log(graphData)
-        // current_activities
+
         this._generateGraph(graphData, this.currentNodeIdSelected);
 
       }
@@ -368,30 +367,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private buildGraphElements(): void {
 
-    // if (!this.isJobsGrouped) {
-    //   this.isJobsGrouped = '';
-    // }
-
-    // if (!this.isProjectsGrouped) {
-    //   this.isProjectsGrouped = '';
-    // }
-
-    // if (!this.isVolunteersGrouped) {
-    //   this.isVolunteersGrouped = '';
-    // }
-
-    // if (!this.isTechnicsEnabled) {
-    //   this.isTechnicsEnabled = '';
-    // }
-
-    // if (!this.isThemesEnabled) {
-    //   this.isThemesEnabled = '';
-    // }
-
-    // if (!this.isToolsEnabled) {
-    //   this.isToolsEnabled = '';
-    // }
-
     // then we want to regenerate activities and skill components
     let skill_categories = []
     if (this.isThemesEnabled) {
@@ -427,20 +402,16 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  private _initLabel(): void {
+  private _generateGraph(graphData: any, nodeIdToSelect: string | null): void {
+
     const nodes: any[] = [];
     const links: any[] = [];
-
     this.label = {
         nodes,
         links
     };
-  }
-
-  private _generateGraph(graphData: any, nodeIdToSelect: string | null): void {
-
-    this._initLabel();
-
+    
+    console.log('b', this.label)
     graphData.nodes.forEach( (d: any, i: number) => {
       this.label.nodes.push({node: d});
       this.label.nodes.push({node: d});
