@@ -91,7 +91,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
     this.resumeService.queryUserInfoFromApi();
-
     this.sendResumeSubMenus()
 
   }
@@ -108,9 +107,5 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   sendActivityId(activityId: string): void {
     this.activityIdFromActivityComponents = activityId;
   }
-
-  // pushActivitiesAvailable(activities: any[]): void {
-  //   this.resumeService.pullActivitiesAvailable(activities);
-  // }
 
 }
