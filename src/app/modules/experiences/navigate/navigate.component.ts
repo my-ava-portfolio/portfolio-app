@@ -562,7 +562,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     if ( nodeIdToSelect !== null ) {
       this._graphSelectedFiltering('#skillsGraphElements #' + nodeIdToSelect);
     } else {
-      // this._defaultDisplayingByDate();
+      this._defaultDisplayingByDate();
     }
 
   }
@@ -627,22 +627,13 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // then we want to regenerate activities and skill components
-    let skill_categories = []
-    if (this.isThemesEnabled) {
-      skill_categories.push('themes')
-    }
-    if (this.isTechnicsEnabled) {
-      skill_categories.push('technics')
-    }
-    if (this.isToolsEnabled) {
-      skill_categories.push('tools')
-    }
-
-    this.resumeService.queryGraphFromApi({
-        date: this.currentDate,
-      skill_categories: skill_categories
-    }
-    );
+    // this.resumeService.pullActivitiesResumeFromGraph(
+    //   this.currentDate,
+    //   this.isThemesEnabled,
+    //   this.isTechnicsEnabled,
+    //   this.isToolsEnabled,
+    //   null
+    // );
   }
 
 
@@ -665,45 +656,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         //   this.isToolsEnabled,
         //   elementData.properties.id
         // );
-            // then we want to regenerate activities and skill components
-        let skill_categories = []
-        if (this.isThemesEnabled) {
-          skill_categories.push('themes')
-        }
-        if (this.isTechnicsEnabled) {
-          skill_categories.push('technics')
-        }
-        if (this.isToolsEnabled) {
-          skill_categories.push('tools')
-        }
-        // todo filter by feature...
-        this.resumeService.queryGraphFromApi({
-            date: this.currentDate,
-            skill_categories: skill_categories,
-          }
-        );
       }
 
 
     } else {
 
-      // then we want to regenerate activities and skill components
-      let skill_categories = []
-      if (this.isThemesEnabled) {
-        skill_categories.push('themes')
-      }
-      if (this.isTechnicsEnabled) {
-        skill_categories.push('technics')
-      }
-      if (this.isToolsEnabled) {
-        skill_categories.push('tools')
-      }
-
-      this.resumeService.queryGraphFromApi({
-          date: this.currentDate,
-          skill_categories: skill_categories
-        }
-      );
       // this.resumeService.pullActivitiesResumeFromGraph(
       //   this.currentDate,
       //   this.isThemesEnabled,
