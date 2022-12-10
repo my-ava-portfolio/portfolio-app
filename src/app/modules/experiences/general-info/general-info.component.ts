@@ -26,6 +26,8 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
   userInfoDataSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
+  activitiesJobDurationSubscription!: Subscription;
+  activitiesCountSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
@@ -44,18 +46,24 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
       }
     )
 
-    this.resumeService.activitiesJobDurationDataSubject.subscribe(
+    this.activitiesJobDurationSubscription = this.resumeService.activitiesJobDurationDataSubject.subscribe(
       (data: any) => {
         this.jobDuration = data
       }
     )
 
-    this.resumeService.activitiesCountDataSubject.subscribe(
+    this.activitiesCountSubscription = this.resumeService.activitiesCountDataSubject.subscribe(
       (data: activitiesCountOutput[]) => {
         let activityTypesMetadata = data.filter((feature: any) => {
           return feature.type !== this.activityCategoryHidden;
         });
         this.activityTypesMetadata = activityTypesMetadata.sort((a, b) => (a.type < b.type ? -1 : 1))
+      }
+    )
+
+    this.activityActionsService.activityParameters.subscribe(
+      (data: any) => {
+        this.resumeService.queryProfesionalActivitiesFromApi(data.parameters)
       }
     )
 
@@ -67,7 +75,10 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.activityEnablingSubscription.unsubscribe()
+    this.userInfoDataSubscription.unsubscribe();
+    this.activityEnablingSubscription.unsubscribe();
+    this.activitiesJobDurationSubscription.unsubscribe();
+    this.activitiesCountSubscription.unsubscribe();
   }
 
   enableActivity(idName: string): void {

@@ -58,6 +58,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   pageLoadingTimeOut: number = 750;
 
   routeQueryParamsSubscription!: Subscription;
+  professionalActivitiesSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
 
   constructor(
@@ -73,7 +74,14 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
         // this.hiddenActivitiesDetails = [];
       }
     )
-
+    this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
+      (data: any) => {
+        console.log(this.tabView, data)
+          this.jobsData = data[0]
+          this.personalProjectsData = data[1]
+          this.volunteersData = data[2]
+      }
+    )
   }
 
   ngOnInit(): void {
@@ -84,7 +92,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.activityEnablingSubscription.unsubscribe()
+    this.activityEnablingSubscription.unsubscribe();
+    this.professionalActivitiesSubscription.unsubscribe();
   }
 
 

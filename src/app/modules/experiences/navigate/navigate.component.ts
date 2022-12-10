@@ -602,7 +602,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // then we want to regenerate activities and skill components
-
+    this.activityActionsService.setActivityParameters({
+      type: null,
+      parameters: {date: this.currentDate}
+    })
     // this.resumeService.pullActivitiesResumeFromGraph(
     //   this.currentDate,
     //   this.isThemesEnabled,
@@ -627,10 +630,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         const elementName = elementData.name
         const elementType = elementData.properties.type
         const elementObject = elementData.properties.object
-        console.log(elementType, " : ", elementName, elementObject)
         
         let parameters = {}
-        elementType
         if (elementObject === "activity") {
           parameters = {
             activity_name: elementName,
@@ -646,26 +647,21 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
             date: this.currentDate
           }
         }
-        console.log(elementType, parameters)
-        // this.resumeService.pullActivitiesResumeFromGraph(
-        //   this.currentDate,
-        //   this.isThemesEnabled,
-        //   this.isTechnicsEnabled,
-        //   this.isToolsEnabled,
-        //   elementData.properties.id
-        // );
+        this.activityActionsService.setActivityParameters({
+          type: elementType,
+          parameters: parameters
+        })
+
       }
 
 
     } else {
 
-      // this.resumeService.pullActivitiesResumeFromGraph(
-      //   this.currentDate,
-      //   this.isThemesEnabled,
-      //   this.isTechnicsEnabled,
-      //   this.isToolsEnabled,
-      //   null
-      // );
+      this.activityActionsService.setActivityParameters({
+        type: null,
+        parameters: {date: this.currentDate}
+      })
+
     }
   }
 

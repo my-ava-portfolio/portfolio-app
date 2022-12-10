@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 export class ActivityActionsService {
 
   activityId: Subject<string> = new Subject<string>();
+  activityParameters: Subject<any> = new Subject<any>();
 
   constructor() { }
 
@@ -14,4 +15,9 @@ export class ActivityActionsService {
   setActivity(nameId: string) {
     this.activityId.next(nameId)
   }
+
+  setActivityParameters(parameters: any) {
+    this.activityParameters.next(parameters)
+  }
+
 }
