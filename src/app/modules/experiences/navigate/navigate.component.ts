@@ -24,19 +24,19 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   private defaultNodeIdSelected = null;
 
   startDate!: number;
-  endDate!: number;
+  endDate: number = currentYear;
 
-  isJobsGrouped!: boolean | string;
-  isProjectsGrouped!: boolean | string;
-  isVolunteersGrouped!: boolean | string;
-  isThemesEnabled!: boolean | string;
-  isTechnicsEnabled!: boolean | string;
-  isToolsEnabled!: boolean | string;
+  isJobsGrouped!: boolean;
+  isProjectsGrouped!: boolean;
+  isVolunteersGrouped!: boolean;
+  isThemesEnabled!: boolean;
+  isTechnicsEnabled!: boolean;
+  isToolsEnabled!: boolean;
 
   // icons
   ungroupIconUnicode = ungroupIconUnicode;
 
-  currentDate: number = currentYear;
+  currentDate!: number;
   currentNodeIdSelected: string | null = null;
 
   graphData!: any;
@@ -99,11 +99,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
 
     this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
-      (data) => {
-        this.graphData = data;
-
+      (graphData: any) => {
+        console.log(graphData)
         // current_activities
-        this._generateGraph(this.currentNodeIdSelected);
+        this._generateGraph(graphData, this.currentNodeIdSelected);
 
       }
     );
@@ -121,7 +120,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.currentNodeIdSelected === null) {
           // in order to filter graph from components job and personal project
           const elementId: string = `node-${activityId}`;
-          this.rebuildActivitiesChartWithAPreselection(elementId);
+          // this.rebuildActivitiesChartWithAPreselection(elementId);
         } else {
           this.resetChart();
         }
@@ -149,11 +148,12 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
    }
 
   ngOnInit(): void {
-    this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
-
+    this.initSvgGraph();
+    console.log(this.currentDate, this.endDate)
+    // get activities validity range for slider and initialize the graph
     this.resetChart();
 
-    this.initSvgGraph();
+
   }
 
   ngAfterViewInit(): void {
@@ -197,11 +197,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   updateDatefromTemporalBar(date: number): void {
     this.currentDate = date;
     this.resumeService.queryActivitiesCountFromApi(date)
-    this.buildGraphElements();
   }
 
   updateDate(event: any): void {
     this.updateDatefromTemporalBar(event.target.value)
+    this.buildGraphElements();
   }
 
   private initSvgGraph(): void {
@@ -216,20 +216,23 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   // here to control default topic graph.
   resetChart(): void {
     this.currentNodeIdSelected = this.defaultNodeIdSelected;
+    this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
+
     this.currentDate = this.endDate;
-    console.log(this.currentDate)
     this.isThemesEnabled = true;
     this.isTechnicsEnabled = true;
     this.isToolsEnabled = false;
     this.isJobsGrouped = false;
     this.isProjectsGrouped = false;
-    this.isVolunteersGrouped = true;
+    this.isVolunteersGrouped = false;
     this.resetLegend();
     this.buildGraphElements();
   }
 
   rebuildActivitiesChartWithAPreselection(nodeToSelect: string): void {
     this.currentNodeIdSelected = nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
+    this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
+
     this.currentDate = this.endDate;
     this.isThemesEnabled = true;
     this.isTechnicsEnabled = true;
@@ -365,39 +368,63 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private buildGraphElements(): void {
 
-    if (!this.isJobsGrouped) {
-      this.isJobsGrouped = '';
+    // if (!this.isJobsGrouped) {
+    //   this.isJobsGrouped = '';
+    // }
+
+    // if (!this.isProjectsGrouped) {
+    //   this.isProjectsGrouped = '';
+    // }
+
+    // if (!this.isVolunteersGrouped) {
+    //   this.isVolunteersGrouped = '';
+    // }
+
+    // if (!this.isTechnicsEnabled) {
+    //   this.isTechnicsEnabled = '';
+    // }
+
+    // if (!this.isThemesEnabled) {
+    //   this.isThemesEnabled = '';
+    // }
+
+    // if (!this.isToolsEnabled) {
+    //   this.isToolsEnabled = '';
+    // }
+
+    // then we want to regenerate activities and skill components
+    let skill_categories = []
+    if (this.isThemesEnabled) {
+      skill_categories.push('themes')
+    }
+    if (this.isTechnicsEnabled) {
+      skill_categories.push('technics')
+    }
+    if (this.isToolsEnabled) {
+      skill_categories.push('tools')
     }
 
-    if (!this.isProjectsGrouped) {
-      this.isProjectsGrouped = '';
+    let activity_group = []
+    if (this.isJobsGrouped) {
+      activity_group.push("job");
     }
-
-    if (!this.isVolunteersGrouped) {
-      this.isVolunteersGrouped = '';
+    if (this.isProjectsGrouped) {
+      activity_group.push("personal-project");
     }
-
-    if (!this.isTechnicsEnabled) {
-      this.isTechnicsEnabled = '';
+    if (this.isVolunteersGrouped) {
+      activity_group.push("volunteer");
     }
-
-    if (!this.isThemesEnabled) {
-      this.isThemesEnabled = '';
-    }
-
-    if (!this.isToolsEnabled) {
-      this.isToolsEnabled = '';
-    }
-
-    // this.resumeService.pullActivitiesGraphData(
-    //   this.isTechnicsEnabled,
-    //   this.isThemesEnabled,
-    //   this.isToolsEnabled,
-    //   this.currentDate,
-    //   this.isProjectsGrouped,
-    //   this.isJobsGrouped,
-    //   this.isVolunteersGrouped,
-    // );
+    console.log({
+      date: this.currentDate,
+      skill_categories: skill_categories,
+      activity_group: activity_group
+    })
+    this.resumeService.queryGraphFromApi({
+        date: this.currentDate,
+        skill_categories: skill_categories,
+        activity_group: activity_group
+      }
+    );
   }
 
   private _initLabel(): void {
@@ -410,11 +437,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  private _generateGraph(nodeIdToSelect: string | null): void {
+  private _generateGraph(graphData: any, nodeIdToSelect: string | null): void {
 
     this._initLabel();
 
-    this.graphData.nodes.forEach( (d: any, i: number) => {
+    graphData.nodes.forEach( (d: any, i: number) => {
       this.label.nodes.push({node: d});
       this.label.nodes.push({node: d});
       this.label.links.push({
@@ -433,18 +460,18 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this._buildLabelLayout();
     // https://observablehq.com/@ben-tanen/a-tutorial-to-using-d3-force-from-someone-who-just-learned-ho
-    const graphLayout = d3.forceSimulation(this.graphData.nodes)
+    const graphLayout = d3.forceSimulation(graphData.nodes)
       .force('charge', d3.forceManyBody().strength(-900))
       .force('x', d3.forceX(this.chartWidth / 2))
       .force('y', d3.forceY(this.chartHeight / 2))
       .force('center', d3.forceCenter(this.chartWidth / 2, this.chartHeight / 2))
-      .force('link', d3.forceLink(this.graphData.links).id((d: any) => d.name).distance(40).strength(1))
+      .force('link', d3.forceLink(graphData.links).id((d: any) => d.name).distance(40).strength(1))
       .force('collision', d3.forceCollide(15))
-      .nodes(this.graphData.nodes)
+      .nodes(graphData.nodes)
       .on('tick', this._ticked.bind(this));
 
     this.adjlist = {};
-    this.graphData.links.forEach( (d: any): any => {
+    graphData.links.forEach( (d: any): any => {
       this.adjlist[d.source.index + '-' + d.target.index] = true;
       this.adjlist[d.target.index + '-' + d.source.index] = true;
     });
@@ -456,7 +483,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const link = svgElements.append('g').attr('class', 'links')
       .selectAll('line')
-      .data(this.graphData.links)
+      .data(graphData.links)
       .enter()
       .append('line')
       .attr('stroke', '#aaa')
@@ -464,7 +491,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const node = svgElements.append('g').attr('class', 'nodes')
       .selectAll('circle')
-      .data(this.graphData.nodes)
+      .data(graphData.nodes)
       .enter()
       .append('circle')
       .attr('class', (d: any) => {
@@ -564,7 +591,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     if ( nodeIdToSelect !== null ) {
       this._graphSelectedFiltering('#skillsGraphElements #' + nodeIdToSelect);
     } else {
-      this._defaultDisplayingByDate();
+      // this._defaultDisplayingByDate();
     }
 
   }
@@ -639,11 +666,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.isToolsEnabled) {
       skill_categories.push('tools')
     }
+
     this.resumeService.queryGraphFromApi({
         date: this.currentDate,
-        skillsCategories: skill_categories,
-        activity_group: []
-      }
+      skill_categories: skill_categories
+    }
     );
   }
 
@@ -667,11 +694,45 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         //   this.isToolsEnabled,
         //   elementData.properties.id
         // );
+            // then we want to regenerate activities and skill components
+        let skill_categories = []
+        if (this.isThemesEnabled) {
+          skill_categories.push('themes')
+        }
+        if (this.isTechnicsEnabled) {
+          skill_categories.push('technics')
+        }
+        if (this.isToolsEnabled) {
+          skill_categories.push('tools')
+        }
+        // todo filter by feature...
+        this.resumeService.queryGraphFromApi({
+            date: this.currentDate,
+            skill_categories: skill_categories,
+          }
+        );
       }
 
 
     } else {
 
+      // then we want to regenerate activities and skill components
+      let skill_categories = []
+      if (this.isThemesEnabled) {
+        skill_categories.push('themes')
+      }
+      if (this.isTechnicsEnabled) {
+        skill_categories.push('technics')
+      }
+      if (this.isToolsEnabled) {
+        skill_categories.push('tools')
+      }
+
+      this.resumeService.queryGraphFromApi({
+          date: this.currentDate,
+          skill_categories: skill_categories
+        }
+      );
       // this.resumeService.pullActivitiesResumeFromGraph(
       //   this.currentDate,
       //   this.isThemesEnabled,

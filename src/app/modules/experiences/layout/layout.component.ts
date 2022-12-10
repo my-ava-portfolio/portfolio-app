@@ -56,7 +56,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   isAnchorExistsCheckerSubscription!: Subscription;
 
   generalDataSubscription!: Subscription;
-  activitiesFilteredSubscription!: Subscription;
  // resumeDataSubscription
   routeSubscription!: Subscription;
 
@@ -92,13 +91,13 @@ export class LayoutComponent implements OnInit, OnDestroy  {
 
   ngOnInit(): void {
     this.resumeService.queryUserInfoFromApi();
+
     this.sendResumeSubMenus()
 
   }
 
   ngOnDestroy(): void {
     this.generalDataSubscription.unsubscribe();
-    this.activitiesFilteredSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
   }
 

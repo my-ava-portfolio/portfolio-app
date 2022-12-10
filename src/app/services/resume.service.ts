@@ -34,7 +34,7 @@ export class ResumeService {
   private trainingsRoute = apiUrl + 'trainings/';
   trainingsDataSubject: Subject<any> = new Subject<any>();
 
-  private graphRoute = apiUrl + 'graph'
+  private graphRoute = apiUrl + 'graph/'
   graphDataSubject: Subject<any> = new Subject<any>();
   private validityRangeActivitisJobRoute = apiUrl + 'activities/job/validity_range'
   validityRangeActivitisJobDataSubject: Subject<any> = new Subject<any>();
@@ -247,7 +247,7 @@ export class ResumeService {
       next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-          this.trainingsDataSubject.next(response);
+          this.graphDataSubject.next(response);
         }
       },
     });

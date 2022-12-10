@@ -19,6 +19,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   jobDuration!: any;
   
   jobCategory: string = "job";
+  activityCategoryHidden = "education"
 
   activityTypesMetadata: activitiesCountOutput[] = []
   tabView: string = this.jobCategory;
@@ -51,10 +52,10 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
     this.resumeService.activitiesCountDataSubject.subscribe(
       (data: activitiesCountOutput[]) => {
-        this.activityTypesMetadata = data.filter((feature: any) => {
-          return feature.type !== 'education';
+        let activityTypesMetadata = data.filter((feature: any) => {
+          return feature.type !== this.activityCategoryHidden;
         });
-        console.log(data)
+        this.activityTypesMetadata = activityTypesMetadata.sort((a, b) => (a.type < b.type ? -1 : 1))
       }
     )
 
