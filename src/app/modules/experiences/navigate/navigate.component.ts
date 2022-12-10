@@ -87,11 +87,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     { id: 'grouper_volunteers', label: 'grouper volunteers', cy: 82, cx: 35 }
   ];
 
-  ActivitiesValidityRangeSubscription!: Subscription;
+  activitiesValidityRangeSubscription!: Subscription;
   graphSubscription!: Subscription;
   activitiesIdSubscription!: Subscription;
-  // activitiesJobsAvailableSubscription!: Subscription;
-  activitiesProjectsAvailableSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
@@ -100,13 +98,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
       (graphData: any) => {
-
         this._generateGraph(graphData, this.currentNodeIdSelected);
-
       }
     );
 
-    this.ActivitiesValidityRangeSubscription = this.resumeService.validityRangeActivitisJobDataSubject.subscribe(
+    this.activitiesValidityRangeSubscription = this.resumeService.validityRangeActivitisJobDataSubject.subscribe(
       (data: any) => {
         this.startDate = data.start_date;
         this.endDate = data.end_date;
@@ -130,41 +126,27 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
             behavior: 'smooth'
           });
         }
-
-
       }
     )
-
-    // this.activitiesJobsAvailableSubscription = this.resumeService.activitiesAvailable.subscribe(
-      // (activitiesAvailable) => {
-        // to display activities list
-        // this.currentPersonalProjectsActivitiesData = activitiesAvailable.personal_projects;
-        // this.currentJobsActivitiesData = activitiesAvailable.jobs;
-        // this.currentVolunteersActivitiesData = activitiesAvailable.volunteers
-      // }
-    // )
 
    }
 
   ngOnInit(): void {
     this.initSvgGraph();
-    console.log(this.currentDate, this.endDate)
-    // get activities validity range for slider and initialize the graph
     this.resetChart();
-
-
   }
 
   ngAfterViewInit(): void {
     this.chartWidth = this.svgGraphChart.nativeElement.offsetWidth;
     if (this.chartWidth === 0) {
-      // if modile device used
+      // if mobile device used
       this.chartWidth = window.innerWidth
     }
   }
 
   ngOnDestroy(): void {
     this.graphSubscription.unsubscribe();
+    this.activitiesValidityRangeSubscription.unsubscribe();
     this.activitiesIdSubscription.unsubscribe();
   }
 
@@ -389,11 +371,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.isVolunteersGrouped) {
       activity_group.push("volunteer");
     }
-    console.log({
-      date: this.currentDate,
-      skill_categories: skill_categories,
-      activity_group: activity_group
-    })
     this.resumeService.queryGraphFromApi({
         date: this.currentDate,
         skill_categories: skill_categories,
@@ -411,7 +388,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         links
     };
     
-    console.log('b', this.label)
     graphData.nodes.forEach( (d: any, i: number) => {
       this.label.nodes.push({node: d});
       this.label.nodes.push({node: d});
@@ -446,7 +422,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       this.adjlist[d.source.index + '-' + d.target.index] = true;
       this.adjlist[d.target.index + '-' + d.source.index] = true;
     });
-
 
     d3.select(`#${this.activityGraphSvgId} .links`).remove();
     d3.select(`#${this.activityGraphSvgId} .nodes`).remove();
