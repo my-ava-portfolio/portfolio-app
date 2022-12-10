@@ -18,9 +18,9 @@ import { mapActivitiesPages, galleryPages, projectPages } from '@core/global-val
 export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() fragment: any;
-  @Input() jobsData: any;
-  @Input() personalProjectsData: any;
-  @Input() volunteersData: any;
+  jobsData!: any;
+  personalProjectsData!: any;
+  volunteersData!: any;
 
   apiImgUrl = assetsLogoPath;
   assetsImagesPath = assetsImagesPath;
@@ -40,7 +40,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   notesIcon = faFileAlt;
   websiteIcon = faGlobe;
 
-  hiddenActivitiesDetails: number[] = [];
+  // hiddenActivitiesDetails: number[] = [];
 
   themesTitle = "Thèmes";
   contextTitle = "Contexte";
@@ -70,7 +70,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       (activityId) => {
         this.tabView = activityId
         // reset to avoid conflict between activity category
-        this.hiddenActivitiesDetails = [];
+        // this.hiddenActivitiesDetails = [];
       }
     )
 
@@ -89,18 +89,18 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
 
 
-  addToHiddenDetailsConter(activityIndex: number) {
-    if (this.hiddenActivitiesDetails.includes(activityIndex)) {
+  // addToHiddenDetailsConter(activityIndex: number) {
+  //   if (this.hiddenActivitiesDetails.includes(activityIndex)) {
 
-      const index = this.hiddenActivitiesDetails.indexOf(activityIndex, 0);
-      if (index > -1) {
-        this.hiddenActivitiesDetails.splice(index, 1);
-      }
+  //     const index = this.hiddenActivitiesDetails.indexOf(activityIndex, 0);
+  //     if (index > -1) {
+  //       this.hiddenActivitiesDetails.splice(index, 1);
+  //     }
 
-    } else {
-      this.hiddenActivitiesDetails.push(activityIndex);
-    }
-  }
+  //   } else {
+  //     this.hiddenActivitiesDetails.push(activityIndex);
+  //   }
+  // }
 
   pushActivityId(activityId: string): void {
     this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
@@ -123,50 +123,50 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     // run only if a change occured on the page (like the time slider...)
-    this.switchOnTheFirstActivityTypeContainingActivities()
+    // this.switchOnTheFirstActivityTypeContainingActivities()
   }
 
-  private switchOnTheFirstActivityTypeContainingActivities(): void {
-      // to switch on an activity containing at least 1 activity
-      let activitiesCount: any = this.countActivities()
-      var currentActivities: string[] = [];
-      Object.keys(activitiesCount).filter((item: string) => {
-        if (activitiesCount[item]) {
-          activitiesCount[item] !== 0
-          currentActivities.push(item);
-        }
-      })
-    if (currentActivities.length > 0 && !currentActivities.includes(this.tabView)) {
-        // switch to the expected activityId
-        this.activityActionsService.setActivity(currentActivities[0])
-      }
-  }
+  // private switchOnTheFirstActivityTypeContainingActivities(): void {
+  //     // to switch on an activity containing at least 1 activity
+  //     let activitiesCount: any = this.countActivities()
+  //     var currentActivities: string[] = [];
+  //     Object.keys(activitiesCount).filter((item: string) => {
+  //       if (activitiesCount[item]) {
+  //         activitiesCount[item] !== 0
+  //         currentActivities.push(item);
+  //       }
+  //     })
+  //   if (currentActivities.length > 0 && !currentActivities.includes(this.tabView)) {
+  //       // switch to the expected activityId
+  //       this.activityActionsService.setActivity(currentActivities[0])
+  //     }
+  // }
 
-  private countActivities(): any {
-    return {
-      'job': this.jobsData?.length,
-      'personal-project': this.personalProjectsData?.length,
-      'volunteer': this.volunteersData?.length
-    }
-  }
+  // private countActivities(): any {
+  //   return {
+  //     'job': this.jobsData?.length,
+  //     'personal-project': this.personalProjectsData?.length,
+  //     'volunteer': this.volunteersData?.length
+  //   }
+  // }
 
-  private findActitivityTypeFromId(activityId: string): string {
-    let activityType: string = '';
+  // private findActitivityTypeFromId(activityId: string): string {
+  //   let activityType: string = '';
 
-    [this.jobsData, this.personalProjectsData, this.volunteersData].forEach((activities: any) => {
-      if (activities !== undefined) {
-        for (let item of activities) {
-          if (item.identifier === activityId) {
-            activityType = item.type;
-            break
-          }
-        }
-      }
-    })
+  //   [this.jobsData, this.personalProjectsData, this.volunteersData].forEach((activities: any) => {
+  //     if (activities !== undefined) {
+  //       for (let item of activities) {
+  //         if (item.identifier === activityId) {
+  //           activityType = item.type;
+  //           break
+  //         }
+  //       }
+  //     }
+  //   })
 
-    return activityType
+  //   return activityType
 
-  }
+  // }
 
   trackByMethod(index:number, el:any): number {
     return el.identifier;

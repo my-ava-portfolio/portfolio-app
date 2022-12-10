@@ -486,7 +486,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     node.on('click', (e: any, d: any, i: any, n: any) => {
       const nodeIsPreselected = d3.select('#skillsGraphElements .nodes .selected');
-
+      // here we update the activities components and skills
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(e.currentTarget).attr('id');
@@ -502,7 +502,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
         this.currentNodeIdSelected = this.defaultNodeIdSelected;
-        this.activityActionsService.setActivity(this.job_identifier) // to switch on the activities buttons
+        this.activityActionsService.setActivity(this.job_identifier) // to switch on the activities buttons (default)
         this._defaultDisplayingByDate();
 
       } else {
@@ -602,6 +602,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // then we want to regenerate activities and skill components
+
     // this.resumeService.pullActivitiesResumeFromGraph(
     //   this.currentDate,
     //   this.isThemesEnabled,
@@ -612,18 +613,40 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  private _graphSelectedFiltering(element: string, withContent = true): void {
+  private _graphSelectedFiltering(element: any, withContent = true): void {
 
     const elementSelected: any = d3.select(element);
     if (elementSelected.size() > 0) {
       elementSelected.classed('unselected', !elementSelected.classed('unselected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' selected');
-
       this._focusOnGraph(elementSelected);
       if ( withContent ) {
         const elementData: any = d3.select(element).data()[0];
         // check origin node type
 
+        const elementName = elementData.name
+        const elementType = elementData.properties.type
+        const elementObject = elementData.properties.object
+        console.log(elementType, " : ", elementName, elementObject)
+        
+        let parameters = {}
+        elementType
+        if (elementObject === "activity") {
+          parameters = {
+            activity_name: elementName,
+            date: this.currentDate
+          }
+        } else if (elementObject === "activityGroup") {
+          parameters = {
+            date: this.currentDate
+          }
+        } else if (elementObject === "skill") {
+          parameters = {
+            skill: elementName,
+            date: this.currentDate
+          }
+        }
+        console.log(elementType, parameters)
         // this.resumeService.pullActivitiesResumeFromGraph(
         //   this.currentDate,
         //   this.isThemesEnabled,

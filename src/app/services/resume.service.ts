@@ -148,8 +148,11 @@ export class ResumeService {
     });
   }
 
-  queryActivitiesFromApi(activityType: string): void {
-    this.http.get<any>(`${this.acitvitiesRoute}/${activityType}`).subscribe({
+  queryActivitiesFromApi(activityType: string, parameters: any = null): void {
+    this.http.get<any>(
+      `${this.acitvitiesRoute}/${activityType}`,
+      {params: parameters}
+    ).subscribe({
       complete: () => {
       },
       error: error => {
