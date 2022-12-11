@@ -602,11 +602,13 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // then we want to regenerate activities and skill components
-    const parameters = this._buildActivitiesParameters({date: this.currentDate})
-    this.resumeService.queryProfesionalActivitiesFromApi(parameters)
-
     const skillsTypes = this._buildSkillsCategoriesParameters()
-    const skillsParameters = this._buildActivitiesParameters({date: this.currentDate, category: skillsTypes})
+    let commonParams = { date: this.currentDate }
+    let skillsParams = {...commonParams, ...{ category: skillsTypes} }
+
+    const activitiesParameters = this._buildActivitiesParameters(commonParams)
+    const skillsParameters = this._buildActivitiesParameters(skillsParams)
+    this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
     this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
     // this.resumeService.pullActivitiesResumeFromGraph(
     //   this.currentDate,
@@ -621,26 +623,34 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   private _graphSelectedFiltering(element: any, withContent = true): void {
 
     const elementSelected: any = d3.select(element);
+
+    const skillsTypes = this._buildSkillsCategoriesParameters()
+    let commonParams = { date: this.currentDate }
+    let skillsParams = {...commonParams, ...{ category: skillsTypes} }
+
+    let activitiesParameters = {}
+    let skillsParameters = {}
+
     if (elementSelected.size() > 0) {
       elementSelected.classed('unselected', !elementSelected.classed('unselected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' selected');
       this._focusOnGraph(elementSelected);
+      
+
       if ( withContent ) {
         const elementData: any = d3.select(element).data()[0];
         // check origin node type
 
         const elementName = elementData.name
         const elementObject = elementData.properties.object
-        
-        const skillsTypes = this._buildSkillsCategoriesParameters()
-
-        let activitiesParameters = {}
-        let skillsParameters = {}
+               
         if (elementObject === "activity") {
           // support activity display
-          activitiesParameters = this._buildActivitiesParameters({date: this.currentDate, activity_name: elementName})
-          skillsParameters = this._buildActivitiesParameters({date: this.currentDate, activity_name: elementName, category: skillsTypes})
-          console.log("tutu", skillsParameters)
+          commonParams = { ...commonParams, ...{ activity_name: elementName } }
+          
+          activitiesParameters = this._buildActivitiesParameters(commonParams)
+          skillsParameters = this._buildActivitiesParameters(skillsParams)
+
         } else if (elementObject === "activityGroup") {
           // support activity group display
           let jobParams = {}
@@ -655,13 +665,15 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
           if (elementName !== "volunteer") {
             volunteerParams = {hide: true}
           }
-          activitiesParameters = this._buildActivitiesParameters({ date: this.currentDate }, jobParams, projectParams, volunteerParams)
-          skillsParameters = this._buildActivitiesParameters({date: this.currentDate, category: skillsTypes})
+          activitiesParameters = this._buildActivitiesParameters(commonParams, jobParams, projectParams, volunteerParams)
+          skillsParameters = this._buildActivitiesParameters(skillsParams)
 
         } else if (elementObject === "skill") {
           // support activity skill display
-          activitiesParameters = this._buildActivitiesParameters({ date: this.currentDate, skill: elementName })
-          skillsParameters = this._buildActivitiesParameters({date: this.currentDate, skill: elementName, category: skillsTypes})
+          commonParams = { ...commonParams, ...{ skill: elementName } }
+
+          activitiesParameters = this._buildActivitiesParameters(commonParams)
+          skillsParameters = this._buildActivitiesParameters({ ...skillsParams, ... { skill: elementName } })
         }
 
         this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
@@ -670,11 +682,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
     } else {
-      const parameters = this._buildActivitiesParameters({date: this.currentDate})
-      this.resumeService.queryProfesionalActivitiesFromApi(parameters)
-
-      const skillsTypes = this._buildSkillsCategoriesParameters()
-      const skillsParameters = this._buildActivitiesParameters({date: this.currentDate, category: skillsTypes})
+      activitiesParameters = this._buildActivitiesParameters(commonParams)
+      skillsParameters = this._buildActivitiesParameters(skillsParams)
+      this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
       this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
 
     }
