@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, Subject } from 'rxjs';
+import { catchError, defaultIfEmpty, forkJoin, Observable, of, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { apiUrl } from '@core/global-values/main';
@@ -28,7 +28,7 @@ export class ResumeService {
   activitiesJobDurationDataSubject: Subject<any> = new Subject<any>();
   private acitvitiesCountRoute = apiUrl + 'activities/count';
   activitiesCountDataSubject: Subject<any> = new Subject<any>();
-  profesionalActivitiesDataSubject: Subject<any> = new Subject<any>();
+  profesionalActivitiesDataSubject: Subject<any[]> = new Subject<any[]>();
   
   private publicationsRoute = apiUrl + 'publications';
   publicationsDataSubject: Subject<any> = new Subject<any>();
@@ -170,10 +170,11 @@ export class ResumeService {
     });
   }
 
-  queryProfesionalActivitiesFromApi(parameters: any): void {
-    let jobQuery = this.http.get<any>(`${this.acitvitiesRoute}/job`, { params: parameters })
-    let personalProjectQuery = this.http.get<any>(`${this.acitvitiesRoute}/personal-project`, {params: parameters})
-    let volunteerQuery = this.http.get<any>(`${this.acitvitiesRoute}/volunteer`, {params: parameters})
+  queryProfesionalActivitiesFromApi(parameters: any, activities: string[]): void {
+    console.log(parameters)
+    let jobQuery = this.http.get<any>(`${this.acitvitiesRoute}/${activities[0]}`, { params: parameters }).pipe(catchError(() => of([])))
+    let personalProjectQuery = this.http.get<any>(`${this.acitvitiesRoute}/${activities[1]}`, {params: parameters}).pipe(catchError(() => of([])))
+    let volunteerQuery = this.http.get<any>(`${this.acitvitiesRoute}/${activities[2]}`, {params: parameters}).pipe(catchError(() => of([])))
 
     forkJoin([jobQuery, personalProjectQuery, volunteerQuery]).subscribe(
       {
@@ -181,7 +182,7 @@ export class ResumeService {
         },
         error: error => {
           // TODO improve error message, but API need improvments
-          this.ErrorResumeDataApiFound.next(error.error.message);
+        this.ErrorResumeDataApiFound.next(error.error.message);
         },
         next: response => {
           // is null only if query return a 204 error (empty result)

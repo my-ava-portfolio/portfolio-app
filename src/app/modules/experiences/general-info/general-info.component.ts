@@ -17,7 +17,8 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
   userInfoData!: any;
   jobDuration!: any;
-  
+  objectSelected!: string;
+
   jobCategory: string = "job";
   activityCategoryHidden = "education"
 
@@ -64,6 +65,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
     this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
       (data: any) => {
+
         this.activityTypesMetadata = [
           {
             type: "job",
@@ -83,7 +85,9 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
     this.activityActionsService.activityParameters.subscribe(
       (data: any) => {
-        this.resumeService.queryProfesionalActivitiesFromApi(data.parameters)
+        console.log(data)
+        // this.objectSelected = data.object
+        this.resumeService.queryProfesionalActivitiesFromApi(data.parameters, data.activityTypes)
       }
     )
 
