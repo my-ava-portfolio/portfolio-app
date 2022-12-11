@@ -73,9 +73,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   // here to control topic graph & text (ex 'missions' shared by neighbors components)... TODO improve it !
 
   legendInput = [
-    { id: this.job_identifier, status: 'unabled-topic', label: activitiesMapping['job'], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.personal_project_identifier, status: 'unabled-topic', label: activitiesMapping['personal-project'], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.volunteer_identifier, status: 'unabled-topic', label: activitiesMapping['volunteer'], cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.job_identifier, status: 'unabled-topic', label: activitiesMapping[this.job_identifier], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.personal_project_identifier, status: 'unabled-topic', label: activitiesMapping[this.personal_project_identifier], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.volunteer_identifier, status: 'unabled-topic', label: activitiesMapping[this.volunteer_identifier], cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
     { id: 'themes', status: 'enabled-topic', label: this.skillsMapping['themes'], cx: 175, cy: 42, text_cx: 190, r: 5, rOver: 10 },
     { id: 'technics', status: 'enabled-topic', label: this.skillsMapping['technics'], cx: 175, cy: 67, text_cx: 190, r: 5, rOver: 10 },
     { id: 'tools', status: 'enabled-topic', label: this.skillsMapping['tools'], cx: 175, cy: 92, text_cx: 190, r: 5, rOver: 10 }
@@ -98,7 +98,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
       (graphData: any) => {
-        this._generateGraph(graphData, this.currentNodeIdSelected);
+        this.buildGraph(graphData, this.currentNodeIdSelected);
       }
     );
 
@@ -133,7 +133,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.initSvgGraph();
+
+    this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
     this.resetChart();
+
   }
 
   ngAfterViewInit(): void {
@@ -150,31 +153,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activitiesIdSubscription.unsubscribe();
   }
 
-  graphHightligthing(activityIdentifier: string, activityType: string): void {
-
-    const nodeToPreselected = d3.selectAll(`#skillsGraphElements #node-${activityIdentifier}`);
-
-    if ( nodeToPreselected.size() === 1 ) {
-      this._graphSelectedFiltering(`#skillsGraphElements #node-${activityIdentifier}`, false);
-    } else if ( nodeToPreselected.size() === 0 ) {
-      // means that activities are grouped
-      if ( activityType === this.job_identifier ) {
-        // job node grouped
-        this._graphSelectedFiltering('#skillsGraphElements #node-' + this.job_identifier, false);
-      } else if ( activityType === this.personal_project_identifier ) {
-        // personal project node grouped
-        this._graphSelectedFiltering('#skillsGraphElements #node-' + this.personal_project_identifier, false);
-      } else if ( activityType === this.volunteer_identifier ) {
-        // volunteer node grouped
-        this._graphSelectedFiltering('#skillsGraphElements #node-' + this.volunteer_identifier, false);
-      }
-    }
-  }
-
-  graphUnHightligthing(): void {
-    this._defaultDisplayingByDate();
-  }
-
   updateDatefromTemporalBar(date: number): void {
     this.currentDate = date;
     this.resumeService.queryActivitiesCountFromApi(date)
@@ -182,7 +160,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   updateDate(event: any): void {
     this.updateDatefromTemporalBar(event.target.value)
-    this.buildGraphElements();
+    this.getGraphFeatures();
   }
 
   private initSvgGraph(): void {
@@ -194,44 +172,36 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('id', 'skillsGraphElements');
   }
 
+  graphReset(): void {
+    this.currentDate = this.endDate;
+    this.isThemesEnabled = true;
+    this.isTechnicsEnabled = true;
+    this.isToolsEnabled = false;
+    this.isJobsGrouped = false;
+    this.isProjectsGrouped = false;
+    this.isVolunteersGrouped = true;
+    this.resetLegend();
+    this.getGraphFeatures();
+  }
+
   // here to control default topic graph.
   resetChart(): void {
     this.currentNodeIdSelected = this.defaultNodeIdSelected;
-    this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
-
-    this.currentDate = this.endDate;
-    this.isThemesEnabled = true;
-    this.isTechnicsEnabled = true;
-    this.isToolsEnabled = false;
-    this.isJobsGrouped = false;
-    this.isProjectsGrouped = false;
-    this.isVolunteersGrouped = false;
-    this.resetLegend();
-    this.buildGraphElements();
+    this.graphReset()
   }
 
-  rebuildActivitiesChartWithAPreselection(nodeToSelect: string): void {
+  resetChartWithASelection(nodeToSelect: string): void {
     this.currentNodeIdSelected = nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
-    this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
-
-    this.currentDate = this.endDate;
-    this.isThemesEnabled = true;
-    this.isTechnicsEnabled = true;
-    this.isToolsEnabled = false;
-    this.isJobsGrouped = false;
-    this.isProjectsGrouped = false;
-    this.isVolunteersGrouped = false
-    this.resetLegend();
-    this.buildGraphElements();
+    this.graphReset()
     d3.select(`#${this.activityGraphSvgId} .nodes #node-${nodeToSelect}`).dispatch('click');
   }
 
   resetLegend(): void {
     d3.select(`#${this.activityLegendSvgId}`).remove();
-    this._buildLegendGraphActivities();
+    this.buildLegend();
   }
 
-  private _buildLegendGraphActivities(): void {
+  private buildLegend(): void {
     const svg = d3.select(this.legendIdDiv)
       .append('svg').attr('id', this.activityLegendSvgId)
       .attr('width', this.legendWidth)
@@ -270,7 +240,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
         d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
 
-        this.buildGraphElements();
+        this.getGraphFeatures();
       });
 
     svgContainer.selectAll()
@@ -305,7 +275,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
           this.isVolunteersGrouped = !this.isVolunteersGrouped;
         }
         d3.select(e.currentTarget).classed('disabled-group', !d3.select(e.currentTarget).classed('disabled-group'));
-        this.buildGraphElements();
+        this.getGraphFeatures();
       });
 
     svgContainer.selectAll()
@@ -347,7 +317,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  private buildGraphElements(): void {
+  private getGraphFeatures(): void {
 
     // then we want to regenerate activities and skill components
     let skill_categories = []
@@ -379,7 +349,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  private _generateGraph(graphData: any, nodeIdToSelect: string | null): void {
+  private buildGraph(graphData: any, nodeIdToSelect: string | null): void {
 
     const nodes: any[] = [];
     const links: any[] = [];
@@ -610,13 +580,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     const skillsParameters = this._buildActivitiesParameters(skillsParams)
     this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
     this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
-    // this.resumeService.pullActivitiesResumeFromGraph(
-    //   this.currentDate,
-    //   this.isThemesEnabled,
-    //   this.isTechnicsEnabled,
-    //   this.isToolsEnabled,
-    //   null
-    // );
   }
 
 
