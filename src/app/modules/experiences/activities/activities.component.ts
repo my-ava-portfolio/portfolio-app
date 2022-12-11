@@ -40,7 +40,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   notesIcon = faFileAlt;
   websiteIcon = faGlobe;
 
-  // hiddenActivitiesDetails: number[] = [];
+  hiddenActivitiesDetails: number[] = [];
 
   themesTitle = "Thèmes";
   contextTitle = "Contexte";
@@ -71,7 +71,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       (activityId) => {
         this.tabView = activityId
         // reset to avoid conflict between activity category
-        // this.hiddenActivitiesDetails = [];
+        this.hiddenActivitiesDetails = [];
       }
     )
     this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
@@ -98,18 +98,18 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
 
 
-  // addToHiddenDetailsConter(activityIndex: number) {
-  //   if (this.hiddenActivitiesDetails.includes(activityIndex)) {
+  addToHiddenDetailsConter(activityIndex: number) {
+    if (this.hiddenActivitiesDetails.includes(activityIndex)) {
 
-  //     const index = this.hiddenActivitiesDetails.indexOf(activityIndex, 0);
-  //     if (index > -1) {
-  //       this.hiddenActivitiesDetails.splice(index, 1);
-  //     }
+      const index = this.hiddenActivitiesDetails.indexOf(activityIndex, 0);
+      if (index > -1) {
+        this.hiddenActivitiesDetails.splice(index, 1);
+      }
 
-  //   } else {
-  //     this.hiddenActivitiesDetails.push(activityIndex);
-  //   }
-  // }
+    } else {
+      this.hiddenActivitiesDetails.push(activityIndex);
+    }
+  }
 
   pushActivityId(activityId: string): void {
     this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
