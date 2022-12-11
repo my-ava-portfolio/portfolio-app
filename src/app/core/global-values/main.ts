@@ -16,7 +16,7 @@ export const activitiesMapping = {
   "volunteer": "Bénévolat"
 }
 
-export const skillsMapping: { themes: string; technics: string; tools: string;} = {
+export const skillsMapping: any = {
   "themes": "Thématiques",
   "technics": "Techniques",
   "tools": "Outils"

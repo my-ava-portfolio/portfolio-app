@@ -604,6 +604,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     // then we want to regenerate activities and skill components
     const parameters = this._buildActivitiesParameters({date: this.currentDate})
     this.resumeService.queryProfesionalActivitiesFromApi(parameters)
+
+    this.resumeService.queryProfesionalSkillsFromApi(parameters)
     // this.resumeService.pullActivitiesResumeFromGraph(
     //   this.currentDate,
     //   this.isThemesEnabled,
@@ -655,12 +657,16 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
         }
         this.resumeService.queryProfesionalActivitiesFromApi(parameters)
+        this.resumeService.queryProfesionalSkillsFromApi(parameters)
+
 
       }
 
     } else {
       const parameters = this._buildActivitiesParameters({date: this.currentDate})
       this.resumeService.queryProfesionalActivitiesFromApi(parameters)
+      this.resumeService.queryProfesionalSkillsFromApi(parameters)
+
     }
   }
 

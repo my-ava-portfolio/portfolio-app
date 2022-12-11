@@ -23,7 +23,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   activityCategoryHidden = "education"
 
   activityTypesMetadata: activitiesCountOutput[] = []
-  tabView: string = this.jobCategory;
+  tabView!: string;
 
   userInfoDataSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
@@ -86,6 +86,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.enableActivity(this.jobCategory)
     this.resumeService.queryUserInfoFromApi();
     this.resumeService.queryActivitiesJobDurationFromApi()
   }
@@ -100,7 +101,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
   enableActivity(idName: string): void {
     this.activityActionsService.setActivity(idName)
-    this.tabView = idName
+    // this.tabView = idName
   }
 
 }
