@@ -28,7 +28,7 @@ export class ResumeService {
   activitiesJobDurationDataSubject: Subject<any> = new Subject<any>();
   private acitvitiesCountRoute = apiUrl + 'activities/count';
   activitiesCountDataSubject: Subject<any> = new Subject<any>();
-  profesionalActivitiesDataSubject: Subject<any[]> = new Subject<any[]>();
+  profesionalActivitiesDataSubject: Subject<any> = new Subject<any>();
   
   private publicationsRoute = apiUrl + 'publications';
   publicationsDataSubject: Subject<any> = new Subject<any>();
@@ -170,11 +170,11 @@ export class ResumeService {
     });
   }
 
-  queryProfesionalActivitiesFromApi(parameters: any, activities: string[]): void {
+  queryProfesionalActivitiesFromApi(parameters: any): void {
     console.log(parameters)
-    let jobQuery = this.http.get<any>(`${this.acitvitiesRoute}/${activities[0]}`, { params: parameters }).pipe(catchError(() => of([])))
-    let personalProjectQuery = this.http.get<any>(`${this.acitvitiesRoute}/${activities[1]}`, {params: parameters}).pipe(catchError(() => of([])))
-    let volunteerQuery = this.http.get<any>(`${this.acitvitiesRoute}/${activities[2]}`, {params: parameters}).pipe(catchError(() => of([])))
+    let jobQuery = this.http.get<any>(`${this.acitvitiesRoute}/job`, { params: parameters["job"] }).pipe(catchError(() => of([])))
+    let personalProjectQuery = this.http.get<any>(`${this.acitvitiesRoute}/personal-project`, {params: parameters["personal-project"]}).pipe(catchError(() => of([])))
+    let volunteerQuery = this.http.get<any>(`${this.acitvitiesRoute}/volunteer`, {params: parameters["volunteer"]}).pipe(catchError(() => of([])))
 
     forkJoin([jobQuery, personalProjectQuery, volunteerQuery]).subscribe(
       {
@@ -187,7 +187,12 @@ export class ResumeService {
         next: response => {
           // is null only if query return a 204 error (empty result)
           if (response !== null) {
-            this.profesionalActivitiesDataSubject.next(response);
+            const outputData = {
+              "job": response[0],
+              "personal-project": response[1],
+              "volunteer": response[2]
+            }
+            this.profesionalActivitiesDataSubject.next(outputData);
           }
         },
       }

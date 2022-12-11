@@ -602,10 +602,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // then we want to regenerate activities and skill components
-    this.activityActionsService.setActivityParameters({
-      activityTypes: ["job", "personal-project", "volunteer"],
-      parameters: {date: this.currentDate}
-    })
+    const parameters = this._buildActivitiesParameters({date: this.currentDate})
+    this.resumeService.queryProfesionalActivitiesFromApi(parameters)
     // this.resumeService.pullActivitiesResumeFromGraph(
     //   this.currentDate,
     //   this.isThemesEnabled,
@@ -630,45 +628,51 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         const elementName = elementData.name
         const elementObject = elementData.properties.object
         
-        let activityTypes = ["job", "personal-project", "volunteer"]
         let parameters = {}
         if (elementObject === "activity") {
-          parameters = {
-            activity_name: elementName,
-            date: this.currentDate
-          }
+          // support activity display
+          parameters = this._buildActivitiesParameters({date: this.currentDate, activity_name: elementName})
+
         } else if (elementObject === "activityGroup") {
-          activityTypes = activityTypes.map(item => {
-            console.log(item, elementName)
-            return item !== elementName ? 'dummy' : elementName
-          });
-          console.log(activityTypes)
-          parameters = {
-            date: this.currentDate
+          // support activity group display
+          let jobParams = {}
+          if (elementName !== "job") {
+            jobParams = {hide: true}
           }
+          let projectParams = {}
+          if (elementName !== "personal-project") {
+            projectParams = {hide: true}
+          }
+          let volunteerParams = {}
+          if (elementName !== "volunteer") {
+            volunteerParams = {hide: true}
+          }
+          parameters = this._buildActivitiesParameters({ date: this.currentDate }, jobParams, projectParams, volunteerParams)
+
         } else if (elementObject === "skill") {
-          parameters = {
-            skill: elementName,
-            date: this.currentDate
-          }
+          // support activity skill display
+          parameters = this._buildActivitiesParameters({date: this.currentDate, skill: elementName})
+
         }
-        this.activityActionsService.setActivityParameters({
-          activityTypes: activityTypes,
-          parameters: parameters
-        })
+        this.resumeService.queryProfesionalActivitiesFromApi(parameters)
 
       }
 
-
     } else {
-
-      this.activityActionsService.setActivityParameters({
-        activityTypes: ["job", "personal-project", "volunteer"],
-        parameters: {date: this.currentDate}
-      })
-
+      const parameters = this._buildActivitiesParameters({date: this.currentDate})
+      this.resumeService.queryProfesionalActivitiesFromApi(parameters)
     }
   }
+
+
+  private _buildActivitiesParameters(commonParameters: any, jobParameters: any = {}, projectParameters: any = {}, volunteerParameters: any = {}): any {
+    return {
+      "job": {...commonParameters, ...jobParameters },
+      "personal-project": {...commonParameters, ...projectParameters},
+      "volunteer": {...commonParameters, ...volunteerParameters}
+    }
+  }
+
 
   private _buildLabelLayout(): void {
     this.labelLayout = d3.forceSimulation(this.label.nodes)

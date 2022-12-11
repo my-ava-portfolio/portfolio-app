@@ -69,25 +69,17 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
         this.activityTypesMetadata = [
           {
             type: "job",
-            count: data[0].length
+            count: data["job"].length
           },
           {
             type: "personal-project",
-            count: data[1].length
+            count: data["personal-project"].length
           },
           {
             type: "volunteer",
-            count: data[2].length
+            count: data["volunteer"].length
           }
         ]
-      }
-    )
-
-    this.activityActionsService.activityParameters.subscribe(
-      (data: any) => {
-        console.log(data)
-        // this.objectSelected = data.object
-        this.resumeService.queryProfesionalActivitiesFromApi(data.parameters, data.activityTypes)
       }
     )
 
