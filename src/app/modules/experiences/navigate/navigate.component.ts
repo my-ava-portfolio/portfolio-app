@@ -605,7 +605,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     const parameters = this._buildActivitiesParameters({date: this.currentDate})
     this.resumeService.queryProfesionalActivitiesFromApi(parameters)
 
-    this.resumeService.queryProfesionalSkillsFromApi(parameters)
+    const skillsTypes = this._buildSkillsCategoriesParameters()
+    const skillsParameters = this._buildActivitiesParameters({date: this.currentDate, category: skillsTypes})
+    this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
     // this.resumeService.pullActivitiesResumeFromGraph(
     //   this.currentDate,
     //   this.isThemesEnabled,
@@ -630,11 +632,15 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         const elementName = elementData.name
         const elementObject = elementData.properties.object
         
-        let parameters = {}
+        const skillsTypes = this._buildSkillsCategoriesParameters()
+
+        let activitiesParameters = {}
+        let skillsParameters = {}
         if (elementObject === "activity") {
           // support activity display
-          parameters = this._buildActivitiesParameters({date: this.currentDate, activity_name: elementName})
-
+          activitiesParameters = this._buildActivitiesParameters({date: this.currentDate, activity_name: elementName})
+          skillsParameters = this._buildActivitiesParameters({date: this.currentDate, activity_name: elementName, category: skillsTypes})
+          console.log("tutu", skillsParameters)
         } else if (elementObject === "activityGroup") {
           // support activity group display
           let jobParams = {}
@@ -649,27 +655,44 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
           if (elementName !== "volunteer") {
             volunteerParams = {hide: true}
           }
-          parameters = this._buildActivitiesParameters({ date: this.currentDate }, jobParams, projectParams, volunteerParams)
+          activitiesParameters = this._buildActivitiesParameters({ date: this.currentDate }, jobParams, projectParams, volunteerParams)
+          skillsParameters = this._buildActivitiesParameters({date: this.currentDate, category: skillsTypes})
 
         } else if (elementObject === "skill") {
           // support activity skill display
-          parameters = this._buildActivitiesParameters({date: this.currentDate, skill: elementName})
-
+          activitiesParameters = this._buildActivitiesParameters({ date: this.currentDate, skill: elementName })
+          skillsParameters = this._buildActivitiesParameters({date: this.currentDate, skill: elementName, category: skillsTypes})
         }
-        this.resumeService.queryProfesionalActivitiesFromApi(parameters)
-        this.resumeService.queryProfesionalSkillsFromApi(parameters)
 
+        this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
+        this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
 
       }
 
     } else {
       const parameters = this._buildActivitiesParameters({date: this.currentDate})
       this.resumeService.queryProfesionalActivitiesFromApi(parameters)
-      this.resumeService.queryProfesionalSkillsFromApi(parameters)
+
+      const skillsTypes = this._buildSkillsCategoriesParameters()
+      const skillsParameters = this._buildActivitiesParameters({date: this.currentDate, category: skillsTypes})
+      this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
 
     }
   }
 
+  private _buildSkillsCategoriesParameters(): string[] {
+    let skillsTypes = []
+    if (this.isThemesEnabled) {
+      skillsTypes.push('themes')
+    }
+    if (this.isTechnicsEnabled) {
+      skillsTypes.push('technics')
+    }
+    if (this.isToolsEnabled) {
+      skillsTypes.push('tools')
+    }
+    return skillsTypes
+  }
 
   private _buildActivitiesParameters(commonParameters: any, jobParameters: any = {}, projectParameters: any = {}, volunteerParameters: any = {}): any {
     return {
