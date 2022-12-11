@@ -28,6 +28,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   activityEnablingSubscription!: Subscription;
   activitiesJobDurationSubscription!: Subscription;
   activitiesCountSubscription!: Subscription;
+  professionalActivitiesSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
@@ -52,12 +53,31 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
       }
     )
 
-    this.activitiesCountSubscription = this.resumeService.activitiesCountDataSubject.subscribe(
-      (data: activitiesCountOutput[]) => {
-        let activityTypesMetadata = data.filter((feature: any) => {
-          return feature.type !== this.activityCategoryHidden;
-        });
-        this.activityTypesMetadata = activityTypesMetadata.sort((a, b) => (a.type < b.type ? -1 : 1))
+    // this.activitiesCountSubscription = this.resumeService.activitiesCountDataSubject.subscribe(
+    //   (data: activitiesCountOutput[]) => {
+    //     let activityTypesMetadata = data.filter((feature: any) => {
+    //       return feature.type !== this.activityCategoryHidden;
+    //     });
+    //     this.activityTypesMetadata = activityTypesMetadata.sort((a, b) => (a.type < b.type ? -1 : 1))
+    //   }
+    // )
+
+    this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
+      (data: any) => {
+        this.activityTypesMetadata = [
+          {
+            type: "job",
+            count: data[0].length
+          },
+          {
+            type: "personal-project",
+            count: data[1].length
+          },
+          {
+            type: "volunteer",
+            count: data[2].length
+          }
+        ]
       }
     )
 
@@ -78,7 +98,8 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
     this.userInfoDataSubscription.unsubscribe();
     this.activityEnablingSubscription.unsubscribe();
     this.activitiesJobDurationSubscription.unsubscribe();
-    this.activitiesCountSubscription.unsubscribe();
+    // this.activitiesCountSubscription.unsubscribe();
+    this.professionalActivitiesSubscription.unsubscribe();
   }
 
   enableActivity(idName: string): void {

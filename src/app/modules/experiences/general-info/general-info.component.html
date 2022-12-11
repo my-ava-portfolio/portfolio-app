@@ -18,6 +18,8 @@
             position-relative
           "
           [class.active]="tabView == activity.type"
+          [class.disabled]="activity.count === 0"
+
           (click)="enableActivity(activity.type)">
           {{activitiesMapping[activity.type]}}
           <span [ngClass]="'badge bg-' + activity.type" class="position-absolute top-0 start-100 translate-middle p2 border border-3 border-light rounded-circle">
