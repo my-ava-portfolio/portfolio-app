@@ -94,7 +94,7 @@
             <ng-container *ngIf="activity.status === 'InProgress'">
                 <div class="me-1">Du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
             </ng-container>
-            <div> ({{activity.duration}})</div>
+            <div>(<span *ngIf="activity.years == 1">{{activity.years}} an</span><span *ngIf="activity.years > 1">{{activity.years}} ans</span><span *ngIf="activity.years > 1 && activity.months > 0"> et {{activity.months}} mois</span><span *ngIf="activity.years == 0 && activity.months > 0">{{activity.months}} mois</span>)</div>
           </div>
 
           <div class="badge-keywords col-11 justify-content-around flex-wrap " *ngIf="activity.keywords">
