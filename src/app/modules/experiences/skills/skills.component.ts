@@ -13,7 +13,7 @@ import { ActivityActionsService } from '../services/activity-actions.service';
   styleUrls: ['./skills.component.scss']
 })
 export class SkillsComponent implements OnInit, OnDestroy {
-  tabView!: string;
+  @Input() tabView!: string;
 
   jobSkillsCategories!: any
   projectSkillsCategories!: any
@@ -28,14 +28,7 @@ export class SkillsComponent implements OnInit, OnDestroy {
 
   constructor(
     private resumeService: ResumeService,
-    private activityActionsService: ActivityActionsService
   ) { 
-
-    this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
-      (activityId) => {
-        this.tabView = activityId
-      }
-    )
 
     this.professionalSkillsSubscription = this.resumeService.profesionalSkillsDataSubject.subscribe(
       (data: any) => {
@@ -51,7 +44,6 @@ export class SkillsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.activityEnablingSubscription.unsubscribe();
     this.professionalSkillsSubscription.unsubscribe();
   }
 

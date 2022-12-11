@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { activitiesMapping } from '@core/global-values/main';
 import { activitiesCountOutput } from '@core/global-values/route-output-types';
 import { ResumeService } from '@services/resume.service';
@@ -13,6 +13,10 @@ import { activities } from '../../../core/data-types';
   styleUrls: ['./general-info.component.scss']
 })
 export class GeneralInfoComponent implements OnInit, OnDestroy {
+  @Input() tabView!: string;
+
+  @Output() tabViewEmit = new EventEmitter<string>();
+
   activitiesMapping: any = activitiesMapping;
 
   userInfoData!: any;
@@ -23,12 +27,11 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   activityCategoryHidden = "education"
 
   activityTypesMetadata: activitiesCountOutput[] = []
-  tabView!: string;
+  // tabView!: string;
 
   userInfoDataSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
   activitiesJobDurationSubscription!: Subscription;
-  activitiesCountSubscription!: Subscription;
   professionalActivitiesSubscription!: Subscription;
 
   constructor(
@@ -42,26 +45,11 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
-      (activityId) => {
-        this.tabView = activityId
-      }
-    )
-
     this.activitiesJobDurationSubscription = this.resumeService.activitiesJobDurationDataSubject.subscribe(
       (data: any) => {
         this.jobDuration = data
       }
     )
-
-    // this.activitiesCountSubscription = this.resumeService.activitiesCountDataSubject.subscribe(
-    //   (data: activitiesCountOutput[]) => {
-    //     let activityTypesMetadata = data.filter((feature: any) => {
-    //       return feature.type !== this.activityCategoryHidden;
-    //     });
-    //     this.activityTypesMetadata = activityTypesMetadata.sort((a, b) => (a.type < b.type ? -1 : 1))
-    //   }
-    // )
 
     this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
       (data: any) => {
@@ -86,22 +74,18 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.enableActivity(this.jobCategory)
     this.resumeService.queryUserInfoFromApi();
     this.resumeService.queryActivitiesJobDurationFromApi()
   }
 
   ngOnDestroy(): void {
     this.userInfoDataSubscription.unsubscribe();
-    this.activityEnablingSubscription.unsubscribe();
     this.activitiesJobDurationSubscription.unsubscribe();
-    // this.activitiesCountSubscription.unsubscribe();
     this.professionalActivitiesSubscription.unsubscribe();
   }
 
   enableActivity(idName: string): void {
-    this.activityActionsService.setActivity(idName)
-    // this.tabView = idName
+    this.tabViewEmit.emit(idName)
   }
 
 }

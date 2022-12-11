@@ -14,6 +14,7 @@ import { minWidthLandscape } from '@core/styles/screen';
 
 import { faGlobeEurope, faTags } from '@fortawesome/free-solid-svg-icons';
 import { experiencesPages } from '@core/global-values/topics';
+import { ActivityActionsService } from '../services/activity-actions.service';
 
 
 @Component({
@@ -24,8 +25,8 @@ import { experiencesPages } from '@core/global-values/topics';
 })
 export class LayoutComponent implements OnInit, OnDestroy  {
 
-
   fragment: string = '';
+  tabView!: string;
 
   apiImgUrl = assetsLogoPath;
   activityIdFromActivityComponents!: string;
@@ -56,14 +57,15 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   isAnchorExistsCheckerSubscription!: Subscription;
 
   generalDataSubscription!: Subscription;
- // resumeDataSubscription
   routeSubscription!: Subscription;
+  activityEnablingSubscription!: Subscription;
 
   constructor(
     private controlerService: ControlerService,
     private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
+    private activityActionsService: ActivityActionsService
   ) {
 
     // to get the data properties from routes (app.module.ts)
@@ -87,12 +89,20 @@ export class LayoutComponent implements OnInit, OnDestroy  {
       }
     );
 
+    this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
+      (activityId) => {
+        this.tabView = activityId
+      }
+    )
+
    }
 
   ngOnInit(): void {
+    // here we define the default activity mode displayed
+    this.sendActivityId("job")
+
     this.resumeService.queryUserInfoFromApi();
     this.sendResumeSubMenus()
-
   }
 
   ngOnDestroy(): void {
@@ -105,7 +115,7 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   }
 
   sendActivityId(activityId: string): void {
-    this.activityIdFromActivityComponents = activityId;
+    this.activityActionsService.setActivity(activityId)
   }
 
 }

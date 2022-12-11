@@ -18,6 +18,8 @@ import { mapActivitiesPages, galleryPages, projectPages } from '@core/global-val
 export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() fragment: any;
+  @Input() tabView!: string;
+
   jobsData!: any;
   personalProjectsData!: any;
   volunteersData!: any;
@@ -53,7 +55,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   activitiesMapping = activitiesMapping;
   availabled_topics = Object.keys(activitiesMapping)
-  tabView = this.availabled_topics[0];
+  // tabView = this.availabled_topics[0];
 
   pageLoadingTimeOut: number = 750;
 
@@ -67,13 +69,13 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   ) {
 
-    this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
-      (activityId) => {
-        this.tabView = activityId
-        // reset to avoid conflict between activity category
-        this.hiddenActivitiesDetails = [];
-      }
-    )
+    // this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
+    //   (activityId) => {
+    //     this.tabView = activityId
+    //     // reset to avoid conflict between activity category
+    //     this.hiddenActivitiesDetails = [];
+    //   }
+    // )
     this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
       (data: any) => {
           this.jobsData = data["job"]

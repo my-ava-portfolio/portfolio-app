@@ -1,7 +1,9 @@
-<set-article-container *ngIf="isDataAvailable" [@fadeInOut]>
+<set-article-container [@fadeInOut]>
 
   <app-general-info
     id="experiences__generalInfo"
+    [tabView]="tabView"
+    (tabViewEmit)="sendActivityId($event)"
   ></app-general-info>
 
 
@@ -26,11 +28,14 @@
     <set-section-container id="experiences__content__activities" class="w-100">
       <app-activities
         [fragment]="fragment"
+        [tabView]="tabView"
       ></app-activities>
     </set-section-container>
 
     <set-section-container id="experiences__content__skills" class="w-100">
-      <app-skills></app-skills>
+      <app-skills
+        [tabView]="tabView"
+      ></app-skills>
     </set-section-container>
 
   </div> 
