@@ -229,7 +229,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .style('r', (d: any) => d.r)
       .style('stroke-width', this.strokeWidth)
       .on('click', (e: any, d: any) => {
-
         if (d.id === 'themes') {
           this.isThemesEnabled = !this.isThemesEnabled;
         } else if (d.id === 'technics') {
