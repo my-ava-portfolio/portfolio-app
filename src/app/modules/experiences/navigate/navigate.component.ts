@@ -611,7 +611,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
           commonParams = { ...commonParams, ...{ activity_name: elementName } }
           
           activitiesParameters = this._buildActivitiesParameters(commonParams)
-          skillsParameters = this._buildActivitiesParameters(skillsParams)
+          skillsParameters = this._buildActivitiesParameters({ ...skillsParams, ... { activity_name: elementName } })
 
         } else if (elementObject === "activityGroup") {
           // support activity group display
