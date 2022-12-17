@@ -69,30 +69,29 @@ export class TimeLegendComponent extends TimeLineComponent implements OnInit, On
         return this.dateRange(startDate);
       })
       .on('mouseover', (e: any, d: any) => {
-
-        this.interactionWithEventNode(e.currentTarget, d);
+        // TODO refactor
         // to link with popup
         d3.select('#popup-feature-' + d.id)
-          .style('display', 'block')
-          .style('right', '1em')
-          .style('top', '5em');
-
+        .style('display', 'block')
+        .style('right', '1em')
+        .style('top', '5em');
         const feature = getFeatureFromLayer(this.map, activityLayerName, d.id, 'id')
-        feature.setStyle(activitySelectedStyle(feature.get('radius')))
-
+        if (feature !== undefined) {
+          this.interactionWithEventNode(e.currentTarget, d);
+          feature.setStyle(activitySelectedStyle(feature.get('radius')))
+        }
       })
       .on('mouseout', (e: any, d: any) => {
-
-        this.interactionWithEventNode(e.currentTarget, d);
-        // link with popup
         d3.select('#popup-feature-' + d.id)
-          .style('display', 'none')
-          .style('right', 'unset')
-          .style('top', 'unset');
-
+        .style('display', 'none')
+        .style('right', 'unset')
+        .style('top', 'unset');
         const feature = getFeatureFromLayer(this.map, activityLayerName, d.id, 'id')
-        feature.setStyle(activitiesStyle(feature))
-
+        if (feature !== undefined) {
+          this.interactionWithEventNode(e.currentTarget, d);
+          // link with popup
+          feature.setStyle(activitiesStyle(feature))
+        }
       });
       ;
 

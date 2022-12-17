@@ -45,9 +45,9 @@ export class DataService {
     this.activitiesGeoDataToMap.next(dataToMap);
   }
 
-  queryTripsGeoData(parameters: any): void {
+  queryTripsGeoData(): void {
 
-    this.http.get<any>(this.apiUrlTripsGeoData, { params: parameters }).subscribe({
+    this.http.get<any>(this.apiUrlTripsGeoData).subscribe({
       complete: () => {
       },
       error: error => {

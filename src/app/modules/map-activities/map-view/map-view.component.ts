@@ -49,7 +49,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   activitiesStyle!: Style;
 
   geoFeaturesData!: any;
-  geoTripsData!: any[];
+  geoTripsData: any[] = [];
 
   travelId: string | null = null;
   startDate!: Date;
@@ -79,9 +79,11 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   popupHeight = 190;
 
   mapSubscription!: Subscription;
-  pullActivitiesGeoDataToMapSubscription!: Subscription;
+  getActivitiesGeoDataToMapSubscription!: Subscription;
   pullGeoDataSubscription!: Subscription;
-  pullTripsGeoDataToMapSubscription!: Subscription;
+  tripsGeoDataToMapSubscription!: Subscription;
+  getTripsGeoDataToMapSubscription!: Subscription;
+
   zoomEventSubscription!: Subscription;
   routeSubscription!: Subscription;
   newCoordsSubscription!: Subscription;
@@ -115,15 +117,12 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     );
 
 
-    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoData.subscribe(
+    this.getActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoData.subscribe(
       (geoData: any) => {
-        console.log(geoData)
         this.geoFeaturesData = geoData.geojson;
-        // this.geoTripsData = geoData.trips_data
 
         this.startDate = new Date(geoData.date_range.start_date)
         this.endDate = new Date()
-        //  this.currentDate = this.endDate
         this.getCurrentDate(this.endDate)
 
 
@@ -139,23 +138,28 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           // check if the zoom is needed, it means only at the start !
           this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
         }
-
-
       });
+    
+    
+    this.getTripsGeoDataToMapSubscription = this.dataService.tripsGeoData.subscribe(
+      (geoData: any) => {
+        this.geoTripsData = geoData
+      }
+    );
 
-    this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
+    this.tripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
       (tripData: any[]) => {
-        // TODO simplifiy...
         if (tripData.length === 1 && this.travelId !== tripData[0].name) {
+          // oh! a trvel must be displayed
           this.mapService.removeLayerByName(travelLayerName)
           this.travelId = tripData[0].name
           this.buildTravelLayer(tripData[0])
         }
         if (tripData.length === 0) {
+          // stop displayed the travel
           this.travelId = null
           this.mapService.removeLayerByName(travelLayerName)
         }
-
       }
     );
 
@@ -182,6 +186,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     // set the layer container
     this.initLayer(activityLayerName, activitiesStyle)
 
+    this.dataService.queryTripsGeoData();
     this.dataService.queryActivitiesGeoData();
 
     this.zoomInitDone = false;
@@ -192,8 +197,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   ngOnDestroy(): void {
     this.mapSubscription.unsubscribe();
-    this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
-    this.pullTripsGeoDataToMapSubscription.unsubscribe();
+    this.getActivitiesGeoDataToMapSubscription.unsubscribe();
+    this.tripsGeoDataToMapSubscription.unsubscribe();
+    this.getTripsGeoDataToMapSubscription.unsubscribe();
     this.zoomEventSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.newCoordsSubscription.unsubscribe();
@@ -217,17 +223,17 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     // manage trips
     let tripFound: any[] = []
-    // this.geoTripsData.forEach((item: any) => {
-    //   const startDate: string = item.start_date;
-    //   const endDate: string = item.end_date;
-    //   const tripStartDate: Date = new Date(startDate);
-    //   const tripEndDate: Date = new Date(endDate);
+    this.geoTripsData.forEach((item: any) => {
+      const startDate: string = item.start_date;
+      const endDate: string = item.end_date;
+      const tripStartDate: Date = new Date(startDate);
+      const tripEndDate: Date = new Date(endDate);
 
-    //   if (this.currentDate >= tripStartDate && this.currentDate < tripEndDate) {
-    //     tripFound.push(item)
-    //   }
-    // });
-    // this.dataService.pullTripsGeoDataToMap(tripFound);
+      if (this.currentDate >= tripStartDate && this.currentDate < tripEndDate) {
+        tripFound.push(item)
+      }
+    });
+    this.dataService.pullTripsGeoDataToMap(tripFound);
 
   }
 
@@ -288,7 +294,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           .style('left', 'unset');
         // this._handleActivityCircleOnLegend(deSelectedFeature)
 
-
       }
       if (selected.length === 1) {
         let selectedFeature = selected[0]
@@ -296,16 +301,13 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         this.mapService.setMapEvent("mapCoords")
 
         d3.select('#popup-feature-' + selectedFeature.get("id"))
-          // .style('display', 'block')
           .style('z-index', '1')
-
         // this._handleActivityCircleOnLegend(selectedFeature)
       }
 
     });
 
     this.map.addInteraction(activityLayerSelector);
-
 
   };
 
@@ -318,7 +320,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         id: data.id,
         type: data.type,
         name: data.name,
-        radius: data.months * 4,
+        radius: data.years * 12 + data.months,
       })
       featuresBuilt.push(featureBuild)
     })
@@ -337,12 +339,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
 
   buildTravelLayer(data: any): void {
-    let points: any[] = []
-    data.geojson_data.forEach((element: any) => {
-      points.push(transform(element.geometry.coordinates, 'EPSG:4326', 'EPSG:3857'))
-    });;
-    let travelLine = new LineString(points)
-    var travel = new Feature({
+    const travelLine = new LineString(data.geojson_data[0].geometry.coordinates)
+    const travel = new Feature({
       type: 'route',
       geometry: travelLine
     })
@@ -370,7 +368,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       source: vectorSource,
     });
 
-    const features = [travel, movingNode, startMarker, endMarker]
+    let features = [travel, startMarker, endMarker]
     features.forEach((feature: any, index: number) => {
       feature.setStyle(travelStyles(feature.get("type")))
       vectorSource.addFeature(feature)
@@ -424,6 +422,5 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     })
     .style('display', 'block');
   }
-
 
 }
