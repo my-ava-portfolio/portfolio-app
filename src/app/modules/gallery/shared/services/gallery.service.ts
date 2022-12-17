@@ -9,7 +9,7 @@ import { GalleryModule } from '@modules/gallery/gallery.module';
 @Injectable()
 export class GalleryService {
 
-  private apiUrlActivitiesGallery = apiUrl + 'gallery_activities?';
+  private apiUrlActivitiesGallery = apiUrl + 'gallery/';
   ErrorActivitiesGalleryApiFound: Subject<string> = new Subject<string>();
   activitiesGalleryData: Subject<any> = new Subject<any>();
 
@@ -17,15 +17,10 @@ export class GalleryService {
     private http: HttpClient
   ) { }
 
-  pullExistingActivitiesGallery(
-    activityName: string | null,
-    categoryName: string | null,
-    typeName: string | null
-  ): void {
+  pullExistingActivitiesGallery(parameters: any): void {
 
 
-    this.http.get<any>(`${this.apiUrlActivitiesGallery}activity_name=${activityName}&category_name=${categoryName}&type_name=${typeName}`
-    ).subscribe({
+    this.http.get<any>(`${this.apiUrlActivitiesGallery}`, {params: parameters}).subscribe({
       complete: () => {
       },
       error: error => {

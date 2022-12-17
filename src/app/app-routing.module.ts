@@ -36,10 +36,10 @@ const appRoutes: Routes = [
         path: 'education',
         loadChildren: () => import('@modules/education/education.module').then(m => m.EducationModule),
       },
-      // {
-      //   path: 'gallery',
-      //   loadChildren: () => import('@modules/gallery/gallery.module').then(m => m.GalleryModule),
-      // },
+      {
+        path: 'gallery',
+        loadChildren: () => import('@modules/gallery/gallery.module').then(m => m.GalleryModule),
+      },
       {
         path: 'maps',
         loadChildren: () => import('@modules/maps/maps.module').then(m => m.MapsModule),
