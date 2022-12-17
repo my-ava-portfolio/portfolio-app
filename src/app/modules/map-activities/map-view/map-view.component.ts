@@ -116,11 +116,12 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
 
     this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoData.subscribe(
-      (geoFeaturesData: any) => {
-        this.geoFeaturesData = geoFeaturesData.activities_geojson.features;
-        this.geoTripsData = geoFeaturesData.trips_data
+      (geoData: any) => {
+        console.log(geoData)
+        this.geoFeaturesData = geoData.geojson;
+        // this.geoTripsData = geoData.trips_data
 
-        this.startDate = new Date(geoFeaturesData.start_date)
+        this.startDate = new Date(geoData.date_range.start_date)
         this.endDate = new Date()
         //  this.currentDate = this.endDate
         this.getCurrentDate(this.endDate)
@@ -181,7 +182,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     // set the layer container
     this.initLayer(activityLayerName, activitiesStyle)
 
-    this.dataService.pullActivitiesGeoData();
+    this.dataService.queryActivitiesGeoData();
 
     this.zoomInitDone = false;
     this.innerWidth = window.innerWidth;
@@ -209,24 +210,24 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     // manage activities
     const newData = this.geoFeaturesData.filter((d: any) => {
-      const selectedDate = new Date(d.properties.start_date);
+      const selectedDate = new Date(d.start_date);
         return selectedDate <= this.currentDate;
     });
     this.addLayerFeatures(newData, activitiesStyle)
 
     // manage trips
     let tripFound: any[] = []
-    this.geoTripsData.forEach((item: any) => {
-      const startDate: string = item.start_date;
-      const endDate: string = item.end_date;
-      const tripStartDate: Date = new Date(startDate);
-      const tripEndDate: Date = new Date(endDate);
+    // this.geoTripsData.forEach((item: any) => {
+    //   const startDate: string = item.start_date;
+    //   const endDate: string = item.end_date;
+    //   const tripStartDate: Date = new Date(startDate);
+    //   const tripEndDate: Date = new Date(endDate);
 
-      if (this.currentDate >= tripStartDate && this.currentDate < tripEndDate) {
-        tripFound.push(item)
-      }
-    });
-    this.dataService.pullTripsGeoDataToMap(tripFound);
+    //   if (this.currentDate >= tripStartDate && this.currentDate < tripEndDate) {
+    //     tripFound.push(item)
+    //   }
+    // });
+    // this.dataService.pullTripsGeoDataToMap(tripFound);
 
   }
 
@@ -314,10 +315,10 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     features.forEach((data: any, index: number) => {
       let featureBuild = new Feature({
         geometry: new Point(data.geometry.coordinates).transform('EPSG:4326', 'EPSG:3857'),
-        id: data.properties.id,
-        type: data.properties.type,
-        name: data.properties.name,
-        radius: data.properties.months,
+        id: data.id,
+        type: data.type,
+        name: data.name,
+        radius: data.months * 4,
       })
       featuresBuilt.push(featureBuild)
     })

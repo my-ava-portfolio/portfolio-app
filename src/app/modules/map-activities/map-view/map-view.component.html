@@ -39,33 +39,33 @@
 
 
 <ng-template #activitiesPopups>
-<div [id]="'popup-feature-' + feature.properties.id" class="card shadow-lg map-popup border border-3 border-secondary" *ngFor="let feature of geoFeaturesData"
+<div [id]="'popup-feature-' + feature.id" class="card shadow-lg map-popup border border-3 border-secondary" *ngFor="let feature of geoFeaturesData"
   >
   <div class="card-body">
     <div class="d-flex flex-row justify-content-around mb-1">
-      <h5 class="fw-bolder small">{{feature.properties.title}}</h5>
+      <h5 class="fw-bolder small">{{feature.title}}</h5>
     </div>
 
     <div class="d-flex flex-row justify-content-around">
 
-      <div *ngIf="feature.properties.img_activity !== 'null'" class="w-25 justify-content-around text-center">
-        <img class="img-fluid rounded mx-auto shadow mini-img-thumbnail" [src]="apiImgUrl + feature.properties.img_activity"/>
+      <div *ngIf="feature.img_activity !== 'null'" class="w-25 justify-content-around text-center">
+        <img class="img-fluid rounded mx-auto shadow mini-img-thumbnail" [src]="apiImgUrl + feature.img_activity"/>
       </div>
 
       <div class="my-auto">
-        <h6 class="fw-bolder small">{{feature.properties.name}}</h6>
+        <h6 class="fw-bolder small">{{feature.name}}</h6>
           <span class="small">
             <fa-icon class="me-2 text-danger" [icon]="locationIcon"></fa-icon>
-            {{feature.properties.location}}
+            {{feature.location}}
           </span>
 
-          <div *ngIf="feature.properties.status === 'InProgress'; then currentJob else pastJob"></div>
+          <div *ngIf="feature.status === 'InProgress'; then currentJob else pastJob"></div>
           <ng-template #pastJob>
-            <div class="small">Du {{ feature.properties.start_date | date: 'MM-yyyy' }} au {{ feature.properties.end_date | date: 'MM-yyyy' }}</div>
+            <div class="small">Du {{ feature.start_date | date: 'MM-yyyy' }} au {{ feature.end_date | date: 'MM-yyyy' }}</div>
           </ng-template>
 
           <ng-template #currentJob>
-            <div class="small">Du {{ feature.properties.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
+            <div class="small">Du {{ feature.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
           </ng-template>
       </div>
     </div>

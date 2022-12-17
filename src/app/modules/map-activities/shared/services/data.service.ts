@@ -8,11 +8,13 @@ import { Subject } from 'rxjs';
 })
 export class DataService {
 
-  private apiUrlActivitiesGeoData = apiUrl + 'activities_geodata';
-  ErrorapiUrlActivitiesGeoDataApiFound: Subject<string> = new Subject<string>();
+  private apiUrlActivitiesGeoData = apiUrl + 'geodata/activities';
+  errorapiUrlApiFound: Subject<string> = new Subject<string>();
   activitiesGeoData: Subject<any> = new Subject<any>();
 
-  dataToMap: Subject<any[]> = new Subject<any[]>();
+  private apiUrlTripsGeoData = apiUrl + '/geodata/trips';
+  tripsGeoData: Subject<any> = new Subject<any>();
+
   dateNotified: Subject<string> = new Subject<string>();
   timelineBuild: Subject<any> = new Subject<any>();
 
@@ -24,14 +26,14 @@ export class DataService {
   ) { }
 
 
-  pullActivitiesGeoData(): void {
+  queryActivitiesGeoData(): void {
 
     this.http.get<any>(this.apiUrlActivitiesGeoData).subscribe({
       complete: () => {
       },
       error: error => {
       // TODO improve error message, but API need improvments
-      this.ErrorapiUrlActivitiesGeoDataApiFound.next(error.error.message);
+      this.errorapiUrlApiFound.next(error.error.message);
       },
       next: response => {
         this.activitiesGeoData.next(response);
@@ -39,13 +41,23 @@ export class DataService {
     });
   }
 
-  pullDataToMap(dataToMap: any): void {
-    // NOT USED (TODO must be a generic func)
-    this.dataToMap.next(dataToMap);
-  }
-
   pullActivitiesGeoDataToMap(dataToMap: any[]): void {
     this.activitiesGeoDataToMap.next(dataToMap);
+  }
+
+  queryTripsGeoData(parameters: any): void {
+
+    this.http.get<any>(this.apiUrlTripsGeoData, { params: parameters }).subscribe({
+      complete: () => {
+      },
+      error: error => {
+      // TODO improve error message, but API need improvments
+      this.errorapiUrlApiFound.next(error.error.message);
+      },
+      next: response => {
+        this.tripsGeoData.next(response);
+      },
+    });
   }
 
   pullTripsGeoDataToMap(dataToMap: any[]): void {
