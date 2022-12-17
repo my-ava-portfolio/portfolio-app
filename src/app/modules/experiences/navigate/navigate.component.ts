@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, Input, ElementRef, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
 

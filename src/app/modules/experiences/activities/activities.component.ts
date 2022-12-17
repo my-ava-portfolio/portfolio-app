@@ -3,11 +3,10 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@
 
 import { ResumeService } from '@services/resume.service';
 
-import { ActivityActionsService } from '../services/activity-actions.service';
-import { assetsLogoPath, assetsImagesPath, personalBlogUrl, activitiesMapping } from '@core/global-values/main';
+import { assetsLogoPath, assetsImagesPath, activitiesMapping } from '@core/global-values/main';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faMapMarkerAlt, faImages, faFilter, faTrophy, faAngleDoubleDown, faPaintBrush, faFileAlt, faGlobe } from '@fortawesome/free-solid-svg-icons';
-import { mapActivitiesPages, galleryPages, projectPages } from '@core/global-values/topics';
+import { mapActivitiesPages, galleryPages } from '@core/global-values/topics';
 
 
 @Component({
@@ -28,8 +27,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   assetsImagesPath = assetsImagesPath;
   mapPages: any = mapActivitiesPages;
   galleryPagesRoute: string = galleryPages.route;
-  // blogPagesRoute: string = projectPages[0].route;
-  // blogUrl = personalBlogUrl;
 
   // icons
   locationIcon = faMapMarkerAlt;

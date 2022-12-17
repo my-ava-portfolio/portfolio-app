@@ -4,7 +4,6 @@ import { skillsMapping } from '@core/global-values/main';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
-import { ActivityActionsService } from '../services/activity-actions.service';
 
 
 @Component({
@@ -32,7 +31,6 @@ export class SkillsComponent implements OnInit, OnDestroy {
 
     this.professionalSkillsSubscription = this.resumeService.profesionalSkillsDataSubject.subscribe(
       (data: any) => {
-        console.log(data)
           this.jobSkillsCategories = data["job"]
           this.projectSkillsCategories = data["personal-project"]
           this.volunteerSkillsCategories = data["volunteer"]
