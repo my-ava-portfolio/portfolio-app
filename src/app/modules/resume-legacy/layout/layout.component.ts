@@ -62,29 +62,29 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     private cdRef: ChangeDetectorRef
   ) {
 
-    this.generalDataSubscription = this.resumeService.resumeData.subscribe(
-      (data) => {
-        this.contactData = data.contact;
-        this.degreesData = data.education;
-        this.generalData = data.general;
-        this.languagesData = data.languages;
-        this.profilData = data.profil;
-        this.trainingsData = data.trainings;
-        this.summaryData = data.profil.carrier_summary;
-        this.publicationsData = data.publications;
+    // this.generalDataSubscription = this.resumeService.resumeData.subscribe(
+    //   (data) => {
+    //     this.contactData = data.contact;
+    //     this.degreesData = data.education;
+    //     this.generalData = data.general;
+    //     this.languagesData = data.languages;
+    //     this.profilData = data.profil;
+    //     this.trainingsData = data.trainings;
+    //     this.summaryData = data.profil.carrier_summary;
+    //     this.publicationsData = data.publications;
 
-        this.dataAvailable = true;
-      }
-    );
+    //     this.dataAvailable = true;
+    //   }
+    // );
 
-    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
-      (data) => {
-        this.jobsData = data.activities_data.job;
+    // this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
+    //   (data) => {
+    //     this.jobsData = data.activities_data.job;
 
-        this.personalProjectsData = data.activities_data["personal-project"].reverse();
-        this.skillsData = data.skills_data;
-      }
-    );
+    //     this.personalProjectsData = data.activities_data["personal-project"].reverse();
+    //     this.skillsData = data.skills_data;
+    //   }
+    // );
 
 
 
@@ -92,14 +92,14 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.sendResumeSubMenus()
-    this.resumeService.pullResumeGeneralData();
-    this.resumeService.pullActivitiesResumeFromGraph(
-      this.currentDate,
-      true,
-      true,
-      true,
-      null
-    );
+    // this.resumeService.pullResumeGeneralData();
+    // this.resumeService.pullActivitiesResumeFromGraph(
+    //   this.currentDate,
+    //   true,
+    //   true,
+    //   true,
+    //   null
+    // );
   }
 
   ngAfterViewInit(): void {
@@ -107,8 +107,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   ngOnDestroy(): void {
-    this.generalDataSubscription.unsubscribe();
-    this.activitiesFilteredSubscription.unsubscribe();
+    // this.generalDataSubscription.unsubscribe();
+    // this.activitiesFilteredSubscription.unsubscribe();
   }
 
   sendResumeSubMenus(): void {

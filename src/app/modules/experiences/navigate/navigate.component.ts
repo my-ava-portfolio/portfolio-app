@@ -155,7 +155,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   updateDatefromTemporalBar(date: number): void {
     this.currentDate = date;
-    this.resumeService.queryActivitiesCountFromApi(date)
+    // this.resumeService.queryActivitiesCountFromApi(date)
   }
 
   updateDate(event: any): void {
