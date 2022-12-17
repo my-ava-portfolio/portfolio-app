@@ -44,10 +44,10 @@ const appRoutes: Routes = [
         path: 'maps',
         loadChildren: () => import('@modules/maps/maps.module').then(m => m.MapsModule),
       },
-      // {
-      //   path: 'blog',
-      //   loadChildren: () => import('@modules/blog/blog.module').then(m => m.BlogModule),
-      // },
+      {
+        path: 'blog',
+        loadChildren: () => import('@modules/blog/blog.module').then(m => m.BlogModule),
+      },
       { path: '**', redirectTo: '/home', pathMatch : 'full' }, // in order to redirect to the home page if the main url is called
     ]
   },

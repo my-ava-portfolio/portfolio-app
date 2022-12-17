@@ -51,7 +51,7 @@ export class LayoutComponent implements OnDestroy {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
-    this.topicsDataSubscription = this.blogService.topicsData.subscribe(
+    this.topicsDataSubscription = this.blogService.blogData.subscribe(
       (data) => {
         data.forEach((feature: any) => {
           this.allBlogTopics.push(this.buildFeature(feature))
@@ -84,7 +84,7 @@ export class LayoutComponent implements OnDestroy {
 
   ngOnInit(): void {
     this.sendResumeSubMenus()
-    this.blogService.pulltopicsData()
+    this.blogService.queryBlogTopics()
 
   }
 
