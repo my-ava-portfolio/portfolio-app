@@ -55,7 +55,6 @@ export class ResumeService {
   }
 
   queryLanguagesFromApi(): void {
-    console.log(this.languagesRoute)
     this.http.get<any>(`${this.languagesRoute}/`).subscribe({
       complete: () => {
       },
