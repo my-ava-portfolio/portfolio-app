@@ -26,7 +26,6 @@ export class PublicationBarComponent implements OnInit, OnDestroy {
     this.publicationsDataSubscription = this.resumeService.publicationsDataSubject.subscribe(
       (data: any) => {
         this.publicationsData = data;
-        // TODO create a component in order to display badges with route
       }
     );
 

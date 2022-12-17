@@ -24,38 +24,21 @@ export class LayoutComponent implements OnInit {
 
   activityType = "education"
 
-  activityIdFromActivityComponents!: string;
-
-  // resume left sidebar
-  profilData: any;
-  degreesData: any;
-  languagesData: any;
-  trainingsData: any;
-  publicationsData: any = []
-
-  // resume center bar
-  generalData: any;
-
-  isDataAvailable = false;
-
   educationTopics = educationPages;
 
   isAnchorExistsChecker = interval(1000); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
 
-  activitiesFilteredSubscription!: Subscription;
+  titleSubscription!: Subscription;
 
   constructor(
     private controlerService: ControlerService,
-    private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
     private titleService: Title
   ) {
 
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
-
-
    }
 
   ngOnInit(): void {
@@ -63,6 +46,7 @@ export class LayoutComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
+    // TODO globally ?
     this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment === undefined) {

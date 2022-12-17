@@ -50,7 +50,6 @@ export class DegreesBarComponent implements OnInit, OnDestroy {
   }
 
   getTitle(data: any): string {
-    // TODO do it on html directly
     return (new Date(data.start_date)).getFullYear() + ' - ' +
      (new Date(data.end_date)).getFullYear();
   }

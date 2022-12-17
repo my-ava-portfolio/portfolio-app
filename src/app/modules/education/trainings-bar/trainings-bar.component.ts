@@ -32,13 +32,10 @@ export class TrainingsBarComponent implements OnInit, OnDestroy {
     this.trainingsDataSubscription = this.resumeService.trainingsDataSubject.subscribe(
       (data: any) => {
         this.trainingsData = data;
-        console.log(data)
-        // TODO create a component in order to display badges with route
       }
     );
 
   }
-
 
   ngOnInit(): void {
     this.resumeService.queryTrainingsFromApi();
