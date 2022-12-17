@@ -48,7 +48,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   contextTitle = "Contexte";
   missionTitle = "Missions";
   describeTitle = "Description";
-  envTitle = "Stack technique";
   trainingTitle = "Formations";
   detailsTitle = "Détails";
   publicationsTitle = "Publications";

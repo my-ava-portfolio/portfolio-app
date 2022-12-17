@@ -115,7 +115,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.currentNodeIdSelected === null) {
           // in order to filter graph from components job and personal project
           const elementId: string = `node-${activityId}`;
-          // this.rebuildActivitiesChartWithAPreselection(elementId);
+          this.resetChartWithASelection(elementId);
         } else {
           this.resetChart();
         }

@@ -104,7 +104,7 @@
             <div *ngIf="activity.years > 1 && activity.months > 0">
               <div>({{activity.years}} ans et {{activity.months}} mois)</div>
             </div>
-            
+
           </div>
 
           <div class="badge-keywords col-11 justify-content-around flex-wrap " *ngIf="activity.keywords">
@@ -140,7 +140,7 @@
           <a *ngIf="activity.url_website" class="btn btn-sm btn-primary m-1" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
         </ng-container>
 
-        <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
+        <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.id)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
       </div>
     </div>
 
@@ -168,21 +168,14 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem>
-          <a ngbNavLink class="fw-bold">{{ this.envTitle }}</a>
-          <ng-template ngbNavContent>
-            <ng-container *ngTemplateOutlet="ngbNavSkillsContent; context:{data: activity}"></ng-container>
-          </ng-template>
-        </li>
-
-        <li ngbNavItem *ngIf="activity.trainings">
+        <li ngbNavItem *ngIf="activity.trainings.length > 0">
           <a ngbNavLink class="fw-bold">{{ this.trainingTitle }}</a>
           <ng-template ngbNavContent>
             <ng-container *ngTemplateOutlet="ngbNavTrainingsContent; context:{data: activity}"></ng-container>
           </ng-template>
         </li>
 
-        <li ngbNavItem *ngIf="activity.publications !== null">
+        <li ngbNavItem *ngIf="activity.publications.length > 0">
           <a ngbNavLink class="fw-bold">{{ this.publicationsTitle }}</a>
           <ng-template ngbNavContent>
             <ng-container *ngTemplateOutlet="ngbNavPublicationsContent; context:{data: activity}"></ng-container>
@@ -223,12 +216,6 @@
     </set-paragraph-content>
 
   </ng-container>
-</ng-template>
-
-<ng-template #ngbNavSkillsContent let-data='data'>
-  <set-paragraph-content>
-    <ng-container *ngTemplateOutlet="skillDetails; context:{data: data.tools}"></ng-container>
-  </set-paragraph-content>
 </ng-template>
 
 <ng-template #ngbNavTrainingsContent let-data='data'>
