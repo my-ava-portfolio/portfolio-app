@@ -28,8 +28,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   assetsImagesPath = assetsImagesPath;
   mapPages: any = mapActivitiesPages;
   galleryPagesRoute: string = galleryPages.route;
-  blogPagesRoute: string = projectPages[0].route;
-  blogUrl = personalBlogUrl;
+  // blogPagesRoute: string = projectPages[0].route;
+  // blogUrl = personalBlogUrl;
 
   // icons
   locationIcon = faMapMarkerAlt;
@@ -108,13 +108,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   forceArrayType(input: any): string[] {
     return input
-  }
-
-  contractValueAlias(contractValue: string): string {
-    if (contractValue == "volunteer") {
-      return "Bénévolat";
-    }
-    return contractValue;
   }
 
   ngOnChanges(changes: SimpleChanges) {

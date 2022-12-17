@@ -21,7 +21,6 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
   userInfoData!: any;
   jobDuration!: any;
-  objectSelected!: string;
 
   jobCategory: string = "job";
   activityCategoryHidden = "education"

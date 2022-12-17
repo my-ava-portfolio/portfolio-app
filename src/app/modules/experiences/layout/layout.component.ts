@@ -30,7 +30,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
 
   apiImgUrl = assetsLogoPath;
   activityIdFromActivityComponents!: string;
-  isLegendDisplayed = true;
 
   navIcon = faGlobeEurope;
   tagsIcon = faTags;
@@ -56,7 +55,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   isAnchorExistsChecker = interval(1000); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
 
-  generalDataSubscription!: Subscription;
   routeSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
 
@@ -71,15 +69,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
     // to get the data properties from routes (app.module.ts)
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
-    this.generalDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
-      (data) => {
-        this.profilData = data
-        this.generalData = data.resume_validity_range;
-        this.isDataAvailable = true;
-
-      }
-    );
-
     this.routeSubscription = this.activatedRoute.fragment.subscribe(
       (fragment) => {
         if (fragment) {
@@ -90,7 +79,7 @@ export class LayoutComponent implements OnInit, OnDestroy  {
     );
 
     this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
-      (activityId) => {
+      (activityId: string) => {
         this.tabView = activityId
       }
     )
@@ -106,8 +95,8 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   }
 
   ngOnDestroy(): void {
-    this.generalDataSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
+    this.activityEnablingSubscription.unsubscribe();
   }
 
   sendResumeSubMenus(): void {

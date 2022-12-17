@@ -59,8 +59,7 @@
 
         <div class="activity-img my-2 w-25 text-center">
           <img class="img-fluid" *ngIf="activityType === 'personal-project'" [src]="assetsImagesPath + activity.img_activity"/>
-          <img class="img-fluid" *ngIf="activityType === 'job'" [src]="apiImgUrl + activity.img_activity"/>
-          <img class="img-fluid" *ngIf="activityType === 'volunteer'" [src]="apiImgUrl + activity.img_activity"/>
+          <img class="img-fluid" *ngIf="['job', 'volunteer'].includes(activityType)" [src]="apiImgUrl + activity.img_activity"/>
         </div>
 
         <div class="abstract
@@ -86,7 +85,7 @@
               my-2
             ">
             
-            <div class="me-1" *ngIf="activityType !== 'personal-project'">{{ this.contractValueAlias(activity.contract) }} - </div>
+            <div class="me-1" *ngIf="activityType === 'job'">{{ activity.contract }} - </div>
             <ng-container *ngIf="activity.status !== 'InProgress'">
                 <div class="me-1">Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }}</div>
             </ng-container>
@@ -122,6 +121,7 @@
       <div class="buttons-tools
           d-flex flex-column top-0 end-0
         ">
+        <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.id)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
 
         <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
 
@@ -140,7 +140,6 @@
           <a *ngIf="activity.url_website" class="btn btn-sm btn-primary m-1" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
         </ng-container>
 
-        <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.id)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
       </div>
     </div>
 
@@ -237,20 +236,3 @@
 
 </ng-template>
 <!-- TAB CONTENT TEMPLATES -->
-
-
-<!-- SKILLS TEMPLATE -->
-<ng-template #skillDetails let-data='data'>
-  <div class="skills-container">
-    <div class="skill" *ngFor="let tool of data">
-      <h6>{{ tool.skill }}</h6>
-      <ul>
-        <li *ngFor="let item of tool.features">
-          <span>{{ item.sub_skill }}</span>
-          <span *ngIf="item.details"> : {{ item.details }}</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-</ng-template>
-<!-- SKILLS TEMPLATE -->

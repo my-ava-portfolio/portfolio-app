@@ -1,4 +1,3 @@
-import { activities } from "@core/data-types";
 import { apiBaseUrl } from "@core/global-values/svr-url";
 
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
