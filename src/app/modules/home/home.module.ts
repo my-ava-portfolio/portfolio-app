@@ -8,12 +8,10 @@ import { FormsModule } from '@angular/forms';
 import { HomeRoutingModule } from '@modules/home/home-routing.module';
 
 import { LayoutComponent } from '@modules/home/layout/layout.component';
-
 import { SummaryComponent } from './summary/summary.component';
-
-import { PipesModule } from '@shared/pipes/pipes.module';
-
 import { GeneralInfoComponent } from './general-info/general-info.component';
+
+// import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { ItemsModule } from '@shared/modules/items/items.module';
 
@@ -27,7 +25,7 @@ import { ItemsModule } from '@shared/modules/items/items.module';
     CommonModule,
     FormsModule,
     HomeRoutingModule,
-    PipesModule,
+    // PipesModule,
     NgbModule,
     ItemsModule
   ],

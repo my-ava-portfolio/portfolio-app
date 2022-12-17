@@ -27,16 +27,13 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   activityCategoryHidden = "education"
 
   activityTypesMetadata: activitiesCountOutput[] = []
-  // tabView!: string;
 
   userInfoDataSubscription!: Subscription;
-  activityEnablingSubscription!: Subscription;
   activitiesJobDurationSubscription!: Subscription;
   professionalActivitiesSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
-    private activityActionsService: ActivityActionsService
   ) {
 
     this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(

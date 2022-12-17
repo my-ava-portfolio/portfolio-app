@@ -18,21 +18,12 @@ export class LayoutComponent implements OnInit {
 
   homeTopics = homePages;
 
-  isWelcomeCardDisplayed = true;
-
-
-  legendEnabled: boolean = false;
-
   constructor(
     private titleService: Title,
     private activatedRoute: ActivatedRoute,
     private controlerService: ControlerService,
   ) {
-
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
-
-
-
    }
 
   ngOnInit(): void {

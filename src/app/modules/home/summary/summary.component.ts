@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { projectPages, resumeTopicsPages } from '@core/global-values/topics';
 
 
@@ -7,19 +7,12 @@ import { projectPages, resumeTopicsPages } from '@core/global-values/topics';
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.scss']
 })
-export class SummaryComponent implements OnInit, OnDestroy {
+export class SummaryComponent {
 
   resumePages: any[] = resumeTopicsPages;
   projectPages: any[] = projectPages;
 
-
   constructor( ) { }
-
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-  }
 
 }
 
