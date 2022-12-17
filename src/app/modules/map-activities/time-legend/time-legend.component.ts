@@ -60,7 +60,7 @@ export class TimeLegendComponent extends TimeLineComponent implements OnInit, On
           if (featureDate <= this.currentDate) {
             return 'pointer svg-color-' + d.type;
           } else {
-            return 'trace'
+            return 'pointer trace'
           }
         })
       .attr('r', "4")
