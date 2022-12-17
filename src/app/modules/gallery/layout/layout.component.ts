@@ -99,7 +99,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.activitiesGallerySubscription = this.galleryService.activitiesGalleryData.subscribe(
       (data) => {
         this.galleryItems = []
-        console.log(data)
         data.forEach((feature: any) => {
           this.galleryItems.push(this.buildFeature(feature))
         })
