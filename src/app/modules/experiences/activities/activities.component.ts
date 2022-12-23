@@ -64,7 +64,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
       (data: any) => {
         this.jobsData = data["job"]
-        console.log(data)
           this.personalProjectsData = data["personal-project"]
           this.volunteersData = data["volunteer"]
       }
