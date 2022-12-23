@@ -98,7 +98,16 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
       (graphData: any) => {
-        this.buildGraph(graphData, this.currentNodeIdSelected);
+
+        // preselected node check
+        if ( this.currentNodeIdSelected !== null ) {
+          this._graphSelectedFiltering('#skillsGraphElements #' + this.currentNodeIdSelected);
+        } else {
+          this._defaultDisplayingByDate();
+        }
+
+        this.buildGraph(graphData);
+        
       }
     );
 
@@ -114,8 +123,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       (activityId) => {
         if (this.currentNodeIdSelected === null) {
           // in order to filter graph from components job and personal project
-          const elementId: string = `node-${activityId}`;
-          this.resetChartWithASelection(elementId);
+          this.resetChartWithASelection(`node-${activityId}`);
         } else {
           this.resetChart();
         }
@@ -133,10 +141,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.initSvgGraph();
-
     this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
     this.resetChart();
-
   }
 
   ngAfterViewInit(): void {
@@ -155,7 +161,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   updateDatefromTemporalBar(date: number): void {
     this.currentDate = date;
-    // this.resumeService.queryActivitiesCountFromApi(date)
   }
 
   updateDate(event: any): void {
@@ -348,7 +353,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  private buildGraph(graphData: any, nodeIdToSelect: string | null): void {
+  private buildGraph(graphData: any): void {
 
     const nodes: any[] = [];
     const links: any[] = [];
@@ -504,13 +509,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
           d.fy = null;
         })
     );
-
-    // to preselect a node
-    if ( nodeIdToSelect !== null ) {
-      this._graphSelectedFiltering('#skillsGraphElements #' + nodeIdToSelect);
-    } else {
-      this._defaultDisplayingByDate();
-    }
 
   }
 
