@@ -27,7 +27,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
   // icons
   languageIcon = faLanguage;
-
+  
   userInfoDataSubscription!: Subscription
   languagesDataSubscription!: Subscription
 
