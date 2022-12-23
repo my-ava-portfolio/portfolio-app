@@ -29,13 +29,12 @@ import { experiencesPages } from '@core/global-values/topics';
 export class LayoutComponent implements OnInit, OnDestroy {
   experiencesRoute: string = experiencesPages.route;
 
-  // TODO create a route to get all activities titles
   currentDate: number = new Date().getFullYear();
-  defaultActivity: string | null = null;
-  currentActivity: string | null = null;
+  defaultActivity: string = 'null';
+  currentActivity: string = 'null';
 
-  defaultCategory: string | null = null;
-  currentCategory: string | null = null;
+  defaultCategory: string = 'null';
+  currentCategory: string = 'null';
 
   isLegendDisplayed = true;
   tagsIcon = faTags;
@@ -51,8 +50,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   galleryItems: galleryFeature[] = [];
 
   activitiesMapping = activitiesMapping
-
-  isDataAvailable = false;
 
   typeStyleMapping: any = {
     chart: { icon: faChartBar, title: 'Graphiques & tableaux' },
@@ -71,6 +68,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     asset_img: 'modal',
     asset_app: 'local_website'
   }
+  
   activitiesGallerySubscription!: Subscription;
   activatedRouteSubscription!: Subscription;
 
@@ -83,15 +81,16 @@ export class LayoutComponent implements OnInit, OnDestroy {
     ) {
 
     // to get the data properties from routes (app.module.ts)
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
+    // this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.activatedRouteSubscription = this.activatedRoute.fragment.subscribe(
       (fragment: string | null) => {
         if (fragment !== null) {
           this.getGalleryDataByActivity(fragment)
-        } else {
-          this.resetGallery();
-        }
+          return
+        } 
+        this.resetGallery();
+        
       }
     );
 
@@ -108,7 +107,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
         }, {})
 
         this.currentCategory = data.current_category;
-        this.isDataAvailable = true;
       }
     );
 
@@ -180,14 +178,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.currentActivity = this.defaultActivity;
     this.currentCategory = this.defaultCategory;
     this.currentType = this.defaultType;
-    this.galleryService.pullExistingActivitiesGallery({})
+    this.galleryService.queryGalleryFeatures({})
     this.mainService.scrollToTopAction()
   }
 
-  getGalleryDataByActivity(activityName: string | null): any {
+  getGalleryDataByActivity(activityName: string): void {
     this.currentActivity = activityName;
     this.currentType = this.defaultType;
-    this.galleryService.pullExistingActivitiesGallery(
+    this.galleryService.queryGalleryFeatures(
       {
         activity_name: this.currentActivity,
       }
@@ -195,11 +193,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.mainService.scrollToTopAction()
   }
 
-  getGalleryDataByCategory(categoryName: string | null): any {
+  getGalleryDataByCategory(categoryName: string): void {
     this.currentCategory = categoryName;
     this.currentActivity = this.defaultActivity;
     this.currentType = this.defaultType;
-    this.galleryService.pullExistingActivitiesGallery(
+    this.galleryService.queryGalleryFeatures(
       {
         activity_type: this.currentCategory,
       }
@@ -207,9 +205,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.mainService.scrollToTopAction()
   }
 
-  getGalleryDataByType(typeName: string | null): any {
+  getGalleryDataByType(typeName: string): void {
     this.currentType = typeName;
-    this.galleryService.pullExistingActivitiesGallery(
+    this.galleryService.queryGalleryFeatures(
       {
         media_type: this.currentType
       }

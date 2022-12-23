@@ -17,8 +17,7 @@ export class GalleryService {
     private http: HttpClient
   ) { }
 
-  pullExistingActivitiesGallery(parameters: any): void {
-
+  queryGalleryFeatures(parameters: any): void {
 
     this.http.get<any>(`${this.apiUrlActivitiesGallery}`, {params: parameters}).subscribe({
       complete: () => {
