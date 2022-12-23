@@ -11,9 +11,12 @@ import { Subscription } from 'rxjs';
 export class GeneralInfoComponent implements OnInit {
   
   userInfoData!: any;
+  jobDuration!: any;
+
   imageProfile: string = imageProfile;
 
   userInfoDataSubscription!: Subscription;
+  activitiesJobDurationSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
@@ -25,14 +28,21 @@ export class GeneralInfoComponent implements OnInit {
       }
     );
 
+    this.activitiesJobDurationSubscription = this.resumeService.activitiesJobDurationDataSubject.subscribe(
+      (data: any) => {
+        this.jobDuration = data
+      }
+    )
+
   }
 
   ngOnInit(): void {
-    //TODO add job duration; check html comment
     this.resumeService.queryUserInfoFromApi();
+    this.resumeService.queryActivitiesJobDurationFromApi()
   }
 
   ngOnDestroy(): void {
     this.userInfoDataSubscription.unsubscribe();
+    this.activitiesJobDurationSubscription.unsubscribe();
   }
 }
