@@ -6,9 +6,7 @@ import { MainService } from '@services/main.service';
 import { Subscription } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 
-import { ControlerService } from '@services/controler.service';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { galleryFeature } from '@core/data-types';
 import { activitiesMapping, assetsImagesPath } from '@core/global-values/main';
@@ -76,7 +74,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private galleryService: GalleryService,
     private mainService: MainService,
     private activatedRoute: ActivatedRoute,
-    private controlerService: ControlerService,
     ) {
 
     this.activatedRouteSubscription = this.activatedRoute.fragment.subscribe(
@@ -108,17 +105,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit(): void {
-    this.sendResumeSubMenus()
-  }
+  ngOnInit(): void { }
 
   ngOnDestroy(): void {
     this.activitiesGallerySubscription.unsubscribe();
     this.activatedRouteSubscription.unsubscribe();
-  }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus([])
   }
 
   buildFeature(feature: any): galleryFeature {

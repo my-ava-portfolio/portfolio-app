@@ -3,9 +3,6 @@ import { fadeInOutAnimation } from '@core/animation_routes';
 import { homePages } from '@core/global-values/topics';
 
 
-import { ControlerService } from '@services/controler.service';
-
-
 @Component({
   selector: 'app-app-layout',
   templateUrl: './layout.component.html',
@@ -16,17 +13,9 @@ export class LayoutComponent implements OnInit {
 
   homeTopics = homePages;
 
-  constructor(
-    private controlerService: ControlerService,
-  ) { }
+  constructor( ) { }
 
-  ngOnInit(): void {
-    this.sendResumeSubMenus();
-  }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus(this.homeTopics.sub_menus)
-  }
+  ngOnInit(): void { }
 
 }
 

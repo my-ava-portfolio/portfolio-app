@@ -76,17 +76,11 @@ export class LayoutComponent implements OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sendResumeSubMenus()
     this.blogService.queryBlogTopics()
-
   }
 
   ngOnDestroy(): void {
     this.topicsDataSubscription.unsubscribe()
-  }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus([])
   }
 
   buildFeature(feature: any): galleryFeature {
