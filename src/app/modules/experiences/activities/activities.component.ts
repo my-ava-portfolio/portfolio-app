@@ -97,11 +97,17 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   pushActivityId(activityId: string): void {
+    // this.jobsData = [];
+    // this.personalProjectsData = [];
+    // this.volunteersData = [];
     this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
   }
 
   countDictObject(inputDict: any): number {
-    return Object.keys(inputDict).length
+    if (inputDict) {
+      return Object.keys(inputDict).length;
+    }
+    return 0;
   }
 
   forceArrayType(input: any): string[] {
