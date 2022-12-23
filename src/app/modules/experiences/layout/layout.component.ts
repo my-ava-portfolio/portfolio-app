@@ -6,11 +6,9 @@ import { ControlerService } from '@services/controler.service';
 import { interval, Subscription } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 
 import { fadeInOutAnimation } from '@core/animation_routes';
-import { activitiesMapping, assetsLogoPath } from '@core/global-values/main';
-import { minWidthLandscape } from '@core/styles/screen';
+import { assetsLogoPath } from '@core/global-values/main';
 
 import { faGlobeEurope, faTags } from '@fortawesome/free-solid-svg-icons';
 import { experiencesPages } from '@core/global-values/topics';
@@ -100,7 +98,8 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   }
 
   sendActivityId(activityId: string): void {
-    this.activityActionsService.setActivity(activityId)
+    // this.activityActionsService.setActivity(activityId)
+    this.tabView = activityId
   }
 
 }

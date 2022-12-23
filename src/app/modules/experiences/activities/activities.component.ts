@@ -56,6 +56,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   routeQueryParamsSubscription!: Subscription;
   professionalActivitiesSubscription!: Subscription;
+  activityEnablingSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
@@ -64,10 +65,11 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
       (data: any) => {
         this.jobsData = data["job"]
-          this.personalProjectsData = data["personal-project"]
-          this.volunteersData = data["volunteer"]
+        this.personalProjectsData = data["personal-project"]
+        this.volunteersData = data["volunteer"]
       }
     )
+
   }
 
   ngOnInit(): void {
@@ -78,7 +80,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.activityEnablingSubscription.unsubscribe();
     this.professionalActivitiesSubscription.unsubscribe();
   }
 

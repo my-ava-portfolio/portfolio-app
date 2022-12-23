@@ -457,7 +457,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         return 'label-' + d.node.properties.id;
       })
       .attr('class', (d: any) => {
-          return d.node.properties.type;
+        return d.node.properties.type;
       });
 
 
@@ -467,8 +467,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(e.currentTarget).attr('id');
-
-        if (!this.skill_topics.includes(d.properties.type)) { // to switch on the activities buttons
+        
+        // to switch on the activities buttons
+        if (!this.skill_topics.includes(d.properties.type)) {
           this.activityActionsService.setActivity(d.properties.type)
         } else {
           this.activityActionsService.setActivity(this.job_identifier)
@@ -530,7 +531,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private _focusOnGraph(element: any): any {
 
-    let value: unknown | any;
+    let value: any;
     value = element.datum();
     const index = value.index;
     const otherNodes = d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`);
@@ -560,7 +561,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     return nodeDisplayed;
   }
-
 
   private _defaultDisplayingByDate(): void {
 
