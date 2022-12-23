@@ -76,12 +76,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private galleryService: GalleryService,
     private mainService: MainService,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title,
     private controlerService: ControlerService,
     ) {
-
-    // to get the data properties from routes (app.module.ts)
-    // this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.activatedRouteSubscription = this.activatedRoute.fragment.subscribe(
       (fragment: string | null) => {

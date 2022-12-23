@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from '@modules/experiences/layout/layout.component';
 
 const routes: Routes = [
-  { path: '', component: LayoutComponent, data: { title: 'Expériences', page: 'experiences' } },
+  { path: '', component: LayoutComponent},
 ]
 
 

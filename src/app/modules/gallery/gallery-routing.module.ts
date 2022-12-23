@@ -5,7 +5,7 @@ import { LayoutComponent } from '@modules/gallery/layout/layout.component';
 
 
 const routes: Routes = [
-  { path: '', component: LayoutComponent, data: { title: 'Galerie', page: 'gallery' } },
+  { path: '', component: LayoutComponent },
 ];
 
 

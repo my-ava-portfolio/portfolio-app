@@ -3,8 +3,6 @@ import { Subscription } from 'rxjs';
 
 import { BlogService } from '@modules/blog/shared/services/blog.service';
 
-import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 import { ControlerService } from '@services/controler.service';
 
 import { fadeInOutAnimation } from '@core/animation_routes';
@@ -43,13 +41,8 @@ export class LayoutComponent implements OnDestroy {
   constructor(
     private blogService: BlogService,
     private mainService: MainService,
-    private activatedRoute: ActivatedRoute,
-    private titleService: Title,
     private controlerService: ControlerService,
   ) {
-
-    // to get the data properties from routes (app.module.ts)
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.topicsDataSubscription = this.blogService.blogData.subscribe(
       (data) => {
