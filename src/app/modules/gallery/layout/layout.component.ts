@@ -52,10 +52,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   activitiesMapping = activitiesMapping
 
-  innerRoutesAvailable: string[] = ['maps/app/']; // to redirect on the routes portolio
   isDataAvailable = false;
-
-  fragment: string | null = null;
 
   typeStyleMapping: any = {
     chart: { icon: faChartBar, title: 'Graphiques & tableaux' },
@@ -89,9 +86,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
 
     this.activatedRouteSubscription = this.activatedRoute.fragment.subscribe(
-      (fragment) => {
-        if (fragment !== undefined) {
-          this.fragment = fragment;
+      (fragment: string | null) => {
+        if (fragment !== null) {
+          this.getGalleryDataByActivity(fragment)
+        } else {
+          this.resetGallery();
         }
       }
     );
@@ -102,8 +101,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
         data.forEach((feature: any) => {
           this.galleryItems.push(this.buildFeature(feature))
         })
-        this.mediaTypes = [...new Set(data.map((item: any) => String(item.type)))]
-        this.activities = [...new Set(data.map((item: any) => String(item.name)))];
+        this.mediaTypes = [...new Set(data.map((item: any) => item.type))]
+        this.activities = data.reduce(function(a: any, b: any) {
+            a[b['activity_identifier']] = b['name']
+          return a
+        }, {})
+
         this.currentCategory = data.current_category;
         this.isDataAvailable = true;
       }
@@ -113,9 +116,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sendResumeSubMenus()
-    this.resetGallery();
-    this.filterFromAnchor();
-
   }
 
   ngOnDestroy(): void {
@@ -126,7 +126,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([])
   }
-
 
   buildFeature(feature: any): galleryFeature {
     // some medias does not have a media_splash attribute
@@ -152,9 +151,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     if (feature.tools) {
       addons['Outils'] = feature.tools;
     }
-    // feature.category: 'job' | 'personal-project' | 'volunteer' = feature.category
     return {
-      id: feature.identifier,
+      id: feature.activity_identifier,
       title: feature.title,
       image_url: img_url,
       content_url: feature.media,
@@ -178,27 +176,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  filterFromAnchor(): void {
-    try {
-      if (this.fragment !== null) {
-        this.getGalleryDataByActivity(this.fragment.replace('#', ''));
-      }
-    } catch (e) {
-    }
-  }
-
-
   resetGallery(): any {
     this.currentActivity = this.defaultActivity;
     this.currentCategory = this.defaultCategory;
     this.currentType = this.defaultType;
-    this.galleryService.pullExistingActivitiesGallery(
-      {
-        // activity_name: this.currentActivity,
-        // activity_type: this.currentCategory,
-        // media_type: this.currentType
-      }
-    )
+    this.galleryService.pullExistingActivitiesGallery({})
     this.mainService.scrollToTopAction()
   }
 
@@ -208,8 +190,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.galleryService.pullExistingActivitiesGallery(
       {
         activity_name: this.currentActivity,
-        // activity_type: this.currentCategory,
-        // media_type: this.currentType
       }
     );
     this.mainService.scrollToTopAction()
@@ -221,9 +201,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.currentType = this.defaultType;
     this.galleryService.pullExistingActivitiesGallery(
       {
-        // activity_name: this.currentActivity,
         activity_type: this.currentCategory,
-        // media_type: this.currentType
       }
     );
     this.mainService.scrollToTopAction()
@@ -233,8 +211,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.currentType = typeName;
     this.galleryService.pullExistingActivitiesGallery(
       {
-        // activity_name: this.currentActivity,
-        // activity_type: this.currentCategory,
         media_type: this.currentType
       }
     );
@@ -252,16 +228,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   showHideLegend(): void {
     this.isLegendDisplayed = !this.isLegendDisplayed;
-  }
-
-  urlAppChecker(url: string): boolean {
-    let urlIsAnInnerUrl: boolean = false;
-    this.innerRoutesAvailable.forEach((innerUrl: string) => {
-      if (url.includes(innerUrl)) {
-        urlIsAnInnerUrl = true
-      }
-    });
-    return urlIsAnInnerUrl;
   }
 
 }
