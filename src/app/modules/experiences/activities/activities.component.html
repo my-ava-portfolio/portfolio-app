@@ -1,14 +1,14 @@
-<div id="jobWidget" *ngIf="tabView == 'job'">
+<div [@fadeInOut] id="jobWidget" *ngIf="tabView == 'job'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'job', activitiesData: jobsData}"></ng-container>
 </div>
 
-<div id="personal_projectWidget" *ngIf="tabView == 'personal-project'">
+<div [@fadeInOut] id="personal_projectWidget" *ngIf="tabView == 'personal-project'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'personal-project', activitiesData: personalProjectsData}"></ng-container>
 </div>
 
-<div id="volunteerWidget" *ngIf="tabView == 'volunteer'">
+<div [@fadeInOut] id="volunteerWidget" *ngIf="tabView == 'volunteer'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'volunteer', activitiesData: volunteersData}"></ng-container>
 </div>

@@ -1,19 +1,19 @@
 <h5 class="title-tick-skills">Compétences</h5>
 
 
-<div id="jobSkillsWidget" *ngIf="tabView == 'job'">
+<div [@fadeInOut] id="jobSkillsWidget" *ngIf="tabView == 'job'">
   <ng-container *ngFor="let skill of jobSkillsCategories">
     <ng-container *ngTemplateOutlet="skillDetails; context:{title:skill.category, category: skill.category, skills: skill.skills}"></ng-container>
   </ng-container>
 </div>
 
-<div id="personal_projectSkillsWidget" *ngIf="tabView == 'personal-project'">
+<div [@fadeInOut] id="personal_projectSkillsWidget" *ngIf="tabView == 'personal-project'">
   <ng-container *ngFor="let skill of projectSkillsCategories">
     <ng-container *ngTemplateOutlet="skillDetails; context:{title:skill.category, category: skill.category, skills: skill.skills}"></ng-container>
   </ng-container>
 </div>
 
-<div id="volunteerSkillsWidget" *ngIf="tabView == 'volunteer'">
+<div [@fadeInOut] id="volunteerSkillsWidget" *ngIf="tabView == 'volunteer'">
   <ng-container *ngFor="let skill of volunteerSkillsCategories">
     <ng-container *ngTemplateOutlet="skillDetails; context:{title:skill.category, category: skill.category, skills: skill.skills}"></ng-container>
   </ng-container>

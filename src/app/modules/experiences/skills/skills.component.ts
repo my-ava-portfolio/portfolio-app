@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { fadeInOutAnimation } from '@core/animation_routes';
 import { skillsMapping } from '@core/global-values/main';
 
 import { faStar } from '@fortawesome/free-regular-svg-icons';
@@ -9,7 +10,8 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-skills',
   templateUrl: './skills.component.html',
-  styleUrls: ['./skills.component.scss']
+  styleUrls: ['./skills.component.scss'],
+  animations: [fadeInOutAnimation]
 })
 export class SkillsComponent implements OnInit, OnDestroy {
   @Input() tabView!: string;

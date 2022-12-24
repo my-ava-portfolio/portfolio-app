@@ -2,10 +2,9 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { activitiesMapping } from '@core/global-values/main';
 import { activitiesCountOutput } from '@core/global-values/route-output-types';
 import { ResumeService } from '@services/resume.service';
-import { tickStep } from 'd3';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActivityActionsService } from '../services/activity-actions.service';
-import { activities } from '../../../core/data-types';
+
 
 @Component({
   selector: 'app-general-info',
@@ -30,9 +29,11 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   userInfoDataSubscription!: Subscription;
   activitiesJobDurationSubscription!: Subscription;
   professionalActivitiesSubscription!: Subscription;
+  activitiesIdSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
+    private activityActionsService: ActivityActionsService
   ) {
 
     this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
@@ -64,8 +65,27 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
             count: data["volunteer"].length
           }
         ]
+        
+        // if (this.tabView !== this.jobCategory) {
+        //   if (projectLength === 0) {
+        //     this.enableActivity(this.jobCategory)
+        //     return
+        //   }
+        //   if (volunteerLength === 0) {
+        //     this.enableActivity(this.jobCategory)
+        //     return
+        //   }
+        // }
+        
       }
     )
+
+    // this.activitiesIdSubscription = this.activityActionsService.activityId.subscribe(
+    //   (activityType) => {
+    //     this.tabView = activityType;
+    //     console.log(activityType)
+    //   }
+    // )
 
   }
 
@@ -78,6 +98,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
     this.userInfoDataSubscription.unsubscribe();
     this.activitiesJobDurationSubscription.unsubscribe();
     this.professionalActivitiesSubscription.unsubscribe();
+    // this.activitiesIdSubscription.unsubscribe();
   }
 
   enableActivity(idName: string): void {

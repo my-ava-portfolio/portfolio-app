@@ -7,12 +7,14 @@ import { assetsLogoPath, assetsImagesPath, activitiesMapping } from '@core/globa
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faMapMarkerAlt, faImages, faFilter, faTrophy, faAngleDoubleDown, faPaintBrush, faFileAlt, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { mapActivitiesPages, galleryPages } from '@core/global-values/topics';
+import { fadeInOutAnimation } from '@core/animation_routes';
 
 
 @Component({
   selector: 'app-activities',
   templateUrl: './activities.component.html',
   styleUrls: ['./activities.component.scss'],
+  animations: [fadeInOutAnimation]
 })
 export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -57,6 +59,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   routeQueryParamsSubscription!: Subscription;
   professionalActivitiesSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
+  activitiesIdSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
@@ -67,6 +70,15 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
         this.jobsData = data["job"]
         this.personalProjectsData = data["personal-project"]
         this.volunteersData = data["volunteer"]
+      }
+    )
+
+    this.activitiesIdSubscription = this.resumeService.activityId.subscribe(
+      (_) => {
+        // clear activities data on change
+        // this.jobsData = [];
+        // this.personalProjectsData = [];
+        // this.volunteersData = [];
       }
     )
 
@@ -81,6 +93,7 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.professionalActivitiesSubscription.unsubscribe();
+    this.activitiesIdSubscription.unsubscribe();
   }
 
   addToHiddenDetailsConter(activityIndex: number) {
@@ -97,9 +110,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   pushActivityId(activityId: string): void {
-    // this.jobsData = [];
-    // this.personalProjectsData = [];
-    // this.volunteersData = [];
     this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
   }
 
