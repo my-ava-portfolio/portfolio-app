@@ -527,6 +527,17 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('display', 'block');
   }
 
+  private _hideGraph(): void {
+    d3.selectAll(`#${this.activityGraphSvgId} .links line`).style('opacity', 0.1);
+
+    d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`)
+      .style('opacity', 0.1)
+      .style('pointer-events', 'none')
+
+    d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`)
+      .attr('display', 'none');
+  }
+
   private _focusOnGraph(element: any): any {
 
     let value: unknown | any;
@@ -581,9 +592,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  private _graphSelectedFiltering(element: any, withContent = true): void {
-
-    const elementSelected: any = d3.select(element);
+  private _graphSelectedFiltering(element: any): void {
 
     const skillsTypes = this._buildSkillsCategoriesParameters()
     let commonParams = { date: this.currentDate }
@@ -592,63 +601,66 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     let activitiesParameters = {}
     let skillsParameters = {}
 
+    const elementSelected: any = d3.select(element);
+
     if (elementSelected.size() > 0) {
       elementSelected.classed('unselected', !elementSelected.classed('unselected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' selected');
       this._focusOnGraph(elementSelected);
-      
-
-      if ( withContent ) {
-        const elementData: any = d3.select(element).data()[0];
-        // check origin node type
-
-        const elementName = elementData.name
-        const elementObject = elementData.properties.object
-               
-        if (elementObject === "activity") {
-          // support activity display
-          commonParams = { ...commonParams, ...{ activity_name: elementName } }
+     
+      const elementData: any = d3.select(element).data()[0];
+      // check origin node type
+  
+      const elementName = elementData.name
+      const elementObject = elementData.properties.object
+                
+      if (elementObject === "activity") {
+        // support activity display
+        commonParams = { ...commonParams, ...{ activity_name: elementName } }
           
-          activitiesParameters = this._buildActivitiesParameters(commonParams)
-          skillsParameters = this._buildActivitiesParameters({ ...skillsParams, ... { activity_name: elementName } })
+        activitiesParameters = this._buildActivitiesParameters(commonParams)
+        skillsParameters = this._buildActivitiesParameters({ ...skillsParams, ... { activity_name: elementName } })
 
-        } else if (elementObject === "activityGroup") {
-          // support activity group display
-          let jobParams = {}
-          if (elementName !== "job") {
-            jobParams = {hide: true}
-          }
-          let projectParams = {}
-          if (elementName !== "personal-project") {
-            projectParams = {hide: true}
-          }
-          let volunteerParams = {}
-          if (elementName !== "volunteer") {
-            volunteerParams = {hide: true}
-          }
-          activitiesParameters = this._buildActivitiesParameters(commonParams, jobParams, projectParams, volunteerParams)
-          skillsParameters = this._buildActivitiesParameters(skillsParams)
-
-        } else if (elementObject === "skill") {
-          // support activity skill display
-          commonParams = { ...commonParams, ...{ skill: elementName } }
-
-          activitiesParameters = this._buildActivitiesParameters(commonParams)
-          skillsParameters = this._buildActivitiesParameters({ ...skillsParams, ... { skill: elementName } })
+      } else if (elementObject === "activityGroup") {
+        // support activity group display
+        let jobParams = {}
+        if (elementName !== "job") {
+          jobParams = { hide: true }
         }
+        let projectParams = {}
+        if (elementName !== "personal-project") {
+          projectParams = { hide: true }
+        }
+        let volunteerParams = {}
+        if (elementName !== "volunteer") {
+          volunteerParams = { hide: true }
+        }
+        activitiesParameters = this._buildActivitiesParameters(commonParams, jobParams, projectParams, volunteerParams)
+        skillsParameters = this._buildActivitiesParameters(skillsParams)
 
-        this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
-        this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
+      } else if (elementObject === "skill") {
+        // support activity skill display
+        commonParams = { ...commonParams, ...{ skill: elementName } }
 
+        activitiesParameters = this._buildActivitiesParameters(commonParams)
+        skillsParameters = this._buildActivitiesParameters({ ...skillsParams, ... { skill: elementName } })
       }
+      this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
+      this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
 
     } else {
+      // display nothing because the node selected is outside scope
+      // TODO improve the next function about graph (refactor style)
+      this._hideGraph()
+      // TODO set route to return none data (activities + skills)
+      let commonParams = { date: 1950 }
+      let skillsParams = {...commonParams, ...{ category: skillsTypes} }
       activitiesParameters = this._buildActivitiesParameters(commonParams)
       skillsParameters = this._buildActivitiesParameters(skillsParams)
       this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
       this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
-
     }
+
   }
 
   private _buildSkillsCategoriesParameters(): string[] {
