@@ -98,16 +98,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
       (graphData: any) => {
-
-        // preselected node check
-        if ( this.currentNodeIdSelected !== null ) {
-          this._graphSelectedFiltering('#skillsGraphElements #' + this.currentNodeIdSelected);
-        } else {
-          this._defaultDisplayingByDate();
-        }
-
-        this.buildGraph(graphData);
-        
+        this.buildGraph(graphData, this.currentNodeIdSelected);
       }
     );
 
@@ -123,7 +114,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       (activityId) => {
         if (this.currentNodeIdSelected === null) {
           // in order to filter graph from components job and personal project
-          this.resetChartWithASelection(`node-${activityId}`);
+          const elementId: string = `node-${activityId}`;
+          this.resetChartWithASelection(elementId);
         } else {
           this.resetChart();
         }
@@ -353,7 +345,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  private buildGraph(graphData: any): void {
+  private buildGraph(graphData: any, nodeIdToSelect: string | null): void {
 
     const nodes: any[] = [];
     const links: any[] = [];
@@ -467,9 +459,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(e.currentTarget).attr('id');
-        
-        // to switch on the activities buttons
-        if (!this.skill_topics.includes(d.properties.type)) {
+
+        if (!this.skill_topics.includes(d.properties.type)) { // to switch on the activities buttons
           this.activityActionsService.setActivity(d.properties.type)
         } else {
           this.activityActionsService.setActivity(this.job_identifier)
@@ -511,6 +502,13 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         })
     );
 
+    // to preselect a node
+    if ( nodeIdToSelect !== null ) {
+      this._graphSelectedFiltering('#skillsGraphElements #' + nodeIdToSelect);
+    } else {
+      this._defaultDisplayingByDate();
+    }
+
   }
 
   private _neigh(a: any, b: any): boolean {
@@ -531,7 +529,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private _focusOnGraph(element: any): any {
 
-    let value: any;
+    let value: unknown | any;
     value = element.datum();
     const index = value.index;
     const otherNodes = d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`);
