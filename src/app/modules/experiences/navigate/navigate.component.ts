@@ -508,64 +508,54 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  private _neigh(a: any, b: any): boolean {
+  private _selectNeighbors(a: any, b: any): boolean {
     return a === b || this.adjlist[a + '-' + b];
   }
 
-  private _unfocusOnGraph(): void {
-    d3.selectAll(`#${this.activityGraphSvgId} .links line`).style('opacity', 1);
+  private _graphSetDisplayStatus(mode: 'unfocus' | 'hidden'): void {
+    let opacity = 1;
+    let display = 'block'
+    if (mode === 'hidden') {
+      opacity = 0.1
+      display = 'none'
+    }
+
+    d3.selectAll(`#${this.activityGraphSvgId} .links line`)
+      .style('opacity', opacity);
 
     d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`)
-      .style('opacity', 1)
+      .style('opacity', opacity)
       .style('pointer-events', 'auto')
       .style('cursor', 'pointer');
 
     d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`)
-      .attr('display', 'block');
+      .attr('display', display);
   }
 
-  private _hideGraph(): void {
-    d3.selectAll(`#${this.activityGraphSvgId} .links line`).style('opacity', 0.1);
+  private _graphFocusOnElement(element: any): void {
 
+    const index = element.datum().index;
+    
     d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`)
-      .style('opacity', 0.1)
-      .style('pointer-events', 'none')
+      .style('opacity', (o: any) => {
+        return this._selectNeighbors(index, o.index) ? 1 : 0.1;
+      })
+      .style('pointer-events', (o: any) => {
+        return this._selectNeighbors(index, o.index) ? 'auto' : 'none';
+      })
+      .style('cursor', (o: any) => {
+        return this._selectNeighbors(index, o.index) ? 'pointer' : 'unset';
+      });
 
     d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`)
-      .attr('display', 'none');
-  }
-
-  private _focusOnGraph(element: any): any {
-
-    let value: unknown | any;
-    value = element.datum();
-    const index = value.index;
-    const otherNodes = d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`);
-
-    const nodeDisplayed = otherNodes.filter( (e: any) => {
-        return this._neigh(index, e.index);
-    });
-
-    otherNodes.style('opacity', (o: any) => {
-        return this._neigh(index, o.index) ? 1 : 0.1;
-    });
-    otherNodes.style('pointer-events', (o: any) => {
-        return this._neigh(index, o.index) ? 'auto' : 'none';
-    });
-    otherNodes.style('cursor', (o: any) => {
-        return this._neigh(index, o.index) ? 'pointer' : 'unset';
-    });
-
-    const labelNodes = d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`);
-    labelNodes.attr('display', (o: any) => {
-        return this._neigh(index, o.node.index) ? 'block' : 'none';
-    });
-    const links = d3.selectAll(`#${this.activityGraphSvgId} .links line`);
-    links.style('opacity', (o: any) => {
+      .attr('display', (o: any) => {
+        return this._selectNeighbors(index, o.node.index) ? 'block' : 'none';
+      });
+    
+    d3.selectAll(`#${this.activityGraphSvgId} .links line`)
+      .style('opacity', (o: any) => {
         return o.source.index === index || o.target.index === index ? 1 : 0.1;
-    });
-
-    return nodeDisplayed;
+      });
   }
 
   private _defaultDisplayingByDate(): void {
@@ -574,7 +564,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     if (elementSelected.size() === 1) {
       elementSelected.classed('selected', !elementSelected.classed('selected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' unselected');
-      this._unfocusOnGraph();
+      this._graphSetDisplayStatus('unfocus');
     }
 
     // then we want to regenerate activities and skill components
@@ -603,7 +593,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     if (elementSelected.size() > 0) {
       elementSelected.classed('unselected', !elementSelected.classed('unselected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' selected');
-      this._focusOnGraph(elementSelected);
+      this._graphFocusOnElement(elementSelected);
      
       const elementData: any = d3.select(element).data()[0];
       // check origin node type
@@ -647,8 +637,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     } else {
       // display nothing because the node selected is outside scope
-      // TODO improve the next function about graph (refactor style)
-      this._hideGraph()
+      this._graphSetDisplayStatus('hidden')
       // TODO set route to return none data (activities + skills)
       let commonParams = { date: 1950 }
       let skillsParams = {...commonParams, ...{ category: skillsTypes} }
