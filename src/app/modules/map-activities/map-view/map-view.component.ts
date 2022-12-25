@@ -11,9 +11,8 @@ import Point from 'ol/geom/Point';
 import Select from 'ol/interaction/Select';
 import {pointerMove} from 'ol/events/condition';
 import { getVectorContext } from 'ol/render';
-import {Geometry, LineString} from 'ol/geom';
+import {LineString} from 'ol/geom';
 import { Style } from 'ol/style';
-import { transform } from 'ol/proj';
 
 import * as d3 from 'd3';
 
@@ -339,7 +338,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
 
   buildTravelLayer(data: any): void {
-    const travelLine = new LineString(data.geojson_data[0].geometry.coordinates)
+    const travelLine = new LineString(data.geojson_data[0].coordinates)
     const travel = new Feature({
       type: 'route',
       geometry: travelLine
