@@ -314,27 +314,24 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   private getGraphFeatures(): void {
 
     // then we want to regenerate activities and skill components
-    let skill_categories = []
-    if (this.isThemesEnabled) {
-      skill_categories.push('themes')
+    const skillsCategoriesStatus = {
+      "themes": this.isThemesEnabled,
+      "technics": this.isTechnicsEnabled,
+      "tools": this.isToolsEnabled
     }
-    if (this.isTechnicsEnabled) {
-      skill_categories.push('technics')
-    }
-    if (this.isToolsEnabled) {
-      skill_categories.push('tools')
-    }
+    let skill_categories = Object.keys(skillsCategoriesStatus).filter( (key: string) => {
+      return skillsCategoriesStatus[key as keyof typeof skillsCategoriesStatus]
+    });
 
-    let activity_group = []
-    if (this.isJobsGrouped) {
-      activity_group.push("job");
+    const activityGroupStatus = {
+      "job": this.isJobsGrouped,
+      "personal-project": this.isProjectsGrouped,
+      "volunteer": this.isVolunteersGrouped
     }
-    if (this.isProjectsGrouped) {
-      activity_group.push("personal-project");
-    }
-    if (this.isVolunteersGrouped) {
-      activity_group.push("volunteer");
-    }
+    let activity_group = Object.keys(activityGroupStatus).filter( (key: string) => {
+      return activityGroupStatus[key as keyof typeof activityGroupStatus]
+    });
+
     this.resumeService.queryGraphFromApi({
         date: this.currentDate,
         skill_categories: skill_categories,
