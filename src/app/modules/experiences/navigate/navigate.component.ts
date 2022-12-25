@@ -344,23 +344,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private buildGraph(graphData: any, nodeIdToSelect: string | null): void {
-
-    const nodes: any[] = [];
-    const links: any[] = [];
-    this.label = {
-        nodes,
-        links
-    };
     
-    graphData.nodes.forEach( (d: any, i: number) => {
-      this.label.nodes.push({node: d});
-      this.label.nodes.push({node: d});
-      this.label.links.push({
-        source: i * 2,
-        target: i * 2 + 1
-      });
-    });
-
     const svgElements: any = d3.select(`#${this.activityGraphSvgId}`);
     svgElements.select('.bg-date').remove();
     svgElements.append('g').attr('class', 'bg-date')
@@ -369,7 +353,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('y', '50%')
       .text(this.currentDate);
 
-    this._buildLabelLayout();
     // https://observablehq.com/@ben-tanen/a-tutorial-to-using-d3-force-from-someone-who-just-learned-ho
     const graphLayout = d3.forceSimulation(graphData.nodes)
       .force('charge', d3.forceManyBody().strength(-900))
@@ -396,7 +379,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .data(graphData.links)
       .enter()
       .append('line')
-      .attr('stroke', '#aaa')
+      .attr('stroke', '#aaaa')
       .attr('stroke-width', '1px');
 
     const node = svgElements.append('g').attr('class', 'nodes')
@@ -404,12 +387,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .data(graphData.nodes)
       .enter()
       .append('circle')
-      .attr('class', (d: any) => {
-          return `svg-color-${d.properties.type} unselected`; // to filter from job/project card
-      })
-      .attr('id', (d: any) => {
-          return 'node-' + d.properties.id;
-      })
+      .attr('class', (d: any) => `svg-color-${d.properties.type} unselected`) // to filter from job/project card
+      .attr('id', (d: any) => 'node-' + d.properties.id)
       .attr('r', (d: any) => {
           const element = this.legendInput.filter(e => e.id === d.properties.type);
           return element[0].r;
@@ -420,7 +399,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         .transition()
         .duration(1000)
         .ease(d3.easeElastic)
-          .attr("r", element[0].rOver)
+        .attr("r", element[0].rOver)
       })
       .on('mouseout', (e: any, d: any) => {
         const element = this.legendInput.filter(e => e.id === d.properties.type);
@@ -428,27 +407,23 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         .transition()
         .duration(1000)
         .ease(d3.easeElastic)
-          .attr("r", element[0].r)
+        .attr("r", element[0].r)
        })
       ;
 
     const labelNode = svgElements.append('g').attr('class', 'nodeLabels')
       .selectAll('text')
-      .data(this.label.nodes)
+      .data(graphData.nodes)
       .enter()
       .append('text')
       .text((d: any, i: number) => {
-        if (d.node.properties.object == "activityGroup") {
-          return i % 2 !== 0 ? '' : activitiesMapping[d.node.properties.name as keyof typeof activitiesMapping]
+        if (d.object == "activityGroup") {
+          return activitiesMapping[d.properties.name as keyof typeof activitiesMapping]
         }
-        return i % 2 !== 0 ? '' : d.node.properties.name;
+        return d.properties.name;
       })
-      .attr('id', (d: any) => {
-        return 'label-' + d.node.properties.id;
-      })
-      .attr('class', (d: any) => {
-        return d.node.properties.type;
-      });
+      .attr('id', (d: any) => 'label-' + d.properties.id)
+      .attr('class', (d: any) => d.properties.type);
 
 
     node.on('click', (e: any, d: any, i: any, n: any) => {
@@ -528,7 +503,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .style('pointer-events', 'auto')
       .style('cursor', 'pointer');
 
-    d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`)
+    const a = d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`)
       .attr('display', display);
   }
 
@@ -537,25 +512,15 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     const index = element.datum().index;
     
     d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`)
-      .style('opacity', (o: any) => {
-        return this._selectNeighbors(index, o.index) ? 1 : 0.1;
-      })
-      .style('pointer-events', (o: any) => {
-        return this._selectNeighbors(index, o.index) ? 'auto' : 'none';
-      })
-      .style('cursor', (o: any) => {
-        return this._selectNeighbors(index, o.index) ? 'pointer' : 'unset';
-      });
+      .style('opacity', (d: any) => this._selectNeighbors(index, d.index) ? 1 : 0.1)
+      .style('pointer-events', (d: any) => this._selectNeighbors(index, d.index) ? 'auto' : 'none')
+      .style('cursor', (d: any) => this._selectNeighbors(index, d.index) ? 'pointer' : 'unset');
 
     d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`)
-      .attr('display', (o: any) => {
-        return this._selectNeighbors(index, o.node.index) ? 'block' : 'none';
-      });
+      .attr('display', (d: any) => this._selectNeighbors(index, d.index) ? 'block' : 'none');
     
     d3.selectAll(`#${this.activityGraphSvgId} .links line`)
-      .style('opacity', (o: any) => {
-        return o.source.index === index || o.target.index === index ? 1 : 0.1;
-      });
+      .style('opacity', (d: any) => d.source.index === index || d.target.index === index ? 1 : 0.1);
   }
 
   private _defaultDisplayingByDate(): void {
@@ -640,6 +605,49 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  private _fixna(x: number): number {
+    if ( isFinite(x) ) { return x; }
+    return 0;
+  }
+
+  private _ticked(): void {
+    const links: any = d3.selectAll(`#${this.activityGraphSvgId} .links line`);
+    const nodes: any = d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`);
+    const labelNodes: any = d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`);
+
+    nodes.call(this._updateNode.bind(this));
+    links.call(this._updateLink.bind(this));
+    labelNodes.call(this._updateNodeLabel.bind(this));
+  }
+
+  private _updateLink(linkElement: any): void {
+    linkElement
+      .attr('x1', (d: any) => this._fixna(d.source.x))
+      .attr('y1', (d: any) => this._fixna(d.source.y))
+      .attr('x2', (d: any) => this._fixna(d.target.x))
+      .attr('y2', (d: any) => this._fixna(d.target.y));
+  }
+
+  private _updateNode(nodeElement: any): void {
+    // to not fit drag on the bound
+    // node.attr("transform", function(d) {
+    //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
+    // });
+    const radius = 10;
+    nodeElement
+      .attr('cx', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)))
+      .attr('cy', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)))
+  }
+
+  private _updateNodeLabel(labelElement: any): void {
+    const radius = 10;
+    labelElement
+      .attr('x', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)))
+      .attr('y', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)));
+  }
+
+
+  // Build parameters for api call // 
   private _buildSkillsCategoriesParameters(): string[] {
     let skillsTypes = []
     if (this.isThemesEnabled) {
@@ -661,89 +669,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       "volunteer": {...commonParameters, ...volunteerParameters}
     }
   }
+    // Build parameters for api call // 
 
-
-  private _buildLabelLayout(): void {
-    this.labelLayout = d3.forceSimulation(this.label.nodes)
-      .force('charge', d3.forceManyBody().strength(-50))
-      .force('link', d3.forceLink(this.label.links).distance(0).strength(2));
-  }
-
-  private _fixna(x: number): number {
-    if ( isFinite(x) ) { return x; }
-    return 0;
-  }
-
-  private _ticked(): void {
-    const links: any = d3.selectAll(`#${this.activityGraphSvgId} .links line`);
-    const nodes: any = d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`);
-    const labelNodes: any = d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`);
-
-    nodes.call(this._updateNode.bind(this));
-    links.call(this._updateLink.bind(this));
-
-    this.labelLayout.alphaTarget(0.1).restart();
-    labelNodes.each( (d: any, i: number) => {
-      if (i % 2 === 0) {
-        d.x = d.node.x;
-        d.y = d.node.y;
-      } else {
-        // TODO maybe not working
-        d3.select('#label-' + d.id).attr('transform', `translate(${d.x},${d.y})`);
-      }
-    });
-    // REFACTOR
-    labelNodes.call(this._updateLabelNode.bind(this));
-  }
-
-  private _updateLink(linkElement: any): void {
-    linkElement.attr('x1', (d: any) => {
-      return this._fixna(d.source.x);
-    })
-    .attr('y1', (d: any) => {
-      return this._fixna(d.source.y);
-    })
-    .attr('x2', (d: any) => {
-      return this._fixna(d.target.x);
-    })
-    .attr('y2', (d: any) => {
-      return this._fixna(d.target.y);
-    });
-  }
-
-  private _updateNode(nodeElement: any): void {
-    // to not fit drag on the bound
-    // node.attr("transform", function(d) {
-    //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
-    // });
-    const radius = 10;
-
-    nodeElement
-      .attr('cx', (d: any) => {
-        return (d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)));
-      })
-      .attr('cy', (d: any) => {
-        return (d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)));
-      });
-  }
-
-  private _updateLabelNode(labelNodeElement: any): void {
-    // to not fit drag on the bound
-    // node.attr("transform", function(d) {
-    //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
-    // });
-    const radius = 10;
-
-    labelNodeElement
-      .attr('x', (d: any) => {
-        return (d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)));
-      })
-      .attr('y', (d: any) => {
-        return (d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)));
-      });
-  }
 
 }
+
 
 
 
