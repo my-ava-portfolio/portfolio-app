@@ -165,8 +165,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .append('svg').attr('id', this.activityGraphSvgId)
       .attr('width', '100%')
       .attr('height', this.chartHeight)
-      .append('g').lower()
-      .attr('id', 'skillsGraphElements');
   }
 
   graphReset(): void {
@@ -363,8 +361,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     });
 
-    const svgElements: any = d3.select('#skillsGraphElements');
-    d3.select(`#${this.activityGraphSvgId} .bg-date`).remove();
+    const svgElements: any = d3.select(`#${this.activityGraphSvgId}`);
+    svgElements.select('.bg-date').remove();
     svgElements.append('g').attr('class', 'bg-date')
       .append('text')
       .attr('x', '50%')
@@ -454,7 +452,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     node.on('click', (e: any, d: any, i: any, n: any) => {
-      const nodeIsPreselected = d3.select('#skillsGraphElements .nodes .selected');
+      const nodeIsPreselected = d3.select(`#${this.activityGraphSvgId} .nodes .selected`);
       // here we update the activities components and skills
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
@@ -465,8 +463,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.activityActionsService.setActivity(this.job_identifier)
         }
-
-        this._graphSelectedFiltering(e.currentTarget);
+        this._graphSelectedFiltering(`#${this.activityGraphSvgId} #${this.currentNodeIdSelected}`);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
@@ -504,7 +501,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // to preselect a node
     if ( nodeIdToSelect !== null ) {
-      this._graphSelectedFiltering('#skillsGraphElements #' + nodeIdToSelect);
+      this._graphSelectedFiltering(`#${this.activityGraphSvgId} #${nodeIdToSelect}`);
     } else {
       this._defaultDisplayingByDate();
     }
@@ -573,7 +570,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private _defaultDisplayingByDate(): void {
 
-    const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
+    const elementSelected = d3.select(`#${this.activityGraphSvgId} .nodes .selected`);
     if (elementSelected.size() === 1) {
       elementSelected.classed('selected', !elementSelected.classed('selected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' unselected');
@@ -592,7 +589,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  private _graphSelectedFiltering(element: any): void {
+  private _graphSelectedFiltering(element: string): void {
 
     const skillsTypes = this._buildSkillsCategoriesParameters()
     let commonParams = { date: this.currentDate }
