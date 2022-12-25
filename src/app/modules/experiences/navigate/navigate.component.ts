@@ -572,8 +572,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     let commonParams = { date: this.currentDate }
     let skillsParams = {...commonParams, ...{ category: skillsTypes} }
 
-    const activitiesParameters = this._buildActivitiesParameters(commonParams)
-    const skillsParameters = this._buildActivitiesParameters(skillsParams)
+    const activitiesParameters = this._buildParameters(commonParams)
+    const skillsParameters = this._buildParameters(skillsParams)
     this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
     this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
   }
@@ -605,43 +605,34 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         // support activity display
         commonParams = { ...commonParams, ...{ activity_name: elementName } }
           
-        activitiesParameters = this._buildActivitiesParameters(commonParams)
-        skillsParameters = this._buildActivitiesParameters({ ...skillsParams, ... { activity_name: elementName } })
+        activitiesParameters = this._buildParameters(commonParams)
+        skillsParameters = this._buildParameters({ ...skillsParams, ... { activity_name: elementName } })
 
       } else if (elementObject === "activityGroup") {
         // support activity group display
-        let jobParams = {}
-        if (elementName !== "job") {
-          jobParams = { hide: true }
-        }
-        let projectParams = {}
-        if (elementName !== "personal-project") {
-          projectParams = { hide: true }
-        }
-        let volunteerParams = {}
-        if (elementName !== "volunteer") {
-          volunteerParams = { hide: true }
-        }
-        activitiesParameters = this._buildActivitiesParameters(commonParams, jobParams, projectParams, volunteerParams)
-        skillsParameters = this._buildActivitiesParameters(skillsParams)
+        let jobParams = { hide: elementName !== "job" }
+        let projectParams = { hide: elementName !== "personal-project" }
+        let volunteerParams = { hide: elementName !== "volunteer" }
+
+        activitiesParameters = this._buildParameters(commonParams, jobParams, projectParams, volunteerParams)
+        skillsParameters = this._buildParameters(skillsParams)
 
       } else if (elementObject === "skill") {
         // support activity skill display
         commonParams = { ...commonParams, ...{ skill: elementName } }
 
-        activitiesParameters = this._buildActivitiesParameters(commonParams)
-        skillsParameters = this._buildActivitiesParameters({ ...skillsParams, ... { skill: elementName } })
+        activitiesParameters = this._buildParameters(commonParams)
+        skillsParameters = this._buildParameters({ ...skillsParams, ... { skill: elementName } })
       }
 
     } else {
       // display nothing because the node selected is outside scope
       this._graphSetDisplayStatus('hidden')
-      // TODO set route to return none data (activities + skills)
-      let commonParams = { date: 1950 }
+      let commonParams = {}
       let skillsParams = { ...commonParams, ...{ category: skillsTypes } }
       
-      activitiesParameters = this._buildActivitiesParameters(commonParams)
-      skillsParameters = this._buildActivitiesParameters(skillsParams)
+      activitiesParameters = this._buildParameters(commonParams, { hide: true }, { hide: true }, { hide: true })
+      skillsParameters = this._buildParameters(skillsParams, { hide: true }, { hide: true }, { hide: true })
 
     }
     this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
@@ -663,7 +654,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     return skillsTypes
   }
 
-  private _buildActivitiesParameters(commonParameters: any, jobParameters: any = {}, projectParameters: any = {}, volunteerParameters: any = {}): any {
+  private _buildParameters(commonParameters: any, jobParameters: any = {}, projectParameters: any = {}, volunteerParameters: any = {}): any {
     return {
       "job": {...commonParameters, ...jobParameters },
       "personal-project": {...commonParameters, ...projectParameters},
