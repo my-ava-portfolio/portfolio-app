@@ -34,10 +34,10 @@
       <div class="skills-container">
 
         <div class="skill" *ngFor="let skill of skills; let idx = index; trackBy: trackByMethod">
-          <h6 [ngClass]="" class="pointer" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + category + idx" [attr.aria-expanded]="" [attr.aria-controls]="'#collapse' + category + idx"><a>
-            {{ skill.name }}</a></h6>
+          <h6 class="pointer" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + category + idx" [attr.aria-expanded]="false" [attr.aria-controls]="'#collapse-' + category + idx">
+            <span>{{ skill.name }}</span></h6>
 
-          <div [ngClass]="" [class]="category + '-multi-collapse'" [attr.id]="'collapse' + category + idx">
+          <div [class]="category + '-multi-collapse show'" [id]="'collapse-' + category + idx">
             <ul>
               <li class="small" *ngFor="let sub_skill of skill.sub_skills">
                 <span>{{ sub_skill }}</span>
