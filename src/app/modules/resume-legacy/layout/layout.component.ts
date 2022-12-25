@@ -1,11 +1,10 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { assetsLogoPath } from '@core/global-values/main';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { assetsLogoPath, skillsMapping } from '@core/global-values/main';
 import { currentYear } from '@core/misc';
 
 import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faPhone, faGlobe, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 
-import { ControlerService } from '@services/controler.service';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
 
@@ -15,11 +14,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })
-export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LayoutComponent implements OnInit, OnDestroy {
   @ViewChild('content') PageContent!: ElementRef;
   @ViewChild('legacyResume') legacyResume: any;
 
-  currentDate: number = currentYear;
+  skillsCategories = skillsMapping;
 
   // icons
   githubIcon = faGithub;
@@ -33,6 +32,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // resume top bar
   profilData: any;
+  jobDuration: any;
   contactData: any;
 
   // resume left sidebar
@@ -41,79 +41,111 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   trainingsData: any;
 
   // resume center bar
-  summaryData!: any; // TODO SHORT VERSION
-  publicationsData!: any;
+  publicationsData: any[] = [];
 
   // resume center bar
   skillsData: any;
-  generalData: any;
   jobsData!: any;
   personalProjectsData!: any;
 
-  dataAvailable = false;
   isPrinting = false;
 
-  generalDataSubscription!: Subscription;
-  activitiesFilteredSubscription!: Subscription;
+  userContactDataSubscription!: Subscription;
+  userInfoDataSubscription!: Subscription;
+  activitiesJobDurationSubscription!: Subscription;
+  activitiesDataSubscription!: Subscription;
+  trainingsDataSubscription!: Subscription;
+  languagesDataSubscription!: Subscription;
+  publicationsDataSubscription!: Subscription;
+  skillsSubscription!: Subscription;
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     private resumeService: ResumeService,
-    private controlerService: ControlerService,
-    private cdRef: ChangeDetectorRef
   ) {
 
-    // this.generalDataSubscription = this.resumeService.resumeData.subscribe(
-    //   (data) => {
-    //     this.contactData = data.contact;
-    //     this.degreesData = data.education;
-    //     this.generalData = data.general;
-    //     this.languagesData = data.languages;
-    //     this.profilData = data.profil;
-    //     this.trainingsData = data.trainings;
-    //     this.summaryData = data.profil.carrier_summary;
-    //     this.publicationsData = data.publications;
+    this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
+      (data) => {
+        this.profilData = data;
+      }
+    );
 
-    //     this.dataAvailable = true;
-    //   }
-    // );
+    this.activitiesJobDurationSubscription = this.resumeService.activitiesJobDurationDataSubject.subscribe(
+      (data: any) => {
+        this.jobDuration = data
+      }
+    )
 
-    // this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
-    //   (data) => {
-    //     this.jobsData = data.activities_data.job;
+    this.userContactDataSubscription = this.resumeService.userContactDataSubject.subscribe(
+      (data: any) => {
+        this.contactData = data;
+      }
+    );
 
-    //     this.personalProjectsData = data.activities_data["personal-project"].reverse();
-    //     this.skillsData = data.skills_data;
-    //   }
-    // );
+    this.activitiesDataSubscription = this.resumeService.activitiesDataSubject.subscribe(
+      (data: any) => {
+        if (data[0].type === "education") {
+          this.degreesData = data;
+        }
+        if (data[0].type === "job") {
+          this.jobsData = data;
+        }
+        if (data[0].type === "personal-project") {
+          this.personalProjectsData = data;
+        }
+      }
+    );
 
+    this.trainingsDataSubscription = this.resumeService.trainingsDataSubject.subscribe(
+      (data: any) => {
+        this.trainingsData = data;
+      }
+    );
 
+    this.languagesDataSubscription = this.resumeService.languagesDataSubject.subscribe(
+      (data) => {
+        this.languagesData = data;
+      }
+    );
+
+    this.publicationsDataSubscription = this.resumeService.publicationsDataSubject.subscribe(
+      (data: any) => {
+        this.publicationsData = this.publicationsData.concat(data);
+      }
+    );
+
+    this.skillsSubscription = this.resumeService.skillsDataSubject.subscribe(
+      (data: any) => {
+        console.log(data)
+          this.skillsData = data
+      }
+    )
 
    }
 
   ngOnInit(): void {
-    this.sendResumeSubMenus()
-    // this.resumeService.pullResumeGeneralData();
-    // this.resumeService.pullActivitiesResumeFromGraph(
-    //   this.currentDate,
-    //   true,
-    //   true,
-    //   true,
-    //   null
-    // );
+    this.resumeService.queryUserInfoFromApi();
+    this.resumeService.queryUserContactFromApi();
+    this.resumeService.queryActivitiesJobDurationFromApi();
+    this.resumeService.queryActivitiesFromApi("education");
+    this.resumeService.queryActivitiesFromApi("job");
+    this.resumeService.queryActivitiesFromApi("personal-project");
+    this.resumeService.queryTrainingsFromApi();
+    this.resumeService.queryLanguagesFromApi();
+    this.resumeService.queryPublicationsFromApi("education")
+    this.resumeService.queryPublicationsFromApi("job")
+    this.resumeService.queryFullSkillsFromApi({category: ["themes", "technics", 'tools']})
   }
-
-  ngAfterViewInit(): void {
-  }
-
 
   ngOnDestroy(): void {
-    // this.generalDataSubscription.unsubscribe();
-    // this.activitiesFilteredSubscription.unsubscribe();
-  }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus([]);
-
+    this.userContactDataSubscription.unsubscribe();
+    this.userInfoDataSubscription.unsubscribe();
+    this.activitiesJobDurationSubscription.unsubscribe();
+    this.activitiesDataSubscription.unsubscribe();
+    this.trainingsDataSubscription.unsubscribe();
+    this.languagesDataSubscription.unsubscribe();
+    this.publicationsDataSubscription.unsubscribe();
+    this.skillsSubscription.unsubscribe();
   }
 
 

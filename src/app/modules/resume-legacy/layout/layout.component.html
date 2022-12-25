@@ -6,20 +6,20 @@
   </div>
 
 
-  <div #legacyResume id="legacy_resume" class="d-flex flex-column justify-content-center d-none d-md-block" *ngIf="dataAvailable">
+  <div #legacyResume id="legacy_resume" class="d-flex flex-column justify-content-center d-none d-md-block">
 
     <div class="page d-flex flex-column" [ngClass]="isPrinting ? 'p-0' : 'p-4 mb-2'" size="A4" layout="">
 
       <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3">
 
-        <div class="">
+        <div *ngIf="profilData">
           <h4 class="fw-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h4>
           <h5 class="">{{ profilData.job }}</h5>
-          <h6 class="">{{ profilData.experience_duration }}</h6>
+          <h6 *ngIf="jobDuration">{{ jobDuration.years }} années et {{ jobDuration.months }} mois d'expérience professionnelle</h6>
         </div>
 
         <div class="my-auto">
-          <ul class="list-unstyled">
+          <ul class="list-unstyled" *ngIf="contactData">
             <ng-container *ngIf="contactData.mail && isPrinting">
               <ng-container *ngTemplateOutlet="contactListElement; context: {icon: emailIcon, data: contactData.mail}"></ng-container>
             </ng-container>
@@ -40,15 +40,15 @@
 
       </div>
 
-      <set-paragraph-content class="text-justify small">{{ summaryData }} </set-paragraph-content>
+      <set-paragraph-content class="text-justify small">{{ profilData.carrier_summary }} </set-paragraph-content>
 
 
-      <div id="degrees" class="d-flex flex-column mx-2 pt-2">
+      <div *ngIf="degreesData" id="degrees" class="d-flex flex-column mx-2 pt-2">
         <h5 class="">Diplômes</h5>
 
         <div class="d-flex flex-column">
           <set-paragraph-content class="" *ngFor="let degree of degreesData">
-            <div class="fw-bold">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy' }} - {{ degree.degree }}</div>
+            <div class="fw-bold">{{ degree.start_date | date: 'yyyy' }}-{{ degree.end_date | date: 'yyyy' }} - {{ degree.title }}</div>
             <div class="fw-light ms-3 small">{{ degree.school }} à {{ degree.location }}</div>
           </set-paragraph-content>
         </div>
@@ -111,19 +111,34 @@
             <div class="fw-bold small w-75">{{job.title}} @ {{job.company}}</div>
             <div class="small">{{job.location}}</div>
           </div>
+          
+          <div class="d-flex flex-row small">
+            <ng-container *ngIf="job.status !== 'InProgress'">
+              <div class="me-1">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }}</div>
+            </ng-container>
 
-          <div *ngIf="job.status === 'InProgress'; then currentJob else pastJob"></div>
-          <ng-template #pastJob>
-            <div class="small">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }}  - {{job.contract}} ({{job.duration}})</div>
-          </ng-template>
-          <ng-template #currentJob>
-            <div class="small"> Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui - {{job.contract}} ({{job.duration}})</div>
-          </ng-template>
+            <ng-container *ngIf="job.status === 'InProgress'">
+                <div class="me-1">Du {{ job.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
+            </ng-container>
+
+            <div *ngIf="job.years == 0 && job.months > 0">
+              <div>({{job.months}} mois)</div>
+            </div>
+            <div *ngIf="job.years == 1 && job.months == 0">
+              <div>({{job.years}} an)</div>
+            </div>
+            <div *ngIf="job.years == 1 && job.months > 0">
+              <div>({{job.years}} an et {{job.months}} mois)</div>
+            </div>
+            <div *ngIf="job.years > 1 && job.months > 0">
+              <div>({{job.years}} ans et {{job.months}} mois)</div>
+            </div>
+          </div>
 
           <div class="d-flex flex-row align-items-center mx-1">
 
             <div class="col-2 text-center">
-              <img class="img-fluid " [src]="apiImgUrl + job.img_company"/>
+              <img class="img-fluid " [src]="apiImgUrl + job.img_activity"/>
             </div>
             <div class="col-10">
               <set-paragraph-content class="small">{{ job.presentation }}</set-paragraph-content>
@@ -180,21 +195,11 @@
 
         <ng-container *ngIf="skillsData">
 
-          <div class="d-flex flex-row mt-2 mx-2">
-            <ng-container *ngIf="skillsData.themes">
-              <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.themes, title: 'Secteurs d\'activité'}"></ng-container>
+          <div class="d-flex flex-row mt-2 mx-2" *ngFor="let skill of skillsData">
+            <ng-container>
+              <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skill.skills, title: skillsCategories[skill.category]}"></ng-container>
             </ng-container>
 
-            <ng-container *ngIf="skillsData.technics">
-              <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.technics, title: 'Techniques'}"></ng-container>
-            </ng-container>
-          </div>
-
-          <div class="d-flex flex-column ms-3">
-
-            <ng-container *ngIf="skillsData.tools">
-              <ng-container *ngTemplateOutlet="skillsFeature; context: {data: skillsData.tools, title: 'Outils'}"></ng-container>
-            </ng-container>
           </div>
 
         </ng-container>
@@ -225,7 +230,7 @@
     <ul class="text-no-decoration small m-0" *ngFor="let feature of data">
       <li>
         <span class="small text-decoration-underline">{{feature.name}}</span>  :
-        <span class="small ms-1">{{ feature.details | join }}.</span>
+        <span class="small ms-1">{{ feature.sub_skills | join }}.</span>
       </li>
     </ul>
   </div>
