@@ -99,7 +99,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
           return a
         }, {})
 
-        this.currentCategory = data.current_category;
       }
     );
 
@@ -169,21 +168,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.mainService.scrollToTopAction()
   }
 
-  getGalleryDataByActivity(activityName: string): void {
-    this.currentActivity = activityName;
-    this.currentType = this.defaultType;
-    this.galleryService.queryGalleryFeatures(
-      {
-        activity_name: this.currentActivity,
-      }
-    );
-    this.mainService.scrollToTopAction()
-  }
-
   getGalleryDataByCategory(categoryName: string): void {
     this.currentCategory = categoryName;
-    this.currentActivity = this.defaultActivity;
-    this.currentType = this.defaultType;
     this.galleryService.queryGalleryFeatures(
       {
         activity_type: this.currentCategory,
@@ -192,10 +178,23 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.mainService.scrollToTopAction()
   }
 
-  getGalleryDataByType(typeName: string): void {
+  getGalleryDataByActivity(activityName: string): void {
+    this.currentActivity = activityName;
+    this.galleryService.queryGalleryFeatures(
+      {
+        activity_type: this.currentCategory,
+        activity_name: this.currentActivity,
+      }
+    );
+    this.mainService.scrollToTopAction()
+  }
+
+  getGalleryDataByMediaType(typeName: string): void {
     this.currentType = typeName;
     this.galleryService.queryGalleryFeatures(
       {
+        activity_type: this.currentCategory,
+        activity_name: this.currentActivity,
         media_type: this.currentType
       }
     );

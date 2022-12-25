@@ -60,15 +60,18 @@
 
 
 <ng-template #galleryControler>
-  <set-section-container class="co-12 col-lg-4">
+  <set-section-container class="col-12 col-lg-4">
     <h6>Filtrage par catégories</h6>
 
-    <set-button-content
+    <div class="row">
+      <set-button-content
       [classes]="currentCategory === null ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
       [icon]="tagIcon"
       (click)="resetGallery()"
     >Tous
     </set-button-content>
+    </div>
+
 
     <set-button-content
       [classes]="currentCategory === 'job' ? 'btn-sm btn-secondary fw-bold' : 'btn-sm btn-secondary'"
@@ -121,7 +124,7 @@
       <set-button-content
         [classes]="'mx-0 rounded-0 btn-sm text-bg-' + type"
         [icon]="typeStyleMapping[type].icon"
-        (click)="getGalleryDataByType(type)"
+        (click)="getGalleryDataByMediaType(type)"
         [title]="typeStyleMapping[type].title"
       >
       </set-button-content>
