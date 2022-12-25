@@ -632,20 +632,20 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         activitiesParameters = this._buildActivitiesParameters(commonParams)
         skillsParameters = this._buildActivitiesParameters({ ...skillsParams, ... { skill: elementName } })
       }
-      this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
-      this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
 
     } else {
       // display nothing because the node selected is outside scope
       this._graphSetDisplayStatus('hidden')
       // TODO set route to return none data (activities + skills)
       let commonParams = { date: 1950 }
-      let skillsParams = {...commonParams, ...{ category: skillsTypes} }
+      let skillsParams = { ...commonParams, ...{ category: skillsTypes } }
+      
       activitiesParameters = this._buildActivitiesParameters(commonParams)
       skillsParameters = this._buildActivitiesParameters(skillsParams)
-      this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
-      this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
+
     }
+    this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
+    this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
 
   }
 
