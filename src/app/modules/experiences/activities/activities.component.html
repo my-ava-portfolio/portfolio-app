@@ -100,6 +100,9 @@
             <div *ngIf="activity.years == 1 && activity.months == 0">
               <div>({{activity.years}} an)</div>
             </div>
+            <div *ngIf="activity.years == 1 && activity.months > 0">
+              <div>({{activity.years}} an et {{activity.months}} mois)</div>
+            </div>
             <div *ngIf="activity.years > 1 && activity.months > 0">
               <div>({{activity.years}} ans et {{activity.months}} mois)</div>
             </div>

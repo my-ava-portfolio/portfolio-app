@@ -16,7 +16,7 @@ export const activitiesMapping = {
 }
 
 export const skillsMapping: any = {
-  "themes": "Thématiques",
+  "themes": "Secteurs d'activité",
   "technics": "Techniques",
   "tools": "Outils"
 }

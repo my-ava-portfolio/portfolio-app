@@ -29,10 +29,11 @@ const appRoutes: Routes = [
         loadChildren: () => import('@modules/experiences/experiences.module').then(m => m.ExperiencesModule),
         data: { title: 'Expériences', page: 'experiences' } 
       },
-      // {
-      //   path: 'resume',
-      //   loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
-      // },
+      {
+        path: 'resume',
+        loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
+        data: { title: 'CV', page: 'resume' } 
+      },
       {
         path: 'education',
         loadChildren: () => import('@modules/education/education.module').then(m => m.EducationModule),

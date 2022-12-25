@@ -24,14 +24,14 @@ export class SkillsComponent implements OnInit, OnDestroy {
 
   skillIcon = faStar;
 
-  professionalSkillsSubscription!: Subscription;
+  skillsSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
   ) { 
 
-    this.professionalSkillsSubscription = this.resumeService.profesionalSkillsDataSubject.subscribe(
+    this.skillsSubscription = this.resumeService.skillsDataSubject.subscribe(
       (data: any) => {
           this.jobSkillsCategories = data["job"]
           this.projectSkillsCategories = data["personal-project"]
@@ -44,7 +44,7 @@ export class SkillsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.professionalSkillsSubscription.unsubscribe();
+    this.skillsSubscription.unsubscribe();
   }
 
   trackByMethod(index: number, el: any): number {

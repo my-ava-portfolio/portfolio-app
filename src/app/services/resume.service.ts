@@ -24,12 +24,12 @@ export class ResumeService {
 
   private acitvitiesRoute = apiUrl + 'activities';
   activitiesDataSubject: Subject<any> = new Subject<any>();
-  private acitvitiesJobDurationRoute = apiUrl + 'activities/job/duration';
+  private activitiesJobDurationRoute = apiUrl + 'activities/job/duration';
   activitiesJobDurationDataSubject: Subject<any> = new Subject<any>();
   profesionalActivitiesDataSubject: Subject<any> = new Subject<any>();
   
   private skillsRoute = apiUrl + 'skills';
-  profesionalSkillsDataSubject: Subject<any> = new Subject<any>();
+  skillsDataSubject: Subject<any> = new Subject<any>();
 
 
   private publicationsRoute = apiUrl + 'publications';
@@ -174,15 +174,32 @@ export class ResumeService {
               "personal-project": response[1],
               "volunteer": response[2]
             }
-            this.profesionalSkillsDataSubject.next(outputData);
+            this.skillsDataSubject.next(outputData);
           }
         },
       }
     );
   }
 
+  queryFullSkillsFromApi(parameters: any): void {
+    this.http.get<any>(`${this.skillsRoute}/`, { params: parameters }).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.skillsDataSubject.next(response);
+        }
+      },
+    });
+  }
+
   queryActivitiesJobDurationFromApi(): void {
-    this.http.get<any>(`${this.acitvitiesJobDurationRoute}`).subscribe({
+    this.http.get<any>(`${this.activitiesJobDurationRoute}`).subscribe({
       complete: () => {
       },
       error: error => {
