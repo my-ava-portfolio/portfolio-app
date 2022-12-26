@@ -16,7 +16,7 @@ const dbLibs = [
 export const dataProcessingInfo = {
   "title": "Pre-processing",
   "color": "dark",
-  "language": "Python 3.10",
+  "language": "Python 3.11",
   "language_icon": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
   "framework": null,
   "libs": [
@@ -42,13 +42,13 @@ export const dataProcessingInfo = {
 export const backEndInfo = {
   "title": "Back-end",
   "color": "danger",
-  "language": "Python 3.10",
+  "language": "Python 3.11",
   "language_icon": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
   "framework": [
     {
-    "name": "Flask",
-    "url": "https://flask.palletsprojects.com/en/2.2.x/",
-    "icon": "https://flask.palletsprojects.com/en/2.2.x/_static/flask-icon.png"
+    "name": "FastApi",
+    "url": "https://fastapi.tiangolo.com/",
+    "icon": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
     }
   ],
   "libs": [
