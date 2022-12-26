@@ -20,6 +20,7 @@ import { ActivityActionsService } from '../services/activity-actions.service';
   animations: [fadeInOutAnimation]
 })
 export class LayoutComponent implements OnInit, OnDestroy  {
+  dataAvailable = false;
 
   fragment: string = '';
   tabView!: string;
@@ -41,9 +42,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   activityTypesMetadata!: any[];
 
   skillsData!: any;
-  isActivitiesDataAvailable = false;
-
-  isDataAvailable = false;
 
   isAnchorExistsChecker = interval(1000); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
@@ -90,4 +88,7 @@ export class LayoutComponent implements OnInit, OnDestroy  {
     this.tabView = activityId
   }
 
+  checkDataAvailability(status: boolean): void {
+    this.dataAvailable = status;
+  }
 }

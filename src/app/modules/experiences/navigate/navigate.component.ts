@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -18,7 +18,8 @@ import { activities } from '@core/data-types';
   encapsulation: ViewEncapsulation.None
 })
 export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  @Output() graphInitialized = new EventEmitter<boolean>();
+  
   @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
 
   private defaultNodeIdSelected = null;
@@ -538,6 +539,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     const skillsParameters = this._buildParameters(skillsParams)
     this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
     this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
+
+    this.graphInitialized.emit(true)
   }
 
 
