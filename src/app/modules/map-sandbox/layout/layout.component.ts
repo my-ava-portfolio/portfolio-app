@@ -1,6 +1,5 @@
 import { layerHandler } from '@modules/map-sandbox/shared/core';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
 import { MapService } from '@services/map.service';
@@ -46,7 +45,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private controlerService: ControlerService,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title,
     private interactionsService: InteractionsService,
     private cdRef:ChangeDetectorRef
   ) {
@@ -97,7 +95,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
   }
 
   showHideLegend(): void {

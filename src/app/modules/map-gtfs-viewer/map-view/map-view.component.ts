@@ -205,9 +205,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
-    // to get the data properties from routes (app.module.ts)
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
-
   }
 
   ngOnDestroy(): void {

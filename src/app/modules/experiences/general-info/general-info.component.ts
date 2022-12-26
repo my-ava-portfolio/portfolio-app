@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { activitiesMapping } from '@core/global-values/main';
-import { activitiesCountOutput } from '@core/global-values/route-output-types';
+import { activitiesCountOutputTypes } from '@core/global-values/route-output-types';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { ActivityActionsService } from '../services/activity-actions.service';
 
 
 @Component({
@@ -24,7 +23,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   jobCategory: string = "job";
   activityCategoryHidden = "education"
 
-  activityTypesMetadata: activitiesCountOutput[] = []
+  activityTypesMetadata: activitiesCountOutputTypes[] = []
 
   userInfoDataSubscription!: Subscription;
   activitiesJobDurationSubscription!: Subscription;
@@ -33,7 +32,6 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private resumeService: ResumeService,
-    private activityActionsService: ActivityActionsService
   ) {
 
     this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
@@ -65,27 +63,9 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
             count: data["volunteer"].length
           }
         ]
-        
-        // if (this.tabView !== this.jobCategory) {
-        //   if (projectLength === 0) {
-        //     this.enableActivity(this.jobCategory)
-        //     return
-        //   }
-        //   if (volunteerLength === 0) {
-        //     this.enableActivity(this.jobCategory)
-        //     return
-        //   }
-        // }
-        
+               
       }
     )
-
-    // this.activitiesIdSubscription = this.activityActionsService.activityId.subscribe(
-    //   (activityType) => {
-    //     this.tabView = activityType;
-    //     console.log(activityType)
-    //   }
-    // )
 
   }
 

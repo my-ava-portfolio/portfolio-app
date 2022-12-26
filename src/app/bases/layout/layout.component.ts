@@ -4,8 +4,8 @@ import { ControlerService } from '@services/controler.service';
 
 import { minWidthLandscape } from '@core/styles/screen';
 import { faAlignLeft } from '@fortawesome/free-solid-svg-icons';
-import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
-import { filter, first, Subscription, take } from 'rxjs';
+import { ActivationEnd, Router } from '@angular/router';
+import { filter, Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 
 
@@ -30,18 +30,17 @@ export class LayoutComponent implements OnInit, OnDestroy {
   constructor(
     private controlerService: ControlerService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
     private titleService: Title,
   ) {
 
-    this.routerSubscription = this.router.events
-      .pipe(
-        filter((event: any) => event instanceof ActivationEnd),
+    this.routerSubscription = this.router.events.pipe(
+      filter(
+        (event: any) => event instanceof ActivationEnd),
       ).subscribe(data => {
-      if ('title' in data.snapshot.data) {
-        this.titleService.setTitle(data.snapshot.data.title)
-      }
-    });
+        if ('title' in data.snapshot.data) {
+          this.titleService.setTitle(data.snapshot.data.title)
+        }
+      });
 
   }
 
@@ -60,12 +59,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
     // if mode portrait and width screen <= 1024...
     if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
       this.sideBarCollapsed = false;
-
     }
   }
 
   updatePage(outlet: any): any {
     this.controlerService.pullTitlePage(outlet.activatedRouteData.title)
+    this.controlerService.pullSubMenus(outlet.activatedRouteData.anchors)
   }
 
   getSideBarCollapseStatus(status: boolean) {

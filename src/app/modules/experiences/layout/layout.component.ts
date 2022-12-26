@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy  } from '@angular/core';
 
 import { ResumeService } from '@services/resume.service';
-import { ControlerService } from '@services/controler.service';
 
 import { interval, Subscription } from 'rxjs';
 
@@ -11,7 +10,6 @@ import { fadeInOutAnimation } from '@core/animation_routes';
 import { assetsLogoPath } from '@core/global-values/main';
 
 import { faGlobeEurope, faTags } from '@fortawesome/free-solid-svg-icons';
-import { experiencesPages } from '@core/global-values/topics';
 import { ActivityActionsService } from '../services/activity-actions.service';
 
 
@@ -47,9 +45,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
 
   isDataAvailable = false;
 
-  experiencesTopics = experiencesPages;
-
-
   isAnchorExistsChecker = interval(1000); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
 
@@ -57,7 +52,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   activityEnablingSubscription!: Subscription;
 
   constructor(
-    private controlerService: ControlerService,
     private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
     private activityActionsService: ActivityActionsService
@@ -85,16 +79,11 @@ export class LayoutComponent implements OnInit, OnDestroy  {
     this.sendActivityId("job")
 
     this.resumeService.queryUserInfoFromApi();
-    this.sendResumeSubMenus()
   }
 
   ngOnDestroy(): void {
     this.routeSubscription.unsubscribe();
     this.activityEnablingSubscription.unsubscribe();
-  }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus(this.experiencesTopics.sub_menus)
   }
 
   sendActivityId(activityId: string): void {

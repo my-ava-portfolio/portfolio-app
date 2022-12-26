@@ -1,17 +1,15 @@
 import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from '@bases/layout/layout.component';
+import { educationPages, experiencesPages } from '@core/global-values/topics';
 
 import { Observable, of } from 'rxjs';
-
-
 
 export class CustomPreloadingStrategy implements PreloadingStrategy {
   preload(route: Route, load: Function): Observable<any> {
     return route.data && route.data.preload ? load() : of(null);
   }
 }
-
 
 
 const appRoutes: Routes = [
@@ -22,37 +20,37 @@ const appRoutes: Routes = [
       {
         path: 'home',
         loadChildren: () => import('@modules/home/home.module').then(m => m.HomeModule),
-        data: {preload: true, title: 'Amaury Valorge - Portfolio', page: 'about_me'}
+        data: { preload: true, title: 'Amaury Valorge - Portfolio', page: 'about_me', anchors: []}
       },
       {
         path: 'experiences',
         loadChildren: () => import('@modules/experiences/experiences.module').then(m => m.ExperiencesModule),
-        data: { title: 'Expériences', page: 'experiences' } 
+        data: { title: 'Expériences', page: 'experiences', anchors: experiencesPages.sub_menus } 
       },
       {
         path: 'resume',
         loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
-        data: { title: 'CV', page: 'resume' } 
+        data: { title: 'CV', page: 'resume', anchors: [] } 
       },
       {
         path: 'education',
         loadChildren: () => import('@modules/education/education.module').then(m => m.EducationModule),
-        data: { title: 'Formation', page: 'education' }
+        data: { title: 'Formation', page: 'education', anchors: educationPages.sub_menus }
       },
       {
         path: 'gallery',
         loadChildren: () => import('@modules/gallery/gallery.module').then(m => m.GalleryModule),
-        data: { title: 'Galerie', page: 'gallery' }
+        data: { title: 'Galerie', page: 'gallery', anchors: [] }
       },
       {
         path: 'maps',
         loadChildren: () => import('@modules/maps/maps.module').then(m => m.MapsModule),
-        data: { title: 'Cartes', page: 'home' }
+        data: { title: 'Cartes', page: 'home', anchors: [] }
       },
       {
         path: 'blog',
         loadChildren: () => import('@modules/blog/blog.module').then(m => m.BlogModule),
-        data: { title: 'Blog', page: 'blog' }
+        data: { title: 'Blog', page: 'blog', anchors: [] }
       },
       { path: '**', redirectTo: '/home', pathMatch : 'full' }, // in order to redirect to the home page if the main url is called
     ]

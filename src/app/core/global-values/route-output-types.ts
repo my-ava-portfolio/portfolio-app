@@ -1,7 +1,7 @@
 import { activities } from "@core/data-types"
 
 
-export interface activitiesCountOutput {
+export interface activitiesCountOutputTypes {
     type: activities
     count: number
   }

@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ControlerService } from '@services/controler.service';
-
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { assetsLogoPath } from '@core/global-values/main';
-import { educationPages } from '@core/global-values/topics';
 
 @Component({
   selector: 'app-app-layout',
@@ -18,18 +15,8 @@ export class LayoutComponent implements OnInit {
 
   activityType = "education"
 
-  educationTopics = educationPages;
+  constructor( ) { }
 
-  constructor(
-    private controlerService: ControlerService,
-  ) { }
-
-  ngOnInit(): void {
-    this.sendResumeSubMenus()
-  }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus(this.educationTopics.sub_menus)
-  }
+  ngOnInit(): void { }
 
 }

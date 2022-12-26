@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { map } from 'rxjs/operators';
 
 import { Subscription } from 'rxjs';
 
@@ -245,8 +244,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
-    // to get the data properties from routes (app.module.ts)
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
   }
 
   showHideLegend(): void {

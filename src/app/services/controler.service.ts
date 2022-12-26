@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class ControlerService {
-  subMenuFeatures: Subject<any> = new Subject<any>();
+  subMenuFeatures: Subject<any[]> = new Subject<any[]>();
   titlePageFeature: Subject<any> = new Subject<any>();
   sideBarCollapsed: Subject<any> = new Subject<any>();
 
