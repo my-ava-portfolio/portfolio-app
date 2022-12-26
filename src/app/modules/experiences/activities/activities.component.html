@@ -221,9 +221,9 @@
 
 <ng-template #ngbNavTrainingsContent let-data='data'>
   <set-paragraph-content>
-    <ng-container *ngFor="let training of data.trainings">
-      <span class="fw-bold">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span>
-    </ng-container>
+    <ul class="w-100">
+      <li *ngFor="let training of data.trainings"><span class="fw-bold">{{ training.year }}</span><span> - {{ training.name }} par {{ training.trainer }}</span></li>
+    </ul>
   </set-paragraph-content>
 </ng-template>
 
