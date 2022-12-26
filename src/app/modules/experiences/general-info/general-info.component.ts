@@ -12,7 +12,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
 })
 export class GeneralInfoComponent implements OnInit, OnDestroy {
   @Input() tabView!: string;
-
   @Output() tabViewEmit = new EventEmitter<string>();
 
   activitiesMapping: any = activitiesMapping;
