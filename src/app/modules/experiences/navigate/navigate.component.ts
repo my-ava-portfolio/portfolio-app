@@ -435,13 +435,13 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.activityActionsService.setActivity(this.job_identifier)
         }
-        this._graphSelectedFiltering(`#${this.activityGraphSvgId} #${this.currentNodeIdSelected}`);
+        this._displayActivitiesAndSkillsFromElement(`#${this.activityGraphSvgId} #${this.currentNodeIdSelected}`);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
         this.currentNodeIdSelected = this.defaultNodeIdSelected;
         this.activityActionsService.setActivity(this.job_identifier) // to switch on the activities buttons (default)
-        this._defaultDisplayingByDate();
+        this._normalDisplayActivitiesAndSkills();
 
       } else {
           // nothing here : to avoid unfocused action on an other node than the origin node, else it will disable the graph interactivity
@@ -473,9 +473,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // to preselect a node
     if ( nodeIdToSelect !== null ) {
-      this._graphSelectedFiltering(`#${this.activityGraphSvgId} #${nodeIdToSelect}`);
+      this._displayActivitiesAndSkillsFromElement(`#${this.activityGraphSvgId} #${nodeIdToSelect}`);
     } else {
-      this._defaultDisplayingByDate();
+      this._normalDisplayActivitiesAndSkills();
     }
 
   }
@@ -520,7 +520,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .style('opacity', (d: any) => d.source.index === index || d.target.index === index ? 1 : 0.1);
   }
 
-  private _defaultDisplayingByDate(): void {
+  private _normalDisplayActivitiesAndSkills(): void {
 
     const elementSelected = d3.select(`#${this.activityGraphSvgId} .nodes .selected`);
     if (elementSelected.size() === 1) {
@@ -541,7 +541,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  private _graphSelectedFiltering(element: string): void {
+  private _displayActivitiesAndSkillsFromElement(element: string): void {
 
     const skillsTypes = this._buildSkillsCategoriesParameters()
     let commonParams = { date: this.currentDate }

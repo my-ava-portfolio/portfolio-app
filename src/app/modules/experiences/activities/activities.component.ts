@@ -73,27 +73,17 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
       }
     )
 
-    this.activitiesIdSubscription = this.resumeService.activityId.subscribe(
-      (_) => {
-        // clear activities data on change
-        // this.jobsData = [];
-        // this.personalProjectsData = [];
-        // this.volunteersData = [];
-      }
-    )
-
   }
 
   ngOnInit(): void {
     // in order to filter the page regarding an activity
-    if ( this.fragment !== '' ) {
+    if (this.fragment !== '') {
       this.pushActivityId(this.fragment);
     }
   }
 
   ngOnDestroy(): void {
     this.professionalActivitiesSubscription.unsubscribe();
-    this.activitiesIdSubscription.unsubscribe();
   }
 
   addToHiddenDetailsConter(activityIndex: number) {

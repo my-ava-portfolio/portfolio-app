@@ -98,7 +98,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   }
 
   sendActivityId(activityId: string): void {
-    // this.activityActionsService.setActivity(activityId)
     this.tabView = activityId
   }
 

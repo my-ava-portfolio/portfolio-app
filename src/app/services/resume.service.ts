@@ -31,7 +31,6 @@ export class ResumeService {
   private skillsRoute = apiUrl + 'skills';
   skillsDataSubject: Subject<any> = new Subject<any>();
 
-
   private publicationsRoute = apiUrl + 'publications';
   publicationsDataSubject: Subject<any> = new Subject<any>();
 
@@ -46,7 +45,7 @@ export class ResumeService {
   activityId: Subject<string> = new Subject<string>();
 
   constructor(
-      private http: HttpClient
+    private http: HttpClient
   ) {}
 
 
@@ -59,14 +58,10 @@ export class ResumeService {
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.languagesDataSubject.next(response);
-        }
+        this.languagesDataSubject.next(response);
       },
     });
   }
@@ -76,14 +71,10 @@ export class ResumeService {
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.userInfoDataSubject.next(response);
-        }
+        this.userInfoDataSubject.next(response);
       },
     });
   }
@@ -93,34 +84,25 @@ export class ResumeService {
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.userContactDataSubject.next(response);
-        }
+        this.userContactDataSubject.next(response);
       },
     });
   }
 
   queryActivitiesFromApi(activityType: string, parameters: any = null): void {
     this.http.get<any>(
-      `${this.acitvitiesRoute}/${activityType}`,
-      {params: parameters}
+      `${this.acitvitiesRoute}/${activityType}`, {params: parameters}
     ).subscribe({
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.activitiesDataSubject.next(response);
-        }
+        this.activitiesDataSubject.next(response);
       },
     });
   }
@@ -135,19 +117,16 @@ export class ResumeService {
         complete: () => {
         },
         error: error => {
-          // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
         },
         next: response => {
-          // is null only if query return a 204 error (empty result)
-          if (response !== null) {
-            const outputData = {
-              "job": response[0],
-              "personal-project": response[1],
-              "volunteer": response[2]
-            }
-            this.profesionalActivitiesDataSubject.next(outputData);
+          const outputData = {
+            "job": response[0],
+            "personal-project": response[1],
+            "volunteer": response[2]
           }
+          this.profesionalActivitiesDataSubject.next(outputData);
+        
         },
       }
     );
@@ -163,19 +142,16 @@ export class ResumeService {
         complete: () => {
         },
         error: error => {
-          // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
         },
         next: response => {
           // is null only if query return a 204 error (empty result)
-          if (response !== null) {
-            const outputData = {
-              "job": response[0],
-              "personal-project": response[1],
-              "volunteer": response[2]
-            }
-            this.skillsDataSubject.next(outputData);
+          const outputData = {
+            "job": response[0],
+            "personal-project": response[1],
+            "volunteer": response[2]
           }
+          this.skillsDataSubject.next(outputData);
         },
       }
     );
@@ -186,14 +162,10 @@ export class ResumeService {
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.skillsDataSubject.next(response);
-        }
+        this.skillsDataSubject.next(response);
       },
     });
   }
@@ -203,48 +175,23 @@ export class ResumeService {
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.activitiesJobDurationDataSubject.next(response);
-        }
-      },
+        this.activitiesJobDurationDataSubject.next(response);
+       },
     });
   }
-
-  // queryActivitiesCountFromApi(date: number): void {
-  //   this.http.get<any>(`${this.acitvitiesCountRoute}/${date}`).subscribe({
-  //     complete: () => {
-  //     },
-  //     error: error => {
-  //       // TODO improve error message, but API need improvments
-  //       this.ErrorResumeDataApiFound.next(error.error.message);
-  //     },
-  //     next: response => {
-  //       // is null only if query return a 204 error (empty result)
-  //       if (response !== null) {
-  //         this.activitiesCountDataSubject.next(response);
-  //       }
-  //     },
-  //   });
-  // }
 
   queryPublicationsFromApi(activityType: string): void {
     this.http.get<any>(`${this.publicationsRoute}/${activityType}`).subscribe({
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.publicationsDataSubject.next(response);
-        }
+        this.publicationsDataSubject.next(response);
       },
     });
   }
@@ -254,14 +201,10 @@ export class ResumeService {
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.trainingsDataSubject.next(response);
-        }
+        this.trainingsDataSubject.next(response);
       },
     });
   }
@@ -274,14 +217,10 @@ export class ResumeService {
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.graphDataSubject.next(response);
-        }
+        this.graphDataSubject.next(response);
       },
     });
   }
@@ -291,14 +230,10 @@ export class ResumeService {
       complete: () => {
       },
       error: error => {
-        // TODO improve error message, but API need improvments
         this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.validityRangeActivitisJobDataSubject.next(response);
-        }
+        this.validityRangeActivitisJobDataSubject.next(response);
       },
     });
   }
