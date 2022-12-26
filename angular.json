@@ -39,7 +39,6 @@
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/cookieconsent/build/cookieconsent.min.js"
-
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -115,9 +114,21 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/ol/ol.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "node_modules/cookieconsent/build/cookieconsent.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/cookieconsent/build/cookieconsent.min.js"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/app/styles/",
+                "node_modules/bootstrap/scss/"
+              ]
+            }
           }
         },
         "e2e": {

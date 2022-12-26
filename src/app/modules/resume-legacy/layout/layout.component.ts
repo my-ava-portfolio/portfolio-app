@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { assetsLogoPath, skillsMapping } from '@core/global-values/main';
-import { currentYear } from '@core/misc';
 
 import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faPhone, faGlobe, faFilePdf } from '@fortawesome/free-solid-svg-icons';

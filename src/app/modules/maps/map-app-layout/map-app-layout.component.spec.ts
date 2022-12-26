@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MapAppLayoutComponent } from './map-app-layout.component';
 
-import { MapAppLayoutComponent } from '@modules/maps/map-app-layout/app-app-layout.component';
 
 describe('MapAppLayoutComponent', () => {
   let component: MapAppLayoutComponent;

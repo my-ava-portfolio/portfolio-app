@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { LegendContainerComponent } from './legend-container.component';
 
 describe('LegendContainerComponent', () => {
@@ -8,7 +7,7 @@ describe('LegendContainerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LegendContainerComponent ]
+      declarations: [LegendContainerComponent],
     })
     .compileComponents();
   });
