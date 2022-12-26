@@ -40,7 +40,7 @@
 
       </div>
 
-      <set-paragraph-content class="text-justify small">{{ profilData.carrier_summary }} </set-paragraph-content>
+      <set-paragraph-content *ngIf="profilData" class="text-justify small">{{ profilData.carrier_summary }} </set-paragraph-content>
 
 
       <div *ngIf="degreesData" id="degrees" class="d-flex flex-column mx-2 pt-2">

@@ -116,7 +116,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     this.skillsSubscription = this.resumeService.skillsDataSubject.subscribe(
       (data: any) => {
-        console.log(data)
           this.skillsData = data
       }
     )
