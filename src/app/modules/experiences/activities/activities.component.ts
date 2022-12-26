@@ -8,6 +8,7 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faMapMarkerAlt, faImages, faFilter, faTrophy, faAngleDoubleDown, faPaintBrush, faFileAlt, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { mapActivitiesPages, galleryPages } from '@core/global-values/topics';
 import { fadeInOutAnimation } from '@core/animation_routes';
+import { ActivityActionsService } from '../services/activity-actions.service';
 
 
 @Component({
@@ -54,13 +55,12 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   pageLoadingTimeOut: number = 750;
 
-  routeQueryParamsSubscription!: Subscription;
   professionalActivitiesSubscription!: Subscription;
-  activityEnablingSubscription!: Subscription;
   activitiesIdSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
+    private activityActionsService: ActivityActionsService
   ) {
 
     this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
@@ -69,6 +69,14 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         this.personalProjectsData = data["personal-project"]
         this.volunteersData = data["volunteer"]
       }
+    )
+
+    this.activitiesIdSubscription = this.activityActionsService.activityId.subscribe(
+      (_: string) => {
+        // when tabview siwtch we reset the activity lists
+        this.jobsData = []
+        this.personalProjectsData = []
+        this.volunteersData = []      }
     )
 
   }
@@ -82,6 +90,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.professionalActivitiesSubscription.unsubscribe();
+    this.activitiesIdSubscription.unsubscribe();
   }
 
   pushActivityId(activityId: string): void {

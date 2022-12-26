@@ -426,17 +426,17 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     node.on('click', (e: any, d: any, i: any, n: any) => {
       const nodeIsPreselected = d3.select(`#${this.activityGraphSvgId} .nodes .selected`);
+      
       // here we update the activities components and skills
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(e.currentTarget).attr('id');
-
+        this._displayActivitiesAndSkillsFromElement(`#${this.activityGraphSvgId} #${this.currentNodeIdSelected}`);
         if (!this.skill_topics.includes(d.properties.type)) { // to switch on the activities buttons
           this.activityActionsService.setActivity(d.properties.type)
         } else {
           this.activityActionsService.setActivity(this.job_identifier)
         }
-        this._displayActivitiesAndSkillsFromElement(`#${this.activityGraphSvgId} #${this.currentNodeIdSelected}`);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
@@ -589,13 +589,14 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         activitiesParameters = this._buildParameters(commonParams)
         skillsParameters = this._buildParameters({ ...skillsParams, ... { skill: elementName } })
       }
+      this.graphInitialized.emit(true)
 
     } else {
-      // display nothing because the node selected is outside scope
+      // display nothing because the node selected is out of the scope
       this._graphSetDisplayStatus('hidden')
-      let commonParams = {}
       let skillsParams = { ...commonParams, ...{ category: skillsTypes } }
       
+      this.graphInitialized.emit(false)
       activitiesParameters = this._buildParameters(commonParams, { hide: true }, { hide: true }, { hide: true })
       skillsParameters = this._buildParameters(skillsParams, { hide: true }, { hide: true }, { hide: true })
 
