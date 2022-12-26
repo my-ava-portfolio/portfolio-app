@@ -1,16 +1,16 @@
 <div [@fadeInOut] id="jobWidget" *ngIf="tabView == 'job'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
-  <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'job', activitiesData: jobsData}"></ng-container>
+  <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: tabView, activitiesData: jobsData}"></ng-container>
 </div>
 
 <div [@fadeInOut] id="personal_projectWidget" *ngIf="tabView == 'personal-project'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
-  <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'personal-project', activitiesData: personalProjectsData}"></ng-container>
+  <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: tabView, activitiesData: personalProjectsData}"></ng-container>
 </div>
 
 <div [@fadeInOut] id="volunteerWidget" *ngIf="tabView == 'volunteer'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
-  <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'volunteer', activitiesData: volunteersData}"></ng-container>
+  <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: tabView, activitiesData: volunteersData}"></ng-container>
 </div>
 
 
@@ -20,7 +20,7 @@
     cardClass="m-3"
     [title]="activity.title"
     [id]="'activities-' + activity.identifier"
-    *ngFor="let activity of activitiesData;let indexOfActivity=index; trackBy: trackByMethod"
+    *ngFor="let activity of activitiesData;let indexOfActivity=index"
     class="activity-feature"
     [headerNgStyle]="buildColorStyle(activity.color)"
   >
@@ -31,7 +31,7 @@
 
   <ng-template #cardFooterTemplate>
 
-    <div class="details text-center" role="button" clickClass="rotate-180" (click)="addToHiddenDetailsConter(indexOfActivity)" title="Afficher plus de détails">
+    <div class="details text-center" role="button" clickClass="rotate-180" data-bs-toggle="collapse" [attr.data-bs-target]="'#tab--' + activity.id" aria-expanded="false" title="Afficher plus de détails">
       <fa-icon class="icon" [icon]="arrowsDownIcon"></fa-icon>
     </div>
 
@@ -70,7 +70,6 @@
 
             <h6 *ngIf="activityType !== 'personal-project'" class="fw-bold col-11">{{activity.company}}</h6>
             <h6 *ngIf="activityType === 'personal-project'" class="fw-bold col-11">{{activity.title}}</h6>
-
 
             <set-icon-text *ngIf="activityType !== 'personal-project'"
               [route]="mapPages.sub_menus[0].content_url"
@@ -147,7 +146,7 @@
     </div>
 
     <div class="d-flex flex-row align-items-center">
-      <div class="feature-tabs mt-3" *ngIf="hiddenActivitiesDetails.includes(activityIndex)">
+      <div class="feature-tabs mt-3 collapse" [id]="'tab--' + activity.id" >
 
       <ul ngbNav #nav="ngbNav" class="nav-tabs">
 

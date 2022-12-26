@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { ResumeService } from '@services/resume.service';
 
@@ -16,7 +16,7 @@ import { fadeInOutAnimation } from '@core/animation_routes';
   styleUrls: ['./activities.component.scss'],
   animations: [fadeInOutAnimation]
 })
-export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
+export class ActivitiesComponent implements OnInit, OnDestroy {
 
   @Input() fragment: any;
   @Input() tabView!: string;
@@ -40,8 +40,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   githubIcon = faGithub;
   notesIcon = faFileAlt;
   websiteIcon = faGlobe;
-
-  hiddenActivitiesDetails: number[] = [];
 
   themesTitle = "Thèmes";
   contextTitle = "Contexte";
@@ -86,19 +84,6 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     this.professionalActivitiesSubscription.unsubscribe();
   }
 
-  addToHiddenDetailsConter(activityIndex: number) {
-    if (this.hiddenActivitiesDetails.includes(activityIndex)) {
-
-      const index = this.hiddenActivitiesDetails.indexOf(activityIndex, 0);
-      if (index > -1) {
-        this.hiddenActivitiesDetails.splice(index, 1);
-      }
-
-    } else {
-      this.hiddenActivitiesDetails.push(activityIndex);
-    }
-  }
-
   pushActivityId(activityId: string): void {
     this.resumeService.pullActivityIdToPreselectNodeGraph(activityId);
   }
@@ -114,18 +99,8 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
     return input
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // run only if a change occured on the page (like the time slider...)
-    // this.switchOnTheFirstActivityTypeContainingActivities()
-  }
-
-  trackByMethod(index:number, el:any): number {
-    return el.identifier;
-  }
-
   buildColorStyle(color: string) {
    return {'background': 'linear-gradient(to right, ' + color +', white)'}
-
   }
 
   keepOrder(): any {
