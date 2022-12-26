@@ -6,10 +6,6 @@
       featuresHeaderClass="text-bg-dark"
     >
       <ng-template #descriptionTemplate let-feature>
-
-        <div *ngIf="feature.status === 'Done'" class="stack-top-success">Terminée !</div>
-        <div *ngIf="feature.status === 'Dev'" class="stack-top-warning text-black">En cours !</div>
-
         <set-paragraph-content>{{ feature.description }}</set-paragraph-content>
       </ng-template>
     
