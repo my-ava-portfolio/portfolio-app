@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { mapActivitiesPages } from '@core/global-values/topics';
 
-import { ControlerService } from '@services/controler.service';
-
 
 @Component({
   selector: 'app-home-layout',
@@ -15,16 +13,9 @@ export class HomeLayoutComponent implements OnInit {
   
   mapPagesMenus: any = mapActivitiesPages;
 
-  constructor(
-    private controlerService: ControlerService,
-  ) { }
+  constructor( ) { }
 
-  ngOnInit(): void {
-    this.sendResumeSubMenus()
-  }
+  ngOnInit(): void { }
 
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus([])
-  }
 
 }

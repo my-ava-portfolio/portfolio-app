@@ -10,8 +10,8 @@ export class ActivityActionsService {
 
   constructor() { }
 
-
   setActivity(nameId: string) {
     this.activityId.next(nameId)
   }
+
 }

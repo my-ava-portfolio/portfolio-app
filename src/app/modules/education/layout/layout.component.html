@@ -1,23 +1,18 @@
-<set-article-container *ngIf="isDataAvailable" [@fadeInOut]>
+<set-article-container [@fadeInOut]>
 
     <app-general-info
-      [fragment]="fragment"
-      [profilData]="profilData"
-      [languagesData]="languagesData"
     ></app-general-info>
 
 
   <set-section-container>
     <h5 id="education__degrees" class="title-tick-education">Parcours universitaire</h5>
-
     <app-degrees-bar
       class="
         d-flex flex-xl-row;
         justify-content-center
         flex-wrap
       "
-      [fragment]="fragment"
-      [degreesData]="degreesData"
+      [activityType]="activityType"
     ></app-degrees-bar>
   </set-section-container>
 
@@ -30,10 +25,11 @@
         justify-content-center
         flex-wrap
       "
-      [fragment]="fragment"
-      [publicationsData]="publicationsData"
+      [activityType]="activityType"
     ></app-publication-bar>
   </set-section-container>
+
+  
 
   <set-section-container>
     <h5 id="education__trainings" class="title-tick-job">Formations professionnelles</h5>
@@ -44,8 +40,6 @@
         justify-content-center
         flex-wrap
       "
-      [fragment]="fragment"
-      [trainingsData]="trainingsData"
     ></app-trainings-bar>
   </set-section-container>
   

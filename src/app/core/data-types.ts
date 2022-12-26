@@ -1,3 +1,4 @@
+export type activities = 'job'|'personal-project'|'volunteer';
 
 // GALLERY TYPES //
 export interface badge {

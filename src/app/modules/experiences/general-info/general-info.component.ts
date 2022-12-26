@@ -1,6 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { activitiesMapping } from '@core/global-values/main';
+import { activitiesCountOutput } from '@core/global-values/route-output-types';
+import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ActivityActionsService } from '../services/activity-actions.service';
+
 
 @Component({
   selector: 'app-general-info',
@@ -8,39 +12,97 @@ import { ActivityActionsService } from '../services/activity-actions.service';
   styleUrls: ['./general-info.component.scss']
 })
 export class GeneralInfoComponent implements OnInit, OnDestroy {
+  @Input() tabView!: string;
 
-  @Input() profilData: any;
-  @Input() activityTypesMetadata: any;
+  @Output() tabViewEmit = new EventEmitter<string>();
 
-  inputProfilData: any;
-  tabView = "job";
+  activitiesMapping: any = activitiesMapping;
 
-  activityEnablingSubscription!: Subscription;
+  userInfoData!: any;
+  jobDuration!: any;
+
+  jobCategory: string = "job";
+  activityCategoryHidden = "education"
+
+  activityTypesMetadata: activitiesCountOutput[] = []
+
+  userInfoDataSubscription!: Subscription;
+  activitiesJobDurationSubscription!: Subscription;
+  professionalActivitiesSubscription!: Subscription;
+  activitiesIdSubscription!: Subscription;
 
   constructor(
+    private resumeService: ResumeService,
     private activityActionsService: ActivityActionsService
   ) {
 
-    this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
-      (activityId) => {
-        this.tabView = activityId
+    this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
+      (data) => {
+        this.userInfoData = data;
+      }
+    );
+
+    this.activitiesJobDurationSubscription = this.resumeService.activitiesJobDurationDataSubject.subscribe(
+      (data: any) => {
+        this.jobDuration = data
       }
     )
 
-   }
+    this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
+      (data: any) => {
+
+        this.activityTypesMetadata = [
+          {
+            type: "job",
+            count: data["job"].length
+          },
+          {
+            type: "personal-project",
+            count: data["personal-project"].length
+          },
+          {
+            type: "volunteer",
+            count: data["volunteer"].length
+          }
+        ]
+        
+        // if (this.tabView !== this.jobCategory) {
+        //   if (projectLength === 0) {
+        //     this.enableActivity(this.jobCategory)
+        //     return
+        //   }
+        //   if (volunteerLength === 0) {
+        //     this.enableActivity(this.jobCategory)
+        //     return
+        //   }
+        // }
+        
+      }
+    )
+
+    // this.activitiesIdSubscription = this.activityActionsService.activityId.subscribe(
+    //   (activityType) => {
+    //     this.tabView = activityType;
+    //     console.log(activityType)
+    //   }
+    // )
+
+  }
 
   ngOnInit(): void {
-    this.inputProfilData = this.profilData
-
+    this.resumeService.queryUserInfoFromApi();
+    this.resumeService.queryActivitiesJobDurationFromApi()
   }
 
   ngOnDestroy(): void {
-    this.activityEnablingSubscription.unsubscribe()
+    this.userInfoDataSubscription.unsubscribe();
+    this.activitiesJobDurationSubscription.unsubscribe();
+    this.professionalActivitiesSubscription.unsubscribe();
+    // this.activitiesIdSubscription.unsubscribe();
   }
 
   enableActivity(idName: string): void {
-    this.activityActionsService.setActivity(idName)
-    this.tabView = idName
+    this.tabViewEmit.emit(idName)
   }
 
 }

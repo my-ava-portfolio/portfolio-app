@@ -1,39 +1,61 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { assetsLogoPath } from '@core/global-values/main';
 import { mapActivitiesPages } from '@core/global-values/topics';
 
 import { faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { ResumeService } from '@services/resume.service';
 import { backgroundTitle, specializationTitle } from '../core';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-general-info',
   templateUrl: './general-info.component.html',
   styleUrls: ['./general-info.component.scss']
 })
-export class GeneralInfoComponent implements OnInit {
-  @Input() fragment: any;
-  @Input() languagesData: any;
-  @Input() profilData: any;
+export class GeneralInfoComponent implements OnInit, OnDestroy {
 
   mapPages: any = mapActivitiesPages;
 
+  // TODO add them on API
   backgroundTitle = backgroundTitle;
   specializationTitle = specializationTitle;
 
   assetsLogoPath = assetsLogoPath;
-  cardTitle!: string;
-  inputDegreesData: any;
-  inputLanguagesData: any;
-  inputProfilData: any;
+
+  languagesData: any;
+  userInfoData: any;
+
   // icons
   languageIcon = faLanguage;
+  
+  userInfoDataSubscription!: Subscription
+  languagesDataSubscription!: Subscription
 
+  constructor(
+    private resumeService: ResumeService,
+  ) {
 
-  constructor() { }
+    this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
+      (data) => {
+        this.userInfoData = data;
+      }
+    );
+
+    this.languagesDataSubscription = this.resumeService.languagesDataSubject.subscribe(
+      (data) => {
+        this.languagesData = data;
+      }
+    );
+  }
 
   ngOnInit(): void {
-    this.inputLanguagesData = this.languagesData;
-    this.inputProfilData = this.profilData
+    this.resumeService.queryUserInfoFromApi();
+    this.resumeService.queryLanguagesFromApi();
+  }
+
+  ngOnDestroy(): void {
+    this.userInfoDataSubscription.unsubscribe();
+    this.languagesDataSubscription.unsubscribe();
   }
 
 }

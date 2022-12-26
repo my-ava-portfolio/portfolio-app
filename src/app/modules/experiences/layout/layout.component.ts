@@ -6,14 +6,13 @@ import { ControlerService } from '@services/controler.service';
 import { interval, Subscription } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 
 import { fadeInOutAnimation } from '@core/animation_routes';
-import { activitiesMapping, assetsLogoPath } from '@core/global-values/main';
-import { minWidthLandscape } from '@core/styles/screen';
+import { assetsLogoPath } from '@core/global-values/main';
 
 import { faGlobeEurope, faTags } from '@fortawesome/free-solid-svg-icons';
 import { experiencesPages } from '@core/global-values/topics';
+import { ActivityActionsService } from '../services/activity-actions.service';
 
 
 @Component({
@@ -24,12 +23,11 @@ import { experiencesPages } from '@core/global-values/topics';
 })
 export class LayoutComponent implements OnInit, OnDestroy  {
 
-
   fragment: string = '';
+  tabView!: string;
 
   apiImgUrl = assetsLogoPath;
   activityIdFromActivityComponents!: string;
-  isLegendDisplayed = true;
 
   navIcon = faGlobeEurope;
   tagsIcon = faTags;
@@ -55,60 +53,15 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   isAnchorExistsChecker = interval(1000); // observable which run all the time
   isAnchorExistsCheckerSubscription!: Subscription;
 
-  generalDataSubscription!: Subscription;
-  activitiesFilteredSubscription!: Subscription;
- // resumeDataSubscription
   routeSubscription!: Subscription;
+  activityEnablingSubscription!: Subscription;
 
   constructor(
     private controlerService: ControlerService,
     private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title,
+    private activityActionsService: ActivityActionsService
   ) {
-
-    // to get the data properties from routes (app.module.ts)
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
-
-    this.generalDataSubscription = this.resumeService.generalData.subscribe(
-      (data) => {
-        this.profilData = data
-        this.generalData = data.resume_validity_range;
-        this.isDataAvailable = true;
-
-      }
-    );
-
-    this.activitiesFilteredSubscription = this.resumeService.activitiesFilteredData.subscribe(
-      (data) => {
-        this.jobsData = data.activities_data.job;
-        this.personalProjectsData = data.activities_data['personal-project'];
-        this.volunteersData = data.activities_data.volunteer;
-        this.skillsData = data.skills_data;
-        this.isActivitiesDataAvailable = true;
-
-        this.activityTypesMetadata = [
-          {
-            id: "job",
-            title: activitiesMapping["job"],
-            count: this.jobsData.length
-          },
-          {
-            id: "personal-project",
-            title: activitiesMapping["personal-project"],
-            count: this.personalProjectsData.length
-          },
-          {
-            id: "volunteer",
-            title: activitiesMapping["volunteer"],
-            count: this.volunteersData.length
-          }
-        ]
-
-        // TODO useless
-        // this.pushActivitiesAvailable(data.activities_data)
-      }
-    );
 
     this.routeSubscription = this.activatedRoute.fragment.subscribe(
       (fragment) => {
@@ -119,18 +72,25 @@ export class LayoutComponent implements OnInit, OnDestroy  {
       }
     );
 
+    this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
+      (activityId: string) => {
+        this.tabView = activityId
+      }
+    )
+
    }
 
   ngOnInit(): void {
-    this.resumeService.pullGeneralData();
-    this.sendResumeSubMenus()
+    // here we define the default activity mode displayed
+    this.sendActivityId("job")
 
+    this.resumeService.queryUserInfoFromApi();
+    this.sendResumeSubMenus()
   }
 
   ngOnDestroy(): void {
-    this.generalDataSubscription.unsubscribe();
-    this.activitiesFilteredSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
+    this.activityEnablingSubscription.unsubscribe();
   }
 
   sendResumeSubMenus(): void {
@@ -138,11 +98,8 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   }
 
   sendActivityId(activityId: string): void {
-    this.activityIdFromActivityComponents = activityId;
+    // this.activityActionsService.setActivity(activityId)
+    this.tabView = activityId
   }
-
-  // pushActivitiesAvailable(activities: any[]): void {
-  //   this.resumeService.pullActivitiesAvailable(activities);
-  // }
 
 }

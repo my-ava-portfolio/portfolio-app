@@ -1,4 +1,4 @@
-<set-article-header *ngIf="generalData">
+<set-article-header *ngIf="userInfoData && jobDuration">
 
     <div id="home__generalInfo__header" class="
         d-flex flex-column
@@ -6,15 +6,15 @@
         my-2
       ">
 
-      <h2 class="title-name">{{ generalData.first_name }} {{ generalData.last_name }}</h2>
+      <h2 class="title-name">{{ userInfoData.first_name }} {{ userInfoData.last_name }}</h2>
 
       <div class="my-2 d-flex flex-column flex-md-row justify-content-center mx-auto">
-        <div class="badge-title-light">{{ generalData.job }}</div>
-        <div class="badge-title-warning">{{ generalData.experience_duration }}</div>
+        <div class="badge-title-light">{{ userInfoData.job }}</div>
+        <div class="badge-title-warning">{{ jobDuration.years }} années et {{ jobDuration.months }} mois d'expérience professionnelle</div>
       </div>
 
       <set-paragraph-content class="text-white">
-        {{ generalData.carrier_summary}}
+        {{ userInfoData.carrier_summary}}
       </set-paragraph-content>
 
     </div>

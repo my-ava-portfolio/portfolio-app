@@ -1,15 +1,15 @@
 <set-article-header>
 
-  <div id="generalInfo__title" class="text-center">
-    <h3 class="text-white">{{ inputProfilData.first_name }} {{ inputProfilData.last_name }}</h3>
-    <div class="badge-title-light">{{ inputProfilData.job }}</div>
+  <div *ngIf="userInfoData" id="generalInfo__title" class="text-center">
+    <h3 class="text-white">{{ userInfoData.first_name }} {{ userInfoData.last_name }}</h3>
+    <div class="badge-title-light">{{ userInfoData.job }}</div>
   </div>
 
-  <div class="badge-title-warning">{{ inputProfilData.experience_duration }} professionnelle</div>
+  <div *ngIf="jobDuration" class="badge-title-warning">{{ jobDuration.years }} années et {{ jobDuration.months }} mois d'expérience professionnelle</div>
 
 
   <div id="generalInfo__activitiesType" class="d-flex flex-sm-row flex-column border border-white rounded-3 p-2 justify-content-center flex-wrap">
-      <ng-container *ngFor="let type of activityTypesMetadata">
+      <ng-container *ngFor="let activity of activityTypesMetadata">
         <div
           class="activity-button
             btn btn-light
@@ -17,11 +17,13 @@
             my-2 mx-3
             position-relative
           "
-          [class.active]="tabView == type.id"
-          (click)="enableActivity(type.id)">
-          {{type.title}}
-          <span [ngClass]="'badge bg-' + type.id" class="position-absolute top-0 start-100 translate-middle p2 border border-3 border-light rounded-circle">
-            {{ type.count }}
+          [class.active]="tabView == activity.type"
+          [class.disabled]="activity.count === 0"
+
+          (click)="enableActivity(activity.type)">
+          {{activitiesMapping[activity.type]}}
+          <span [ngClass]="'badge bg-' + activity.type" class="position-absolute top-0 start-100 translate-middle p2 border border-3 border-light rounded-circle">
+            {{ activity.count }}
             <span class="visually-hidden"></span>
           </span>
           <div ></div>

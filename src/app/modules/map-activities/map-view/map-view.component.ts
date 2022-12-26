@@ -11,9 +11,8 @@ import Point from 'ol/geom/Point';
 import Select from 'ol/interaction/Select';
 import {pointerMove} from 'ol/events/condition';
 import { getVectorContext } from 'ol/render';
-import {Geometry, LineString} from 'ol/geom';
+import {LineString} from 'ol/geom';
 import { Style } from 'ol/style';
-import { transform } from 'ol/proj';
 
 import * as d3 from 'd3';
 
@@ -49,7 +48,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   activitiesStyle!: Style;
 
   geoFeaturesData!: any;
-  geoTripsData!: any[];
+  geoTripsData: any[] = [];
 
   travelId: string | null = null;
   startDate!: Date;
@@ -79,9 +78,11 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   popupHeight = 190;
 
   mapSubscription!: Subscription;
-  pullActivitiesGeoDataToMapSubscription!: Subscription;
+  getActivitiesGeoDataToMapSubscription!: Subscription;
   pullGeoDataSubscription!: Subscription;
-  pullTripsGeoDataToMapSubscription!: Subscription;
+  tripsGeoDataToMapSubscription!: Subscription;
+  getTripsGeoDataToMapSubscription!: Subscription;
+
   zoomEventSubscription!: Subscription;
   routeSubscription!: Subscription;
   newCoordsSubscription!: Subscription;
@@ -115,14 +116,12 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     );
 
 
-    this.pullActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoData.subscribe(
-      (geoFeaturesData: any) => {
-        this.geoFeaturesData = geoFeaturesData.activities_geojson.features;
-        this.geoTripsData = geoFeaturesData.trips_data
+    this.getActivitiesGeoDataToMapSubscription = this.dataService.activitiesGeoData.subscribe(
+      (geoData: any) => {
+        this.geoFeaturesData = geoData.geojson;
 
-        this.startDate = new Date(geoFeaturesData.start_date)
+        this.startDate = new Date(geoData.date_range.start_date)
         this.endDate = new Date()
-        //  this.currentDate = this.endDate
         this.getCurrentDate(this.endDate)
 
 
@@ -138,23 +137,28 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           // check if the zoom is needed, it means only at the start !
           this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
         }
-
-
       });
+    
+    
+    this.getTripsGeoDataToMapSubscription = this.dataService.tripsGeoData.subscribe(
+      (geoData: any) => {
+        this.geoTripsData = geoData
+      }
+    );
 
-    this.pullTripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
+    this.tripsGeoDataToMapSubscription = this.dataService.tripsGeoDataToMap.subscribe(
       (tripData: any[]) => {
-        // TODO simplifiy...
         if (tripData.length === 1 && this.travelId !== tripData[0].name) {
+          // oh! a trvel must be displayed
           this.mapService.removeLayerByName(travelLayerName)
           this.travelId = tripData[0].name
           this.buildTravelLayer(tripData[0])
         }
         if (tripData.length === 0) {
+          // stop displayed the travel
           this.travelId = null
           this.mapService.removeLayerByName(travelLayerName)
         }
-
       }
     );
 
@@ -181,7 +185,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     // set the layer container
     this.initLayer(activityLayerName, activitiesStyle)
 
-    this.dataService.pullActivitiesGeoData();
+    this.dataService.queryTripsGeoData();
+    this.dataService.queryActivitiesGeoData();
 
     this.zoomInitDone = false;
     this.innerWidth = window.innerWidth;
@@ -191,8 +196,9 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   ngOnDestroy(): void {
     this.mapSubscription.unsubscribe();
-    this.pullActivitiesGeoDataToMapSubscription.unsubscribe();
-    this.pullTripsGeoDataToMapSubscription.unsubscribe();
+    this.getActivitiesGeoDataToMapSubscription.unsubscribe();
+    this.tripsGeoDataToMapSubscription.unsubscribe();
+    this.getTripsGeoDataToMapSubscription.unsubscribe();
     this.zoomEventSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.newCoordsSubscription.unsubscribe();
@@ -209,7 +215,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
     // manage activities
     const newData = this.geoFeaturesData.filter((d: any) => {
-      const selectedDate = new Date(d.properties.start_date);
+      const selectedDate = new Date(d.start_date);
         return selectedDate <= this.currentDate;
     });
     this.addLayerFeatures(newData, activitiesStyle)
@@ -287,7 +293,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           .style('left', 'unset');
         // this._handleActivityCircleOnLegend(deSelectedFeature)
 
-
       }
       if (selected.length === 1) {
         let selectedFeature = selected[0]
@@ -295,16 +300,13 @@ export class MapViewComponent implements OnInit, OnDestroy  {
         this.mapService.setMapEvent("mapCoords")
 
         d3.select('#popup-feature-' + selectedFeature.get("id"))
-          // .style('display', 'block')
           .style('z-index', '1')
-
         // this._handleActivityCircleOnLegend(selectedFeature)
       }
 
     });
 
     this.map.addInteraction(activityLayerSelector);
-
 
   };
 
@@ -314,10 +316,10 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     features.forEach((data: any, index: number) => {
       let featureBuild = new Feature({
         geometry: new Point(data.geometry.coordinates).transform('EPSG:4326', 'EPSG:3857'),
-        id: data.properties.id,
-        type: data.properties.type,
-        name: data.properties.name,
-        radius: data.properties.months,
+        id: data.id,
+        type: data.type,
+        name: data.name,
+        radius: data.years * 12 + data.months,
       })
       featuresBuilt.push(featureBuild)
     })
@@ -336,12 +338,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
 
   buildTravelLayer(data: any): void {
-    let points: any[] = []
-    data.geojson_data.forEach((element: any) => {
-      points.push(transform(element.geometry.coordinates, 'EPSG:4326', 'EPSG:3857'))
-    });;
-    let travelLine = new LineString(points)
-    var travel = new Feature({
+    const travelLine = new LineString(data.geojson_data[0].coordinates)
+    const travel = new Feature({
       type: 'route',
       geometry: travelLine
     })
@@ -369,7 +367,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       source: vectorSource,
     });
 
-    const features = [travel, movingNode, startMarker, endMarker]
+    let features = [travel, startMarker, endMarker]
     features.forEach((feature: any, index: number) => {
       feature.setStyle(travelStyles(feature.get("type")))
       vectorSource.addFeature(feature)
@@ -423,6 +421,5 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     })
     .style('display', 'block');
   }
-
 
 }

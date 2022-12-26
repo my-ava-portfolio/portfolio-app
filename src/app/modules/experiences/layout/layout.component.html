@@ -1,21 +1,21 @@
-<set-article-container *ngIf="isDataAvailable" [@fadeInOut]>
+<set-article-container [@fadeInOut]>
 
   <app-general-info
     id="experiences__generalInfo"
-    [profilData]="profilData"
-    [activityTypesMetadata]="activityTypesMetadata"
+    [tabView]="tabView"
+    (tabViewEmit)="sendActivityId($event)"
   ></app-general-info>
+
 
   <set-section-container>
     <h5 id="experiences__navigate" class="title-tick-warning">Navigation</h5>
 
     <app-navigate
-    class="
-      d-flex flex-md-row flex-column
-      justify-content-between
-      align-items-center
-    "
-      [graphInputData]="generalData"
+      class="
+        d-flex flex-md-row flex-column
+        justify-content-between
+        align-items-center
+      "
     ></app-navigate>
   </set-section-container>
 
@@ -25,22 +25,19 @@
     bg-white
   ">
 
-    <set-section-container id="experiences__content__activities" class="w-100">
+    <set-section-container id="experiences__content__activities" class="col-12 col-lg-7">
       <app-activities
         [fragment]="fragment"
-        [jobsData]="jobsData"
-        [personalProjectsData]="personalProjectsData"
-        [volunteersData]="volunteersData"
+        [tabView]="tabView"
       ></app-activities>
     </set-section-container>
 
-    <set-section-container id="experiences__content__skills" class="w-100">
+    <set-section-container id="experiences__content__skills" class="col-12 col-lg-5">
       <app-skills
-        [skillsData]="skillsData"
-        [isActivitiesDataAvailable]="isActivitiesDataAvailable"
+        [tabView]="tabView"
       ></app-skills>
     </set-section-container>
 
-  </div>
+  </div> 
 
 </set-article-container>

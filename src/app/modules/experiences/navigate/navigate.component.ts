@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, Input, ElementRef, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -9,6 +9,7 @@ import { ActivityActionsService } from '@modules/experiences/services/activity-a
 import { ungroupIconUnicode } from '@core/styles/icons';
 import { skillsMapping, activitiesMapping } from '@core/global-values/main';
 import { currentYear } from '@core/misc';
+import { activities } from '@core/data-types';
 
 @Component({
   selector: 'app-navigate',
@@ -17,23 +18,25 @@ import { currentYear } from '@core/misc';
   encapsulation: ViewEncapsulation.None
 })
 export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() graphInputData!: any;
 
   @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
 
   private defaultNodeIdSelected = null;
 
-  isJobsGrouped!: boolean | string;
-  isProjectsGrouped!: boolean | string;
-  isVolunteersGrouped!: boolean | string;
-  isThemesEnabled!: boolean | string;
-  isTechnicsEnabled!: boolean | string;
-  isToolsEnabled!: boolean | string;
+  startDate!: number;
+  endDate: number = currentYear;
+
+  isJobsGrouped!: boolean;
+  isProjectsGrouped!: boolean;
+  isVolunteersGrouped!: boolean;
+  isThemesEnabled!: boolean;
+  isTechnicsEnabled!: boolean;
+  isToolsEnabled!: boolean;
 
   // icons
   ungroupIconUnicode = ungroupIconUnicode;
 
-  currentDate: number = currentYear;
+  currentDate!: number;
   currentNodeIdSelected: string | null = null;
 
   graphData!: any;
@@ -51,9 +54,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   // circle
   strokeWidth = '0px';
 
-  job_identifier: string = 'job'
-  personal_project_identifier = 'personal-project' // api input data... about the '_' vs scss...
-  volunteer_identifier = 'volunteer'
+  job_identifier: activities = 'job'
+  personal_project_identifier: activities = 'personal-project' // api input data... about the '_' vs scss...
+  volunteer_identifier: activities = 'volunteer'
   skillsMapping = skillsMapping;
   skill_topics = Object.keys(skillsMapping)
 
@@ -70,9 +73,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   // here to control topic graph & text (ex 'missions' shared by neighbors components)... TODO improve it !
 
   legendInput = [
-    { id: this.job_identifier, status: 'unabled-topic', label: activitiesMapping['job'], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.personal_project_identifier, status: 'unabled-topic', label: activitiesMapping['personal-project'], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.volunteer_identifier, status: 'unabled-topic', label: activitiesMapping['volunteer'], cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.job_identifier, status: 'unabled-topic', label: activitiesMapping[this.job_identifier], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.personal_project_identifier, status: 'unabled-topic', label: activitiesMapping[this.personal_project_identifier], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.volunteer_identifier, status: 'unabled-topic', label: activitiesMapping[this.volunteer_identifier], cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
     { id: 'themes', status: 'enabled-topic', label: this.skillsMapping['themes'], cx: 175, cy: 42, text_cx: 190, r: 5, rOver: 10 },
     { id: 'technics', status: 'enabled-topic', label: this.skillsMapping['technics'], cx: 175, cy: 67, text_cx: 190, r: 5, rOver: 10 },
     { id: 'tools', status: 'enabled-topic', label: this.skillsMapping['tools'], cx: 175, cy: 92, text_cx: 190, r: 5, rOver: 10 }
@@ -84,32 +87,35 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     { id: 'grouper_volunteers', label: 'grouper volunteers', cy: 82, cx: 35 }
   ];
 
-  activitiesFilteredSubscription!: Subscription;
+  activitiesValidityRangeSubscription!: Subscription;
+  graphSubscription!: Subscription;
   activitiesIdSubscription!: Subscription;
-  // activitiesJobsAvailableSubscription!: Subscription;
-  activitiesProjectsAvailableSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
     private activityActionsService: ActivityActionsService
   ) {
 
-    this.activitiesFilteredSubscription = this.resumeService.ActivitiesChartData.subscribe(
-      (data) => {
-        this.graphData = data;
-
-        // current_activities
-        this._generateGraph(this.currentNodeIdSelected);
-
+    this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
+      (graphData: any) => {
+        this.buildGraph(graphData, this.currentNodeIdSelected);
       }
     );
+
+    this.activitiesValidityRangeSubscription = this.resumeService.validityRangeActivitisJobDataSubject.subscribe(
+      (data: any) => {
+        this.startDate = data.start_date;
+        this.endDate = data.end_date;
+        this.updateDatefromTemporalBar(this.endDate)
+      }
+    )
 
     this.activitiesIdSubscription = this.resumeService.activityId.subscribe(
       (activityId) => {
         if (this.currentNodeIdSelected === null) {
           // in order to filter graph from components job and personal project
           const elementId: string = `node-${activityId}`;
-          this.rebuildActivitiesChartWithAPreselection(elementId);
+          this.resetChartWithASelection(elementId);
         } else {
           this.resetChart();
         }
@@ -120,70 +126,38 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
             behavior: 'smooth'
           });
         }
-
-
       }
     )
-
-    // this.activitiesJobsAvailableSubscription = this.resumeService.activitiesAvailable.subscribe(
-      // (activitiesAvailable) => {
-        // to display activities list
-        // this.currentPersonalProjectsActivitiesData = activitiesAvailable.personal_projects;
-        // this.currentJobsActivitiesData = activitiesAvailable.jobs;
-        // this.currentVolunteersActivitiesData = activitiesAvailable.volunteers
-      // }
-    // )
 
    }
 
   ngOnInit(): void {
-
-    this.resetChart();
-
     this.initSvgGraph();
+    this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
+    this.resetChart();
   }
 
   ngAfterViewInit(): void {
     this.chartWidth = this.svgGraphChart.nativeElement.offsetWidth;
     if (this.chartWidth === 0) {
-      // if modile device used
+      // if mobile device used
       this.chartWidth = window.innerWidth
     }
   }
 
   ngOnDestroy(): void {
-    this.activitiesFilteredSubscription.unsubscribe();
+    this.graphSubscription.unsubscribe();
+    this.activitiesValidityRangeSubscription.unsubscribe();
     this.activitiesIdSubscription.unsubscribe();
   }
 
-  graphHightligthing(activityIdentifier: string, activityType: string): void {
-
-    const nodeToPreselected = d3.selectAll(`#skillsGraphElements #node-${activityIdentifier}`);
-
-    if ( nodeToPreselected.size() === 1 ) {
-      this._graphSelectedFiltering(`#skillsGraphElements #node-${activityIdentifier}`, false);
-    } else if ( nodeToPreselected.size() === 0 ) {
-      // means that activities are grouped
-      if ( activityType === this.job_identifier ) {
-        // job node grouped
-        this._graphSelectedFiltering('#skillsGraphElements #node-' + this.job_identifier, false);
-      } else if ( activityType === this.personal_project_identifier ) {
-        // personal project node grouped
-        this._graphSelectedFiltering('#skillsGraphElements #node-' + this.personal_project_identifier, false);
-      } else if ( activityType === this.volunteer_identifier ) {
-        // volunteer node grouped
-        this._graphSelectedFiltering('#skillsGraphElements #node-' + this.volunteer_identifier, false);
-      }
-    }
-  }
-
-  graphUnHightligthing(): void {
-    this._defaultDisplayingByDate();
+  updateDatefromTemporalBar(date: number): void {
+    this.currentDate = date;
   }
 
   updateDate(event: any): void {
-    this.currentDate = event.target.value;
-    this.buildGraphElements();
+    this.updateDatefromTemporalBar(event.target.value)
+    this.getGraphFeatures();
   }
 
   private initSvgGraph(): void {
@@ -191,14 +165,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .append('svg').attr('id', this.activityGraphSvgId)
       .attr('width', '100%')
       .attr('height', this.chartHeight)
-      .append('g').lower()
-      .attr('id', 'skillsGraphElements');
   }
 
-  // here to control default topic graph.
-  resetChart(): void {
-    this.currentNodeIdSelected = this.defaultNodeIdSelected;
-    this.currentDate = this.graphInputData.end_date;
+  graphReset(): void {
+    this.currentDate = this.endDate;
     this.isThemesEnabled = true;
     this.isTechnicsEnabled = true;
     this.isToolsEnabled = false;
@@ -206,29 +176,27 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isProjectsGrouped = false;
     this.isVolunteersGrouped = true;
     this.resetLegend();
-    this.buildGraphElements();
+    this.getGraphFeatures();
   }
 
-  rebuildActivitiesChartWithAPreselection(nodeToSelect: string): void {
+  // here to control default topic graph.
+  resetChart(): void {
+    this.currentNodeIdSelected = this.defaultNodeIdSelected;
+    this.graphReset()
+  }
+
+  resetChartWithASelection(nodeToSelect: string): void {
     this.currentNodeIdSelected = nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
-    this.currentDate = this.graphInputData.end_date;
-    this.isThemesEnabled = true;
-    this.isTechnicsEnabled = true;
-    this.isToolsEnabled = false;
-    this.isJobsGrouped = false;
-    this.isProjectsGrouped = false;
-    this.isVolunteersGrouped = false
-    this.resetLegend();
-    this.buildGraphElements();
+    this.graphReset()
     d3.select(`#${this.activityGraphSvgId} .nodes #node-${nodeToSelect}`).dispatch('click');
   }
 
   resetLegend(): void {
     d3.select(`#${this.activityLegendSvgId}`).remove();
-    this._buildLegendGraphActivities();
+    this.buildLegend();
   }
 
-  private _buildLegendGraphActivities(): void {
+  private buildLegend(): void {
     const svg = d3.select(this.legendIdDiv)
       .append('svg').attr('id', this.activityLegendSvgId)
       .attr('width', this.legendWidth)
@@ -256,7 +224,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .style('r', (d: any) => d.r)
       .style('stroke-width', this.strokeWidth)
       .on('click', (e: any, d: any) => {
-
         if (d.id === 'themes') {
           this.isThemesEnabled = !this.isThemesEnabled;
         } else if (d.id === 'technics') {
@@ -267,7 +234,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
         d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
 
-        this.buildGraphElements();
+        this.getGraphFeatures();
       });
 
     svgContainer.selectAll()
@@ -302,7 +269,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
           this.isVolunteersGrouped = !this.isVolunteersGrouped;
         }
         d3.select(e.currentTarget).classed('disabled-group', !d3.select(e.currentTarget).classed('disabled-group'));
-        this.buildGraphElements();
+        this.getGraphFeatures();
       });
 
     svgContainer.selectAll()
@@ -325,7 +292,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         .attr('r', (d) => d.r);
     
     // create line to display that object is disabled
-    let skillsButtons = LegendElements.filter((d) => ['themes', 'technics', 'tools'].includes(d.id))
+    let skillsButtons = LegendElements.filter((d: any) => ['themes', 'technics', 'tools'].includes(d.id))
       .append("line")
       .attr('x1', (d) => d.cx - d.r - 2)
       .attr('x2', (d) => d.cx + d.r + 2)
@@ -344,92 +311,61 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  private buildGraphElements(): void {
+  private getGraphFeatures(): void {
 
-    if (!this.isJobsGrouped) {
-      this.isJobsGrouped = '';
+    // then we want to regenerate activities and skill components
+    const skillsCategoriesStatus = {
+      "themes": this.isThemesEnabled,
+      "technics": this.isTechnicsEnabled,
+      "tools": this.isToolsEnabled
     }
+    let skill_categories = Object.keys(skillsCategoriesStatus).filter( (key: string) => {
+      return skillsCategoriesStatus[key as keyof typeof skillsCategoriesStatus]
+    });
 
-    if (!this.isProjectsGrouped) {
-      this.isProjectsGrouped = '';
+    const activityGroupStatus = {
+      "job": this.isJobsGrouped,
+      "personal-project": this.isProjectsGrouped,
+      "volunteer": this.isVolunteersGrouped
     }
+    let activity_group = Object.keys(activityGroupStatus).filter( (key: string) => {
+      return activityGroupStatus[key as keyof typeof activityGroupStatus]
+    });
 
-    if (!this.isVolunteersGrouped) {
-      this.isVolunteersGrouped = '';
-    }
-
-    if (!this.isTechnicsEnabled) {
-      this.isTechnicsEnabled = '';
-    }
-
-    if (!this.isThemesEnabled) {
-      this.isThemesEnabled = '';
-    }
-
-    if (!this.isToolsEnabled) {
-      this.isToolsEnabled = '';
-    }
-
-    this.resumeService.pullActivitiesGraphData(
-      this.isTechnicsEnabled,
-      this.isThemesEnabled,
-      this.isToolsEnabled,
-      this.currentDate,
-      this.isProjectsGrouped,
-      this.isJobsGrouped,
-      this.isVolunteersGrouped,
+    this.resumeService.queryGraphFromApi({
+        date: this.currentDate,
+        skill_categories: skill_categories,
+        activity_group: activity_group
+      }
     );
   }
 
-  private _initLabel(): void {
-    const nodes: any[] = [];
-    const links: any[] = [];
-
-    this.label = {
-        nodes,
-        links
-    };
-  }
-
-  private _generateGraph(nodeIdToSelect: string | null): void {
-
-    this._initLabel();
-
-    this.graphData.nodes.forEach( (d: any, i: number) => {
-      this.label.nodes.push({node: d});
-      this.label.nodes.push({node: d});
-      this.label.links.push({
-        source: i * 2,
-        target: i * 2 + 1
-      });
-    });
-
-    const svgElements: any = d3.select('#skillsGraphElements');
-    d3.select(`#${this.activityGraphSvgId} .bg-date`).remove();
+  private buildGraph(graphData: any, nodeIdToSelect: string | null): void {
+    
+    const svgElements: any = d3.select(`#${this.activityGraphSvgId}`);
+    svgElements.select('.bg-date').remove();
     svgElements.append('g').attr('class', 'bg-date')
       .append('text')
       .attr('x', '50%')
       .attr('y', '50%')
       .text(this.currentDate);
 
-    this._buildLabelLayout();
     // https://observablehq.com/@ben-tanen/a-tutorial-to-using-d3-force-from-someone-who-just-learned-ho
-    const graphLayout = d3.forceSimulation(this.graphData.nodes)
+    const graphLayout = d3.forceSimulation(graphData.nodes)
       .force('charge', d3.forceManyBody().strength(-900))
       .force('x', d3.forceX(this.chartWidth / 2))
       .force('y', d3.forceY(this.chartHeight / 2))
       .force('center', d3.forceCenter(this.chartWidth / 2, this.chartHeight / 2))
-      .force('link', d3.forceLink(this.graphData.links).id((d: any) => d.name).distance(40).strength(1))
+      .force('link', d3.forceLink(graphData.links).id((d: any) => d.name).distance(40).strength(1))
       .force('collision', d3.forceCollide(15))
-      .nodes(this.graphData.nodes)
+      .nodes(graphData.nodes)
       .on('tick', this._ticked.bind(this));
 
     this.adjlist = {};
-    this.graphData.links.forEach( (d: any): any => {
+    graphData.links.forEach( (d: any): any => {
       this.adjlist[d.source.index + '-' + d.target.index] = true;
       this.adjlist[d.target.index + '-' + d.source.index] = true;
     });
-
 
     d3.select(`#${this.activityGraphSvgId} .links`).remove();
     d3.select(`#${this.activityGraphSvgId} .nodes`).remove();
@@ -437,23 +373,19 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const link = svgElements.append('g').attr('class', 'links')
       .selectAll('line')
-      .data(this.graphData.links)
+      .data(graphData.links)
       .enter()
       .append('line')
-      .attr('stroke', '#aaa')
+      .attr('stroke', '#aaaa')
       .attr('stroke-width', '1px');
 
     const node = svgElements.append('g').attr('class', 'nodes')
       .selectAll('circle')
-      .data(this.graphData.nodes)
+      .data(graphData.nodes)
       .enter()
       .append('circle')
-      .attr('class', (d: any) => {
-          return `svg-color-${d.properties.type} unselected`; // to filter from job/project card
-      })
-      .attr('id', (d: any) => {
-          return 'node-' + d.properties.id;
-      })
+      .attr('class', (d: any) => `svg-color-${d.properties.type} unselected`) // to filter from job/project card
+      .attr('id', (d: any) => 'node-' + d.properties.id)
       .attr('r', (d: any) => {
           const element = this.legendInput.filter(e => e.id === d.properties.type);
           return element[0].r;
@@ -464,7 +396,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         .transition()
         .duration(1000)
         .ease(d3.easeElastic)
-          .attr("r", element[0].rOver)
+        .attr("r", element[0].rOver)
       })
       .on('mouseout', (e: any, d: any) => {
         const element = this.legendInput.filter(e => e.id === d.properties.type);
@@ -472,29 +404,28 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         .transition()
         .duration(1000)
         .ease(d3.easeElastic)
-          .attr("r", element[0].r)
+        .attr("r", element[0].r)
        })
       ;
 
     const labelNode = svgElements.append('g').attr('class', 'nodeLabels')
       .selectAll('text')
-      .data(this.label.nodes)
+      .data(graphData.nodes)
       .enter()
       .append('text')
       .text((d: any, i: number) => {
-        return i % 2 !== 0 ? '' : d.node.properties.name;
+        if (d.object == "activityGroup") {
+          return activitiesMapping[d.properties.name as keyof typeof activitiesMapping]
+        }
+        return d.properties.name;
       })
-      .attr('id', (d: any) => {
-        return 'label-' + d.node.properties.id;
-      })
-      .attr('class', (d: any) => {
-          return d.node.properties.type;
-      });
+      .attr('id', (d: any) => 'label-' + d.properties.id)
+      .attr('class', (d: any) => d.properties.type);
 
 
     node.on('click', (e: any, d: any, i: any, n: any) => {
-      const nodeIsPreselected = d3.select('#skillsGraphElements .nodes .selected');
-
+      const nodeIsPreselected = d3.select(`#${this.activityGraphSvgId} .nodes .selected`);
+      // here we update the activities components and skills
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(e.currentTarget).attr('id');
@@ -504,13 +435,12 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.activityActionsService.setActivity(this.job_identifier)
         }
-
-        this._graphSelectedFiltering(e.currentTarget);
+        this._graphSelectedFiltering(`#${this.activityGraphSvgId} #${this.currentNodeIdSelected}`);
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
         this.currentNodeIdSelected = this.defaultNodeIdSelected;
-        this.activityActionsService.setActivity(this.job_identifier) // to switch on the activities buttons
+        this.activityActionsService.setActivity(this.job_identifier) // to switch on the activities buttons (default)
         this._defaultDisplayingByDate();
 
       } else {
@@ -543,121 +473,133 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // to preselect a node
     if ( nodeIdToSelect !== null ) {
-      this._graphSelectedFiltering('#skillsGraphElements #' + nodeIdToSelect);
+      this._graphSelectedFiltering(`#${this.activityGraphSvgId} #${nodeIdToSelect}`);
     } else {
       this._defaultDisplayingByDate();
     }
 
   }
 
-  private _neigh(a: any, b: any): boolean {
+  private _selectNeighbors(a: any, b: any): boolean {
     return a === b || this.adjlist[a + '-' + b];
   }
 
-  private _unfocusOnGraph(): void {
-    d3.selectAll(`#${this.activityGraphSvgId} .links line`).style('opacity', 1);
+  private _graphSetDisplayStatus(mode: 'unfocus' | 'hidden'): void {
+    let opacity = 1;
+    let display = 'block'
+    if (mode === 'hidden') {
+      opacity = 0.1
+      display = 'none'
+    }
+
+    d3.selectAll(`#${this.activityGraphSvgId} .links line`)
+      .style('opacity', opacity);
 
     d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`)
-      .style('opacity', 1)
+      .style('opacity', opacity)
       .style('pointer-events', 'auto')
       .style('cursor', 'pointer');
 
+    const a = d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`)
+      .attr('display', display);
+  }
+
+  private _graphFocusOnElement(element: any): void {
+
+    const index = element.datum().index;
+    
+    d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`)
+      .style('opacity', (d: any) => this._selectNeighbors(index, d.index) ? 1 : 0.1)
+      .style('pointer-events', (d: any) => this._selectNeighbors(index, d.index) ? 'auto' : 'none')
+      .style('cursor', (d: any) => this._selectNeighbors(index, d.index) ? 'pointer' : 'unset');
+
     d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`)
-      .attr('display', 'block');
+      .attr('display', (d: any) => this._selectNeighbors(index, d.index) ? 'block' : 'none');
+    
+    d3.selectAll(`#${this.activityGraphSvgId} .links line`)
+      .style('opacity', (d: any) => d.source.index === index || d.target.index === index ? 1 : 0.1);
   }
-
-  private _focusOnGraph(element: any): any {
-
-    let value: unknown | any;
-    value = element.datum();
-    const index = value.index;
-    const otherNodes = d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`);
-
-    const nodeDisplayed = otherNodes.filter( (e: any) => {
-        return this._neigh(index, e.index);
-    });
-
-    otherNodes.style('opacity', (o: any) => {
-        return this._neigh(index, o.index) ? 1 : 0.1;
-    });
-    otherNodes.style('pointer-events', (o: any) => {
-        return this._neigh(index, o.index) ? 'auto' : 'none';
-    });
-    otherNodes.style('cursor', (o: any) => {
-        return this._neigh(index, o.index) ? 'pointer' : 'unset';
-    });
-
-    const labelNodes = d3.selectAll(`#${this.activityGraphSvgId} .nodeLabels text`);
-    labelNodes.attr('display', (o: any) => {
-        return this._neigh(index, o.node.index) ? 'block' : 'none';
-    });
-    const links = d3.selectAll(`#${this.activityGraphSvgId} .links line`);
-    links.style('opacity', (o: any) => {
-        return o.source.index === index || o.target.index === index ? 1 : 0.1;
-    });
-
-    return nodeDisplayed;
-  }
-
 
   private _defaultDisplayingByDate(): void {
 
-    const elementSelected = d3.select('#skillsGraphElements .nodes .selected');
+    const elementSelected = d3.select(`#${this.activityGraphSvgId} .nodes .selected`);
     if (elementSelected.size() === 1) {
       elementSelected.classed('selected', !elementSelected.classed('selected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' unselected');
-      this._unfocusOnGraph();
+      this._graphSetDisplayStatus('unfocus');
     }
 
     // then we want to regenerate activities and skill components
-    this.resumeService.pullActivitiesResumeFromGraph(
-      this.currentDate,
-      this.isThemesEnabled,
-      this.isTechnicsEnabled,
-      this.isToolsEnabled,
-      null
-    );
+    const skillsTypes = this._buildSkillsCategoriesParameters()
+    let commonParams = { date: this.currentDate }
+    let skillsParams = {...commonParams, ...{ category: skillsTypes} }
+
+    const activitiesParameters = this._buildParameters(commonParams)
+    const skillsParameters = this._buildParameters(skillsParams)
+    this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
+    this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
   }
 
 
-  private _graphSelectedFiltering(element: string, withContent = true): void {
+  private _graphSelectedFiltering(element: string): void {
+
+    const skillsTypes = this._buildSkillsCategoriesParameters()
+    let commonParams = { date: this.currentDate }
+    let skillsParams = {...commonParams, ...{ category: skillsTypes} }
+
+    let activitiesParameters = {}
+    let skillsParameters = {}
 
     const elementSelected: any = d3.select(element);
+
     if (elementSelected.size() > 0) {
       elementSelected.classed('unselected', !elementSelected.classed('unselected'));
       elementSelected.attr('class', elementSelected.attr('class') + ' selected');
+      this._graphFocusOnElement(elementSelected);
+     
+      const elementData: any = d3.select(element).data()[0];
+      // check origin node type
+  
+      const elementName = elementData.name
+      const elementObject = elementData.properties.object
+                
+      if (elementObject === "activity") {
+        // support activity display
+        commonParams = { ...commonParams, ...{ activity_name: elementName } }
+          
+        activitiesParameters = this._buildParameters(commonParams)
+        skillsParameters = this._buildParameters({ ...skillsParams, ... { activity_name: elementName } })
 
-      this._focusOnGraph(elementSelected);
-      if ( withContent ) {
-        const elementData: any = d3.select(element).data()[0];
-        // check origin node type
+      } else if (elementObject === "activityGroup") {
+        // support activity group display
+        let jobParams = { hide: elementName !== "job" }
+        let projectParams = { hide: elementName !== "personal-project" }
+        let volunteerParams = { hide: elementName !== "volunteer" }
 
-        this.resumeService.pullActivitiesResumeFromGraph(
-          this.currentDate,
-          this.isThemesEnabled,
-          this.isTechnicsEnabled,
-          this.isToolsEnabled,
-          elementData.properties.id
-        );
+        activitiesParameters = this._buildParameters(commonParams, jobParams, projectParams, volunteerParams)
+        skillsParameters = this._buildParameters(skillsParams)
+
+      } else if (elementObject === "skill") {
+        // support activity skill display
+        commonParams = { ...commonParams, ...{ skill: elementName } }
+
+        activitiesParameters = this._buildParameters(commonParams)
+        skillsParameters = this._buildParameters({ ...skillsParams, ... { skill: elementName } })
       }
 
-
     } else {
+      // display nothing because the node selected is outside scope
+      this._graphSetDisplayStatus('hidden')
+      let commonParams = {}
+      let skillsParams = { ...commonParams, ...{ category: skillsTypes } }
+      
+      activitiesParameters = this._buildParameters(commonParams, { hide: true }, { hide: true }, { hide: true })
+      skillsParameters = this._buildParameters(skillsParams, { hide: true }, { hide: true }, { hide: true })
 
-      this.resumeService.pullActivitiesResumeFromGraph(
-        this.currentDate,
-        this.isThemesEnabled,
-        this.isTechnicsEnabled,
-        this.isToolsEnabled,
-        null
-      );
     }
-  }
+    this.resumeService.queryProfesionalActivitiesFromApi(activitiesParameters)
+    this.resumeService.queryProfesionalSkillsFromApi(skillsParameters)
 
-  private _buildLabelLayout(): void {
-    this.labelLayout = d3.forceSimulation(this.label.nodes)
-      .force('charge', d3.forceManyBody().strength(-50))
-      .force('link', d3.forceLink(this.label.links).distance(0).strength(2));
   }
 
   private _fixna(x: number): number {
@@ -672,34 +614,15 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     nodes.call(this._updateNode.bind(this));
     links.call(this._updateLink.bind(this));
-
-    this.labelLayout.alphaTarget(0.1).restart();
-    labelNodes.each( (d: any, i: number) => {
-      if (i % 2 === 0) {
-        d.x = d.node.x;
-        d.y = d.node.y;
-      } else {
-        // TODO maybe not working
-        d3.select('#label-' + d.id).attr('transform', `translate(${d.x},${d.y})`);
-      }
-    });
-    // REFACTOR
-    labelNodes.call(this._updateLabelNode.bind(this));
+    labelNodes.call(this._updateNodeLabel.bind(this));
   }
 
   private _updateLink(linkElement: any): void {
-    linkElement.attr('x1', (d: any) => {
-      return this._fixna(d.source.x);
-    })
-    .attr('y1', (d: any) => {
-      return this._fixna(d.source.y);
-    })
-    .attr('x2', (d: any) => {
-      return this._fixna(d.target.x);
-    })
-    .attr('y2', (d: any) => {
-      return this._fixna(d.target.y);
-    });
+    linkElement
+      .attr('x1', (d: any) => this._fixna(d.source.x))
+      .attr('y1', (d: any) => this._fixna(d.source.y))
+      .attr('x2', (d: any) => this._fixna(d.target.x))
+      .attr('y2', (d: any) => this._fixna(d.target.y));
   }
 
   private _updateNode(nodeElement: any): void {
@@ -708,33 +631,46 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
     // });
     const radius = 10;
-
     nodeElement
-      .attr('cx', (d: any) => {
-        return (d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)));
-      })
-      .attr('cy', (d: any) => {
-        return (d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)));
-      });
+      .attr('cx', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)))
+      .attr('cy', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)))
   }
 
-  private _updateLabelNode(labelNodeElement: any): void {
-    // to not fit drag on the bound
-    // node.attr("transform", function(d) {
-    //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
-    // });
+  private _updateNodeLabel(labelElement: any): void {
     const radius = 10;
-
-    labelNodeElement
-      .attr('x', (d: any) => {
-        return (d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)));
-      })
-      .attr('y', (d: any) => {
-        return (d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)));
-      });
+    labelElement
+      .attr('x', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)))
+      .attr('y', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)));
   }
+
+
+  // Build parameters for api call // 
+  private _buildSkillsCategoriesParameters(): string[] {
+    let skillsTypes = []
+    if (this.isThemesEnabled) {
+      skillsTypes.push('themes')
+    }
+    if (this.isTechnicsEnabled) {
+      skillsTypes.push('technics')
+    }
+    if (this.isToolsEnabled) {
+      skillsTypes.push('tools')
+    }
+    return skillsTypes
+  }
+
+  private _buildParameters(commonParameters: any, jobParameters: any = {}, projectParameters: any = {}, volunteerParameters: any = {}): any {
+    return {
+      "job": {...commonParameters, ...jobParameters },
+      "personal-project": {...commonParameters, ...projectParameters},
+      "volunteer": {...commonParameters, ...volunteerParameters}
+    }
+  }
+    // Build parameters for api call // 
+
 
 }
+
 
 
 

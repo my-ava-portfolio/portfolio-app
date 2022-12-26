@@ -56,43 +56,42 @@ export class TimeLegendComponent extends TimeLineComponent implements OnInit, On
       circleEvents.selectAll('circle').data(this.timelineDataViz).enter()
       .append('circle')
         .attr('class', (d: any) => {
-          const featureDate = new Date(d.properties.start_date);
+          const featureDate = new Date(d.start_date);
           if (featureDate <= this.currentDate) {
-            return 'pointer svg-color-' + d.properties.type;
+            return 'pointer svg-color-' + d.type;
           } else {
-            return 'trace'
+            return 'pointer trace'
           }
         })
       .attr('r', "4")
       .attr('cx', (d: any) => {
-        const startDate = new Date(d.properties.start_date);
+        const startDate = new Date(d.start_date);
         return this.dateRange(startDate);
       })
       .on('mouseover', (e: any, d: any) => {
-
-        this.interactionWithEventNode(e.currentTarget, d);
+        // TODO refactor
         // to link with popup
-        d3.select('#popup-feature-' + d.properties.id)
-          .style('display', 'block')
-          .style('right', '1em')
-          .style('top', '5em');
-
-        const feature = getFeatureFromLayer(this.map, activityLayerName, d.properties.id, 'id')
-        feature.setStyle(activitySelectedStyle(feature.get('radius')))
-
+        d3.select('#popup-feature-' + d.id)
+        .style('display', 'block')
+        .style('right', '1em')
+        .style('top', '5em');
+        const feature = getFeatureFromLayer(this.map, activityLayerName, d.id, 'id')
+        if (feature !== undefined) {
+          this.interactionWithEventNode(e.currentTarget, d);
+          feature.setStyle(activitySelectedStyle(feature.get('radius')))
+        }
       })
       .on('mouseout', (e: any, d: any) => {
-
-        this.interactionWithEventNode(e.currentTarget, d);
-        // link with popup
-        d3.select('#popup-feature-' + d.properties.id)
-          .style('display', 'none')
-          .style('right', 'unset')
-          .style('top', 'unset');
-
-        const feature = getFeatureFromLayer(this.map, activityLayerName, d.properties.id, 'id')
-        feature.setStyle(activitiesStyle(feature))
-
+        d3.select('#popup-feature-' + d.id)
+        .style('display', 'none')
+        .style('right', 'unset')
+        .style('top', 'unset');
+        const feature = getFeatureFromLayer(this.map, activityLayerName, d.id, 'id')
+        if (feature !== undefined) {
+          this.interactionWithEventNode(e.currentTarget, d);
+          // link with popup
+          feature.setStyle(activitiesStyle(feature))
+        }
       });
       ;
 
@@ -101,9 +100,9 @@ export class TimeLegendComponent extends TimeLineComponent implements OnInit, On
     if (changes.currentDate) {
       d3.selectAll('.circle-events circle')
       .attr('class', (d: any) => {
-        const featureDate = new Date(d.properties.start_date);
+        const featureDate = new Date(d.start_date);
         if (featureDate <= this.currentDate) {
-          return 'pointer svg-color-' + d.properties.type;
+          return 'pointer svg-color-' + d.type;
         } else {
           return 'trace'
         }
@@ -117,7 +116,7 @@ export class TimeLegendComponent extends TimeLineComponent implements OnInit, On
     const currentElement: any = d3.select(svgObject);
     currentElement.classed('selected', !currentElement.classed('selected')); // toggle class
 
-    const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + data.properties.type);
+    const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + data.type);
     legendElement.classed('selected', !legendElement.classed('selected'));
     //TODO select circle
   }

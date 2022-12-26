@@ -3,31 +3,32 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@
 
 import { ResumeService } from '@services/resume.service';
 
-import { ActivityActionsService } from '../services/activity-actions.service';
-import { assetsLogoPath, assetsImagesPath, personalBlogUrl, activitiesMapping } from '@core/global-values/main';
+import { assetsLogoPath, assetsImagesPath, activitiesMapping } from '@core/global-values/main';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faMapMarkerAlt, faImages, faFilter, faTrophy, faAngleDoubleDown, faPaintBrush, faFileAlt, faGlobe } from '@fortawesome/free-solid-svg-icons';
-import { mapActivitiesPages, galleryPages, projectPages } from '@core/global-values/topics';
+import { mapActivitiesPages, galleryPages } from '@core/global-values/topics';
+import { fadeInOutAnimation } from '@core/animation_routes';
 
 
 @Component({
   selector: 'app-activities',
   templateUrl: './activities.component.html',
   styleUrls: ['./activities.component.scss'],
+  animations: [fadeInOutAnimation]
 })
 export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() fragment: any;
-  @Input() jobsData: any;
-  @Input() personalProjectsData: any;
-  @Input() volunteersData: any;
+  @Input() tabView!: string;
+
+  jobsData!: any;
+  personalProjectsData!: any;
+  volunteersData!: any;
 
   apiImgUrl = assetsLogoPath;
   assetsImagesPath = assetsImagesPath;
   mapPages: any = mapActivitiesPages;
   galleryPagesRoute: string = galleryPages.route;
-  blogPagesRoute: string = projectPages[0].route;
-  blogUrl = personalBlogUrl;
 
   // icons
   locationIcon = faMapMarkerAlt;
@@ -46,31 +47,38 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   contextTitle = "Contexte";
   missionTitle = "Missions";
   describeTitle = "Description";
-  envTitle = "Stack technique";
   trainingTitle = "Formations";
   detailsTitle = "Détails";
   publicationsTitle = "Publications";
 
   activitiesMapping = activitiesMapping;
   availabled_topics = Object.keys(activitiesMapping)
-  tabView = this.availabled_topics[0];
 
   pageLoadingTimeOut: number = 750;
 
   routeQueryParamsSubscription!: Subscription;
+  professionalActivitiesSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;
+  activitiesIdSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
-    private activityActionsService: ActivityActionsService
-
   ) {
 
-    this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
-      (activityId) => {
-        this.tabView = activityId
-        // reset to avoid conflict between activity category
-        this.hiddenActivitiesDetails = [];
+    this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
+      (data: any) => {
+        this.jobsData = data["job"]
+        this.personalProjectsData = data["personal-project"]
+        this.volunteersData = data["volunteer"]
+      }
+    )
+
+    this.activitiesIdSubscription = this.resumeService.activityId.subscribe(
+      (_) => {
+        // clear activities data on change
+        // this.jobsData = [];
+        // this.personalProjectsData = [];
+        // this.volunteersData = [];
       }
     )
 
@@ -84,10 +92,9 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.activityEnablingSubscription.unsubscribe()
+    this.professionalActivitiesSubscription.unsubscribe();
+    this.activitiesIdSubscription.unsubscribe();
   }
-
-
 
   addToHiddenDetailsConter(activityIndex: number) {
     if (this.hiddenActivitiesDetails.includes(activityIndex)) {
@@ -107,65 +114,19 @@ export class ActivitiesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   countDictObject(inputDict: any): number {
-    return Object.keys(inputDict).length
+    if (inputDict) {
+      return Object.keys(inputDict).length;
+    }
+    return 0;
   }
 
   forceArrayType(input: any): string[] {
     return input
   }
 
-  contractValueAlias(contractValue: string): string {
-    if (contractValue == "volunteer") {
-      return "Bénévolat";
-    }
-    return contractValue;
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     // run only if a change occured on the page (like the time slider...)
-    this.switchOnTheFirstActivityTypeContainingActivities()
-  }
-
-  private switchOnTheFirstActivityTypeContainingActivities(): void {
-      // to switch on an activity containing at least 1 activity
-      let activitiesCount: any = this.countActivities()
-      var currentActivities: string[] = [];
-      Object.keys(activitiesCount).filter((item: string) => {
-        if (activitiesCount[item]) {
-          activitiesCount[item] !== 0
-          currentActivities.push(item);
-        }
-      })
-    if (currentActivities.length > 0 && !currentActivities.includes(this.tabView)) {
-        // switch to the expected activityId
-        this.activityActionsService.setActivity(currentActivities[0])
-      }
-  }
-
-  private countActivities(): any {
-    return {
-      'job': this.jobsData?.length,
-      'personal-project': this.personalProjectsData?.length,
-      'volunteer': this.volunteersData?.length
-    }
-  }
-
-  private findActitivityTypeFromId(activityId: string): string {
-    let activityType: string = '';
-
-    [this.jobsData, this.personalProjectsData, this.volunteersData].forEach((activities: any) => {
-      if (activities !== undefined) {
-        for (let item of activities) {
-          if (item.identifier === activityId) {
-            activityType = item.type;
-            break
-          }
-        }
-      }
-    })
-
-    return activityType
-
+    // this.switchOnTheFirstActivityTypeContainingActivities()
   }
 
   trackByMethod(index:number, el:any): number {

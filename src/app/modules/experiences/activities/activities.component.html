@@ -1,14 +1,14 @@
-<div id="jobWidget" *ngIf="tabView == 'job'">
+<div [@fadeInOut] id="jobWidget" *ngIf="tabView == 'job'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'job', activitiesData: jobsData}"></ng-container>
 </div>
 
-<div id="personal_projectWidget" *ngIf="tabView == 'personal-project'">
+<div [@fadeInOut] id="personal_projectWidget" *ngIf="tabView == 'personal-project'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'personal-project', activitiesData: personalProjectsData}"></ng-container>
 </div>
 
-<div id="volunteerWidget" *ngIf="tabView == 'volunteer'">
+<div [@fadeInOut] id="volunteerWidget" *ngIf="tabView == 'volunteer'">
   <h5 [ngClass]="'title-tick-' + tabView">Activités : {{activitiesMapping[tabView]}}</h5>
   <ng-container *ngTemplateOutlet="activityFeature; context:{activitiesType: 'volunteer', activitiesData: volunteersData}"></ng-container>
 </div>
@@ -58,9 +58,8 @@
         ">
 
         <div class="activity-img my-2 w-25 text-center">
-          <img class="img-fluid" *ngIf="activityType === 'personal-project'" [src]="assetsImagesPath + activity.img_company"/>
-          <img class="img-fluid" *ngIf="activityType === 'job'" [src]="apiImgUrl + activity.img_company"/>
-          <img class="img-fluid" *ngIf="activityType === 'volunteer'" [src]="apiImgUrl + activity.img_company"/>
+          <img class="img-fluid" *ngIf="activityType === 'personal-project'" [src]="assetsImagesPath + activity.img_activity"/>
+          <img class="img-fluid" *ngIf="['job', 'volunteer'].includes(activityType)" [src]="apiImgUrl + activity.img_activity"/>
         </div>
 
         <div class="abstract
@@ -75,7 +74,7 @@
 
             <set-icon-text *ngIf="activityType !== 'personal-project'"
               [route]="mapPages.sub_menus[0].content_url"
-              [fragment]="activity.identifier"
+              [fragment]="activity.id"
               [title]="activity.location"
               classes="bounce"
               [iconInput]="locationIcon"
@@ -86,7 +85,7 @@
               my-2
             ">
             
-            <div class="me-1" *ngIf="activityType !== 'personal-project'">{{ this.contractValueAlias(activity.contract) }} - </div>
+            <div class="me-1" *ngIf="activityType === 'job'">{{ activity.contract }} - </div>
             <ng-container *ngIf="activity.status !== 'InProgress'">
                 <div class="me-1">Du {{ activity.start_date | date: 'MM-yyyy' }} au {{ activity.end_date | date: 'MM-yyyy' }}</div>
             </ng-container>
@@ -94,7 +93,20 @@
             <ng-container *ngIf="activity.status === 'InProgress'">
                 <div class="me-1">Du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
             </ng-container>
-            <div> ({{activity.duration}})</div>
+
+            <div *ngIf="activity.years == 0 && activity.months > 0">
+              <div>({{activity.months}} mois)</div>
+            </div>
+            <div *ngIf="activity.years == 1 && activity.months == 0">
+              <div>({{activity.years}} an)</div>
+            </div>
+            <div *ngIf="activity.years == 1 && activity.months > 0">
+              <div>({{activity.years}} an et {{activity.months}} mois)</div>
+            </div>
+            <div *ngIf="activity.years > 1 && activity.months > 0">
+              <div>({{activity.years}} ans et {{activity.months}} mois)</div>
+            </div>
+
           </div>
 
           <div class="badge-keywords col-11 justify-content-around flex-wrap " *ngIf="activity.keywords">
@@ -112,10 +124,11 @@
       <div class="buttons-tools
           d-flex flex-column top-0 end-0
         ">
+        <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.id)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
 
-        <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.identifier" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
+        <a *ngIf="activity.medias_found" class="btn btn-sm btn-warning m-1" [routerLink]="[galleryPagesRoute]" [fragment]="activity.id" title="Accès à la galerie"><fa-icon [icon]="galleryIcon"></fa-icon></a>
 
-        <ng-container *ngIf="activity.recommendations && countDictObject(activity.recommendations) > 0">
+        <ng-container *ngIf="countDictObject(activity.recommendations) > 0">
           <span class="btn btn-sm btn-success m-1" title="Recommandation(s)" type="button" id="dropdownRecomButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <fa-icon [icon]="trophyIcon"></fa-icon>
           </span>
@@ -130,7 +143,6 @@
           <a *ngIf="activity.url_website" class="btn btn-sm btn-primary m-1" [href]="activity.url_website"><fa-icon [icon]="websiteIcon"></fa-icon></a>
         </ng-container>
 
-        <a class="btn btn-sm btn-dark m-1" (click)="pushActivityId(activity.identifier)" title="Filtrer"><fa-icon [icon]="filterIcon"></fa-icon></a>
       </div>
     </div>
 
@@ -158,21 +170,14 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem>
-          <a ngbNavLink class="fw-bold">{{ this.envTitle }}</a>
-          <ng-template ngbNavContent>
-            <ng-container *ngTemplateOutlet="ngbNavSkillsContent; context:{data: activity}"></ng-container>
-          </ng-template>
-        </li>
-
-        <li ngbNavItem *ngIf="activity.trainings">
+        <li ngbNavItem *ngIf="activity.trainings.length > 0">
           <a ngbNavLink class="fw-bold">{{ this.trainingTitle }}</a>
           <ng-template ngbNavContent>
             <ng-container *ngTemplateOutlet="ngbNavTrainingsContent; context:{data: activity}"></ng-container>
           </ng-template>
         </li>
 
-        <li ngbNavItem *ngIf="activity.publications !== null">
+        <li ngbNavItem *ngIf="activity.publications.length > 0">
           <a ngbNavLink class="fw-bold">{{ this.publicationsTitle }}</a>
           <ng-template ngbNavContent>
             <ng-container *ngTemplateOutlet="ngbNavPublicationsContent; context:{data: activity}"></ng-container>
@@ -215,12 +220,6 @@
   </ng-container>
 </ng-template>
 
-<ng-template #ngbNavSkillsContent let-data='data'>
-  <set-paragraph-content>
-    <ng-container *ngTemplateOutlet="skillDetails; context:{data: data.tools}"></ng-container>
-  </set-paragraph-content>
-</ng-template>
-
 <ng-template #ngbNavTrainingsContent let-data='data'>
   <set-paragraph-content>
     <ng-container *ngFor="let training of data.trainings">
@@ -240,20 +239,3 @@
 
 </ng-template>
 <!-- TAB CONTENT TEMPLATES -->
-
-
-<!-- SKILLS TEMPLATE -->
-<ng-template #skillDetails let-data='data'>
-  <div class="skills-container">
-    <div class="skill" *ngFor="let tool of data">
-      <h6>{{ tool.skill }}</h6>
-      <ul>
-        <li *ngFor="let item of tool.features">
-          <span>{{ item.sub_skill }}</span>
-          <span *ngIf="item.details"> : {{ item.details }}</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-</ng-template>
-<!-- SKILLS TEMPLATE -->

@@ -14,7 +14,7 @@ import { ControlerService } from '@services/controler.service';
   encapsulation: ViewEncapsulation.None,
   animations: [fadeInOutAnimation]
 })
-export class MapAppLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MapAppLayoutComponent implements OnInit, OnDestroy {
 
   isLegendDisplayed: boolean = true;
 
@@ -51,10 +51,6 @@ export class MapAppLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([])
-  }
-
-  ngAfterViewInit(): void {
-
   }
 
   ngOnDestroy(): void {

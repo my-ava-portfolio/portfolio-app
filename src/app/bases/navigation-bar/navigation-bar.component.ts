@@ -70,11 +70,12 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   imageProfile: string = imageProfile;
 
   linkBuilt!: string;
-  contactData!: any;
-  contactDataSubscription!: Subscription;
+  userContactData!: any;
+  userContactDataSubscription!: Subscription;
 
-  generalData!: any;
-  generalDataSubscription!: Subscription;
+  userInfoData!: any;
+
+  userInfoDataSubscription!: Subscription;
   routeSubscription!: Subscription;
 
   constructor(
@@ -91,15 +92,15 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
       this.currentPage = this.location.path();
     });
 
-    this.contactDataSubscription = this.resumeService.contactData.subscribe(
-      (data) => {
-        this.contactData = data;
+    this.userContactDataSubscription = this.resumeService.userContactDataSubject.subscribe(
+      (data: any) => {
+        this.userContactData = data;
       }
     );
 
-    this.generalDataSubscription = this.resumeService.generalData.subscribe(
+    this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
       (data) => {
-        this.generalData = data;
+        this.userInfoData = data;
       }
     );
 
@@ -108,13 +109,13 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentPage = this.location.path();
-    this.resumeService.pullContactData();
-    this.resumeService.pullGeneralData();
+    this.resumeService.queryUserContactFromApi();
+    this.resumeService.queryUserInfoFromApi();
   }
 
   ngOnDestroy(): void {
-    this.contactDataSubscription.unsubscribe();
-    this.generalDataSubscription.unsubscribe();
+    this.userContactDataSubscription.unsubscribe();
+    this.userInfoDataSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
   }
 

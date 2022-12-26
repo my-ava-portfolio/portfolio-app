@@ -1,16 +1,11 @@
-import { Component, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { BlogService } from '@modules/blog/shared/services/blog.service';
 
-import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { ControlerService } from '@services/controler.service';
-
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { MainService } from '@services/main.service';
 import { badge, galleryFeature } from '@core/data-types';
-import { minWidthLandscape } from '@core/styles/screen';
 import { faTags, faTag } from '@fortawesome/free-solid-svg-icons';
 import { stringToColor } from '@core/styles/colors';
 
@@ -43,22 +38,15 @@ export class LayoutComponent implements OnDestroy {
   constructor(
     private blogService: BlogService,
     private mainService: MainService,
-    private activatedRoute: ActivatedRoute,
-    private titleService: Title,
-    private controlerService: ControlerService,
   ) {
 
-    // to get the data properties from routes (app.module.ts)
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
-
-    this.topicsDataSubscription = this.blogService.topicsData.subscribe(
+    this.topicsDataSubscription = this.blogService.blogData.subscribe(
       (data) => {
         data.forEach((feature: any) => {
           this.allBlogTopics.push(this.buildFeature(feature))
         })
         this.selectedblogTopics = this.allBlogTopics
 
-        // TODO refactor
         this.allBlogTopics.forEach((element: any) => {
           element.categories.forEach((category: badge) => {
             const elementFound = Array.from(this.allCategories.values()).filter((item: any) => item.name === category.name);
@@ -67,7 +55,6 @@ export class LayoutComponent implements OnDestroy {
             }
           });
         })
-
 
         this.allBlogTopics.forEach((element: any) => {
           element.tags.forEach((tag: badge) => {
@@ -83,17 +70,11 @@ export class LayoutComponent implements OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sendResumeSubMenus()
-    this.blogService.pulltopicsData()
-
+    this.blogService.queryBlogTopics()
   }
 
   ngOnDestroy(): void {
     this.topicsDataSubscription.unsubscribe()
-  }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus([])
   }
 
   buildFeature(feature: any): galleryFeature {
@@ -131,7 +112,6 @@ export class LayoutComponent implements OnDestroy {
     this.isLegendDisplayed = !this.isLegendDisplayed;
   }
 
-
   resetContent(): void {
     this.selectedblogTopics = this.allBlogTopics;
     this.mainService.scrollToTopAction()
@@ -155,15 +135,6 @@ export class LayoutComponent implements OnDestroy {
     this.currentTag = tag_name;
     this.selectedblogTopics = topicsFound;
     this.mainService.scrollToTopAction()
-  }
-
-
-  @HostListener('window:orientationchange', ['$event'])
-  displayContentRegardingDeviceScreen(): void {
-    // if mode portrait and width screen <= 1024...
-    if (window.screen.orientation.angle === 0 && window.screen.height <= minWidthLandscape) {
-      this.isLegendDisplayed = false;
-    }
   }
 
 }

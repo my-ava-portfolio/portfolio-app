@@ -1,4 +1,4 @@
-  <ng-container *ngFor="let degree of inputDegreesData">
+  <ng-container *ngFor="let degree of activityData">
 
     <set-card-container
       class="feature-degree d-flex flex-row flew-wrap text-center"
@@ -18,10 +18,10 @@
             d-flex flex-row
             align-items-center
           ">
-            <img *ngIf="degree.img_school !== 'null'" [src]="assetsLogoPath + degree.img_school"/>
-            <set-paragraph-content *ngIf="degree.img_school === 'null'" class="d-flex flex-row justify-content-center">{{ degree.school }}</set-paragraph-content>
+            <img *ngIf="degree.img_activity !== 'null'" [src]="assetsLogoPath + degree.img_activity"/>
+            <set-paragraph-content *ngIf="degree.img_activity === 'null'" class="d-flex flex-row justify-content-center">{{ degree.school }}</set-paragraph-content>
 
-            <set-paragraph-content class="fw-bold">{{ degree.degree }}</set-paragraph-content>
+            <set-paragraph-content class="fw-bold">{{ degree.title }}</set-paragraph-content>
           </div>
 
         </div>

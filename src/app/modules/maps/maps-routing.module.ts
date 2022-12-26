@@ -29,7 +29,6 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent,
-    data: { title: 'Cartes', page: 'home' },
   },
 ]
 

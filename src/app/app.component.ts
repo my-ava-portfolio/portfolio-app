@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
     '/maps/app/activities',
     '/maps/app/gtfs-viewer',
     '/maps/app/sandbox',
+    '/blog'
   ];
 
   routesWhereScrollingIsDisabled: string[] = [

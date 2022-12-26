@@ -7,9 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    data: {
-      title: 'CV', page: 'resume'
-    }
   },
 ]
 

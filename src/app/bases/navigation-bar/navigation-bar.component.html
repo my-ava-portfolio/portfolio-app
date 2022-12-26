@@ -1,6 +1,6 @@
 <nav
   id="leftSideBar"
-  *ngIf="generalData"
+  *ngIf="userInfoData"
   [ngClass]="sideBarCollapsed ? 'inactive' : 'active'"
   class="
     sticky-top
@@ -30,8 +30,8 @@
       >
 
       <div id="leftSideBar__container__header__profil" *ngIf="sideBarCollapsed">
-        <h4 class="title-name">{{ generalData.first_name }} {{ generalData.last_name }}</h4>
-        <div class="badge-title-light">{{ generalData.job }}</div>
+        <h4 class="title-name">{{ userInfoData.first_name }} {{ userInfoData.last_name }}</h4>
+        <div class="badge-title-light">{{ userInfoData.job }}</div>
 
         <div type="button" class="badge-title-warning" [title]="legacyResumePage.title" [routerLink]="legacyResumePage.route">
           {{legacyResumePage.verbose_title}}
@@ -40,20 +40,20 @@
       </div>
 
       <h4 id="leftSideBar__container__header__shortname" *ngIf="!sideBarCollapsed" class="title-name">
-        {{ generalData.first_name[0] }}{{ generalData.last_name[0] }}
+        {{ userInfoData.first_name[0] }}{{ userInfoData.last_name[0] }}
       </h4>
 
       <h5 *ngIf="sideBarCollapsed" class="text-white">Contact</h5>
-      <div class="" id="leftSideBar__container__header__contact" *ngIf="contactData">
-        <a class="btn btn-sm text-bg-light m-1" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(contactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+      <div class="" id="leftSideBar__container__header__contact" *ngIf="userContactData">
+        <a class="btn btn-sm text-bg-light m-1" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(userContactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="text-black" [icon]="emailIcon" size="xl"></fa-icon>
         </a>
 
-        <a class="btn btn-sm text-bg-light m-1" [href]="linkBuilt" (mouseover)="reverse(contactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+        <a class="btn btn-sm text-bg-light m-1" [href]="linkBuilt" (mouseover)="reverse(userContactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="text-black" [icon]="linkedinIcon" size="xl"></fa-icon>
         </a>
 
-        <a class="btn btn-sm text-bg-light m-1" [href]="linkBuilt" (mouseover)="reverse(contactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+        <a class="btn btn-sm text-bg-light m-1" [href]="linkBuilt" (mouseover)="reverse(userContactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="text-black" [icon]="githubIcon" size="xl"></fa-icon>
         </a>
 
@@ -100,13 +100,13 @@
       <div class="copyright
         text-white
       " *ngIf="sideBarCollapsed">
-        © {{currentYear}} {{ generalData.first_name }} {{ generalData.last_name }}
+        © {{currentYear}} {{ userInfoData.first_name }} {{ userInfoData.last_name }}
       </div>
 
       <div class="copyright
         text-white
       " *ngIf="!sideBarCollapsed">
-        © {{currentYear}} {{ generalData.first_name[0] }}{{ generalData.last_name[0] }}
+        © {{currentYear}} {{ userInfoData.first_name[0] }}{{ userInfoData.last_name[0] }}
       </div>
 
     </div>

@@ -6,7 +6,7 @@ import { LayoutComponent } from '@modules/education/layout/layout.component';
 
 
 const routes: Routes = [
-  { path: '', component: LayoutComponent, data: { title: 'Formation', page: 'education' } },
+  { path: '', component: LayoutComponent },
 ];
 
 @NgModule({

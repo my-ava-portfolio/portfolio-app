@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { homePages } from '@core/global-values/topics';
-
-
-import { ControlerService } from '@services/controler.service';
 
 
 @Component({
@@ -18,30 +13,9 @@ export class LayoutComponent implements OnInit {
 
   homeTopics = homePages;
 
-  isWelcomeCardDisplayed = true;
+  constructor( ) { }
 
-
-  legendEnabled: boolean = false;
-
-  constructor(
-    private titleService: Title,
-    private activatedRoute: ActivatedRoute,
-    private controlerService: ControlerService,
-  ) {
-
-    this.titleService.setTitle(this.activatedRoute.snapshot.data.title);
-
-
-
-   }
-
-  ngOnInit(): void {
-    this.sendResumeSubMenus();
-  }
-
-  sendResumeSubMenus(): void {
-    this.controlerService.pullSubMenus(this.homeTopics.sub_menus)
-  }
+  ngOnInit(): void { }
 
 }
 

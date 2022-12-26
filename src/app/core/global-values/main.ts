@@ -9,17 +9,14 @@ export const githubUrl = 'https://github.com/amauryval/';
 export const imageProfile = 'https://avatars.githubusercontent.com/u/36413727?v=4';
 
 
-
-
-
-export const activitiesMapping: { job: string; 'personal-project': string; volunteer: string;} = {
+export const activitiesMapping = {
   "job": "Missions",
   "personal-project": "Projets personnels",
   "volunteer": "Bénévolat"
 }
 
-export const skillsMapping: { themes: string; technics: string; tools: string;} = {
-  "themes": "Thématiques",
+export const skillsMapping: any = {
+  "themes": "Secteurs d'activité",
   "technics": "Techniques",
   "tools": "Outils"
 }

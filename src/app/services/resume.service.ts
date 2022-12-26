@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { catchError, defaultIfEmpty, forkJoin, Observable, of, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { apiUrl } from '@core/global-values/main';
+import { query } from '@angular/animations';
 
 
 @Injectable({
@@ -12,48 +13,49 @@ export class ResumeService {
 
   ErrorResumeDataApiFound: Subject<string> = new Subject<string>();
 
-  private apiUrlResumeData = apiUrl + 'resume_static_data';
-  resumeData: Subject<any> = new Subject<any>();
-  private apiUrlContactData = apiUrl + 'contact_data';
-  contactData: Subject<any> = new Subject<any>();
-  private apiUrlGeneralData = apiUrl + 'general_data';
-  generalData: Subject<any> = new Subject<any>();
-  private apiUrlFullSkillsData = apiUrl + 'full_skills_data';
-  fullSkillsData: Subject<any> = new Subject<any>();
+  private userInfoRoute = apiUrl + 'user/info';
+  userInfoDataSubject: Subject<any> = new Subject<any>();
 
-  private apiUrlGraphData = apiUrl + 'activities_graph_data?';
-  errorActivitiesChartApiFound: Subject<string> = new Subject<string>();
-  ActivitiesChartData: Subject<any> = new Subject<any>();
+  private userContactRoute = apiUrl + 'user/contact';
+  userContactDataSubject: Subject<any> = new Subject<any>();
 
-  // deprecated
-  private apiUrlSkillsFilteredData = apiUrl + 'skills_filtered?';
-  errorUrlSkillsFilteredApiFound: Subject<string> = new Subject<string>();
-  skillsFilteredData: Subject<any> = new Subject<any>();
+  private languagesRoute = apiUrl + 'languages';
+  languagesDataSubject: Subject<any> = new Subject<any>();
 
-  private apiUrlActivitiesFilteredData = apiUrl + 'activities_filtered?';
-  errorUrlActivitiesFilteredApiFound: Subject<string> = new Subject<string>();
-  activitiesFilteredData: Subject<any> = new Subject<any>();
+  private acitvitiesRoute = apiUrl + 'activities';
+  activitiesDataSubject: Subject<any> = new Subject<any>();
+  private activitiesJobDurationRoute = apiUrl + 'activities/job/duration';
+  activitiesJobDurationDataSubject: Subject<any> = new Subject<any>();
+  profesionalActivitiesDataSubject: Subject<any> = new Subject<any>();
+  
+  private skillsRoute = apiUrl + 'skills';
+  skillsDataSubject: Subject<any> = new Subject<any>();
+
+
+  private publicationsRoute = apiUrl + 'publications';
+  publicationsDataSubject: Subject<any> = new Subject<any>();
+
+  private trainingsRoute = apiUrl + 'trainings/';
+  trainingsDataSubject: Subject<any> = new Subject<any>();
+
+  private graphRoute = apiUrl + 'graph/'
+  graphDataSubject: Subject<any> = new Subject<any>();
+  private validityRangeActivitisJobRoute = apiUrl + 'activities/job/validity_range'
+  validityRangeActivitisJobDataSubject: Subject<any> = new Subject<any>();
 
   activityId: Subject<string> = new Subject<string>();
-
-  // activitiesAvailable: Subject<any> = new Subject<any>();
-
 
   constructor(
       private http: HttpClient
   ) {}
 
-  // pullActivitiesAvailable(activities: any[]): void {
-  //   this.activitiesAvailable.next(activities);
-  // }
 
   pullActivityIdToPreselectNodeGraph(activityId: string): void {
     this.activityId.next(activityId);
   }
 
-  pullResumeGeneralData(): void {
-
-    this.http.get<any>(this.apiUrlResumeData).subscribe({
+  queryLanguagesFromApi(): void {
+    this.http.get<any>(`${this.languagesRoute}/`).subscribe({
       complete: () => {
       },
       error: error => {
@@ -63,15 +65,14 @@ export class ResumeService {
       next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-          this.resumeData.next(response);
+          this.languagesDataSubject.next(response);
         }
       },
     });
   }
 
-  pullContactData(): void {
-
-    this.http.get<any>(`${this.apiUrlContactData}`).subscribe({
+  queryUserInfoFromApi(): void {
+    this.http.get<any>(`${this.userInfoRoute}`).subscribe({
       complete: () => {
       },
       error: error => {
@@ -81,15 +82,14 @@ export class ResumeService {
       next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-          this.contactData.next(response);
+          this.userInfoDataSubject.next(response);
         }
       },
     });
   }
 
-  pullGeneralData(): void {
-
-    this.http.get<any>(`${this.apiUrlGeneralData}`).subscribe({
+  queryUserContactFromApi(): void {
+    this.http.get<any>(`${this.userContactRoute}`).subscribe({
       complete: () => {
       },
       error: error => {
@@ -99,81 +99,205 @@ export class ResumeService {
       next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-          this.generalData.next(response);
+          this.userContactDataSubject.next(response);
         }
       },
     });
   }
 
-
-  pullFullSkillsData(): void {
-    // not used
-
-    this.http.get<any>(`${this.apiUrlFullSkillsData}`).subscribe({
-      complete: () => {
-      },
-      error: error => {
-        // TODO improve error message, but API need improvments
-        this.ErrorResumeDataApiFound.next(error.error.message);
-      },
-      next: response => {
-        // is null only if query return a 204 error (empty result)
-        if (response !== null) {
-          this.fullSkillsData.next(response);
-        }
-      },
-    });
-  }
-
-
-
-  pullActivitiesGraphData(
-    isTechnics: boolean | string,
-    isThemes: boolean | string,
-    isTools: boolean | string,
-    currentDateValue: number,
-    grouperProjects: boolean | string,
-    grouperJobs: boolean | string,
-    grouperVolunteers: boolean | string,
-  ): void {
+  queryActivitiesFromApi(activityType: string, parameters: any = null): void {
     this.http.get<any>(
-      `${this.apiUrlGraphData}technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&start_date=${currentDateValue}&group_projects=${grouperProjects}&group_jobs=${grouperJobs}&group_volunteers=${grouperVolunteers}`
+      `${this.acitvitiesRoute}/${activityType}`,
+      {params: parameters}
     ).subscribe({
       complete: () => {
       },
       error: error => {
         // TODO improve error message, but API need improvments
-        this.errorActivitiesChartApiFound.next(error.error.message);
+        this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-          this.ActivitiesChartData.next(response);
+          this.activitiesDataSubject.next(response);
         }
       },
     });
   }
 
-  pullActivitiesResumeFromGraph( // TODO RENAME IT
-    currentDate: number,
-    isThemes: boolean | string,
-    isTechnics: boolean | string,
-    isTools: boolean | string,
-    fromSkill: string | null,
-  ): void {
+  queryProfesionalActivitiesFromApi(parameters: any): void {
+    let jobQuery = this.http.get<any>(`${this.acitvitiesRoute}/job`, { params: parameters["job"] }).pipe(catchError(() => of([])))
+    let personalProjectQuery = this.http.get<any>(`${this.acitvitiesRoute}/personal-project`, {params: parameters["personal-project"]}).pipe(catchError(() => of([])))
+    let volunteerQuery = this.http.get<any>(`${this.acitvitiesRoute}/volunteer`, {params: parameters["volunteer"]}).pipe(catchError(() => of([])))
+
+    forkJoin([jobQuery, personalProjectQuery, volunteerQuery]).subscribe(
+      {
+        complete: () => {
+        },
+        error: error => {
+          // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+        },
+        next: response => {
+          // is null only if query return a 204 error (empty result)
+          if (response !== null) {
+            const outputData = {
+              "job": response[0],
+              "personal-project": response[1],
+              "volunteer": response[2]
+            }
+            this.profesionalActivitiesDataSubject.next(outputData);
+          }
+        },
+      }
+    );
+  }
+
+  queryProfesionalSkillsFromApi(parameters: any): void {
+    let jobQuery = this.http.get<any>(`${this.skillsRoute}/job`, { params: parameters["job"] }).pipe(catchError(() => of([])))
+    let personalProjectQuery = this.http.get<any>(`${this.skillsRoute}/personal-project`, {params: parameters["personal-project"]}).pipe(catchError(() => of([])))
+    let volunteerQuery = this.http.get<any>(`${this.skillsRoute}/volunteer`, {params: parameters["volunteer"]}).pipe(catchError(() => of([])))
+
+    forkJoin([jobQuery, personalProjectQuery, volunteerQuery]).subscribe(
+      {
+        complete: () => {
+        },
+        error: error => {
+          // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+        },
+        next: response => {
+          // is null only if query return a 204 error (empty result)
+          if (response !== null) {
+            const outputData = {
+              "job": response[0],
+              "personal-project": response[1],
+              "volunteer": response[2]
+            }
+            this.skillsDataSubject.next(outputData);
+          }
+        },
+      }
+    );
+  }
+
+  queryFullSkillsFromApi(parameters: any): void {
+    this.http.get<any>(`${this.skillsRoute}/`, { params: parameters }).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.skillsDataSubject.next(response);
+        }
+      },
+    });
+  }
+
+  queryActivitiesJobDurationFromApi(): void {
+    this.http.get<any>(`${this.activitiesJobDurationRoute}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.activitiesJobDurationDataSubject.next(response);
+        }
+      },
+    });
+  }
+
+  // queryActivitiesCountFromApi(date: number): void {
+  //   this.http.get<any>(`${this.acitvitiesCountRoute}/${date}`).subscribe({
+  //     complete: () => {
+  //     },
+  //     error: error => {
+  //       // TODO improve error message, but API need improvments
+  //       this.ErrorResumeDataApiFound.next(error.error.message);
+  //     },
+  //     next: response => {
+  //       // is null only if query return a 204 error (empty result)
+  //       if (response !== null) {
+  //         this.activitiesCountDataSubject.next(response);
+  //       }
+  //     },
+  //   });
+  // }
+
+  queryPublicationsFromApi(activityType: string): void {
+    this.http.get<any>(`${this.publicationsRoute}/${activityType}`).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.publicationsDataSubject.next(response);
+        }
+      },
+    });
+  }
+  
+  queryTrainingsFromApi(): void {
+    this.http.get<any>(this.trainingsRoute).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.trainingsDataSubject.next(response);
+        }
+      },
+    });
+  }
+
+  queryGraphFromApi(queryParams: any): void {
     this.http.get<any>(
-      `${this.apiUrlActivitiesFilteredData}start_date=${currentDate}&technics=${isTechnics}&themes=${isThemes}&tools=${isTools}&from_feature=${fromSkill}`
+      this.graphRoute,
+      {params: queryParams}
     ).subscribe({
       complete: () => {
       },
       error: error => {
         // TODO improve error message, but API need improvments
-        this.errorUrlActivitiesFilteredApiFound.next(error.error.message);
+        this.ErrorResumeDataApiFound.next(error.error.message);
       },
       next: response => {
         // is null only if query return a 204 error (empty result)
         if (response !== null) {
-          this.activitiesFilteredData.next(response);
+          this.graphDataSubject.next(response);
+        }
+      },
+    });
+  }
+
+  queryValidityRangeActivitisJobRouteFromApi(): void {
+    this.http.get<any>(this.validityRangeActivitisJobRoute).subscribe({
+      complete: () => {
+      },
+      error: error => {
+        // TODO improve error message, but API need improvments
+        this.ErrorResumeDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        // is null only if query return a 204 error (empty result)
+        if (response !== null) {
+          this.validityRangeActivitisJobDataSubject.next(response);
         }
       },
     });

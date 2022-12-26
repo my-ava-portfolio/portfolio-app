@@ -5,7 +5,7 @@ import { LayoutComponent } from '@modules/blog/layout/layout.component';
 
 
 const routes: Routes = [
-  { path: '', component: LayoutComponent, data: { title: 'Blog', page: 'blog' } },
+  { path: '', component: LayoutComponent },
 ];
 
 @NgModule({
