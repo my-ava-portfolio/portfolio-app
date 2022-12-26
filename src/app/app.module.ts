@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule, CustomPreloadingStrategy } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -51,6 +51,7 @@ registerLocaleData(localeFr, 'fr');
     MainService,
     ResumeService,
     MapService,
+    CustomPreloadingStrategy,
     {provide: LOCALE_ID, useValue: 'fr-FR'}
   ],
   bootstrap: [AppComponent]

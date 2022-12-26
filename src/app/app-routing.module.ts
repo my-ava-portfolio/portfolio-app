@@ -35,22 +35,22 @@ const appRoutes: Routes = [
       {
         path: 'education',
         loadChildren: () => import('@modules/education/education.module').then(m => m.EducationModule),
-        data: { preload: true, title: 'Formation', page: 'education', anchors: educationPages.sub_menus }
+        data: {title: 'Formation', page: 'education', anchors: educationPages.sub_menus }
       },
       {
         path: 'gallery',
         loadChildren: () => import('@modules/gallery/gallery.module').then(m => m.GalleryModule),
-        data: { preload: true, title: 'Galerie', page: 'gallery', anchors: [] }
+        data: {title: 'Galerie', page: 'gallery', anchors: [] }
       },
       {
         path: 'maps',
         loadChildren: () => import('@modules/maps/maps.module').then(m => m.MapsModule),
-        data: { preload: false, title: 'Cartes', page: 'home', anchors: [] }
+        data: {title: 'Cartes', page: 'home', anchors: [] }
       },
       {
         path: 'blog',
         loadChildren: () => import('@modules/blog/blog.module').then(m => m.BlogModule),
-        data: { preload: false, title: 'Blog', page: 'blog', anchors: [] }
+        data: { title: 'Blog', page: 'blog', anchors: [] }
       },
       { path: '**', redirectTo: '/home', pathMatch : 'full' }, // in order to redirect to the home page if the main url is called
     ]
