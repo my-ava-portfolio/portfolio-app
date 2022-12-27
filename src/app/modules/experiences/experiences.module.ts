@@ -8,8 +8,6 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { ExperiencesRoutingModule } from '@modules/experiences/experiences-routing.module';
 
-import { ActivityActionsService } from '@modules/experiences/services/activity-actions.service';
-
 import { LayoutComponent } from '@modules/experiences/layout/layout.component';
 import { NavigateComponent } from '@modules/experiences/navigate/navigate.component';
 import { ActivitiesComponent } from '@modules/experiences/activities/activities.component';
@@ -38,9 +36,6 @@ import { ItemsModule } from '@shared/modules/items/items.module';
     PipesModule,
     ExperiencesRoutingModule,
     ItemsModule
-  ],
-  providers: [
-    ActivityActionsService
   ]
 })
 export class ExperiencesModule { }

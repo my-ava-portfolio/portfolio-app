@@ -8,7 +8,6 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faMapMarkerAlt, faImages, faFilter, faTrophy, faAngleDoubleDown, faPaintBrush, faFileAlt, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { mapActivitiesPages, galleryPages } from '@core/global-values/topics';
 import { fadeInOutAnimation } from '@core/animation_routes';
-import { ActivityActionsService } from '../services/activity-actions.service';
 
 
 @Component({
