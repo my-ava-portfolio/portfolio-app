@@ -46,7 +46,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   isAnchorExistsCheckerSubscription!: Subscription;
 
   routeSubscription!: Subscription;
-  activityEnablingSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
@@ -73,7 +72,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
 
   ngOnDestroy(): void {
     this.routeSubscription.unsubscribe();
-    this.activityEnablingSubscription.unsubscribe();
   }
 
   setActivityTab(activityId: string): void {
