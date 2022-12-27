@@ -413,7 +413,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .enter()
       .append('text')
       .text((d: any, i: number) => {
-        if (d.object == "activityGroup") {
+        if (d.properties.object == "activityGroup") {
           return activitiesMapping[d.properties.name as keyof typeof activitiesMapping]
         }
         return d.properties.name;
