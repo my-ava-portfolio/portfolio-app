@@ -11,8 +11,9 @@ import { Subscription } from 'rxjs/internal/Subscription';
   styleUrls: ['./general-info.component.scss']
 })
 export class GeneralInfoComponent implements OnInit, OnDestroy {
-  @Input() tabView!: string;
   @Output() tabViewEmit = new EventEmitter<string>();
+
+  @Input() tabView!: string;
 
   activitiesMapping: any = activitiesMapping;
 
@@ -20,7 +21,6 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   jobDuration!: any;
 
   jobCategory: string = "job";
-  activityCategoryHidden = "education"
 
   activityTypesMetadata: activitiesCountOutputTypes[] = []
 
@@ -62,6 +62,32 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
             count: data["volunteer"].length
           }
         ]
+        
+        // To handle the activity switching
+        let availableActivities = this.activityTypesMetadata.filter((feature: any) => {
+          return feature.count > 0 && this.tabView === feature.type
+        })
+        if (availableActivities.length === 0) {
+          // the current tab is not the right one, select the tabs where there are activities
+          let availableActivities = this.activityTypesMetadata.filter((feature: any) => {
+            return feature.count > 0
+          })
+          if (availableActivities.length > 0) {
+            // set the first tabView where we got activities ; the current tab is not the right one
+            this.enableActivity(availableActivities[0].type)
+          } else {
+            // 0 activities found (out of data scope)
+            this.enableActivity("null")
+          }
+
+        } else if (availableActivities.length === 1) {
+          // current tabView is the right one
+          this.enableActivity(availableActivities[0].type)
+
+        } else {
+          // 0 activities found (out of data scope)
+          this.enableActivity("null")
+        }
                
       }
     )
@@ -77,11 +103,10 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
     this.userInfoDataSubscription.unsubscribe();
     this.activitiesJobDurationSubscription.unsubscribe();
     this.professionalActivitiesSubscription.unsubscribe();
-    // this.activitiesIdSubscription.unsubscribe();
   }
 
-  enableActivity(idName: string): void {
-    this.tabViewEmit.emit(idName)
+  enableActivity(tabName: string): void {
+    this.tabViewEmit.emit(tabName)
   }
 
 }

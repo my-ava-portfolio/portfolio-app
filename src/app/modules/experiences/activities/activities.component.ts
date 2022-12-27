@@ -56,11 +56,9 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   pageLoadingTimeOut: number = 750;
 
   professionalActivitiesSubscription!: Subscription;
-  activitiesIdSubscription!: Subscription;
 
   constructor(
     private resumeService: ResumeService,
-    private activityActionsService: ActivityActionsService
   ) {
 
     this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
@@ -69,14 +67,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         this.personalProjectsData = data["personal-project"]
         this.volunteersData = data["volunteer"]
       }
-    )
-
-    this.activitiesIdSubscription = this.activityActionsService.activityId.subscribe(
-      (_: string) => {
-        // when tabview siwtch we reset the activity lists
-        this.jobsData = []
-        this.personalProjectsData = []
-        this.volunteersData = []      }
     )
 
   }
@@ -90,7 +80,6 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.professionalActivitiesSubscription.unsubscribe();
-    this.activitiesIdSubscription.unsubscribe();
   }
 
   pushActivityId(activityId: string): void {

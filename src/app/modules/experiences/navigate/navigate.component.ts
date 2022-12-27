@@ -5,7 +5,6 @@ import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 
 import { ResumeService } from '@services/resume.service';
-import { ActivityActionsService } from '@modules/experiences/services/activity-actions.service';
 import { ungroupIconUnicode } from '@core/styles/icons';
 import { skillsMapping, activitiesMapping } from '@core/global-values/main';
 import { currentYear } from '@core/misc';
@@ -94,7 +93,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private resumeService: ResumeService,
-    private activityActionsService: ActivityActionsService
   ) {
 
     this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
@@ -432,16 +430,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         // click nothing is selected, so we want to select the new selected node
         this.currentNodeIdSelected = d3.select(e.currentTarget).attr('id');
         this._displayActivitiesAndSkillsFromElement(`#${this.activityGraphSvgId} #${this.currentNodeIdSelected}`);
-        if (!this.skill_topics.includes(d.properties.type)) { // to switch on the activities buttons
-          this.activityActionsService.setActivity(d.properties.type)
-        } else {
-          this.activityActionsService.setActivity(this.job_identifier)
-        }
 
       } else if (nodeIsPreselected.size() === 1) {
         // unclick we want to unselect the node, only on the original node !
         this.currentNodeIdSelected = this.defaultNodeIdSelected;
-        this.activityActionsService.setActivity(this.job_identifier) // to switch on the activities buttons (default)
         this._normalDisplayActivitiesAndSkills();
 
       } else {

@@ -10,7 +10,6 @@ import { fadeInOutAnimation } from '@core/animation_routes';
 import { assetsLogoPath } from '@core/global-values/main';
 
 import { faGlobeEurope, faTags } from '@fortawesome/free-solid-svg-icons';
-import { ActivityActionsService } from '../services/activity-actions.service';
 
 
 @Component({
@@ -52,7 +51,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
   constructor(
     private resumeService: ResumeService,
     private activatedRoute: ActivatedRoute,
-    private activityActionsService: ActivityActionsService
   ) {
 
     this.routeSubscription = this.activatedRoute.fragment.subscribe(
@@ -64,17 +62,11 @@ export class LayoutComponent implements OnInit, OnDestroy  {
       }
     );
 
-    this.activityEnablingSubscription = this.activityActionsService.activityId.subscribe(
-      (activityId: string) => {
-        this.tabView = activityId
-      }
-    )
-
    }
 
   ngOnInit(): void {
     // here we define the default activity mode displayed
-    this.sendActivityId("job")
+    this.setActivityTab("job")
 
     this.resumeService.queryUserInfoFromApi();
   }
@@ -84,7 +76,7 @@ export class LayoutComponent implements OnInit, OnDestroy  {
     this.activityEnablingSubscription.unsubscribe();
   }
 
-  sendActivityId(activityId: string): void {
+  setActivityTab(activityId: string): void {
     this.tabView = activityId
   }
 
