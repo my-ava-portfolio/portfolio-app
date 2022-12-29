@@ -60,6 +60,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // circle
   strokeWidth = '0px';
+  opacityForDisabledNode = 0.2;
 
   job_identifier: activities = 'job'
   personal_project_identifier: activities = 'personal-project'
@@ -465,7 +466,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     let opacity = 1;
     let display = 'block'
     if (mode === 'hidden') {
-      opacity = 0.1
+      opacity = this.opacityForDisabledNode
       display = 'none'
     }
 
@@ -486,7 +487,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     const index = element.datum().index;
     
     d3.selectAll(`#${this.activityGraphSvgId} .nodes circle`)
-      .style('opacity', (d: any) => this._selectNeighbors(index, d.index) ? 1 : 0.1)
+      .style('opacity', (d: any) => this._selectNeighbors(index, d.index) ? 1 : this.opacityForDisabledNode)
       .style('pointer-events', (d: any) => this._selectNeighbors(index, d.index) ? 'auto' : 'none')
       .style('cursor', (d: any) => this._selectNeighbors(index, d.index) ? 'pointer' : 'unset');
 
@@ -494,7 +495,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('display', (d: any) => this._selectNeighbors(index, d.index) ? 'block' : 'none');
     
     d3.selectAll(`#${this.activityGraphSvgId} .links line`)
-      .style('opacity', (d: any) => d.source.index === index || d.target.index === index ? 1 : 0.1);
+      .style('opacity', (d: any) => d.source.index === index || d.target.index === index ? 1 : this.opacityForDisabledNode);
   }
 
   private _normalDisplayActivitiesAndSkills(): void {
