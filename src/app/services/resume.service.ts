@@ -108,9 +108,9 @@ export class ResumeService {
   }
 
   queryProfesionalActivitiesFromApi(parameters: any): void {
-    let jobQuery = this.http.get<any>(`${this.acitvitiesRoute}/job`, { params: parameters["job"] }).pipe(catchError(() => of([])))
-    let personalProjectQuery = this.http.get<any>(`${this.acitvitiesRoute}/personal-project`, {params: parameters["personal-project"]}).pipe(catchError(() => of([])))
-    let volunteerQuery = this.http.get<any>(`${this.acitvitiesRoute}/volunteer`, {params: parameters["volunteer"]}).pipe(catchError(() => of([])))
+    let jobQuery = this.http.get<any>(`${this.acitvitiesRoute}/job`, { params: parameters["job"] })
+    let personalProjectQuery = this.http.get<any>(`${this.acitvitiesRoute}/personal-project`, {params: parameters["personal-project"]})
+    let volunteerQuery = this.http.get<any>(`${this.acitvitiesRoute}/volunteer`, {params: parameters["volunteer"]})
 
     forkJoin([jobQuery, personalProjectQuery, volunteerQuery]).subscribe(
       {
@@ -133,9 +133,9 @@ export class ResumeService {
   }
 
   queryProfesionalSkillsFromApi(parameters: any): void {
-    let jobQuery = this.http.get<any>(`${this.skillsRoute}/job`, { params: parameters["job"] }).pipe(catchError(() => of([])))
-    let personalProjectQuery = this.http.get<any>(`${this.skillsRoute}/personal-project`, {params: parameters["personal-project"]}).pipe(catchError(() => of([])))
-    let volunteerQuery = this.http.get<any>(`${this.skillsRoute}/volunteer`, {params: parameters["volunteer"]}).pipe(catchError(() => of([])))
+    let jobQuery = this.http.get<any>(`${this.skillsRoute}/job`, { params: parameters["job"] })
+    let personalProjectQuery = this.http.get<any>(`${this.skillsRoute}/personal-project`, {params: parameters["personal-project"]})
+    let volunteerQuery = this.http.get<any>(`${this.skillsRoute}/volunteer`, {params: parameters["volunteer"]})
 
     forkJoin([jobQuery, personalProjectQuery, volunteerQuery]).subscribe(
       {
