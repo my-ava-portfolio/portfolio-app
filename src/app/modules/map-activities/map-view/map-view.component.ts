@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -31,7 +31,8 @@ import { experiencesPages, educationPages } from '@core/global-values/topics';
 @Component({
   selector: 'app-map-view',
   templateUrl: './map-view.component.html',
-  styleUrls: ['./map-view.component.scss']
+  styleUrls: ['./map-view.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MapViewComponent implements OnInit, OnDestroy  {
   imageProfile: string = imageProfile;
@@ -288,7 +289,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           .style('right', 'unset')
           .style('top', 'unset')
           .style('left', 'unset');
-        // this._handleActivityCircleOnLegend(deSelectedFeature)
+        this._handleActivityCircleOnLegend(deSelectedFeature)
 
       }
       if (selected.length === 1) {
@@ -298,7 +299,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
         d3.select('#popup-feature-' + selectedFeature.get("id"))
           .style('z-index', '1')
-        // this._handleActivityCircleOnLegend(selectedFeature)
+        this._handleActivityCircleOnLegend(selectedFeature)
       }
 
     });
@@ -326,10 +327,12 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   };
 
   _handleActivityCircleOnLegend(feature: Feature): void {
-    const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + feature.get("type"));
+    const properties = feature.getProperties()
+    console.log(feature.getProperties())
+    const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + properties["type"]);
     legendElement.classed('selected', !legendElement.classed('selected')); // toggle class
 
-    const timeLineEvent: any = d3.select('circle#location_' + feature.get("id"));
+    const timeLineEvent: any = d3.select('.circle-events circle#location_' + properties["id"]);
     timeLineEvent.classed('selected', !timeLineEvent.classed('selected'));
   }
 

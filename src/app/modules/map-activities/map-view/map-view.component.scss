@@ -22,3 +22,8 @@
 .mini-img-thumbnail {
   width: 15vw;
 }
+
+#legendActivity circle.selected {
+  stroke: black;
+  stroke-width: 4px;
+}

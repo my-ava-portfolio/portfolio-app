@@ -63,6 +63,9 @@ export class TimeLegendComponent extends TimeLineComponent implements OnInit, On
             return 'pointer trace'
           }
         })
+        .attr('id', (d: any) => {
+          return "location_" + d.id;
+        })
       .attr('r', "4")
       .attr('cx', (d: any) => {
         const startDate = new Date(d.start_date);

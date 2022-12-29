@@ -9,7 +9,6 @@ import { ungroupIconUnicode } from '@core/styles/icons';
 import { skillsMapping, activitiesMapping } from '@core/global-values/main';
 import { currentYear } from '@core/misc';
 import { activities } from '@core/data-types';
-import { element } from 'protractor';
 import { MainService } from '@services/main.service';
 
 @Component({
