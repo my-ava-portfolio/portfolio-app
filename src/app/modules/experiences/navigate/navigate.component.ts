@@ -26,12 +26,17 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   startDate!: number;
   endDate: number = currentYear;
 
-  isJobsGrouped!: boolean;
-  isProjectsGrouped!: boolean;
-  isVolunteersGrouped!: boolean;
-  isThemesEnabled!: boolean;
-  isTechnicsEnabled!: boolean;
-  isToolsEnabled!: boolean;
+  activitiesGroupStatus = {
+    "job": false,
+    "personal-project": false,
+    "volunteer": true
+  }
+
+  skillsCategoriesStatus = {
+    "themes": true,
+    "technics": true,
+    "tools": false
+  }
 
   // icons
   ungroupIconUnicode = ungroupIconUnicode;
@@ -55,7 +60,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   strokeWidth = '0px';
 
   job_identifier: activities = 'job'
-  personal_project_identifier: activities = 'personal-project' // api input data... about the '_' vs scss...
+  personal_project_identifier: activities = 'personal-project'
   volunteer_identifier: activities = 'volunteer'
   skillsMapping = skillsMapping;
   skill_topics = Object.keys(skillsMapping)
@@ -70,8 +75,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     { id: 'legend-graph-title', label: 'Compétences', cx: 160, cy: 15 },
   ];
 
-  // here to control topic graph & text (ex 'missions' shared by neighbors components)... TODO improve it !
-
   legendInput = [
     { id: this.job_identifier, status: 'unabled-topic', label: activitiesMapping[this.job_identifier], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
     { id: this.personal_project_identifier, status: 'unabled-topic', label: activitiesMapping[this.personal_project_identifier], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
@@ -82,7 +85,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   legendGroupInput = [
-    { id: 'grouper_jobs', label: 'grouper jobs', cy: 31, cx: 35 },  // jobs grouped is disabled (style)
+    { id: 'grouper_jobs', label: 'grouper jobs', cy: 31, cx: 35 },
     { id: 'grouper_projects', label: 'grouper projets', cy: 56, cx: 35 },
     { id: 'grouper_volunteers', label: 'grouper volunteers', cy: 82, cx: 35 }
   ];
@@ -168,12 +171,14 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   graphReset(): void {
     this.currentDate = this.endDate;
-    this.isThemesEnabled = true;
-    this.isTechnicsEnabled = true;
-    this.isToolsEnabled = false;
-    this.isJobsGrouped = false;
-    this.isProjectsGrouped = false;
-    this.isVolunteersGrouped = true;
+    this.skillsCategoriesStatus.themes = true
+    this.skillsCategoriesStatus.technics = true
+    this.skillsCategoriesStatus.tools = false
+
+    this.activitiesGroupStatus.job = false;
+    this.activitiesGroupStatus['personal-project'] = false;
+    this.activitiesGroupStatus.volunteer = true
+
     this.resetLegend();
     this.getGraphFeatures();
   }
@@ -211,11 +216,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('class', (d) => {
         // in order to control the display or node, check header variables
         let classesValue = `${d.id} ${d.status}`;
-        if (d.id === 'themes' && !this.isThemesEnabled) {
+        if (d.id === 'themes' && !this.skillsCategoriesStatus.themes) {
           classesValue = classesValue + ' disabled-node';
-        } else if (d.id === 'technics' && !this.isTechnicsEnabled) {
+        } else if (d.id === 'technics' && !this.skillsCategoriesStatus.technics) {
           classesValue = classesValue + ' disabled-node';
-        } else if (d.id === 'tools' && !this.isToolsEnabled) {
+        } else if (d.id === 'tools' && !this.skillsCategoriesStatus.tools) {
           classesValue = classesValue + ' disabled-node';
         }
         return classesValue;
@@ -224,11 +229,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .style('stroke-width', this.strokeWidth)
       .on('click', (e: any, d: any) => {
         if (d.id === 'themes') {
-          this.isThemesEnabled = !this.isThemesEnabled;
+          this.skillsCategoriesStatus.themes = !this.skillsCategoriesStatus.themes;
         } else if (d.id === 'technics') {
-          this.isTechnicsEnabled = !this.isTechnicsEnabled;
+          this.skillsCategoriesStatus.technics = !this.skillsCategoriesStatus.technics;
         } else if (d.id === 'tools') {
-          this.isToolsEnabled = !this.isToolsEnabled;
+          this.skillsCategoriesStatus.tools = !this.skillsCategoriesStatus.tools;
         }
 
         d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
@@ -245,11 +250,12 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('class', (d: any) => {
         // in order to control the display or node, check header variables
         let classesValue = `${d.id} fw-bolder`;
-        if (d.id === 'grouper_jobs' && !this.isJobsGrouped) {
+        
+        if (d.id === 'grouper_jobs' && !this.activitiesGroupStatus.job) {
           classesValue = classesValue + ' disabled-group';
-        } else if (d.id === 'grouper_projects' && !this.isProjectsGrouped) {
+        } else if (d.id === 'grouper_projects' && !this.activitiesGroupStatus['personal-project']) {
           classesValue = classesValue + ' disabled-group';
-        } else if (d.id === 'grouper_volunteers' && !this.isVolunteersGrouped) {
+        } else if (d.id === 'grouper_volunteers' && !this.activitiesGroupStatus.volunteer) {
           classesValue = classesValue + ' disabled-group';
         }
         return classesValue;
@@ -264,11 +270,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentNodeIdSelected = null
 
         if (d.id === 'grouper_jobs') {
-          this.isJobsGrouped = !this.isJobsGrouped;
+          this.activitiesGroupStatus.job = !this.activitiesGroupStatus.job;
         } else if (d.id === 'grouper_projects') {
-          this.isProjectsGrouped = !this.isProjectsGrouped;
+          this.activitiesGroupStatus['personal-project'] = !this.activitiesGroupStatus['personal-project'];
         } else if (d.id === 'grouper_volunteers') {
-          this.isVolunteersGrouped = !this.isVolunteersGrouped;
+          this.activitiesGroupStatus.volunteer = !this.activitiesGroupStatus.volunteer;
         }
         d3.select(e.currentTarget).classed('disabled-group', !d3.select(e.currentTarget).classed('disabled-group'));
         this.getGraphFeatures();
@@ -316,22 +322,12 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   private getGraphFeatures(): void {
 
     // then we want to regenerate activities and skill components
-    const skillsCategoriesStatus = {
-      "themes": this.isThemesEnabled,
-      "technics": this.isTechnicsEnabled,
-      "tools": this.isToolsEnabled
-    }
-    let skill_categories = Object.keys(skillsCategoriesStatus).filter( (key: string) => {
-      return skillsCategoriesStatus[key as keyof typeof skillsCategoriesStatus]
+    let skill_categories = Object.keys(this.skillsCategoriesStatus).filter( (key: string) => {
+      return this.skillsCategoriesStatus[key as keyof typeof this.skillsCategoriesStatus]
     });
 
-    const activityGroupStatus = {
-      "job": this.isJobsGrouped,
-      "personal-project": this.isProjectsGrouped,
-      "volunteer": this.isVolunteersGrouped
-    }
-    let activity_group = Object.keys(activityGroupStatus).filter( (key: string) => {
-      return activityGroupStatus[key as keyof typeof activityGroupStatus]
+    let activity_group = Object.keys(this.activitiesGroupStatus).filter( (key: string) => {
+      return this.activitiesGroupStatus[key as keyof typeof this.activitiesGroupStatus]
     });
 
     this.resumeService.queryGraphFromApi({
@@ -646,12 +642,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Build parameters for api call // 
   private _buildSkillsCategoriesParameters(): string[] {
-    let skillsTypes = {
-      "themes": this.isThemesEnabled,
-      "technics": this.isTechnicsEnabled,
-      "tools": this.isToolsEnabled
-    }
-    return Object.keys(skillsTypes).filter((key: string) => skillsTypes[key as keyof typeof skillsTypes])
+    return Object.keys(this.skillsCategoriesStatus).filter((key: string) => this.skillsCategoriesStatus[key as keyof typeof this.skillsCategoriesStatus])
   }
 
   private _buildParameters(commonParameters: any, jobParameters: any = {}, projectParameters: any = {}, volunteerParameters: any = {}): any {
