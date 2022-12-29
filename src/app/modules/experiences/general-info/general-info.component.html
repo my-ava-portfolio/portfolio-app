@@ -18,7 +18,6 @@
             position-relative
           "
           [class.active]="tabView == activity.type"
-          [class.disabled]="activity.count === 0"
 
           (click)="enableActivity(activity.type)">
           {{activitiesMapping[activity.type]}}

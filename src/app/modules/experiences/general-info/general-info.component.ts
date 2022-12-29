@@ -20,9 +20,11 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   userInfoData!: any;
   jobDuration!: any;
 
-  jobCategory: string = "job";
-
-  activityTypesMetadata: activitiesCountOutputTypes[] = []
+  activityTypesMetadata: activitiesCountOutputTypes[] = [
+    { type: "job", count: 0 },
+    { type: "personal-project", count: 0 },
+    { type: "volunteer", count: 0 }
+  ]
 
   userInfoDataSubscription!: Subscription;
   activitiesJobDurationSubscription!: Subscription;
@@ -47,61 +49,44 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
 
     this.professionalActivitiesSubscription = this.resumeService.profesionalActivitiesDataSubject.subscribe(
       (data: any) => {
+        let activityIdsPossible: string[] = []
+        this.activityTypesMetadata.forEach((_: any, index: number) => {
+          const count = data[this.activityTypesMetadata[index].type].length
+          const activityType = this.activityTypesMetadata[index].type
 
-        this.activityTypesMetadata = [
-          {
-            type: "job",
-            count: data["job"].length
-          },
-          {
-            type: "personal-project",
-            count: data["personal-project"].length
-          },
-          {
-            type: "volunteer",
-            count: data["volunteer"].length
+          this.activityTypesMetadata[index].count = data[activityType].length
+          if (count > 0) {
+            activityIdsPossible.push(activityType)
           }
-        ]
-        
-        // To handle the activity switching
-        let availableActivities = this.activityTypesMetadata.filter((feature: any) => {
-          return feature.count > 0 && this.tabView === feature.type
         })
-        if (availableActivities.length === 0) {
-          // the current tab is not the right one, select the tabs where there are activities
-          let availableActivities = this.activityTypesMetadata.filter((feature: any) => {
-            return feature.count > 0
+
+        let tabToSwitch: string = 'null';
+
+        if (activityIdsPossible.length === 1) {
+          tabToSwitch = activityIdsPossible[0]
+
+        } else if (activityIdsPossible.length > 1) {
+          const activityIdsPossibleFiltered = activityIdsPossible.filter((feature: string) => {
+            return this.tabView === feature
           })
-          if (availableActivities.length > 0) {
-            // set the first tabView where we got activities ; the current tab is not the right one
-            this.enableActivity(availableActivities[0].type)
-          } else {
-            // 0 activities found (out of data scope)
-            this.enableActivity("null")
-          }
+          tabToSwitch = activityIdsPossibleFiltered[0]
 
-        } else if (availableActivities.length === 1) {
-          // current tabView is the right one
-          this.enableActivity(availableActivities[0].type)
-
-        } else {
-          // 0 activities found (out of data scope)
-          this.enableActivity("null")
         }
-               
+        this.enableActivity(tabToSwitch)
       }
     )
-
+    
   }
 
   ngOnInit(): void {
     this.resumeService.queryUserInfoFromApi();
-    this.resumeService.queryActivitiesJobDurationFromApi()
+    this.resumeService.queryActivitiesJobDurationFromApi();
+    this.userInfoDataSubscription.unsubscribe();
+    this.activitiesJobDurationSubscription.unsubscribe();
   }
 
   ngOnDestroy(): void {
-    this.userInfoDataSubscription.unsubscribe();
-    this.activitiesJobDurationSubscription.unsubscribe();
+
     this.professionalActivitiesSubscription.unsubscribe();
   }
 

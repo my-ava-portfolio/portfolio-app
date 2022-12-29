@@ -108,11 +108,14 @@ export class ResumeService {
   }
 
   queryProfesionalActivitiesFromApi(parameters: any): void {
-    let jobQuery = this.http.get<any>(`${this.acitvitiesRoute}/job`, { params: parameters["job"] })
-    let personalProjectQuery = this.http.get<any>(`${this.acitvitiesRoute}/personal-project`, {params: parameters["personal-project"]})
-    let volunteerQuery = this.http.get<any>(`${this.acitvitiesRoute}/volunteer`, {params: parameters["volunteer"]})
 
-    forkJoin([jobQuery, personalProjectQuery, volunteerQuery]).subscribe(
+    const queries = {
+      "job": this.http.get<any>(`${this.acitvitiesRoute}/job`, { params: parameters["job"] }),
+      "personal-project": this.http.get<any>(`${this.acitvitiesRoute}/personal-project`, {params: parameters["personal-project"]}),
+      "volunteer": this.http.get<any>(`${this.acitvitiesRoute}/volunteer`, {params: parameters["volunteer"]})
+    }
+
+    forkJoin(queries).subscribe(
       {
         complete: () => {
         },
@@ -120,38 +123,27 @@ export class ResumeService {
         this.ErrorResumeDataApiFound.next(error.error.message);
         },
         next: response => {
-          const outputData = {
-            "job": response[0],
-            "personal-project": response[1],
-            "volunteer": response[2]
-          }
-          this.profesionalActivitiesDataSubject.next(outputData);
-        
+          this.profesionalActivitiesDataSubject.next(response);
         },
       }
     );
   }
 
   queryProfesionalSkillsFromApi(parameters: any): void {
-    let jobQuery = this.http.get<any>(`${this.skillsRoute}/job`, { params: parameters["job"] })
-    let personalProjectQuery = this.http.get<any>(`${this.skillsRoute}/personal-project`, {params: parameters["personal-project"]})
-    let volunteerQuery = this.http.get<any>(`${this.skillsRoute}/volunteer`, {params: parameters["volunteer"]})
 
-    forkJoin([jobQuery, personalProjectQuery, volunteerQuery]).subscribe(
-      {
+    const queries = {
+      "job": this.http.get<any>(`${this.skillsRoute}/job`, { params: parameters["job"] }),
+      "personal-project": this.http.get<any>(`${this.skillsRoute}/personal-project`, {params: parameters["personal-project"]}),
+      "volunteer": this.http.get<any>(`${this.skillsRoute}/volunteer`, {params: parameters["volunteer"]})
+    }
+    forkJoin(queries).subscribe({
         complete: () => {
         },
         error: error => {
         this.ErrorResumeDataApiFound.next(error.error.message);
         },
         next: response => {
-          // is null only if query return a 204 error (empty result)
-          const outputData = {
-            "job": response[0],
-            "personal-project": response[1],
-            "volunteer": response[2]
-          }
-          this.skillsDataSubject.next(outputData);
+          this.skillsDataSubject.next(response);
         },
       }
     );

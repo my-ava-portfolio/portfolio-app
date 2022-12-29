@@ -260,6 +260,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .style('r', (d: any) => d.r)
       .style('stroke-width', this.strokeWidth)
       .on('click', (e: any, d: any) => {
+        // if a selection is done and an activity is group, the selection is reset
+        this.currentNodeIdSelected = null
+
         if (d.id === 'grouper_jobs') {
           this.isJobsGrouped = !this.isJobsGrouped;
         } else if (d.id === 'grouper_projects') {
@@ -465,7 +468,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     // to preselect a node
-    if ( nodeIdToSelect !== null ) {
+    if (nodeIdToSelect !== null) {
+      // only for anchor
       this._displayActivitiesAndSkillsFromElement(`#${this.activityGraphSvgId} #${nodeIdToSelect}`);
     } else {
       this._normalDisplayActivitiesAndSkills();
@@ -642,17 +646,12 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Build parameters for api call // 
   private _buildSkillsCategoriesParameters(): string[] {
-    let skillsTypes = []
-    if (this.isThemesEnabled) {
-      skillsTypes.push('themes')
+    let skillsTypes = {
+      "themes": this.isThemesEnabled,
+      "technics": this.isTechnicsEnabled,
+      "tools": this.isToolsEnabled
     }
-    if (this.isTechnicsEnabled) {
-      skillsTypes.push('technics')
-    }
-    if (this.isToolsEnabled) {
-      skillsTypes.push('tools')
-    }
-    return skillsTypes
+    return Object.keys(skillsTypes).filter((key: string) => skillsTypes[key as keyof typeof skillsTypes])
   }
 
   private _buildParameters(commonParameters: any, jobParameters: any = {}, projectParameters: any = {}, volunteerParameters: any = {}): any {
