@@ -81,12 +81,11 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.resumeService.queryUserInfoFromApi();
     this.resumeService.queryActivitiesJobDurationFromApi();
-    this.userInfoDataSubscription.unsubscribe();
-    this.activitiesJobDurationSubscription.unsubscribe();
   }
 
   ngOnDestroy(): void {
-
+    this.userInfoDataSubscription.unsubscribe();
+    this.activitiesJobDurationSubscription.unsubscribe();
     this.professionalActivitiesSubscription.unsubscribe();
   }
 

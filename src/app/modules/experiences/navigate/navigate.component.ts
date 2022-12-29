@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation, Output, EventEmitter, Input } from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -9,6 +9,8 @@ import { ungroupIconUnicode } from '@core/styles/icons';
 import { skillsMapping, activitiesMapping } from '@core/global-values/main';
 import { currentYear } from '@core/misc';
 import { activities } from '@core/data-types';
+import { element } from 'protractor';
+import { MainService } from '@services/main.service';
 
 @Component({
   selector: 'app-navigate',
@@ -18,7 +20,8 @@ import { activities } from '@core/data-types';
 })
 export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() graphInitialized = new EventEmitter<boolean>();
-  
+  @Input() fragment: any;
+
   @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
 
   private defaultNodeIdSelected = null;
@@ -96,11 +99,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private resumeService: ResumeService,
+    private mainService: MainService,
   ) {
 
     this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
       (graphData: any) => {
-        console.log("tutu")
         this.buildGraph(graphData, this.currentNodeIdSelected);
       }
     );
@@ -109,27 +112,15 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       (data: any) => {
         this.startDate = data.start_date;
         this.endDate = data.end_date;
-        this.currentDate = this.endDate
-        this.updateDatefromTemporalBar(this.endDate)
+        this.currentDate = this.endDate;
+        this.getGraphFeatures();
       }
     )
 
     this.activitiesIdSubscription = this.resumeService.activityId.subscribe(
       (activityId) => {
-        if (this.currentNodeIdSelected === null) {
-          // in order to filter graph from components job and personal project
-          const elementId: string = `node-${activityId}`;
-          this.resetChartWithASelection(elementId);
-        } else {
-          this.resetChart();
-        }
-
-        const navigationDiv = document.querySelector('#navigation');
-        if (navigationDiv !== null) {
-          navigationDiv.scrollIntoView({
-            behavior: 'smooth'
-          });
-        }
+        this.selectGraphNode(activityId)
+        this.mainService.scrollToTopAction()
       }
     )
 
@@ -137,9 +128,16 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.initSvgGraph();
+    this.buildLegend();
+
     this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
-    this.resetChart();
+
+    if (this.fragment !== '') {
+      this.selectGraphNode(this.fragment)
+    }
+
   }
+
 
   ngAfterViewInit(): void {
     this.chartWidth = this.svgGraphChart.nativeElement.offsetWidth;
@@ -160,8 +158,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateDate(event: any): void {
-    console.log(event.target.value)
-
     this.updateDatefromTemporalBar(event.target.value)
     this.getGraphFeatures();
   }
@@ -185,6 +181,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.resetLegend();
     this.getGraphFeatures();
+
   }
 
   // here to control default topic graph.
@@ -193,10 +190,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.graphReset()
   }
 
-  resetChartWithASelection(nodeToSelect: string): void {
-    this.currentNodeIdSelected = nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
-    this.graphReset()
-    d3.select(`#${this.activityGraphSvgId} .nodes #node-${nodeToSelect}`).dispatch('click');
+  selectGraphNode(nodeToSelect: string): void {
+    this.currentNodeIdSelected = 'node-' + nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
+    d3.select(`#${this.activityGraphSvgId} .nodes #${this.currentNodeIdSelected}`).dispatch('click');
   }
 
   resetLegend(): void {

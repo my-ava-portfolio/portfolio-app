@@ -70,12 +70,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit(): void {
-    // in order to filter the page regarding an activity
-    if (this.fragment !== '') {
-      this.pushActivityId(this.fragment);
-    }
-  }
+  ngOnInit(): void { }
 
   ngOnDestroy(): void {
     this.professionalActivitiesSubscription.unsubscribe();
