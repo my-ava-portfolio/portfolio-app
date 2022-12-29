@@ -85,9 +85,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   legendGroupInput = [
-    { id: 'grouper_jobs', label: 'grouper jobs', cy: 31, cx: 35 },
-    { id: 'grouper_projects', label: 'grouper projets', cy: 56, cx: 35 },
-    { id: 'grouper_volunteers', label: 'grouper volunteers', cy: 82, cx: 35 }
+    { id: 'job', label: 'grouper jobs', cy: 31, cx: 35 },
+    { id: 'personal-project', label: 'grouper projets', cy: 56, cx: 35 },
+    { id: 'volunteer', label: 'grouper volunteers', cy: 82, cx: 35 }
   ];
 
   activitiesValidityRangeSubscription!: Subscription;
@@ -100,6 +100,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
       (graphData: any) => {
+        console.log("tutu")
         this.buildGraph(graphData, this.currentNodeIdSelected);
       }
     );
@@ -108,6 +109,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       (data: any) => {
         this.startDate = data.start_date;
         this.endDate = data.end_date;
+        this.currentDate = this.endDate
         this.updateDatefromTemporalBar(this.endDate)
       }
     )
@@ -158,6 +160,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateDate(event: any): void {
+    console.log(event.target.value)
+
     this.updateDatefromTemporalBar(event.target.value)
     this.getGraphFeatures();
   }
@@ -216,11 +220,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('class', (d) => {
         // in order to control the display or node, check header variables
         let classesValue = `${d.id} ${d.status}`;
-        if (d.id === 'themes' && !this.skillsCategoriesStatus.themes) {
-          classesValue = classesValue + ' disabled-node';
-        } else if (d.id === 'technics' && !this.skillsCategoriesStatus.technics) {
-          classesValue = classesValue + ' disabled-node';
-        } else if (d.id === 'tools' && !this.skillsCategoriesStatus.tools) {
+
+        const categoryStatus = this.skillsCategoriesStatus[d.id as keyof typeof this.skillsCategoriesStatus]
+        if (!categoryStatus) {
           classesValue = classesValue + ' disabled-node';
         }
         return classesValue;
@@ -228,13 +230,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .style('r', (d: any) => d.r)
       .style('stroke-width', this.strokeWidth)
       .on('click', (e: any, d: any) => {
-        if (d.id === 'themes') {
-          this.skillsCategoriesStatus.themes = !this.skillsCategoriesStatus.themes;
-        } else if (d.id === 'technics') {
-          this.skillsCategoriesStatus.technics = !this.skillsCategoriesStatus.technics;
-        } else if (d.id === 'tools') {
-          this.skillsCategoriesStatus.tools = !this.skillsCategoriesStatus.tools;
-        }
+        this.skillsCategoriesStatus[
+          d.id as keyof typeof this.skillsCategoriesStatus
+        ] = !this.skillsCategoriesStatus[d.id as keyof typeof this.skillsCategoriesStatus]
 
         d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
 
@@ -250,12 +248,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .attr('class', (d: any) => {
         // in order to control the display or node, check header variables
         let classesValue = `${d.id} fw-bolder`;
-        
-        if (d.id === 'grouper_jobs' && !this.activitiesGroupStatus.job) {
-          classesValue = classesValue + ' disabled-group';
-        } else if (d.id === 'grouper_projects' && !this.activitiesGroupStatus['personal-project']) {
-          classesValue = classesValue + ' disabled-group';
-        } else if (d.id === 'grouper_volunteers' && !this.activitiesGroupStatus.volunteer) {
+        if (!this.activitiesGroupStatus[d.id as keyof typeof this.activitiesGroupStatus]) {
           classesValue = classesValue + ' disabled-group';
         }
         return classesValue;
@@ -269,13 +262,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
         // if a selection is done and an activity is group, the selection is reset
         this.currentNodeIdSelected = null
 
-        if (d.id === 'grouper_jobs') {
-          this.activitiesGroupStatus.job = !this.activitiesGroupStatus.job;
-        } else if (d.id === 'grouper_projects') {
-          this.activitiesGroupStatus['personal-project'] = !this.activitiesGroupStatus['personal-project'];
-        } else if (d.id === 'grouper_volunteers') {
-          this.activitiesGroupStatus.volunteer = !this.activitiesGroupStatus.volunteer;
-        }
+        this.activitiesGroupStatus[
+          d.id as keyof typeof this.activitiesGroupStatus
+        ] = !this.activitiesGroupStatus[d.id as keyof typeof this.activitiesGroupStatus]
+
         d3.select(e.currentTarget).classed('disabled-group', !d3.select(e.currentTarget).classed('disabled-group'));
         this.getGraphFeatures();
       });
@@ -329,7 +319,6 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     let activity_group = Object.keys(this.activitiesGroupStatus).filter( (key: string) => {
       return this.activitiesGroupStatus[key as keyof typeof this.activitiesGroupStatus]
     });
-
     this.resumeService.queryGraphFromApi({
         date: this.currentDate,
         skill_categories: skill_categories,

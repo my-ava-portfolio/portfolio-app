@@ -9,14 +9,14 @@ $disabled-color: grey;
 }
   
   
-.grouper_jobs, .grouper_projects, .grouper_volunteers {
+#activitiesGraph__svgLegend .job, #activitiesGraph__svgLegend .personal-project, #activitiesGraph__svgLegend .volunteer {
     font-family: 'Font Awesome 5 Free';
-    text-anchor: middle;
+    text-anchor: left;
 }
 // legend misc // 
 
 // graph misc //
-#activitiesGraph__svgLegend .nodeLabels text:not(.technics):not(.themes):not(.tools), #activitiesGraph__svgChart .nodeLabels text:not(.technics):not(.themes):not(.tools) {
+#activitiesGraph__svgChart .nodeLabels text:not(.technics):not(.themes):not(.tools) {
     fill: $navigate-text-color;
     font-family: Arial;
     font-size: 12px;
@@ -24,7 +24,10 @@ $disabled-color: grey;
     pointer-events: none; /* to prevent mouseover/drag capture*/
   }
   
-#activitiesGraph__svgChart .nodeLabels text.technics, #activitiesGraph__svgChart .nodeLabels text.themes, #activitiesGraph__svgChart .nodeLabels text.tools {
+  #activitiesGraph__svgLegend text:not(.technics):not(.themes):not(.tools), 
+  #activitiesGraph__svgChart .nodeLabels text.technics, 
+  #activitiesGraph__svgChart .nodeLabels text.themes, 
+  #activitiesGraph__svgChart .nodeLabels text.tools {
     fill: $navigate-text-color;
     font-family: Arial;
     font-size: 10px;
