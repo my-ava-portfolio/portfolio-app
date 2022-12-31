@@ -46,9 +46,9 @@ export const backEndInfo = {
   "language_icon": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
   "framework": [
     {
-    "name": "FastApi",
-    "url": "https://fastapi.tiangolo.com/",
-    "icon": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+    "name": "Starlite",
+    "url": "https://github.com/starlite-api/starlite",
+    "icon": "https://raw.githubusercontent.com/starlite-api/starlite/000800b1ff2f1fddbd5e2d23f29f1c9709ea5de3/docs/images/SVG/starlite-banner.svg"
     }
   ],
   "libs": [
