@@ -182,7 +182,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.currentActivity = activityName;
     this.galleryService.queryGalleryFeatures(
       {
-        activity_type: this.currentCategory,
         activity_name: this.currentActivity,
       }
     );
@@ -193,8 +192,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.currentType = typeName;
     this.galleryService.queryGalleryFeatures(
       {
-        activity_type: this.currentCategory,
-        activity_name: this.currentActivity,
         media_type: this.currentType
       }
     );
