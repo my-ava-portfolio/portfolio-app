@@ -67,6 +67,11 @@ $disabled-color: grey;
     stroke-width: 2;
 }
 
+circle.highlight {
+    stroke: black;
+    stroke-width: 2; 
+}
+
 .disabled-group {
     color: #aeaeae!important;
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation, Output, EventEmitter, Input } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, OnInit, ElementRef, ViewChild, OnDestroy, ViewEncapsulation, Output, EventEmitter, Input, SimpleChanges, OnChanges } from '@angular/core';
 
 import * as d3 from 'd3';
 
@@ -17,9 +17,10 @@ import { MainService } from '@services/main.service';
   styleUrls: ['./navigate.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDestroy {
   @Output() graphInitialized = new EventEmitter<boolean>();
   @Input() fragment: any;
+  @Input() tabView: any;
 
   @ViewChild('svgGraphChart') svgGraphChart!: ElementRef;
 
@@ -105,6 +106,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.graphSubscription = this.resumeService.graphDataSubject.subscribe(
       (graphData: any) => {
         this.buildGraph(graphData, this.currentNodeIdSelected);
+        // this.highLightNodesGraph(this.tabView)  // useful when the graph is initialized
+
       }
     );
 
@@ -135,9 +138,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.fragment !== '') {
       this.selectGraphNode(this.fragment)
     }
-
   }
 
+  ngDoCheck(): void {
+      this.highLightNodesGraph(this.tabView)
+  }
 
   ngAfterViewInit(): void {
     this.chartWidth = this.svgGraphChart.nativeElement.offsetWidth;
@@ -152,6 +157,19 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activitiesValidityRangeSubscription.unsubscribe();
     this.activitiesIdSubscription.unsubscribe();
   }
+
+  highLightNodesGraph(activityCategory: string): void {
+    const nodes = d3.selectAll(`circle.highlight`)
+    if (nodes.size() > 0) {
+      nodes.classed('highlight', !nodes.classed('highlight'));
+    }
+    
+    const nodesToHightLight = d3.selectAll(`circle.${activityCategory}`)
+    if (nodesToHightLight.size() > 0) {
+      nodesToHightLight.classed('highlight', !nodesToHightLight.classed('highlight'));
+    }
+  }
+
 
   updateDatefromTemporalBar(date: number): void {
     this.currentDate = date;
@@ -280,7 +298,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
 
     LegendElements
       .append('circle')
-        .attr('class', (d) => 'svg-color-' + d.id)
+        .attr('class', (d) => d.id + ' svg-color-' + d.id)
         .attr('cx', (d) => d.cx)
         .attr('cy', (d) => d.cy)
         .attr('r', (d) => d.r);
@@ -367,7 +385,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, OnDestroy {
       .data(graphData.nodes)
       .enter()
       .append('circle')
-      .attr('class', (d: any) => `svg-color-${d.properties.type} unselected`) // to filter from job/project card
+      .attr('class', (d: any) => `svg-color-${d.properties.type} ${d.properties.type} unselected`) // to filter from job/project card
       .attr('id', (d: any) => 'node-' + d.properties.id)
       .attr('r', (d: any) => {
           const element = this.legendInput.filter(e => e.id === d.properties.type);
