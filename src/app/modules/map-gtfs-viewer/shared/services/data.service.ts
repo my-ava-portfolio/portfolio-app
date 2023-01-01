@@ -61,7 +61,7 @@ export class DataService {
   }
 
   pullAvailableAreas(): void {
-    this.http.get<any>(this.apiUrl + '/existing_study_areas').subscribe({
+    this.http.get<any>(this.apiUrl + 'existing_study_areas').subscribe({
       complete: () => {
       },
       error: error => {
