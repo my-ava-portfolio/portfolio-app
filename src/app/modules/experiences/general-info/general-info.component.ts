@@ -69,9 +69,12 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
           const activityIdsPossibleFiltered = activityIdsPossible.filter((feature: string) => {
             return this.tabView === feature
           })
-          tabToSwitch = activityIdsPossibleFiltered[0]
+          if (activityIdsPossibleFiltered.length > 0) {
+            tabToSwitch = activityIdsPossibleFiltered[0]
+          }
+          tabToSwitch = activityIdsPossible[0]
 
-        }
+        } 
         this.enableActivity(tabToSwitch)
       }
     )
