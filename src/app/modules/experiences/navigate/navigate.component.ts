@@ -83,24 +83,24 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
     { id: 'legend-graph-title', label: 'Activités', cx: 5, cy: 15 },
   ];
   legendActivitiesInput = [
-    { id: this.job_identifier, status: '',  label: activitiesMapping[this.job_identifier], cx: 20, cy: 42, text_cx: 60, r: 10, rOver: 15 },
-    { id: this.personal_project_identifier, status: '', label: activitiesMapping[this.personal_project_identifier], cx: 20, cy: 67, text_cx: 60, r: 10, rOver: 15 },
-    { id: this.volunteer_identifier, status: '', label: activitiesMapping[this.volunteer_identifier], cx: 20, cy: 92, text_cx: 60, r: 10, rOver: 15 },
+    { id: this.job_identifier, status: '',  label: activitiesMapping[this.job_identifier], cx: 20, cy: 49, text_cx: 65, r: 11, rOver: 15 },
+    { id: this.personal_project_identifier, status: '', label: activitiesMapping[this.personal_project_identifier], cx: 20, cy: 76, text_cx: 65, r: 11, rOver: 15 },
+    { id: this.volunteer_identifier, status: '', label: activitiesMapping[this.volunteer_identifier], cx: 20, cy: 103, text_cx: 65, r: 11, rOver: 15 },
   ];
 
   legendSkillsInputTitles = [
     { id: 'legend-graph-title', label: 'Compétences', cx: 5, cy: 15 },
   ];
   legendSkillsInput = [
-    { id: 'themes', status: 'enabled-topic', label: this.skillsMapping['themes'], cx: 20, cy: 42, text_cx: 35, r: 5, rOver: 10 },
-    { id: 'technics', status: 'enabled-topic', label: this.skillsMapping['technics'], cx: 20, cy: 67, text_cx: 35, r: 5, rOver: 10 },
-    { id: 'tools', status: 'enabled-topic', label: this.skillsMapping['tools'], cx: 20, cy: 92, text_cx: 35, r: 5, rOver: 10 }
+    { id: 'themes', status: 'enabled-topic', label: this.skillsMapping['themes'], cx: 20, cy: 42, text_cx: 35, r: 6, rOver: 10 },
+    { id: 'technics', status: 'enabled-topic', label: this.skillsMapping['technics'], cx: 20, cy: 67, text_cx: 35, r: 6, rOver: 10 },
+    { id: 'tools', status: 'enabled-topic', label: this.skillsMapping['tools'], cx: 20, cy: 92, text_cx: 35, r: 6, rOver: 10 }
   ];
 
   legendGroupActivitiesInput = [
-    { id: 'job', label: 'grouper jobs', cy: 31, cx: 35 },
-    { id: 'personal-project', label: 'grouper projets', cy: 56, cx: 35 },
-    { id: 'volunteer', label: 'grouper volunteers', cy: 82, cx: 35 }
+    { id: 'job', label: 'grouper jobs', cy: 38, cx: 40 },
+    { id: 'personal-project', label: 'grouper projets', cy: 65, cx: 40 },
+    { id: 'volunteer', label: 'grouper volunteers', cy: 92, cx: 40 }
   ];
   legendInputs = [...this.legendActivitiesInput, ...this.legendSkillsInput]
 
@@ -260,7 +260,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
         .transition()
         .duration(1000)
         .ease(d3.easeElastic)
-        .attr("r", element[0].rOver)
+          .attr("r", element[0].rOver)         
       })
       .on('mouseout', (e: any, d: any) => {
         const element = this.legendActivitiesInput.filter(e => e.id === d.id);
@@ -455,7 +455,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
     const graphLayout = d3.forceSimulation(graphData.nodes)
       .force('charge', d3.forceManyBody().strength(-900))
       .force('x', d3.forceX(this.chartWidth / 2))
-      .force('y', d3.forceY(this.chartHeight / 2))
+      .force('y', d3.forceY(this.chartHeight / 2.3))
       .force('center', d3.forceCenter(this.chartWidth / 2, this.chartHeight / 2))
       .force('link', d3.forceLink(graphData.links).id((d: any) => d.name).distance(40).strength(1))
       .force('collision', d3.forceCollide(15))
@@ -494,19 +494,32 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
       .on('mouseover', (e: any, d: any) => {
         const element = this.legendInputs.filter(e => e.id === d.properties.type);
         d3.select(e.currentTarget)
-        .transition()
-        .duration(1000)
-        .ease(d3.easeElastic)
-        .attr("r", element[0].rOver)
+          .transition()
+          .duration(1000)
+          .ease(d3.easeElastic)
+          .attr("r", element[0].rOver)
+
+        d3.selectAll(`.skillsLegend circle.${d.properties.type}`)
+          .transition()
+          .duration(1000)
+          .ease(d3.easeElastic)
+          .attr("r", element[0].rOver)
       })
       .on('mouseout', (e: any, d: any) => {
         const element = this.legendInputs.filter(e => e.id === d.properties.type);
         d3.select(e.currentTarget)
-        .transition()
-        .duration(1000)
-        .ease(d3.easeElastic)
-        .attr("r", element[0].r)
+          .transition()
+          .duration(1000)
+          .ease(d3.easeElastic)
+          .attr("r", element[0].r)
+        
+        d3.selectAll(`.skillsLegend circle.${d.properties.type}`)
+          .transition()
+          .duration(1000)
+          .ease(d3.easeElastic)
+          .attr("r", element[0].r)
        })
+       
       ;
 
     const labelNode = svgElements.append('g').attr('class', 'nodeLabels')
@@ -526,7 +539,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
 
     node.on('click', (e: any, d: any, i: any, n: any) => {
       const nodeIsPreselected = d3.select(`#${this.activityGraphSvgId} .nodes .selected`);
-      
+
       // here we update the activities components and skills
       if (nodeIsPreselected.size() === 0) {
         // click nothing is selected, so we want to select the new selected node
@@ -725,9 +738,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
   }
 
   private _updateNode(nodeElement: any): void {
-    // to not fit drag on the bound
-    // node.attr("transform", function(d) {
-    //     return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
+    //to not fit drag on the bound
+    // nodeElement.attr("transform", (d: any) => {
+    //     return "translate(" + this._fixna(d.x) + "," + this._fixna(d.y) + ")";
     // });
     const radius = 10;
     nodeElement
@@ -738,8 +751,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
   private _updateNodeLabel(labelElement: any): void {
     const radius = 10;
     labelElement
-      .attr('x', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)) + radius)
-      .attr('y', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)) - radius / 2);
+      .attr('x', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)) + 5)
+      .attr('y', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)) - 5);
   }
 
 
