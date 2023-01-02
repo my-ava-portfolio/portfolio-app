@@ -20,12 +20,16 @@ $disabled-color: grey;
     fill: $navigate-text-color;
     font-size: 12px;
     font-weight: bold;
+}
+
+#activitiesGraph__svgChart text {
     pointer-events: none; /* to prevent mouseover/drag capture*/
-  }
-  
-  #activitiesGraph__svgLegendActivities text, 
-  #activitiesGraph__svgLegendSkills text, 
-  #activitiesGraph__svgChart .nodeLabels text {
+}
+
+
+#activitiesGraph__svgLegendActivities text, 
+#activitiesGraph__svgLegendSkills text, 
+#activitiesGraph__svgChart .nodeLabels text {
     fill: $navigate-text-color;
     font-size: 10px;
 }
