@@ -9,7 +9,7 @@ $disabled-color: grey;
 }
   
   
-#activitiesGraph__svgLegend .job, #activitiesGraph__svgLegend .personal-project, #activitiesGraph__svgLegend .volunteer {
+#activitiesGraph__svgLegendActivities foreignObject {
     font-family: 'Font Awesome 5 Free';
     text-anchor: left;
 }
@@ -18,20 +18,16 @@ $disabled-color: grey;
 // graph misc //
 #activitiesGraph__svgChart .nodeLabels text:not(.technics):not(.themes):not(.tools) {
     fill: $navigate-text-color;
-    font-family: Arial;
     font-size: 12px;
     font-weight: bold;
     pointer-events: none; /* to prevent mouseover/drag capture*/
   }
   
-  #activitiesGraph__svgLegend text:not(.technics):not(.themes):not(.tools), 
-  #activitiesGraph__svgChart .nodeLabels text.technics, 
-  #activitiesGraph__svgChart .nodeLabels text.themes, 
-  #activitiesGraph__svgChart .nodeLabels text.tools {
+  #activitiesGraph__svgLegendActivities text, 
+  #activitiesGraph__svgLegendSkills text, 
+  #activitiesGraph__svgChart .nodeLabels text {
     fill: $navigate-text-color;
-    font-family: Arial;
     font-size: 10px;
-    // pointer-events: none; /* to prevent mouseover/drag capture*/
 }
 
 
@@ -53,12 +49,6 @@ $disabled-color: grey;
     user-select: none;
 }
 
-// .disabled-node circle {
-//     stroke: $disabled-color;
-//     stroke-width: 3;
-//     fill: white !important;
-// }
-
 .skillsLegend .disabled-node line {
     stroke: red;
     stroke-width: 2;
@@ -77,10 +67,7 @@ circle.highlight {
     cursor: pointer;
 }
   
-#activitiesGraph__svgLegend foreignObject{
+#activitiesGraph__svgLegendActivities foreignObject{
     cursor: pointer;
-} 
-#activitiesGraph__svgLegend text{
-    fill: $navigate-text-color;
 } 
 // graph misc //

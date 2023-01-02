@@ -55,10 +55,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
   labelLayout!: any;
   label!: any;
 
-  chartHeight = 250;
+  chartHeight = 300;
   chartWidth!: number;
 
-  legendWidth = 300; // try to not change
+  legendWidth = 180; // try to not change
   legendHeight = 120;
 
   // circle
@@ -73,28 +73,36 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
 
   activityGraphDiv = "#activitiesGraph"
   activityGraphSvgId = "activitiesGraph__svgChart"
-  activityLegendSvgId = "activitiesGraph__svgLegend"
+  activitiesLegendSvgId = "activitiesGraph__svgLegendActivities"
+  skillsLegendSvgId = "activitiesGraph__svgLegendSkills"
 
-  legendIdDiv = "#legendGraph__themes"
-  legendInputTitles = [
+  legendActivitiesIdDiv = "#legendGraph__themes"
+  legendIdSkillsDiv = "#legendGraph__skills"
+
+  legendActivitiesInputTitles = [
     { id: 'legend-graph-title', label: 'Activités', cx: 5, cy: 15 },
-    { id: 'legend-graph-title', label: 'Compétences', cx: 160, cy: 15 },
+  ];
+  legendActivitiesInput = [
+    { id: this.job_identifier, status: '',  label: activitiesMapping[this.job_identifier], cx: 20, cy: 42, text_cx: 60, r: 10, rOver: 15 },
+    { id: this.personal_project_identifier, status: '', label: activitiesMapping[this.personal_project_identifier], cx: 20, cy: 67, text_cx: 60, r: 10, rOver: 15 },
+    { id: this.volunteer_identifier, status: '', label: activitiesMapping[this.volunteer_identifier], cx: 20, cy: 92, text_cx: 60, r: 10, rOver: 15 },
   ];
 
-  legendInput = [
-    { id: this.job_identifier, status: '', category: 'activity',  label: activitiesMapping[this.job_identifier], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.personal_project_identifier, status: '', category: 'activity', label: activitiesMapping[this.personal_project_identifier], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.volunteer_identifier, status: '', category: 'activity', label: activitiesMapping[this.volunteer_identifier], cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
-    { id: 'themes', status: 'enabled-topic', category: 'skill', label: this.skillsMapping['themes'], cx: 175, cy: 42, text_cx: 190, r: 5, rOver: 10 },
-    { id: 'technics', status: 'enabled-topic', category: 'skill', label: this.skillsMapping['technics'], cx: 175, cy: 67, text_cx: 190, r: 5, rOver: 10 },
-    { id: 'tools', status: 'enabled-topic', category: 'skill', label: this.skillsMapping['tools'], cx: 175, cy: 92, text_cx: 190, r: 5, rOver: 10 }
+  legendSkillsInputTitles = [
+    { id: 'legend-graph-title', label: 'Compétences', cx: 5, cy: 15 },
+  ];
+  legendSkillsInput = [
+    { id: 'themes', status: 'enabled-topic', label: this.skillsMapping['themes'], cx: 20, cy: 42, text_cx: 35, r: 5, rOver: 10 },
+    { id: 'technics', status: 'enabled-topic', label: this.skillsMapping['technics'], cx: 20, cy: 67, text_cx: 35, r: 5, rOver: 10 },
+    { id: 'tools', status: 'enabled-topic', label: this.skillsMapping['tools'], cx: 20, cy: 92, text_cx: 35, r: 5, rOver: 10 }
   ];
 
-  legendGroupInput = [
+  legendGroupActivitiesInput = [
     { id: 'job', label: 'grouper jobs', cy: 31, cx: 35 },
     { id: 'personal-project', label: 'grouper projets', cy: 56, cx: 35 },
     { id: 'volunteer', label: 'grouper volunteers', cy: 82, cx: 35 }
   ];
+  legendInputs = [...this.legendActivitiesInput, ...this.legendSkillsInput]
 
   activitiesValidityRangeSubscription!: Subscription;
   graphSubscription!: Subscription;
@@ -133,7 +141,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
 
   ngOnInit(): void {
     this.initSvgGraph();
-    this.buildLegend();
+    this.buildActivitiesLegend();
+    this.buildSkillsLegend();
 
     this.resumeService.queryValidityRangeActivitisJobRouteFromApi();
 
@@ -216,17 +225,23 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
 
   selectGraphNode(nodeToSelect: string): void {
     this.currentNodeIdSelected = 'node-' + nodeToSelect; // here we want to preselect the chart graph created (few seconds later)
-    d3.select(`#${this.activityGraphSvgId} .nodes #${this.currentNodeIdSelected}`).dispatch('click');
+    this.clickOnGraphNode(this.currentNodeIdSelected);
+  }
+
+  clickOnGraphNode(nodeId: string): void {
+    d3.select(`#${this.activityGraphSvgId} .nodes #${nodeId}`).dispatch('click');
   }
 
   resetLegend(): void {
-    d3.select(`#${this.activityLegendSvgId}`).remove();
-    this.buildLegend();
+    d3.select(`#${this.activitiesLegendSvgId}`).remove();
+    this.buildActivitiesLegend();
+    d3.select(`#${this.skillsLegendSvgId}`).remove();
+    this.buildSkillsLegend()
   }
 
-  private buildLegend(): void {
-    const svg = d3.select(this.legendIdDiv)
-      .append('svg').attr('id', this.activityLegendSvgId)
+  private buildActivitiesLegend(): void {
+    const svg = d3.select(this.legendActivitiesIdDiv)
+      .append('svg').attr('id', this.activitiesLegendSvgId)
       .attr('width', this.legendWidth)
       .attr('height', this.legendHeight);
 
@@ -234,24 +249,13 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
       .attr('class', 'skillsLegend');
 
     const LegendElements = svgContainer.selectAll(null)
-      .data(this.legendInput)
+      .data(this.legendActivitiesInput)
       .enter()
       .append('g')
-      .attr('class', (d) => {
-        // in order to control the display or node, check header variables
-        let classesValue = `${d.id} ${d.status}`;
-        if (d.category === 'skill') {
-          const categoryStatus = this.skillsCategoriesStatus[d.id as keyof typeof this.skillsCategoriesStatus]
-          if (!categoryStatus) {
-            classesValue = classesValue + ' disabled-node';
-          }
-        }
-        return classesValue;
-      })
       .style('r', (d: any) => d.r)
       .style('stroke-width', this.strokeWidth)
       .on('mouseover', (e: any, d: any) => {
-        const element = this.legendInput.filter(e => e.id === d.id);
+        const element = this.legendActivitiesInput.filter(e => e.id === d.id);
         d3.selectAll(`#${this.activityGraphSvgId} circle.${d.id}`)
         .transition()
         .duration(1000)
@@ -259,26 +263,16 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
         .attr("r", element[0].rOver)
       })
       .on('mouseout', (e: any, d: any) => {
-        const element = this.legendInput.filter(e => e.id === d.id);
+        const element = this.legendActivitiesInput.filter(e => e.id === d.id);
         d3.selectAll(`#${this.activityGraphSvgId} circle.${d.id}`)
           .transition()
           .duration(1000)
           .ease(d3.easeElastic)
           .attr("r", element[0].r);
       })
-      .on('click', (e: any, d: any) => {
-        if (d.category === 'skill') {
-          this.skillsCategoriesStatus[
-            d.id as keyof typeof this.skillsCategoriesStatus
-          ] = !this.skillsCategoriesStatus[d.id as keyof typeof this.skillsCategoriesStatus]
-          d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
-          this.getGraphFeatures();
-        }
-
-      });
 
     svgContainer.selectAll()
-      .data(this.legendGroupInput)
+      .data(this.legendGroupActivitiesInput)
       .enter()
       .append('svg:foreignObject')
       .attr('width', 18)
@@ -309,7 +303,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
       });
 
     svgContainer.selectAll()
-      .data(this.legendInputTitles)
+      .data(this.legendActivitiesInputTitles)
       .enter()
       .append('text')
       .style('text-anchor', 'left')
@@ -327,14 +321,92 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
       .attr('cy', (d) => d.cy)
       .attr('r', (d) => d.r)
       .on('click', (e: any, d: any) => {
-        console.log(d)
-        if (d.category === 'activity') {
-          this.enableActivity(d.id)
+        // unselect if needed
+        if (this.currentNodeIdSelected !== null) {
+          this.clickOnGraphNode(this.currentNodeIdSelected)
         }
+        this.enableActivity(d.id)
       });
     
+    LegendElements
+      .append('text')
+        .style('text-anchor', 'left')
+        .style('font-size', '12')
+        .style('dominant-baseline', 'middle')
+        .attr('x', (d: any) => d.text_cx)
+        .attr('y', (d: any) => d.cy)
+        .text((d: any) => d.label);
+  }
+
+  private buildSkillsLegend(): void {
+    const svg = d3.select(this.legendIdSkillsDiv)
+      .append('svg').attr('id', this.skillsLegendSvgId)
+      .attr('width', this.legendWidth)
+      .attr('height', this.legendHeight);
+
+    const svgContainer = svg.append('g')
+      .attr('class', 'skillsLegend');
+
+    const LegendElements = svgContainer.selectAll(null)
+      .data(this.legendSkillsInput)
+      .enter()
+      .append('g')
+      .attr('class', (d) => {
+        // in order to control the display or node, check header variables
+        let classesValue = `${d.id} ${d.status}`;
+        const categoryStatus = this.skillsCategoriesStatus[d.id as keyof typeof this.skillsCategoriesStatus]
+        if (!categoryStatus) {
+          classesValue = classesValue + ' disabled-node';
+        }
+        return classesValue;
+      })
+      .style('r', (d: any) => d.r)
+      .style('stroke-width', this.strokeWidth)
+      .on('mouseover', (e: any, d: any) => {
+        const element = this.legendInputs.filter(e => e.id === d.id);
+        d3.selectAll(`#${this.activityGraphSvgId} circle.${d.id}`)
+        .transition()
+        .duration(1000)
+        .ease(d3.easeElastic)
+        .attr("r", element[0].rOver)
+      })
+      .on('mouseout', (e: any, d: any) => {
+        const element = this.legendInputs.filter(e => e.id === d.id);
+        d3.selectAll(`#${this.activityGraphSvgId} circle.${d.id}`)
+          .transition()
+          .duration(1000)
+          .ease(d3.easeElastic)
+          .attr("r", element[0].r);
+      })
+    .on('click', (e: any, d: any) => {
+        this.skillsCategoriesStatus[
+          d.id as keyof typeof this.skillsCategoriesStatus
+        ] = !this.skillsCategoriesStatus[d.id as keyof typeof this.skillsCategoriesStatus]
+        d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
+        this.getGraphFeatures();
+      });
+
+    svgContainer.selectAll()
+      .data(this.legendSkillsInputTitles)
+      .enter()
+      .append('text')
+      .style('text-anchor', 'left')
+      .style('font-size', '12')
+      .style('dominant-baseline', 'middle')
+      .attr('class', (d) => d.id)
+      .attr('x', (d) => d.cx)
+      .attr('y', (d) => d.cy)
+      .text( (d) => d.label);
+
+    LegendElements
+      .append('circle')
+      .attr('class', (d) => d.id + ' pointer svg-color-' + d.id)
+      .attr('cx', (d) => d.cx)
+      .attr('cy', (d) => d.cy)
+      .attr('r', (d) => d.r)
+    
     // create line to display that object is disabled
-    let skillsButtons = LegendElements.filter((d: any) => ['themes', 'technics', 'tools'].includes(d.id))
+    LegendElements
       .append("line")
       .attr('x1', (d) => d.cx - d.r - 2)
       .attr('x2', (d) => d.cx + d.r + 2)
@@ -346,11 +418,9 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
         .style('text-anchor', 'left')
         .style('font-size', '12')
         .style('dominant-baseline', 'middle')
-        // .style("pointer-events", "auto")
         .attr('x', (d: any) => d.text_cx)
         .attr('y', (d: any) => d.cy)
         .text((d: any) => d.label);
-
   }
 
   private getGraphFeatures(): void {
@@ -418,11 +488,11 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
       .attr('class', (d: any) => `svg-color-${d.properties.type} ${d.properties.type} unselected`) // to filter from job/project card
       .attr('id', (d: any) => 'node-' + d.properties.id)
       .attr('r', (d: any) => {
-          const element = this.legendInput.filter(e => e.id === d.properties.type);
+        const element = this.legendInputs.filter(e => e.id === d.properties.type);
           return element[0].r;
       })
       .on('mouseover', (e: any, d: any) => {
-        const element = this.legendInput.filter(e => e.id === d.properties.type);
+        const element = this.legendInputs.filter(e => e.id === d.properties.type);
         d3.select(e.currentTarget)
         .transition()
         .duration(1000)
@@ -430,7 +500,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
         .attr("r", element[0].rOver)
       })
       .on('mouseout', (e: any, d: any) => {
-        const element = this.legendInput.filter(e => e.id === d.properties.type);
+        const element = this.legendInputs.filter(e => e.id === d.properties.type);
         d3.select(e.currentTarget)
         .transition()
         .duration(1000)
