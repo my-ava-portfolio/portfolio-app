@@ -71,8 +71,9 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
           })
           if (activityIdsPossibleFiltered.length > 0) {
             tabToSwitch = activityIdsPossibleFiltered[0]
+          } else {
+            tabToSwitch = activityIdsPossible[0]
           }
-          tabToSwitch = activityIdsPossible[0]
 
         } 
         this.enableActivity(tabToSwitch)

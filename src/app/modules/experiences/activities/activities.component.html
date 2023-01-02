@@ -108,13 +108,15 @@
 
           </div>
 
-          <div class="badge-keywords col-11 justify-content-around flex-wrap " *ngIf="activity.keywords">
+          <div class="badge-keywords col-11 justify-content-around flex-wrap my-1" *ngIf="activity.keywords">
             <set-badge-content
             *ngFor="let item of activity.keywords | keyvalue"
               [customBgColor]="item.value"
             >{{item.key}}</set-badge-content>
 
           </div>
+
+          <div class="small" *ngIf="activityType === 'personal-project'">{{ activity.presentation }}</div>
 
         </div>
 
