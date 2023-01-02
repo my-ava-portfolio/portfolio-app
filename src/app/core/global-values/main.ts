@@ -20,3 +20,9 @@ export const skillsMapping: any = {
   "technics": "Techniques",
   "tools": "Outils"
 }
+
+export interface skillsMappingStatus {
+  themes: boolean
+  technics: boolean
+  tools: boolean
+}

@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 import { ResumeService } from '@services/resume.service';
 import { ungroupIconUnicode } from '@core/styles/icons';
-import { skillsMapping, activitiesMapping } from '@core/global-values/main';
+import { skillsMapping, activitiesMapping, skillsMappingStatus } from '@core/global-values/main';
 import { currentYear } from '@core/misc';
 import { activities } from '@core/data-types';
 import { MainService } from '@services/main.service';
@@ -19,6 +19,8 @@ import { MainService } from '@services/main.service';
 })
 export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDestroy {
   @Output() graphInitialized = new EventEmitter<boolean>();
+  @Output() tabViewEmit = new EventEmitter<string>();
+
   @Input() fragment: any;
   @Input() tabView: any;
 
@@ -35,7 +37,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
     "volunteer": true
   }
 
-  skillsCategoriesStatus = {
+  skillsCategoriesStatus: skillsMappingStatus = {
     "themes": true,
     "technics": true,
     "tools": false
@@ -80,12 +82,12 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
   ];
 
   legendInput = [
-    { id: this.job_identifier, status: 'unabled-topic', label: activitiesMapping[this.job_identifier], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.personal_project_identifier, status: 'unabled-topic', label: activitiesMapping[this.personal_project_identifier], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
-    { id: this.volunteer_identifier, status: 'unabled-topic', label: activitiesMapping[this.volunteer_identifier], cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
-    { id: 'themes', status: 'enabled-topic', label: this.skillsMapping['themes'], cx: 175, cy: 42, text_cx: 190, r: 5, rOver: 10 },
-    { id: 'technics', status: 'enabled-topic', label: this.skillsMapping['technics'], cx: 175, cy: 67, text_cx: 190, r: 5, rOver: 10 },
-    { id: 'tools', status: 'enabled-topic', label: this.skillsMapping['tools'], cx: 175, cy: 92, text_cx: 190, r: 5, rOver: 10 }
+    { id: this.job_identifier, status: '', category: 'activity',  label: activitiesMapping[this.job_identifier], cx: 20, cy: 42, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.personal_project_identifier, status: '', category: 'activity', label: activitiesMapping[this.personal_project_identifier], cx: 20, cy: 67, text_cx: 55, r: 10, rOver: 15 },
+    { id: this.volunteer_identifier, status: '', category: 'activity', label: activitiesMapping[this.volunteer_identifier], cx: 20, cy: 92, text_cx: 55, r: 10, rOver: 15 },
+    { id: 'themes', status: 'enabled-topic', category: 'skill', label: this.skillsMapping['themes'], cx: 175, cy: 42, text_cx: 190, r: 5, rOver: 10 },
+    { id: 'technics', status: 'enabled-topic', category: 'skill', label: this.skillsMapping['technics'], cx: 175, cy: 67, text_cx: 190, r: 5, rOver: 10 },
+    { id: 'tools', status: 'enabled-topic', category: 'skill', label: this.skillsMapping['tools'], cx: 175, cy: 92, text_cx: 190, r: 5, rOver: 10 }
   ];
 
   legendGroupInput = [
@@ -156,6 +158,10 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
     this.graphSubscription.unsubscribe();
     this.activitiesValidityRangeSubscription.unsubscribe();
     this.activitiesIdSubscription.unsubscribe();
+  }
+
+  enableActivity(tabName: string): void {
+    this.tabViewEmit.emit(tabName)
   }
 
   highLightNodesGraph(activityCategory: string): void {
@@ -234,23 +240,41 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
       .attr('class', (d) => {
         // in order to control the display or node, check header variables
         let classesValue = `${d.id} ${d.status}`;
-
-        const categoryStatus = this.skillsCategoriesStatus[d.id as keyof typeof this.skillsCategoriesStatus]
-        if (!categoryStatus) {
-          classesValue = classesValue + ' disabled-node';
+        if (d.category === 'skill') {
+          const categoryStatus = this.skillsCategoriesStatus[d.id as keyof typeof this.skillsCategoriesStatus]
+          if (!categoryStatus) {
+            classesValue = classesValue + ' disabled-node';
+          }
         }
         return classesValue;
       })
       .style('r', (d: any) => d.r)
       .style('stroke-width', this.strokeWidth)
+      .on('mouseover', (e: any, d: any) => {
+        const element = this.legendInput.filter(e => e.id === d.id);
+        d3.selectAll(`#${this.activityGraphSvgId} circle.${d.id}`)
+        .transition()
+        .duration(1000)
+        .ease(d3.easeElastic)
+        .attr("r", element[0].rOver)
+      })
+      .on('mouseout', (e: any, d: any) => {
+        const element = this.legendInput.filter(e => e.id === d.id);
+        d3.selectAll(`#${this.activityGraphSvgId} circle.${d.id}`)
+          .transition()
+          .duration(1000)
+          .ease(d3.easeElastic)
+          .attr("r", element[0].r);
+      })
       .on('click', (e: any, d: any) => {
-        this.skillsCategoriesStatus[
-          d.id as keyof typeof this.skillsCategoriesStatus
-        ] = !this.skillsCategoriesStatus[d.id as keyof typeof this.skillsCategoriesStatus]
+        if (d.category === 'skill') {
+          this.skillsCategoriesStatus[
+            d.id as keyof typeof this.skillsCategoriesStatus
+          ] = !this.skillsCategoriesStatus[d.id as keyof typeof this.skillsCategoriesStatus]
+          d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
+          this.getGraphFeatures();
+        }
 
-        d3.select(e.currentTarget).classed('disabled-node', !d3.select(e.currentTarget).classed('disabled-node'));
-
-        this.getGraphFeatures();
       });
 
     svgContainer.selectAll()
@@ -298,10 +322,16 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
 
     LegendElements
       .append('circle')
-        .attr('class', (d) => d.id + ' svg-color-' + d.id)
-        .attr('cx', (d) => d.cx)
-        .attr('cy', (d) => d.cy)
-        .attr('r', (d) => d.r);
+      .attr('class', (d) => d.id + ' pointer svg-color-' + d.id)
+      .attr('cx', (d) => d.cx)
+      .attr('cy', (d) => d.cy)
+      .attr('r', (d) => d.r)
+      .on('click', (e: any, d: any) => {
+        console.log(d)
+        if (d.category === 'activity') {
+          this.enableActivity(d.id)
+        }
+      });
     
     // create line to display that object is disabled
     let skillsButtons = LegendElements.filter((d: any) => ['themes', 'technics', 'tools'].includes(d.id))
