@@ -477,7 +477,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
       .data(graphData.links)
       .enter()
       .append('line')
-      .attr('stroke', '#aaaa')
+      .attr('stroke', 'silver')
       .attr('stroke-width', '1px');
 
     const node = svgElements.append('g').attr('class', 'nodes')
@@ -738,8 +738,8 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
   private _updateNodeLabel(labelElement: any): void {
     const radius = 10;
     labelElement
-      .attr('x', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)))
-      .attr('y', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)));
+      .attr('x', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)) + radius)
+      .attr('y', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)) - radius / 2);
   }
 
 
