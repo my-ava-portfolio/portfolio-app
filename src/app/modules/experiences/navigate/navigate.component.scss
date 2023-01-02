@@ -18,7 +18,7 @@ $disabled-color: grey;
 // graph misc //
 #activitiesGraph__svgChart .nodeLabels text:not(.technics):not(.themes):not(.tools) {
     fill: $navigate-text-color;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
 }
 
@@ -32,7 +32,7 @@ $disabled-color: grey;
 #activitiesGraph__svgChart .nodeLabels text {
     fill: $navigate-text-color;
     font-size: 10px;
-    text-shadow: -0.1em -0.1em 0 rgb(255, 255, 255), 0.1em -0.1em 0 rgb(255, 255, 255), -0.1em 0.1em 0 rgb(255, 255, 255), 0.1em 0.1em 0 rgb(255, 255, 255);
+    //text-shadow: -0.1em -0.1em 0 rgb(255, 255, 255), 0.1em -0.1em 0 rgb(255, 255, 255), -0.1em 0.1em 0 rgb(255, 255, 255), 0.1em 0.1em 0 rgb(255, 255, 255);
 
 }
 

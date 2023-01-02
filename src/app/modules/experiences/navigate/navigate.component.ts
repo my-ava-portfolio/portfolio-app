@@ -477,7 +477,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
       .data(graphData.links)
       .enter()
       .append('line')
-      .attr('stroke', 'silver')
+      .attr('stroke', '#aaa')
       .attr('stroke-width', '1px');
 
     const node = svgElements.append('g').attr('class', 'nodes')
@@ -742,17 +742,21 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
     // nodeElement.attr("transform", (d: any) => {
     //     return "translate(" + this._fixna(d.x) + "," + this._fixna(d.y) + ")";
     // });
-    const radius = 10;
+    const radius = 30;
     nodeElement
       .attr('cx', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)))
       .attr('cy', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)))
   }
 
   private _updateNodeLabel(labelElement: any): void {
-    const radius = 10;
-    labelElement
-      .attr('x', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)) + 5)
-      .attr('y', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)) - 5);
+    //to not fit drag on the bound
+    labelElement.attr("transform", (d: any) => {
+        return "translate(" + this._fixna(d.x + 10) + "," + this._fixna(d.y - 10) + ")";
+    });
+    // const radius = 10;
+    // labelElement
+    //   .attr('x', (d: any) => d.x = Math.max(radius, Math.min(this.chartWidth - radius, d.x)))
+    //   .attr('y', (d: any) => d.y = Math.max(radius, Math.min(this.chartHeight - radius, d.y)));
   }
 
 
