@@ -98,7 +98,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
     );
 
-
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
         this.map = map;
@@ -244,6 +243,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
 
   refreshSourceLayer(features: any[]): void {
+
     let vectorSource = new VectorSource({
       features: [],
       attributions: this.currentAttributionValue  // sources will be added
@@ -257,8 +257,8 @@ export class MapViewComponent implements OnInit, OnDestroy {
         route_long_name: feature.route_long_name,
       })
       featuresToAdd.push(iconFeature)
-
     })
+    
     vectorSource.addFeatures(featuresToAdd)
     this.gtfsLayer.setSource(vectorSource)
   }
