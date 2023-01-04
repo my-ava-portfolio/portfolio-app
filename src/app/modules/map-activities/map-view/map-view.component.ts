@@ -327,8 +327,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   };
 
   _handleActivityCircleOnLegend(feature: Feature): void {
-    const properties = feature.getProperties()
-    console.log(feature.getProperties())
+    const properties = feature.getProperties();
+    
     const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + properties["type"]);
     legendElement.classed('selected', !legendElement.classed('selected')); // toggle class
 
