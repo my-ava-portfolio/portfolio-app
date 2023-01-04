@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -23,7 +23,7 @@ import VectorSource from 'ol/source/Vector';
   templateUrl: './map-view.component.html',
   styleUrls: ['./map-view.component.scss']
 })
-export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MapViewComponent implements OnInit, OnDestroy {
 
   locationIcon = locationIcon;
   tagIcon = tagsIcon;
@@ -56,7 +56,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     ]
   };
 
-
   previousArea: string | null = null;
   currentArea = this.input_data[1].area;
   currentstepValue = this.input_data[1].default_step_value;
@@ -68,9 +67,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   currentDate!: Date;
   dataBoundingBox!: number[];
 
-  isGeodataCanBeDisplayed = false;
-  isLegendDisplayed = true;
-  currentFeatureSelectedId!: string | null;
   currentRouteTypes: string[] = [];
   gtfsLayer!: any
 
@@ -79,7 +75,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   // check css code related to popup
   popupWidth = 100;
   popupHeight = 100;
-  geoFeaturesData!: any[];
 
   mapSubscription!: Subscription;
   pullGeoDataToMapSubscription!: Subscription;
@@ -120,9 +115,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.pullGeoDataToMapSubscription = this.dataService.GeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
-
-        this.geoFeaturesData = geoFeaturesData;
-
         this.refreshSourceLayer(geoFeaturesData)
 
         // we zoom to the area only once
@@ -178,27 +170,20 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-
+    // the begining of the process
+    this.dataService.pullAvailableAreas();
     this.sendResumeSubMenus();
     this.mapService.setMapEvent("mapBounds")
     // let's go to get map container and init layer(s)
     this.mapService.changeMapInteractionStatus(true)
     this.mapService.getMap();
-    this.gtfsLayer = this.buildGtfsLayer(gtfsLayerName)
-
-    // the begining of the process
-    this.dataService.pullAvailableAreas();
-
-  }
-
-  ngAfterViewInit(): void {
+    this.buildGtfsLayer(gtfsLayerName)
     this.updateData(this.currentArea)
   }
 
   getCurrentDate(date: Date): void {
     this.currentDate = date
     // update current map bound to reduce the amount of data
-    // this.mapService.getScreenMapBounds()
     this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
   }
 
@@ -219,16 +204,12 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pullAvailableAreasSubscription.unsubscribe();
     this.pullAvailableRouteTypeSubscription.unsubscribe();
 
-
     this.mapService.removeLayerByName(gtfsLayerName)
     this.mapService.changeMapInteractionStatus(false)
-
     this.mapService.resetMapView()
-
   }
 
   zoomOnData(): void {
-    // TODO create map components with buttons
     this.mapService.sendZoomAction();
   }
 
@@ -236,38 +217,29 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     return new Date(time);
   }
 
-  updateData(data: string): void {
-
+  updateData(currentArea: string): void {
     const data_found = this.input_data.filter((e) => {
-      return e.area === data;
+      return e.area === currentArea;
     });
-    this.currentArea = data
+    this.currentArea = currentArea
+    this.dataService.pullRangeDateData(this.currentArea);
+
     this.currentstepValue = data_found[0]["default_step_value"]
     this.currentZoomValue = data_found[0]["zoom"]
     this.currentAttributionValue = data_found[0]["source"]
-
-    this.dataService.pullRangeDateData(this.currentArea);
   }
 
-  showHideLegend(): void {
-    this.isLegendDisplayed = !this.isLegendDisplayed;
-  }
+  buildGtfsLayer(layerName: string): void {
 
-
-  buildGtfsLayer(layerName: string): any {
-
-    let vectorLayer = new VectorImageLayer({
+    this.gtfsLayer = new VectorImageLayer({
       source:  new VectorSource({
         features: []
       }),
       style: gtfsStyle
     });
 
-
-    vectorLayer.set("name", layerName)
-    this.map.addLayer(vectorLayer)
-    return vectorLayer
-
+    this.gtfsLayer.set("name", layerName)
+    this.map.addLayer(this.gtfsLayer)
   };
 
 
@@ -277,9 +249,8 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
       attributions: this.currentAttributionValue  // sources will be added
     });
 
-
     let featuresToAdd: any[] = []
-    features.forEach((feature: any, index: number) => {
+    features.forEach((feature: any, _: number) => {
       let iconFeature = new Feature({
         geometry: new Point([feature.x, feature.y]).transform('EPSG:4326', 'EPSG:3857'),
         route_type: feature.route_type,
@@ -289,12 +260,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     })
     vectorSource.addFeatures(featuresToAdd)
-    const layers = this.map.getLayers().getArray()
-    const layersFound: any[] = layers.filter((layer: any) => layer.get('name') === gtfsLayerName)
-    if (layersFound.length === 1) {
-      layersFound[0].setSource(vectorSource);
-    }
-
+    this.gtfsLayer.setSource(vectorSource)
   }
 
 }
