@@ -94,7 +94,6 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
     private dataService: DataService,
     private mapService: MapService,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title,
     private controlerService: ControlerService,
   ) {
 
@@ -113,7 +112,8 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.screenMapBoundSubscription = this.mapService.screenMapBound.subscribe(
       (data: any) => {
-        this.dataBoundingBox = data;
+        console.log(data)
+        this.dataBoundingBox = data["4326"];
         // redraw data when zoom/pan event occurs on map
         this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
       }
@@ -181,7 +181,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
 
     this.sendResumeSubMenus();
-
+    this.mapService.setMapEvent("mapBounds")
     // let's go to get map container and init layer(s)
     this.mapService.changeMapInteractionStatus(true)
     this.mapService.getMap();
@@ -194,11 +194,12 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.updateData(this.currentArea)
-
   }
 
   getCurrentDate(date: Date): void {
     this.currentDate = date
+    // update current map bound to reduce the amount of data
+    // this.mapService.getScreenMapBounds()
     this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
   }
 
@@ -208,6 +209,7 @@ export class MapViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    this.mapService.unsetMapEvent("mapBounds")
 
     this.mapSubscription.unsubscribe();
     this.pullGeoDataToMapSubscription.unsubscribe();

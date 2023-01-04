@@ -38,7 +38,6 @@ export class MapService {
   newLinesSvgLayerName: Subject<string> = new Subject<string>();
   removeLinesSvgLayerName: Subject<string> = new Subject<string>();
   //
-
   screenMapBound: Subject<any> = new Subject<any>();
 
   newCoords: Subject<number[]> = new Subject<number[]>();
@@ -93,7 +92,7 @@ export class MapService {
     this.unsetMapInteraction.next(interactionName);
   }
 
-  sendScreenMapBounds(coordsBound: number[]): void {
+  sendScreenMapBounds(coordsBound: { "4326": number[], "3857": number[] }): void { // add type  {str: list[number]}
     this.screenMapBound.next(coordsBound);
   }
 

@@ -79,6 +79,8 @@ export class BackgroundComponent implements OnInit {
       (event: string) => {
         if (event === "mapCoords") {
           this.mapCoordinatesEvent()
+        } else if (event === "mapBounds") {
+          this.mapBoundsEvent()
         }
       }
     )
@@ -186,7 +188,6 @@ export class BackgroundComponent implements OnInit {
     this.setControlOnMapSubscription.unsubscribe();
     this.unsetControlOnMapSubscription.unsubscribe();
     this.changeMapVieWfromEpsgSubscription.unsubscribe();
-
   }
 
 
@@ -246,7 +247,13 @@ export class BackgroundComponent implements OnInit {
       this.mapService.pullMapCoords([evt.coordinate, evt.pixel])
     })
     this.mapEvents["mapCoords"] = mapCoords
+  }
 
+  mapBoundsEvent(): void {
+    const mapBounds = this.map.on('moveend', (event: any) => {
+      this.getMapScreenBounds();
+    });
+    this.mapEvents["mapBounds"] = mapBounds
   }
 
   disableMapEvent(event: string): void {
@@ -276,13 +283,12 @@ export class BackgroundComponent implements OnInit {
   }
 
   getMapScreenBounds(): void {
-    let extent = this.map.getView().calculateExtent(this.map.getSize());
-    this.mapService.sendScreenMapBounds([
-      extent[0], // west
-      extent[1], // south
-      extent[2], // east
-      extent[3], // North
-    ]);
+    this.mapService.sendScreenMapBounds({
+      "4326": this.getView("EPSG:4326").calculateExtent(this.map.getSize()),
+      "3857": this.getView("EPSG:3857").calculateExtent(this.map.getSize()),
+    })
+    // result meaning: [0]=west, [1]=south, [2]=east, [3]=North
+
   }
 
   zoomToLayerName(layerName: string, zoom: number): void {
@@ -318,7 +324,7 @@ export class BackgroundComponent implements OnInit {
       .forEach((layer: any) => this.map.removeLayer(layer));
   }
 
-  changeMapProjection(epsg: string): void {
+  getView(epsg: string): View {
     const currentView = this.map.getView();
     const currentProjection = currentView.getProjection();
     const newProjection = getProjection(epsg);
@@ -342,11 +348,15 @@ export class BackgroundComponent implements OnInit {
           rotation: currentRotation,
           projection: newProjection,
         });
-        this.map.setView(newView);
+        return newView;
       }
-
     }
+    return currentView
+  }
 
+  changeMapProjection(epsg: string): void {
+    const view = this.getView(epsg)
+    this.map.setView(view);
   }
 
 }
