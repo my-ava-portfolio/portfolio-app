@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { apiBaseUrl } from '@core/global-values/svr-url';
 import { formatDate } from '@angular/common';
 
@@ -11,8 +11,9 @@ import { formatDate } from '@angular/common';
   providedIn: 'root'
 })
 export class DataService {
+  cache = Observable<any>
 
-  private apiUrl = apiBaseUrl + 'api/v1/gtfs_builder/';
+  private apiUrl = apiBaseUrl + 'api/v2/gtfs_builder/';
 
   mapContainer: Subject<any> = new Subject<any>();
   screenMapBound: Subject<number[]> = new Subject<number[]>();
@@ -31,7 +32,8 @@ export class DataService {
 
   pullGeoData(area: string, current_date: Date, bounds: number[]): void {
     const currentDate = Math.floor(current_date.getTime() / 1000)
-    this.http.get<any>(this.apiUrl + area.toLowerCase() + '/moving_nodes_by_date?current_date=' + currentDate + "&bounds=" + bounds).subscribe({
+    
+    this.http.get<any>(this.apiUrl + area.toLowerCase() + '/moving_nodes?date=' + currentDate).subscribe({
       complete: () => {
       },
       error: error => {
