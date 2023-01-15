@@ -33,7 +33,7 @@ export class DataService {
   pullGeoData(area: string, current_date: Date, bounds: number[]): void {
     const currentDate = Math.floor(current_date.getTime() / 1000)
     
-    this.http.get<any>(this.apiUrl + area.toLowerCase() + '/moving_nodes?date=' + currentDate).subscribe({
+    this.http.get<any>(this.apiUrl + area.toLowerCase() + '/moving_nodes?date=' + currentDate + "&bounds=" + bounds).subscribe({
       complete: () => {
       },
       error: error => {
