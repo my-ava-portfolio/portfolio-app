@@ -134,7 +134,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.pullBoundingBoxDataSubscription = this.dataService.rangeDateData.subscribe(
       (element) => {
-        console.log(element)
         this.dataBoundingBox = element.DataBounds;
         this.startDate = this.secsToDate(element.StartDate);
         this.endDate = this.secsToDate(element.EndDate);
@@ -181,9 +180,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   }
 
   secsToDate(secs: number): Date {
-    console.log(secs)
     let date = new Date(secs * 1000); // Epoch
-    console.log(date)
     return date;
   }
 

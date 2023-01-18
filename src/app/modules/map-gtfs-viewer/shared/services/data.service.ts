@@ -13,7 +13,7 @@ import { formatDate } from '@angular/common';
 export class DataService {
   cache = Observable<any>
 
-  private apiUrl = apiBaseUrl + 'api/v2/gtfs_builder/';
+  private apiUrl = apiBaseUrl + 'api/v2/gtfs_viewer/';
 
   mapContainer: Subject<any> = new Subject<any>();
   screenMapBound: Subject<number[]> = new Subject<number[]>();
