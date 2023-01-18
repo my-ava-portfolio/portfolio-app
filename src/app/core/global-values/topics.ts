@@ -122,8 +122,9 @@ export const mapActivitiesPages: activitiesPagesType = {
       image_url: `${assetsImagesPath}/gtfs_viewer.jpg`,
       description: `Application pour visualiser la circulation sur une journée des transports en commun à partir d'un GTFS. 
         On propose ainsi une cartographie spatio-temporelle des TER de la SNCF sur l'ensemble du territoire et les lignes de trams 
-        et métros pour Toulouse et Lyon. OpenLayers et D3js sont mobilisés pour le front. Le backend, quant à lui, en python avec 
-        une API Flask, utilise la librarie spatialPandas pour stocker et traiter les données.`
+        et métros pour Toulouse et Lyon. OpenLayers et D3js sont mobilisés pour le front. Une phase de pré-traitement des données, 
+        issus des GTFS est réalisée en Python pour obtenir des données exploitables. Ces dernières sont diffusées par un backend 
+        codé en Golang à l'aide d'une API REST (Gin Gonic)`
     },
     {
       id: "find-my-path",
