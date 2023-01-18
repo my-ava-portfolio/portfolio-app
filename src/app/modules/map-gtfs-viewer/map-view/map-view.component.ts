@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import Map from 'ol/Map';
 
 import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 
 import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.service';
 
@@ -24,7 +23,7 @@ import VectorSource from 'ol/source/Vector';
   styleUrls: ['./map-view.component.scss']
 })
 export class MapViewComponent implements OnInit, OnDestroy {
-
+  dataCached = {}  
   locationIcon = locationIcon;
   tagIcon = tagsIcon;
   centerIcon = centerIcon;
@@ -50,9 +49,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
     circleStrokeWidth: strokeWidth,
     textXPos: 35,
     features: [
-      { dataValue: '0', cy: 22, label: 'Tram', color: tramColor },
-      { dataValue: '1', cy: 44, label: 'Métro', color: metroColor },
-      { dataValue: '2', cy: 66, label: 'Train', color: trainColor },
+      { dataValue: 0, cy: 22, label: 'Tram', color: tramColor },
+      { dataValue: 1, cy: 44, label: 'Métro', color: metroColor },
+      { dataValue: 2, cy: 66, label: 'Train', color: trainColor },
     ]
   };
 
@@ -108,12 +107,15 @@ export class MapViewComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.dataBoundingBox = data["4326"];
         // redraw data when zoom/pan event occurs on map
-        this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
+        if (this.currentDate !== undefined) {
+          this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
+        }
       }
     );
 
     this.pullGeoDataToMapSubscription = this.dataService.GeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
+
         this.refreshSourceLayer(geoFeaturesData)
 
         // we zoom to the area only once
@@ -132,10 +134,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.pullBoundingBoxDataSubscription = this.dataService.rangeDateData.subscribe(
       (element) => {
-
-        this.dataBoundingBox = element.data_bounds;
-        this.startDate = this.parseTime(element.start_date);
-        this.endDate = this.parseTime(element.end_date)
+        this.dataBoundingBox = element.DataBounds;
+        this.startDate = this.secsToDate(element.StartDate);
+        this.endDate = this.secsToDate(element.EndDate);
 
         // let s go to adapt the timeline with the current time for fun. It seems good if the currentData is outside the time boundaries...
         const now = new Date()
@@ -154,9 +155,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.pullGeoDataSubscription = this.dataService.GeoData.subscribe(
       (geoData) => {
-        if (geoData.length > 0) {
-          this.dataService.pullGeoDataToMap(geoData);
-        }
+        this.dataService.pullGeoDataToMap(geoData);
       },
     );
 
@@ -180,10 +179,16 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.updateData(this.currentArea)
   }
 
+  secsToDate(secs: number): Date {
+    let date = new Date(secs * 1000); // Epoch
+    return date;
+  }
+
   getCurrentDate(date: Date): void {
     this.currentDate = date
     // update current map bound to reduce the amount of data
     this.dataService.pullGeoData(this.currentArea, this.currentDate, this.dataBoundingBox)
+
   }
 
   sendResumeSubMenus(): void {
@@ -253,7 +258,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     features.forEach((feature: any, _: number) => {
       let iconFeature = new Feature({
         geometry: new Point([feature.x, feature.y]).transform('EPSG:4326', 'EPSG:3857'),
-        route_type: feature.route_type,
+        route_type: String(feature.route_type),
         route_long_name: feature.route_long_name,
       })
       featuresToAdd.push(iconFeature)
