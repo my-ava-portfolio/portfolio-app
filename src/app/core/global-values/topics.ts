@@ -1,4 +1,4 @@
-import { activitiesPagesType } from "@core/data-types";
+import { activitiesPagesType, mapPagesType } from "@core/data-types";
 import { faHome, faUserGraduate, faGlobeEurope, faAddressCard, faBuilding, faStar, faMap, faImages, faFileAlt } from "@fortawesome/free-solid-svg-icons";
 import { assetsImagesPath } from "./main";
 
@@ -78,7 +78,12 @@ export const experiencesPages: activitiesPagesType = {
   ]
 };
 
-export const mapActivitiesPages: activitiesPagesType = {
+const svgLogoTypescript = "https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg"
+const svgLogoPython = "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg"
+const pngLogoGo = "https://www.developpez.com/images/logos/go.png"
+
+
+export const mapActivitiesPages: mapPagesType = {
   id: 'maps',
   route: '/maps',
   title: 'Cartes',
@@ -93,6 +98,18 @@ export const mapActivitiesPages: activitiesPagesType = {
       content_url: "/maps/app/activities",
       categories: [],
       tags: [],
+      stack: [
+        {
+          type: "Back-end",
+          language: "Python",
+          img: svgLogoPython,
+        },
+        {
+          type: "Front-end",
+          language: "TypeScript",
+          img: svgLogoTypescript,
+        }
+      ],
       status: 'Done',
       image_url: `${assetsImagesPath}/portfolio_activities.jpg`,
       description: `Cartographie de mon parcours universitaire et professionnel. Le front utilise Angular avec notamment 
@@ -106,6 +123,13 @@ export const mapActivitiesPages: activitiesPagesType = {
       content_url: "/maps/app/sandbox",
       categories: [],
       tags: [],
+      stack: [
+        {
+          type: "Front-end",
+          language: "TypeScript",
+          img: svgLogoTypescript,
+        }
+      ],
       status: 'Dev',
       image_url: `${assetsImagesPath}/sandbox.jpg`,
       description: `Un bac à sable pour saisir et exporter des données géographiques: Points, LineString, Polygons (et à trous). 
@@ -118,6 +142,23 @@ export const mapActivitiesPages: activitiesPagesType = {
       content_url: "/maps/app/gtfs-viewer",
       categories: [],
       tags: [],
+      stack: [
+        {
+          type: "Pre-Proc",
+          language: "Python",
+          img: svgLogoPython,
+        },
+        {
+          type: "Back-end",
+          language: "Go",
+          img: pngLogoGo,
+        },
+        {
+          type: "Front-end",
+          language: "TypeScript",
+          img: svgLogoTypescript,
+        }
+      ],
       status: 'Dev',
       image_url: `${assetsImagesPath}/gtfs_viewer.jpg`,
       description: `Application pour visualiser la circulation sur une journée des transports en commun à partir d'un GTFS. 
@@ -132,6 +173,18 @@ export const mapActivitiesPages: activitiesPagesType = {
       type: 'website',
       categories: [],
       tags: [],
+      stack: [
+        {
+          type: "Back-end",
+          language: "Python",
+          img: svgLogoPython,
+        },
+        {
+          type: "Front-end",
+          language: "TypeScript",
+          img: svgLogoTypescript,
+        }
+      ],
       status: 'Dev',
       content_url: "https://findmypath.amaury-valorge.com/",
       image_url: `${assetsImagesPath}/find_my_path.jpg`,

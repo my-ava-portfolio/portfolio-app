@@ -37,11 +37,19 @@ export interface mapFeature {
   title: string,
   image_url: string,
   type: 'app' | 'modal' | 'website' | 'video',
+  stack: stackFeature[],  // img url
   status?: 'Done' | 'Dev',
   content_url: string,
   categories: badge[], // map home & blog page (color compute dynamically)
   tags: badge[], // map home & blog page (color compute dynamically)
   description: string,
+}
+
+
+interface stackFeature {
+  type: 'Pre-Proc' | 'Back-end' | 'Front-end',
+  language: string,
+  img: string,
 }
 
 export interface activityFeature {
@@ -54,6 +62,7 @@ export interface activityFeature {
 
 
 // items //
+// TODO split interfaces
 export interface activitiesPagesType {
   id: string,
   route: string,
@@ -61,5 +70,15 @@ export interface activitiesPagesType {
   verbose_title?: string,
   colorType?: string,
   icon: any,
-  sub_menus: galleryFeature[] | mapFeature[] | activityFeature[]
+  sub_menus: galleryFeature[] | activityFeature[]
+}
+
+export interface mapPagesType {
+  id: string,
+  route: string,
+  title: string,
+  verbose_title?: string,
+  colorType?: string,
+  icon: any,
+  sub_menus: mapFeature[]
 }
