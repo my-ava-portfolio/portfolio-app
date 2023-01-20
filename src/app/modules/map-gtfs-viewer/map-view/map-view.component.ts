@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import Map from 'ol/Map';
 
@@ -11,7 +11,7 @@ import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.servi
 import { locationIcon, tagsIcon, centerIcon, gtfsLayerName, gtfsStyle, circleRadius, metroColor, strokeWidth, trainColor, tramColor, strokeColor } from '@modules/map-gtfs-viewer/shared/core';
 import { MapService } from '@services/map.service';
 import { ControlerService } from '@services/controler.service';
-import { Feature } from 'ol';
+import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
