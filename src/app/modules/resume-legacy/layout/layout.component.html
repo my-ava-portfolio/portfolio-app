@@ -11,7 +11,9 @@
     <div class="page d-flex flex-column" [ngClass]="isPrinting ? 'p-0' : 'p-4 mb-2'" size="A4" layout="">
 
       <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3">
-
+        <div>
+          <img src="https://avatars.githubusercontent.com/u/36413727?v=4">
+        </div>
         <div *ngIf="profilData">
           <h4 class="fw-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h4>
           <h5 class="">{{ profilData.job }}</h5>
