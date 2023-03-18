@@ -111,7 +111,7 @@ export const mapActivitiesPages: mapPagesType = {
         }
       ],
       status: 'Done',
-      image_url: `${assetsImagesPath}/portfolio_activities.jpg`,
+      image_url: `${assetsImagesPath}/md-portfolio_activities.avif`,
       description: `Cartographie de mon parcours universitaire et professionnel. Le front utilise Angular avec notamment 
           les libraries OpenLayers pour la gestion des objets géographiques et D3js pour la légende temporelles. Les données 
           sont gérées par le backend en Python au travers d'une API Flask.`
@@ -131,7 +131,7 @@ export const mapActivitiesPages: mapPagesType = {
         }
       ],
       status: 'Dev',
-      image_url: `${assetsImagesPath}/sandbox.jpg`,
+      image_url: `${assetsImagesPath}/md-sandbox.avif`,
       description: `Un bac à sable pour saisir et exporter des données géographiques: Points, LineString, Polygons (et à trous). 
         L'ensemble est totalement géré par le front avec OpenLayers principalement.`
     },
@@ -160,7 +160,7 @@ export const mapActivitiesPages: mapPagesType = {
         }
       ],
       status: 'Dev',
-      image_url: `${assetsImagesPath}/gtfs_viewer.jpg`,
+      image_url: `${assetsImagesPath}/md-gtfs_viewer.avif`,
       description: `Application pour visualiser la circulation sur une journée des transports en commun à partir d'un GTFS. 
         On propose ainsi une cartographie spatio-temporelle des TER de la SNCF sur l'ensemble du territoire et les lignes de trams 
         et métros pour Toulouse et Lyon. OpenLayers et D3js sont mobilisés pour le front. Une phase de pré-traitement des données, 
@@ -187,7 +187,7 @@ export const mapActivitiesPages: mapPagesType = {
       ],
       status: 'Dev',
       content_url: "https://findmypath.amaury-valorge.com/",
-      image_url: `${assetsImagesPath}/find_my_path.jpg`,
+      image_url: `${assetsImagesPath}/md-find_my_path.avif`,
       description: `Application Angular (Leaflet, D3js) pour déterminer des plus courts chemins à partir des données OpenStreetMap. 
         Le calcul est réalisé à partir de ma librarie Python OsmGT dédiée à l'analyse de réseau.`
     }

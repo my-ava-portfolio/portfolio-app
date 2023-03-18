@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { catchError, defaultIfEmpty, forkJoin, Observable, of, Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { apiUrl } from '@core/global-values/main';
-import { query } from '@angular/animations';
 
 
 @Injectable({

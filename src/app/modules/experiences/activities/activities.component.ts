@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Component, OnInit, Input, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { ResumeService } from '@services/resume.service';
 
@@ -25,7 +25,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   personalProjectsData!: any;
   volunteersData!: any;
 
-  apiImgUrl = assetsLogoPath;
+  apiLogoUrl = assetsLogoPath;
   assetsImagesPath = assetsImagesPath;
   mapPages: any = mapActivitiesPages;
   galleryPagesRoute: string = galleryPages.route;

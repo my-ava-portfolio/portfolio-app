@@ -58,8 +58,8 @@
         ">
 
         <div class="activity-img my-2 w-25 text-center">
-          <img class="img-fluid" *ngIf="activityType === 'personal-project'" [src]="assetsImagesPath + activity.img_activity"/>
-          <img class="img-fluid" *ngIf="['job', 'volunteer'].includes(activityType)" [src]="apiImgUrl + activity.img_activity"/>
+          <img class="img-fluid" *ngIf="activityType === 'personal-project'" [src]="assetsImagesPath + 'md-' + activity.img_activity"/>
+          <img class="img-fluid" *ngIf="['job', 'volunteer'].includes(activityType)" [src]="apiLogoUrl + activity.img_activity"/>
         </div>
 
         <div class="abstract

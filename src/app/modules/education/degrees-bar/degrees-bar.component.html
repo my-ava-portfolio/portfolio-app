@@ -19,7 +19,7 @@
             align-items-center
           ">
             <img *ngIf="degree.img_activity !== 'null'" [src]="assetsLogoPath + degree.img_activity"/>
-            <set-paragraph-content *ngIf="degree.img_activity === 'null'" class="d-flex flex-row justify-content-center">{{ degree.school }}</set-paragraph-content>
+            <set-paragraph-content *ngIf="degree.img_activity === 'null'" class="d-flex flex-row justify-content-center">{{ degree.company }}</set-paragraph-content>
 
             <set-paragraph-content class="fw-bold">{{ degree.title }}</set-paragraph-content>
           </div>

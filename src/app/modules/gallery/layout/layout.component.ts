@@ -121,7 +121,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     // media_splash may be an asset media
     img_url = feature.media_splash
     if (!feature.media_splash.includes('http')) {
-      img_url = assetsImagesPath + feature.media_splash
+      img_url = assetsImagesPath + 'md-' + feature.media_splash;
     }
 
     if (['asset_img'].includes(feature.source)) {
