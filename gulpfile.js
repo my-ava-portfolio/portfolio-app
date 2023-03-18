@@ -7,8 +7,8 @@ const compress = () =>
     sharpResponsive({
       formats: [
         // avif
-        {  format: "webp", sharp: {  animated: true }, rename: { suffix: "-md" }},
-        {  format: "webp", sharp: { animated: true }, rename: { suffix: "-large" }},
+        {  format: "webp", sharp: {  animated: true }, rename: { prefix: "md-" }},
+        {  format: "webp", sharp: { animated: true } },
       ],
     })
   )
@@ -19,8 +19,8 @@ const compress = () =>
       sharpResponsive({
         formats: [
           // avif
-          { width: 512, format: "avif", rename: { suffix: "-md" } },
-          { width: 2048, format: "avif", rename: { suffix: "-large" } },
+          { width: 512, format: "avif", rename: { prefix: "md-" } },
+          { format: "avif" },
         ],
       })
     )
