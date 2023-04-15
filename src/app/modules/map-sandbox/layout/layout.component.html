@@ -1,12 +1,12 @@
 <div class="container-fluid g-0">
 
- <div id="sandbox" class="d-flex flex-row position-fixed">
+ <div fluidHeight id="sandbox" class="d-flex flex-row position-fixed">
 
-    <div id="mapTools" class="d-flex flex-column bg-light position-relative" [ngClass]="!isLegendDisplayed ? 'hidden' : 'displayed'">
+    <div id="panelsContainer" class="d-flex flex-column bg-light position-relative" [ngClass]="!isLegendDisplayed ? 'hidden' : 'displayed'">
 
       <app-geoinfo
         id="geoTools"
-        class="d-flex flex-column overflow-auto"
+        class="overflow-auto"
         [ngClass]="currentMenuDisplayed == 'geoTools' ? 'd-block' : 'd-none'"
         [map]="map"
         [currentEpsg]="currentEpsg"
@@ -16,7 +16,7 @@
 
       <app-layer-manager
         id="createTools"
-        class="d-flex flex-column overflow-auto"
+        class="overflow-auto"
         [ngClass]="currentMenuDisplayed == 'createTools' ? 'd-block' : 'd-none'"
         [map]="map"
         [currentEpsg]="currentEpsg"

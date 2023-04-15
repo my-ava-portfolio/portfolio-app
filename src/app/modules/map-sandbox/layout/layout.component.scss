@@ -2,9 +2,7 @@
   // user-select: none
 }
 
-#mapTools {
-  // height: calc(100vh - 56px);  // 56px is about the control bar height...
-  height:100vh;
+#panelsContainer {
   box-shadow: 1em 0rem 1rem rgb(0 0 0 / 15%) !important;
 
   &.displayed{
