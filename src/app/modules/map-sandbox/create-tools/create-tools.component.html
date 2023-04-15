@@ -1,0 +1,9 @@
+<div id="creationTools" class="text-center m-3">
+
+    <ng-container *ngFor="let layer of layerTypes">
+        <button class="btn btn-sm btn-dark border-0 me-1 text-warning" (click)="addLayer(layer.mode)" [ngbPopover]="layer.label" placement="bottom"triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="layer.icon"></fa-icon>
+        </button>
+    </ng-container>
+
+</div>

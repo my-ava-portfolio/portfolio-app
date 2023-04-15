@@ -126,7 +126,6 @@ export class layerHandler {
       features: this.select.getFeatures(),
     });
   }
-
   enableTranslating(): void {
     this.map.addInteraction(this.translate)
   }
@@ -367,7 +366,6 @@ export class layerHandler {
       return featureFound.get(attribute)
     }
   }
-
 
   features(): any[] {
     if (!this.deleted) {

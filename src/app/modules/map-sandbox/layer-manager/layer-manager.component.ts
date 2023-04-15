@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { faXmark, faCircle, faWaveSquare, faDrawPolygon, faUpload, faExpand, faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { layerHandler, layerHandlerPositionning } from '@modules/map-sandbox/shared/core';
 
@@ -14,6 +14,9 @@ import GeoJSON from 'ol/format/GeoJSON';
 import WKT from 'ol/format/WKT';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '../shared/service/interactions.service';
+
+import { geomLayerTypes } from '@modules/map-sandbox/shared/data-types';
+
 
 @Component({
   selector: 'app-layer-manager',
@@ -49,23 +52,6 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   currentLayerIdSelected!: string;
 
   layerNamedIncrement: number = -1;
-  createModesSupported = [
-    {
-      "mode": 'Point',
-      "label": 'Ajouter une couche de Points',
-      "icon": this.pointIcon
-    },
-    {
-      "mode": 'LineString',
-      "label": 'Ajouter une couche de LineString',
-      "icon": this.lineStringIcon
-    },
-    {
-      "mode": 'Polygon',
-      "label": 'Ajouter une couche de Polygones',
-      "icon": this.polygonIcon
-    }
-  ]
 
   createFromModesSupported = [
     {
@@ -140,7 +126,8 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     }
   }
 
-  addLayer(geomType: any, groupId: string | null = null): void {
+  addLayer(geomType: geomLayerTypes, groupId: string | null = null): void {
+    // TODO geomType set types in create-tools components
     const layerNo: number = ++this.layerNamedIncrement
     let newLayer = new layerHandler(
       this.map,
@@ -264,20 +251,10 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
       } else if (this.importDataType === "WKT(s)") {
         featuresToAdd = readStringWktAndGroupedByGeomType(this.strInputDataValues.split('\n'), featureParams)
       }
-
       if (this.modeImportInput === 'new') {
-        Object.keys(featuresToAdd).forEach((geomType: string) => {
+        Object.keys(featuresToAdd).forEach((geomType) => {
           let features = featuresToAdd[geomType]
-          if ('Point' === geomType) {
-            this.addLayerFromFeatures(geomType, features)
-            // TODO should have thier own properties
-          }
-          if ('LineString' === geomType) {
-            this.addLayerFromFeatures(geomType, features)
-          }
-          if ('Polygon' === geomType) {
-            this.addLayerFromFeatures(geomType, features)
-          }
+          this.addLayerFromFeatures(geomType as geomLayerTypes, features)
         })
       } else {
         let layerTarget = this.getLayerFromId(this.modeImportInput)
@@ -343,10 +320,9 @@ function readGeoJsonAndGroupedByGeomType(geoData: string, featureParams: any): a
 
 }
 
-function readStringWktAndGroupedByGeomType(Wkts: string[], featureParams: any): any {
+function readStringWktAndGroupedByGeomType(inputWkts: string[], featureParams: any): any {
   let featuresGroupedByGeom: any = {}
-
-  Wkts.forEach((wktValue: string) => {
+  inputWkts.forEach((wktValue: string) => {
     // POLYGON((10.689 -25.092, 34.595 -20.170, 38.814 -35.639, 13.502 -39.155, 10.689 -25.092))
     let feature!: any;
     try {
@@ -355,7 +331,8 @@ function readStringWktAndGroupedByGeomType(Wkts: string[], featureParams: any): 
       alert(error.message)
     }
 
-    if (feature !== undefined) {
+    if (feature !== undefined && !feature.getGeometry().flatCoordinates.includes(NaN) ) {
+      // NaN check appears if the projection is not well defined
       const featureGeom = feature.getGeometry();
       const featureGeomType: string = featureGeom.getType()
       if (!( featureGeomType in featuresGroupedByGeom)) {
@@ -366,6 +343,8 @@ function readStringWktAndGroupedByGeomType(Wkts: string[], featureParams: any): 
         featuresGroupedByGeom[featureGeomType].push(feature)
       }
     }
+    // TODO addd gui warning if something wrong appears with geom
+    // => need to create a dedicated component
 
   })
   return featuresGroupedByGeom

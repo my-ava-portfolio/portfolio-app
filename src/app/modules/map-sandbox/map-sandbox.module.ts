@@ -18,6 +18,7 @@ import { FeatureComponent } from '@modules/map-sandbox/layer-components/feature/
 import { EditBarComponent } from '@modules/map-sandbox/edit-bar/edit-bar.component';
 
 import { DirectivesModule } from '@shared/directives/directives.module';
+import { CreateToolsComponent } from './create-tools/create-tools.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     FeatureComponent,
     GeoinfoComponent,
     LayerManagerComponent,
-    EditBarComponent
+    EditBarComponent,
+    CreateToolsComponent
   ],
   imports: [
     CommonModule,

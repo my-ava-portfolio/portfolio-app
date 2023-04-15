@@ -2,16 +2,11 @@
   Créer
 </div>
 
-<div id="creationTools" class="text-center m-3">
 
-  <ng-container *ngFor="let feature of createModesSupported">
-    <button class="btn btn-sm btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
-      <fa-icon class="" [icon]="feature.icon"></fa-icon>
-    </button>
-  </ng-container>
-
-</div>
-
+<app-create-tools
+(newLayerEvent)="addLayer($event)"
+>
+</app-create-tools>
 
 <div class="text-center fw-bold bg-dark text-white p-3">
   Importer
