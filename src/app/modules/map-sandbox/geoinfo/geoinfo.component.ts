@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import { MapService } from '@services/map.service';
 import MousePosition from 'ol/control/MousePosition';
-import { Subscription } from 'rxjs';
 import { format } from 'ol/coordinate';
 
 import Map from 'ol/Map';
@@ -12,49 +11,44 @@ import Map from 'ol/Map';
   templateUrl: './geoinfo.component.html',
   styleUrls: ['./geoinfo.component.scss']
 })
-export class GeoinfoComponent implements OnInit, OnDestroy, AfterViewInit {
+export class GeoinfoComponent implements AfterViewInit {
   @Input() currentEpsg!: string;
   @Input() map!: Map;
   @Input() epsgAvailable!: string[];
 
   mousePositionControl!: MousePosition;
-  cursorCoordinates!: any;
+  defaultCoordsPrecision = 4;
 
-  mapSubscription!: Subscription;
-
-  constructor(
-    private mapService: MapService,
-  ) {  }
-
-  ngOnInit(): void {
-  }
+  constructor(private mapService: MapService) {}
 
   ngAfterViewInit(): void {
     this.initMousePosition()
 
   }
 
-  ngOnDestroy(): void {
+  updatePrecision(event: any): void {
+    this.mousePositionControl.setCoordinateFormat(this.setPrecisionFunc(event.target.value))
   }
 
+  setProjection(epsg: string): void {
+    this.currentEpsg = epsg;
+    this.mapService.setProjectionOnMap(epsg)
+    this.setMapEpsg();
 
-  initMousePosition(): void {
+  }
+
+  private initMousePosition(): void {
     let mouseCoordinatesDiv!: any;
     mouseCoordinatesDiv = document.getElementById('mouseCoordinates')
 
     this.mousePositionControl = new MousePosition({
-      coordinateFormat: this.setPrecisionFunc(4),
+      coordinateFormat: this.setPrecisionFunc(this.defaultCoordsPrecision),
       placeholder: 'x :<br>y : ',
       className: 'mouse-position',
       target: mouseCoordinatesDiv,
-
     });
 
     this.map.addControl(this.mousePositionControl)
-  }
-
-  updatePrecision(event: any): any {
-    return this.mousePositionControl.setCoordinateFormat(this.setPrecisionFunc(event.target.value))
   }
 
   private setPrecisionFunc(precision: any): any {
@@ -65,17 +59,8 @@ export class GeoinfoComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  setMapEpsg(): void {
+  private setMapEpsg(): void {
     this.currentEpsg = this.map.getView().getProjection().getCode();
-  }
-
-  setProjection(epsg: string): void {
-    this.currentEpsg = epsg;
-
-    this.mapService.setProjectionOnMap(epsg)
-
-    this.setMapEpsg();
-
   }
 
 }
