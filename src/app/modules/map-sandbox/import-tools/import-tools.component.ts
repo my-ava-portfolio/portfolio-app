@@ -52,9 +52,7 @@ export class ImportToolsComponent implements OnInit {
   moveImportDataModalToBody(): void {
     let modalLayerDiv = document.getElementById('modalDataImport');
     if (modalLayerDiv !== null) {
-      console.log(modalLayerDiv)
       let bodyDiv = document.body;
-      console.log(bodyDiv)
       if (bodyDiv !== null) {
         bodyDiv.appendChild(modalLayerDiv)
       }

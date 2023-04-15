@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { faArrowsUpDownLeftRight, faCircle, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil } from '@fortawesome/free-solid-svg-icons';
 
 import { layerHandler } from '@modules/map-sandbox/shared/core';
 
@@ -24,11 +24,18 @@ export class EditBarComponent implements OnInit, OnDestroy {
   unLockIcon = faLockOpen;
   polygonIcon = faDrawPolygon;
   moveIcon = faArrowsUpDownLeftRight;
+  pathIcon = faRoad;
 
+  // add
   isDrawn: boolean = false;
+
+  // edit
   isEdited: boolean = false;
   isHole: boolean = false;
   isMoved: boolean = false;
+
+  // compute
+  isShortestPath: boolean = false;
 
   isEditBarEnabled!: boolean;;
 
@@ -186,6 +193,11 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
     this.layer.disableDrawing();
     this.isHole = false;
+  }
+
+  computeShortestPath(): void {
+    //TODO call osmrx-api
+    console.log(this.layer.features().length)
   }
 
 }
