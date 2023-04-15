@@ -29,7 +29,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   @Input() epsgAvailable!: string[];
 
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
-  @ViewChild('layersListDiv') layersListDiv!: ElementRef;
+  @ViewChild('layersList') layersList!: ElementRef;
 
   disabledIcon = faXmark;
 
@@ -98,51 +98,42 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
 
-    if (changes.layersListDiv) {
+    if (changes.layersList) {
       this.refreshLayers()
     }
   }
 
-  addLayer(geomType: geomLayerTypes, groupId: string | null = null): void {
-    // TODO geomType set types in create-tools components
+  addLayer(geomType: geomLayerTypes): void {
+    let layer = this.setNewLayer(geomType)
+    this.existingLayers.push(layer)
+    this.refreshLayers()
+
+  }
+
+  private setNewLayer(geomType: geomLayerTypes, layerName: string | null = null, groupId: string | null = null): layerHandler {
     const layerNo: number = ++this.layerNamedIncrement
-    let newLayer = new layerHandler(
+    if (layerName === null) {
+      layerName = 'layer ' + layerNo
+    }
+    return new layerHandler(
       this.map,
-      'layer ' + layerNo,
+      layerName,
       geomType,
       layerNo, // Zindex
       groupId
     )
-    this.existingLayers.push(newLayer)
-    this.refreshLayers()
-
   }
 
   duplicateLayer(layer: layerHandler): void {
-    const layerNo: number = this.existingLayers.length
-    let newLayer = new layerHandler(
-      this.map,
-      layer.layerName + " copy",
-      layer.geomType,
-      layerNo, // Zindex
-      null
-    )
+    let duplicatedLayer = this.setNewLayer(layer.geomType, layer.layerName + " copy")
     // copy the feature from the current feature selecte to duplicate
-    newLayer.addFeaturesAndUpdateIds(layer.features())
-    this.existingLayers.push(newLayer)
+    duplicatedLayer.addFeaturesAndUpdateIds(layer.features())
+    this.existingLayers.push(duplicatedLayer)
     this.refreshLayers()
   }
 
   addLayerFromFeatures(geomType: 'Point' | 'LineString' | 'Polygon', features: any[]): void {
-    // TODO verify if geomType and features geom type match
-    const layerNo: number = ++this.layerNamedIncrement
-    let newLayer = new layerHandler(
-      this.map,
-      'layer ' + layerNo,
-      geomType,
-      layerNo, // Zindex
-      null
-    )
+    let newLayer = this.setNewLayer(geomType)
     newLayer.addFeaturesAndUpdateIds(features)
     this.existingLayers.push(newLayer)
     this.refreshLayers()

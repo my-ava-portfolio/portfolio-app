@@ -79,7 +79,7 @@ export class ImportToolsComponent implements OnInit {
         featuresToAdd = readStringWktAndGroupedByGeomType(this.strInputDataValues.split('\n'), featureParams)
       }
 
-      if (this.modeImportInput === 'new') {
+      if (this.modeImportInput === 'newLayer') {
         this.featuresToNewLayerEvent.emit(featuresToAdd)
       } else {
         const layerIdToAppend = this.modeImportInput
@@ -89,7 +89,7 @@ export class ImportToolsComponent implements OnInit {
 
     this.strInputDataValues = null;
     this.strInputEpsgInput = null;
-    this.modeImportInput = 'new';
+    this.modeImportInput = 'newLayer';
   }
 
 }
@@ -115,7 +115,7 @@ function readStringWktAndGroupedByGeomType(inputWkts: string[], featureParams: a
     let feature!: any;
     try {
       feature = new WKT().readFeature(wktValue, featureParams);
-    } catch (error: any) { // TODO catche the expected exception
+    } catch (error: any) { // TODO catch the expected exception
       alert(error.message)
     }
 
@@ -131,7 +131,7 @@ function readStringWktAndGroupedByGeomType(inputWkts: string[], featureParams: a
         featuresGroupedByGeom[featureGeomType].push(feature)
       }
     }
-    // TODO addd gui warning if something wrong appears with geom
+    // TODO add gui warning if something wrong appears with geom
     // => need to create a dedicated component
 
   })

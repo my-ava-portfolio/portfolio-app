@@ -1,3 +1,4 @@
+<div>
 <div class="text-center fw-bold bg-dark text-white p-3">
   Créer
 </div>
@@ -34,14 +35,14 @@
     <fa-icon class="" [icon]="btnVisible.checked ? visibleIcon : invisibleIcon" size="1x"></fa-icon>
   </label>
 
-  <button class="m-1 btn btn-sm btn-transparent border-0 pointer" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
-    <fa-icon class="" [icon]="centerIcon" size="1x"></fa-icon>
-  </button>
-
   <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="lockLayers(btnLock.checked)">
   <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnLockLayers" container="body" [ngbPopover]="btnLock.checked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="btnLock.checked ? lockIcon : unLockIcon" size="1x"></fa-icon>
   </label>
+
+  <button class="m-1 btn btn-sm btn-transparent border-0 pointer" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="centerIcon" size="1x"></fa-icon>
+  </button>
 
   <button class="m-1 btn btn-sm btn-transparent border-0 pointer text-danger" (click)="removeLayers()" ngbPopover="Supprimer toutes les couches" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="disabledIcon" size="1x"></fa-icon>
@@ -50,9 +51,7 @@
 </div>
 
 
-<div id="layersContainer" class="d-flex flex-column mx-2 overflow-auto">
-
-  <div #layersListDi id="layersList" class="d-flex flex-column justify-content-start mb-2">
+  <div #layersList id="layersList" class="d-flex flex-column justify-content-start mb-2">
 
     <div
       class="layer pointer d-flex flex-column small mt-1 mx-1 px-1 align-items-around"
@@ -84,5 +83,4 @@
     </ng-container>
   </div>
 
-</div>
 
