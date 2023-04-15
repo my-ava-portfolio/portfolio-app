@@ -1,10 +1,10 @@
 <nav
+  fluidHeight
   id="leftSideBar"
   *ngIf="userInfoData"
   [ngClass]="sideBarCollapsed ? 'inactive' : 'active'"
   class="
     sticky-top
-    vh-100
     bg-dark bg-gradient
     overflow-auto
   "
@@ -15,7 +15,6 @@
     class="
       d-flex flex-column
       h-100
-      mx-2
       text-center
     "
   >
@@ -67,7 +66,7 @@
       </ul>
     </div>
 
-    <div id="leftSideBar__container__footer" class="mt-auto mb-3">
+    <div id="leftSideBar__container__footer" class="mt-auto pb-3">
 
       <ul class="list-unstyled list-group justify-content-center mb-2" [ngClass]="sideBarCollapsed ? 'list-group-horizontal' : ''">
 
