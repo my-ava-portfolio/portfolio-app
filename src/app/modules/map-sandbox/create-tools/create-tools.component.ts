@@ -16,6 +16,7 @@ export class CreateToolsComponent {
 
   @Output() newLayerEvent = new EventEmitter<geomLayerTypes>();
 
+  // TODO icons must be linked to others components:
   private pointIcon = faCircle;
   private lineStringIcon = faWaveSquare;
   private polygonIcon = faDrawPolygon;
