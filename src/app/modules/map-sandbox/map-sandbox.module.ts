@@ -16,7 +16,8 @@ import { LayerManagerComponent } from '@modules/map-sandbox/layer-manager/layer-
 import { LayerComponent } from '@modules/map-sandbox/layer-components/layer/layer.component';
 import { FeatureComponent } from '@modules/map-sandbox/layer-components/feature/feature.component';
 import { EditBarComponent } from '@modules/map-sandbox/edit-bar/edit-bar.component';
-import { FluidHeightDirective } from '@shared/directives/fluid-height.directive';
+
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 
 @NgModule({
@@ -26,15 +27,15 @@ import { FluidHeightDirective } from '@shared/directives/fluid-height.directive'
     FeatureComponent,
     GeoinfoComponent,
     LayerManagerComponent,
-    EditBarComponent,
-    FluidHeightDirective
+    EditBarComponent
   ],
   imports: [
     CommonModule,
     MapSandboxRoutingModule,
     FontAwesomeModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    DirectivesModule
   ],
 })
 export class MapSandboxModule { }
