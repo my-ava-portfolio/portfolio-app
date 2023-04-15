@@ -36,7 +36,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   isLegendDisplayed = true;
 
-  currentMenuDisplayed: 'geoTools' | 'createTools' = 'geoTools'
+  currentMenuDisplayed: 'geoTools' | 'createTools' = 'createTools'
 
   editBarEnabled!: boolean
   currentLayerSelected!: layerHandler | null;
@@ -96,7 +96,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.mapService.resetMapView()
   }
 
-  sendResumeSubMenus(): void {
+  private sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
   }

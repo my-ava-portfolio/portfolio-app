@@ -1,60 +1,55 @@
-<div class="d-flex flex-row align-items-center justify-content-center bg-dark bg-gradient text-white py-2 px-3">
-  <span class="fw-bold">Créer des couches</span>
+<div class="text-center fw-bold bg-dark text-white p-3">
+  Créer
 </div>
 
-<div id="creationTools" class="d-flex flex-column">
+<div id="creationTools" class="text-center m-3">
 
-  <div class="d-flex flex-row justify-content-center my-2 mx-3">
-
-    <ng-container *ngFor="let feature of createModesSupported">
-      <button class="badge bg-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="feature.icon"></fa-icon>
-      </button>
-    </ng-container>
-
-  </div>
+  <ng-container *ngFor="let feature of createModesSupported">
+    <button class="btn btn-sm btn-dark border-0 me-1 text-warning" (click)="addLayer(feature.mode)" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="feature.icon"></fa-icon>
+    </button>
+  </ng-container>
 
 </div>
 
-<div class="d-flex flex-row align-items-center justify-content-center bg-dark bg-gradient text-white py-2 px-3">
-  <span class="fw-bold">Importer des données</span>
+
+<div class="text-center fw-bold bg-dark text-white p-3">
+  Importer
 </div>
 
-<div id="creationTools" class="d-flex flex-column">
+<div id="importTools" class="text-center m-3">
 
-  <div class="d-flex flex-row justify-content-center my-2 mx-3">
-
-    <ng-container *ngFor="let feature of createFromModesSupported">
-      <button class="badge bg-dark border-0 me-1 text-warning" (click)="setImportDataType(feature.label_text)" data-bs-toggle="modal" data-bs-target="#modalDataImport" type="button" role="tab" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
-        <fa-icon class="mx-1" [icon]="feature.icon"></fa-icon>{{ feature.label_text}}
-      </button>
-    </ng-container>
-
-  </div>
+  <ng-container *ngFor="let feature of createFromModesSupported">
+    <button class="btn btn-sm btn-dark border-0 me-1 text-warning" (click)="setImportDataType(feature.label_text)" data-bs-toggle="modal" data-bs-target="#modalDataImport" type="button" role="tab" [ngbPopover]="feature.label" placement="bottom"triggers="mouseenter:mouseleave">
+      <fa-icon class="mx-1" [icon]="feature.icon"></fa-icon>{{ feature.label_text}}
+    </button>
+  </ng-container>
 
 </div>
 
-<div class="d-flex flex-row align-items-center justify-content-center bg-dark bg-gradient text-white py-2 px-3">
-  <span class="fw-bold">Couches</span>
+
+<div class="text-center fw-bold bg-dark text-white p-3">
+  Couches
 </div>
 
 <div id="layersTools" class="d-flex flex-row justify-content-evenly align-items-center mx-2">
 
   <input #btnVisible type="checkbox" class="btn-check" id="btnVisibleLayers" [checked]="true" (click)="visibleLayers(btnVisible.checked)">
-  <label class="p-1 bg-transparent border-0 pointer" for="btnVisibleLayers" [ngClass]="btnVisible.checked ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="btnVisible.checked ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+
+  <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnVisibleLayers" [ngClass]="btnVisible.checked ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="btnVisible.checked ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="btnVisible.checked ? visibleIcon : invisibleIcon" size="1x"></fa-icon>
   </label>
 
-  <button class="p-1 bg-transparent border-0" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+  <button class="m-1 btn btn-sm btn-transparent border-0 pointer" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="centerIcon" size="1x"></fa-icon>
   </button>
 
   <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="lockLayers(btnLock.checked)">
-  <label class="p-1 bg-transparent border-0 pointer" for="btnLockLayers" container="body" [ngbPopover]="btnLock.checked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
+  <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnLockLayers" container="body" [ngbPopover]="btnLock.checked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="btnLock.checked ? lockIcon : unLockIcon" size="1x"></fa-icon>
   </label>
 
-  <button class="p-1 bg-transparent border-0 text-danger" (click)="removeLayers()" ngbPopover="Supprimer toutes les couches" triggers="mouseenter:mouseleave">
+  <button class="m-1 btn btn-sm btn-transparent border-0 pointer text-danger" (click)="removeLayers()" ngbPopover="Supprimer toutes les couches" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="disabledIcon" size="1x"></fa-icon>
   </button>
 
