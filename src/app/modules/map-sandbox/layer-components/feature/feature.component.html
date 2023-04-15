@@ -72,9 +72,14 @@
         <div id="toastActions" class="d-flex flex-row justify-content-start align-items-center">
           <span class="fw-bold">Actions :</span>
 
-          <span class="badge bg-dark rounded m-1 small pointer" (click)="copyToClipboard(getWktFromFeature(feature))" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
+          <span class="badge bg-dark rounded m-1 small pointer" (click)="copyToClipboard(getWktFromFeature())" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
             WKT
           </span>
+
+          <span class="badge bg-primary rounded m-1 small pointer" (click)="copyToClipboard(getBoundsFromFeature())" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier la Bbox (xmin, ymin, xmax, ymax)">
+            Bbox
+          </span>
+
 
         </div>
 
@@ -105,8 +110,6 @@
           </div>
 
         </div>
-
-        <span class="">{{ getWktFromFeature(feature) }}</span>
 
       </div>
     </div>

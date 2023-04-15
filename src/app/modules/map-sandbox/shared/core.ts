@@ -17,6 +17,7 @@ import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
+import { Extent } from 'ol/extent';
 
 const defaultStrokeWidth: number = 2;
 const defaultStrokeColor: string = "black";
@@ -456,6 +457,11 @@ export class layerHandler {
       feature.set(styleProperties, value, false)
       // refreshFeatureStyle(feature) // not need ? supported by changefeature event....
     })
+  }
+
+  exportBounds(): Extent {
+    // TODO return the list for copy to clipboard
+    return this.sourceFeatures.getExtent();
   }
 
   exportToGeoJSON(): string {
