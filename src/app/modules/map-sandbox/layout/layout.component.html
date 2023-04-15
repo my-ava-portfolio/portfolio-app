@@ -1,6 +1,4 @@
-<div class="container-fluid g-0">
-
- <div fluidHeight id="sandbox" class="d-flex flex-row position-fixed">
+<div fluidHeight id="sandbox" class="d-flex flex-row position-fixed">
 
     <div id="panelsContainer" class="d-flex flex-column bg-light position-relative" [ngClass]="!isLegendDisplayed ? 'hidden' : 'displayed'">
 
@@ -55,22 +53,17 @@
 
 
 
-  </div>
-
-
-
 </div>
 
 
-<div class="d-flex flex-row justify-content-center">
+<div class="d-flex flex-row justify-content-center" *ngIf="editBarEnabled && currentLayerSelected !== null">
 
   <app-edit-bar
-  id="editBar"
-  class="d-flex flex-row align-items-center justify-content-center m-2"
-  *ngIf="editBarEnabled && currentLayerSelected !== null"
-  [layer]="currentLayerSelected"
-  [currentEpsg]="currentEpsg"
+    id="editBar"
+    [layer]="currentLayerSelected"
+    [currentEpsg]="currentEpsg"
   ></app-edit-bar>
+
 </div>
 
 

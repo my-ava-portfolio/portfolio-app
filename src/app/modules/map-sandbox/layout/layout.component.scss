@@ -45,32 +45,20 @@
 }
 
 
-
-
-.tool.btn {
-  width: 45px;
+.tool {
   border-radius: unset;
-  -webkit-transition: width 1s ease-in-out;
-  -moz-transition: width 1s ease-in-out;
-  -o-transition: width 1s ease-in-out;
-  transition: width 1s ease-in-out;
+  transition: all 0.1s;
+
+  &.btn {
+    width: 45px;
+
+    &:hover, &.selected {
+      width: 60px;
+    }
+  }
+
 }
 
-.tool.btn:hover {
-  width: 60px;
-  -webkit-transition: width 1s ease-in-out;
-  -moz-transition: width 1s ease-in-out;
-  -o-transition: width 1s ease-in-out;
-  transition: width 1s ease-in-out;
-}
-
-.tool.btn.selected {
-  width: 60px;
-  -webkit-transition: width 1s ease-in-out;
-  -moz-transition: width 1s ease-in-out;
-  -o-transition: width 1s ease-in-out;
-  transition: width 1s ease-in-out;
-}
 
 #editBar {
   position: fixed;
