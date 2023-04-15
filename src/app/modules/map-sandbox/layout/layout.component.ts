@@ -20,6 +20,8 @@ import { InteractionsService } from '../shared/service/interactions.service';
 export class LayoutComponent implements OnInit, OnDestroy {
 
   currentEpsg!: string;
+
+  // used by menus
   epsgAvailable = ["EPSG:4326", "EPSG:3857"];
 
   // icons
@@ -33,7 +35,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   defaultMapView!: View;
 
   isLegendDisplayed = true;
-  currentMenuDisplayed = 'createTools'
+
+  currentMenuDisplayed: 'geoTools' | 'createTools' = 'geoTools'
 
   editBarEnabled!: boolean
   currentLayerSelected!: layerHandler | null;
@@ -49,6 +52,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private cdRef:ChangeDetectorRef
   ) {
 
+    // Get the map container, view and epsg
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
         this.map = map;
