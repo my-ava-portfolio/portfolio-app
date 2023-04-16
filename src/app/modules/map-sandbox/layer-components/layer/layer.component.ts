@@ -184,6 +184,8 @@ export class LayerComponent implements OnInit {
   removeLayer(): void {
     this.layer.removeLayer()
     this.removeLayerId.emit(this.layer.id)
+    this.interactionsService.sendSelectedLayer(null)
+
     this.ngOnDestroy()
   }
 

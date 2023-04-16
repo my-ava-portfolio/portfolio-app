@@ -9,9 +9,8 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { EditComputingService } from '../shared/service/edit-computing.service';
 import { GraphComputingService } from '../shared/service/graph-computing.service';
 import { Feature } from 'ol';
-import { LineString } from 'ol/geom';
-import { lineStringType } from '../shared/data-types';
 
+import { readStringWktAndGroupedByGeomType } from '@modules/map-sandbox/import-tools/import-tools.component'
 
 @Component({
   selector: 'app-edit-bar',
@@ -219,21 +218,15 @@ export class EditBarComponent implements OnInit, OnDestroy {
         }
 
       })
-
+      const featureParams = {
+        dataProjection: "EPSG:4326",
+        featureProjection: this.currentEpsg
+      }
       this.graphComputingService.getShortestPathFromApi(wktFeatures).subscribe(
         // TODO improve it
-        (data: number[][]) => {
-          let path!: any;
-          path = new LineString(data)
-          if (this.currentEpsg !== 'EPSG:4326') {
-            path = path.transform('EPSG:4326', this.currentEpsg)
-          }
-          let feature: Feature = new Feature({
-            geometry: path
-          });
-          let geomType: lineStringType = 'LineString'
-          this.editComputingService.addNewFeatures( {[geomType]: [feature]})
-
+        (data: string[]) => {
+          const featuresToAdd = readStringWktAndGroupedByGeomType(data, featureParams)
+          this.editComputingService.addNewFeatures(featuresToAdd)
         })
       
     }
@@ -244,4 +237,5 @@ export class EditBarComponent implements OnInit, OnDestroy {
       this.editComputingService.addNewFeatures(this.layer.exportBoundsPolygon())
     }
   }
+  
 }

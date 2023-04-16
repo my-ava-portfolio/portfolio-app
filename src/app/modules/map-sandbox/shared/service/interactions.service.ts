@@ -39,7 +39,7 @@ export class InteractionsService {
   sendSelectedLayerId(layerId: string): void {
     this.layerIdSelected.next(layerId)
   }
-  sendSelectedLayer(layer: layerHandler |null): void {
+  sendSelectedLayer(layer: layerHandler | null): void {
     this.layerObjectSelected.next(layer)
   }
 }

@@ -98,7 +98,7 @@ function readGeoJsonAndGroupedByGeomType(geoData: string, featureParams: any): a
 
 }
 
-function readStringWktAndGroupedByGeomType(inputWkts: string[], featureParams: any): any {
+export function readStringWktAndGroupedByGeomType(inputWkts: string[], featureParams: any): any {
   let featuresGroupedByGeom: any = {}
   inputWkts.forEach((wktValue: string) => {
     // POLYGON((10.689 -25.092, 34.595 -20.170, 38.814 -35.639, 13.502 -39.155, 10.689 -25.092))
