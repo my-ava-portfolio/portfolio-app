@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand } from '@fortawesome/free-solid-svg-icons';
 
 import { layerHandler } from '@modules/map-sandbox/shared/core';
 
 import { InteractionsService } from '../shared/service/interactions.service';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { EditComputingService } from '../shared/service/edit-computing.service';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   polygonIcon = faDrawPolygon;
   moveIcon = faArrowsUpDownLeftRight;
   pathIcon = faRoad;
+  centerIcon = faExpand;
 
   // add
   isDrawn: boolean = false;
@@ -48,6 +50,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   constructor(
     private interactionsService: InteractionsService,
+    private editComputingService: EditComputingService,
     private cdRef: ChangeDetectorRef,
   ) {
 
@@ -200,4 +203,10 @@ export class EditBarComponent implements OnInit, OnDestroy {
     console.log(this.layer.features().length)
   }
 
+  computeBoundingBox(): void {
+    console.log(this.layer.features().length)
+    if (this.layer.features().length > 0) {
+      this.editComputingService.addNewFeatures(this.layer.exportBoundsPolygon())
+    }
+  }
 }

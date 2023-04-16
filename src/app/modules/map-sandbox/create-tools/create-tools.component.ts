@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 
 import { faCircle, faWaveSquare, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
-import { geomLayerTypes, point, lineString, polygon } from '@modules/map-sandbox/shared/data-types';
+import { geomLayerTypes, pointType, lineStringType, polygonType } from '@modules/map-sandbox/shared/data-types';
 
 
 @Component({
@@ -23,17 +23,17 @@ export class CreateToolsComponent {
   
   layerTypes = [
     {
-      "mode": 'Point' as point,
+      "mode": 'Point' as pointType,
       "label": 'Ajouter une couche de Points',
       "icon": this.pointIcon
     },
     {
-      "mode": 'LineString' as lineString,
+      "mode": 'LineString' as lineStringType,
       "label": 'Ajouter une couche de LineString',
       "icon": this.lineStringIcon
     },
     {
-      "mode": 'Polygon' as polygon,
+      "mode": 'Polygon' as polygonType,
       "label": 'Ajouter une couche de Polygones',
       "icon": this.polygonIcon
     }

@@ -1,5 +1,5 @@
 import GeoJSON from 'ol/format/GeoJSON';
-import {LineString, Polygon}  from 'ol/geom';
+import {LineString, Point, Polygon}  from 'ol/geom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Draw, Modify, Snap, Translate } from 'ol/interaction';
@@ -17,7 +17,8 @@ import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
-import { Extent } from 'ol/extent';
+
+import { featuresLayerType, polygonType } from '@modules/map-sandbox/shared/data-types';
 
 const defaultStrokeWidth: number = 2;
 const defaultStrokeColor: string = "black";
@@ -287,6 +288,7 @@ export class layerHandler {
     } else {
       name = 'feature ' + this.counter
     }
+    // TOOD add the layerName ? 
     feature.setProperties({
       'id': feature.getId(),
       'layer_id': this.id,
@@ -459,9 +461,27 @@ export class layerHandler {
     })
   }
 
-  exportBounds(): Extent {
+  exportBounds(): number[] {
     // TODO return the list for copy to clipboard
-    return this.sourceFeatures.getExtent();
+    return this.sourceFeatures.getExtent().join(',').split(',').map(Number) ;
+  }
+
+  exportBoundsPolygon(): featuresLayerType {
+    const bounds = this.exportBounds()
+    const coordinates = [
+      [bounds[0], bounds[3]],
+      [bounds[2], bounds[3]],
+      [bounds[2], bounds[1]],
+      [bounds[0], bounds[1]],
+      [bounds[0], bounds[3]],
+    ];
+    console.log(coordinates)
+    const boundsPolygon: Polygon = new Polygon([coordinates])
+    let feature: Feature = new Feature({
+      geometry: boundsPolygon
+    });
+    let geomType: polygonType = 'Polygon'
+    return {[geomType]: [feature]}
   }
 
   exportToGeoJSON(): string {

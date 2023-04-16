@@ -9,13 +9,11 @@ import {extend} from 'ol/extent';
 import { MapService } from '@services/map.service';
 import { Subscription } from 'rxjs';
 
-import VectorSource from 'ol/source/Vector';
-import GeoJSON from 'ol/format/GeoJSON';
-import WKT from 'ol/format/WKT';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '../shared/service/interactions.service';
 
-import { geomLayerTypes } from '@modules/map-sandbox/shared/data-types';
+import { featuresLayerType, geomLayerTypes } from '@modules/map-sandbox/shared/data-types';
+import { EditComputingService } from '../shared/service/edit-computing.service';
 
 
 @Component({
@@ -53,12 +51,14 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   epsgChangesSubscription!: Subscription;
   layerIdSelectedSubscription!: Subscription;
+  newFeaturesSubscription!: Subscription;
 
   zoomPadding = [100, 100, 100, 100];  // TODO refactor
 
   constructor(
     private mapService: MapService,
     private interactionsService: InteractionsService,
+    private editComputingService: EditComputingService,
   ) {
 
     this.epsgChangesSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
@@ -79,6 +79,12 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
       }
     )
 
+    this.newFeaturesSubscription = this.editComputingService.newFeatures.subscribe(
+      (newFeatures: featuresLayerType) => {
+        this.createNewLayersFromFeatures(newFeatures)
+      }
+    )
+
    }
 
   ngOnInit(): void {
@@ -91,9 +97,9 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
       layer.cleanEvents()
     })
 
-    this.epsgChangesSubscription.unsubscribe()
-    this.layerIdSelectedSubscription.unsubscribe()
-
+    this.epsgChangesSubscription.unsubscribe();
+    this.layerIdSelectedSubscription.unsubscribe();
+    this.newFeaturesSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -186,7 +192,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   }
 
   createNewLayersFromFeatures(featuresToAdd: any): void {
-    // TODO improve!
+    // TODO improve! use featuresLayerType as type
     Object.keys(featuresToAdd).forEach((geomType) => {
       let features = featuresToAdd[geomType]
       this.addLayerFromFeatures(geomType as geomLayerTypes, features)
