@@ -66,7 +66,7 @@
           <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
         </button>
 
-        <button class="p-1 bg-transparent border-0 text-black" (click)="moveModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayer-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+        <button class="p-1 bg-transparent border-0 text-black" (click)="displayLayerSettings()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayerSettings-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
         </button>
 
@@ -111,7 +111,8 @@
 
 </div>
 
-<div [id]="'modalLayer-'+ layer.id" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div moveDivToBody [isRemoved]="this.isLayerRemoved" 
+[id]="'modalLayerSettings-'+ layer.id" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">

@@ -1,9 +1,8 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { layerHandler } from '@modules/map-sandbox/shared/core';
 import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
-
 import VectorSource from 'ol/source/Vector';
 
 @Component({
@@ -11,7 +10,7 @@ import VectorSource from 'ol/source/Vector';
   templateUrl: './import-tools.component.html',
   styleUrls: ['./import-tools.component.scss']
 })
-export class ImportToolsComponent implements OnInit {
+export class ImportToolsComponent implements OnInit, OnDestroy {
   @Input() epsgAvailable!: string[];
   @Input() currentEpsg!: string;
   @Input() existingLayers!: layerHandler[];
@@ -35,28 +34,21 @@ export class ImportToolsComponent implements OnInit {
       "icon": this.loadIcon
     },
   ]
-
+  componentRemoved: boolean = false;
   importDataType!: string;
   strInputDataValues: string | null = null;
   strInputEpsgInput: string | null = null;
   modeImportInput: string = 'newLayer';
 
   ngOnInit(): void {
-    this.moveImportDataModalToBody()
   }
 
+  ngOnDestroy(): void {
+    this.componentRemoved = true;
+  }
+  
   setImportDataType(dataType: string): void {
     this.importDataType = dataType;
-  }
-
-  moveImportDataModalToBody(): void {
-    let modalLayerDiv = document.getElementById('modalDataImport');
-    if (modalLayerDiv !== null) {
-      let bodyDiv = document.body;
-      if (bodyDiv !== null) {
-        bodyDiv.appendChild(modalLayerDiv)
-      }
-    }
   }
 
   importFromFormat(): void {

@@ -5,6 +5,7 @@ import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
 
+
 @Component({
   selector: 'app-layer',
   templateUrl: './layer.component.html',
@@ -59,7 +60,7 @@ export class LayerComponent implements OnInit {
   layerIdSelectedSubscription!: Subscription;
 
   displayLayerModal = false;
-
+  isLayerRemoved = false;
   exportData: string = '';
   exportDataMode = 'geojson'
 
@@ -128,11 +129,8 @@ export class LayerComponent implements OnInit {
 
   ngOnDestroy(): void {
 
-    // remove the modal div
-    let modalLayerDiv = document.getElementById('modalLayer-' + this.layer.id)
-    if (modalLayerDiv !== null) {
-      modalLayerDiv.remove()
-    }
+    this.isLayerRemoved = true;
+    
     let modalWktDiv = document.getElementById('modalWktLayer-' + this.layer.id)
     if (modalWktDiv !== null) {
       modalWktDiv.remove()
@@ -217,18 +215,9 @@ export class LayerComponent implements OnInit {
     this.displayLayerModal = false;
   }
 
-  moveModalToBody(): void {
+  displayLayerSettings(): void {
     this.displayLayerModal = true;
     this.exportBuilder(this.exportDataMode)
-    // TODO create a global function
-    let modalLayerDiv = document.getElementById('modalLayer-'+ this.layer.id);
-    if (modalLayerDiv !== null) {
-
-      let bodyDiv = document.body;
-      if (bodyDiv !== null) {
-        bodyDiv.appendChild(modalLayerDiv)
-      }
-    }
   }
 
   exportBuilder(mode: string): void {
