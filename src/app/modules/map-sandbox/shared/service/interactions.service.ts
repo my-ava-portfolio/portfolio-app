@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { layerHandler } from '../core';
+import { layerHandler } from '../layer-handler';
 
 @Injectable({
   providedIn: 'root'

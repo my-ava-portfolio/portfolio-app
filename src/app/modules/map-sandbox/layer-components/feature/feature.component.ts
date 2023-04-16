@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faExpand, faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
-import { getWkt } from '@modules/map-sandbox/shared/core';
-import { layerHandler } from '@modules/map-sandbox/shared/core';
+import { getWkt } from '@modules/map-sandbox/shared/layer-handler';
+import { layerHandler } from '@modules/map-sandbox/shared/layer-handler';
 import { Extent } from 'ol/extent';
 
 

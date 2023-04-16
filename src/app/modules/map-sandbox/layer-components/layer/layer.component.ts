@@ -1,4 +1,4 @@
-import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
+import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
