@@ -2,11 +2,15 @@ import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular
 
 import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand } from '@fortawesome/free-solid-svg-icons';
 
-import { layerHandler } from '@modules/map-sandbox/shared/layer-handler';
+import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler';
 
 import { InteractionsService } from '../shared/service/interactions.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { EditComputingService } from '../shared/service/edit-computing.service';
+import { GraphComputingService } from '../shared/service/graph-computing.service';
+import { Feature } from 'ol';
+import { LineString } from 'ol/geom';
+import { lineStringType } from '../shared/data-types';
 
 
 @Component({
@@ -51,6 +55,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   constructor(
     private interactionsService: InteractionsService,
     private editComputingService: EditComputingService,
+    private graphComputingService: GraphComputingService,
     private cdRef: ChangeDetectorRef,
   ) {
 
@@ -200,11 +205,41 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   computeShortestPath(): void {
     //TODO call osmrx-api
-    console.log(this.layer.features().length)
+    let wktFeatures: string[] = []
+    if (this.layer.features().length > 0) {
+
+      this.layer.features().forEach((feature: Feature) => {
+        const featureCloned = feature.clone()
+        let geom = featureCloned.getGeometry()
+        if (geom !== undefined) {
+          if (this.currentEpsg !== 'EPSG:4326') {
+            geom = geom.transform(this.currentEpsg, 'EPSG:4326')
+          }
+          wktFeatures.push(getWkt(geom))
+        }
+
+      })
+
+      this.graphComputingService.getShortestPathFromApi(wktFeatures).subscribe(
+        // TODO improve it
+        (data: number[][]) => {
+          let path!: any;
+          path = new LineString(data)
+          if (this.currentEpsg !== 'EPSG:4326') {
+            path = path.transform('EPSG:4326', this.currentEpsg)
+          }
+          let feature: Feature = new Feature({
+            geometry: path
+          });
+          let geomType: lineStringType = 'LineString'
+          this.editComputingService.addNewFeatures( {[geomType]: [feature]})
+
+        })
+      
+    }
   }
 
   computeBoundingBox(): void {
-    console.log(this.layer.features().length)
     if (this.layer.features().length > 0) {
       this.editComputingService.addNewFeatures(this.layer.exportBoundsPolygon())
     }
