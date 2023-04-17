@@ -3,17 +3,23 @@
 }
 
 
-.layer:hover {
+.layer {
+  background-color: var(--bs-light);
 
-  .layer-name{
+  .layer-name:hover{
     font-weight: bold;
+  }
+
+  .header{
+    animation-name: layerColorTransition;
+    animation-duration: 2s;
   }
 
 }
 
-
-.feature:hover {
-  font-weight: bold;
+@keyframes layerColorTransition {
+  from {background-color: var(--bs-warning) ;}
+  to {background-color: var(--bs-light);}
 }
 
 .toast {
