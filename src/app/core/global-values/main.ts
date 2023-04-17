@@ -5,7 +5,7 @@ export const assetsLogoPath = `./assets/logo/`;
 export const assetsImagesPath = `./assets/images/`;
 
 export const personalBlogUrl = 'https://blog.amaury-valorge.com';
-export const githubUrl = 'https://github.com/amauryval/';
+export const githubPortfolioUrl = 'https://github.com/my-ava-portfolio/';
 export const imageProfile = 'https://avatars.githubusercontent.com/u/36413727?v=4';
 
 
