@@ -16,11 +16,6 @@ $column-counts: (
   }
 }
 
-.grid-container {
-  min-height: 75vh; // to avoid a floating legend
-  // @include grid.grid($columnCount, 350px);
-}
-
 .grid-feature {
   break-inside: avoid;
 }
