@@ -17,8 +17,8 @@
         <div class="d-flex flex-row border-start rounded-end p-1">
           <input #btnDraw type="checkbox" class="btn-check" [id]="'btnDraw' + layer.id" [checked]="isDrawn" (click)="drawHandler(btnDraw.checked)">
           <label [for]="'btnDraw' + layer.id" [ngbPopover]="'Ajouter un objet de type \'' + layer.geomType + '\''" triggers="mouseenter:mouseleave">
-            <div class="btn btn-light px-1 py-0 border m-1" [ngClass]="isDrawn ? 'text-danger' : 'text-success'">
-              <fa-icon [icon]="addIcon" size="1x"></fa-icon>
+            <div class="btn btn-outline-success m-1" [ngClass]="isDrawn ? 'btn-outline-danger' : ''">
+              <fa-icon [icon]="addIcon"></fa-icon>
             </div>
           </label>
 
@@ -32,30 +32,32 @@
 
         <div class="d-flex flex-row border-start rounded-end p-1">
 
-          <input #btnEdit type="checkbox" class="btn-check" [id]="'btnEdit' + layer.id" [checked]="isEdited" (click)="editHandler(btnEdit.checked)">
-          <label [for]="'btnEdit' + layer.id" ngbPopover="Editer" triggers="mouseenter:mouseleave">
-            <div class="btn btn-light px-1 py-0 border m-1" [ngClass]="isEdited ? 'text-danger' : 'text-success'">
-              <fa-icon [icon]="editIcon" size="1x"></fa-icon>
+          <input #btnMove type="checkbox" class="btn-check" [id]="'btnMove' + layer.id" [checked]="isMoved" (click)="translateHandler(btnMove.checked)">
+          <label [for]="'btnMove' + layer.id" ngbPopover="Déplacer" triggers="mouseenter:mouseleave">
+            <div class="btn btn-outline-success m-1" [ngClass]="isMoved ? 'btn-outline-danger' : ''">
+              <fa-icon [icon]="moveIcon"></fa-icon>
             </div>
           </label>
 
-          <ng-container *ngIf="layer.geomType === 'Polygon'">
-            <input #btnHole type="checkbox" class="btn-check" [id]="'btnHole' + layer.id" [checked]="isHole" (click)="drawHoleHandler(btnHole.checked, true)">
-            <label [for]="'btnHole' + layer.id" ngbPopover="Ajouter un trou" triggers="mouseenter:mouseleave">
-              <div class="btn btn-light px-1 py-0 border m-1" [ngClass]="isHole ? 'text-danger' : 'text-success'">
-                <fa-icon [icon]="polygonIcon" size="1x"></fa-icon>
+          <ng-container *ngIf="['Polygon', 'LineString'].includes(layer.geomType)">
+            <input #btnEdit type="checkbox" class="btn-check" [id]="'btnEdit' + layer.id" [checked]="isEdited" (click)="editHandler(btnEdit.checked)">
+            <label [for]="'btnEdit' + layer.id" ngbPopover="Editer" triggers="mouseenter:mouseleave">
+              <div class="btn btn-outline-success m-1" [ngClass]="isEdited ? 'btn-outline-danger' : ''">
+                <fa-icon [icon]="editIcon"></fa-icon>
               </div>
             </label>
           </ng-container>
 
-          <ng-container *ngIf="layer.geomType !== 'Point'">
-            <input #btnMove type="checkbox" class="btn-check" [id]="'btnMove' + layer.id" [checked]="isMoved" (click)="translateHandler(btnMove.checked)">
-            <label [for]="'btnMove' + layer.id" ngbPopover="Déplacer" triggers="mouseenter:mouseleave">
-              <div class="btn btn-light px-1 py-0 border m-1" [ngClass]="isMoved ? 'text-danger' : 'text-success'">
-                <fa-icon [icon]="moveIcon" size="1x"></fa-icon>
+          <ng-container *ngIf="['Polygon', 'LineString'].includes(layer.geomType)">
+            <input #btnHole type="checkbox" class="btn-check" [id]="'btnHole' + layer.id" [checked]="isHole" (click)="drawHoleHandler(btnHole.checked, true)">
+            <label [for]="'btnHole' + layer.id" ngbPopover="Ajouter un trou" triggers="mouseenter:mouseleave">
+              <div class="btn btn-outline-success m-1" [ngClass]="isHole ? 'btn-outline-danger' : ''">
+                <fa-icon [icon]="polygonIcon"></fa-icon>
               </div>
             </label>
           </ng-container>
+
+
 
         </div>
 
@@ -65,18 +67,30 @@
 
         <span class="text-dark mx-2 fw-bold small">Calculer</span>
 
-        <div class="d-flex flex-row border-start rounded-end p-1">
+        <div class="d-flex flex-row align-items-center border-start rounded-end p-1">
 
           <ng-container>
-            <div class="btn btn-light px-1 py-0 border m-1 text-success" (click)="computeBoundingBox()" ngbPopover="La bounding box" triggers="mouseenter:mouseleave">
-              <fa-icon [icon]="centerIcon" size="1x"></fa-icon>
-            </div>
+            <button class="btn btn-outline-success m-1" (click)="computeBoundingBox()" ngbPopover="La bounding box" triggers="mouseenter:mouseleave">
+              <fa-icon [icon]="centerIcon"></fa-icon>
+            </button>
           </ng-container>
 
           <ng-container *ngIf="layer.geomType === 'Point'">
-            <div class="btn btn-light px-1 py-0 border m-1 text-success" (click)="computeShortestPath()" ngbPopover="Plus court chemin" triggers="mouseenter:mouseleave">
-              <fa-icon [icon]="pathIcon" size="1x"></fa-icon>
+
+            <div class="input-group border border-success rounded mx-1">
+              <div class="input-group-text text-success m-0" ngbPopover="Plus court chemin" id="btnGroupAddon" triggers="mouseenter:mouseleave">
+                <fa-icon [icon]="pathIcon"></fa-icon>
+              </div>
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-secondary border-0" (click)="computeShortestPath('pedestrian')" ngbPopover="Piéton" triggers="mouseenter:mouseleave">
+                  <fa-icon [icon]="pedestrianIcon"></fa-icon>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary border-0" (click)="computeShortestPath('vehicle')" ngbPopover="Motorisé" triggers="mouseenter:mouseleave">
+                  <fa-icon [icon]="motorIcon"></fa-icon>
+                </button>
+              </div>
             </div>
+
           </ng-container>
 
         </div>

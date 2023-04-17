@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking } from '@fortawesome/free-solid-svg-icons';
 
 import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler';
 
@@ -29,6 +29,8 @@ export class EditBarComponent implements OnInit, OnDestroy {
   polygonIcon = faDrawPolygon;
   moveIcon = faArrowsUpDownLeftRight;
   pathIcon = faRoad;
+  motorIcon = faCar;
+  pedestrianIcon = faPersonWalking;
   centerIcon = faExpand;
 
   // add
@@ -202,7 +204,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
     this.isHole = false;
   }
 
-  computeShortestPath(): void {
+  computeShortestPath(mode: 'pedestrian' | 'vehicle'): void {
     //TODO call osmrx-api
     let wktFeatures: string[] = []
     if (this.layer.features().length > 0) {
@@ -222,7 +224,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
         dataProjection: "EPSG:4326",
         featureProjection: this.currentEpsg
       }
-      this.graphComputingService.getShortestPathFromApi(wktFeatures).subscribe(
+      this.graphComputingService.getShortestPathFromApi(wktFeatures, mode).subscribe(
         // TODO improve it
         (data: string[]) => {
           const featuresToAdd = readStringWktAndGroupedByGeomType(data, featureParams)
