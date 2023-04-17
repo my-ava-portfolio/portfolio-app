@@ -16,6 +16,11 @@ $column-counts: (
   }
 }
 
+.grid-container {
+  // TODO improve it with fluidHeight or something else
+  min-height: 75vh; // to avoid a floating legend
+}
+
 .grid-feature {
   break-inside: avoid;
 }
