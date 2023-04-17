@@ -17,6 +17,10 @@ import { LayerComponent } from '@modules/map-sandbox/layer-components/layer/laye
 import { FeatureComponent } from '@modules/map-sandbox/layer-components/feature/feature.component';
 import { EditBarComponent } from '@modules/map-sandbox/edit-bar/edit-bar.component';
 
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { CreateToolsComponent } from './create-tools/create-tools.component';
+import { ImportToolsComponent } from './import-tools/import-tools.component';
+
 
 @NgModule({
   declarations: [
@@ -25,14 +29,17 @@ import { EditBarComponent } from '@modules/map-sandbox/edit-bar/edit-bar.compone
     FeatureComponent,
     GeoinfoComponent,
     LayerManagerComponent,
-    EditBarComponent
+    EditBarComponent,
+    CreateToolsComponent,
+    ImportToolsComponent
   ],
   imports: [
     CommonModule,
     MapSandboxRoutingModule,
     FontAwesomeModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    DirectivesModule
   ],
 })
 export class MapSandboxModule { }

@@ -1,4 +1,4 @@
-import { githubUrl } from "@core/global-values/main";
+import { githubPortfolioUrl } from "@core/global-values/main";
 
 // github issues buttons on navigation bar
 
@@ -9,6 +9,6 @@ export const contactFeatureMessage = 'Des améliorations ?';
 
 export const issueSufixTitle = ' page:';
 
-export const githubBugIssueUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';
-export const githubQuestionUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=question&template=question-.md&title=';
-export const githubEnhancementUrl = githubUrl + '/portfolio/issues/new?assignees=amauryval&labels=enhancement&template=feature_request.md&title=';
+export const githubBugIssueUrl = githubPortfolioUrl + '/portfolio-app/issues/new?assignees=amauryval&labels=bug&template=bug_report.md&title=';
+export const githubQuestionUrl = githubPortfolioUrl + '/portfolio-app/issues/new?assignees=amauryval&labels=question&template=question-.md&title=';
+export const githubEnhancementUrl = githubPortfolioUrl + '/portfolio-app/issues/new?assignees=amauryval&labels=enhancement&template=feature_request.md&title=';

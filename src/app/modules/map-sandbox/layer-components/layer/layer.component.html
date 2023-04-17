@@ -4,7 +4,7 @@
   class="layer pointer d-flex flex-column small mt-1 mx-1 px-1 align-items-around"
   >
 
-    <div class="d-flex flex-row border rounded"
+    <div class="header d-flex flex-row border rounded"
     [ngClass]="isSelected ? 'border-dark border-2' :  ''"
     >
 
@@ -66,7 +66,7 @@
           <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
         </button>
 
-        <button class="p-1 bg-transparent border-0 text-black" (click)="moveModalToBody()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayer-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+        <button class="p-1 bg-transparent border-0 text-black" (click)="displayLayerSettings()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayerSettings-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
         </button>
 
@@ -74,22 +74,16 @@
 
     </div>
 
-    <div class="d-flex flex-row small mb-1" *ngIf="layer.features().length > 0">
-      <ul id="featuresList" class="w-100 list-group list-group-flush mx-3 border rounded" [id]="'featuresLayer-' + layer.id">
+    <div class="feature-container d-flex flex-row small mb-1" *ngIf="layer.features().length > 0">
+      <ul id="featuresList" class="w-100 list-group list-unstyled list-group-flush mx-3 rounded" [id]="'featuresLayer-' + layer.id">
 
         <li 
-        class="feature py-0 d-flex justify-content-between align-items-center pointer" 
-        [ngClass]="featureIdSelected == 'none' && isSelected ? 'fw-bold bg-secondary bg-opacity-25' : ''" 
+        class="feature border-bottom" 
+        [ngClass]="featureIdSelected == 'none' && isSelected ? 'bg-opacity-25' : ''" 
         (click)="unSelectFeature()"
         >
-          <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill m-1">
-
-            <div class="">
-              <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>
-            </div>
-            <div class="">
-              Déseléctionner
-            </div>
+          <div class="d-flex flex-row pointer justify-content-center align-items-center flex-fill m-1">
+            <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>Désélectionner
           </div>
 
         </li>
@@ -111,7 +105,8 @@
 
 </div>
 
-<div [id]="'modalLayer-'+ layer.id" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div moveDivToBody [isRemoved]="this.isLayerRemoved" 
+[id]="'modalLayerSettings-'+ layer.id" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
@@ -119,14 +114,25 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModalLayer()"></button>
       </div>
       <div class="modal-body">
-
         <div class="d-flex flex-column my-3" [ngClass]="this.layer.locked ? 'pe-none' :'pe-auto'">
           <h4 class="">Général</h4>
-          <div class="d-flex flex-row ms-2">
+          <div class="d-flex flex-row ms-2 mb-2">
             <span class="me-2">Nom de la couche :</span>
             <input type="text" class="form-control" [placeholder]="layer.layerName" aria-label="layerName" (change)="layer.setName($event)">
           </div>
+
+          <div class="d-flex flex-column ms-2">
+            <span class="me-2">Bounding box:</span>
+            <span class="small">x min: {{layer.exportBounds()[0]}}</span>
+            <span class="small">y min: {{layer.exportBounds()[1]}}</span>
+            <span class="small">x max: {{layer.exportBounds()[2]}}</span>
+            <span class="small">y max: {{layer.exportBounds()[3]}}</span>
+          </div>
+
+
         </div>
+
+
 
         <div class="d-flex flex-column my-3" [ngClass]="this.layer.locked ? 'pe-none' :'pe-auto'">
           <h4 class="">Style</h4>

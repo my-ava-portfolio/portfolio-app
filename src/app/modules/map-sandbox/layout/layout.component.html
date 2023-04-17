@@ -1,12 +1,10 @@
-<div class="container-fluid g-0">
+<div fluidHeight id="sandbox" class="d-flex flex-row position-fixed">
 
- <div id="sandbox" class="d-flex flex-row position-fixed">
-
-    <div id="mapTools" class="d-flex flex-column bg-light shadow-map-tools position-relative" [ngClass]="!isLegendDisplayed ? 'hidden' : 'displayed'">
+    <div id="panelsContainer" class="d-flex flex-column bg-light " [ngClass]="!isLegendDisplayed ? 'hidden' : 'displayed'">
 
       <app-geoinfo
         id="geoTools"
-        class="d-flex flex-column overflow-auto"
+        class="overflow-auto"
         [ngClass]="currentMenuDisplayed == 'geoTools' ? 'd-block' : 'd-none'"
         [map]="map"
         [currentEpsg]="currentEpsg"
@@ -16,7 +14,7 @@
 
       <app-layer-manager
         id="createTools"
-        class="d-flex flex-column overflow-auto"
+        class="overflow-auto"
         [ngClass]="currentMenuDisplayed == 'createTools' ? 'd-block' : 'd-none'"
         [map]="map"
         [currentEpsg]="currentEpsg"
@@ -32,7 +30,7 @@
         class="tool btn btn-warning text-black my-3 shadow rounded-end"
         [ngClass]="isLegendDisplayed ? 'selected' : ''"
         (click)="showHideLegend()">
-        <fa-icon class="" [icon]="isLegendDisplayed ? leftSideIcon : rightSideIcon"></fa-icon>
+        <fa-icon [icon]="isLegendDisplayed ? leftSideIcon : rightSideIcon"></fa-icon>
       </span>
 
       <span
@@ -40,7 +38,7 @@
         [ngClass]="currentMenuDisplayed === 'geoTools' ? 'selected' : ''"
         (click)="currentMenuDisplayed = 'geoTools'"
         >
-        <fa-icon class="" [icon]="geoIcon"></fa-icon>
+        <fa-icon [icon]="geoIcon"></fa-icon>
       </span>
 
       <span
@@ -48,29 +46,24 @@
         [ngClass]="currentMenuDisplayed === 'createTools' ? 'selected' : ''"
         (click)="currentMenuDisplayed = 'createTools'"
         >
-        <fa-icon class="" [icon]="layersIcon"></fa-icon>
+        <fa-icon [icon]="layersIcon"></fa-icon>
       </span>
 
     </div>
 
 
 
-  </div>
-
-
-
 </div>
 
 
-<div class="d-flex flex-row justify-content-center">
+<div class="d-flex flex-row justify-content-center" *ngIf="editBarEnabled && currentLayerSelected !== null">
 
   <app-edit-bar
-  id="editBar"
-  class="d-flex flex-row align-items-center justify-content-center m-2"
-  *ngIf="editBarEnabled && currentLayerSelected !== null"
-  [layer]="currentLayerSelected"
-  [currentEpsg]="currentEpsg"
+    id="editBar"
+    [layer]="currentLayerSelected"
+    [currentEpsg]="currentEpsg"
   ></app-edit-bar>
+
 </div>
 
 

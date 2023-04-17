@@ -1,9 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faExpand, faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
-import { getWkt } from '@modules/map-sandbox/shared/core';
-import { layerHandler } from '@modules/map-sandbox/shared/core';
-import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
+import { getWkt } from '@modules/map-sandbox/shared/layer-handler';
+import { layerHandler } from '@modules/map-sandbox/shared/layer-handler';
+import { Extent } from 'ol/extent';
 
 
 @Component({
@@ -65,7 +65,7 @@ export class FeatureComponent implements OnInit {
     this.displayPopup = !this.displayPopup;
   }
 
-  copyToClipboard(value: string): void {
+  copyToClipboard(value: any): void {
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -93,8 +93,13 @@ export class FeatureComponent implements OnInit {
     this.currentLayer.zoomToFeature(this.feature.getId())
   }
 
-  getWktFromFeature(feature: any): string {
-    return getWkt(feature.getGeometry())
+  getWktFromFeature(): string {
+    return getWkt(this.feature.getGeometry())
+  }
+
+  getBoundsFromFeature(): string {
+    // xmin, ymin, xmax, ymax
+    return this.feature.getGeometry().getExtent().join(', ')
   }
 }
 

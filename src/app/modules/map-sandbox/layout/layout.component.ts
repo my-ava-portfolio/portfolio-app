@@ -1,4 +1,4 @@
-import { layerHandler } from '@modules/map-sandbox/shared/core';
+import { layerHandler } from '@modules/map-sandbox/shared/layer-handler';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
@@ -20,6 +20,8 @@ import { InteractionsService } from '../shared/service/interactions.service';
 export class LayoutComponent implements OnInit, OnDestroy {
 
   currentEpsg!: string;
+
+  // used by menus
   epsgAvailable = ["EPSG:4326", "EPSG:3857"];
 
   // icons
@@ -33,7 +35,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   defaultMapView!: View;
 
   isLegendDisplayed = true;
-  currentMenuDisplayed = 'createTools'
+
+  currentMenuDisplayed: 'geoTools' | 'createTools' = 'createTools'
 
   editBarEnabled!: boolean
   currentLayerSelected!: layerHandler | null;
@@ -49,6 +52,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private cdRef:ChangeDetectorRef
   ) {
 
+    // Get the map container, view and epsg
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
         this.map = map;
@@ -92,7 +96,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.mapService.resetMapView()
   }
 
-  sendResumeSubMenus(): void {
+  private sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
   }

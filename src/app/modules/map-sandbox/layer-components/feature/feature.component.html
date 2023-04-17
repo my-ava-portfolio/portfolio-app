@@ -1,4 +1,4 @@
-<li class="feature py-0 d-flex justify-content-between align-items-center pointer">
+<li class="feature py-0 d-flex align-items-center pointer border-bottom">
 
   <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
 
@@ -9,8 +9,8 @@
       </svg>
 
       <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'LineString'">
-        <line x1="0" y1="10" x2="25" y2="10" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * 2"/>
-        <line x1="0" y1="10" x2="25" y2="10" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') *1.5"/>
+        <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * 2"/>
+        <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') *1.5"/>
       </svg>
 
       <svg height="15" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
@@ -37,7 +37,7 @@
         <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
       </button>
 
-      <button class="p-1 bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
+      <button class="btn m-0 bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
       </button>
 
@@ -72,9 +72,14 @@
         <div id="toastActions" class="d-flex flex-row justify-content-start align-items-center">
           <span class="fw-bold">Actions :</span>
 
-          <span class="badge bg-dark rounded m-1 small pointer" (click)="copyToClipboard(getWktFromFeature(feature))" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
+          <span class="badge bg-dark rounded m-1 small pointer" (click)="copyToClipboard(getWktFromFeature())" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier le WKT">
             WKT
           </span>
+
+          <span class="badge bg-primary rounded m-1 small pointer" (click)="copyToClipboard(getBoundsFromFeature())" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copier la Bbox (xmin, ymin, xmax, ymax)">
+            Bbox
+          </span>
+
 
         </div>
 
@@ -105,8 +110,6 @@
           </div>
 
         </div>
-
-        <span class="">{{ getWktFromFeature(feature) }}</span>
 
       </div>
     </div>

@@ -1,89 +1,64 @@
-.button-title {
-  border-radius: unset;
-  z-index: 1;
-
-  .vertical-text {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    letter-spacing: -5px;
-  }
-
-  .horizontal-text {
-    writing-mode: horizontal-tb;
-    letter-spacing: 0px;
-
-  }
-
-}
-
-.hidden .d-flex {
-  visibility: hidden !important;
-  opacity: 0;
-  transition: all 0.3s;
-}
-
-
 #sandbox{
-  user-select: none
+  // user-select: none
 }
 
-#mapTools.displayed{
-  opacity: 1;
-  width: 18vw;
-  transition: all 0.3s;
-}
+#panelsContainer {
+  box-shadow: 1em 0rem 1rem rgb(0 0 0 / 15%) !important;
 
-#mapTools.hidden{
-  width: 1vw;
-  transition: all 0.3s;
-
-}
-
-.shadow-map-tools {
-    box-shadow: 1em 0rem 1rem rgb(0 0 0 / 15%) !important;
-}
-
-#mapTools {
-  height: calc(100vh - 56px);  // 56px is about the control bar height...
-}
-
-@media (max-width: 960px){
-
-  #mapTools.hidden {
-    width: 3vw;
+  &.displayed{
+    transition: all 0.3s;
+  }
+  &.displayed * {
+    opacity: 1;
+    transition: all 0.1s;
   }
 
-  #mapTools.displayed {
-    width: 75vw;
+  &.hidden{
+    transition: all 0.3s;
+    // visibility: hidden !important
+
+  }
+  &.hidden * {
+      opacity: 0;
+      transition: all 0.1s;
+  }
+
+
+  @media (max-width: 960px){
+    &.hidden {
+      width: 3vw;
+    }
+    &.displayed {
+      width: 40vw;
+    }
+  }
+
+  @media (min-width: 960px){
+    &.hidden {
+      width: 1vw;
+    }
+    &.displayed {
+      width: 18vw;
+    }
   }
 
 }
 
 
-.tool.btn {
-  width: 45px;
+.tool {
   border-radius: unset;
-  -webkit-transition: width 1s ease-in-out;
-  -moz-transition: width 1s ease-in-out;
-  -o-transition: width 1s ease-in-out;
-  transition: width 1s ease-in-out;
+  transition: all 0.1s;
+
+  &.btn {
+    width: 45px;
+
+    &:hover, &.selected {
+      width: 60px;
+    }
+  }
+
 }
 
-.tool.btn:hover {
-  width: 60px;
-  -webkit-transition: width 1s ease-in-out;
-  -moz-transition: width 1s ease-in-out;
-  -o-transition: width 1s ease-in-out;
-  transition: width 1s ease-in-out;
-}
-
-.tool.btn.selected {
-  width: 60px;
-  -webkit-transition: width 1s ease-in-out;
-  -moz-transition: width 1s ease-in-out;
-  -o-transition: width 1s ease-in-out;
-  transition: width 1s ease-in-out;
-}
 
 #editBar {
   position: fixed;

@@ -22,3 +22,17 @@
 	-webkit-transition: opacity 0.5s!important;
 	transition: opacity 0.5s!important;
 }
+
+.feature {
+  animation-name: featureColorTransition;
+  animation-duration: 0.5s;
+
+  :hover{
+    font-weight: bold;
+  }
+}
+
+@keyframes featureColorTransition {
+  from {background-color: var(--bs-secondary) ;}
+  to {background-color: var(--bs-light);}
+}

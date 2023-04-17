@@ -20,6 +20,7 @@ import { SwipeDirective } from '@shared/directives/swipe.directive';
 import { HoverClassDirective } from '@shared/directives/hover-class.directive';
 
 import { ItemsModule } from '@shared/modules/items/items.module';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 import { LayoutComponent } from '@bases/layout/layout.component';
 import { BackgroundComponent } from '@bases/background-map/background.component';
@@ -36,7 +37,7 @@ registerLocaleData(localeFr, 'fr');
     NavigationBarComponent,
     ControlBarComponent,
     SwipeDirective,
-    HoverClassDirective,
+    HoverClassDirective
    ],
   imports: [
     BrowserModule,
@@ -45,7 +46,8 @@ registerLocaleData(localeFr, 'fr');
     HttpClientModule,
     FontAwesomeModule,
     NgbModule,
-    ItemsModule
+    ItemsModule,
+    DirectivesModule
   ],
   providers: [
     MainService,

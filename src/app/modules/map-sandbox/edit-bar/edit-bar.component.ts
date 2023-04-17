@@ -1,12 +1,16 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { faArrowsUpDownLeftRight, faCircle, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking } from '@fortawesome/free-solid-svg-icons';
 
-import { layerHandler } from '@modules/map-sandbox/shared/core';
+import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler';
 
 import { InteractionsService } from '../shared/service/interactions.service';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { EditComputingService } from '../shared/service/edit-computing.service';
+import { GraphComputingService } from '../shared/service/graph-computing.service';
+import { Feature } from 'ol';
 
+import { readStringWktAndGroupedByGeomType } from '@modules/map-sandbox/import-tools/import-tools.component'
 
 @Component({
   selector: 'app-edit-bar',
@@ -24,11 +28,21 @@ export class EditBarComponent implements OnInit, OnDestroy {
   unLockIcon = faLockOpen;
   polygonIcon = faDrawPolygon;
   moveIcon = faArrowsUpDownLeftRight;
+  pathIcon = faRoad;
+  motorIcon = faCar;
+  pedestrianIcon = faPersonWalking;
+  centerIcon = faExpand;
 
+  // add
   isDrawn: boolean = false;
+
+  // edit
   isEdited: boolean = false;
   isHole: boolean = false;
   isMoved: boolean = false;
+
+  // compute
+  isShortestPath: boolean = false;
 
   isEditBarEnabled!: boolean;;
 
@@ -41,6 +55,8 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   constructor(
     private interactionsService: InteractionsService,
+    private editComputingService: EditComputingService,
+    private graphComputingService: GraphComputingService,
     private cdRef: ChangeDetectorRef,
   ) {
 
@@ -188,4 +204,40 @@ export class EditBarComponent implements OnInit, OnDestroy {
     this.isHole = false;
   }
 
+  computeShortestPath(mode: 'pedestrian' | 'vehicle'): void {
+    //TODO call osmrx-api
+    let wktFeatures: string[] = []
+    if (this.layer.features().length > 0) {
+
+      this.layer.features().forEach((feature: Feature) => {
+        const featureCloned = feature.clone()
+        let geom = featureCloned.getGeometry()
+        if (geom !== undefined) {
+          if (this.currentEpsg !== 'EPSG:4326') {
+            geom = geom.transform(this.currentEpsg, 'EPSG:4326')
+          }
+          wktFeatures.push(getWkt(geom))
+        }
+
+      })
+      const featureParams = {
+        dataProjection: "EPSG:4326",
+        featureProjection: this.currentEpsg
+      }
+      this.graphComputingService.getShortestPathFromApi(wktFeatures, mode).subscribe(
+        // TODO improve it
+        (data: string[]) => {
+          const featuresToAdd = readStringWktAndGroupedByGeomType(data, featureParams)
+          this.editComputingService.addNewFeatures(featuresToAdd)
+        })
+      
+    }
+  }
+
+  computeBoundingBox(): void {
+    if (this.layer.features().length > 0) {
+      this.editComputingService.addNewFeatures(this.layer.exportBoundsPolygon())
+    }
+  }
+  
 }

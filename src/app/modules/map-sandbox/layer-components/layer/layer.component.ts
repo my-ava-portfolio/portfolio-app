@@ -1,9 +1,10 @@
-import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/core';
+import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-layer',
@@ -59,7 +60,7 @@ export class LayerComponent implements OnInit {
   layerIdSelectedSubscription!: Subscription;
 
   displayLayerModal = false;
-
+  isLayerRemoved = false;
   exportData: string = '';
   exportDataMode = 'geojson'
 
@@ -128,11 +129,8 @@ export class LayerComponent implements OnInit {
 
   ngOnDestroy(): void {
 
-    // remove the modal div
-    let modalLayerDiv = document.getElementById('modalLayer-' + this.layer.id)
-    if (modalLayerDiv !== null) {
-      modalLayerDiv.remove()
-    }
+    this.isLayerRemoved = true;
+    
     let modalWktDiv = document.getElementById('modalWktLayer-' + this.layer.id)
     if (modalWktDiv !== null) {
       modalWktDiv.remove()
@@ -186,6 +184,8 @@ export class LayerComponent implements OnInit {
   removeLayer(): void {
     this.layer.removeLayer()
     this.removeLayerId.emit(this.layer.id)
+    this.interactionsService.sendSelectedLayer(null)
+
     this.ngOnDestroy()
   }
 
@@ -217,18 +217,9 @@ export class LayerComponent implements OnInit {
     this.displayLayerModal = false;
   }
 
-  moveModalToBody(): void {
+  displayLayerSettings(): void {
     this.displayLayerModal = true;
     this.exportBuilder(this.exportDataMode)
-    // TODO create a global function
-    let modalLayerDiv = document.getElementById('modalLayer-'+ this.layer.id);
-    if (modalLayerDiv !== null) {
-
-      let bodyDiv = document.body;
-      if (bodyDiv !== null) {
-        bodyDiv.appendChild(modalLayerDiv)
-      }
-    }
   }
 
   exportBuilder(mode: string): void {

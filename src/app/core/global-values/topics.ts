@@ -125,6 +125,11 @@ export const mapActivitiesPages: mapPagesType = {
       tags: [],
       stack: [
         {
+          type: "Back-end",
+          language: "Python",
+          img: svgLogoPython,
+        },
+        {
           type: "Front-end",
           language: "TypeScript",
           img: svgLogoTypescript,
@@ -133,7 +138,8 @@ export const mapActivitiesPages: mapPagesType = {
       status: 'Dev',
       image_url: `${assetsImagesPath}/md-sandbox.avif`,
       description: `Un bac à sable pour saisir et exporter des données géographiques: Points, LineString, Polygons (et à trous). 
-        L'ensemble est totalement géré par le front avec OpenLayers principalement.`
+        L'ensemble est totalement géré par le front avec OpenLayers principalement. Il est possible de générer des plus courts
+        chemin en saisissant des noeuds ; calculs gérés par la librairie python OsmRx`
     },
     {
       id: "gtfs-viewer",
@@ -167,30 +173,6 @@ export const mapActivitiesPages: mapPagesType = {
         issus des GTFS est réalisée en Python pour obtenir des données exploitables. Ces dernières sont diffusées par un backend 
         codé en Golang à l'aide d'une API REST (Gin Gonic)`
     },
-    {
-      id: "find-my-path",
-      title: "Find my path",
-      type: 'website',
-      categories: [],
-      tags: [],
-      stack: [
-        {
-          type: "Back-end",
-          language: "Python",
-          img: svgLogoPython,
-        },
-        {
-          type: "Front-end",
-          language: "TypeScript",
-          img: svgLogoTypescript,
-        }
-      ],
-      status: 'Dev',
-      content_url: "https://findmypath.amaury-valorge.com/",
-      image_url: `${assetsImagesPath}/md-find_my_path.avif`,
-      description: `Application Angular (Leaflet, D3js) pour déterminer des plus courts chemins à partir des données OpenStreetMap. 
-        Le calcul est réalisé à partir de ma librarie Python OsmGT dédiée à l'analyse de réseau.`
-    }
   ]
 };
 
