@@ -475,7 +475,6 @@ export class layerHandler {
       [bounds[0], bounds[1]],
       [bounds[0], bounds[3]],
     ];
-    console.log(coordinates)
     const boundsPolygon: Polygon = new Polygon([coordinates])
     let feature: Feature = new Feature({
       geometry: boundsPolygon

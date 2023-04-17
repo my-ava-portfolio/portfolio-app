@@ -13,8 +13,6 @@ export class DivToBodyDirective implements OnChanges, OnDestroy {
 
   constructor(private _elemRef: ElementRef, private renderer: Renderer2) { 
     this.renderer.appendChild(document.body, this._elemRef.nativeElement)
-    console.log("coucou")
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {
