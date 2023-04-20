@@ -48,7 +48,7 @@
             </label>
           </ng-container>
 
-          <ng-container *ngIf="['Polygon', 'LineString'].includes(layer.geomType)">
+          <ng-container *ngIf="['Polygon'].includes(layer.geomType)">
             <input #btnHole type="checkbox" class="btn-check" [id]="'btnHole' + layer.id" [checked]="isHole" (click)="drawHoleHandler(btnHole.checked, true)">
             <label [for]="'btnHole' + layer.id" ngbPopover="Ajouter un trou" triggers="mouseenter:mouseleave">
               <div class="btn btn-outline-success m-1" [ngClass]="isHole ? 'btn-outline-danger' : ''">

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular
 
 import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking } from '@fortawesome/free-solid-svg-icons';
 
-import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler';
+import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 
 import { InteractionsService } from '../shared/service/interactions.service';
 import { Subscription } from 'rxjs/internal/Subscription';

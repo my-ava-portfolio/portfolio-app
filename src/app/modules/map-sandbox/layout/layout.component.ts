@@ -1,4 +1,4 @@
-import { layerHandler } from '@modules/map-sandbox/shared/layer-handler';
+import { layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';

@@ -51,6 +51,7 @@
     "@angular-devkit/build-angular": "^15.1.2",
     "@angular/cli": "^15.1.2",
     "@angular/compiler-cli": "^15.1.1",
+    "@types/colorbrewer": "^1.0.29",
     "@types/d3": "^7.4.0",
     "@types/gulp": "^4.0.10",
     "@types/jasmine": "^4.3.1",

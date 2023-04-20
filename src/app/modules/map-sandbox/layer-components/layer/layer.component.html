@@ -82,7 +82,7 @@
         [ngClass]="featureIdSelected == 'none' && isSelected ? 'bg-opacity-25' : ''" 
         (click)="unSelectFeature()"
         >
-          <div class="d-flex flex-row pointer justify-content-center align-items-center flex-fill m-1">
+          <div class="feature d-flex flex-row pointer justify-content-center align-items-center flex-fill m-1">
             <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>Désélectionner
           </div>
 
@@ -90,6 +90,7 @@
 
         <ng-container *ngFor="let feature of layer.features()">
           <app-feature
+          class="feature"
           [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"
           (click)="selectFeatureById(feature.getId())"
           [currentFeatureIdSelected]="featureIdSelected"
@@ -114,98 +115,45 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModalLayer()"></button>
       </div>
       <div class="modal-body">
-        <div class="d-flex flex-column my-3" [ngClass]="this.layer.locked ? 'pe-none' :'pe-auto'">
-          <h4 class="">Général</h4>
-          <div class="d-flex flex-row ms-2 mb-2">
-            <span class="me-2">Nom de la couche :</span>
-            <input type="text" class="form-control" [placeholder]="layer.layerName" aria-label="layerName" (change)="layer.setName($event)">
-          </div>
 
-          <div class="d-flex flex-column ms-2">
-            <span class="me-2">Bounding box:</span>
-            <span class="small">x min: {{layer.exportBounds()[0]}}</span>
-            <span class="small">y min: {{layer.exportBounds()[1]}}</span>
-            <span class="small">x max: {{layer.exportBounds()[2]}}</span>
-            <span class="small">y max: {{layer.exportBounds()[3]}}</span>
-          </div>
+        
+        <ul ngbNav #nav="ngbNav" class="nav-tabs">
 
+          <li ngbNavItem>
+            <a ngbNavLink class="fw-bold">Général</a>
+              <ng-template ngbNavContent>
+                <div class="d-flex flex-column">
+                  <ng-container *ngTemplateOutlet="ngNavLayerGeneral; context:{layerObject: layer}"></ng-container>
+                </div>
+              </ng-template>
+          </li>
 
-        </div>
+          <li ngbNavItem>
+            <a ngbNavLink class="fw-bold">Style de la couche</a>
+            <ng-template ngbNavContent>
+              <div class="d-flex flex-column">
+                <ng-container *ngTemplateOutlet="ngNavLayerStyling; context:{layerObject: layer}"></ng-container>
+              </div>
+            </ng-template>
+          </li>
 
+          <li ngbNavItem>
+            <a ngbNavLink class="fw-bold">Exporter</a>
+            <ng-template ngbNavContent>
+              <div class="d-flex flex-column">
+                <ng-container *ngTemplateOutlet="ngNavLayerExporting; context:{layerObject: layer}"></ng-container>
+              </div>
+            </ng-template>
 
+        </ul>
 
-        <div class="d-flex flex-column my-3" [ngClass]="this.layer.locked ? 'pe-none' :'pe-auto'">
-          <h4 class="">Style</h4>
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Opacité :</span>
-            <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layer.getOpacity()" (change)="layer.setOpacity($event)"/>
-          </div>
-
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Couleur de fond :</span>
-            <input #layerFillColor type="color" [id]="'fillColor-' + layer.id" class=" fillColor m-1 pointer" [value]="layer.fillColor" (change)="layer.setStyleForAllFeatures(layerFillColor.value, 'fill_color')"/>
-            <label [attr.for]="'fillColor-' + layer.id"></label>
-          </div>
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Couleur du contour :</span>
-            <input #layerStrokeColor type="color" [id]="'strokeColor-' + layer.id" class="fillColor m-1 pointer" [value]="layerStrokeColor.value" (change)="layer.setStyleForAllFeatures(layerStrokeColor.value, 'stroke_color')"/>
-            <label [attr.for]="'strokeColor-' + layer.id"></label>
-          </div>
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Epaisseur du contour :</span>
-            <input class="small strokeWidth" type="number" min="0" max="12" [value]="layer.strokeWidth" (change)="layer.setStyleForAllFeatures($event, 'stroke_width')"/>
-          </div>
-
-        </div>
-
-        <div class="d-flex flex-column my-3">
-          <h4 class="">Export</h4>
-
-          <ul class="nav nav-pills align-items-center justify-content-center" role="tablist">
-            <li class="nav-item border m-1" role="presentation">
-              <a class="nav-link fw-bold active" (click)="exportBuilder('geojson')" data-bs-toggle="tab" [attr.data-bs-target]="'#GeoJsonTab' + layer.id" type="button" role="tab">
-                GeoJSON
-              </a>
-            </li>
-            <li class="nav-item border m-1" role="presentation">
-              <a class="nav-link fw-bold" (click)="exportBuilder('wkt')" data-bs-toggle="tab" [attr.data-bs-target]="'#wktTab' + layer.id" type="button" role="tab">
-                WKT
-              </a>
-            </li>
-
-            <li class="nav-item border m-1" role="presentation">
-              <a class="nav-link fw-bold" (click)="exportBuilder('pytestFixture')" data-bs-toggle="tab" [attr.data-bs-target]="'#pytestFixture' + layer.id" type="button" role="tab">
-                Pytest Fixtures
-              </a>
-            </li>
-
-          </ul>
-
-          <div class="d-flex flex-row mx-2 tab-content" id="'tabContent' + layer.id">
-
-            <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'geojson' ? 'active' : ''" [id]="'GeoJsonTab' + layer.id" role="tabpanel">
-              <textarea #exportGeoJsonStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportGeoJsonStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
-            </div>
-
-            <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'wkt' ? 'active' : ''" [id]="'wktTab' + layer.id" role="tabpanel">
-              <textarea #exportWktStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportWktStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
-            </div>
-
-            <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'pytestFixture' ? 'active' : ''" [id]="'pytestFixture' + layer.id" role="tabpanel">
-              <textarea #exportPytestFixturesGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportPytestFixturesGeomDiv.select()" readonly>{{this.exportData}}</textarea>
-            </div>
-
-          </div>
-
-        </div>
-
+        <div [ngbNavOutlet]="nav" class="nav-content mx-2"></div>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
       </div>
+
     </div>
   </div>
 </div>
@@ -213,3 +161,110 @@
 
 
 
+<ng-template #ngNavLayerGeneral let-layerObject='layer'>
+  <span class="fs-4 my-2">Informations générales</span>
+
+  <div class="d-flex flex-row align-items-center my-2">
+    <span class="fs-6 me-2">Nom de la couche :</span>
+    <input type="text" class="form-control w-50" [placeholder]="layer.layerName" aria-label="layerName" (change)="layer.setName($event)">
+  </div>
+
+  <div class="d-flex flex-row align-items-center my-2">
+    <span class="fs-6 me-2">Type de la géométrie :</span>
+    <span>{{layer.geomType}}</span>
+  </div>
+
+  <div class="d-flex flex-column my-2">
+    <span class="fs-6">Bounding box  de la couche:</span>
+    <span class="ms-3">x min, x max: {{layer.exportBounds()[0]}}, {{layer.exportBounds()[2]}}</span>
+    <span class="ms-3">y min, y max: {{layer.exportBounds()[1]}}, {{layer.exportBounds()[3]}}</span>
+  </div>
+
+  <div class="d-flex flex-column my-2 w-50">
+    <span class="fs-6">Eléments:</span>
+    <ng-container *ngFor="let feature of layer.features()">
+      <app-feature
+      class="feature"
+      [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"
+      (click)="selectFeatureById(feature.getId())"
+      [currentFeatureIdSelected]="featureIdSelected"
+      [feature]="feature"
+      [currentLayer]="layer"
+      >
+      </app-feature>
+    </ng-container>
+  </div>
+
+</ng-template>
+
+
+<ng-template #ngNavLayerStyling let-layerObject='layer'>
+  <span class="fs-4 my-2">Modifier le style de tous les objets</span>
+
+  <div class="d-flex flex-row align-items-center my-2">
+    <span class="fs-6 me-2">Opacité :</span>
+    <input class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layer.getOpacity()" (change)="layer.setOpacity($event)"/>
+  </div>
+
+  <div class="d-flex flex-row align-items-center my-2">
+    <span class="fs-6 me-2">Couleur de fond :</span>
+    <input #layerFillColor type="color" [id]="'fillColor-' + layer.id" class="fillColor pointer border-0" [value]="layer.fillColor" (change)="layer.fillColor = layerFillColor.value"/>
+    <label [attr.for]="'fillColor-' + layer.id"></label>
+    <input #textLayerFillColor type="text" [id]="'textFillColor-' + layer.id" class="fillColor p-0 border-1" [value]="layer.fillColor" (change)="layer.fillColor = textLayerFillColor.value"/>
+    <label [attr.for]="'textFillColor-' + layer.id"></label>
+  </div>
+
+  <div class="d-flex flex-row align-items-center my-2">
+    <span class="fs-6 me-2">Couleur du contour :</span>
+    <input #layerStrokeColor type="color" [id]="'strokeColor-' + layer.id" class="fillColor pointer border-0" [value]="layer.strokeColor" (change)="layer.strokeColor = layerStrokeColor.value"/>
+    <label [attr.for]="'strokeColor-' + layer.id"></label>
+    <input #textLayerStrokeColor type="text" [id]="'textStrokeColor-' + layer.id" class="fillColor p-0 border-1" [value]="layer.strokeColor" (change)="layer.strokeColor = textLayerStrokeColor.value"/>
+    <label [attr.for]="'textStrokeColor-' + layer.id"></label>
+  </div>
+
+  <div class="d-flex flex-row align-items-center my-2">
+    <span class="fs-6 me-2">Epaisseur du contour :</span>
+    <input #strokeWidth class="small strokeWidth" type="number" min="0" max="12" [value]="layer.strokeWidth" (change)="layer.strokeWidth = strokeWidth.value"/>
+  </div>
+</ng-template>
+
+
+<ng-template #ngNavLayerExporting let-layerObject='layer'>
+  <span class="fs-4 my-2">Exportation des données</span>
+
+  <ul class="nav nav-pills align-items-center justify-content-center" role="tablist">
+    <li class="nav-item border m-1" role="presentation">
+      <a class="nav-link fw-bold active" (click)="exportBuilder('geojson')" data-bs-toggle="tab" [attr.data-bs-target]="'#GeoJsonTab' + layer.id" type="button" role="tab">
+        GeoJSON
+      </a>
+    </li>
+    <li class="nav-item border m-1" role="presentation">
+      <a class="nav-link fw-bold" (click)="exportBuilder('wkt')" data-bs-toggle="tab" [attr.data-bs-target]="'#wktTab' + layer.id" type="button" role="tab">
+        WKT
+      </a>
+    </li>
+
+    <li class="nav-item border m-1" role="presentation">
+      <a class="nav-link fw-bold" (click)="exportBuilder('pytestFixture')" data-bs-toggle="tab" [attr.data-bs-target]="'#pytestFixture' + layer.id" type="button" role="tab">
+        Pytest Fixtures
+      </a>
+    </li>
+
+  </ul>
+
+  <div class="d-flex flex-row mx-2 tab-content" id="'tabContent' + layer.id">
+
+    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'geojson' ? 'active' : ''" [id]="'GeoJsonTab' + layer.id" role="tabpanel">
+      <textarea #exportGeoJsonStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportGeoJsonStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
+    </div>
+
+    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'wkt' ? 'active' : ''" [id]="'wktTab' + layer.id" role="tabpanel">
+      <textarea #exportWktStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportWktStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
+    </div>
+
+    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'pytestFixture' ? 'active' : ''" [id]="'pytestFixture' + layer.id" role="tabpanel">
+      <textarea #exportPytestFixturesGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportPytestFixturesGeomDiv.select()" readonly>{{this.exportData}}</textarea>
+    </div>
+
+  </div>
+</ng-template>

@@ -19,10 +19,8 @@ import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 
 import { featuresLayerType, polygonType } from '@modules/map-sandbox/shared/data-types';
+import { defaultStrokeColor, defaultStrokeWidth, getRandomDefaultColor, hexColorReg } from '../style-helper';
 
-const defaultStrokeWidth: number = 2;
-const defaultStrokeColor: string = "black";
-const defaultFillColor: string = '#ffcc33';
 
 
 export class layerHandler {
@@ -50,9 +48,10 @@ export class layerHandler {
   zIndexValue: number;
   layerName: string;
   geomType: 'Point' | 'LineString' | 'Polygon';
-  fillColor = defaultFillColor;
-  strokeColor = defaultStrokeColor;
-  strokeWidth = defaultStrokeWidth;
+
+  private _fillColor: string = getRandomDefaultColor();
+  private _strokeColor: string = defaultStrokeColor;
+  private _strokeWidth: string = ""+defaultStrokeWidth;
 
   deleted = false;
   locked = false;
@@ -86,6 +85,43 @@ export class layerHandler {
 
     this.map.addLayer(this.vectorLayer);
 
+  }
+
+  public get fillColor(): string {
+    return this._fillColor;
+  }
+
+  public set fillColor(color: string) {
+    if (hexColorReg.test(color)) {
+      this.features().forEach((feature: Feature) => {
+        feature.set("fill_color", color, false)
+      })
+      this._fillColor = color
+    };
+  }
+
+  public get strokeColor(): string {
+    return this._strokeColor;
+  }
+
+  public set strokeColor(color: string) {
+    if (hexColorReg.test(color)) {
+      this.features().forEach((feature: Feature) => {
+        feature.set("stroke_color", color, false)
+      })
+      this._strokeColor = color
+    };
+  }
+
+  public get strokeWidth(): string {
+    return this._strokeWidth;
+  }
+
+  public set strokeWidth(width: string) {
+    this._strokeWidth = width
+    this.features().forEach((feature: Feature) => {
+      feature.set("stroke_width", parseFloat(width), false)
+    })
   }
 
   private setLayer(): void {
@@ -440,27 +476,6 @@ export class layerHandler {
     this.vectorLayer.set('name', this.layerName, true)
   }
 
-  setStyleForAllFeatures(eventValue: any, styleProperties: 'fill_color' | 'stroke_color' | 'stroke_width'): void {
-    let value!: string;
-    // TODO avoid this condition regarding input output type?
-    if (styleProperties === 'stroke_width') {
-      value = eventValue.target.value
-    } else {
-      value = eventValue
-
-      if (styleProperties === 'fill_color') {
-        this.fillColor = eventValue;
-      } else if (styleProperties === 'stroke_color') {
-        this.strokeColor = eventValue;
-      }
-
-    }
-    this.features().forEach((feature: Feature) => {
-      feature.set(styleProperties, value, false)
-      // refreshFeatureStyle(feature) // not need ? supported by changefeature event....
-    })
-  }
-
   exportBounds(): number[] {
     // TODO return the list for copy to clipboard
     return this.sourceFeatures.getExtent().join(',').split(',').map(Number) ;
@@ -683,5 +698,4 @@ export function findElementBy(layer: any, attribute: string, value: string | num
 
   return null;
 }
-
 
