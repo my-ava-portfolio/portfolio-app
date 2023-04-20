@@ -64,7 +64,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.epsgChangesSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
       (epsg: string) => {
         this.existingLayers.forEach((layer: layerHandler) => {
-          layer.features().forEach( (feature: any) => {
+          layer.features.forEach( (feature: any) => {
             feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, epsg))
           });
         })
@@ -133,7 +133,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   duplicateLayer(layer: layerHandler): void {
     let duplicatedLayer = this.setNewLayer(layer.geomType, layer.layerName + " copy")
     // copy the feature from the current feature selecte to duplicate
-    duplicatedLayer.addFeaturesAndUpdateIds(layer.features())
+    duplicatedLayer.addFeaturesAndUpdateIds(layer.features)
     this.existingLayers.push(duplicatedLayer)
     this.refreshLayers()
   }

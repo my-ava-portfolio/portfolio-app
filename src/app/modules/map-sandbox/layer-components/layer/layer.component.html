@@ -74,7 +74,7 @@
 
     </div>
 
-    <div class="feature-container d-flex flex-row small mb-1" *ngIf="layer.features().length > 0">
+    <div class="feature-container d-flex flex-row small mb-1" *ngIf="layer.features.length > 0">
       <ul id="featuresList" class="w-100 list-group list-unstyled list-group-flush mx-3 rounded" [id]="'featuresLayer-' + layer.id">
 
         <li 
@@ -88,7 +88,7 @@
 
         </li>
 
-        <ng-container *ngFor="let feature of layer.features()">
+        <ng-container *ngFor="let feature of layer.features">
           <app-feature
           class="feature"
           [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"
@@ -182,7 +182,7 @@
 
   <div class="d-flex flex-column my-2 w-50">
     <span class="fs-6">Eléments:</span>
-    <ng-container *ngFor="let feature of layer.features()">
+    <ng-container *ngFor="let feature of layer.features">
       <app-feature
       class="feature"
       [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"

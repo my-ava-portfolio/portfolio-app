@@ -93,7 +93,7 @@ export class layerHandler {
 
   public set fillColor(color: string) {
     if (hexColorReg.test(color)) {
-      this.features().forEach((feature: Feature) => {
+      this.features.forEach((feature: Feature) => {
         feature.set("fill_color", color, false)
       })
       this._fillColor = color
@@ -106,7 +106,7 @@ export class layerHandler {
 
   public set strokeColor(color: string) {
     if (hexColorReg.test(color)) {
-      this.features().forEach((feature: Feature) => {
+      this.features.forEach((feature: Feature) => {
         feature.set("stroke_color", color, false)
       })
       this._strokeColor = color
@@ -119,9 +119,16 @@ export class layerHandler {
 
   public set strokeWidth(width: string) {
     this._strokeWidth = width
-    this.features().forEach((feature: Feature) => {
+    this.features.forEach((feature: Feature) => {
       feature.set("stroke_width", parseFloat(width), false)
     })
+  }
+
+  public get features(): Feature[] {
+    return  this.sourceFeatures.getFeatures().sort((a, b) => {
+      return a.get('no') - b.get('no');
+    });
+
   }
 
   private setLayer(): void {
@@ -406,19 +413,6 @@ export class layerHandler {
     }
   }
 
-  features(): any[] {
-    if (!this.deleted) {
-      // sort feature by no
-      let features = this.sourceFeatures.getFeatures().sort((a, b) => {
-        return a.get('no') - b.get('no');
-      });
-
-      return features
-    } else {
-      return []
-    }
-  }
-
   private removeHoles(event: any): void {
 
     // we suppose that we have only one feature!
@@ -501,13 +495,13 @@ export class layerHandler {
   exportToGeoJSON(): string {
     let exportFormatContainer = new GeoJSON();
     return JSON.stringify(JSON.parse(
-      exportFormatContainer.writeFeatures(this.features())
+      exportFormatContainer.writeFeatures(this.features)
     ), null, 2);
   }
 
   exportToWkt(): string {
     let wktFeatures: string[] = []
-    this.features().forEach((feature: any) => {
+    this.features.forEach((feature: any) => {
       wktFeatures.push(getWkt(feature.getGeometry()))
     })
     return wktFeatures.join('\n')
@@ -516,8 +510,8 @@ export class layerHandler {
   exportToPytestFixture(): string {
     const fixtureHeader = "\n@pytest.fixture\ndef "
     let fixtureFeatures: string[] = []
-    if (this.features() !== undefined) {
-      this.features().forEach((feature: any) => {
+    if (this.features !== undefined) {
+      this.features.forEach((feature: any) => {
         fixtureFeatures.push(
           fixtureHeader + feature.get('name').replace(' ', '_') + '():\n\treturn \'' + getWkt(feature.getGeometry()) + '\''
         )
@@ -535,7 +529,7 @@ export class layerHandler {
 
   zoomToFeature(featureId: string): void {
 
-    this.features().filter((feature: any) => {
+    this.features.filter((feature: any) => {
       if (feature.getId() === featureId) {
         this.map.getView().fit(feature.getGeometry(), {size:this.map.getSize(), maxZoom: this.maxZoom})
       }

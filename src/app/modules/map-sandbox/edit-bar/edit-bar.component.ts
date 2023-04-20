@@ -207,9 +207,9 @@ export class EditBarComponent implements OnInit, OnDestroy {
   computeShortestPath(mode: 'pedestrian' | 'vehicle'): void {
     //TODO call osmrx-api
     let wktFeatures: string[] = []
-    if (this.layer.features().length > 0) {
+    if (this.layer.features.length > 0) {
 
-      this.layer.features().forEach((feature: Feature) => {
+      this.layer.features.forEach((feature: Feature) => {
         const featureCloned = feature.clone()
         let geom = featureCloned.getGeometry()
         if (geom !== undefined) {
@@ -235,7 +235,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   computeBoundingBox(): void {
-    if (this.layer.features().length > 0) {
+    if (this.layer.features.length > 0) {
       this.editComputingService.addNewFeatures(this.layer.exportBoundsPolygon())
     }
   }

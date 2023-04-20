@@ -253,7 +253,7 @@ export class LayerComponent implements OnInit {
   }
 
   private getFeature(featureId: string): any {
-    let features = this.layer.features().filter((feature: any) => {
+    let features = this.layer.features.filter((feature: any) => {
       return feature.getId() === featureId
     })
     if (features.length === 1) {
