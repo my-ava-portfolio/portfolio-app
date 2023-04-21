@@ -4,7 +4,6 @@ import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, f
 
 import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 
-import { InteractionsService } from '../shared/service/interactions.service';
 import { EditComputingService } from '../shared/service/edit-computing.service';
 import { GraphComputingService } from '../shared/service/graph-computing.service';
 import { Feature } from 'ol';
@@ -52,7 +51,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   strInputEspgInput: string | null = null;
 
   constructor(
-    // private interactionsService: InteractionsService,
     private editComputingService: EditComputingService,
     private graphComputingService: GraphComputingService,
   ) {  }
@@ -83,14 +81,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   get enabled(): boolean {
     return this._enabled
-  }
-
-  enablingSelectOnlyOnTheCurrentLayer(): void { // not really on all layer
-    // this.interactionsService.setSelectableLayer(this.layer.uuid)
-  }
-
-  enableSelectingOnAllLayers(): void {
-    // this.interactionsService.setSelectableAllLayers()
   }
 
   disableEditing(unSelectLayer: boolean = true): void {
@@ -137,28 +127,18 @@ export class EditBarComponent implements OnInit, OnDestroy {
   drawHandler(status: boolean, holeStatus: boolean = false): void {
     if (status) {
       this.disableEditing(false)
-
-      // this.enablingSelectOnlyOnTheCurrentLayer()
-
       this.addFeatureEnable(holeStatus)
     } else {
       this.addFeatureDisable()
-      // this.enableSelectingOnAllLayers()
-
     }
   }
 
   drawHoleHandler(status: boolean, holeStatus: boolean = true): void {
     if (status) {
       this.disableEditing(false)
-
-      // this.enablingSelectOnlyOnTheCurrentLayer()
-
       this.addHoleFeatureEnable(holeStatus)
     } else {
       this.addHoleFeatureDisable()
-      // this.enableSelectingOnAllLayers()
-
     }
   }
 
@@ -228,8 +208,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
           const featuresToAdd = readStringWktAndGroupedByGeomType(data, featureParams)
           this.editComputingService.addNewFeatures(featuresToAdd)
         })
-      
-    }
+      }
   }
 
   computeBoundingBox(): void {

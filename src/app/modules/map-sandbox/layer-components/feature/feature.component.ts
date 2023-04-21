@@ -17,8 +17,6 @@ export class FeatureComponent implements OnInit {
   private _id!: string;
   private _geometry!: Geometry
 
-  // @Input() feature!: any;
-  // @Input() currentFeatureIdSelected!: string;
   @Input() layer!: layerHandler;
 
   disabledIcon = faXmark;

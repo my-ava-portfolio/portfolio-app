@@ -34,12 +34,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   defaultMapView!: View;
 
-  isLegendDisplayed = true;
+  isPanelsDisplayed = true;
 
   currentMenuDisplayed: 'geoTools' | 'createTools' = 'createTools'
-
-  editBarEnabled!: boolean
-  currentLayerSelected!: layerHandler | null;
 
   mapSubscription!: Subscription;
 
@@ -83,7 +80,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   showHideLegend(): void {
-    this.isLegendDisplayed = !this.isLegendDisplayed;
+    this.isPanelsDisplayed = !this.isPanelsDisplayed;
   }
 
 }

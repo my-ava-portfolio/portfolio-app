@@ -23,7 +23,6 @@ export class GeoinfoComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMousePosition()
-
   }
 
   updatePrecision(event: any): void {
@@ -34,7 +33,6 @@ export class GeoinfoComponent implements AfterViewInit {
     this.currentEpsg = epsg;
     this.mapService.setProjectionOnMap(epsg)
     this.setMapEpsg();
-
   }
 
   private initMousePosition(): void {

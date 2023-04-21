@@ -12,9 +12,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./layer.component.scss'],
 })
 export class LayerComponent implements OnInit, OnDestroy {
-  // @ViewChild(ChildComponent, {static: false}) childRef: ChildComponent;
-
-
   private _layer!: layerHandler;
 
   @Input() layersVisibleStatus!: boolean;
@@ -57,11 +54,6 @@ export class LayerComponent implements OnInit, OnDestroy {
   featureIdSelected!: string;
 
   removeLayerSubscription!: Subscription;
-  selectableLayerStatusSubscription!: Subscription;
-  selectableAllLayersStatusSubscription!: Subscription;
-
-  // layerIdSelectedSubscription!: Subscription;
-
   displayLayerModal = false;
   isLayerRemoved = false;
   exportData: string = '';
@@ -78,25 +70,6 @@ export class LayerComponent implements OnInit, OnDestroy {
         this.removeLayer()
       }
     )
-  
-    // this.selectableLayerStatusSubscription = this.interactionsService.selectableLayerId.subscribe(
-    //   (layerIdtoSelect: string) => {
-    //     console.log("oooo")
-    //     if (this.layer.uuid !== layerIdtoSelect) {
-    //       this.layer.disableSelecting()
-    //     } else {
-    //       this.layer.disableSelecting()
-    //       this.layer.enableSelecting()
-    //     }
-    //   }
-    // )
-
-    // this.selectableAllLayersStatusSubscription = this.interactionsService.selectableAllLayers.subscribe(
-    //   (_: boolean) => {
-    //     this.layer.disableSelecting()
-    //     this.layer.enableSelecting()
-    //   }
-    // )
    
   }
 
@@ -140,9 +113,6 @@ export class LayerComponent implements OnInit, OnDestroy {
     }
     
     this.removeLayerSubscription.unsubscribe();
-    // this.selectableLayerStatusSubscription.unsubscribe();
-    // this.selectableAllLayersStatusSubscription.unsubscribe();
-
     this.layer.disableSelecting()
     this.elementRef.nativeElement.remove();
   }
@@ -158,6 +128,13 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   @Input()
   set epsg(value: string) {
+    console.log(value, this._epsg)
+    if (value !== this._epsg) {
+      this.layer.features.forEach( (feature: any) => {
+        feature.setGeometry(feature.getGeometry().transform(this._epsg, value))
+      });
+    }
+
     this._epsg = value
   }
 
@@ -177,10 +154,6 @@ export class LayerComponent implements OnInit, OnDestroy {
   @Input()
   set locked(status: boolean) {
     this.layer.locked = status
-    // if (this.selected) {
-    //   // it concerns here only the selected layer
-    //   // this.interactionsService.activateEditBar(!this.layer.locked)
-    // }
   }
 
   get locked(): boolean {
@@ -205,8 +178,6 @@ export class LayerComponent implements OnInit, OnDestroy {
   removeLayer(): void {
     this.layer.removeLayer()
     this.removeLayerId.emit(this.layer.uuid)
-    // this.interactionsService.sendSelectedLayer(null)
-
     this.ngOnDestroy()
   }
 
@@ -220,7 +191,6 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   selectLayer(): void {
     this.interactionsService.sendSelectedLayerId(this.layer.uuid)
-    // this.interactionsService.sendSelectedLayer(this.layer) // for layout component
   }
 
   zoomToLayer(): void {

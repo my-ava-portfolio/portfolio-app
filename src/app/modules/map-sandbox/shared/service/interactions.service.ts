@@ -17,23 +17,9 @@ export class InteractionsService {
   constructor(
   ) { }
 
-  // activateEditBar(event: boolean): void {
-  //   this.editBarActivation.next(event);
-  // }
-
   removeAllLayers(): void {
     this.removeLayers.next(true)
   }
-
-  // setSelectingLayers(isEnabled: boolean): void {
-  //   this.selectingLayerStatus.next(isEnabled)
-  // }
-  // setSelectableLayer(layerId: string): void {
-  //   this.selectableLayerId.next(layerId)
-  // }
-  // setSelectableAllLayers(): void {
-  //   this.selectableAllLayers.next(true)
-  // }
 
   sendSelectedLayerId(layerId: string | null): void {
     this.layerIdSelected.next(layerId)

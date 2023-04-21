@@ -1,6 +1,6 @@
 <div fluidHeight id="sandbox" class="d-flex flex-row position-fixed">
 
-    <div id="panelsContainer" class="d-flex flex-column bg-light " [ngClass]="!isLegendDisplayed ? 'hidden' : 'displayed'">
+    <div id="panelsContainer" class="d-flex flex-column bg-light " [ngClass]="!isPanelsDisplayed ? 'hidden' : 'displayed'">
 
       <app-geoinfo
         id="geoTools"
@@ -28,9 +28,9 @@
 
       <span
         class="tool btn btn-warning text-black my-3 shadow rounded-end"
-        [ngClass]="isLegendDisplayed ? 'selected' : ''"
+        [ngClass]="isPanelsDisplayed ? 'selected' : ''"
         (click)="showHideLegend()">
-        <fa-icon [icon]="isLegendDisplayed ? leftSideIcon : rightSideIcon"></fa-icon>
+        <fa-icon [icon]="isPanelsDisplayed ? leftSideIcon : rightSideIcon"></fa-icon>
       </span>
 
       <span

@@ -23,7 +23,7 @@ import { EditComputingService } from '../shared/service/edit-computing.service';
 })
 export class LayerManagerComponent implements OnInit, OnDestroy {
   @Input() map!: Map;
-  @Input() currentEpsg!: string;
+  private _currentEpsg!: string;
   @Input() epsgAvailable!: string[];
 
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
@@ -63,12 +63,6 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
     this.epsgChangesSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
       (epsg: string) => {
-        this.existingLayers.forEach((layer: layerHandler) => {
-          layer.features.forEach( (feature: any) => {
-            feature.setGeometry(feature.getGeometry().transform(this.currentEpsg, epsg))
-          });
-        })
-
         this.currentEpsg = epsg;
       }
     )
@@ -107,6 +101,15 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     if (changes.layersList) {
       this.refreshLayers()
     }
+  }
+
+  @Input()
+  set currentEpsg(value: string) {
+    this._currentEpsg = value
+  }
+
+  get currentEpsg(): string {
+    return this._currentEpsg
   }
 
   addLayer(geomType: geomLayerTypes): void {
