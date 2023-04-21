@@ -14,8 +14,8 @@
           <fa-icon class="" [icon]="visible ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
         </label>
 
-        <input #btnLocked type="checkbox" class="btn-check" [id]="'btnLocked' + layer.uuid" [checked]="locked" (click)="locked = btnLocked.checked">
-        <label class="ms-auto p-1 bg-transparent border-0 pointer" [for]="'btnLocked' + layer.uuid" container="body" [ngbPopover]="locked ? 'Déverrouiler' : 'Verrouiller'" triggers="mouseenter:mouseleave">
+        <input #btnLocked type="checkbox" class="btn-check" [id]="'btnLocked' + layer.uuid" [checked]="locked" (change)="locked = btnLocked.checked">
+        <label class="ms-auto p-1 bg-transparent border-0 pointer" [for]="'btnLocked' + layer.uuid" container="body" [ngbPopover]="locked ? 'Déverrouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="locked ? lockIcon : unLockIcon" size="xs"></fa-icon>
         </label>
 
@@ -34,8 +34,8 @@
 
       <div
         class="d-flex flex-row pointer justify-content-start align-items-center flex-fill p-1"
-        (click)="selected = true"
         [ngClass]="selected ? 'fw-bold' :  'text-black'"
+        (click)="selected = true"
         >
         <div class="">
           <fa-icon *ngIf="layer.geomType === 'Point'" class="me-2" [icon]="pointIcon" size="xs"></fa-icon>
@@ -54,7 +54,7 @@
           <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
         </button>
 
-        <button [ngClass]="this.layer.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
+        <button [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
         </button>
 
@@ -105,16 +105,18 @@
 </div>
 
 
-<!-- <div moveDivToBody targetDivId="mapLegendTools" [isRemoved]="false" class="position-fixed top-50 end-0 translate-middle-y">
+<div moveDivToBody [isRemoved]="this.isLayerRemoved" *ngIf="!isLayerRemoved" class="position-fixed bottom-0 start-50 translate-middle-x">
 
   <app-edit-bar
     class=""
-    id="editBar0"
     [layer]="layer"
+    [hidden]="!selected"
+    [enabled]="!locked && selected"
+    id="editBar0"
     [currentEpsg]="epsg"
   ></app-edit-bar>
 
-</div> -->
+</div>
 
 
 

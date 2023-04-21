@@ -1,5 +1,5 @@
 import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, OnDestroy } from '@angular/core';
 import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
@@ -11,8 +11,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './layer.component.html',
   styleUrls: ['./layer.component.scss'],
 })
-export class LayerComponent implements OnInit {
-  @Input() layer!: layerHandler;
+export class LayerComponent implements OnInit, OnDestroy {
+  // @ViewChild(ChildComponent, {static: false}) childRef: ChildComponent;
+
+
+  private _layer!: layerHandler;
 
   @Input() layersVisibleStatus!: boolean;
 
@@ -50,7 +53,6 @@ export class LayerComponent implements OnInit {
   isEdited: boolean = false;
   isShown: boolean = false;
   isHole: boolean = false;
-  @Input() isLocked: boolean = false;
 
   featureIdSelected!: string;
 
@@ -77,24 +79,24 @@ export class LayerComponent implements OnInit {
       }
     )
   
-    this.selectableLayerStatusSubscription = this.interactionsService.selectableLayerId.subscribe(
-      (layerIdtoSelect: string) => {
+    // this.selectableLayerStatusSubscription = this.interactionsService.selectableLayerId.subscribe(
+    //   (layerIdtoSelect: string) => {
+    //     console.log("oooo")
+    //     if (this.layer.uuid !== layerIdtoSelect) {
+    //       this.layer.disableSelecting()
+    //     } else {
+    //       this.layer.disableSelecting()
+    //       this.layer.enableSelecting()
+    //     }
+    //   }
+    // )
 
-        if (this.layer.uuid !== layerIdtoSelect) {
-          this.layer.disableSelecting()
-        } else {
-          this.layer.disableSelecting()
-          this.layer.enableSelecting()
-        }
-      }
-    )
-
-    this.selectableAllLayersStatusSubscription = this.interactionsService.selectableAllLayers.subscribe(
-      (_: boolean) => {
-        this.layer.disableSelecting()
-        this.layer.enableSelecting()
-      }
-    )
+    // this.selectableAllLayersStatusSubscription = this.interactionsService.selectableAllLayers.subscribe(
+    //   (_: boolean) => {
+    //     this.layer.disableSelecting()
+    //     this.layer.enableSelecting()
+    //   }
+    // )
    
   }
 
@@ -138,11 +140,20 @@ export class LayerComponent implements OnInit {
     }
     
     this.removeLayerSubscription.unsubscribe();
-    this.selectableLayerStatusSubscription.unsubscribe();
-    this.selectableAllLayersStatusSubscription.unsubscribe();
+    // this.selectableLayerStatusSubscription.unsubscribe();
+    // this.selectableAllLayersStatusSubscription.unsubscribe();
 
     this.layer.disableSelecting()
     this.elementRef.nativeElement.remove();
+  }
+
+  @Input()
+  set layer(layer: layerHandler) {
+    this._layer = layer
+  }
+
+  get layer(): layerHandler {
+    return this._layer
   }
 
   @Input()
@@ -165,12 +176,11 @@ export class LayerComponent implements OnInit {
 
   @Input()
   set locked(status: boolean) {
-    this.isLocked = status
-    this.layer.locked = this.isLocked
-    if (this.selected) {
-      // it concerns here only the selected layer
-      this.interactionsService.activateEditBar(!this.layer.locked)
-    }
+    this.layer.locked = status
+    // if (this.selected) {
+    //   // it concerns here only the selected layer
+    //   // this.interactionsService.activateEditBar(!this.layer.locked)
+    // }
   }
 
   get locked(): boolean {
@@ -179,16 +189,13 @@ export class LayerComponent implements OnInit {
 
   @Input()
   set selected(status: boolean) {
-    console.log(status)
     if (!status) {
       // unselect all the features
       this.unSelectFeature()
     } else {
       this.selectLayer()
     }
-    console.log(status)
     this._selected = status
-
   }
 
   get selected(): boolean {
@@ -213,7 +220,7 @@ export class LayerComponent implements OnInit {
 
   selectLayer(): void {
     this.interactionsService.sendSelectedLayerId(this.layer.uuid)
-    this.interactionsService.sendSelectedLayer(this.layer) // for layout component
+    // this.interactionsService.sendSelectedLayer(this.layer) // for layout component
   }
 
   zoomToLayer(): void {

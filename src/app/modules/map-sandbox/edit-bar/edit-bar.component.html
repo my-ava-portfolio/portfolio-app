@@ -2,16 +2,16 @@
 
   <div class="d-flex flex-column editTools bg-dark bg-gradient p-2 m-2 rounded-3 shadow">
 
-    <div class="d-flex flex-column align-items-center justify-content-center text-warning m-1">
+    <div class="d-flex flex-row align-items-center justify-content-center text-warning m-1">
       <span class="fw-bold me-1">{{layer.layerName}}</span>
       <span class="fst-italic">({{layer.geomType}})</span>
     </div>
 
-    <div *ngIf="isEditBarEnabled" class="d-flex flex-column m-1">
+    <div *ngIf="enabled" class="d-flex flex-row m-1">
 
-      <div class="d-flex flex-column my-1 align-items-center shadow border rounded bg-light">
+      <div class="d-flex flex-row m-1 align-items-center shadow border rounded bg-light">
 
-        <span class="text-dark mx-2 fw-bold small">Ajouter</span>
+        <span class="text-dark m-2 fw-bold small">Ajouter</span>
 
           <input #btnDraw type="checkbox" class="btn-check" [id]="'btnDraw' + layer.uuid" [checked]="isDrawn" (click)="drawHandler(btnDraw.checked)">
           <label [for]="'btnDraw' + layer.uuid" [ngbPopover]="'Ajouter un objet de type \'' + layer.geomType + '\''" triggers="mouseenter:mouseleave">
@@ -23,9 +23,9 @@
 
       </div>
 
-      <div class="d-flex flex-column my-1 align-items-center shadow border rounded bg-light">
+      <div class="d-flex flex-row m-1 align-items-center shadow border rounded bg-light">
 
-        <span class="text-dark mx-2 fw-bold small">Editer</span>
+        <span class="text-dark m-2 fw-bold small">Editer</span>
 
         <input #btnMove type="checkbox" class="btn-check" [id]="'btnMove' + layer.uuid" [checked]="isMoved" (click)="translateHandler(btnMove.checked)">
         <label [for]="'btnMove' + layer.uuid" ngbPopover="Déplacer" triggers="mouseenter:mouseleave">
@@ -54,31 +54,30 @@
 
       </div>
 
-      <div class="d-flex flex-column my-1 align-items-center shadow border rounded bg-light">
+      <div class="d-flex flex-row m-1 align-items-center shadow border rounded bg-light">
 
-        <span class="text-dark mx-2 fw-bold small">Calculer</span>
+        <span class="text-dark m-2 fw-bold small">Calculer</span>
 
+        <ng-container>
+          <button class="btn btn-outline-success m-1" (click)="computeBoundingBox()" ngbPopover="La bounding box" triggers="mouseenter:mouseleave">
+            <fa-icon [icon]="centerIcon"></fa-icon>
+          </button>
+        </ng-container>
 
-          <ng-container>
-            <button class="btn btn-outline-success m-1" (click)="computeBoundingBox()" ngbPopover="La bounding box" triggers="mouseenter:mouseleave">
-              <fa-icon [icon]="centerIcon"></fa-icon>
-            </button>
-          </ng-container>
+        <ng-container *ngIf="layer.geomType === 'Point'">
+          <div class="d-flex flex-row border border-success rounded m-1">
+              <div class="input-group-text m-0 text-success" ngbPopover="Plus court chemin" id="btnGroupAddon" triggers="mouseenter:mouseleave">
+                <fa-icon [icon]="pathIcon" size="xs"></fa-icon>
+              </div>
+              <button class="btn btn-sm btn-outline-secondary border-0" (click)="computeShortestPath('pedestrian')" ngbPopover="Piéton" triggers="mouseenter:mouseleave">
+                <fa-icon [icon]="pedestrianIcon"></fa-icon>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary border-0" (click)="computeShortestPath('vehicle')" ngbPopover="Motorisé" triggers="mouseenter:mouseleave">
+                <fa-icon [icon]="motorIcon"></fa-icon>
+              </button>
+          </div>
 
-          <ng-container *ngIf="layer.geomType === 'Point'">
-            <div class="d-flex flex-column border border-success rounded m-1">
-                <div class="input-group-text m-0 text-success" ngbPopover="Plus court chemin" id="btnGroupAddon" triggers="mouseenter:mouseleave">
-                  <fa-icon [icon]="pathIcon" size="xs"></fa-icon>
-                </div>
-                <button class="btn btn-sm btn-outline-secondary border-0" (click)="computeShortestPath('pedestrian')" ngbPopover="Piéton" triggers="mouseenter:mouseleave">
-                  <fa-icon [icon]="pedestrianIcon"></fa-icon>
-                </button>
-                <button class="btn btn-sm btn-outline-secondary border-0" (click)="computeShortestPath('vehicle')" ngbPopover="Motorisé" triggers="mouseenter:mouseleave">
-                  <fa-icon [icon]="motorIcon"></fa-icon>
-                </button>
-            </div>
-
-          </ng-container>
+        </ng-container>
 
       </div>
 

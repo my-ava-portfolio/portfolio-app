@@ -1,11 +1,10 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking } from '@fortawesome/free-solid-svg-icons';
 
 import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 
 import { InteractionsService } from '../shared/service/interactions.service';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { EditComputingService } from '../shared/service/edit-computing.service';
 import { GraphComputingService } from '../shared/service/graph-computing.service';
 import { Feature } from 'ol';
@@ -18,8 +17,10 @@ import { readStringWktAndGroupedByGeomType } from '@modules/map-sandbox/import-t
   styleUrls: ['./edit-bar.component.scss']
 })
 export class EditBarComponent implements OnInit, OnDestroy {
-  @Input() layer!: layerHandler;
+  private _layer!: layerHandler;
   @Input() currentEpsg!: string;
+
+  private _enabled!: boolean
 
   addIcon = faCirclePlus;
   editIcon = faPencil;
@@ -44,56 +45,52 @@ export class EditBarComponent implements OnInit, OnDestroy {
   // compute
   isShortestPath: boolean = false;
 
-  isEditBarEnabled!: boolean;;
 
   // wkt import
   epsgAvailable = ["EPSG:4326", "EPSG:3857"]; //TODO refactor
   strInputDataValues: string | null = null;
   strInputEspgInput: string | null = null;
 
-  layerLockStatusSubscription!: Subscription;
-
   constructor(
-    private interactionsService: InteractionsService,
+    // private interactionsService: InteractionsService,
     private editComputingService: EditComputingService,
     private graphComputingService: GraphComputingService,
-    private cdRef: ChangeDetectorRef,
-  ) {
-
-    this.layerLockStatusSubscription = this.interactionsService.editBarActivation.subscribe(
-      (activated: boolean) => {
-        if (activated) {
-          this.isEditBarEnabled = true
-        } else {
-          this.isEditBarEnabled = false
-
-          this.disableEditing()
-        }
-        this.cdRef.detectChanges();
-      }
-    )
-
-  }
+  ) {  }
 
   ngOnInit(): void {
-    this.isEditBarEnabled = !this.layer.locked
   }
 
   ngOnDestroy(): void {
     this.disableEditing()
-    this.layerLockStatusSubscription.unsubscribe()
-    console.log("hop")
   }
 
-  ngOnChanges(changes: any) {
+  @Input()
+  set layer(layer: layerHandler) {
+    this._layer = layer
+  }
+
+  get layer(): layerHandler {
+    return this._layer
+  }
+
+  @Input()
+  set enabled(status: boolean) {
+    if (!status) {
+      this.disableEditing()
+    }
+    this._enabled = status
+  }
+
+  get enabled(): boolean {
+    return this._enabled
   }
 
   enablingSelectOnlyOnTheCurrentLayer(): void { // not really on all layer
-    this.interactionsService.setSelectableLayer(this.layer.uuid)
+    // this.interactionsService.setSelectableLayer(this.layer.uuid)
   }
 
   enableSelectingOnAllLayers(): void {
-    this.interactionsService.setSelectableAllLayers()
+    // this.interactionsService.setSelectableAllLayers()
   }
 
   disableEditing(unSelectLayer: boolean = true): void {
@@ -141,12 +138,12 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
 
-      this.enablingSelectOnlyOnTheCurrentLayer()
+      // this.enablingSelectOnlyOnTheCurrentLayer()
 
       this.addFeatureEnable(holeStatus)
     } else {
       this.addFeatureDisable()
-      this.enableSelectingOnAllLayers()
+      // this.enableSelectingOnAllLayers()
 
     }
   }
@@ -155,12 +152,12 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
 
-      this.enablingSelectOnlyOnTheCurrentLayer()
+      // this.enablingSelectOnlyOnTheCurrentLayer()
 
       this.addHoleFeatureEnable(holeStatus)
     } else {
       this.addHoleFeatureDisable()
-      this.enableSelectingOnAllLayers()
+      // this.enableSelectingOnAllLayers()
 
     }
   }

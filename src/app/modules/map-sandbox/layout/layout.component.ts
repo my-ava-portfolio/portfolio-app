@@ -42,14 +42,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
   currentLayerSelected!: layerHandler | null;
 
   mapSubscription!: Subscription;
-  layerObjectSelectedSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
     private controlerService: ControlerService,
     private activatedRoute: ActivatedRoute,
-    private interactionsService: InteractionsService,
-    private cdRef:ChangeDetectorRef
   ) {
 
     // Get the map container, view and epsg
@@ -60,21 +57,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.defaultMapView = this.map.getView()
       }
     );
-
-    this.layerObjectSelectedSubscription = this.interactionsService.layerObjectSelected.subscribe(
-      (layerSelected: layerHandler | null) => {
-
-        if (layerSelected !== this.currentLayerSelected) {
-          this.editBarEnabled = false
-          this.cdRef.detectChanges(); // in order to delete/reset the edit bar component
-
-          this.editBarEnabled = true
-        } else if (layerSelected === null ) {
-          this.editBarEnabled = false
-        }
-        this.currentLayerSelected = layerSelected
-
-      })
 
    }
 
@@ -90,7 +72,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.map.setView(this.defaultMapView)
 
     this.mapSubscription.unsubscribe();
-    // this.layerObjectSelectedSubscription.unsubscribe();
 
     this.mapService.changeMapInteractionStatus(false)
     this.mapService.resetMapView()

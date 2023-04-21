@@ -2,19 +2,16 @@ import { NgModule } from '@angular/core';
 
 import { FluidHeightDirective } from './fluid-height.directive';
 import { DivToBodyDirective } from './div-to-body.directive';
-import { MoveDivDirective } from './move-div.directive';
 
 @NgModule({
   imports: [],
     declarations: [
       FluidHeightDirective,
-      DivToBodyDirective,
-      MoveDivDirective
-    ],
+    DivToBodyDirective
+  ],
   exports: [
     FluidHeightDirective,
-    DivToBodyDirective,
-    MoveDivDirective
+    DivToBodyDirective
   ]
 })
 export class DirectivesModule { }
