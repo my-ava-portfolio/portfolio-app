@@ -18,7 +18,7 @@ import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 
-import { featuresLayerType, polygonType } from '@modules/map-sandbox/shared/data-types';
+import { featuresLayerType, geomLayerTypes, polygonType } from '@modules/map-sandbox/shared/data-types';
 import { defaultStrokeColor, defaultStrokeWidth, getRandomDefaultColor, hexColorReg } from '../style-helper';
 
 
@@ -44,16 +44,15 @@ export class layerHandler {
   allFeatures: any[] = [];
 
   groupId: string | null; // not used
-  id: string;
+  private _id!: string;
   zIndexValue: number;
-  layerName: string;
-  geomType: 'Point' | 'LineString' | 'Polygon';
+  private _layerName!: string;
+  geomType: geomLayerTypes;
 
   private _fillColor: string = getRandomDefaultColor();
   private _strokeColor: string = defaultStrokeColor;
   private _strokeWidth: string = ""+defaultStrokeWidth;
 
-  deleted = false;
   locked = false;
 
   featuresSelected: any[] = []
@@ -70,14 +69,12 @@ export class layerHandler {
     groupId: string | null = null
   ) {
     this.map = map
-    this.layerName = layerName
     this.geomType = geomType
     this.groupId = groupId
 
-    this.id = uuidv4();
     this.zIndexValue = zIndexValue;
 
-    this.setLayer();
+    this.initLayer(layerName);
     this.initSelect();
     this.initTranslate();
     this.initSnap();
@@ -85,6 +82,18 @@ export class layerHandler {
 
     this.map.addLayer(this.vectorLayer);
 
+  }
+
+  public get layerName(): string {
+    return this.vectorLayer.get('name')
+  }
+
+  public set layerName(layerName: string) {
+    this.vectorLayer.set('name', layerName, true)
+  }
+
+  public get uuid(): string {
+    return this._id;
   }
 
   public get fillColor(): string {
@@ -131,7 +140,7 @@ export class layerHandler {
 
   }
 
-  private setLayer(): void {
+  private initLayer(layerName: string): void {
     this.sourceFeatures = new VectorSource();
 
     this.vectorLayer = new VectorLayer({
@@ -140,8 +149,9 @@ export class layerHandler {
         return refreshFeatureStyle(feature)
       }
     });
+    this._id = uuidv4();
 
-    this.vectorLayer.set('name', this.layerName, true)
+    this.layerName = layerName
     this.vectorLayer.set('geomType', this.geomType, true)
     this.vectorLayer.setZIndex(this.zIndexValue);
 
@@ -149,7 +159,6 @@ export class layerHandler {
 
   removeLayer(): void {
     this.map.removeLayer(this.vectorLayer)
-    this.deleted = true;
   }
 
   private initSelect(): void {
@@ -334,7 +343,7 @@ export class layerHandler {
     // TOOD add the layerName ? 
     feature.setProperties({
       'id': feature.getId(),
-      'layer_id': this.id,
+      // 'layer_id': this.uuid,
       'no': this.counter,
       'name': name,
       'geom_type': feature.getGeometry()?.getType(),
@@ -542,7 +551,7 @@ export class layerHandler {
 export function layerHandlerPositionning(layersArray: layerHandler[], layerId: string, incrementValue: number): layerHandler[] {
   let outputArray: layerHandler[] = [];
 
-  const layerIndexToGet = layersArray.findIndex((layer: layerHandler) => layer.id === layerId);
+  const layerIndexToGet = layersArray.findIndex((layer: layerHandler) => layer.uuid === layerId);
   const layerZIndex = layersArray[layerIndexToGet].zIndexValue;
   const toIndex = layerZIndex + incrementValue
   if (toIndex >= 0 && toIndex < layersArray.length) {

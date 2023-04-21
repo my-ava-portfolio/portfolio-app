@@ -7,7 +7,7 @@ import { layerHandler } from '../layer-handler/layer-handler';
 })
 export class InteractionsService {
 
-  layerIdSelected: Subject<string> = new Subject<string>();
+  layerIdSelected: Subject<string | null> = new Subject<string | null>();
   layerObjectSelected: Subject<layerHandler | null> = new Subject<layerHandler | null>();
   selectableLayerId: Subject<string> = new Subject<string>();
   selectableAllLayers: Subject<boolean> = new Subject<boolean>();
@@ -36,7 +36,7 @@ export class InteractionsService {
     this.selectableAllLayers.next(true)
   }
 
-  sendSelectedLayerId(layerId: string): void {
+  sendSelectedLayerId(layerId: string | null): void {
     this.layerIdSelected.next(layerId)
   }
   sendSelectedLayer(layer: layerHandler | null): void {

@@ -5,21 +5,21 @@
   >
 
     <div class="header d-flex flex-row border rounded"
-    [ngClass]="isSelected ? 'border-dark border-2' :  ''"
+    [ngClass]="selected ? 'border-dark border-2' :  ''"
     >
 
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
-        <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.id" [checked]="isVisible" (click)="visibleHandler(btnVisible.checked)">
-        <label class="p-1 bg-transparent border-0 pointer" [for]="'btnVisible' + layer.id" [ngClass]="btnVisible.checked ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="btnVisible.checked ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="btnVisible.checked ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
+        <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.uuid" [checked]="visible" (change)="visible = btnVisible.checked">
+        <label class="p-1 bg-transparent border-0 pointer" [for]="'btnVisible' + layer.uuid" [ngClass]="visible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="visible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="visible ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
         </label>
 
-        <input #btnLocked type="checkbox" class="btn-check" [id]="'btnLocked' + layer.id" [checked]="isLocked" (click)="lockingLayer(btnLocked.checked)">
-        <label class="ms-auto p-1 bg-transparent border-0 pointer" [for]="'btnLocked' + layer.id" container="body" [ngbPopover]="btnLocked.checked ? 'Déverrouiler' : 'Verrouiller'" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="btnLocked.checked ? lockIcon : unLockIcon" size="xs"></fa-icon>
+        <input #btnLocked type="checkbox" class="btn-check" [id]="'btnLocked' + layer.uuid" [checked]="locked" (click)="locked = btnLocked.checked">
+        <label class="ms-auto p-1 bg-transparent border-0 pointer" [for]="'btnLocked' + layer.uuid" container="body" [ngbPopover]="locked ? 'Déverrouiler' : 'Verrouiller'" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="locked ? lockIcon : unLockIcon" size="xs"></fa-icon>
         </label>
 
-        <div class="d-flex flex-column" [ngClass]="isSelected ? 'pe-auto' :  'pe-none'">
+        <div class="d-flex flex-column" [ngClass]="selected ? 'pe-auto' :  'pe-none'">
           <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
             <fa-icon class="" [icon]="upIcon" size="xs"></fa-icon>
           </button>
@@ -34,8 +34,8 @@
 
       <div
         class="d-flex flex-row pointer justify-content-start align-items-center flex-fill p-1"
-        (click)="selectLayer()"
-        [ngClass]="isSelected ? 'fw-bold' :  'text-black'"
+        (click)="selected = true"
+        [ngClass]="selected ? 'fw-bold' :  'text-black'"
         >
         <div class="">
           <fa-icon *ngIf="layer.geomType === 'Point'" class="me-2" [icon]="pointIcon" size="xs"></fa-icon>
@@ -48,7 +48,7 @@
         </div>
       </div>
 
-      <div class="ms-auto d-flex flex-row" [ngClass]="isSelected ? 'd-block' : 'd-none'">
+      <div class="ms-auto d-flex flex-row" [ngClass]="selected ? 'd-block' : 'd-none'">
 
         <button class="ms-auto p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
@@ -66,7 +66,7 @@
           <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
         </button>
 
-        <button class="p-1 bg-transparent border-0 text-black" (click)="displayLayerSettings()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayerSettings-'+ layer.id" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+        <button class="p-1 bg-transparent border-0 text-black" (click)="displayLayerSettings()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayerSettings-'+ layer.uuid" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
         </button>
 
@@ -75,11 +75,11 @@
     </div>
 
     <div class="feature-container d-flex flex-row small mb-1" *ngIf="layer.features.length > 0">
-      <ul id="featuresList" class="w-100 list-group list-unstyled list-group-flush mx-3 rounded" [id]="'featuresLayer-' + layer.id">
+      <ul id="featuresList" class="w-100 list-group list-unstyled list-group-flush mx-3 rounded" [id]="'featuresLayer-' + layer.uuid">
 
         <li 
         class="feature border-bottom" 
-        [ngClass]="featureIdSelected == 'none' && isSelected ? 'bg-opacity-25' : ''" 
+        [ngClass]="featureIdSelected == 'none' && selected ? 'bg-opacity-25' : ''" 
         (click)="unSelectFeature()"
         >
           <div class="feature d-flex flex-row pointer justify-content-center align-items-center flex-fill m-1">
@@ -93,21 +93,33 @@
           class="feature"
           [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"
           (click)="selectFeatureById(feature.getId())"
-          [currentFeatureIdSelected]="featureIdSelected"
+          [selected]="featureIdSelected == feature.getId()"
           [feature]="feature"
-          [currentLayer]="layer"
+          [layer]="layer"
           >
           </app-feature>
         </ng-container>
 
       </ul>
     </div>
-
-
 </div>
 
+
+<!-- <div moveDivToBody targetDivId="mapLegendTools" [isRemoved]="false" class="position-fixed top-50 end-0 translate-middle-y">
+
+  <app-edit-bar
+    class=""
+    id="editBar0"
+    [layer]="layer"
+    [currentEpsg]="epsg"
+  ></app-edit-bar>
+
+</div> -->
+
+
+
 <div moveDivToBody [isRemoved]="this.isLayerRemoved" 
-[id]="'modalLayerSettings-'+ layer.id" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+[id]="'modalLayerSettings-'+ layer.uuid" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
@@ -187,9 +199,9 @@
       class="feature"
       [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"
       (click)="selectFeatureById(feature.getId())"
-      [currentFeatureIdSelected]="featureIdSelected"
+      [selected]="featureIdSelected == feature.getId()"
       [feature]="feature"
-      [currentLayer]="layer"
+      [layer]="layer"
       >
       </app-feature>
     </ng-container>
@@ -208,18 +220,18 @@
 
   <div class="d-flex flex-row align-items-center my-2">
     <span class="fs-6 me-2">Couleur de fond :</span>
-    <input #layerFillColor type="color" [id]="'fillColor-' + layer.id" class="fillColor pointer border-0" [value]="layer.fillColor" (change)="layer.fillColor = layerFillColor.value"/>
-    <label [attr.for]="'fillColor-' + layer.id"></label>
-    <input #textLayerFillColor type="text" [id]="'textFillColor-' + layer.id" class="fillColor p-0 border-1" [value]="layer.fillColor" (change)="layer.fillColor = textLayerFillColor.value"/>
-    <label [attr.for]="'textFillColor-' + layer.id"></label>
+    <input #layerFillColor type="color" [id]="'fillColor-' + layer.uuid" class="fillColor pointer border-0" [value]="layer.fillColor" (change)="layer.fillColor = layerFillColor.value"/>
+    <label [attr.for]="'fillColor-' + layer.uuid"></label>
+    <input #textLayerFillColor type="text" [id]="'textFillColor-' + layer.uuid" class="fillColor p-0 border-1" [value]="layer.fillColor" (change)="layer.fillColor = textLayerFillColor.value"/>
+    <label [attr.for]="'textFillColor-' + layer.uuid"></label>
   </div>
 
   <div class="d-flex flex-row align-items-center my-2">
     <span class="fs-6 me-2">Couleur du contour :</span>
-    <input #layerStrokeColor type="color" [id]="'strokeColor-' + layer.id" class="fillColor pointer border-0" [value]="layer.strokeColor" (change)="layer.strokeColor = layerStrokeColor.value"/>
-    <label [attr.for]="'strokeColor-' + layer.id"></label>
-    <input #textLayerStrokeColor type="text" [id]="'textStrokeColor-' + layer.id" class="fillColor p-0 border-1" [value]="layer.strokeColor" (change)="layer.strokeColor = textLayerStrokeColor.value"/>
-    <label [attr.for]="'textStrokeColor-' + layer.id"></label>
+    <input #layerStrokeColor type="color" [id]="'strokeColor-' + layer.uuid" class="fillColor pointer border-0" [value]="layer.strokeColor" (change)="layer.strokeColor = layerStrokeColor.value"/>
+    <label [attr.for]="'strokeColor-' + layer.uuid"></label>
+    <input #textLayerStrokeColor type="text" [id]="'textStrokeColor-' + layer.uuid" class="fillColor p-0 border-1" [value]="layer.strokeColor" (change)="layer.strokeColor = textLayerStrokeColor.value"/>
+    <label [attr.for]="'textStrokeColor-' + layer.uuid"></label>
   </div>
 
   <div class="d-flex flex-row align-items-center my-2">
@@ -234,18 +246,18 @@
 
   <ul class="nav nav-pills align-items-center justify-content-center" role="tablist">
     <li class="nav-item border m-1" role="presentation">
-      <a class="nav-link fw-bold active" (click)="exportBuilder('geojson')" data-bs-toggle="tab" [attr.data-bs-target]="'#GeoJsonTab' + layer.id" type="button" role="tab">
+      <a class="nav-link fw-bold active" (click)="exportBuilder('geojson')" data-bs-toggle="tab" [attr.data-bs-target]="'#GeoJsonTab' + layer.uuid" type="button" role="tab">
         GeoJSON
       </a>
     </li>
     <li class="nav-item border m-1" role="presentation">
-      <a class="nav-link fw-bold" (click)="exportBuilder('wkt')" data-bs-toggle="tab" [attr.data-bs-target]="'#wktTab' + layer.id" type="button" role="tab">
+      <a class="nav-link fw-bold" (click)="exportBuilder('wkt')" data-bs-toggle="tab" [attr.data-bs-target]="'#wktTab' + layer.uuid" type="button" role="tab">
         WKT
       </a>
     </li>
 
     <li class="nav-item border m-1" role="presentation">
-      <a class="nav-link fw-bold" (click)="exportBuilder('pytestFixture')" data-bs-toggle="tab" [attr.data-bs-target]="'#pytestFixture' + layer.id" type="button" role="tab">
+      <a class="nav-link fw-bold" (click)="exportBuilder('pytestFixture')" data-bs-toggle="tab" [attr.data-bs-target]="'#pytestFixture' + layer.uuid" type="button" role="tab">
         Pytest Fixtures
       </a>
     </li>
@@ -254,15 +266,15 @@
 
   <div class="d-flex flex-row mx-2 tab-content" id="'tabContent' + layer.id">
 
-    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'geojson' ? 'active' : ''" [id]="'GeoJsonTab' + layer.id" role="tabpanel">
+    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'geojson' ? 'active' : ''" [id]="'GeoJsonTab' + layer.uuid" role="tabpanel">
       <textarea #exportGeoJsonStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportGeoJsonStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
     </div>
 
-    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'wkt' ? 'active' : ''" [id]="'wktTab' + layer.id" role="tabpanel">
+    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'wkt' ? 'active' : ''" [id]="'wktTab' + layer.uuid" role="tabpanel">
       <textarea #exportWktStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportWktStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
     </div>
 
-    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'pytestFixture' ? 'active' : ''" [id]="'pytestFixture' + layer.id" role="tabpanel">
+    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'pytestFixture' ? 'active' : ''" [id]="'pytestFixture' + layer.uuid" role="tabpanel">
       <textarea #exportPytestFixturesGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportPytestFixturesGeomDiv.select()" readonly>{{this.exportData}}</textarea>
     </div>
 

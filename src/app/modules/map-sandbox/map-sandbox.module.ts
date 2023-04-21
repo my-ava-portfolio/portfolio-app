@@ -39,7 +39,7 @@ import { ImportToolsComponent } from './import-tools/import-tools.component';
     FontAwesomeModule,
     NgbModule,
     FormsModule,
-    DirectivesModule
+    DirectivesModule    
   ],
 })
 export class MapSandboxModule { }

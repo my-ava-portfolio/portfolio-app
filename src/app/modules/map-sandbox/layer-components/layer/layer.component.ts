@@ -13,8 +13,6 @@ import { Subscription } from 'rxjs';
 })
 export class LayerComponent implements OnInit {
   @Input() layer!: layerHandler;
-  @Input() isSelected!: boolean;
-  layerIdSelected!: string;
 
   @Input() layersVisibleStatus!: boolean;
 
@@ -44,7 +42,10 @@ export class LayerComponent implements OnInit {
   lockIcon = faLock;
   unLockIcon = faLockOpen;
 
-  @Input() isVisible: boolean = true;
+  private _epsg!: string
+  private _selected: boolean = false
+  displayTool: boolean = false;
+
   isDrawn: boolean = false;
   isEdited: boolean = false;
   isShown: boolean = false;
@@ -57,7 +58,7 @@ export class LayerComponent implements OnInit {
   selectableLayerStatusSubscription!: Subscription;
   selectableAllLayersStatusSubscription!: Subscription;
 
-  layerIdSelectedSubscription!: Subscription;
+  // layerIdSelectedSubscription!: Subscription;
 
   displayLayerModal = false;
   isLayerRemoved = false;
@@ -79,7 +80,7 @@ export class LayerComponent implements OnInit {
     this.selectableLayerStatusSubscription = this.interactionsService.selectableLayerId.subscribe(
       (layerIdtoSelect: string) => {
 
-        if (this.layer.id !== layerIdtoSelect) {
+        if (this.layer.uuid !== layerIdtoSelect) {
           this.layer.disableSelecting()
         } else {
           this.layer.disableSelecting()
@@ -131,7 +132,7 @@ export class LayerComponent implements OnInit {
 
     this.isLayerRemoved = true;
     
-    let modalWktDiv = document.getElementById('modalWktLayer-' + this.layer.id)
+    let modalWktDiv = document.getElementById('modalWktLayer-' + this.layer.uuid)
     if (modalWktDiv !== null) {
       modalWktDiv.remove()
     }
@@ -141,65 +142,78 @@ export class LayerComponent implements OnInit {
     this.selectableAllLayersStatusSubscription.unsubscribe();
 
     this.layer.disableSelecting()
-
-
     this.elementRef.nativeElement.remove();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-
-    if (changes.isSelected) {
-      if (!changes.isSelected.currentValue) {
-        this.unSelectFeature()
-      }
-    }
-
-    if (changes.isLocked) {
-      if (this.layer.locked !== changes.isLocked.currentValue) {
-        this.lockingLayer(changes.isLocked.currentValue)
-      }
-    }
-  
-
-    if (changes.isVisible) {
-      this.visibleHandler(changes.isVisible.currentValue)
-    }
+  @Input()
+  set epsg(value: string) {
+    this._epsg = value
   }
 
-  visibleHandler(status: boolean): void {
-    this.isVisible = status
+  get epsg(): string {
+    return this._epsg
+  }
+
+  @Input()
+  set visible(status: boolean) {
     this.layer.vectorLayer.setVisible(status)
   }
 
-  lockingLayer(status: boolean): void {
+  get visible(): boolean {
+    return this.layer.vectorLayer.getVisible();
+  }
+
+  @Input()
+  set locked(status: boolean) {
     this.isLocked = status
     this.layer.locked = this.isLocked
-    if (this.isSelected) {
+    if (this.selected) {
       // it concerns here only the selected layer
       this.interactionsService.activateEditBar(!this.layer.locked)
-
     }
+  }
+
+  get locked(): boolean {
+    return this.layer.locked;
+  }
+
+  @Input()
+  set selected(status: boolean) {
+    console.log(status)
+    if (!status) {
+      // unselect all the features
+      this.unSelectFeature()
+    } else {
+      this.selectLayer()
+    }
+    console.log(status)
+    this._selected = status
+
+  }
+
+  get selected(): boolean {
+    return this._selected;
   }
 
   removeLayer(): void {
     this.layer.removeLayer()
-    this.removeLayerId.emit(this.layer.id)
-    this.interactionsService.sendSelectedLayer(null)
+    this.removeLayerId.emit(this.layer.uuid)
+    // this.interactionsService.sendSelectedLayer(null)
 
     this.ngOnDestroy()
   }
 
   layerGoUp(): void{
-    this.layerMoveUp.emit(this.layer.id)
+    this.layerMoveUp.emit(this.layer.uuid)
   }
 
   layerGoDown(): void{
-    this.layerMoveDown.emit(this.layer.id)
+    this.layerMoveDown.emit(this.layer.uuid)
   }
 
   selectLayer(): void {
-    this.interactionsService.sendSelectedLayerId(this.layer.id)
-    this.interactionsService.sendSelectedLayer(this.layer)
+    this.interactionsService.sendSelectedLayerId(this.layer.uuid)
+    this.interactionsService.sendSelectedLayer(this.layer) // for layout component
   }
 
   zoomToLayer(): void {
@@ -208,7 +222,6 @@ export class LayerComponent implements OnInit {
 
   duplicateLayer(): void {
     this.unSelectFeature()
-
     const layerCloned: layerHandler = Object.create(this.layer) // create a clone
     this.layerCloned.emit(layerCloned)
   }

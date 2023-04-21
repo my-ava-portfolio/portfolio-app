@@ -95,6 +95,11 @@ export class MapAppLayoutComponent implements OnInit, OnDestroy {
     divAttribution.appendChild(
       window.document.getElementsByClassName("ol-attribution ol-unselectable ol-control ol-uncollapsible")[0]
     )
+
+    const divmapLegend: any = window.document.getElementById('mapLegendTools')
+    divAttribution.appendChild(
+      window.document.getElementsByClassName("ol-attribution ol-unselectable ol-control ol-uncollapsible")[0]
+    )
   }
 
 }

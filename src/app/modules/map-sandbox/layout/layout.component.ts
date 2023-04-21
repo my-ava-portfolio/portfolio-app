@@ -90,7 +90,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.map.setView(this.defaultMapView)
 
     this.mapSubscription.unsubscribe();
-    this.layerObjectSelectedSubscription.unsubscribe();
+    // this.layerObjectSelectedSubscription.unsubscribe();
 
     this.mapService.changeMapInteractionStatus(false)
     this.mapService.resetMapView()

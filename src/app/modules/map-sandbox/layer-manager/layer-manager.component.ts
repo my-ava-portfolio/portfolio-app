@@ -39,13 +39,13 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   lockIcon = faLock;
   unLockIcon = faLockOpen;
 
-  forceVisibleStatus: boolean = true;
-  layersLockStatus: boolean = false;
+  allVisible: boolean = true;
+  allLocked: boolean = false;
 
   existingLayers: layerHandler[] = [];
   allLayers: layerHandler[] = [];
 
-  currentLayerIdSelected!: string;
+  currentLayerIdSelected: string  | null = null;
 
   layerNamedIncrement: number = -1;
 
@@ -74,7 +74,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     )
 
     this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
-      (currentLayerIdSelected: string) => {
+      (currentLayerIdSelected: string | null) => {
         this.currentLayerIdSelected = currentLayerIdSelected
       }
     )
@@ -157,27 +157,26 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   removeLayer(layerId: string): void {
     this.existingLayers = this.existingLayers.filter((layer: layerHandler) => {
-      return layer.id !== layerId
+      return layer.uuid !== layerId
     })
     this.buildLayersIndexes()
   }
 
   private getLayerFromId(layerId: string): layerHandler {
     let currentLayer = this.existingLayers.filter((layer: layerHandler) => {
-      return layer.id === layerId
+      return layer.uuid === layerId
     })
     return currentLayer[0]
   }
 
   refreshLayers(): void {
-    this.allLayers = this.existingLayers.filter((layer: layerHandler) => {
-      return !layer.deleted;
-    }).sort((a, b) => (a.zIndexValue > b.zIndexValue ? -1 : 1))
+    this.allLayers = this.existingLayers.sort((a, b) => (a.zIndexValue > b.zIndexValue ? -1 : 1))
   }
 
   unSelectLayer(): void {
-    this.interactionsService.sendSelectedLayerId('none')
-    this.interactionsService.sendSelectedLayer(null)
+    // this.currentLayerIdSelected = null
+    this.interactionsService.sendSelectedLayerId(null)
+    // this.interactionsService.sendSelectedLayer(null)
   }
 
   buildLayersIndexes(): void {
@@ -231,14 +230,6 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
       );
     }
 
-  }
-
-  visibleLayers(status: boolean): void {
-    this.forceVisibleStatus = status
-  }
-
-  lockLayers(status: boolean): void {
-    this.layersLockStatus = status
   }
 
   removeLayers(): void {

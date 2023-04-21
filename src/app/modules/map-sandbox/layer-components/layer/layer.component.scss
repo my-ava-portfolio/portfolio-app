@@ -51,3 +51,10 @@
     font-weight: bold;
   }
 }
+
+
+#editBar {
+  position: fixed;
+  bottom: 0;
+  user-select: none
+}

@@ -2,6 +2,8 @@ import { Component, ElementRef, Input, OnInit, SimpleChanges } from '@angular/co
 import { faExpand, faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { layerHandler, getWkt } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
+import Feature from 'ol/Feature';
+import { Geometry } from 'ol/geom';
 
 
 @Component({
@@ -10,9 +12,14 @@ import { layerHandler, getWkt } from '@modules/map-sandbox/shared/layer-handler/
   styleUrls: ['./feature.component.scss']
 })
 export class FeatureComponent implements OnInit {
-  @Input() feature!: any;
-  @Input() currentFeatureIdSelected!: string;
-  @Input() currentLayer!: layerHandler;
+  private _feature!: Feature;
+  private _selected!: boolean;
+  private _id!: string;
+  private _geometry!: Geometry
+
+  // @Input() feature!: any;
+  // @Input() currentFeatureIdSelected!: string;
+  @Input() layer!: layerHandler;
 
   disabledIcon = faXmark;
   duplicateIcon = faClone;
@@ -42,21 +49,48 @@ export class FeatureComponent implements OnInit {
     this.elementRef.nativeElement.remove();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.currentFeatureIdSelected) {
-      if (changes.currentFeatureIdSelected.currentValue !== this.feature.getId()) {
-        this.displayPopup = false;
-      }
-    }
+  @Input()
+  set feature(feature: Feature) {
+    this._feature = feature
+    this._id = feature.getId() as string
+    this._geometry = feature.getGeometry() as Geometry
+  }
+
+  get feature(): Feature {
+    return this._feature;
+  }
+
+  get id(): string {
+    return this._id;
+  }
+
+  get geometry(): Geometry {
+    return this._geometry;
+  }
+
+  @Input()
+  set selected(status: boolean) {
+    this.displayPopup = false;
+    this._selected = status;
+  }
+
+  get selected(): boolean {
+    return this._selected;
   }
 
   removeFeature(): void {
-    this.currentLayer.removeFeature(this.feature.getId())
+    // the layer object is needed
+    this.layer.removeFeature(this.id as string)
   }
 
   duplicateFeature(): void {
-    this.currentLayer.select.getFeatures().clear() // need to unselect to avoid to save the select style (openlayers behavior)
-    this.currentLayer.duplicateFeature(this.feature.getId())
+    // the layer object is needed
+    this.layer.select.getFeatures().clear() // need to unselect to avoid to save the select style (openlayers behavior)
+    this.layer.duplicateFeature(this.id as string)
+  }
+  zoomToFeature(): void {
+    // the layer object is needed
+    this.layer.zoomToFeature(this.id)
   }
 
   showPopup(): void {
@@ -78,7 +112,7 @@ export class FeatureComponent implements OnInit {
   }
 
   updateFillColor(color: string): void {
-    this.feature.set("fill_color", color, false)
+    this.feature.set("fill_color", color, true)
   }
   updateStrokeWidth(event: any): void {
     this.feature.set("stroke_width", event.target.value, true)
@@ -87,17 +121,13 @@ export class FeatureComponent implements OnInit {
     this.feature.set("stroke_color", color, true)
   }
 
-  zoomToFeature(): void {
-    this.currentLayer.zoomToFeature(this.feature.getId())
-  }
-
   getWktFromFeature(): string {
-    return getWkt(this.feature.getGeometry())
+    return getWkt(this.geometry)
   }
 
   getBoundsFromFeature(): string {
     // xmin, ymin, xmax, ymax
-    return this.feature.getGeometry().getExtent().join(', ')
+    return this.geometry.getExtent().join(', ')
   }
 }
 

@@ -82,13 +82,14 @@ export class EditBarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.disableEditing()
     this.layerLockStatusSubscription.unsubscribe()
+    console.log("hop")
   }
 
   ngOnChanges(changes: any) {
   }
 
   enablingSelectOnlyOnTheCurrentLayer(): void { // not really on all layer
-    this.interactionsService.setSelectableLayer(this.layer.id)
+    this.interactionsService.setSelectableLayer(this.layer.uuid)
   }
 
   enableSelectingOnAllLayers(): void {

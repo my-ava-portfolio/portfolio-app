@@ -30,7 +30,7 @@
                 Type d'importation
                 <select [(ngModel)]="modeImportInput" class="form-select form-select-sm">
                     <option value="newLayer">Créer de nouvelles couches</option>
-                    <option [value]="layer.id" *ngFor="let layer of existingLayers">Importer dans la couche : {{layer.layerName}}</option>
+                    <option [value]="layer.uuid" *ngFor="let layer of existingLayers">Importer dans la couche : {{layer.layerName}}</option>
                 </select>
 
             </div>
