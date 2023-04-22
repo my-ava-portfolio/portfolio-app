@@ -4,6 +4,7 @@ import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircle
 import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
+import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
 
 
 @Component({
@@ -59,9 +60,12 @@ export class LayerComponent implements OnInit, OnDestroy {
   exportData: string = '';
   exportDataMode = 'geojson'
 
+  featureIdEditedSubscription!: Subscription;;
+
   constructor(
     private elementRef: ElementRef,
     private interactionsService: InteractionsService,
+    private editComputingService: EditComputingService
   ) {
 
     this.removeLayerSubscription = this.interactionsService.removeLayers.subscribe(
@@ -70,6 +74,21 @@ export class LayerComponent implements OnInit, OnDestroy {
         this.removeLayer()
       }
     )
+
+    this.featureIdEditedSubscription = this.editComputingService.featureIdEdited.subscribe(
+      (featureIdEdited: string | null) => {
+        // useful to disable select interaction when editing
+        if (featureIdEdited === null) {
+          this.layer.enableSelecting()
+          return
+        }
+        if (featureIdEdited !== this.layer.uuid) {
+          this.layer.disableSelecting()
+    
+        }
+      }
+    )
+
    
   }
 
@@ -77,24 +96,9 @@ export class LayerComponent implements OnInit, OnDestroy {
     
     // enable selecting
     this.layer.enableSelecting()
-
+    // this.layer.enableSnapping()
     // set select event
-    this.layer.select.on("select", (event: any) => {
-      let deselected = event.deselected
-      let selected = event.selected
-      
-      if (deselected.length > 0 && selected.length === 0) {
-        this.unSelectFeature()
-
-      }
-
-      if (selected.length > 0) {
-        selected.forEach((feature: any) => {
-          this.selectFeatureById(feature.getId())
-        })
-
-      }
-    })
+    this.layerSelectConfigured()
 
     this.layer.sourceFeatures.on('changefeature', (event: any) => {
       // update step when change on feature occurs
@@ -173,6 +177,26 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   get selected(): boolean {
     return this._selected;
+  }
+
+  layerSelectConfigured(): void {
+    // set select event
+    this.layer.select.on("select", (event: any) => {
+      let deselected = event.deselected
+      let selected = event.selected
+      
+      if (deselected.length > 0 && selected.length === 0) {
+        this.unSelectFeature()
+
+      }
+
+      if (selected.length > 0) {
+        selected.forEach((feature: any) => {
+          this.selectFeatureById(feature.getId())
+        })
+
+      }
+    })
   }
 
   removeLayer(): void {

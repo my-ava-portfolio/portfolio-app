@@ -79,7 +79,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
       }
     )
 
-   }
+  }
 
   ngOnInit(): void {
   }

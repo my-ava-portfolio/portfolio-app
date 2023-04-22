@@ -50,6 +50,7 @@ export class layerEdit {
         this._initTranslate();
         this._initSnap();
         this._initModifier();
+
         this._map.addLayer(this._vectorLayer);
 
     }
@@ -137,24 +138,32 @@ export class layerEdit {
     this._map.removeInteraction(this.select)
   }
 
-    private _initSelect(): void {
-        this.select = new Select({
-          condition: click,
-          multi: false,
-          layers: [this.layer],
-        })
-      }
+  enableSnapping(): void {
+    this._map.addInteraction(this._snap);
+  }
+
+  disableSnapping(): void {
+    this._map.removeInteraction(this._snap);
+  }
+
+  private _initSelect(): void {
+      this.select = new Select({
+        condition: click,
+        multi: false,
+        layers: [this.layer],
+      })
+    }
     
-      private _initSnap(): void {
-        this._snap = new Snap({
-          source: this._sourceFeatures
-        });
-      }
+    private _initSnap(): void {
+      this._snap = new Snap({
+        source: this._sourceFeatures
+      });
+    }
     
-      private _initTranslate(): void {
-        this._translate = new Translate({
-          features: this.select.getFeatures(),
-        });
+    private _initTranslate(): void {
+      this._translate = new Translate({
+        features: this.select.getFeatures(),
+      });
     }
     
     private _initModifier(): void {
@@ -216,45 +225,50 @@ export class layerEdit {
     
     }
     enableEditing(): void {
-        this.disableEditing()
-        this._map.addInteraction(this._modifier);
-        this._map.addInteraction(this._snap);
-      }
+      this.disableEditing()
+      this._map.addInteraction(this._modifier);
+      this._map.addInteraction(this._snap);
+      this.disableSelecting()
+
+    }
     
     disableEditing(): void {
-        this._map.removeInteraction(this._modifier);
-        this._map.removeInteraction(this._snap);
-      }
+      this._map.removeInteraction(this._modifier);
+      this._map.removeInteraction(this._snap);
+      this.enableSelecting()
+    }
     
-      cleanEvents(): void {
+    cleanEvents(): void {
         this.disableDrawing();
         this.disableEditing();
         this.disableSelecting();
     }
     
     enableDrawing(holeStatus = false): void {
-        this.holePolygonDrawingStatus = holeStatus;
+      this.holePolygonDrawingStatus = holeStatus;
     
-        this._draw = new Draw({
-          type: this.geomType,
-          stopClick: false,
-          source: this._sourceFeatures,
-          condition: (e: any) => e.originalEvent.buttons === 1,  // draw only with left click
-        });
+      this._draw = new Draw({
+        type: this.geomType,
+        stopClick: false,
+        source: this._sourceFeatures,
+        condition: (e: any) => e.originalEvent.buttons === 1,  // draw only with left click
+      });
     
-        this._map.addInteraction(this._draw);
-        this._map.addInteraction(this._snap);
+      this._map.addInteraction(this._draw);
+      this._map.addInteraction(this._snap);
+      this.disableSelecting()
+      
+      this._draw.on('drawstart', this._onDrawStart.bind(this));
+      this._draw.on('drawend', this._onDrawEnd.bind(this));
     
-        this._draw.on('drawstart', this._onDrawStart.bind(this));
-        this._draw.on('drawend', this._onDrawEnd.bind(this));
-    
-        this._draw.on('drawabort', this._onDrawAborting.bind(this));
+      this._draw.on('drawabort', this._onDrawAborting.bind(this));
       }
     
     disableDrawing(): void {
-        this._map.removeInteraction(this._draw);
-        this._map.removeInteraction(this._snap);
-      }
+      this._map.removeInteraction(this._draw);
+      this._map.removeInteraction(this._snap);
+      this.enableSelecting()
+    }
 
     // att
     private _updateMetadataFeature(feature: Feature): void {

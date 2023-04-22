@@ -71,6 +71,17 @@ export class EditBarComponent implements OnInit, OnDestroy {
     return this._layer
   }
 
+  disableOthersLayersSelection(): void {
+    // when drawing & editing is on
+    this.editComputingService.sendFeatureIdEdited(this.layer.uuid)
+  }
+
+  enableLayersSelection(): void {
+    // when drawing & editing is on
+    this.editComputingService.sendFeatureIdEdited(null)
+  }
+
+
   @Input()
   set enabled(status: boolean) {
     if (!status) {
@@ -99,14 +110,10 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   }
 
-  removeFeature(): void {
-  }
-
   translateHandler(status: boolean): void {
 
     if (status) {
       this.disableEditing(false)
-
       this.translateFeatureEnable()
     } else {
       this.translateFeatureDisable()
@@ -117,10 +124,12 @@ export class EditBarComponent implements OnInit, OnDestroy {
   editHandler(status: boolean): void {
     if (status) {
       this.disableEditing(false)
-
       this.editFeatureEnable()
+      this.disableOthersLayersSelection()
     } else {
       this.editFeatureDisable()
+      this.enableLayersSelection()
+
     }
   }
 
@@ -128,8 +137,10 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
       this.addFeatureEnable(holeStatus)
+      this.disableOthersLayersSelection()
     } else {
       this.addFeatureDisable()
+      this.enableLayersSelection()
     }
   }
 
@@ -137,8 +148,10 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
       this.addHoleFeatureEnable(holeStatus)
+      this.disableOthersLayersSelection()
     } else {
       this.addHoleFeatureDisable()
+      this.enableLayersSelection()
     }
   }
 
