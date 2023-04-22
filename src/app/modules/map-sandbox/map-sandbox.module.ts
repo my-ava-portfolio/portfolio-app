@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -20,6 +19,7 @@ import { EditBarComponent } from '@modules/map-sandbox/edit-bar/edit-bar.compone
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { CreateToolsComponent } from './create-tools/create-tools.component';
 import { ImportToolsComponent } from './import-tools/import-tools.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
