@@ -77,14 +77,15 @@ export class LayerComponent implements OnInit, OnDestroy {
 
     this.featureIdEditedSubscription = this.editComputingService.featureIdEdited.subscribe(
       (featureIdEdited: string | null) => {
-        // useful to disable select interaction when editing
+        // mandatory to manage selecting and enable snapping interactionbetween layers when editing
         if (featureIdEdited === null) {
           this.layer.enableSelecting()
+          this.layer.disableSnapping()
           return
         }
         if (featureIdEdited !== this.layer.uuid) {
           this.layer.disableSelecting()
-    
+          this.layer.enableSnapping()
         }
       }
     )
@@ -96,8 +97,8 @@ export class LayerComponent implements OnInit, OnDestroy {
     
     // enable selecting
     this.layer.enableSelecting()
-    // this.layer.enableSnapping()
-    // set select event
+
+    // set select interaction event
     this.layerSelectConfigured()
 
     this.layer.sourceFeatures.on('changefeature', (event: any) => {
@@ -132,7 +133,6 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   @Input()
   set epsg(value: string) {
-    console.log(value, this._epsg)
     if (value !== this._epsg) {
       this.layer.features.forEach( (feature: any) => {
         feature.setGeometry(feature.getGeometry().transform(this._epsg, value))
@@ -180,7 +180,7 @@ export class LayerComponent implements OnInit, OnDestroy {
   }
 
   layerSelectConfigured(): void {
-    // set select event
+    // set select event: mandatory to connect ol api and angular mecanisms
     this.layer.select.on("select", (event: any) => {
       let deselected = event.deselected
       let selected = event.selected

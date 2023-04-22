@@ -139,6 +139,7 @@ export class layerEdit {
   }
 
   enableSnapping(): void {
+    // used during the drawing, editing
     this._map.addInteraction(this._snap);
   }
 
@@ -147,12 +148,12 @@ export class layerEdit {
   }
 
   private _initSelect(): void {
-      this.select = new Select({
-        condition: click,
-        multi: false,
-        layers: [this.layer],
-      })
-    }
+    this.select = new Select({
+      condition: click,
+      multi: false,
+      layers: [this.layer],
+    })
+  }
     
     private _initSnap(): void {
       this._snap = new Snap({
@@ -235,7 +236,6 @@ export class layerEdit {
     disableEditing(): void {
       this._map.removeInteraction(this._modifier);
       this._map.removeInteraction(this._snap);
-      this.enableSelecting()
     }
     
     cleanEvents(): void {
@@ -256,8 +256,11 @@ export class layerEdit {
     
       this._map.addInteraction(this._draw);
       this._map.addInteraction(this._snap);
-      this.disableSelecting()
-      
+      if (!holeStatus) {
+        // select is disabled when drawing a new feature
+        this.disableSelecting()
+      }
+
       this._draw.on('drawstart', this._onDrawStart.bind(this));
       this._draw.on('drawend', this._onDrawEnd.bind(this));
     
@@ -266,8 +269,8 @@ export class layerEdit {
     
     disableDrawing(): void {
       this._map.removeInteraction(this._draw);
-      this._map.removeInteraction(this._snap);
       this.enableSelecting()
+      this.disableSnapping()
     }
 
     // att
@@ -330,7 +333,6 @@ export class layerEdit {
     
     private _onDrawAborting(e: any): void {
         // to cancel a drawing hole (shift + left click OR shift + right click for hole )
-        console.log(e)
         if (this.holePolygonDrawingStatus) {
   
         if (this.polygonIntersected !== undefined) {
