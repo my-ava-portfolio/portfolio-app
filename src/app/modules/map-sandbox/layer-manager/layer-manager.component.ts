@@ -174,13 +174,10 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   refreshLayers(): void {
     this.allLayers = this.existingLayers.sort((a, b) => (a.zIndex > b.zIndex ? -1 : 1))
-    console.log(this.allLayers)
   }
 
   unSelectLayer(): void {
-    // this.currentLayerIdSelected = null
     this.interactionsService.sendSelectedLayerId(null)
-    // this.interactionsService.sendSelectedLayer(null)
   }
 
   buildLayersIndexes(): void {
