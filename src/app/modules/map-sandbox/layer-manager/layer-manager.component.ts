@@ -173,7 +173,8 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   }
 
   refreshLayers(): void {
-    this.allLayers = this.existingLayers.sort((a, b) => (a.zIndexValue > b.zIndexValue ? -1 : 1))
+    this.allLayers = this.existingLayers.sort((a, b) => (a.zIndex > b.zIndex ? -1 : 1))
+    console.log(this.allLayers)
   }
 
   unSelectLayer(): void {
@@ -187,8 +188,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
     this.existingLayers = []
     existingLayers.forEach((layer: layerHandler, idx: number) => {
-      layer.zIndexValue = idx;
-      layer.vectorLayer.setZIndex(idx);
+      layer.zIndex = idx;
       this.existingLayers.push(layer)
     })
   }

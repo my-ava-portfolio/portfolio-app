@@ -20,367 +20,62 @@ import Stroke from 'ol/style/Stroke';
 
 import { featuresLayerType, geomLayerTypes, polygonType } from '@modules/map-sandbox/shared/data-types';
 import { defaultStrokeColor, defaultStrokeWidth, getRandomDefaultColor, hexColorReg } from '../style-helper';
+import { layerCore } from './layer-core';
 
 
 
-export class layerHandler {
-  private map: Map;
-  draw!: Draw;
-  snap!: Snap;
-  translate!: Translate;
-  modifier!: Modify;
-  select!: Select;
-
-  private counter: number = 0
-
-  // var for polygon holes
-  private holePolygonDrawingStatus = false;  // TODO add GUI option to play with it
-  private polygonIntersected!: Feature | undefined;
-  private coordsLength!: number;
-  private previousPolygonGeometry!: any;
-
-  vectorLayer!: VectorLayer<any>;
-  sourceFeatures!: VectorSource;
-  allFeatures: any[] = [];
-
-  groupId: string | null; // not used
-  private _id!: string;
-  zIndexValue: number;
-  private _layerName!: string;
-  geomType: geomLayerTypes;
-
-  private _fillColor: string = getRandomDefaultColor();
-  private _strokeColor: string = defaultStrokeColor;
-  private _strokeWidth: string = ""+defaultStrokeWidth;
-
-  locked = false;
-
-  featuresSelected: any[] = []
-  featuresDeselected: any[] = []
-
-  zoomPadding = [100, 100, 100, 100];  // TODO set as a global var (use by layer-manager)
-  maxZoom = 14;
+export class layerHandler extends layerCore {
+  private _locked: boolean = false;
 
   constructor(
     map: Map,
     layerName: string,
-    geomType: 'Point' | 'LineString' | 'Polygon',
+    geomType: geomLayerTypes,
     zIndexValue: number,
     groupId: string | null = null
   ) {
-    this.map = map
-    this.geomType = geomType
-    this.groupId = groupId
-
-    this.zIndexValue = zIndexValue;
-
-    this.initLayer(layerName);
-    this.initSelect();
-    this.initTranslate();
-    this.initSnap();
-    this.initModifier();
-
-    this.map.addLayer(this.vectorLayer);
-
+    super(map, layerName, geomType, zIndexValue, groupId)
   }
 
-  public get layer(): VectorLayer<any> {
-    return this.vectorLayer
+  set visible(enabled: boolean) {
+    this.layer.setVisible(enabled)
   }
 
-  public get layerName(): string {
-    return this.vectorLayer.get('name')
+  get visible(): boolean {
+      return this.layer.getVisible()
   }
 
-  public set layerName(layerName: string) {
-    this.vectorLayer.set('name', layerName, true)
+  set locked(enabled: boolean) {
+    this._locked = enabled
   }
 
-  public get uuid(): string {
-    return this._id;
+  get locked(): boolean {
+      return this._locked
   }
 
-  public get fillColor(): string {
-    return this._fillColor;
-  }
-
-  public set fillColor(color: string) {
-    if (hexColorReg.test(color)) {
-      this.features.forEach((feature: Feature) => {
-        feature.set("fill_color", color, false)
-      })
-      this._fillColor = color
-    };
-  }
-
-  public get strokeColor(): string {
-    return this._strokeColor;
-  }
-
-  public set strokeColor(color: string) {
-    if (hexColorReg.test(color)) {
-      this.features.forEach((feature: Feature) => {
-        feature.set("stroke_color", color, false)
-      })
-      this._strokeColor = color
-    };
-  }
-
-  public get strokeWidth(): string {
-    return this._strokeWidth;
-  }
-
-  public set strokeWidth(width: string) {
-    this._strokeWidth = width
-    this.features.forEach((feature: Feature) => {
-      feature.set("stroke_width", parseFloat(width), false)
-    })
-  }
-
-  public get features(): Feature[] {
-    return  this.sourceFeatures.getFeatures().sort((a, b) => {
-      return a.get('no') - b.get('no');
-    });
-
-  }
-
-  private initLayer(layerName: string): void {
-    this.sourceFeatures = new VectorSource();
-
-    this.vectorLayer = new VectorLayer({
-      source: this.sourceFeatures,
-      style: (feature: any, _: any): any => {
-        return refreshFeatureStyle(feature)
-      }
-    });
-    this._id = uuidv4();
-
-    this.layerName = layerName
-    this.fillColor = this._fillColor
-    this.strokeColor = this._strokeColor
-    this.strokeWidth = this._strokeWidth
-    this.vectorLayer.set('geomType', this.geomType, true)
-    this.vectorLayer.setZIndex(this.zIndexValue);
-
-  }
-
-  removeLayer(): void {
-    this.map.removeLayer(this.vectorLayer)
-  }
-
-  private initSelect(): void {
-    this.select = new Select({
-      condition: click,
-      multi: false,
-      layers: [this.vectorLayer],
-    })
-  }
-
-  private initSnap(): void {
-    this.snap = new Snap({
-      source: this.sourceFeatures
-    });
-  }
-
-  private initTranslate(): void {
-    this.translate = new Translate({
-      features: this.select.getFeatures(),
-    });
-  }
-  enableTranslating(): void {
-    this.map.addInteraction(this.translate)
-  }
-
-  disableTranslating(): void {
-    this.map.removeInteraction(this.translate)
-  }
-
-  enableSelecting(): void {
-    this.map.addInteraction(this.select)
-  }
-
-  disableSelecting(): void {
-    this.map.removeInteraction(this.select)
-  }
-
-
-  private initModifier(): void {
-    this.modifier = new Modify({
-      features: this.select.getFeatures(),
-    });
-
-    this.modifier.on('modifyend', (e: any) => {
-
-      // to remove hole on polygon (select the polygon, press ctr + start to edti a vertice + release)
-      if (e.mapBrowserEvent.originalEvent.ctrlKey) {
-        this.removeHoles(e)
-      }
-
-      // to update value definitively (especially during hole drawing)
-      if (e.features.getArray().length > 0) {
-        e.features.getArray().forEach((element: Feature) => {
-          this.updateFeature(element)
-        });
-      }
-    })
-  }
-
-  enableDrawing(holeStatus = false): void {
-    this.holePolygonDrawingStatus = holeStatus;
-
-    this.draw = new Draw({
-      type: this.geomType,
-      stopClick: false,
-      source: this.vectorLayer.getSource(),
-    });
-
-    this.map.addInteraction(this.draw);
-    this.map.addInteraction(this.snap);
-
-    this.draw.on('drawstart', this.onDrawStart.bind(this));
-    this.draw.on('drawend', this.onDrawEnd.bind(this));
-
-    this.draw.on('drawabort', this.onDrawAborting.bind(this));
-  }
-
-  disableDrawing(): void {
-    this.map.removeInteraction(this.draw);
-    this.map.removeInteraction(this.snap);
-  }
-
-  enableEditing(): void {
-    this.disableEditing()
-    this.map.addInteraction(this.modifier);
-    this.map.addInteraction(this.snap);
-  }
-
-  disableEditing(): void {
-    this.map.removeInteraction(this.modifier);
-    this.map.removeInteraction(this.snap);
-  }
-
-  cleanEvents(): void {
-    this.disableDrawing();
-    this.disableEditing();
-    this.disableSelecting();
-  }
-
-  private onDrawAborting(e: any): void {
-      // to cancel a drawing hole (shift + left click OR shift + right click for hole )
-    if (this.holePolygonDrawingStatus) {
-
-      if (this.polygonIntersected !== undefined) {
-        this.polygonIntersected.setGeometry(this.previousPolygonGeometry)
-        this.polygonIntersected = undefined;
-      }
+  duplicateFeature(featureId: string): void {
+    const featureFound = this.featureById(featureId)
+    if (featureFound.length === 1) {
+      const newFeature = this.addProperties(featureFound[0].clone())
+      this.sourceFeatures.addFeature(newFeature)
     }
   }
 
-  private onDrawStart(e: any): void {
-
-    //to build hole on polygon
-    if (this.holePolygonDrawingStatus) {
-      if (e.feature.getGeometry()?.getType() === "Polygon") {
-
-        let featureFound: Feature | undefined = this.checkIfCoordIntersectLayer(e.feature)
-        this.polygonIntersected = featureFound
-        if (this.polygonIntersected === undefined) {
-          e.target.abortDrawing();
-          this.onDrawAborting(e)
-          alert('An hole is possible only on a polygon!')
-          return;
-        }
-
-        if (this.polygonIntersected !== undefined) {
-          this.previousPolygonGeometry = this.polygonIntersected.getGeometry()
-          const polygonIntersectedGeom: any = this.polygonIntersected.getGeometry()
-          this.coordsLength = polygonIntersectedGeom.getCoordinates().length;
-          e.feature.getGeometry().on('change', this.onGeomChangeBuildHole.bind(this));
-        }
-      }
+  removeFeature(featureId: string): void {
+    const featureFound = this.featureById(featureId)
+    if (featureFound.length === 1) {
+      this.sourceFeatures.removeFeature(featureFound[0]);
     }
-
   }
 
-  private checkIfCoordIntersectLayer(feature: any): Feature | undefined {
-    let featureFound!: Feature | undefined;
-    this.vectorLayer.getSource().forEachFeatureIntersectingExtent(feature.getGeometry().getExtent(), (feature: Feature | undefined) => {
-      featureFound = feature;
-    });
-
-    return featureFound
+  set opacity(event: any) {
+      this.layer.setOpacity(event.target.valueAsNumber)
   }
 
-  private onDrawEnd(e: any): void {
-
-    // let's go to finalize
-    if (this.holePolygonDrawingStatus) {
-      // disable hole editing
-      setTimeout(() => {
-        // we remove the polygon drawn, because it has been used to create the hole on onGeomChangeBuildHole()
-        this.sourceFeatures.removeFeature(e.feature);
-      }, 5);
-
-      if (this.polygonIntersected !== undefined) {
-        e.feature.setGeometry(this.polygonIntersected.getGeometry())
-        this.select.getFeatures().clear()
-      }
-
-
-      this.polygonIntersected = undefined;
-      // TODO: QUESTION: no need to recreate the properties because the polygon already exists?
-      return
-    }
-
-    this.addProperties(e.feature)
+  get opacity(): number {
+      return this.layer.getOpacity()
   }
 
-  addProperties(feature: any): any {
-    // TODO synchronize properties after the call of this func
-    ++this.counter;
-    const uuid = uuidv4()
-    feature.setId(uuid)
-
-    let name!: string;
-    if (feature.get("name") !== undefined) {
-      name = feature.get("name") + " copy"
-    } else {
-      name = 'feature ' + this.counter
-    }
-    // TOOD add the layerName ? 
-    feature.setProperties({
-      'id': feature.getId(),
-      // 'layer_id': this.uuid,
-      'no': this.counter,
-      'name': name,
-      'geom_type': feature.getGeometry()?.getType(),
-      "status": "added",
-      'created_at': new Date().toISOString(),
-      'updated_at': new Date().toISOString(),
-      // 'fill_color': this.fillColor,
-      // 'stroke_width': this.strokeWidth,
-      // 'stroke_color':  this.strokeColor
-    }, true)
-    if (feature.get("fill_color") === undefined) {
-      feature.set("fill_color",  this.fillColor, true)
-    }
-    if (feature.get("stroke_width") === undefined) {
-      feature.set("stroke_width",  this.strokeWidth, true)
-    }
-    if (feature.get("stroke_color") === undefined) {
-      feature.set("stroke_color",  this.strokeColor, true)
-    }
-    return feature
-  }
-
-  // addFeaturesFromGeomFeatureWithoutProperties(features: any[]): void {
-  //   if (features.length > 0) {
-  //     features.forEach((feature: any) => {
-  //       let featureWithProperties = this.addProperties(feature)
-  //       this.sourceFeatures.addFeature(featureWithProperties)
-  //     })
-  //   }
-  // }
   addFeaturesAndUpdateIds(features: any[]): void {
     if (features.length > 0) {
       features.forEach((feature: any) => {
@@ -391,99 +86,12 @@ export class layerHandler {
     }
   }
 
-  onGeomChangeBuildHole(e: any): void {
-    //Get hole coordinates for polygon
-    if (this.polygonIntersected !== undefined) {
-
-      const polygonIntersectedGeom: any = this.polygonIntersected.getGeometry()
-      let coordinates = polygonIntersectedGeom.getCoordinates();
-      let geom = new Polygon(coordinates.slice(0, this.coordsLength));
-
-      //Add hole coordinates to polygon and reset the polygon geometry
-      let linearRing = new LinearRing(e.target.getCoordinates()[0]);
-      geom.appendLinearRing(linearRing);
-      this.polygonIntersected.setGeometry(geom);
-
-    }
-  }
-
-  removeFeature(featureId: string): void {
-    const featureFound = this.sourceFeatures.getFeatureById(featureId)
-    if (featureFound !== null) {
-      this.sourceFeatures.removeFeature(featureFound);
-    }
-  }
-  duplicateFeature(featureId: string): void {
-    const featureFound = this.sourceFeatures.getFeatureById(featureId)
-    if (featureFound !== null) {
-      const newFeature = this.addProperties(featureFound.clone())
-      this.sourceFeatures.addFeature(newFeature)
-    }
-  }
-
   getFeatureAttribute(featureId: string, attribute: string): void {
-    // TODO issue stay selected
-    const featureFound = this.sourceFeatures.getFeatureById(featureId)
-    if (featureFound !== null) {
-      return featureFound.get(attribute)
+    // TODO not used
+    const featureFound = this.featureById(featureId)
+    if (featureFound.length === 1) {
+      return featureFound[0].get(attribute)
     }
-  }
-
-  private removeHoles(event: any): void {
-
-    // we suppose that we have only one feature!
-    const featureFound: any = event.features.getArray()[0];
-    const mouseCoordinate: number[] = event.mapBrowserEvent.coordinate;
-
-    if (featureFound.getGeometry().getType() == "Polygon") {
-
-      // get the linearing composing the polygon & convert them into LineString to compare them
-      const linearRingsFound = featureFound.getGeometry().getLinearRings()
-
-      if (linearRingsFound.length > 1) {
-        let linearRingVectorSource = new VectorSource();
-        linearRingsFound.forEach((geom: any, index: number) => {
-          const line: LineString = new LineString(geom.getCoordinates())
-          let featureLine: Feature = new Feature({
-            geometry: line
-          });
-          featureLine.setId(index)
-          linearRingVectorSource.addFeature(featureLine);
-        })
-        // get the closest LineString from the mouse coords
-        const closestFeature = linearRingVectorSource.getClosestFeatureToCoordinate(mouseCoordinate);
-        let coordsCleaned: number[] = []
-        linearRingsFound.forEach((ring: any, index: number) => {
-          if (index !== closestFeature.getId()) {
-            coordsCleaned.push(ring.getCoordinates());
-          }
-        })
-        // let go to remove the linearing found
-        featureFound.getGeometry().setCoordinates(coordsCleaned)
-      }
-
-    };
-
-  }
-
-  updateFeature(feature: Feature): void {
-    feature.setProperties({
-      'updated_at': new Date().toISOString(),
-      "status": "modified",
-    }, true)
-  }
-
-  // update functions
-  getOpacity(): number {
-    return this.vectorLayer.getOpacity()
-  }
-  setOpacity(event: any): void {
-    this.vectorLayer.setOpacity(event.target.valueAsNumber)
-  }
-
-  setName(event: any): void {
-    this.layerName = event.target.value
-    this.vectorLayer.set('name', this.layerName, true)
   }
 
   exportBounds(): number[] {
@@ -537,42 +145,23 @@ export class layerHandler {
 
   }
 
-  zoomToLayer(): void {
-    if (this.sourceFeatures.getFeatures().length > 0) {
-      this.map.getView().fit(this.sourceFeatures.getExtent(), { size: this.map.getSize(), maxZoom: this.maxZoom, padding: this.zoomPadding});
-    }
-  }
-
-  zoomToFeature(featureId: string): void {
-
-    this.features.filter((feature: any) => {
-      if (feature.getId() === featureId) {
-        this.map.getView().fit(feature.getGeometry(), {size:this.map.getSize(), maxZoom: this.maxZoom})
-      }
-    })
-  }
-
 }
 
 
 export function layerHandlerPositionning(layersArray: layerHandler[], layerId: string, incrementValue: number): layerHandler[] {
-  let outputArray: layerHandler[] = [];
-
   const layerIndexToGet = layersArray.findIndex((layer: layerHandler) => layer.uuid === layerId);
-  const layerZIndex = layersArray[layerIndexToGet].zIndexValue;
+  const layerZIndex = layersArray[layerIndexToGet].zIndex;
   const toIndex = layerZIndex + incrementValue
+  console.log(toIndex >= 0 && toIndex < layersArray.length)
   if (toIndex >= 0 && toIndex < layersArray.length) {
-    layersArray.splice(
-      toIndex, 0,
-      layersArray.splice(layerZIndex, 1)[0]
-    );
+    layersArray[layerIndexToGet].zIndex = toIndex
+    layersArray = layersArray.sort((a, b) => (a.zIndex < b.zIndex ? -1 : 1));
+
     // rebuild ZIndex
     layersArray.forEach((layer: layerHandler, idx: number) => {
-      layer.zIndexValue = idx;
-      layer.vectorLayer.setZIndex(idx);
-      outputArray.push(layer)
+      layer.zIndex = idx;
     })
-    return outputArray
+    return layersArray
   }
 
   return layersArray

@@ -144,11 +144,11 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   @Input()
   set visible(status: boolean) {
-    this.layer.vectorLayer.setVisible(status)
+    this.layer.visible = status
   }
 
   get visible(): boolean {
-    return this.layer.vectorLayer.getVisible();
+    return this.layer.visible;
   }
 
   @Input()
