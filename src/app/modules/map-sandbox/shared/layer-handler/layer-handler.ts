@@ -84,6 +84,10 @@ export class layerHandler {
 
   }
 
+  public get layer(): VectorLayer<any> {
+    return this.vectorLayer
+  }
+
   public get layerName(): string {
     return this.vectorLayer.get('name')
   }
@@ -152,6 +156,9 @@ export class layerHandler {
     this._id = uuidv4();
 
     this.layerName = layerName
+    this.fillColor = this._fillColor
+    this.strokeColor = this._strokeColor
+    this.strokeWidth = this._strokeWidth
     this.vectorLayer.set('geomType', this.geomType, true)
     this.vectorLayer.setZIndex(this.zIndexValue);
 
