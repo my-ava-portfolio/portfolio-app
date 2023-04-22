@@ -6,20 +6,15 @@ import { Draw, Modify, Snap, Translate } from 'ol/interaction';
 import VectorLayer from 'ol/layer/Vector';
 
 import Map from 'ol/Map';
-import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
-import LinearRing from 'ol/geom/LinearRing';
 import WKT from 'ol/format/WKT';
 
-import Select from 'ol/interaction/Select';
-import { click } from 'ol/events/condition';
 import { Fill, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 
 import { featuresLayerType, geomLayerTypes, polygonType } from '@modules/map-sandbox/shared/data-types';
-import { defaultStrokeColor, defaultStrokeWidth, getRandomDefaultColor, hexColorReg } from '../style-helper';
 import { layerCore } from './layer-core';
 
 
@@ -152,7 +147,6 @@ export function layerHandlerPositionning(layersArray: layerHandler[], layerId: s
   const layerIndexToGet = layersArray.findIndex((layer: layerHandler) => layer.uuid === layerId);
   const layerZIndex = layersArray[layerIndexToGet].zIndex;
   const toIndex = layerZIndex + incrementValue
-  console.log(toIndex >= 0 && toIndex < layersArray.length)
   if (toIndex >= 0 && toIndex < layersArray.length) {
     layersArray[layerIndexToGet].zIndex = toIndex
     layersArray = layersArray.sort((a, b) => (a.zIndex < b.zIndex ? -1 : 1));
