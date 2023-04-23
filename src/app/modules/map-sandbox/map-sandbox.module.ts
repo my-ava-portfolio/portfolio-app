@@ -20,6 +20,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { CreateToolsComponent } from './create-tools/create-tools.component';
 import { ImportToolsComponent } from './import-tools/import-tools.component';
 import { FormsModule } from '@angular/forms';
+import { LegendComponent } from './legend/legend.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { FormsModule } from '@angular/forms';
     LayerManagerComponent,
     EditBarComponent,
     CreateToolsComponent,
-    ImportToolsComponent
+    ImportToolsComponent,
+    LegendComponent
   ],
   imports: [
     CommonModule,
