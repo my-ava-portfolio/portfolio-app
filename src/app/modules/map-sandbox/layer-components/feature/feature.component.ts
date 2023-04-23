@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, SimpleChanges } from '@angular/core';
 import { faExpand, faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
-import { layerHandler, getWkt } from '@modules/map-sandbox/shared/layer-handler/layer';
+import { layerHandler, getWkt } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import Feature from 'ol/Feature';
 import { Geometry } from 'ol/geom';
 

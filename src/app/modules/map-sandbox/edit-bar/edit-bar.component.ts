@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking, faMagnet } from '@fortawesome/free-solid-svg-icons';
 
-import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer';
+import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 
 import { EditComputingService } from '../shared/service/edit-computing.service';
 import { GraphComputingService } from '../shared/service/graph-computing.service';

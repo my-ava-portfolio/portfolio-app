@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer';
+import { layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
