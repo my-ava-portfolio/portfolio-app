@@ -26,21 +26,21 @@
 
         <span class="text-dark m-2 fw-bold small">Editer</span>
 
-        <input #btnMove type="checkbox" class="btn-check" [id]="'btnMove' + layer.container.uuid" [checked]="isMoved" (click)="translateHandler(btnMove.checked)">
-        <label [for]="'btnMove' + layer.container.uuid" ngbPopover="Déplacer" triggers="mouseenter:mouseleave">
-          <div class="btn btn-outline-success m-1" [ngClass]="isMoved ? 'btn-outline-danger' : ''">
-            <fa-icon [icon]="moveIcon"></fa-icon>
-          </div>
-        </label>
-
         <ng-container *ngIf="['Polygon', 'LineString'].includes(layer.container.geomType)">
-          <input #btnEdit type="checkbox" class="btn-check" [id]="'btnEdit' + layer.container.uuid" [checked]="isEdited" (click)="editHandler(btnEdit.checked)">
-          <label [for]="'btnEdit' + layer.container.uuid" ngbPopover="Editer" triggers="mouseenter:mouseleave">
-            <div class="btn btn-outline-success m-1" [ngClass]="isEdited ? 'btn-outline-danger' : ''">
-              <fa-icon [icon]="editIcon"></fa-icon>
+          <input #btnMove type="checkbox" class="btn-check" [id]="'btnMove' + layer.container.uuid" [checked]="isMoved" (click)="translateHandler(btnMove.checked)">
+          <label [for]="'btnMove' + layer.container.uuid" ngbPopover="Déplacer" triggers="mouseenter:mouseleave">
+            <div class="btn btn-outline-success m-1" [ngClass]="isMoved ? 'btn-outline-danger' : ''">
+              <fa-icon [icon]="moveIcon"></fa-icon>
             </div>
           </label>
         </ng-container>
+
+        <input #btnEdit type="checkbox" class="btn-check" [id]="'btnEdit' + layer.container.uuid" [checked]="isEdited" (click)="editHandler(btnEdit.checked)">
+        <label [for]="'btnEdit' + layer.container.uuid" ngbPopover="Editer" triggers="mouseenter:mouseleave">
+          <div class="btn btn-outline-success m-1" [ngClass]="isEdited ? 'btn-outline-danger' : ''">
+            <fa-icon [icon]="editIcon"></fa-icon>
+          </div>
+        </label>
 
         <ng-container *ngIf="['Polygon'].includes(layer.container.geomType)">
           <input #btnHole type="checkbox" class="btn-check" [id]="'btnHole' + layer.container.uuid" [checked]="isHole" (click)="drawHoleHandler(btnHole.checked, true)">
