@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { faXmark, faUpload, faExpand, faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
-import { layerHandler, layerHandlerPositionning } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
+import { faXmark, faUpload, faExpand, faEyeSlash, faLock, faLockOpen, faMagnet } from '@fortawesome/free-solid-svg-icons';
+import { baseLayer, layerHandler, layerHandlerPositionning } from '@modules/map-sandbox/shared/layer-handler/layer';
 
 import Map from 'ol/Map';
 import {createEmpty} from 'ol/extent';
@@ -12,8 +12,10 @@ import { Subscription } from 'rxjs';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '../shared/service/interactions.service';
 
-import { featuresLayerType, geomLayerTypes } from '@modules/map-sandbox/shared/data-types';
+import { featuresLayerType, geomLayerTypes, lineStringType, pointType } from '@modules/map-sandbox/shared/data-types';
 import { EditComputingService } from '../shared/service/edit-computing.service';
+import { polygonType } from '../shared/data-types';
+import { layer } from '@fortawesome/fontawesome-svg-core';
 
 
 @Component({
@@ -38,7 +40,8 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   centerIcon = faExpand;
   lockIcon = faLock;
   unLockIcon = faLockOpen;
-
+  snapIcon = faMagnet;
+  
   allVisible: boolean = true;
   allLocked: boolean = false;
 
@@ -86,8 +89,8 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
-    this.existingLayers.forEach((layer: any) => {
-      this.map.removeLayer(layer.vectorLayer)
+    this.existingLayers.forEach((layer: layerHandler) => {
+      this.map.removeLayer(layer.container.layer)
       layer.cleanEvents()
     })
 
@@ -124,26 +127,24 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     if (layerName === null) {
       layerName = 'layer ' + layerNo
     }
+    let containerLayer = new baseLayer(layerName, geomType, layerNo)
     return new layerHandler(
       this.map,
-      layerName,
-      geomType,
-      layerNo, // Zindex
-      groupId
+      containerLayer
     )
   }
 
   duplicateLayer(layer: layerHandler): void {
-    let duplicatedLayer = this.setNewLayer(layer.geomType, layer.layerName + " copy")
+    let duplicatedLayer = this.setNewLayer(layer.container.geomType, layer.container.layerName + " copy")
     // copy the feature from the current feature selecte to duplicate
-    duplicatedLayer.addFeaturesAndUpdateIds(layer.features)
+    duplicatedLayer.container.addFeaturesAndUpdateIds(layer.container.features)
     this.existingLayers.push(duplicatedLayer)
     this.refreshLayers()
   }
 
   addLayerFromFeatures(geomType: 'Point' | 'LineString' | 'Polygon', features: any[]): void {
     let newLayer = this.setNewLayer(geomType)
-    newLayer.addFeaturesAndUpdateIds(features)
+    newLayer.container.addFeaturesAndUpdateIds(features)
     this.existingLayers.push(newLayer)
     this.refreshLayers()
   }
@@ -160,20 +161,20 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   removeLayer(layerId: string): void {
     this.existingLayers = this.existingLayers.filter((layer: layerHandler) => {
-      return layer.uuid !== layerId
+      return layer.container.uuid !== layerId
     })
     this.buildLayersIndexes()
   }
 
   private getLayerFromId(layerId: string): layerHandler {
     let currentLayer = this.existingLayers.filter((layer: layerHandler) => {
-      return layer.uuid === layerId
+      return layer.container.uuid === layerId
     })
     return currentLayer[0]
   }
 
   refreshLayers(): void {
-    this.allLayers = this.existingLayers.sort((a, b) => (a.zIndex > b.zIndex ? -1 : 1))
+    this.allLayers = this.existingLayers.sort((a, b) => (a.container.zIndex > b.container.zIndex ? -1 : 1))
   }
 
   unSelectLayer(): void {
@@ -185,7 +186,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
     this.existingLayers = []
     existingLayers.forEach((layer: layerHandler, idx: number) => {
-      layer.zIndex = idx;
+      layer.container.zIndex = idx;
       this.existingLayers.push(layer)
     })
   }
@@ -205,8 +206,8 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     let layerTarget = this.getLayerFromId(layerId)
     Object.keys(featuresToAdd).forEach((geomType: string) => {
       let features = featuresToAdd[geomType]
-      if (geomType === layerTarget.geomType) {
-        layerTarget.addFeaturesAndUpdateIds(features)  // TODO synchronize properties      
+      if (geomType === layerTarget.container.geomType) {
+        layerTarget.container.addFeaturesAndUpdateIds(features)  // TODO synchronize properties      
         this.refreshLayers()
       }
     })
@@ -217,7 +218,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   zoomLayers(): void {
     let emptyExtent = createEmpty();
     this.existingLayers.forEach((layer: layerHandler) => {
-      extend(emptyExtent, layer.sourceFeatures.getExtent());
+      extend(emptyExtent, layer.container.sourceFeatures.getExtent());
     })
     if (emptyExtent[0] !== Infinity
       && emptyExtent[1] !== Infinity
@@ -234,6 +235,25 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   removeLayers(): void {
     this.interactionsService.removeAllLayers()
+  }
+
+  snapHandler(status: boolean): void {
+    // work on all layers
+    this._snappingHandlerOnAllLayers(status)
+  }
+  
+
+  private _snappingHandlerOnAllLayers(status: boolean): void {
+    this.existingLayers.forEach((layer: layerHandler) => {
+      if (status) {
+        layer.enableSnapping()
+        console.log(status)
+      } else {
+        layer.disableSnapping()
+        console.log(status)
+
+      }
+    })
   }
   // END layers controlers //
 

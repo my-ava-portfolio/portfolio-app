@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, SimpleChanges } from '@angular/core';
 import { faExpand, faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
-import { layerHandler, getWkt } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
+import { layerHandler, getWkt } from '@modules/map-sandbox/shared/layer-handler/layer';
 import Feature from 'ol/Feature';
 import { Geometry } from 'ol/geom';
 
@@ -78,13 +78,13 @@ export class FeatureComponent implements OnInit {
 
   removeFeature(): void {
     // the layer object is needed
-    this.layer.removeFeature(this.id as string)
+    this.layer.container.removeFeature(this.id as string)
   }
 
   duplicateFeature(): void {
     // the layer object is needed
     this.layer.select.getFeatures().clear() // need to unselect to avoid to save the select style (openlayers behavior)
-    this.layer.duplicateFeature(this.id as string)
+    this.layer.container.duplicateFeature(this.id as string)
   }
   zoomToFeature(): void {
     // the layer object is needed

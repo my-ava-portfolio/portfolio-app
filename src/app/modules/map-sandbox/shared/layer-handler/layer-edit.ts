@@ -139,7 +139,6 @@ export class layerEdit {
   }
 
   enableSnapping(): void {
-    // used during the drawing, editing
     this._map.addInteraction(this._snap);
   }
 
@@ -228,14 +227,12 @@ export class layerEdit {
     enableEditing(): void {
       this.disableEditing()
       this._map.addInteraction(this._modifier);
-      this._map.addInteraction(this._snap);
       this.disableSelecting()
 
     }
     
     disableEditing(): void {
       this._map.removeInteraction(this._modifier);
-      this._map.removeInteraction(this._snap);
     }
     
     cleanEvents(): void {
@@ -255,7 +252,6 @@ export class layerEdit {
       });
     
       this._map.addInteraction(this._draw);
-      this._map.addInteraction(this._snap);
       if (!holeStatus) {
         // select is disabled when drawing a new feature
         this.disableSelecting()

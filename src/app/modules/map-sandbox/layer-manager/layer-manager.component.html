@@ -40,6 +40,11 @@
     <fa-icon class="" [icon]="allLocked ? lockIcon : unLockIcon" size="1x"></fa-icon>
   </label>
 
+  <input #btnSnap type="checkbox" class="btn-check" id="btnSnap" [checked]="false" (click)="snapHandler(btnSnap.checked)">
+  <label class="btn btn-sm btn-transparent border-0 pointer" [ngClass]="btnSnap.checked ? 'btn-danger' : ''" for="btnSnap" container="body" ngbPopover="Activer le snapping" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="snapIcon" size="1x"></fa-icon>
+  </label>
+
   <button class="m-1 btn btn-sm btn-transparent border-0 pointer" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="centerIcon" size="1x"></fa-icon>
   </button>
@@ -69,7 +74,7 @@
 
         <app-layer
           [layer]="layer"
-          [selected]="currentLayerIdSelected == layer.uuid"
+          [selected]="currentLayerIdSelected == layer.container.uuid"
           [visible]="allVisible"
           [locked]="allLocked"
           [epsg]="currentEpsg"

@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking } from '@fortawesome/free-solid-svg-icons';
 
-import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
+import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer';
 
 import { EditComputingService } from '../shared/service/edit-computing.service';
 import { GraphComputingService } from '../shared/service/graph-computing.service';
@@ -44,7 +44,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   // compute
   isShortestPath: boolean = false;
 
-
   // wkt import
   epsgAvailable = ["EPSG:4326", "EPSG:3857"]; //TODO refactor
   strInputDataValues: string | null = null;
@@ -56,6 +55,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   ) {  }
 
   ngOnInit(): void {
+
   }
 
   ngOnDestroy(): void {
@@ -70,17 +70,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   get layer(): layerHandler {
     return this._layer
   }
-
-  disableOthersLayersSelection(): void {
-    // when drawing & editing is on
-    this.editComputingService.sendFeatureIdEdited(this.layer.uuid)
-  }
-
-  enableLayersSelection(): void {
-    // when drawing & editing is on
-    this.editComputingService.sendFeatureIdEdited(null)
-  }
-
 
   @Input()
   set enabled(status: boolean) {
@@ -125,11 +114,8 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
       this.editFeatureEnable()
-      this.disableOthersLayersSelection()
     } else {
       this.editFeatureDisable()
-      this.enableLayersSelection()
-
     }
   }
 
@@ -137,10 +123,8 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
       this.addFeatureEnable(holeStatus)
-      this.disableOthersLayersSelection()
     } else {
       this.addFeatureDisable()
-      this.enableLayersSelection()
     }
   }
 
@@ -148,10 +132,8 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
       this.addHoleFeatureEnable(holeStatus)
-      this.disableOthersLayersSelection()
     } else {
       this.addHoleFeatureDisable()
-      this.enableLayersSelection()
     }
   }
 
@@ -198,9 +180,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   computeShortestPath(mode: 'pedestrian' | 'vehicle'): void {
     //TODO call osmrx-api
     let wktFeatures: string[] = []
-    if (this.layer.features.length > 0) {
-
-      this.layer.features.forEach((feature: Feature) => {
+      this.layer.container.features.forEach((feature: Feature) => {
         const featureCloned = feature.clone()
         let geom = featureCloned.getGeometry()
         if (geom !== undefined) {
@@ -221,11 +201,11 @@ export class EditBarComponent implements OnInit, OnDestroy {
           const featuresToAdd = readStringWktAndGroupedByGeomType(data, featureParams)
           this.editComputingService.addNewFeatures(featuresToAdd)
         })
-      }
+
   }
 
   computeBoundingBox(): void {
-    if (this.layer.features.length > 0) {
+    if (this.layer.container.features.length > 0) {
       this.editComputingService.addNewFeatures(this.layer.exportBoundsPolygon())
     }
   }
