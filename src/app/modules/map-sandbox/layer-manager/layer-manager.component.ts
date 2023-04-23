@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { faXmark, faUpload, faExpand, faEyeSlash, faLock, faLockOpen, faMagnet } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faUpload, faExpand, faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { baseLayer, layerHandler, layerHandlerPositionning } from '@modules/map-sandbox/shared/layer-handler/layer';
 
 import Map from 'ol/Map';
@@ -14,8 +14,6 @@ import { InteractionsService } from '../shared/service/interactions.service';
 
 import { featuresLayerType, geomLayerTypes, lineStringType, pointType } from '@modules/map-sandbox/shared/data-types';
 import { EditComputingService } from '../shared/service/edit-computing.service';
-import { polygonType } from '../shared/data-types';
-import { layer } from '@fortawesome/fontawesome-svg-core';
 
 
 @Component({
@@ -40,7 +38,6 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   centerIcon = faExpand;
   lockIcon = faLock;
   unLockIcon = faLockOpen;
-  snapIcon = faMagnet;
   
   allVisible: boolean = true;
   allLocked: boolean = false;
@@ -237,24 +234,8 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.interactionsService.removeAllLayers()
   }
 
-  snapHandler(status: boolean): void {
-    // work on all layers
-    this._snappingHandlerOnAllLayers(status)
-  }
-  
 
-  private _snappingHandlerOnAllLayers(status: boolean): void {
-    this.existingLayers.forEach((layer: layerHandler) => {
-      if (status) {
-        layer.enableSnapping()
-        console.log(status)
-      } else {
-        layer.disableSnapping()
-        console.log(status)
 
-      }
-    })
-  }
   // END layers controlers //
 
 }

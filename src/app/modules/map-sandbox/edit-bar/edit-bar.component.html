@@ -77,6 +77,19 @@
           </div>
 
         </ng-container>
+        
+        <div class="d-flex flex-row m-1 align-items-center shadow border rounded bg-light">
+
+          <span class="text-dark m-2 fw-bold small">Config</span>
+
+            <input #btnSnap type="checkbox" class="btn-check" id="btnSnap" [checked]="isSnapped" (click)="snappingHandler(btnSnap.checked)">
+            <label [ngClass]="btnSnap.checked ? 'btn-danger' : ''" for="btnSnap" container="body" ngbPopover="Activer le snapping" triggers="mouseenter:mouseleave">
+              <div [class.disabled]="editionMode" class="btn btn-outline-success m-1" [ngClass]="isSnapped ? 'btn-outline-danger' : ''">
+                <fa-icon [icon]="snapIcon"></fa-icon>
+              </div>
+            </label>
+
+        </div>
 
       </div>
 

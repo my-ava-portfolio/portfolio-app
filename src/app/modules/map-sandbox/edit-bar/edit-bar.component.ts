@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking, faMagnet } from '@fortawesome/free-solid-svg-icons';
 
 import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer';
 
@@ -32,6 +32,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   motorIcon = faCar;
   pedestrianIcon = faPersonWalking;
   centerIcon = faExpand;
+  snapIcon = faMagnet;
 
   // add
   isDrawn: boolean = false;
@@ -43,6 +44,10 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   // compute
   isShortestPath: boolean = false;
+
+  // misc
+  editionMode: boolean = false;
+  isSnapped: boolean = false;
 
   // wkt import
   epsgAvailable = ["EPSG:4326", "EPSG:3857"]; //TODO refactor
@@ -83,12 +88,35 @@ export class EditBarComponent implements OnInit, OnDestroy {
     return this._enabled
   }
 
+  enableSnapModeOnAllOthersLayers(): void {
+    // must be enabled at the end the interactions setter
+    // to enable snapping on all layers
+    if (this.isSnapped) {
+      this.editComputingService.activateSnapping(true)
+    }
+  }
+
+  disableSnapModeOnAllOthersLayers(): void {
+    // to disable snapping on all layers, only if snap mode is enabled
+    // to avoid useless call to remove the interaction
+    if (this.isSnapped) {
+      this.editComputingService.activateSnapping(false)
+    }
+ }
+
+  snappingHandler(status: boolean): void {
+    this.isSnapped = status
+    if (!status) {
+      this.disableSnapModeOnAllOthersLayers()
+    }
+  }
+
   disableEditing(unSelectLayer: boolean = true): void {
     this.drawHoleHandler(false)
     this.drawHandler(false)
     this.editHandler(false)
     this.translateHandler(false)
-
+    this.disableSnapModeOnAllOthersLayers()
     if (unSelectLayer) {
       this.unSelectFeature()
     }
@@ -100,7 +128,6 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   translateHandler(status: boolean): void {
-
     if (status) {
       this.disableEditing(false)
       this.translateFeatureEnable()
@@ -114,8 +141,10 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
       this.editFeatureEnable()
+      this.enableSnapModeOnAllOthersLayers()
     } else {
       this.editFeatureDisable()
+      this.disableSnapModeOnAllOthersLayers()
     }
   }
 
@@ -123,58 +152,73 @@ export class EditBarComponent implements OnInit, OnDestroy {
     if (status) {
       this.disableEditing(false)
       this.addFeatureEnable(holeStatus)
+      this.enableSnapModeOnAllOthersLayers()
     } else {
       this.addFeatureDisable()
+      this.disableSnapModeOnAllOthersLayers()
     }
+
   }
 
   drawHoleHandler(status: boolean, holeStatus: boolean = true): void {
     if (status) {
       this.disableEditing(false)
       this.addHoleFeatureEnable(holeStatus)
+      this.enableSnapModeOnAllOthersLayers()
     } else {
       this.addHoleFeatureDisable()
+      this.disableSnapModeOnAllOthersLayers()
     }
   }
 
   private translateFeatureEnable(): void {
     this.layer.enableTranslating()
     this.isMoved = true;
+    this.editionMode = true
   }
 
   private translateFeatureDisable(): void {
     this.layer.disableTranslating()
     this.isMoved = false
+    this.editionMode = false
   }
 
   private addFeatureEnable(holeStatus: boolean = false): void {
     this.layer.enableDrawing(holeStatus);
     this.isDrawn = true;
+    this.editionMode = true
   }
 
   private addFeatureDisable(): void {
     this.layer.disableDrawing();
     this.isDrawn = false;
+    this.editionMode = false
+
   }
 
   private editFeatureEnable(): void {
     this.layer.enableEditing()
     this.isEdited = true;
+    this.editionMode = true
+
   }
 
   private editFeatureDisable(): void {
     this.layer.disableEditing()
     this.isEdited = false
+    this.editionMode = false
   }
 
   private addHoleFeatureEnable(holeStatus: boolean = true): void {
     this.layer.enableDrawing(holeStatus);
     this.isHole = true;
+    this.editionMode = true
   }
   private addHoleFeatureDisable(): void {
 
     this.layer.disableDrawing();
     this.isHole = false;
+    this.editionMode = false
   }
 
   computeShortestPath(mode: 'pedestrian' | 'vehicle'): void {

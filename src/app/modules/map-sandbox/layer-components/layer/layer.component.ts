@@ -59,11 +59,12 @@ export class LayerComponent implements OnInit, OnDestroy {
   isLayerRemoved = false;
   exportData: string = '';
   exportDataMode = 'geojson'
+  featureIdEditedSubscription!: Subscription
 
   constructor(
     private elementRef: ElementRef,
     private interactionsService: InteractionsService,
-    // private editComputingService: EditComputingService
+    private editComputingService: EditComputingService
   ) {
 
     this.removeLayerSubscription = this.interactionsService.removeLayers.subscribe(
@@ -71,7 +72,21 @@ export class LayerComponent implements OnInit, OnDestroy {
         // to remove the layer, if all layers must be removed
         this.removeLayer()
       }
-    )   
+    )
+
+    this.featureIdEditedSubscription = this.editComputingService.snappingLayerEnabled.subscribe(
+      (snappingLayerEnabled: boolean) => {
+        // mandatory to manage selecting and enable snapping interactionbetween layers when editing
+        if (snappingLayerEnabled) {
+          // this.layer.enableSelecting()
+          this.layer.enableSnapping()
+        } else {
+          this.layer.disableSnapping()
+
+        }
+      }
+    )
+
   }
 
   ngOnInit(): void {
