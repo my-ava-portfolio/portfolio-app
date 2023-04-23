@@ -1,3 +1,5 @@
+import { faCircle, faWaveSquare, faDrawPolygon } from "@fortawesome/free-solid-svg-icons";
+
 export const defaultStrokeWidth: number = 2;
 export const defaultStrokeColor: string = "black";
 export const hexColorReg = /^#([0-9a-f]{3}){1,2}$/i;
@@ -19,4 +21,8 @@ export function getRandomDefaultColor(): string {
     const randomNumber = Math.floor(Math.random()* palette.length);
     return palette[randomNumber];
   
-  }
+}
+  
+export const pointIcon = faCircle;
+export const lineStringIcon = faWaveSquare;
+export const polygonIcon = faDrawPolygon;

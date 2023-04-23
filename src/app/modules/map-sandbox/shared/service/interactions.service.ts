@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { layerHandler } from '../layer-handler/layer-handler';
 
 @Injectable({
   providedIn: 'root'
@@ -7,14 +8,15 @@ import { Subject } from 'rxjs';
 export class InteractionsService {
 
   layerIdSelected: Subject<string | null> = new Subject<string | null>();
-  selectableLayerId: Subject<string> = new Subject<string>();
-  selectableAllLayers: Subject<boolean> = new Subject<boolean>();
-  editBarActivation: Subject<boolean> = new Subject<boolean>();
+  allLayers: Subject<layerHandler[]> = new Subject<layerHandler[]>();
   removeLayers: Subject<boolean> = new Subject<boolean>();
-  selectingLayerStatus: Subject<boolean> = new Subject<boolean>();
-
+  
   constructor(
   ) { }
+
+  sendAllLayers(layers: layerHandler[]): void {
+    this.allLayers.next(layers)
+  }
 
   removeAllLayers(): void {
     this.removeLayers.next(true)
