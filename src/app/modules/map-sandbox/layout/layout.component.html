@@ -59,6 +59,7 @@
     <ng-container *ngFor="let layer of currentLayers">
       <app-legend
         [layer]="layer"
+        [selected]="currentLayerIdSelected == layer.container.uuid"
       ></app-legend>
     </ng-container>
   </div>

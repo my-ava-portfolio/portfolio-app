@@ -38,9 +38,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
   isPanelsDisplayed = true;
 
   currentMenuDisplayed: 'geoTools' | 'createTools' = 'createTools'
+  currentLayerIdSelected: string | null = null;
 
   mapSubscription!: Subscription;
   allLayersSubscription!: Subscription;
+  layerIdSelectedSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
@@ -63,6 +65,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.currentLayers = allLayers
       }
     )
+
+    this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
+      (currentLayerIdSelected: string | null) => {
+        this.currentLayerIdSelected = currentLayerIdSelected
+      }
+    )
    }
 
   ngOnInit(): void {
@@ -78,6 +86,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     this.mapSubscription.unsubscribe();
     this.allLayersSubscription.unsubscribe();
+    this.layerIdSelectedSubscription.unsubscribe();
     
     this.mapService.changeMapInteractionStatus(false)
     this.mapService.resetMapView()

@@ -11,6 +11,8 @@ import { InteractionsService } from '../shared/service/interactions.service';
 export class LegendComponent implements OnInit, OnDestroy {
   // important component similar to layer to manage feature selection
   private _layer!: layerHandler;
+  private _selected!: boolean; 
+
   featureIdSelected!: string;
 
   pointIcon = pointIcon
@@ -49,6 +51,22 @@ export class LegendComponent implements OnInit, OnDestroy {
 
   get layer(): layerHandler {
     return this._layer
+  }
+
+  @Input()
+  set selected(status: boolean) {
+    
+    if (!status) {
+      // unselect all the features
+      this.unSelectFeature()
+    } else {
+      this.selectLayer()
+    }
+    this._selected = status
+  }
+
+  get selected(): boolean {
+    return this._selected;
   }
 
   layerSelectConfigured(): void {
