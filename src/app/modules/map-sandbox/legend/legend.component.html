@@ -1,19 +1,32 @@
 <div class="d-flex flex-row fs-6 title">
-        <fa-icon *ngIf="layer.container.geomType === 'Point'" class="me-2" [icon]="pointIcon" size="xs"></fa-icon>
-        <fa-icon *ngIf="layer.container.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon" size="xs"></fa-icon>
-        <fa-icon *ngIf="layer.container.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon" size="xs"></fa-icon>
-    {{this.layer.container.layerName}}
+    <span class="text-decoration-underline mb-2 fw-bold">{{this.layer.container.layerName}}</span>
 </div>
 
-<ul>
-    <li class="list-unstyled" *ngFor="let feature of layer.container.features">
+<ul class="list-unstyled m-0">
+    <li *ngFor="let feature of layer.container.features">
         <div
-        class="feature"
-        [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"
+        class="d-flex flex-row align-items-center px-2 mx-2 pointer"
+        [ngClass]="featureIdSelected == feature.getId() ? 'bg-secondary bg-opacity-25 rounded' : ''"
         (click)="selectFeatureById(feature.getId())"
-
         >
-        {{feature.get('name')}}
+
+            <div class="me-1">
+                <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'Point'">
+                    <circle cx="12" cy="12" r="8" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
+                </svg>
+            
+                <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'LineString'">
+                    <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * 2"/>
+                    <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') *1.5"/>
+                </svg>
+            
+                <svg height="15" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
+                    <rect x="0" y="0" width="25" height="15" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')"/>
+                </svg>
+            </div>
+
+            <span class="small">{{feature.get('name')}}</span>
+            
         </div>
     </li>
 </ul>
