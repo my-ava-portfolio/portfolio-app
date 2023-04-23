@@ -91,9 +91,9 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     
-    // enable selecting
-    this.layer.enableSnapping()
-
+    // enable selecting 
+    // TODO useless ?
+    // this.layer.enableSnapping()
     this.layer.enableSelecting()
 
     // set select interaction event
