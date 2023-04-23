@@ -131,8 +131,9 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   @Input()
   set epsg(value: string) {
-    if (value !== this._epsg) {
-      this.layer.container.features.forEach( (feature: any) => {
+    if (value !== this._epsg && this._epsg !== undefined) {
+      this.layer.container.features.forEach((feature: any) => {
+        console.log(this._epsg, value)
         feature.setGeometry(feature.getGeometry().transform(this._epsg, value))
       });
     }
