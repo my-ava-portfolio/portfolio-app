@@ -52,3 +52,14 @@
     </div>
 
 </div>
+
+
+<div moveDivToBody *ngIf="!isPanelsDisplayed && currentLayers.length >0" class="position-fixed bottom-0 end-0 bg-white rounded shadow overflow-auto m-3 p-3">
+  <div class="d-flex flex-column justify-content-start">
+    <ng-container *ngFor="let layer of currentLayers">
+      <app-legend
+        [layer]="layer"
+      ></app-legend>
+    </ng-container>
+  </div>
+</div>

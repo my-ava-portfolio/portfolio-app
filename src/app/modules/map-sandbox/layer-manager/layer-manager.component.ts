@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '../shared/service/interactions.service';
 
-import { featuresLayerType, geomLayerTypes, lineStringType, pointType } from '@modules/map-sandbox/shared/data-types';
+import { featuresLayerType, geomLayerTypes } from '@modules/map-sandbox/shared/data-types';
 import { EditComputingService } from '../shared/service/edit-computing.service';
 
 
@@ -172,6 +172,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
 
   refreshLayers(): void {
     this.allLayers = this.existingLayers.sort((a, b) => (a.container.zIndex > b.container.zIndex ? -1 : 1))
+    this.interactionsService.sendAllLayers(this.allLayers)
   }
 
   unSelectLayer(): void {

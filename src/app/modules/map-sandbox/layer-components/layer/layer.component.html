@@ -110,9 +110,8 @@
   <app-edit-bar
     class=""
     [layer]="layer"
-    [hidden]="!selected"
+    *ngIf="selected"
     [enabled]="!locked && selected"
-    id="editBar0"
     [currentEpsg]="epsg"
   ></app-edit-bar>
 
