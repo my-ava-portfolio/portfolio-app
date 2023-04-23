@@ -83,9 +83,9 @@
           <span class="text-dark m-2 fw-bold small">Config</span>
 
             <input #btnSnap type="checkbox" class="btn-check" id="btnSnap" [checked]="isSnapped" (click)="snappingHandler(btnSnap.checked)">
-            <label [ngClass]="btnSnap.checked ? 'btn-danger' : ''" for="btnSnap" container="body" ngbPopover="Activer le snapping" triggers="mouseenter:mouseleave">
-              <div [class.disabled]="editionMode" class="btn btn-outline-success m-1" [ngClass]="isSnapped ? 'btn-outline-danger' : ''">
-                <fa-icon [icon]="snapIcon"></fa-icon>
+            <label for="btnSnap" container="body" ngbPopover="Activer le snapping" triggers="mouseenter:mouseleave">
+              <div [class.disabled]="editionMode" class="btn m-1" [ngClass]="isSnapped ? 'btn-danger' : 'btn-outline-dark'">
+                <fa-icon [icon]="snapIcon" size="xs"></fa-icon>
               </div>
             </label>
 
