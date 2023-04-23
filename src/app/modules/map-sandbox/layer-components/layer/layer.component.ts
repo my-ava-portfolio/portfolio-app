@@ -59,8 +59,7 @@ export class LayerComponent implements OnInit, OnDestroy {
   isLayerRemoved = false;
   exportData: string = '';
   exportDataMode = 'geojson'
-
-  featureIdEditedSubscription!: Subscription;;
+  featureIdEditedSubscription!: Subscription
 
   constructor(
     private elementRef: ElementRef,
@@ -75,33 +74,32 @@ export class LayerComponent implements OnInit, OnDestroy {
       }
     )
 
-    this.featureIdEditedSubscription = this.editComputingService.featureIdEdited.subscribe(
-      (featureIdEdited: string | null) => {
+    this.featureIdEditedSubscription = this.editComputingService.snappingLayerEnabled.subscribe(
+      (snappingLayerEnabled: boolean) => {
         // mandatory to manage selecting and enable snapping interactionbetween layers when editing
-        if (featureIdEdited === null) {
-          this.layer.enableSelecting()
-          this.layer.disableSnapping()
-          return
-        }
-        if (featureIdEdited !== this.layer.uuid) {
-          this.layer.disableSelecting()
+        if (snappingLayerEnabled) {
+          // this.layer.enableSelecting()
           this.layer.enableSnapping()
+        } else {
+          this.layer.disableSnapping()
+
         }
       }
     )
 
-   
   }
 
   ngOnInit(): void {
     
-    // enable selecting
+    // enable selecting 
+    // TODO useless ?
+    // this.layer.enableSnapping()
     this.layer.enableSelecting()
 
     // set select interaction event
     this.layerSelectConfigured()
 
-    this.layer.sourceFeatures.on('changefeature', (event: any) => {
+    this.layer.container.sourceFeatures.on('changefeature', (event: any) => {
       // update step when change on feature occurs
       refreshFeatureStyle(event.feature)
     })
@@ -112,7 +110,7 @@ export class LayerComponent implements OnInit, OnDestroy {
 
     this.isLayerRemoved = true;
     
-    let modalWktDiv = document.getElementById('modalWktLayer-' + this.layer.uuid)
+    let modalWktDiv = document.getElementById('modalWktLayer-' + this.layer.container.uuid)
     if (modalWktDiv !== null) {
       modalWktDiv.remove()
     }
@@ -134,7 +132,7 @@ export class LayerComponent implements OnInit, OnDestroy {
   @Input()
   set epsg(value: string) {
     if (value !== this._epsg) {
-      this.layer.features.forEach( (feature: any) => {
+      this.layer.container.features.forEach( (feature: any) => {
         feature.setGeometry(feature.getGeometry().transform(this._epsg, value))
       });
     }
@@ -148,24 +146,25 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   @Input()
   set visible(status: boolean) {
-    this.layer.visible = status
+    this.layer.container.visible = status
   }
 
   get visible(): boolean {
-    return this.layer.visible;
+    return this.layer.container.visible;
   }
 
   @Input()
   set locked(status: boolean) {
-    this.layer.locked = status
+    this.layer.container.locked = status
   }
 
   get locked(): boolean {
-    return this.layer.locked;
+    return this.layer.container.locked;
   }
 
   @Input()
   set selected(status: boolean) {
+    
     if (!status) {
       // unselect all the features
       this.unSelectFeature()
@@ -201,20 +200,20 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   removeLayer(): void {
     this.layer.removeLayer()
-    this.removeLayerId.emit(this.layer.uuid)
+    this.removeLayerId.emit(this.layer.container.uuid)
     this.ngOnDestroy()
   }
 
   layerGoUp(): void{
-    this.layerMoveUp.emit(this.layer.uuid)
+    this.layerMoveUp.emit(this.layer.container.uuid)
   }
 
   layerGoDown(): void{
-    this.layerMoveDown.emit(this.layer.uuid)
+    this.layerMoveDown.emit(this.layer.container.uuid)
   }
 
   selectLayer(): void {
-    this.interactionsService.sendSelectedLayerId(this.layer.uuid)
+    this.interactionsService.sendSelectedLayerId(this.layer.container.uuid)
   }
 
   zoomToLayer(): void {
@@ -259,7 +258,7 @@ export class LayerComponent implements OnInit, OnDestroy {
     this.featureIdSelected = featureId
 
     let feature = this.getFeature(this.featureIdSelected)
-
+    this.layer.enableSelecting()  // mandatory
     this.layer.select.getFeatures().clear()
     this.layer.select.getFeatures().push(feature)
 
@@ -267,7 +266,7 @@ export class LayerComponent implements OnInit, OnDestroy {
   }
 
   private getFeature(featureId: string): any {
-    let features = this.layer.features.filter((feature: any) => {
+    let features = this.layer.container.features.filter((feature: any) => {
       return feature.getId() === featureId
     })
     if (features.length === 1) {

@@ -1,54 +1,54 @@
 <div>
-<div class="text-center fw-bold bg-dark bg-gradient text-white p-3">
-  Créer
-</div>
+  <div class="text-center fw-bold bg-dark bg-gradient text-white p-3">
+    Créer
+  </div>
 
 
-<app-create-tools
-(newLayerEvent)="addLayer($event)"
->
-</app-create-tools>
+  <app-create-tools
+  (newLayerEvent)="addLayer($event)"
+  >
+  </app-create-tools>
 
-<div class="text-center fw-bold bg-dark  bg-gradient text-white p-3">
-  Importer
-</div>
+  <div class="text-center fw-bold bg-dark  bg-gradient text-white p-3">
+    Importer
+  </div>
 
-<app-import-tools
-[epsgAvailable]="epsgAvailable"
-[currentEpsg]="currentEpsg"
-[existingLayers]="existingLayers"
-(featuresToNewLayerEvent)="createNewLayersFromFeatures($event)"
-(featuresToAppendEvent)="appendFeatureOnLayerFromFeatures($event)"
-></app-import-tools>
+  <app-import-tools
+  [epsgAvailable]="epsgAvailable"
+  [currentEpsg]="currentEpsg"
+  [existingLayers]="existingLayers"
+  (featuresToNewLayerEvent)="createNewLayersFromFeatures($event)"
+  (featuresToAppendEvent)="appendFeatureOnLayerFromFeatures($event)"
+  ></app-import-tools>
 
 
 
-<div class="text-center fw-bold bg-dark bg-gradient text-white p-3">
-  Couches
-</div>
+  <div class="text-center fw-bold bg-dark bg-gradient text-white p-3">
+    Couches
+  </div>
 
-<div id="layersTools" class="d-flex flex-row justify-content-evenly align-items-center mx-2">
+  <div id="layersTools" class="d-flex flex-row justify-content-evenly align-items-center mx-2">
 
-  <input #btnVisible type="checkbox" class="btn-check" id="btnVisibleLayers" [checked]="allVisible" (change)="allVisible = btnVisible.checked">
+    <input #btnVisible type="checkbox" class="btn-check" id="btnVisibleLayers" [checked]="allVisible" (change)="allVisible = btnVisible.checked">
 
-  <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnVisibleLayers" [ngClass]="allVisible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="allVisible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
-    <fa-icon class="" [icon]="allVisible ? visibleIcon : invisibleIcon" size="1x"></fa-icon>
-  </label>
+    <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnVisibleLayers" [ngClass]="allVisible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="allVisible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="allVisible ? visibleIcon : invisibleIcon" size="1x"></fa-icon>
+    </label>
 
-  <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="allLocked = btnLock.checked">
-  <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnLockLayers" container="body" [ngbPopover]="allLocked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
-    <fa-icon class="" [icon]="allLocked ? lockIcon : unLockIcon" size="1x"></fa-icon>
-  </label>
+    <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="allLocked = btnLock.checked">
+    <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnLockLayers" container="body" [ngbPopover]="allLocked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="allLocked ? lockIcon : unLockIcon" size="1x"></fa-icon>
+    </label>
 
-  <button class="m-1 btn btn-sm btn-transparent border-0 pointer" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
-    <fa-icon class="" [icon]="centerIcon" size="1x"></fa-icon>
-  </button>
+    <button class="m-1 btn btn-sm btn-transparent border-0 pointer" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="centerIcon" size="1x"></fa-icon>
+    </button>
 
-  <button class="m-1 btn btn-sm btn-transparent border-0 pointer text-danger" (click)="removeLayers()" ngbPopover="Supprimer toutes les couches" triggers="mouseenter:mouseleave">
-    <fa-icon class="" [icon]="disabledIcon" size="1x"></fa-icon>
-  </button>
+    <button class="m-1 btn btn-sm btn-transparent border-0 pointer text-danger" (click)="removeLayers()" ngbPopover="Supprimer toutes les couches" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="disabledIcon" size="1x"></fa-icon>
+    </button>
 
-</div>
+  </div>
 
 
   <div #layersList id="layersList" class="d-flex flex-column justify-content-start mb-2">
@@ -69,7 +69,7 @@
 
         <app-layer
           [layer]="layer"
-          [selected]="currentLayerIdSelected == layer.uuid"
+          [selected]="currentLayerIdSelected == layer.container.uuid"
           [visible]="allVisible"
           [locked]="allLocked"
           [epsg]="currentEpsg"
@@ -82,3 +82,4 @@
 
     </ng-container>
   </div>
+</div>

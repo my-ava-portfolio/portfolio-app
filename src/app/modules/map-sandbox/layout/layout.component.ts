@@ -1,5 +1,4 @@
-import { layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
 import { MapService } from '@services/map.service';
@@ -11,6 +10,7 @@ import { faGlobe, faLayerGroup, faAnglesLeft, faAnglesRight } from '@fortawesome
 import { Subscription } from 'rxjs/internal/Subscription';
 import View from 'ol/View';
 import { InteractionsService } from '../shared/service/interactions.service';
+import { layerHandler } from '../shared/layer-handler/layer-handler';
 
 @Component({
   selector: 'app-app-layout',
@@ -20,7 +20,8 @@ import { InteractionsService } from '../shared/service/interactions.service';
 export class LayoutComponent implements OnInit, OnDestroy {
 
   currentEpsg!: string;
-
+  currentLayers!: layerHandler[];
+  
   // used by menus
   epsgAvailable = ["EPSG:4326", "EPSG:3857"];
 
@@ -39,11 +40,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
   currentMenuDisplayed: 'geoTools' | 'createTools' = 'createTools'
 
   mapSubscription!: Subscription;
+  allLayersSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
     private controlerService: ControlerService,
     private activatedRoute: ActivatedRoute,
+    private interactionsService: InteractionsService,
   ) {
 
     // Get the map container, view and epsg
@@ -54,7 +57,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.defaultMapView = this.map.getView()
       }
     );
-
+    
+    this.allLayersSubscription = this.interactionsService.allLayers.subscribe(
+      (allLayers: layerHandler[]) => {
+        this.currentLayers = allLayers
+      }
+    )
    }
 
   ngOnInit(): void {
@@ -69,7 +77,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.map.setView(this.defaultMapView)
 
     this.mapSubscription.unsubscribe();
-
+    this.allLayersSubscription.unsubscribe();
+    
     this.mapService.changeMapInteractionStatus(false)
     this.mapService.resetMapView()
   }
@@ -81,6 +90,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   showHideLegend(): void {
     this.isPanelsDisplayed = !this.isPanelsDisplayed;
+    this.unSelectLayer()
+  }
+
+  unSelectLayer(): void {
+    this.interactionsService.sendSelectedLayerId(null)
   }
 
 }

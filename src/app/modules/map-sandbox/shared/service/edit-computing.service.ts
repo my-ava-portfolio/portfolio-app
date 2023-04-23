@@ -8,7 +8,7 @@ import { featuresLayerType, geomLayerTypes } from '../data-types';
 })
 export class EditComputingService {
   newFeatures: Subject<featuresLayerType> = new Subject<featuresLayerType>();
-  featureIdEdited: Subject<string | null> = new Subject<string | null>();
+  snappingLayerEnabled: Subject<boolean> = new Subject<boolean>();
 
   constructor() { }
 
@@ -16,7 +16,7 @@ export class EditComputingService {
     this.newFeatures.next(event);
   }
 
-  sendFeatureIdEdited(event: string | null): void {
-    this.featureIdEdited.next(event);
+  activateSnapping(event: boolean): void {
+    this.snappingLayerEnabled.next(event);
   }
 }
