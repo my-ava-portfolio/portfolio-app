@@ -1,19 +1,47 @@
-<app-create-tools 
-  [layerTypeModes]="['Point', 'LineString', 'Polygon']"
-  (newLayerEvent)="addLayer($event)">
-</app-create-tools>
+<ng-container *ngIf="toolsMode == 'geoTools'">
+  <app-geo-tools
+    id="geoTools"
+    class="overflow-auto"
+    [map]="map"
+    [currentEpsg]="currentEpsg"
+    [epsgAvailable]="epsgAvailable"
+  >
+  </app-geo-tools>
+</ng-container>
 
-<app-import-tools
-  [epsgAvailable]="epsgAvailable"
+<ng-container *ngIf="toolsMode == 'createTools'">
+  <app-create-tools 
+    [layerTypeModes]="['Point', 'LineString', 'Polygon']"
+    (newLayerEvent)="addLayer($event)">
+  </app-create-tools>
+
+  <app-import-tools
+    [epsgAvailable]="epsgAvailable"
+    [currentEpsg]="currentEpsg"
+    [existingLayers]="existingLayers"
+    (featuresToNewLayerEvent)="createNewLayersFromFeatures($event)"
+    (featuresToAppendEvent)="appendFeatureOnLayerFromFeatures($event)"
+  ></app-import-tools>
+</ng-container>
+
+<ng-container *ngIf="toolsMode == 'pathTools'">
+  <app-create-tools
+    classColor="danger"
+    [layerTypeModes]="['Point', 'LineString']"
+    (newLayerEvent)="addLayer($event)">
+  </app-create-tools>
+
+  <app-path-tools
   [currentEpsg]="currentEpsg"
-  [existingLayers]="existingLayers"
-  (featuresToNewLayerEvent)="createNewLayersFromFeatures($event)"
-  (featuresToAppendEvent)="appendFeatureOnLayerFromFeatures($event)"
-></app-import-tools>
+  [layerSelected]="getLayerFromId(currentLayerIdSelected)"
+  >
+  </app-path-tools>
+</ng-container>
 
 
 
-<div class="text-center fw-bold bg-dark bg-gradient text-white p-3">
+
+<div class="text-center fw-bold bg-primary bg-gradient text-white p-2">
   Couches
 </div>
 
@@ -55,7 +83,7 @@
 
   </div>
 
-  <ng-container *ngFor="let layer of allLayers">
+  <ng-container *ngFor="let layer of layersToDisplay">
 
     <app-layer
       [layer]="layer"

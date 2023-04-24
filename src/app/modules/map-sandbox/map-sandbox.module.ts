@@ -9,9 +9,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { LayoutComponent } from './layout/layout.component';
 
-import { GeoinfoComponent } from '@modules/map-sandbox/geoinfo/geoinfo.component';
+import { GeoToolsComponent } from './geo-tools/geo-tools.component';
 
-import { LayerManagerComponent } from '@modules/map-sandbox/layer-manager/layer-manager.component';
+import { LayersManagerComponent } from './layers-manager/layers-manager.component';
 import { LayerComponent } from '@modules/map-sandbox/layer-components/layer/layer.component';
 import { FeatureComponent } from '@modules/map-sandbox/layer-components/feature/feature.component';
 import { EditBarComponent } from '@modules/map-sandbox/edit-bar/edit-bar.component';
@@ -21,6 +21,7 @@ import { CreateToolsComponent } from './create-tools/create-tools.component';
 import { ImportToolsComponent } from './import-tools/import-tools.component';
 import { FormsModule } from '@angular/forms';
 import { LegendComponent } from './legend/legend.component';
+import { PathToolsComponent } from './path-tools/path-tools.component';
 
 
 @NgModule({
@@ -28,12 +29,13 @@ import { LegendComponent } from './legend/legend.component';
     LayoutComponent,
     LayerComponent,
     FeatureComponent,
-    GeoinfoComponent,
-    LayerManagerComponent,
+    GeoToolsComponent,
+    LayersManagerComponent,
     EditBarComponent,
     CreateToolsComponent,
     ImportToolsComponent,
-    LegendComponent
+    LegendComponent,
+    PathToolsComponent
   ],
   imports: [
     CommonModule,
