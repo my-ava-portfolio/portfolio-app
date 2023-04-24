@@ -1,6 +1,8 @@
 <div>
 
-  <app-create-tools (newLayerEvent)="addLayer($event)">
+  <app-create-tools 
+    [layerTypeModes]="['Point', 'LineString', 'Polygon']"
+    (newLayerEvent)="addLayer($event)">
   </app-create-tools>
 
   <app-import-tools

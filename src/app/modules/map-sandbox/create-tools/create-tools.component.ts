@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 
 import { faCircle, faWaveSquare, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
@@ -12,32 +12,42 @@ import { geomLayerTypes, pointType, lineStringType, polygonType } from '@modules
 })
 
   
-export class CreateToolsComponent {
+export class CreateToolsComponent implements OnInit {
+  @Input() layerTypeModes!: geomLayerTypes[] ;
 
   @Output() newLayerEvent = new EventEmitter<geomLayerTypes>();
 
+  layerTypesModes!: any[];
   // TODO icons must be linked to others components:
-  private pointIcon = faCircle;
-  private lineStringIcon = faWaveSquare;
-  private polygonIcon = faDrawPolygon;
+  private _pointIcon = faCircle;
+  private _lineStringIcon = faWaveSquare;
+  private _polygonIcon = faDrawPolygon;
   
-  layerTypes = [
+  private _layerTypes = [
     {
       "mode": 'Point' as pointType,
       "label": 'Ajouter une couche de Points',
-      "icon": this.pointIcon
+      "icon": this._pointIcon
     },
     {
       "mode": 'LineString' as lineStringType,
       "label": 'Ajouter une couche de LineString',
-      "icon": this.lineStringIcon
+      "icon": this._lineStringIcon
     },
     {
       "mode": 'Polygon' as polygonType,
       "label": 'Ajouter une couche de Polygones',
-      "icon": this.polygonIcon
+      "icon": this._polygonIcon
     }
   ]
+
+  ngOnInit(): void {
+
+    this.layerTypesModes = this._layerTypes.filter((mode: any) => {
+      return this.layerTypeModes.includes(mode['mode'])
+    })
+    
+  }
 
   addLayer(geomType: geomLayerTypes) {
     this.newLayerEvent.emit(geomType)
