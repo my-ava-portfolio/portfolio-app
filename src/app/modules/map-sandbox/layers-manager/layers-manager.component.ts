@@ -14,6 +14,8 @@ import { InteractionsService } from '@modules/map-sandbox/shared/service/interac
 
 import { featuresLayerType, geomLayerTypes, toolsTypes } from '@modules/map-sandbox/shared/data-types';
 import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
+import { linestringsExample, pointsExample, polygonsExample } from '../data-example';
+import { readStringWktAndGroupedByGeomType } from '../import-tools/import-tools.component';
 
 
 @Component({
@@ -84,6 +86,7 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._mapExamplesData()
   }
 
   ngOnDestroy(): void {
@@ -96,6 +99,16 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
     this.epsgChangesSubscription.unsubscribe();
     this.layerIdSelectedSubscription.unsubscribe();
     this.newFeaturesSubscription.unsubscribe();
+  }
+
+  private _mapExamplesData(): void {
+    const featureParams = {
+      dataProjection: this.currentEpsg,
+      featureProjection: 'EPSG:3857'
+    }
+    const exampleData = [...pointsExample, ...linestringsExample, ...polygonsExample]
+    const dataformated = readStringWktAndGroupedByGeomType(exampleData, featureParams)
+    this.createNewLayersFromFeatures(dataformated)
   }
 
   @Input()
