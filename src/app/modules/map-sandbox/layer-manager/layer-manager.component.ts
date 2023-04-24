@@ -176,7 +176,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   }
 
   unSelectLayer(): void {
-    this.interactionsService.sendSelectedLayerId(null)
+    this.currentLayerIdSelected = null
   }
 
   buildLayersIndexes(): void {

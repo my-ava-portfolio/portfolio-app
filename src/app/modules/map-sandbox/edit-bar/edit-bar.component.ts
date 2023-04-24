@@ -46,7 +46,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   isShortestPath: boolean = false;
 
   // misc
-  editionMode: boolean = false;
+  editing: boolean = false;
   isSnapped: boolean = false;
 
   // wkt import
@@ -174,51 +174,51 @@ export class EditBarComponent implements OnInit, OnDestroy {
   private translateFeatureEnable(): void {
     this.layer.enableTranslating()
     this.isMoved = true;
-    this.editionMode = true
+    this.editing = true
   }
 
   private translateFeatureDisable(): void {
     this.layer.disableTranslating()
     this.isMoved = false
-    this.editionMode = false
+    this.editing = false
   }
 
   private addFeatureEnable(holeStatus: boolean = false): void {
     this.layer.enableDrawing(holeStatus);
     this.isDrawn = true;
-    this.editionMode = true
+    this.editing = true
   }
 
   private addFeatureDisable(): void {
     this.layer.disableDrawing();
     this.isDrawn = false;
-    this.editionMode = false
+    this.editing = false
 
   }
 
   private editFeatureEnable(): void {
     this.layer.enableEditing()
     this.isEdited = true;
-    this.editionMode = true
+    this.editing = true
 
   }
 
   private editFeatureDisable(): void {
     this.layer.disableEditing()
     this.isEdited = false
-    this.editionMode = false
+    this.editing = false
   }
 
   private addHoleFeatureEnable(holeStatus: boolean = true): void {
     this.layer.enableDrawing(holeStatus);
     this.isHole = true;
-    this.editionMode = true
+    this.editing = true
   }
   private addHoleFeatureDisable(): void {
 
     this.layer.disableDrawing();
     this.isHole = false;
-    this.editionMode = false
+    this.editing = false
   }
 
   computeShortestPath(mode: 'pedestrian' | 'vehicle'): void {
