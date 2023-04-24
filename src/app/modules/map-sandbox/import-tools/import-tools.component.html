@@ -5,7 +5,7 @@
 <div id="importTools" class="text-center m-3">
 
     <ng-container *ngFor="let importMode of importModes">
-      <button class="btn btn-sm btn-dark border-0 me-1 text-warning" (click)="setImportDataType(importMode.label_text)" data-bs-toggle="modal" 
+      <button class="btn btn-sm btn-dark border-0 m-1 text-warning" (click)="setImportDataType(importMode.label_text)" data-bs-toggle="modal" 
       data-bs-target="#modalDataImport" type="button" role="tab" [ngbPopover]="importMode.label" placement="bottom" 
       triggers="mouseenter:mouseleave">
         <fa-icon class="mx-1" [icon]="importMode.icon"></fa-icon>{{ importMode.label_text}}
