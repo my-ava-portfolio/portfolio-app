@@ -1,17 +1,7 @@
 <div>
-  <div class="text-center fw-bold bg-dark bg-gradient text-white p-3">
-    Créer
-  </div>
 
-
-  <app-create-tools
-  (newLayerEvent)="addLayer($event)"
-  >
+  <app-create-tools (newLayerEvent)="addLayer($event)">
   </app-create-tools>
-
-  <div class="text-center fw-bold bg-dark  bg-gradient text-white p-3">
-    Importer
-  </div>
 
   <app-import-tools
   [epsgAvailable]="epsgAvailable"
