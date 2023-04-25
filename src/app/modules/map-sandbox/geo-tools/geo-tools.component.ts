@@ -7,11 +7,11 @@ import Map from 'ol/Map';
 
 
 @Component({
-  selector: 'app-geoinfo',
-  templateUrl: './geoinfo.component.html',
-  styleUrls: ['./geoinfo.component.scss']
+  selector: 'app-geo-tools',
+  templateUrl: './geo-tools.component.html',
+  styleUrls: ['./geo-tools.component.scss']
 })
-export class GeoinfoComponent implements AfterViewInit {
+export class GeoToolsComponent implements AfterViewInit {
   @Input() currentEpsg!: string;
   @Input() map!: Map;
   @Input() epsgAvailable!: string[];
@@ -23,7 +23,6 @@ export class GeoinfoComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMousePosition()
-
   }
 
   updatePrecision(event: any): void {
@@ -34,7 +33,6 @@ export class GeoinfoComponent implements AfterViewInit {
     this.currentEpsg = epsg;
     this.mapService.setProjectionOnMap(epsg)
     this.setMapEpsg();
-
   }
 
   private initMousePosition(): void {

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LayerManagerComponent } from './layer-manager.component';
+import { LayersManagerComponent } from './layers-manager.component';
 
-describe('LayerManagerComponent', () => {
-  let component: LayerManagerComponent;
-  let fixture: ComponentFixture<LayerManagerComponent>;
+describe('LayersManagerComponent', () => {
+  let component: LayersManagerComponent;
+  let fixture: ComponentFixture<LayersManagerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LayerManagerComponent ]
+      declarations: [ LayersManagerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LayerManagerComponent);
+    fixture = TestBed.createComponent(LayersManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

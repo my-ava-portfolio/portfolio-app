@@ -1,4 +1,4 @@
-<li class="feature py-0 d-flex align-items-center pointer border-bottom">
+<li class="feature-content py-0 d-flex align-items-center pointer border-bottom">
 
   <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
 
@@ -48,13 +48,10 @@
 
 
 
-
-
-
 <div
   [id]="'featurePopup' + feature.getId()"
-  *ngIf="( currentLayer.id === feature.get('layer_id') || currentFeatureIdSelected === feature.getId() ) && displayPopup"
-  class="featureToasts position-fixed bottom-0 end-0 p-3 d-flex flex-row overflow-auto fw-normal pointer-none" style="z-index: 11"
+  *ngIf="displayPopup"
+  class="featureToast position-fixed bottom-0 end-0 p-3 d-flex flex-row overflow-auto fw-normal pointer-none" style="z-index: 11"
   >
 
     <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true">
@@ -62,7 +59,7 @@
 
         <strong>{{ feature.get('name') }}</strong>
         <em class="ms-2 me-auto me-auto">({{ feature.get('geom_type') }})</em>
-        <em class="ms-auto">Couche: {{ currentLayer.layerName }}</em>
+        <em class="ms-auto">Couche: {{ layer.container.layerName }}</em>
         <button type="button" class="btn-close" aria-label="Close" (click)="showPopup()"></button>
 
       </div>
@@ -87,21 +84,20 @@
           <span>Créé à {{ feature.get('created_at') | date: 'HH:mm:ss' }}</span>
           <span>Modifié à {{ feature.get('updated_at') | date: 'HH:mm:ss' }}</span>
         </div>
-
-
+        
         <div class="d-flex flex-column my-3">
           <h6 class="">Style</h6>
 
           <div class="d-flex flex-row ms-2 my-1">
             <span class="me-2">Couleur de fond :</span>
-            <input #fillColor type="color" [id]="'fillColor-' + feature.getId()" [value]="feature.get('fill_color')" class="fillColor m-1 pointer" (change)="updateFillColor(fillColor.value)"/>
-            <label [attr.for]="'fillColor-' + feature.getId()"></label>
+            <input #fillColor type="color" id="fillColor" [value]="feature.get('fill_color')" class="fillColor m-1 pointer" (change)="updateFillColor(fillColor.value)"/>
+            <label for="fillColor"></label>
           </div>
 
           <div class="d-flex flex-row ms-2 my-1">
             <span class="me-2">Couleur du contour :</span>
-            <input #strokeColor type="color" [id]="'strokeColor-' + feature.getId()" [value]="feature.get('stroke_color')" class="strokeColor m-1 pointer" (change)="updateStrokeColor(strokeColor.value)"/>
-            <label [attr.for]="'strokeColor-' + feature.getId()"></label>
+            <input #strokeColor type="color" id="strokeColor" [value]="feature.get('stroke_color')" class="strokeColor m-1 pointer" (change)="updateStrokeColor(strokeColor.value)"/>
+            <label for="strokeColor"></label>
           </div>
 
           <div class="d-flex flex-row ms-2 my-1">
@@ -115,3 +111,4 @@
     </div>
 
 </div>
+

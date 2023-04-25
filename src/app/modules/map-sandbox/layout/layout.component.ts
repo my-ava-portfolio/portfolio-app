@@ -1,16 +1,17 @@
-import { layerHandler } from '@modules/map-sandbox/shared/layer-handler';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ControlerService } from '@services/controler.service';
 import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import { faGlobe, faLayerGroup, faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faLayerGroup, faAnglesLeft, faAnglesRight, faRoad } from '@fortawesome/free-solid-svg-icons';
 
 import { Subscription } from 'rxjs/internal/Subscription';
 import View from 'ol/View';
 import { InteractionsService } from '../shared/service/interactions.service';
+import { layerHandler } from '../shared/layer-handler/layer-handler';
+import { toolsTypes } from '../shared/data-types';
 
 @Component({
   selector: 'app-app-layout',
@@ -20,12 +21,15 @@ import { InteractionsService } from '../shared/service/interactions.service';
 export class LayoutComponent implements OnInit, OnDestroy {
 
   currentEpsg!: string;
-
+  currentLayers!: layerHandler[];
+  
   // used by menus
   epsgAvailable = ["EPSG:4326", "EPSG:3857"];
 
   // icons
   geoIcon = faGlobe;
+  pathIcon = faRoad;
+
   leftSideIcon = faAnglesLeft;
   rightSideIcon = faAnglesRight;
   layersIcon = faLayerGroup;
@@ -34,22 +38,21 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   defaultMapView!: View;
 
-  isLegendDisplayed = true;
+  isPanelsDisplayed = true;
 
-  currentMenuDisplayed: 'geoTools' | 'createTools' = 'createTools'
+  toolsMode: toolsTypes = 'createTools';
 
-  editBarEnabled!: boolean
-  currentLayerSelected!: layerHandler | null;
+  layerIdSelected: string | null = null;
 
   mapSubscription!: Subscription;
-  layerObjectSelectedSubscription!: Subscription;
+  allLayersSubscription!: Subscription;
+  layerIdSelectedSubscription!: Subscription;
 
   constructor(
     private mapService: MapService,
     private controlerService: ControlerService,
     private activatedRoute: ActivatedRoute,
     private interactionsService: InteractionsService,
-    private cdRef:ChangeDetectorRef
   ) {
 
     // Get the map container, view and epsg
@@ -60,22 +63,18 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.defaultMapView = this.map.getView()
       }
     );
+    
+    this.allLayersSubscription = this.interactionsService.allLayers.subscribe(
+      (allLayers: layerHandler[]) => {
+        this.currentLayers = allLayers
+      }
+    )
 
-    this.layerObjectSelectedSubscription = this.interactionsService.layerObjectSelected.subscribe(
-      (layerSelected: layerHandler | null) => {
-
-        if (layerSelected !== this.currentLayerSelected) {
-          this.editBarEnabled = false
-          this.cdRef.detectChanges(); // in order to delete/reset the edit bar component
-
-          this.editBarEnabled = true
-        } else if (layerSelected === null ) {
-          this.editBarEnabled = false
-        }
-        this.currentLayerSelected = layerSelected
-
-      })
-
+    this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
+      (layerIdSelected: string | null) => {
+        this.layerIdSelected = layerIdSelected
+      }
+    )
    }
 
   ngOnInit(): void {
@@ -90,8 +89,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.map.setView(this.defaultMapView)
 
     this.mapSubscription.unsubscribe();
-    this.layerObjectSelectedSubscription.unsubscribe();
-
+    this.allLayersSubscription.unsubscribe();
+    this.layerIdSelectedSubscription.unsubscribe();
+    
     this.mapService.changeMapInteractionStatus(false)
     this.mapService.resetMapView()
   }
@@ -102,7 +102,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   showHideLegend(): void {
-    this.isLegendDisplayed = !this.isLegendDisplayed;
+    this.isPanelsDisplayed = !this.isPanelsDisplayed;
+    this.unSelectLayer()
+  }
+
+  unSelectLayer(): void {
+    this.interactionsService.sendSelectedLayerId(null)
   }
 
 }

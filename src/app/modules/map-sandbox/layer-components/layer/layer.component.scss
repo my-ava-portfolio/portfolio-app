@@ -44,3 +44,17 @@
   height: 25px;
   cursor: pointer;
 }
+
+
+.feature {
+  :hover{
+    font-weight: bold;
+  }
+}
+
+
+#editBar {
+  position: fixed;
+  bottom: 0;
+  user-select: none
+}

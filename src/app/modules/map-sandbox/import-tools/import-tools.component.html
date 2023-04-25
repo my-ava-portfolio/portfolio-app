@@ -1,7 +1,11 @@
+<div class="text-center fw-bold bg-dark bg-gradient text-white p-2">
+    Importer
+  </div>
+
 <div id="importTools" class="text-center m-3">
 
     <ng-container *ngFor="let importMode of importModes">
-      <button class="btn btn-sm btn-dark border-0 me-1 text-warning" (click)="setImportDataType(importMode.label_text)" data-bs-toggle="modal" 
+      <button class="btn btn-sm btn-dark border-0 m-1 text-warning" (click)="setImportDataType(importMode.label_text)" data-bs-toggle="modal" 
       data-bs-target="#modalDataImport" type="button" role="tab" [ngbPopover]="importMode.label" placement="bottom" 
       triggers="mouseenter:mouseleave">
         <fa-icon class="mx-1" [icon]="importMode.icon"></fa-icon>{{ importMode.label_text}}
@@ -30,7 +34,7 @@
                 Type d'importation
                 <select [(ngModel)]="modeImportInput" class="form-select form-select-sm">
                     <option value="newLayer">Créer de nouvelles couches</option>
-                    <option [value]="layer.id" *ngFor="let layer of existingLayers">Importer dans la couche : {{layer.layerName}}</option>
+                    <option [value]="layer.container.uuid" *ngFor="let layer of existingLayers">Importer dans la couche : {{layer.container.layerName}}</option>
                 </select>
 
             </div>

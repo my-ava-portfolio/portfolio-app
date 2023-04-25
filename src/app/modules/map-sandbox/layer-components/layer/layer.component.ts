@@ -1,9 +1,10 @@
-import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
-import { faClone } from '@fortawesome/free-regular-svg-icons';
+import { faClone, faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
+import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
 
 
 @Component({
@@ -11,10 +12,8 @@ import { Subscription } from 'rxjs';
   templateUrl: './layer.component.html',
   styleUrls: ['./layer.component.scss'],
 })
-export class LayerComponent implements OnInit {
-  @Input() layer!: layerHandler;
-  @Input() isSelected!: boolean;
-  layerIdSelected!: string;
+export class LayerComponent implements OnInit, OnDestroy {
+  private _layer!: layerHandler;
 
   @Input() layersVisibleStatus!: boolean;
 
@@ -43,30 +42,31 @@ export class LayerComponent implements OnInit {
   centerIcon = faExpand;
   lockIcon = faLock;
   unLockIcon = faLockOpen;
+  unToggleIcon = faMinusSquare
+  toggleIcon = faPlusSquare
 
-  @Input() isVisible: boolean = true;
+  private _epsg!: string
+  private _selected: boolean = false
+  displayTool: boolean = false;
+
   isDrawn: boolean = false;
   isEdited: boolean = false;
   isShown: boolean = false;
   isHole: boolean = false;
-  @Input() isLocked: boolean = false;
 
-  featureIdSelected!: string;
+  featuresIdSelected: string[] = [];
 
   removeLayerSubscription!: Subscription;
-  selectableLayerStatusSubscription!: Subscription;
-  selectableAllLayersStatusSubscription!: Subscription;
-
-  layerIdSelectedSubscription!: Subscription;
-
   displayLayerModal = false;
   isLayerRemoved = false;
   exportData: string = '';
   exportDataMode = 'geojson'
+  featureIdEditedSubscription!: Subscription
 
   constructor(
     private elementRef: ElementRef,
     private interactionsService: InteractionsService,
+    private editComputingService: EditComputingService
   ) {
 
     this.removeLayerSubscription = this.interactionsService.removeLayers.subscribe(
@@ -75,52 +75,32 @@ export class LayerComponent implements OnInit {
         this.removeLayer()
       }
     )
-  
-    this.selectableLayerStatusSubscription = this.interactionsService.selectableLayerId.subscribe(
-      (layerIdtoSelect: string) => {
 
-        if (this.layer.id !== layerIdtoSelect) {
-          this.layer.disableSelecting()
+    this.featureIdEditedSubscription = this.editComputingService.snappingLayerEnabled.subscribe(
+      (snappingLayerEnabled: boolean) => {
+        // mandatory to manage selecting and enable snapping interactionbetween layers when editing
+        if (snappingLayerEnabled) {
+          // this.layer.enableSelecting()
+          this.layer.enableSnapping()
         } else {
-          this.layer.disableSelecting()
-          this.layer.enableSelecting()
+          this.layer.disableSnapping()
+
         }
       }
     )
 
-    this.selectableAllLayersStatusSubscription = this.interactionsService.selectableAllLayers.subscribe(
-      (_: boolean) => {
-        this.layer.disableSelecting()
-        this.layer.enableSelecting()
-      }
-    )
-   
   }
 
   ngOnInit(): void {
     
-    // enable selecting
+    // enable selecting 
+    // TODO useless ?
+    // this.layer.enableSnapping()
     this.layer.enableSelecting()
+    // set select interaction event
+    this.layerSelectConfigured()
 
-    // set select event
-    this.layer.select.on("select", (event: any) => {
-      let deselected = event.deselected
-      let selected = event.selected
-      
-      if (deselected.length > 0 && selected.length === 0) {
-        this.unSelectFeature()
-
-      }
-
-      if (selected.length > 0) {
-        selected.forEach((feature: any) => {
-          this.selectFeatureById(feature.getId())
-        })
-
-      }
-    })
-
-    this.layer.sourceFeatures.on('changefeature', (event: any) => {
+    this.layer.container.sourceFeatures.on('changefeature', (event: any) => {
       // update step when change on feature occurs
       refreshFeatureStyle(event.feature)
     })
@@ -131,75 +111,147 @@ export class LayerComponent implements OnInit {
 
     this.isLayerRemoved = true;
     
-    let modalWktDiv = document.getElementById('modalWktLayer-' + this.layer.id)
+    let modalWktDiv = document.getElementById('modalWktLayer-' + this.layer.container.uuid)
     if (modalWktDiv !== null) {
       modalWktDiv.remove()
     }
     
     this.removeLayerSubscription.unsubscribe();
-    this.selectableLayerStatusSubscription.unsubscribe();
-    this.selectableAllLayersStatusSubscription.unsubscribe();
+    this.featureIdEditedSubscription.unsubscribe();
 
     this.layer.disableSelecting()
-
-
     this.elementRef.nativeElement.remove();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  toggleFeatures(): void {
+    this.toggled = !this.toggled;
+  }
 
-    if (changes.isSelected) {
-      if (!changes.isSelected.currentValue) {
-        this.unSelectFeature()
-      }
+  @Input()
+  set layer(layer: layerHandler) {
+    this._layer = layer
+  }
+
+  get layer(): layerHandler {
+    return this._layer
+  }
+
+  @Input()
+  set epsg(value: string) {
+    if (value !== this._epsg && this._epsg !== undefined) {
+      this.layer.container.features.forEach((feature: any) => {
+        feature.setGeometry(feature.getGeometry().transform(this._epsg, value))
+      });
     }
 
-    if (changes.isLocked) {
-      if (this.layer.locked !== changes.isLocked.currentValue) {
-        this.lockingLayer(changes.isLocked.currentValue)
-      }
-    }
+    this._epsg = value
+  }
+
+  get epsg(): string {
+    return this._epsg
+  }
+
+  @Input()
+  set visible(status: boolean) {
+    this.layer.container.visible = status
+  }
+
+  get visible(): boolean {
+    return this.layer.container.visible;
+  }
+
+  @Input()
+  set locked(status: boolean) {
+    this.layer.container.locked = status
+  }
+
+  get locked(): boolean {
+    return this.layer.container.locked;
+  }
+
+  @Input()
+  set toggled(status: boolean) {
+    this.layer.container.featuresToggled = status
+  }
+
+  get toggled(): boolean {
+    return this.layer.container.featuresToggled;
+  }
   
-
-    if (changes.isVisible) {
-      this.visibleHandler(changes.isVisible.currentValue)
+  @Input()
+  set selected(status: boolean) {
+    
+    if (!status) {
+      // unselect all the features
+      this.unSelectFeatures()
+    } else {
+      this.selectLayer()
     }
+    this._selected = status
   }
 
-  visibleHandler(status: boolean): void {
-    this.isVisible = status
-    this.layer.vectorLayer.setVisible(status)
+  get selected(): boolean {
+    return this._selected;
   }
 
-  lockingLayer(status: boolean): void {
-    this.isLocked = status
-    this.layer.locked = this.isLocked
-    if (this.isSelected) {
-      // it concerns here only the selected layer
-      this.interactionsService.activateEditBar(!this.layer.locked)
+  layerSelectConfigured(): void {
+    // set select event: mandatory to connect ol api and angular mecanisms
+    this.layer.select.on("select", (event: any) => {
+      let deselected = event.deselected
+      let selected = event.selected
 
-    }
+      if (event.mapBrowserEvent.originalEvent.shiftKey) {
+        // multiple selections
+        selected.forEach((feature: any) => {
+          this.featuresIdSelected.push(feature.get('id'))
+          this.layer.select.getFeatures().push(feature)
+          this.selectLayer()
+        })
+      } else {
+
+        if (deselected.length > 0) {
+          this.unSelectFeatures()
+        }
+
+        if (selected.length == 0) {
+          this.selected = false
+        }
+
+        if (deselected.length == 0) {
+          this.selected = true
+        }
+
+        if (selected.length > 0) {
+          selected.forEach((feature: any) => {
+            this.featuresIdSelected.push(feature.get('id'))
+            this.layer.select.getFeatures().push(feature)
+          })
+        }
+           
+      }
+
+    })
   }
 
   removeLayer(): void {
     this.layer.removeLayer()
-    this.removeLayerId.emit(this.layer.id)
-    this.interactionsService.sendSelectedLayer(null)
-
+    this.removeLayerId.emit(this.layer.container.uuid)
     this.ngOnDestroy()
   }
 
   layerGoUp(): void{
-    this.layerMoveUp.emit(this.layer.id)
+    this.layerMoveUp.emit(this.layer.container.uuid)
   }
 
   layerGoDown(): void{
-    this.layerMoveDown.emit(this.layer.id)
+    this.layerMoveDown.emit(this.layer.container.uuid)
   }
 
   selectLayer(): void {
-    this.interactionsService.sendSelectedLayerId(this.layer.id)
-    this.interactionsService.sendSelectedLayer(this.layer)
+    this.interactionsService.sendSelectedLayerId(this.layer.container.uuid)
+  }
+  unSelectLayer(): void {
+    this.interactionsService.sendSelectedLayerId(null)
   }
 
   zoomToLayer(): void {
@@ -207,8 +259,7 @@ export class LayerComponent implements OnInit {
   }
 
   duplicateLayer(): void {
-    this.unSelectFeature()
-
+    this.unSelectFeatures()
     const layerCloned: layerHandler = Object.create(this.layer) // create a clone
     this.layerCloned.emit(layerCloned)
   }
@@ -235,25 +286,26 @@ export class LayerComponent implements OnInit {
 
   // START FEATURE FUNCS //
 
-  unSelectFeature(): void {
-    this.featureIdSelected = 'none'
+  unSelectFeatures(): void {
+    this.featuresIdSelected = []
     this.layer.select.getFeatures().clear()
+    // this.layer.select.getFeatures().dispose()
   }
 
   selectFeatureById(featureId: any): void {
+    this.unSelectFeatures()
+    this.featuresIdSelected.push(featureId)
 
-    this.featureIdSelected = featureId
-
-    let feature = this.getFeature(this.featureIdSelected)
-
-    this.layer.select.getFeatures().clear()
+    let feature = this.getFeature(featureId)
+    // this.layer.enableSelecting()
+    // this.layer.select.getFeatures().clear()
     this.layer.select.getFeatures().push(feature)
 
-    this.selectLayer()
+    this.selected = true
   }
 
   private getFeature(featureId: string): any {
-    let features = this.layer.features().filter((feature: any) => {
+    let features = this.layer.container.features.filter((feature: any) => {
       return feature.getId() === featureId
     })
     if (features.length === 1) {

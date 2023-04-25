@@ -1,20 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GeoinfoComponent } from './geoinfo.component';
+import { LegendComponent } from './legend.component';
 
-describe('GeoinfoComponent', () => {
-  let component: GeoinfoComponent;
-  let fixture: ComponentFixture<GeoinfoComponent>;
+describe('LegendComponent', () => {
+  let component: LegendComponent;
+  let fixture: ComponentFixture<LegendComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GeoinfoComponent ]
+      declarations: [ LegendComponent ]
     })
     .compileComponents();
-  });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(GeoinfoComponent);
+    fixture = TestBed.createComponent(LegendComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

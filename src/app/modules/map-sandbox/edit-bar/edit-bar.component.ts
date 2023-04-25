@@ -1,16 +1,11 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking, faMagnet } from '@fortawesome/free-solid-svg-icons';
 
-import { getWkt, layerHandler } from '@modules/map-sandbox/shared/layer-handler';
+import { layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 
-import { InteractionsService } from '../shared/service/interactions.service';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { EditComputingService } from '../shared/service/edit-computing.service';
-import { GraphComputingService } from '../shared/service/graph-computing.service';
-import { Feature } from 'ol';
 
-import { readStringWktAndGroupedByGeomType } from '@modules/map-sandbox/import-tools/import-tools.component'
 
 @Component({
   selector: 'app-edit-bar',
@@ -18,8 +13,10 @@ import { readStringWktAndGroupedByGeomType } from '@modules/map-sandbox/import-t
   styleUrls: ['./edit-bar.component.scss']
 })
 export class EditBarComponent implements OnInit, OnDestroy {
-  @Input() layer!: layerHandler;
+  private _layer!: layerHandler;
   @Input() currentEpsg!: string;
+
+  private _enabled!: boolean
 
   addIcon = faCirclePlus;
   editIcon = faPencil;
@@ -32,6 +29,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   motorIcon = faCar;
   pedestrianIcon = faPersonWalking;
   centerIcon = faExpand;
+  snapIcon = faMagnet;
 
   // add
   isDrawn: boolean = false;
@@ -44,55 +42,69 @@ export class EditBarComponent implements OnInit, OnDestroy {
   // compute
   isShortestPath: boolean = false;
 
-  isEditBarEnabled!: boolean;;
+  // misc
+  editing: boolean = false;
+  isSnapped: boolean = false;
 
   // wkt import
   epsgAvailable = ["EPSG:4326", "EPSG:3857"]; //TODO refactor
   strInputDataValues: string | null = null;
   strInputEspgInput: string | null = null;
 
-  layerLockStatusSubscription!: Subscription;
-
   constructor(
-    private interactionsService: InteractionsService,
     private editComputingService: EditComputingService,
-    private graphComputingService: GraphComputingService,
-    private cdRef: ChangeDetectorRef,
-  ) {
-
-    this.layerLockStatusSubscription = this.interactionsService.editBarActivation.subscribe(
-      (activated: boolean) => {
-        if (activated) {
-          this.isEditBarEnabled = true
-        } else {
-          this.isEditBarEnabled = false
-
-          this.disableEditing()
-        }
-        this.cdRef.detectChanges();
-      }
-    )
-
-  }
+  ) {  }
 
   ngOnInit(): void {
-    this.isEditBarEnabled = !this.layer.locked
+
   }
 
   ngOnDestroy(): void {
     this.disableEditing()
-    this.layerLockStatusSubscription.unsubscribe()
   }
 
-  ngOnChanges(changes: any) {
+  @Input()
+  set layer(layer: layerHandler) {
+    this._layer = layer
   }
 
-  enablingSelectOnlyOnTheCurrentLayer(): void { // not really on all layer
-    this.interactionsService.setSelectableLayer(this.layer.id)
+  get layer(): layerHandler {
+    return this._layer
   }
 
-  enableSelectingOnAllLayers(): void {
-    this.interactionsService.setSelectableAllLayers()
+  @Input()
+  set enabled(status: boolean) {
+    if (!status) {
+      this.disableEditing()
+    }
+    this._enabled = status
+  }
+
+  get enabled(): boolean {
+    return this._enabled
+  }
+
+  enableSnapModeOnAllOthersLayers(): void {
+    // must be enabled at the end the interactions setter
+    // to enable snapping on all layers
+    if (this.isSnapped) {
+      this.editComputingService.activateSnapping(true)
+    }
+  }
+
+  disableSnapModeOnAllOthersLayers(): void {
+    // to disable snapping on all layers, only if snap mode is enabled
+    // to avoid useless call to remove the interaction
+    if (this.isSnapped) {
+      this.editComputingService.activateSnapping(false)
+    }
+ }
+
+  snappingHandler(status: boolean): void {
+    this.isSnapped = status
+    if (!status) {
+      this.disableSnapModeOnAllOthersLayers()
+    }
   }
 
   disableEditing(unSelectLayer: boolean = true): void {
@@ -100,7 +112,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
     this.drawHandler(false)
     this.editHandler(false)
     this.translateHandler(false)
-
+    this.disableSnapModeOnAllOthersLayers()
     if (unSelectLayer) {
       this.unSelectFeature()
     }
@@ -111,14 +123,9 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   }
 
-  removeFeature(): void {
-  }
-
   translateHandler(status: boolean): void {
-
     if (status) {
       this.disableEditing(false)
-
       this.translateFeatureEnable()
     } else {
       this.translateFeatureDisable()
@@ -129,113 +136,89 @@ export class EditBarComponent implements OnInit, OnDestroy {
   editHandler(status: boolean): void {
     if (status) {
       this.disableEditing(false)
-
       this.editFeatureEnable()
+      this.enableSnapModeOnAllOthersLayers()
     } else {
       this.editFeatureDisable()
+      this.disableSnapModeOnAllOthersLayers()
     }
   }
 
   drawHandler(status: boolean, holeStatus: boolean = false): void {
     if (status) {
       this.disableEditing(false)
-
-      this.enablingSelectOnlyOnTheCurrentLayer()
-
       this.addFeatureEnable(holeStatus)
+      this.enableSnapModeOnAllOthersLayers()
     } else {
       this.addFeatureDisable()
-      this.enableSelectingOnAllLayers()
-
+      this.disableSnapModeOnAllOthersLayers()
     }
+
   }
 
   drawHoleHandler(status: boolean, holeStatus: boolean = true): void {
     if (status) {
       this.disableEditing(false)
-
-      this.enablingSelectOnlyOnTheCurrentLayer()
-
       this.addHoleFeatureEnable(holeStatus)
+      this.enableSnapModeOnAllOthersLayers()
     } else {
       this.addHoleFeatureDisable()
-      this.enableSelectingOnAllLayers()
-
+      this.disableSnapModeOnAllOthersLayers()
     }
   }
 
   private translateFeatureEnable(): void {
     this.layer.enableTranslating()
     this.isMoved = true;
+    this.editing = true
   }
 
   private translateFeatureDisable(): void {
     this.layer.disableTranslating()
     this.isMoved = false
+    this.editing = false
   }
 
   private addFeatureEnable(holeStatus: boolean = false): void {
     this.layer.enableDrawing(holeStatus);
     this.isDrawn = true;
+    this.editing = true
   }
 
   private addFeatureDisable(): void {
     this.layer.disableDrawing();
     this.isDrawn = false;
+    this.editing = false
+
   }
 
   private editFeatureEnable(): void {
     this.layer.enableEditing()
     this.isEdited = true;
+    this.editing = true
+
   }
 
   private editFeatureDisable(): void {
     this.layer.disableEditing()
     this.isEdited = false
+    this.editing = false
   }
 
   private addHoleFeatureEnable(holeStatus: boolean = true): void {
     this.layer.enableDrawing(holeStatus);
     this.isHole = true;
+    this.editing = true
   }
   private addHoleFeatureDisable(): void {
 
     this.layer.disableDrawing();
     this.isHole = false;
-  }
-
-  computeShortestPath(mode: 'pedestrian' | 'vehicle'): void {
-    //TODO call osmrx-api
-    let wktFeatures: string[] = []
-    if (this.layer.features().length > 0) {
-
-      this.layer.features().forEach((feature: Feature) => {
-        const featureCloned = feature.clone()
-        let geom = featureCloned.getGeometry()
-        if (geom !== undefined) {
-          if (this.currentEpsg !== 'EPSG:4326') {
-            geom = geom.transform(this.currentEpsg, 'EPSG:4326')
-          }
-          wktFeatures.push(getWkt(geom))
-        }
-
-      })
-      const featureParams = {
-        dataProjection: "EPSG:4326",
-        featureProjection: this.currentEpsg
-      }
-      this.graphComputingService.getShortestPathFromApi(wktFeatures, mode).subscribe(
-        // TODO improve it
-        (data: string[]) => {
-          const featuresToAdd = readStringWktAndGroupedByGeomType(data, featureParams)
-          this.editComputingService.addNewFeatures(featuresToAdd)
-        })
-      
-    }
+    this.editing = false
   }
 
   computeBoundingBox(): void {
-    if (this.layer.features().length > 0) {
+    if (this.layer.container.features.length > 0) {
       this.editComputingService.addNewFeatures(this.layer.exportBoundsPolygon())
     }
   }

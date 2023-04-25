@@ -7,8 +7,8 @@ import { DivToBodyDirective } from './div-to-body.directive';
   imports: [],
     declarations: [
       FluidHeightDirective,
-      DivToBodyDirective
-    ],
+    DivToBodyDirective
+  ],
   exports: [
     FluidHeightDirective,
     DivToBodyDirective

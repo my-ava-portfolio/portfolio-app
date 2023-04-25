@@ -1,0 +1,108 @@
+<ng-container *ngIf="toolsMode == 'geoTools'">
+  <app-geo-tools
+    id="geoTools"
+    class="overflow-auto"
+    [map]="map"
+    [currentEpsg]="currentEpsg"
+    [epsgAvailable]="epsgAvailable"
+  >
+  </app-geo-tools>
+</ng-container>
+
+<ng-container *ngIf="toolsMode == 'createTools'">
+  <app-create-tools 
+    [layerTypeModes]="['Point', 'LineString', 'Polygon']"
+    (newLayerEvent)="addLayer($event)">
+  </app-create-tools>
+
+  <app-import-tools
+    [epsgAvailable]="epsgAvailable"
+    [currentEpsg]="currentEpsg"
+    [existingLayers]="existingLayers"
+    (featuresToNewLayerEvent)="createNewLayersFromFeatures($event)"
+    (featuresToAppendEvent)="appendFeatureOnLayerFromFeatures($event)"
+  ></app-import-tools>
+</ng-container>
+
+<ng-container *ngIf="toolsMode == 'pathTools'">
+  <app-create-tools
+    classColor="danger"
+    [layerTypeModes]="['Point', 'LineString']"
+    (newLayerEvent)="addLayer($event)">
+  </app-create-tools>
+
+  <app-path-tools
+  [currentEpsg]="currentEpsg"
+  [layerSelected]="getLayerFromId(layerIdSelected)"
+  [layersToDisplay]="layersToDisplay"
+  >
+  </app-path-tools>
+</ng-container>
+
+
+
+
+<div class="text-center fw-bold bg-primary bg-gradient text-white p-2">
+  Couches
+</div>
+
+<div id="layersTools" class="d-flex flex-row justify-content-evenly align-items-center mx-2">
+
+  <input #btnVisible type="checkbox" class="btn-check" id="btnVisibleLayers" [checked]="allVisible" (change)="allVisible = btnVisible.checked">
+  <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnVisibleLayers" [ngClass]="allVisible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="allVisible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="allVisible ? visibleIcon : invisibleIcon" size="1x"></fa-icon>
+  </label>
+
+  <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="allLocked = btnLock.checked">
+  <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnLockLayers" container="body" [ngbPopover]="allLocked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="allLocked ? lockIcon : unLockIcon" size="1x"></fa-icon>
+  </label>
+
+  <input #btnToggle type="checkbox" class="btn-check" id="btnToggleFeatures" [checked]="!allVisible" (change)="allToggled = btnToggle.checked">
+  <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnToggleFeatures" container="body" [ngbPopover]="allToggled ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="allToggled ? toggleIcon : unToggleIcon" size="1x"></fa-icon>
+  </label>
+
+  <button class="m-1 btn btn-sm btn-transparent border-0 pointer" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="centerIcon" size="1x"></fa-icon>
+  </button>
+
+  <button class="m-1 btn btn-sm btn-transparent border-0 pointer text-danger" (click)="removeLayers()" ngbPopover="Supprimer toutes les couches" triggers="mouseenter:mouseleave">
+    <fa-icon class="" [icon]="disabledIcon" size="1x"></fa-icon>
+  </button>
+
+</div>
+
+
+<div #layersList id="layersList" class="d-flex flex-column justify-content-start mb-2">
+
+  <div
+    class="layer pointer d-flex flex-column small mt-1 mx-1 px-1 align-items-around"
+    (click)="unSelectLayer()"
+    [ngClass]="layerIdSelected === null ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
+    >
+
+    <div class="pointer p-2 d-flex flex-row pointer justify-content-center align-items-center border-bottom">
+        <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>Désélectionner
+    </div>
+
+  </div>
+
+  <ng-container *ngFor="let layer of layersToDisplay">
+
+    <app-layer
+      [layer]="layer"
+      [selected]="layerIdSelected == layer.container.uuid"
+      [visible]="allVisible"
+      [locked]="allLocked"
+      [toggled]="allToggled"
+      [epsg]="currentEpsg"
+      (layerMoveUp)="layerGoUp($event)"
+      (layerMoveDown)="layerGoDown($event)"
+      (layerCloned)="duplicateLayer($event)"
+      (removeLayerId)="removeLayer($event)"
+    >
+    </app-layer>
+
+  </ng-container>
+</div>
