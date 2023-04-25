@@ -1,7 +1,7 @@
 import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
-import { faClone } from '@fortawesome/free-regular-svg-icons';
+import { faClone, faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
 import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
@@ -42,6 +42,8 @@ export class LayerComponent implements OnInit, OnDestroy {
   centerIcon = faExpand;
   lockIcon = faLock;
   unLockIcon = faLockOpen;
+  unToggleIcon = faMinusSquare
+  toggleIcon = faPlusSquare
 
   private _epsg!: string
   private _selected: boolean = false
@@ -120,6 +122,10 @@ export class LayerComponent implements OnInit, OnDestroy {
     this.elementRef.nativeElement.remove();
   }
 
+  toggleFeatures(): void {
+    this.toggled = !this.toggled;
+  }
+
   @Input()
   set layer(layer: layerHandler) {
     this._layer = layer
@@ -163,6 +169,15 @@ export class LayerComponent implements OnInit, OnDestroy {
     return this.layer.container.locked;
   }
 
+  @Input()
+  set toggled(status: boolean) {
+    this.layer.container.featuresToggled = status
+  }
+
+  get toggled(): boolean {
+    return this.layer.container.featuresToggled;
+  }
+  
   @Input()
   set selected(status: boolean) {
     

@@ -9,7 +9,7 @@ import {extend} from 'ol/extent';
 import { MapService } from '@services/map.service';
 import { Subscription } from 'rxjs';
 
-import { faEye } from '@fortawesome/free-regular-svg-icons';
+import { faEye, faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 
 import { featuresLayerType, geomLayerTypes, toolsTypes } from '@modules/map-sandbox/shared/data-types';
@@ -42,7 +42,10 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   centerIcon = faExpand;
   lockIcon = faLock;
   unLockIcon = faLockOpen;
-  
+  unToggleIcon = faMinusSquare;
+  toggleIcon = faPlusSquare;
+
+  allToggled: boolean = false;
   allVisible: boolean = true;
   allLocked: boolean = false;
 
@@ -179,6 +182,7 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
       return layer.container.uuid !== layerId
     })
     this.buildLayersIndexes()
+    this.refreshLayers()
   }
 
   getLayerFromId(layerId: string | null): layerHandler | null {

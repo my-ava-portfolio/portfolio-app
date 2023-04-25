@@ -18,26 +18,27 @@ import { StyleLike } from 'ol/style/Style';
 
 
 export class baseLayer{  
-    private _vectorLayer!: VectorLayer<any>;
-    private _sourceFeatures!: VectorSource;
+  private _vectorLayer!: VectorLayer<any>;
+  private _sourceFeatures!: VectorSource;
 
-    // common style
-    private _fillColor: string = getRandomDefaultColor();
-    private _strokeColor: string = defaultStrokeColor;
-    private _strokeWidth: string = "" + defaultStrokeWidth;
-    
-    private _locked: boolean = false;
-    private _featuresCounter: number = 0
+  // common style
+  private _fillColor: string = getRandomDefaultColor();
+  private _strokeColor: string = defaultStrokeColor;
+  private _strokeWidth: string = "" + defaultStrokeWidth;
+  
+  private _locked: boolean = false;
+  private _featuresToggled: boolean = false;
+  private _featuresCounter: number = 0
 
-    constructor(
-        layerName: string,
-        geomType: geomLayerTypes,
-        zIndexValue: number,
-        groupId: string | null = null
-    ) { 
-        this._initLayer(layerName, geomType, zIndexValue);
-
-    }
+  constructor(
+    layerName: string,
+    geomType: geomLayerTypes,
+    zIndexValue: number,
+    groupId: string | null = null
+  ) { 
+    this._initLayer(layerName, geomType, zIndexValue);
+  }
+  
     get layer(): VectorLayer<any> {
         return this._vectorLayer
     }
@@ -76,6 +77,14 @@ export class baseLayer{
           return this.layer.getVisible()
       }
     
+    set featuresToggled(enabled: boolean) {
+      this._featuresToggled = enabled
+    }
+    
+    get featuresToggled(): boolean {
+        return this._featuresToggled
+    }
+  
     set locked(enabled: boolean) {
         this._locked = enabled
       }

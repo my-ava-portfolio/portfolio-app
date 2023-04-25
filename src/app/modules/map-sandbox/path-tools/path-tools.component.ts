@@ -1,17 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { faCar, faPersonWalking, faRoad } from '@fortawesome/free-solid-svg-icons';
 import { Feature } from 'ol';
 import { readStringWktAndGroupedByGeomType } from '../import-tools/import-tools.component';
 import { getWkt, layerHandler } from '../shared/layer-handler/layer-handler';
 import { GraphComputingService } from '../shared/service/graph-computing.service';
 import { EditComputingService } from '../shared/service/edit-computing.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-path-tools',
   templateUrl: './path-tools.component.html',
   styleUrls: ['./path-tools.component.scss']
 })
-export class PathToolsComponent implements OnInit {
+export class PathToolsComponent implements OnInit, OnDestroy {
   @Input() currentEpsg!: string;
   // @Input() map!: Map;
   pathIcon = faRoad;
@@ -20,15 +21,29 @@ export class PathToolsComponent implements OnInit {
   buttonEnabled!: boolean;
   private _layerSelected!: layerHandler | null
 
+  displayedLayers!: Subscription;
+
   constructor(
     private editComputingService: EditComputingService,
     private graphComputingService: GraphComputingService,
-  ) { }
-
-  ngOnInit(): void {
-    
+  ) { 
   }
 
+  ngOnInit(): void { }
+  
+  ngOnDestroy(): void {
+    this.displayedLayers.unsubscribe()
+  }
+
+  @Input()
+  set layersToDisplay(layers: layerHandler[]) {
+    layers.forEach((layer: layerHandler) => {
+      if (['Polygon', 'LineString'].includes(layer.container.geomType)) {
+        layer.container.featuresToggled = true
+      }
+    })
+  }
+  
   @Input()
   set layerSelected(layer: layerHandler | null) {
     this.buttonEnabled = false;
