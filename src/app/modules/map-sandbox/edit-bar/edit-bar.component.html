@@ -63,24 +63,9 @@
           </button>
         </ng-container>
 
-        <ng-container *ngIf="layer.container.geomType === 'Point'">
-          <div class="d-flex flex-row border border-success rounded m-1">
-              <div class="input-group-text m-0 text-success" ngbPopover="Plus court chemin" id="btnGroupAddon" triggers="mouseenter:mouseleave">
-                <fa-icon [icon]="pathIcon" size="xs"></fa-icon>
-              </div>
-              <button class="btn btn-sm btn-outline-secondary border-0" (click)="computeShortestPath('pedestrian')" ngbPopover="Piéton" triggers="mouseenter:mouseleave">
-                <fa-icon [icon]="pedestrianIcon"></fa-icon>
-              </button>
-              <button class="btn btn-sm btn-outline-secondary border-0" (click)="computeShortestPath('vehicle')" ngbPopover="Motorisé" triggers="mouseenter:mouseleave">
-                <fa-icon [icon]="motorIcon"></fa-icon>
-              </button>
-          </div>
-
-        </ng-container>
-        
         <div class="d-flex flex-row m-1 align-items-center shadow border rounded bg-light">
 
-          <span class="text-dark m-2 fw-bold small">Config</span>
+          <span class="text-dark m-2 fw-bold small">Misc</span>
 
             <input [disabled]="editing" #btnSnap type="checkbox" class="btn-check" id="btnSnap" [checked]="isSnapped" (click)="snappingHandler(btnSnap.checked)">
             <label for="btnSnap" container="body" ngbPopover="Activer le snapping" triggers="mouseenter:mouseleave">

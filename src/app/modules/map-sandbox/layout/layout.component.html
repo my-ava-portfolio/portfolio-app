@@ -2,25 +2,15 @@
 
     <div id="panelsContainer" class="d-flex flex-column bg-light " [ngClass]="!isPanelsDisplayed ? 'hidden' : 'displayed'">
 
-      <app-geoinfo
-        id="geoTools"
-        class="overflow-auto"
-        [ngClass]="currentMenuDisplayed == 'geoTools' ? 'd-block' : 'd-none'"
-        [map]="map"
-        [currentEpsg]="currentEpsg"
-        [epsgAvailable]="epsgAvailable"
-      >
-      </app-geoinfo>
-
-      <app-layer-manager
+      <app-layers-manager
         id="createTools"
         class="overflow-auto"
-        [ngClass]="currentMenuDisplayed == 'createTools' ? 'd-block' : 'd-none'"
         [map]="map"
+        [toolsMode]="toolsMode"
         [currentEpsg]="currentEpsg"
         [epsgAvailable]="epsgAvailable"
       >
-      </app-layer-manager>
+      </app-layers-manager>
 
     </div>
 
@@ -34,19 +24,27 @@
       </span>
 
       <span
-        class="tool btn btn-info text-white mb-1 shadow rounded-end"
-        [ngClass]="currentMenuDisplayed === 'geoTools' ? 'selected' : ''"
-        (click)="currentMenuDisplayed = 'geoTools'"
+        class="tool btn btn-success text-white mb-1 shadow rounded-end"
+        [ngClass]="toolsMode === 'geoTools' ? 'selected' : ''"
+        (click)="toolsMode = 'geoTools'"
         >
         <fa-icon [icon]="geoIcon"></fa-icon>
       </span>
 
       <span
         class="tool btn btn-dark text-white mb-1 shadow rounded-end" type="button"
-        [ngClass]="currentMenuDisplayed === 'createTools' ? 'selected' : ''"
-        (click)="currentMenuDisplayed = 'createTools'"
+        [ngClass]="toolsMode === 'createTools' ? 'selected' : ''"
+        (click)="toolsMode = 'createTools'"
         >
         <fa-icon [icon]="layersIcon"></fa-icon>
+      </span>
+
+      <span
+        class="tool btn btn-danger text-white mb-1 shadow rounded-end" type="button"
+        [ngClass]="toolsMode === 'pathTools' ? 'selected' : ''"
+        (click)="toolsMode = 'pathTools'"
+        >
+        <fa-icon [icon]="pathIcon"></fa-icon>
       </span>
 
     </div>
@@ -60,7 +58,7 @@
       <div class="m-3">
         <app-legend
           [layer]="layer"
-          [selected]="currentLayerIdSelected == layer.container.uuid"
+          [selected]="layerIdSelected == layer.container.uuid"
         ></app-legend>
       </div>
     </ng-container>

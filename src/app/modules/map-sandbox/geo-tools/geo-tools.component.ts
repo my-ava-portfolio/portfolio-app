@@ -7,11 +7,11 @@ import Map from 'ol/Map';
 
 
 @Component({
-  selector: 'app-geoinfo',
-  templateUrl: './geoinfo.component.html',
-  styleUrls: ['./geoinfo.component.scss']
+  selector: 'app-geo-tools',
+  templateUrl: './geo-tools.component.html',
+  styleUrls: ['./geo-tools.component.scss']
 })
-export class GeoinfoComponent implements AfterViewInit {
+export class GeoToolsComponent implements AfterViewInit {
   @Input() currentEpsg!: string;
   @Input() map!: Map;
   @Input() epsgAvailable!: string[];

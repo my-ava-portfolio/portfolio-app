@@ -116,7 +116,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.pullGeoDataToMapSubscription = this.dataService.GeoDataToMap.subscribe(
       (geoFeaturesData: any[]) => {
 
-        this.refreshSourceLayer(geoFeaturesData)
+        if (geoFeaturesData !== null) {
+          this.refreshSourceLayer(geoFeaturesData)
+        }
 
         // we zoom to the area only once
         if (this.previousArea !== this.currentArea) {

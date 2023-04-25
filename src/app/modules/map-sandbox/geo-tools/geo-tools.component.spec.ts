@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LayerManagerComponent } from './layer-manager.component';
+import { GeoToolsComponent } from './geo-tools.component';
 
-describe('LayerManagerComponent', () => {
-  let component: LayerManagerComponent;
-  let fixture: ComponentFixture<LayerManagerComponent>;
+describe('GeoToolsComponent', () => {
+  let component: GeoToolsComponent;
+  let fixture: ComponentFixture<GeoToolsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LayerManagerComponent ]
+      declarations: [ GeoToolsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LayerManagerComponent);
+    fixture = TestBed.createComponent(GeoToolsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

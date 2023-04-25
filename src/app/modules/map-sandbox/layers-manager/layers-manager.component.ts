@@ -9,25 +9,29 @@ import {extend} from 'ol/extent';
 import { MapService } from '@services/map.service';
 import { Subscription } from 'rxjs';
 
-import { faEye } from '@fortawesome/free-regular-svg-icons';
-import { InteractionsService } from '../shared/service/interactions.service';
+import { faEye, faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
+import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 
-import { featuresLayerType, geomLayerTypes } from '@modules/map-sandbox/shared/data-types';
-import { EditComputingService } from '../shared/service/edit-computing.service';
+import { featuresLayerType, geomLayerTypes, toolsTypes } from '@modules/map-sandbox/shared/data-types';
+import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
+import { linestringsExample, pointsExample, polygonsExample } from '../data-example';
+import { readStringWktAndGroupedByGeomType } from '../import-tools/import-tools.component';
 
 
 @Component({
-  selector: 'app-layer-manager',
-  templateUrl: './layer-manager.component.html',
-  styleUrls: ['./layer-manager.component.scss']
+  selector: 'app-layers-manager',
+  templateUrl: './layers-manager.component.html',
+  styleUrls: ['./layers-manager.component.scss']
 })
-export class LayerManagerComponent implements OnInit, OnDestroy {
+export class LayersManagerComponent implements OnInit, OnDestroy {
   @Input() map!: Map;
+
   private _currentEpsg!: string;
+  private _toolsMode!: toolsTypes;
+
   @Input() epsgAvailable!: string[];
 
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
-  @ViewChild('layersList') layersList!: ElementRef;
 
   disabledIcon = faXmark;
 
@@ -38,14 +42,17 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   centerIcon = faExpand;
   lockIcon = faLock;
   unLockIcon = faLockOpen;
-  
+  unToggleIcon = faMinusSquare;
+  toggleIcon = faPlusSquare;
+
+  allToggled: boolean = false;
   allVisible: boolean = true;
   allLocked: boolean = false;
 
   existingLayers: layerHandler[] = [];
-  allLayers: layerHandler[] = [];
+  layersToDisplay: layerHandler[] = [];
 
-  currentLayerIdSelected: string  | null = null;
+  layerIdSelected: string  | null = null;
 
   layerNamedIncrement: number = -1;
 
@@ -68,8 +75,11 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     )
 
     this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
-      (currentLayerIdSelected: string | null) => {
-        this.currentLayerIdSelected = currentLayerIdSelected
+      (layerIdSelected: string | null) => {
+        this.layerIdSelected = layerIdSelected
+        // if (layerIdSelected == null) {
+        //   this.unSelectLayer()
+        // }
       }
     )
 
@@ -82,6 +92,7 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._mapExamplesData()
   }
 
   ngOnDestroy(): void {
@@ -96,11 +107,24 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     this.newFeaturesSubscription.unsubscribe();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-
-    if (changes.layersList) {
-      this.refreshLayers()
+  private _mapExamplesData(): void {
+    const featureParams = {
+      dataProjection: this.currentEpsg,
+      featureProjection: 'EPSG:3857'
     }
+    const exampleData = [...pointsExample, ...linestringsExample, ...polygonsExample]
+    const dataformated = readStringWktAndGroupedByGeomType(exampleData, featureParams)
+    this.createNewLayersFromFeatures(dataformated)
+  }
+
+  @Input()
+  set toolsMode(value: toolsTypes) {
+    this._toolsMode = value;
+    this.refreshLayers();
+  }
+
+  get toolsMode(): toolsTypes {
+    return this._toolsMode;
   }
 
   @Input()
@@ -161,22 +185,28 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
       return layer.container.uuid !== layerId
     })
     this.buildLayersIndexes()
+    this.refreshLayers()
   }
 
-  private getLayerFromId(layerId: string): layerHandler {
-    let currentLayer = this.existingLayers.filter((layer: layerHandler) => {
-      return layer.container.uuid === layerId
-    })
-    return currentLayer[0]
+  getLayerFromId(layerId: string | null): layerHandler | null {
+    if (layerId !== null) {
+      let currentLayer = this.existingLayers.filter((layer: layerHandler) => {
+        return layer.container.uuid === layerId
+      })
+      return currentLayer[0]
+    }
+    return null
   }
 
   refreshLayers(): void {
-    this.allLayers = this.existingLayers.sort((a, b) => (a.container.zIndex > b.container.zIndex ? -1 : 1))
-    this.interactionsService.sendAllLayers(this.allLayers)
+    this.layersToDisplay = this.existingLayers.sort((a, b) => (a.container.zIndex > b.container.zIndex ? -1 : 1))
+    
+    // for layout map legend
+    this.interactionsService.sendAllLayers(this.layersToDisplay)
   }
 
   unSelectLayer(): void {
-    this.currentLayerIdSelected = null
+    this.layerIdSelected = null
   }
 
   buildLayersIndexes(): void {
@@ -202,14 +232,17 @@ export class LayerManagerComponent implements OnInit, OnDestroy {
     const layerId = data.layerId;
     const featuresToAdd = data.features
     let layerTarget = this.getLayerFromId(layerId)
-    Object.keys(featuresToAdd).forEach((geomType: string) => {
-      let features = featuresToAdd[geomType]
-      if (geomType === layerTarget.container.geomType) {
-        layerTarget.container.addFeaturesAndUpdateIds(features)  // TODO synchronize properties      
-        this.refreshLayers()
-      }
-    })
-    return
+    if (layerTarget !== null) {
+      const geomTypeLayer = layerTarget.container.geomType
+      let layerObject = layerTarget.container
+      Object.keys(featuresToAdd).forEach((geomType: string) => {
+        let features = featuresToAdd[geomType]
+        if (geomType === geomTypeLayer) {
+          layerObject.addFeaturesAndUpdateIds(features)  // TODO synchronize properties      
+          this.refreshLayers()
+        }
+      })
+    }
   }
 
   // START layers controlers //

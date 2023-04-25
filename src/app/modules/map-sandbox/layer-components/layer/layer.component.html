@@ -48,7 +48,12 @@
         </div>
       </div>
 
+      <button class="ms-auto p-1 bg-transparent border-0" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="toggled ? toggleIcon : unToggleIcon" size="xs"></fa-icon>
+      </button>
+
       <div class="ms-auto d-flex flex-row" [ngClass]="selected ? 'd-block' : 'd-none'">
+
 
         <button class="ms-auto p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
@@ -75,12 +80,12 @@
     </div>
 
     <div class="feature-container d-flex flex-row small mb-1" *ngIf="layer.container.features.length > 0">
-      <ul id="featuresList" class="w-100 list-group list-unstyled list-group-flush mx-3 rounded" [id]="'featuresLayer-' + layer.container.uuid">
+      <ul [hidden]="toggled" id="featuresList" class="w-100 list-group list-unstyled list-group-flush mx-3 rounded" [id]="'featuresLayer-' + layer.container.uuid">
 
         <li 
         class="feature border-bottom" 
-        [ngClass]="featureIdSelected == 'none' && selected ? 'bg-opacity-25' : ''" 
-        (click)="unSelectFeature()"
+        [ngClass]="featuresIdSelected.length > 0 && selected ? 'bg-opacity-25' : ''" 
+        (click)="unSelectFeatures()"
         >
           <div class="feature d-flex flex-row pointer justify-content-center align-items-center flex-fill m-1">
             <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>Désélectionner
@@ -91,9 +96,9 @@
         <ng-container *ngFor="let feature of layer.container.features">
           <app-feature
           class="feature"
-          [ngClass]="featureIdSelected == feature.getId() ? 'fw-bold bg-secondary bg-opacity-25' : ''"
-          (click)="selectFeatureById(feature.getId())"
-          [selected]="featureIdSelected == feature.getId()"
+          [ngClass]="featuresIdSelected.includes(feature.get('id')) ? 'fw-bold bg-secondary bg-opacity-25' : ''"
+          (click)="selectFeatureById(feature.get('id'))"
+          [selected]="featuresIdSelected.includes(feature.get('id'))"
           [feature]="feature"
           [layer]="layer"
           >

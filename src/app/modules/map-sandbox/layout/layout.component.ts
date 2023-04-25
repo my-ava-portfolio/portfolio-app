@@ -5,12 +5,13 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import { faGlobe, faLayerGroup, faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faLayerGroup, faAnglesLeft, faAnglesRight, faRoad } from '@fortawesome/free-solid-svg-icons';
 
 import { Subscription } from 'rxjs/internal/Subscription';
 import View from 'ol/View';
 import { InteractionsService } from '../shared/service/interactions.service';
 import { layerHandler } from '../shared/layer-handler/layer-handler';
+import { toolsTypes } from '../shared/data-types';
 
 @Component({
   selector: 'app-app-layout',
@@ -27,6 +28,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   // icons
   geoIcon = faGlobe;
+  pathIcon = faRoad;
+
   leftSideIcon = faAnglesLeft;
   rightSideIcon = faAnglesRight;
   layersIcon = faLayerGroup;
@@ -37,8 +40,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   isPanelsDisplayed = true;
 
-  currentMenuDisplayed: 'geoTools' | 'createTools' = 'createTools'
-  currentLayerIdSelected: string | null = null;
+  toolsMode: toolsTypes = 'createTools';
+
+  layerIdSelected: string | null = null;
 
   mapSubscription!: Subscription;
   allLayersSubscription!: Subscription;
@@ -67,8 +71,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     )
 
     this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
-      (currentLayerIdSelected: string | null) => {
-        this.currentLayerIdSelected = currentLayerIdSelected
+      (layerIdSelected: string | null) => {
+        this.layerIdSelected = layerIdSelected
       }
     )
    }
