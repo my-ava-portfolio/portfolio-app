@@ -301,8 +301,7 @@ export class LayerComponent implements OnInit, OnDestroy {
     // this.layer.select.getFeatures().clear()
     this.layer.select.getFeatures().push(feature)
 
-    this.selectLayer()
-    // this.selected = true
+    this.selected = true
   }
 
   private getFeature(featureId: string): any {
