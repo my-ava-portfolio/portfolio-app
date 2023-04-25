@@ -336,7 +336,6 @@ export class layerHandler {
     }
   
   enableSelecting(): void {
-      console.log("select on")
       this._map.addInteraction(this.select)
     }
   

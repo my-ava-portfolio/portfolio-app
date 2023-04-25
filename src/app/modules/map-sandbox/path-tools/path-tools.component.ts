@@ -21,19 +21,15 @@ export class PathToolsComponent implements OnInit, OnDestroy {
   buttonEnabled!: boolean;
   private _layerSelected!: layerHandler | null
 
-  displayedLayers!: Subscription;
-
   constructor(
     private editComputingService: EditComputingService,
     private graphComputingService: GraphComputingService,
   ) { 
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
   
-  ngOnDestroy(): void {
-    this.displayedLayers.unsubscribe()
-  }
+  ngOnDestroy(): void {}
 
   @Input()
   set layersToDisplay(layers: layerHandler[]) {

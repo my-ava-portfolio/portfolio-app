@@ -97,7 +97,6 @@ export class LayerComponent implements OnInit, OnDestroy {
     // TODO useless ?
     // this.layer.enableSnapping()
     this.layer.enableSelecting()
-    console.log("aaa")
     // set select interaction event
     this.layerSelectConfigured()
 
@@ -141,7 +140,6 @@ export class LayerComponent implements OnInit, OnDestroy {
   set epsg(value: string) {
     if (value !== this._epsg && this._epsg !== undefined) {
       this.layer.container.features.forEach((feature: any) => {
-        console.log(this._epsg, value)
         feature.setGeometry(feature.getGeometry().transform(this._epsg, value))
       });
     }
@@ -292,7 +290,6 @@ export class LayerComponent implements OnInit, OnDestroy {
     this.featuresIdSelected = []
     this.layer.select.getFeatures().clear()
     // this.layer.select.getFeatures().dispose()
-    console.log("éééé")
   }
 
   selectFeatureById(featureId: any): void {
