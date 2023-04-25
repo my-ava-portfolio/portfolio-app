@@ -42,7 +42,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   toolsMode: toolsTypes = 'createTools';
 
-  currentLayerIdSelected: string | null = null;
+  layerIdSelected: string | null = null;
 
   mapSubscription!: Subscription;
   allLayersSubscription!: Subscription;
@@ -71,8 +71,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     )
 
     this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
-      (currentLayerIdSelected: string | null) => {
-        this.currentLayerIdSelected = currentLayerIdSelected
+      (layerIdSelected: string | null) => {
+        this.layerIdSelected = layerIdSelected
       }
     )
    }

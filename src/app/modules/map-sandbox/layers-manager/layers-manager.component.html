@@ -33,7 +33,7 @@
 
   <app-path-tools
   [currentEpsg]="currentEpsg"
-  [layerSelected]="getLayerFromId(currentLayerIdSelected)"
+  [layerSelected]="getLayerFromId(layerIdSelected)"
   [layersToDisplay]="layersToDisplay"
   >
   </app-path-tools>
@@ -79,7 +79,7 @@
   <div
     class="layer pointer d-flex flex-column small mt-1 mx-1 px-1 align-items-around"
     (click)="unSelectLayer()"
-    [ngClass]="currentLayerIdSelected === null ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
+    [ngClass]="layerIdSelected === null ? 'bg-secondary  bg-gradient bg-opacity-25 fw-bold text-black' :  'text-black'"
     >
 
     <div class="pointer p-2 d-flex flex-row pointer justify-content-center align-items-center border-bottom">
@@ -92,7 +92,7 @@
 
     <app-layer
       [layer]="layer"
-      [selected]="currentLayerIdSelected == layer.container.uuid"
+      [selected]="layerIdSelected == layer.container.uuid"
       [visible]="allVisible"
       [locked]="allLocked"
       [toggled]="allToggled"

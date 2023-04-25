@@ -335,7 +335,8 @@ export class layerHandler {
       this._map.removeInteraction(this._translate)
     }
   
-    enableSelecting(): void {
+  enableSelecting(): void {
+      console.log("select on")
       this._map.addInteraction(this.select)
     }
   
@@ -469,7 +470,7 @@ export class layerHandler {
       
       disableDrawing(): void {
         this._map.removeInteraction(this._draw);
-        this.enableSelecting()
+        // this.enableSelecting()
       }
   
       // att

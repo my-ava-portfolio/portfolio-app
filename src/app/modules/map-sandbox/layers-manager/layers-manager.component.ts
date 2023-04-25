@@ -52,7 +52,7 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   existingLayers: layerHandler[] = [];
   layersToDisplay: layerHandler[] = [];
 
-  currentLayerIdSelected: string  | null = null;
+  layerIdSelected: string  | null = null;
 
   layerNamedIncrement: number = -1;
 
@@ -75,8 +75,11 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
     )
 
     this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
-      (currentLayerIdSelected: string | null) => {
-        this.currentLayerIdSelected = currentLayerIdSelected
+      (layerIdSelected: string | null) => {
+        this.layerIdSelected = layerIdSelected
+        // if (layerIdSelected == null) {
+        //   this.unSelectLayer()
+        // }
       }
     )
 
@@ -203,7 +206,7 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   }
 
   unSelectLayer(): void {
-    this.currentLayerIdSelected = null
+    this.layerIdSelected = null
   }
 
   buildLayersIndexes(): void {

@@ -54,7 +54,7 @@ export class LayerComponent implements OnInit, OnDestroy {
   isShown: boolean = false;
   isHole: boolean = false;
 
-  featureIdSelected!: string;
+  featuresIdSelected: string[] = [];
 
   removeLayerSubscription!: Subscription;
   displayLayerModal = false;
@@ -97,7 +97,7 @@ export class LayerComponent implements OnInit, OnDestroy {
     // TODO useless ?
     // this.layer.enableSnapping()
     this.layer.enableSelecting()
-
+    console.log("aaa")
     // set select interaction event
     this.layerSelectConfigured()
 
@@ -118,6 +118,8 @@ export class LayerComponent implements OnInit, OnDestroy {
     }
     
     this.removeLayerSubscription.unsubscribe();
+    this.featureIdEditedSubscription.unsubscribe();
+
     this.layer.disableSelecting()
     this.elementRef.nativeElement.remove();
   }
@@ -183,7 +185,7 @@ export class LayerComponent implements OnInit, OnDestroy {
     
     if (!status) {
       // unselect all the features
-      this.unSelectFeature()
+      this.unSelectFeatures()
     } else {
       this.selectLayer()
     }
@@ -199,18 +201,37 @@ export class LayerComponent implements OnInit, OnDestroy {
     this.layer.select.on("select", (event: any) => {
       let deselected = event.deselected
       let selected = event.selected
-      
-      if (deselected.length > 0 && selected.length === 0) {
-        this.unSelectFeature()
 
-      }
-
-      if (selected.length > 0) {
+      if (event.mapBrowserEvent.originalEvent.shiftKey) {
+        // multiple selections
         selected.forEach((feature: any) => {
-          this.selectFeatureById(feature.getId())
+          this.featuresIdSelected.push(feature.get('id'))
+          this.layer.select.getFeatures().push(feature)
+          this.selectLayer()
         })
+      } else {
 
+        if (deselected.length > 0) {
+          this.unSelectFeatures()
+        }
+
+        if (selected.length == 0) {
+          this.selected = false
+        }
+
+        if (deselected.length == 0) {
+          this.selected = true
+        }
+
+        if (selected.length > 0) {
+          selected.forEach((feature: any) => {
+            this.featuresIdSelected.push(feature.get('id'))
+            this.layer.select.getFeatures().push(feature)
+          })
+        }
+           
       }
+
     })
   }
 
@@ -231,13 +252,16 @@ export class LayerComponent implements OnInit, OnDestroy {
   selectLayer(): void {
     this.interactionsService.sendSelectedLayerId(this.layer.container.uuid)
   }
+  unSelectLayer(): void {
+    this.interactionsService.sendSelectedLayerId(null)
+  }
 
   zoomToLayer(): void {
     this.layer.zoomToLayer()
   }
 
   duplicateLayer(): void {
-    this.unSelectFeature()
+    this.unSelectFeatures()
     const layerCloned: layerHandler = Object.create(this.layer) // create a clone
     this.layerCloned.emit(layerCloned)
   }
@@ -264,21 +288,24 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   // START FEATURE FUNCS //
 
-  unSelectFeature(): void {
-    this.featureIdSelected = 'none'
+  unSelectFeatures(): void {
+    this.featuresIdSelected = []
     this.layer.select.getFeatures().clear()
+    // this.layer.select.getFeatures().dispose()
+    console.log("éééé")
   }
 
   selectFeatureById(featureId: any): void {
+    this.unSelectFeatures()
+    this.featuresIdSelected.push(featureId)
 
-    this.featureIdSelected = featureId
-
-    let feature = this.getFeature(this.featureIdSelected)
-    this.layer.enableSelecting()  // mandatory
-    this.layer.select.getFeatures().clear()
+    let feature = this.getFeature(featureId)
+    // this.layer.enableSelecting()
+    // this.layer.select.getFeatures().clear()
     this.layer.select.getFeatures().push(feature)
 
     this.selectLayer()
+    // this.selected = true
   }
 
   private getFeature(featureId: string): any {
