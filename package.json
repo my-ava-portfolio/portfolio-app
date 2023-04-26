@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "img_compress": "gulp compress",
-    "start": "ng serve -o --host=127.0.0.1",
+    "start": "ng serve -o",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

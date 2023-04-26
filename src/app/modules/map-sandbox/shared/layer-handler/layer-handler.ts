@@ -443,7 +443,7 @@ export class layerHandler {
       cleanEvents(): void {
           this.disableDrawing();
           this.disableEditing();
-          this.disableSelecting();
+          // this.disableSelecting();
       }
       
       enableDrawing(holeStatus = false): void {
@@ -459,7 +459,7 @@ export class layerHandler {
         this._map.addInteraction(this._draw);
         if (!holeStatus) {
           // select is disabled when drawing a new feature
-          this.disableSelecting()
+          // this.disableSelecting()
         }
   
         this._draw.on('drawstart', this._onDrawStart.bind(this));
