@@ -58,7 +58,6 @@ export class LayerComponent implements OnInit, OnDestroy {
   featuresIdSelected: string[] = [];
 
   removeLayerSubscription!: Subscription;
-  displayLayerModal = false;
   isLayerRemoved = false;
   exportData: string = '';
   exportDataMode = 'geojson'
@@ -268,27 +267,6 @@ export class LayerComponent implements OnInit, OnDestroy {
     this.unSelectFeatures()
     const layerCloned: layerHandler = Object.create(this.layer) // create a clone
     this.layerCloned.emit(layerCloned)
-  }
-
-  hideModalLayer(): void {
-    this.displayLayerModal = false;
-  }
-
-  // displayLayerSettings(): void {
-  //   this.openModal()
-  //   this.displayLayerModal = true;
-  //   this.exportBuilder(this.exportDataMode)
-  // }
-
-  exportBuilder(mode: string): void {
-    this.exportDataMode = mode
-    if (mode === 'wkt') {
-      this.exportData = this.layer.exportToWkt()
-    } else if (mode === 'geojson') {
-      this.exportData = this.layer.exportToGeoJSON()
-    } else if (mode === 'pytestFixture') {
-      this.exportData = this.layer.exportToPytestFixture()
-    }
   }
 
   // START FEATURE FUNCS //

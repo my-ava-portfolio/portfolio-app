@@ -23,6 +23,7 @@ import { FormsModule } from '@angular/forms';
 import { LegendComponent } from './legend/legend.component';
 import { PathToolsComponent } from './path-tools/path-tools.component';
 import { ItemsModule } from '@shared/modules/items/items.module';
+import { LayerSettingsComponent } from './layer-components/layer/layer-settings/layer-settings.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ItemsModule } from '@shared/modules/items/items.module';
     CreateToolsComponent,
     ImportToolsComponent,
     LegendComponent,
-    PathToolsComponent
+    PathToolsComponent,
+    LayerSettingsComponent
   ],
   imports: [
     CommonModule,
