@@ -48,11 +48,17 @@
         </div>
       </div>
 
+
+      <button class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="openTable()" ngbPopover="Table des attributs" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="tableIcon" size="xs"></fa-icon>
+      </button>
+      
       <button class="ms-auto p-1 bg-transparent border-0" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="toggled ? toggleIcon : unToggleIcon" size="xs"></fa-icon>
       </button>
 
       <div class="ms-auto d-flex flex-row" [ngClass]="selected ? 'd-block' : 'd-none'">
+
 
 
         <button class="ms-auto p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
@@ -71,7 +77,7 @@
           <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
         </button>
 
-        <button class="p-1 bg-transparent border-0 text-black" (click)="displayLayerSettings()" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+        <button class="p-1 bg-transparent border-0 text-black" (click)="openSettings()" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
         </button>
 
@@ -123,7 +129,7 @@
 
 
 
-<set-modal #modalLayerSettings>
+<set-modal #modalLayerSettings title="Paramètres de la couche">
  
     <app-layer-settings
       [layer]="layer"
@@ -131,4 +137,12 @@
 
 </set-modal>
 
+
+<set-modal #modalLayerTable title="Attributs de la couche">
+ 
+  <app-layer-table
+    [layer]="layer"
+  ></app-layer-table>
+
+</set-modal>
 

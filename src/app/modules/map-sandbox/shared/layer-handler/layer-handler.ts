@@ -586,13 +586,38 @@ export class layerHandler {
     }
     
    
-      getFeatureAttribute(featureId: string, attribute: string): void {
-        // TODO not used
-        const featureFound = this.container.featureById(featureId)
-        if (featureFound.length === 1) {
-          return featureFound[0].get(attribute)
+  getFeatureAttribute(featureId: string, attribute: string): void {
+    // TODO not used
+    const featureFound = this.container.featureById(featureId)
+    if (featureFound.length === 1) {
+      return featureFound[0].get(attribute)
+    }
+  }
+  
+  getAttributesHeader(): string[] {
+    const feature = this.container.features[0]
+    return feature.getKeys()
+  }
+
+  setAttribute(attributeName: string, value: any | null): void {
+    const defaultEmptyValue = ''
+    if (!this.getAttributesHeader().includes(attributeName)) {
+      this.container.features.forEach((feature: Feature) => {
+        if (value === null) {
+          value = defaultEmptyValue
         }
-      }
+        feature.set(attributeName, value, false)
+      })
+    }
+  }
+
+  removeAttribute(attributeName: string): void {
+    if (this.getAttributesHeader().includes(attributeName)) {
+      this.container.features.forEach((feature: Feature) => {
+        feature.unset(attributeName, false)
+      })
+    }
+  }
     
       exportBounds(): number[] {
         // TODO return the list for copy to clipboard

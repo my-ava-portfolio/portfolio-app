@@ -1,6 +1,6 @@
 import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, OnDestroy, ViewChild } from '@angular/core';
-import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faTable, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faClone, faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
@@ -45,6 +45,7 @@ export class LayerComponent implements OnInit, OnDestroy {
   unLockIcon = faLockOpen;
   unToggleIcon = faMinusSquare
   toggleIcon = faPlusSquare
+  tableIcon = faTable;
 
   private _epsg!: string
   private _selected: boolean = false
@@ -91,9 +92,14 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   }
 
-  @ViewChild('modalLayerSettings') private modalComponent!: ModalComponent
-  async displayLayerSettings() {
-    return await this.modalComponent.open()
+  @ViewChild('modalLayerSettings') private modalLayerSettingComponent!: ModalComponent
+  async openSettings() {
+    return await this.modalLayerSettingComponent.open()
+  }
+
+  @ViewChild('modalLayerTable') private modalLayerTableComponent!: ModalComponent
+  async openTable() {
+    return await this.modalLayerTableComponent.open()
   }
 
   ngOnInit(): void {

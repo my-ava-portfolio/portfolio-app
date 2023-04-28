@@ -24,6 +24,7 @@ import { LegendComponent } from './legend/legend.component';
 import { PathToolsComponent } from './path-tools/path-tools.component';
 import { ItemsModule } from '@shared/modules/items/items.module';
 import { LayerSettingsComponent } from './layer-components/layer/layer-settings/layer-settings.component';
+import { LayerTableComponent } from './layer-components/layer/layer-table/layer-table.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { LayerSettingsComponent } from './layer-components/layer/layer-settings/
     ImportToolsComponent,
     LegendComponent,
     PathToolsComponent,
-    LayerSettingsComponent
+    LayerSettingsComponent,
+    LayerTableComponent
   ],
   imports: [
     CommonModule,

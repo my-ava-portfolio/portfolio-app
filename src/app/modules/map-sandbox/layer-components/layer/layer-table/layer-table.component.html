@@ -1,0 +1,41 @@
+
+
+<div class="input-group mb-3">
+    <input #fieldToAdd type="text" class="form-control" placeholder="Ajouter un champs" aria-label="Ajouter un champs" aria-describedby="btn-add-field">
+    <button class="btn btn-success" type="button" id="btn-add-field" (click)="addField(fieldToAdd.value)">Ajouter</button>
+  </div>
+
+  <div class="input-group mb-3">
+    <input #fieldToRm type="text" class="form-control" placeholder="Ajouter un champs" aria-label="Supprimer un champs" aria-describedby="btn-rm-field">
+    <button class="btn btn-danger" type="button" id="btn-rm-field" (click)="removeField(fieldToRm.value)">Supprimer</button>
+  </div>
+
+
+  <div class="input-group mb-3">
+    <select #fieldSelected class="form-select" aria-label="Champs">
+        <option disabled>Séléctionner un champs</option>
+        <option *ngFor="let header of attributesHeader">{{header}}</option>
+    </select>
+    <input #fieldValue type="text" class="form-control" placeholder="Ajouter un champs" aria-label="Supprimer un champs" aria-describedby="btn-field-value">
+    <button class="btn btn-warning" type="button" id="btn-field-value" (click)="updateField(fieldSelected.value, fieldValue.value)">Mettre à jour</button>
+  </div>
+
+<div class="table-responsive">
+
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" *ngFor="let header of attributesHeader">{{header}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let feature of getFeatures() ; index as i">
+            <tr class="small">
+                <th scope="row">{{i}}</th>
+                <td *ngFor="let header of attributesHeader">{{feature.get(header)}}</td>
+            </tr>
+        </ng-container>
+        </tbody>
+    </table>
+</div>
