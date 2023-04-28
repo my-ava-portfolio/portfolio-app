@@ -71,7 +71,7 @@
           <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
         </button>
 
-        <button class="p-1 bg-transparent border-0 text-black" (click)="displayLayerSettings()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayerSettings-'+ layer.container.uuid" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+        <button class="p-1 bg-transparent border-0 text-black" (click)="displayLayerSettings()" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
         </button>
 
@@ -109,7 +109,6 @@
     </div>
 </div>
 
-
 <div moveDivToBody [isRemoved]="this.isLayerRemoved" *ngIf="!isLayerRemoved" class="position-fixed bottom-0 start-50 translate-middle-x">
 
   <app-edit-bar
@@ -119,63 +118,48 @@
     [enabled]="!locked && selected"
     [currentEpsg]="epsg"
   ></app-edit-bar>
-
 </div>
 
 
-<div moveDivToBody [isRemoved]="this.isLayerRemoved" 
-[id]="'modalLayerSettings-'+ layer.container.uuid" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">{{ layer.container.layerName}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModalLayer()"></button>
-      </div>
-      <div class="modal-body">
-
-        
-        <ul ngbNav #nav="ngbNav" class="nav-tabs">
-
-          <li ngbNavItem>
-            <a ngbNavLink class="fw-bold">Général</a>
-              <ng-template ngbNavContent>
-                <div class="d-flex flex-column">
-                  <ng-container *ngTemplateOutlet="ngNavLayerGeneral; context:{layerObject: layer}"></ng-container>
-                </div>
-              </ng-template>
-          </li>
-
-          <li ngbNavItem>
-            <a ngbNavLink class="fw-bold">Style de la couche</a>
-            <ng-template ngbNavContent>
-              <div class="d-flex flex-column">
-                <ng-container *ngTemplateOutlet="ngNavLayerStyling; context:{layerObject: layer}"></ng-container>
-              </div>
-            </ng-template>
-          </li>
-
-          <li ngbNavItem>
-            <a ngbNavLink class="fw-bold">Exporter</a>
-            <ng-template ngbNavContent>
-              <div class="d-flex flex-column">
-                <ng-container *ngTemplateOutlet="ngNavLayerExporting; context:{layerObject: layer}"></ng-container>
-              </div>
-            </ng-template>
-
-        </ul>
-
-        <div [ngbNavOutlet]="nav" class="nav-content mx-2"></div>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 
+<set-modal #modalLayerSettings>
+          
+  <ul ngbNav #nav="ngbNav" class="nav-tabs">
+
+    <li ngbNavItem>
+      <a ngbNavLink class="fw-bold">Général</a>
+        <ng-template ngbNavContent>
+          <div class="d-flex flex-column">
+            <ng-container *ngTemplateOutlet="ngNavLayerGeneral; context:{layerObject: layer}"></ng-container>
+          </div>
+        </ng-template>
+    </li>
+
+    <li ngbNavItem>
+      <a ngbNavLink class="fw-bold">Style de la couche</a>
+      <ng-template ngbNavContent>
+        <div class="d-flex flex-column">
+          <ng-container *ngTemplateOutlet="ngNavLayerStyling; context:{layerObject: layer}"></ng-container>
+        </div>
+      </ng-template>
+    </li>
+
+    <li ngbNavItem>
+      <a ngbNavLink class="fw-bold">Exporter</a>
+      <ng-template ngbNavContent>
+        <div class="d-flex flex-column">
+          <ng-container *ngTemplateOutlet="ngNavLayerExporting; context:{layerObject: layer}"></ng-container>
+        </div>
+      </ng-template>
+
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="nav-content mx-2"></div>
+
+
+
+</set-modal>
 
 
 <ng-template #ngNavLayerGeneral let-layerObject='layer'>

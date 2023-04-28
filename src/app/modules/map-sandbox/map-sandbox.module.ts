@@ -22,6 +22,7 @@ import { ImportToolsComponent } from './import-tools/import-tools.component';
 import { FormsModule } from '@angular/forms';
 import { LegendComponent } from './legend/legend.component';
 import { PathToolsComponent } from './path-tools/path-tools.component';
+import { ItemsModule } from '@shared/modules/items/items.module';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { PathToolsComponent } from './path-tools/path-tools.component';
     FontAwesomeModule,
     NgbModule,
     FormsModule,
-    DirectivesModule    
+    DirectivesModule,
+    ItemsModule
   ],
 })
 export class MapSandboxModule { }

@@ -1,10 +1,11 @@
 import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, OnDestroy, ViewChild } from '@angular/core';
 import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faClone, faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
 import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
+import { ModalComponent } from '@shared/modules/items/modal/modal.component';
 
 
 @Component({
@@ -89,6 +90,11 @@ export class LayerComponent implements OnInit, OnDestroy {
       }
     )
 
+  }
+
+  @ViewChild('modalLayerSettings') private modalComponent!: ModalComponent
+  async displayLayerSettings() {
+    return await this.modalComponent.open()
   }
 
   ngOnInit(): void {
@@ -268,10 +274,11 @@ export class LayerComponent implements OnInit, OnDestroy {
     this.displayLayerModal = false;
   }
 
-  displayLayerSettings(): void {
-    this.displayLayerModal = true;
-    this.exportBuilder(this.exportDataMode)
-  }
+  // displayLayerSettings(): void {
+  //   this.openModal()
+  //   this.displayLayerModal = true;
+  //   this.exportBuilder(this.exportDataMode)
+  // }
 
   exportBuilder(mode: string): void {
     this.exportDataMode = mode
