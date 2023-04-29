@@ -216,7 +216,6 @@ export class baseLayer{
           'stroke_width': this.strokeWidth,
           'stroke_color':  this.strokeColor
         }, true)
-        this._updateMetadataFeature(feature)
         return feature
     }
 
