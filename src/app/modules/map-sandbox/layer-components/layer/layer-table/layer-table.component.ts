@@ -65,24 +65,8 @@ export class LayerTableComponent implements OnInit {
     this.getFeatures()
   }
 
-  applyClassificationColor(fieldName: string): void {
-    let uniqueValues: any[] = []
-    this.getFeatures().forEach((feature: Feature) => {
-      const value = feature.get(fieldName)
-      if (!uniqueValues.includes(value)) {
-        uniqueValues.push(value)
-      }
-    })
-    
-    uniqueValues.forEach((value: any) => {
-      const randomColor = getRandomDefaultColor();
-      this.getFeatures().forEach((feature: Feature) => {
-        if (value === feature.get(fieldName)) {
-          feature.set('fill_color', randomColor)
-        }
-      })
-    })
-
+  applyCategoryColors(fieldName: string): void {
+    this.layer.propertyStyledByCategory = fieldName
   }
 
 }

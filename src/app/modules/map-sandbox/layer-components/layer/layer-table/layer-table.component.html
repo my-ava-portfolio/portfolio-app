@@ -46,7 +46,7 @@
             <select #fieldClassifiedSelected class="form-select" aria-label="Champs">
                 <option *ngFor="let header of attributesHeader">{{header}}</option>
             </select>
-            <button class="btn btn-warning" type="button" id="btn-field-value" (click)="applyClassificationColor(fieldClassifiedSelected.value)">Appliquer</button>
+            <button class="btn btn-warning" type="button" id="btn-field-value" (click)="applyCategoryColors(fieldClassifiedSelected.value)">Appliquer</button>
         </div>
 
     </div>
