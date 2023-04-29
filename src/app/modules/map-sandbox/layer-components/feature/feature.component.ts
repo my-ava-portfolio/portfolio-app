@@ -38,13 +38,7 @@ export class FeatureComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {
-
-    this.currentFillColor = this.feature.get('fill_color')
-    this.currentStrokeColor = this.feature.get('stroke_color')
-    this.currentStrokeWidth = this.feature.get('stroke_width')
-
-  }
+  ngOnInit(): void { }
 
   ngOnDestroy(): void {
     this.elementRef.nativeElement.remove();
@@ -115,8 +109,8 @@ export class FeatureComponent implements OnInit {
   updateFillColor(color: string): void {
     this.feature.set("fill_color", color, true)
   }
-  updateStrokeWidth(event: any): void {
-    this.feature.set("stroke_width", event.target.value, true)
+  updateStrokeWidth(width: string): void {
+    this.feature.set("stroke_width", width, true)
   }
   updateStrokeColor(color: string): void {
     this.feature.set("stroke_color", color, true)

@@ -58,32 +58,60 @@
   <ng-template #ngNavLayerStyling let-layerObject='layer'>
     <span class="fs-4 my-2">Modifier le style de tous les objets</span>
   
-    <div class="d-flex flex-row align-items-center my-2">
-      <span class="fs-6 me-2">Opacité :</span>
-      <input #opacityInput class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layer.container.opacity" (change)="layer.container.opacity = opacityInput.value"/>
+    <div class="d-flex flex-column my-2">
+      <span class="fs-5 me-2">Opacité :</span>
+      <div class="d-flex flex-row align-items-center ms-2">
+        <input #opacityInput class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layer.container.opacity" (change)="layer.container.opacity = opacityInput.value"/>
+      </div>
     </div>
   
-    <div class="d-flex flex-row align-items-center my-2">
-      <span class="fs-6 me-2">Couleur de fond :</span>
-      <input #layerFillColor type="color" [id]="'fillColor-' + layer.container.uuid" class="fillColor pointer border-0" [value]="layer.container.fillColor" (change)="layer.container.fillColor = layerFillColor.value"/>
-      <label [attr.for]="'fillColor-' + layer.container.uuid"></label>
-      <input #textLayerFillColor type="text" [id]="'textFillColor-' + layer.container.uuid" class="fillColor p-0 border-1" [value]="layer.container.fillColor" (change)="layer.container.fillColor = textLayerFillColor.value"/>
-      <label [attr.for]="'textFillColor-' + layer.container.uuid"></label>
-    </div>
+    <ul class="nav nav-pills align-items-center justify-content-center" role="tablist">
+      <li class="nav-item border m-1" role="presentation">
+        <a class="nav-link fw-bold active" data-bs-toggle="tab" [attr.data-bs-target]="'#uniqueColor' + layer.container.uuid" type="button" role="tab">
+          Symbole unique
+        </a>
+      </li>
+      <li class="nav-item border m-1" role="presentation">
+        <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#categoryColor' + layer.container.uuid" type="button" role="tab">
+          Catégorisé
+        </a>
+      </li>
   
-    <div class="d-flex flex-row align-items-center my-2">
-      <span class="fs-6 me-2">Couleur du contour :</span>
-      <input #layerStrokeColor type="color" [id]="'strokeColor-' + layer.container.uuid" class="fillColor pointer border-0" [value]="layer.container.strokeColor" (change)="layer.container.strokeColor = layerStrokeColor.value"/>
-      <label [attr.for]="'strokeColor-' + layer.container.uuid"></label>
-      <input #textLayerStrokeColor type="text" [id]="'textStrokeColor-' + layer.container.uuid" class="fillColor p-0 border-1" [value]="layer.container.strokeColor" (change)="layer.container.strokeColor = textLayerStrokeColor.value"/>
-      <label [attr.for]="'textStrokeColor-' + layer.container.uuid"></label>
-    </div>
+      <li class="nav-item border m-1" role="presentation">
+        <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#quantitativeColor' + layer.container.uuid" type="button" role="tab">
+          Gradué
+        </a>
+      </li>
   
-    <div class="d-flex flex-row align-items-center my-2">
-      <span class="fs-6 me-2">Epaisseur du contour :</span>
-      <input #strokeWidth class="small strokeWidth" type="number" min="0" max="12" [value]="layer.container.strokeWidth" (change)="layer.container.strokeWidth = strokeWidth.value"/>
+    </ul>
+
+    <div class="d-flex flex-row mx-2 tab-content" id="'StylingTabContent' + layer.container.id">
+  
+      <div class="tab-pane fade w-100 show active" [id]="'uniqueColor' + layer.container.uuid" role="tabpanel">
+        <app-widget-color 
+          [fillColor]="layer.container.fillColor"
+          [strokeColor]="layer.container.strokeColor"
+          [strokeWidth]="layer.container.strokeWidth"
+          (fillColorEvent)="layer.container.fillColor = $event"
+          (strokeColorEvent)="layer.container.strokeColor = $event"  
+          (strokeWidthEvent)="layer.container.strokeWidth = $event"
+        ></app-widget-color>
+      </div>
+  
+      <div class="tab-pane fade w-100 show" [id]="'categoryColor' + layer.container.uuid" role="tabpanel">
+      </div>
+  
+      <div class="tab-pane fade w-100 show" [id]="'quantitativeColor' + layer.container.uuid" role="tabpanel">
+      </div>
+  
     </div>
+
   </ng-template>
+
+
+
+
+  
   
   
   <ng-template #ngNavLayerExporting let-layerObject='layer'>

@@ -85,22 +85,14 @@
         <div class="d-flex flex-column my-3">
           <h6 class="">Style</h6>
 
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Couleur de fond :</span>
-            <input #fillColor type="color" id="fillColor" [value]="feature.get('fill_color')" class="fillColor m-1 pointer" (change)="updateFillColor(fillColor.value)"/>
-            <label for="fillColor"></label>
-          </div>
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Couleur du contour :</span>
-            <input #strokeColor type="color" id="strokeColor" [value]="feature.get('stroke_color')" class="strokeColor m-1 pointer" (change)="updateStrokeColor(strokeColor.value)"/>
-            <label for="strokeColor"></label>
-          </div>
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Epaisseur du contour :</span>
-            <input class="small strokeWidth" type="number" min="0" max="12" [value]="currentStrokeWidth" (change)="updateStrokeWidth($event)"/>
-          </div>
+          <app-widget-color 
+            [fillColor]="feature.get('fill_color')"
+            [strokeColor]="feature.get('stroke_color')"
+            [strokeWidth]="feature.get('stroke_width')"
+            (fillColorEvent)="updateFillColor($event)"
+            (strokeColorEvent)="updateStrokeColor($event)"  
+            (strokeWidthEvent)="updateStrokeWidth($event)"
+          ></app-widget-color>
 
         </div>
 

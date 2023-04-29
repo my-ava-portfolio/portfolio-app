@@ -25,6 +25,7 @@ import { PathToolsComponent } from './path-tools/path-tools.component';
 import { ItemsModule } from '@shared/modules/items/items.module';
 import { LayerSettingsComponent } from './layer-components/layer/layer-settings/layer-settings.component';
 import { LayerTableComponent } from './layer-components/layer/layer-table/layer-table.component';
+import { WidgetColorComponent } from './shared/components/widget-color/widget-color.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { LayerTableComponent } from './layer-components/layer/layer-table/layer-
     LegendComponent,
     PathToolsComponent,
     LayerSettingsComponent,
-    LayerTableComponent
+    LayerTableComponent,
+    WidgetColorComponent,
   ],
   imports: [
     CommonModule,
