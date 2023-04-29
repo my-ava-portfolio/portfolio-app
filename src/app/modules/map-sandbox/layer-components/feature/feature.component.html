@@ -3,13 +3,14 @@
   <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
 
     <div class="me-2">
-      <div class="btn bg-transparent border-0 p-1" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
-      </div>
+      
+      <button class="p-1 bg-transparent border-0" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="centerIcon"></fa-icon>
+      </button>
 
-      <div class="btn bg-transparent border-0 p-1" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
-      </div>
+      <button class="p-1 bg-transparent border-0" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
+      </button>
     </div>
 
     <div class="me-1">
@@ -33,13 +34,13 @@
     <div class="ms-auto">
 
 
-      <div class="btn bg-transparent border-0 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
-      </div>
+      <button class="p-1 bg-transparent border-0 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="disabledIcon"></fa-icon>
+      </button>
 
-      <div class="btn bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
-      </div>
+      <button class="btn bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="paramIcon"></fa-icon>
+      </button>
 
     </div>
 
