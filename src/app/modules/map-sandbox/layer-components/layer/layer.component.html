@@ -76,7 +76,7 @@
 
         <div class="pointer ms-auto" ngbPopover="Désélectionner" triggers="mouseenter:mouseleave" (click)="unSelectFeatures()">
           <fa-icon class="me-1" [icon]="clearIcon"></fa-icon>
-          <span>{{featuresIdSelected.length}} séléctionné(s) /{{layer.container.features.length}}</span>
+          <span>{{featuresIdSelected.length}} sélectionné(s) /{{layer.container.features.length}}</span>
         </div>
 
         <div [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="pointer ms-auto px-1 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
