@@ -5,10 +5,11 @@
   >
 
     <div class="header d-flex flex-row align-items-center border rounded p-2 pointer"
-    [ngClass]="selected ? 'border-dark border-1' :  ''"
+    [ngClass]="selected ? 'bg-warning border-1' :  ''"
     >
 
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
+        
         <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.container.uuid" [checked]="visible" (change)="visible = btnVisible.checked">
         <label class="p-1 bg-transparent border-0 pointer" [for]="'btnVisible' + layer.container.uuid" [ngClass]="visible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="visible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="visible ? visibleIcon : invisibleIcon"></fa-icon>
@@ -19,15 +20,14 @@
           <fa-icon class="" [icon]="locked ? lockIcon : unLockIcon"></fa-icon>
         </label>
 
-        <div class="d-flex flex-row" [ngClass]="selected ? 'pe-auto' :  'pe-none'">
-          <button class="p- bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
-            <fa-icon class="" [icon]="upIcon"></fa-icon>
-          </button>
+        <div class="d-flex flex-column justify-content-center align-items-center mx-1" [ngClass]="selected ? 'pe-auto' :  'pe-none'">
+            <div class="p- bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
+              <fa-icon class="" [icon]="upIcon"></fa-icon>
+            </div>
 
-          <div class="-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
-            <fa-icon class="" [icon]="downIcon"></fa-icon>
-          </div>
-
+            <div class="-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
+              <fa-icon class="" [icon]="downIcon"></fa-icon>
+            </div>
         </div>
 
       </div>
@@ -60,27 +60,27 @@
 
     </div>
 
-    <div class="feature-container d-flex flex-column mb-1" *ngIf="layer.container.features.length > 0">
+    <div class="feature-container d-flex flex-column small" *ngIf="layer.container.features.length > 0">
 
-      <div class="d-flex flex-row justify-content-around align-items-center flex-fill mx-3">
-        <button class="px-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+      <div class="d-flex flex-row justify-content-around align-items-center flex-fill mt-1 mx-3 mb-1">
+        <div class="pointer px-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="centerIcon"></fa-icon>
-        </button>
+        </div>
         
-        <div class="bg-transparent border-0" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
+        <div class="pointer px-1 bg-transparent border-0" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="toggled ? toggleIcon : unToggleIcon"></fa-icon>
         </div>
 
-        <div class="px-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
+        <div class="pointer px-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
         </div>
 
-        <div class="ms-auto bg-transparent border-0" ngbPopover="Désélectionner" triggers="mouseenter:mouseleave" (click)="unSelectFeatures()">
+        <div class="pointer ms-auto bg-transparent border-0" ngbPopover="Désélectionner" triggers="mouseenter:mouseleave" (click)="unSelectFeatures()">
           <fa-icon class="me-1" [icon]="clearIcon"></fa-icon>
           <span>{{featuresIdSelected.length}} séléctionné(s) /{{layer.container.features.length}}</span>
         </div>
 
-        <div [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
+        <div [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="pointer ms-auto px-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="removeIcon"></fa-icon>
         </div>
 
@@ -90,7 +90,6 @@
 
         <ng-container *ngFor="let feature of layer.container.features">
           <app-feature
-          class="feature"
           [ngClass]="featuresIdSelected.includes(feature.get('id')) ? 'fw-bold bg-secondary bg-opacity-25' : ''"
           (click)="selectFeatureById(feature.get('id'))"
           [selected]="featuresIdSelected.includes(feature.get('id'))"

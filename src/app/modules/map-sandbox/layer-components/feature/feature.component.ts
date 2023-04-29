@@ -17,6 +17,9 @@ export class FeatureComponent implements OnInit {
   private _id!: string;
   private _geometry!: Geometry
 
+  _strokeWidthCoeff = 1.8
+  _strokeWidthLineCoeff = 1.2;
+
   @Input() layer!: layerHandler;
 
   disabledIcon = faXmark;

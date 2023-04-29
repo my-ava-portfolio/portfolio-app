@@ -1,28 +1,28 @@
-<li class="pointer feature-item mx-4 d-flex flex-row align-items-center border-top">
+<li class="pointer feature-item mx-4 py-1 d-flex flex-row align-items-center border-top">
 
-  <div class="me-2 d-flex flex-row small">
-    <div class="tool p-1 bg-transparent border-0" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
+  <div class="me-2 d-flex flex-row align-items-evenly small">
+    <button class="tool bg-transparent border-0" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
       <fa-icon class="" [icon]="centerIcon"></fa-icon>
-    </div>
+    </button>
 
-    <div class="tool p-1 bg-transparent border-0" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
+    <button class="tool bg-transparent border-0" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
       <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
-    </div>
+    </button>
   </div>
 
     <div class="me-2 d-flex flex-row small">
 
-      <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'Point'">
-        <circle cx="12" cy="12" r="8" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
+      <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'Point'">
+        <circle cx="10" cy="10" r="7" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
       </svg>
 
-      <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'LineString'">
-        <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * 2"/>
-        <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') *1.5"/>
+      <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'LineString'">
+        <line x1="0" y1="10" x2="20" y2="10" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * this._strokeWidthCoeff"/>
+        <line x1="0" y1="10" x2="20" y2="10" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') * this._strokeWidthLineCoeff"/>
       </svg>
 
       <svg height="16" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
-        <rect x="0" y="0" width="25" height="16" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')"/>
+        <rect x="0" y="0" width="25" height="16" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * this._strokeWidthCoeff" [attr.fill]="feature.get('fill_color')"/>
       </svg>
     </div>
 
