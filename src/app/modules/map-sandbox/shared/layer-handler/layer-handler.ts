@@ -304,7 +304,7 @@ export class layerHandler {
     private _modifier!: Modify;
     select!: Select;
     
-    _zoomPadding = [100, 100, 100, 100];  // TODO set as a global var (use by layer-manager)
+    _zoomPadding = [100, 100, 100, 200];  // TODO set as a global var (use by layer-manager)
     _maxZoom = 14;
 
 
@@ -571,7 +571,7 @@ export class layerHandler {
           if (this.container.features.length > 0) {
               this._map.getView().fit(
                   this.container.layer.getSource().getExtent(),
-                  { size: this._map.getSize(), maxZoom: this._maxZoom, padding: this._zoomPadding }
+                  { size: this._map.getSize(), padding: this._zoomPadding, maxZoom: 20 }
               );
           }
       }
@@ -580,7 +580,8 @@ export class layerHandler {
   
           this.container.features.filter((feature: any) => {
               if (feature.getId() === featureId) {
-              this._map.getView().fit(feature.getGeometry(), {size:this._map.getSize(), maxZoom: this._maxZoom})
+              this._map.getView().fit(feature.getGeometry(), { size: this._map.getSize(), padding: this._zoomPadding, maxZoom: 20 }
+              )
               }
           })
     }
