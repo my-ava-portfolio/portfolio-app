@@ -11,10 +11,10 @@
       </a>
     </li>
 
-  </ul>
+</ul>
 
-  <div class="d-flex flex-row mx-2 tab-content" id="'StylingTabContent' + layer.container.id">
-  
+<div class="d-flex flex-row mx-2 tab-content" id="'StylingTabContent' + layer.container.id">
+
     <div class="tab-pane fade w-100  show active" [id]="'attributesChanges' + layer.container.uuid" role="tabpanel">
         
         <div class="d-flex flex-row">
@@ -32,7 +32,7 @@
         <div class="input-group m-2">
             <span class="input-group-text">Sélection du champ</span>
             <select #fieldSelected class="form-select" aria-label="Champs">
-                <option *ngFor="let header of attributesHeader">{{header}}</option>
+                <option *ngFor="let header of layer.getAttributesHeader()">{{header}}</option>
             </select>
             <input #fieldValue type="text" class="form-control" placeholder="Définir une valeur" aria-label="Valeur" aria-describedby="btn-field-value">
             <button class="btn btn-warning" type="button" id="btn-field-value" (click)="updateField(fieldSelected.value, fieldValue.value)">Mettre à jour</button>
@@ -44,37 +44,18 @@
         <div class="input-group mb-3">
             <span class="input-group-text">Classification par catégories</span>
             <select #fieldClassifiedSelected class="form-select" aria-label="Champs">
-                <option *ngFor="let header of attributesHeader">{{header}}</option>
+                <option *ngFor="let header of layer.getAttributesHeader()">{{header}}</option>
             </select>
             <button class="btn btn-warning" type="button" id="btn-field-value" (click)="applyCategoryColors(fieldClassifiedSelected.value)">Appliquer</button>
         </div>
 
     </div>
 
-
-  </div>
-
-
-
-
-<div class="m-2 table-responsive">
-
-    <table class="table table-striped">
-        <thead class="table-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col" *ngFor="let header of attributesHeader">{{header}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <ng-container *ngFor="let feature of getFeatures() ; index as i">
-            <tr class="small">
-                <th scope="row">{{i}}</th>
-                <td *ngFor="let header of attributesHeader">
-                    <input #tutu type="text" [placeholder]="feature.get(header)" (change)="feature.set(header, tutu.value, false)">
-                </td>
-            </tr>
-        </ng-container>
-        </tbody>
-    </table>
 </div>
+
+<app-widget-table
+    [attributesHeaders]="layer.getAttributesHeader()"
+    [features]="getFeatures()"
+>
+</app-widget-table>
+

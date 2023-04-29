@@ -18,7 +18,7 @@ export class LayerTableComponent implements OnInit {
   attributesFeatures!: any[]
 
   ngOnInit(): void {
-    this.getAttributesHeaders()
+    // this.getAttributesHeaders()
   }
 
   @Input()
@@ -30,19 +30,13 @@ export class LayerTableComponent implements OnInit {
     return this._layer
   }
 
-  getAttributesHeaders(): any {
-    this.attributesHeader = this.layer.getAttributesHeader().filter(
-      (header: string) => !this.headerHidden.includes(header)
-    ) 
-  }
-
   getFeatures(): Feature[] {
     return this.layer.container.features
   }
 
   addField(fieldName: string): void {
     this.layer.setAttribute(fieldName, null)
-    this.refreshTable()
+    // this.refreshTable()
   }
 
   updateField(fieldName: string, value: any) {
@@ -52,16 +46,15 @@ export class LayerTableComponent implements OnInit {
     }
     this.layer.removeAttribute(fieldName)
     this.layer.setAttribute(fieldName, value)
-    this.refreshTable()
+    // this.refreshTable()
   }
 
   removeField(fieldName: string): void {
     this.layer.removeAttribute(fieldName)
-    this.refreshTable()
+    // this.refreshTable()
   }
 
   refreshTable(): void {
-    this.getAttributesHeaders()
     this.getFeatures()
   }
 

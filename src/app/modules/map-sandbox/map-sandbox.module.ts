@@ -26,6 +26,7 @@ import { ItemsModule } from '@shared/modules/items/items.module';
 import { LayerSettingsComponent } from './layer-components/layer/layer-settings/layer-settings.component';
 import { LayerTableComponent } from './layer-components/layer/layer-table/layer-table.component';
 import { WidgetColorComponent } from './shared/components/widget-color/widget-color.component';
+import { WidgetTableComponent } from './shared/components/widget-table/widget-table.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { WidgetColorComponent } from './shared/components/widget-color/widget-co
     LayerSettingsComponent,
     LayerTableComponent,
     WidgetColorComponent,
+    WidgetTableComponent,
   ],
   imports: [
     CommonModule,

@@ -287,7 +287,8 @@ export class baseLayer{
 
 
 export class layerHandler {
-
+    private _headerHidden = ['geometry', 'id', 'no', 'geom_type', 'created_at',
+      'updated_at', 'fill_color', 'stroke_width', 'stroke_color']
     container!: baseLayer;
 
     private _map: Map
@@ -347,7 +348,7 @@ export class layerHandler {
   get propertyStyledByCategory(): string | null {
     return this._propertyStyled
   }
-  
+
   removeLayer(): void {
       this._map.removeLayer(this.container.layer)
   }      
@@ -620,8 +621,11 @@ export class layerHandler {
   }
   
   getAttributesHeader(): string[] {
-    const feature = this.container.features[0]
-    return feature.getKeys()
+    const headers = this.container.features[0].getKeys()
+    const headersFound = headers.filter(
+      (header: string) => !this._headerHidden.includes(header)
+    ) 
+    return headersFound
   }
 
   setAttribute(attributeName: string, value: any | null): void {
