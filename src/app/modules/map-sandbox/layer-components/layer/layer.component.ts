@@ -116,6 +116,7 @@ export class LayerComponent implements OnInit, OnDestroy {
       // update step when change on feature occurs
       refreshFeatureStyle(event.feature)
     })
+    this.zoomToLayer()
 
   }
 

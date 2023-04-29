@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
+import { getRandomDefaultColor } from '@modules/map-sandbox/shared/style-helper';
 import Feature from 'ol/Feature';
 
 @Component({
@@ -62,6 +63,26 @@ export class LayerTableComponent implements OnInit {
   refreshTable(): void {
     this.getAttributesHeaders()
     this.getFeatures()
+  }
+
+  applyClassificationColor(fieldName: string): void {
+    let uniqueValues: any[] = []
+    this.getFeatures().forEach((feature: Feature) => {
+      const value = feature.get(fieldName)
+      if (!uniqueValues.includes(value)) {
+        uniqueValues.push(value)
+      }
+    })
+    
+    uniqueValues.forEach((value: any) => {
+      const randomColor = getRandomDefaultColor();
+      this.getFeatures().forEach((feature: Feature) => {
+        if (value === feature.get(fieldName)) {
+          feature.set('fill_color', randomColor)
+        }
+      })
+    })
+
   }
 
 }

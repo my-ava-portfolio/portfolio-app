@@ -1,26 +1,63 @@
 
+<ul class="nav nav-pills align-items-center justify-content-center mt-2 mb-3" role="tablist">
+    <li class="nav-item border m-1" role="presentation">
+      <a class="nav-link fw-bold active" data-bs-toggle="tab" [attr.data-bs-target]="'#attributesChanges' + layer.container.uuid" type="button" role="tab">
+        Modification des attributs
+      </a>
+    </li>
+    <li class="nav-item border m-1" role="presentation">
+      <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#styleApplying' + layer.container.uuid" type="button" role="tab">
+        Application de style
+      </a>
+    </li>
 
-<div class="input-group mb-3">
-    <input #fieldToAdd type="text" class="form-control" placeholder="Ajouter un champs" aria-label="Ajouter un champs" aria-describedby="btn-add-field">
-    <button class="btn btn-success" type="button" id="btn-add-field" (click)="addField(fieldToAdd.value)">Ajouter</button>
+  </ul>
+
+  <div class="d-flex flex-row mx-2 tab-content" id="'StylingTabContent' + layer.container.id">
+  
+    <div class="tab-pane fade w-100  show active" [id]="'attributesChanges' + layer.container.uuid" role="tabpanel">
+        
+        <div class="d-flex flex-row">
+            <div class="input-group m-2">
+                <input #fieldToAdd type="text" class="form-control" placeholder="Ajouter un champs" aria-label="Ajouter un champs" aria-describedby="btn-add-field">
+                <button class="btn btn-success" type="button" id="btn-add-field" (click)="addField(fieldToAdd.value)">Ajouter</button>
+            </div>
+            
+            <div class="input-group m-2">
+                <input #fieldToRm type="text" class="form-control" placeholder="Supprimer un champs" aria-label="Supprimer un champs" aria-describedby="btn-rm-field">
+                <button class="btn btn-danger" type="button" id="btn-rm-field" (click)="removeField(fieldToRm.value)">Supprimer</button>
+            </div>
+        </div>
+        
+        <div class="input-group m-2">
+            <span class="input-group-text">Sélection du champ</span>
+            <select #fieldSelected class="form-select" aria-label="Champs">
+                <option *ngFor="let header of attributesHeader">{{header}}</option>
+            </select>
+            <input #fieldValue type="text" class="form-control" placeholder="Définir une valeur" aria-label="Valeur" aria-describedby="btn-field-value">
+            <button class="btn btn-warning" type="button" id="btn-field-value" (click)="updateField(fieldSelected.value, fieldValue.value)">Mettre à jour</button>
+        </div>
+    </div>
+
+    <div class="m-2 tab-pane fade w-100 show" [id]="'styleApplying' + layer.container.uuid" role="tabpanel">
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Classification par catégories</span>
+            <select #fieldClassifiedSelected class="form-select" aria-label="Champs">
+                <option *ngFor="let header of attributesHeader">{{header}}</option>
+            </select>
+            <button class="btn btn-warning" type="button" id="btn-field-value" (click)="applyClassificationColor(fieldClassifiedSelected.value)">Appliquer</button>
+        </div>
+
+    </div>
+
+
   </div>
 
-  <div class="input-group mb-3">
-    <input #fieldToRm type="text" class="form-control" placeholder="Supprimer un champs" aria-label="Supprimer un champs" aria-describedby="btn-rm-field">
-    <button class="btn btn-danger" type="button" id="btn-rm-field" (click)="removeField(fieldToRm.value)">Supprimer</button>
-  </div>
 
 
-  <div class="input-group mb-3">
-    <span class="input-group-text">Sélection du champs</span>
-    <select #fieldSelected class="form-select" aria-label="Champs">
-        <option *ngFor="let header of attributesHeader">{{header}}</option>
-    </select>
-    <input #fieldValue type="text" class="form-control" placeholder="Définir une valeur" aria-label="Valeur" aria-describedby="btn-field-value">
-    <button class="btn btn-warning" type="button" id="btn-field-value" (click)="updateField(fieldSelected.value, fieldValue.value)">Mettre à jour</button>
-  </div>
 
-<div class="table-responsive">
+<div class="m-2 table-responsive">
 
     <table class="table table-striped">
         <thead class="table-dark">
