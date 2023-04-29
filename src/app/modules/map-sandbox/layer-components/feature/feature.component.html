@@ -1,8 +1,18 @@
-<li class="feature-content py-0 d-flex align-items-center pointer border-bottom">
+<li class="feature-content mx-2 d-flex align-items-center pointer border-bottom">
 
   <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
 
-    <div class="m-1">
+    <div class="me-2">
+      <div class="btn bg-transparent border-0 p-1" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
+      </div>
+
+      <div class="btn bg-transparent border-0 p-1" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
+      </div>
+    </div>
+
+    <div class="me-1">
 
       <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'Point'">
         <circle cx="12" cy="12" r="8" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
@@ -13,33 +23,23 @@
         <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') *1.5"/>
       </svg>
 
-      <svg height="15" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
-        <rect x="0" y="0" width="25" height="15" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')"/>
+      <svg height="16" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
+        <rect x="0" y="0" width="25" height="16" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')"/>
       </svg>
     </div>
 
-    <div class="">
-      {{feature.get('name')}}
-    </div>
+    {{feature.get('name')}}
 
     <div class="ms-auto">
 
-      <button class="ms-auto btn p-1 bg-transparent border-0" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
-      </button>
 
-
-      <button class="ms-auto btn p-1 bg-transparent border-0" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
-      </button>
-
-      <button class="btn m-0 bg-transparent border-0 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
+      <div class="btn bg-transparent border-0 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
-      </button>
+      </div>
 
-      <button class="btn m-0 bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
+      <div class="btn bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
-      </button>
+      </div>
 
     </div>
 

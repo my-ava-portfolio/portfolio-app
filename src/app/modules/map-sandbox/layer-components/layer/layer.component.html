@@ -11,21 +11,25 @@
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
         <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.container.uuid" [checked]="visible" (change)="visible = btnVisible.checked">
         <label class="p-1 bg-transparent border-0 pointer" [for]="'btnVisible' + layer.container.uuid" [ngClass]="visible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="visible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="visible ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
+          <fa-icon class="" [icon]="visible ? visibleIcon : invisibleIcon"></fa-icon>
         </label>
 
         <input #btnLocked type="checkbox" class="btn-check" [id]="'btnLocked' + layer.container.uuid" [checked]="locked" (change)="locked = btnLocked.checked">
         <label class="ms-auto p-1 bg-transparent border-0 pointer" [for]="'btnLocked' + layer.container.uuid" container="body" [ngbPopover]="locked ? 'Déverrouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="locked ? lockIcon : unLockIcon" size="xs"></fa-icon>
+          <fa-icon class="" [icon]="locked ? lockIcon : unLockIcon"></fa-icon>
         </label>
 
-        <div class="d-flex flex-column" [ngClass]="selected ? 'pe-auto' :  'pe-none'">
-          <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
-            <fa-icon class="" [icon]="upIcon" size="xs"></fa-icon>
+        <button class="ms-auto p-1 bg-transparent border-0" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="toggled ? toggleIcon : unToggleIcon"></fa-icon>
+        </button>
+
+        <div class="d-flex flex-row" [ngClass]="selected ? 'pe-auto' :  'pe-none'">
+          <button class="p- bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
+            <fa-icon class="" [icon]="upIcon"></fa-icon>
           </button>
 
           <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
-            <fa-icon class="" [icon]="downIcon" size="xs"></fa-icon>
+            <fa-icon class="" [icon]="downIcon"></fa-icon>
           </button>
 
         </div>
@@ -33,7 +37,7 @@
       </div>
 
       <div
-        class="d-flex flex-row pointer justify-content-start align-items-center flex-fill p-1"
+        class="d-flex flex-row pointer justify-content-center align-items-center flex-fill p-1"
         [ngClass]="selected ? 'fw-bold' :  'text-black'"
         (click)="selected = true"
         >
@@ -43,30 +47,27 @@
           <fa-icon *ngIf="layer.container.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon" size="xs"></fa-icon>
         </div>
 
-        <div class="layer-name">
+        <div class="layer-name fw-bold">
           <span>{{ layer.container.layerName }}</span>
         </div>
       </div>
 
 
       <button class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="openTable()" ngbPopover="Table des attributs" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="tableIcon" size="xs"></fa-icon>
+        <fa-icon class="" [icon]="tableIcon"></fa-icon>
       </button>
-      
-      <button class="ms-auto p-1 bg-transparent border-0" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="toggled ? toggleIcon : unToggleIcon" size="xs"></fa-icon>
-      </button>
+
 
       <div class="ms-auto d-flex flex-row" [ngClass]="selected ? 'd-block' : 'd-none'">
 
 
 
         <button class="ms-auto p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
+          <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
         </button>
 
         <button [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
+          <fa-icon class="" [icon]="disabledIcon"></fa-icon>
         </button>
 
       </div>
