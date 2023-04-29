@@ -66,17 +66,17 @@
           <fa-icon class="" [icon]="centerIcon"></fa-icon>
         </div>
         
-        <div class="pointer px-1" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="toggled ? toggleIcon : unToggleIcon"></fa-icon>
-        </div>
-
         <div class="pointer px-1" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
         </div>
 
+        <div class="pointer px-1" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="toggled ? toggleIcon : unToggleIcon"></fa-icon>
+        </div>
+
         <div class="pointer ms-auto" ngbPopover="Désélectionner" triggers="mouseenter:mouseleave" (click)="unSelectFeatures()">
           <fa-icon class="me-1" [icon]="clearIcon"></fa-icon>
-          <span>{{featuresIdSelected.length}} sélectionné(s) /{{layer.container.features.length}}</span>
+          <span>{{featuresIdSelected.length}} / {{layer.container.features.length}} sélectionné(s)</span>
         </div>
 
         <div [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="pointer ms-auto px-1 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
