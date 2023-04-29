@@ -37,8 +37,8 @@
       </div>
 
       <div
-        class="d-flex flex-row pointer justify-content-center align-items-center flex-fill p-1"
-        [ngClass]="selected ? 'fw-bold' :  'text-black'"
+        class="d-flex flex-row pointer justify-content-center align-items-center flex-fill p-1 "
+        [ngClass]="selected ? '' :  'text-black'"
         (click)="selected = true"
         >
         <div class="">
@@ -58,25 +58,7 @@
       </button>
 
 
-      <div class="ms-auto d-flex flex-row" [ngClass]="selected ? 'd-block' : 'd-none'">
-
-
-
-        <button class="ms-auto p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
-        </button>
-
-        <button [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="disabledIcon"></fa-icon>
-        </button>
-
-      </div>
-
-      <div class="ms-auto d-flex flex-row">
-
-        <button class="ms-auto p-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
-        </button>
+       <div class="ms-auto d-flex flex-row">
 
         <button class="p-1 bg-transparent border-0 text-black" (click)="openSettings()" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
@@ -86,19 +68,29 @@
 
     </div>
 
-    <div class="feature-container d-flex flex-row small mb-1" *ngIf="layer.container.features.length > 0">
+    <div class="feature-container d-flex flex-column small mb-1" *ngIf="layer.container.features.length > 0">
+
+      <div class="d-flex flex-row pointer justify-content-between align-items-center flex-fill mx-5">
+        <button class="ms-auto p-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
+        </button>
+        
+        <button class="bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
+        </button>
+
+        <button class="ms-auto bg-transparent border-0" ngbPopover="Désélectionner" triggers="mouseenter:mouseleave" (click)="unSelectFeatures()">
+          <fa-icon class="me-1" [icon]="clearIcon"></fa-icon>
+          <span>{{featuresIdSelected.length}} séléctionné(s)</span>
+        </button>
+
+        <button [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="removeIcon"></fa-icon>
+        </button>
+
+      </div>
+
       <ul [hidden]="toggled" id="featuresList" class="w-100 list-group list-unstyled list-group-flush mx-3 rounded" [id]="'featuresLayer-' + layer.container.uuid">
-
-        <li 
-        class="feature border-bottom" 
-        [ngClass]="featuresIdSelected.length > 0 && selected ? 'bg-opacity-25' : ''" 
-        (click)="unSelectFeatures()"
-        >
-          <div class="feature d-flex flex-row pointer justify-content-center align-items-center flex-fill m-1">
-            <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>Désélectionner
-          </div>
-
-        </li>
 
         <ng-container *ngFor="let feature of layer.container.features">
           <app-feature

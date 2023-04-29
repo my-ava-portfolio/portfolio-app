@@ -1,7 +1,7 @@
 import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, OnDestroy, ViewChild } from '@angular/core';
-import { faLock, faTable, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
-import { faClone, faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
+import { faLock, faTable, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand, faBroom } from '@fortawesome/free-solid-svg-icons';
+import { faClone, faMinusSquare, faPlusSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
 import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
@@ -30,7 +30,8 @@ export class LayerComponent implements OnInit, OnDestroy {
   addIcon = faCirclePlus;
   editIcon = faPencil;
   paramIcon = faGear;
-  disabledIcon = faXmark;
+  clearIcon = faBroom;
+  removeIcon = faTrashCan;
   EditIcon = faCircle;
   pointIcon = faCircle;
   lineStringIcon = faWaveSquare;
