@@ -1,19 +1,16 @@
-<li class="feature-content mx-2 d-flex align-items-center pointer border-bottom">
+<li class="pointer feature-item mx-4 d-flex flex-row align-items-center border-top">
 
-  <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
-
-    <div class="me-2">
-      
-      <button class="p-1 bg-transparent border-0" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="centerIcon"></fa-icon>
-      </button>
-
-      <button class="p-1 bg-transparent border-0" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
-      </button>
+  <div class="me-2 d-flex flex-row small">
+    <div class="tool p-1 bg-transparent border-0" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="centerIcon"></fa-icon>
     </div>
 
-    <div class="me-1">
+    <div class="tool p-1 bg-transparent border-0" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
+    </div>
+  </div>
+
+    <div class="me-2 d-flex flex-row small">
 
       <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'Point'">
         <circle cx="12" cy="12" r="8" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
@@ -29,22 +26,21 @@
       </svg>
     </div>
 
-    {{feature.get('name')}}
+    <span class="title small">{{feature.get('name')}}</span>
 
-    <div class="ms-auto">
+    <div class="ms-auto d-flex flex-row align-items-center" *ngIf="selected">
 
 
-      <button class="p-1 bg-transparent border-0 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
+      <div class="tool px-2 bg-transparent border-0 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="disabledIcon"></fa-icon>
-      </button>
+      </div>
 
-      <button class="btn bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="paramIcon"></fa-icon>
-      </button>
+      <div class="px-1 bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="paramIcon" size="1x"></fa-icon>
+      </div>
 
     </div>
 
-  </div>
 </li>
 
 

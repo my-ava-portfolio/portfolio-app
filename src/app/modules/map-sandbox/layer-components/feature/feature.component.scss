@@ -23,9 +23,13 @@
 	transition: opacity 0.5s!important;
 }
 
-.feature-content {
+.feature-item {
   animation-name: featureColorTransition;
   animation-duration: 0.5s;
+
+  &:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 
 @keyframes featureColorTransition {

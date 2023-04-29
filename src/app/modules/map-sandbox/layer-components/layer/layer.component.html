@@ -1,11 +1,11 @@
 
 
 <div
-  class="layer pointer d-flex flex-column small mt-1 mx-1 px-1 align-items-around"
+  class="layer d-flex flex-column small m-1 p-1 align-items-around"
   >
 
-    <div class="header d-flex flex-row border rounded"
-    [ngClass]="selected ? 'border-dark border-2' :  ''"
+    <div class="header d-flex flex-row align-items-center border rounded p-2 pointer"
+    [ngClass]="selected ? 'border-dark border-1' :  ''"
     >
 
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
@@ -24,23 +24,23 @@
             <fa-icon class="" [icon]="upIcon"></fa-icon>
           </button>
 
-          <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
+          <div class="-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
             <fa-icon class="" [icon]="downIcon"></fa-icon>
-          </button>
+          </div>
 
         </div>
 
       </div>
 
       <div
-        class="d-flex flex-row pointer justify-content-center align-items-center flex-fill p-1 "
+        class="d-flex flex-row pointer justify-content-center align-items-center flex-fill"
         [ngClass]="selected ? '' :  'text-black'"
         (click)="selected = true"
         >
-        <div class="">
-          <fa-icon *ngIf="layer.container.geomType === 'Point'" class="me-2" [icon]="pointIcon" size="xs"></fa-icon>
-          <fa-icon *ngIf="layer.container.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon" size="xs"></fa-icon>
-          <fa-icon *ngIf="layer.container.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon" size="xs"></fa-icon>
+        <div class="me-2">
+          <fa-icon *ngIf="layer.container.geomType === 'Point'" [icon]="pointIcon"></fa-icon>
+          <fa-icon *ngIf="layer.container.geomType === 'LineString'" [icon]="lineStringIcon"></fa-icon>
+          <fa-icon *ngIf="layer.container.geomType === 'Polygon'" [icon]="polygonIcon"></fa-icon>
         </div>
 
         <div class="layer-name fw-bold">
@@ -49,44 +49,44 @@
       </div>
 
 
-      <button class="p-1 bg-transparent border-0 text-danger" (click)="openTable()" ngbPopover="Table des attributs" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="tableIcon"></fa-icon>
-      </button>
+      <div class="px-1 bg-transparent border-0 text-primary" (click)="openTable()" ngbPopover="Table des attributs" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="tableIcon" size="1x"></fa-icon>
+      </div>
 
-      <button class="p-1 bg-transparent border-0 text-black" (click)="openSettings()" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="paramIcon"></fa-icon>
-      </button>
+      <div class="px-1 bg-transparent border-0 text-black" (click)="openSettings()" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="paramIcon" size="1x"></fa-icon>
+      </div>
 
 
     </div>
 
     <div class="feature-container d-flex flex-column mb-1" *ngIf="layer.container.features.length > 0">
 
-      <div class="d-flex flex-row justify-content- align-items- flex-fill mx-3">
-        <button class="p-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
+      <div class="d-flex flex-row justify-content-around align-items-center flex-fill mx-3">
+        <button class="px-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="centerIcon"></fa-icon>
         </button>
         
-        <button class="p-1 bg-transparent border-0" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
+        <div class="bg-transparent border-0" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="toggled ? toggleIcon : unToggleIcon"></fa-icon>
-        </button>
+        </div>
 
-        <button class="bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
+        <div class="px-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
-        </button>
+        </div>
 
-        <button class="ms-auto bg-transparent border-0" ngbPopover="Désélectionner" triggers="mouseenter:mouseleave" (click)="unSelectFeatures()">
+        <div class="ms-auto bg-transparent border-0" ngbPopover="Désélectionner" triggers="mouseenter:mouseleave" (click)="unSelectFeatures()">
           <fa-icon class="me-1" [icon]="clearIcon"></fa-icon>
           <span>{{featuresIdSelected.length}} séléctionné(s) /{{layer.container.features.length}}</span>
-        </button>
+        </div>
 
-        <button [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
+        <div [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="removeIcon"></fa-icon>
-        </button>
+        </div>
 
       </div>
 
-      <ul [hidden]="toggled" id="featuresList" class="w-100 list-group list-unstyled list-group-flush mx-3 rounded" [id]="'featuresLayer-' + layer.container.uuid">
+      <ul [hidden]="toggled" id="featuresList" class="list-unstyled m-0" [id]="'featuresLayer-' + layer.container.uuid">
 
         <ng-container *ngFor="let feature of layer.container.features">
           <app-feature
