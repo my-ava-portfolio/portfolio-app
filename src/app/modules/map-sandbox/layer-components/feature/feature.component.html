@@ -1,13 +1,13 @@
-<li class="pointer feature-item mx-4 py-1 d-flex flex-row align-items-center border-top">
+<li class="pointer feature-item mx-4 py-1 d-flex flex-row align-items-around border-top">
 
-  <div class="me-2 d-flex flex-row align-items-evenly small">
-    <button class="tool bg-transparent border-0" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
+  <div class="me-2 d-flex flex-row">
+    <div class="px-1" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
       <fa-icon class="" [icon]="centerIcon"></fa-icon>
-    </button>
+    </div>
 
-    <button class="tool bg-transparent border-0" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
+    <div class="px-1" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
       <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
-    </button>
+    </div>
   </div>
 
     <div class="me-2 d-flex flex-row small">
