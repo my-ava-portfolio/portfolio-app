@@ -31,11 +31,11 @@
     <div class="ms-auto d-flex flex-row align-items-center" *ngIf="selected">
 
 
-      <div class="tool px-2 bg-transparent border-0 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
+      <div class="px-2 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="disabledIcon"></fa-icon>
       </div>
 
-      <div class="px-1 bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
+      <div class="px-1 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="paramIcon" size="1x"></fa-icon>
       </div>
 
