@@ -47,15 +47,9 @@
         </div>
       </div>
 
-
-      <div class="px-1 text-primary" (click)="openTable()" ngbPopover="Table des attributs" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="tableIcon" size="1x"></fa-icon>
-      </div>
-
       <div class="px-1 text-black" (click)="openSettings()" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="paramIcon" size="1x"></fa-icon>
       </div>
-
 
     </div>
 
@@ -114,22 +108,10 @@
 </div>
 
 
-
-
-<set-modal #modalLayerSettings title="Paramètres de la couche">
+<set-modal #modalLayerSettings [title]="'Paramètres de la couche : ' + layer.container.layerName">
  
     <app-layer-settings
       [layer]="layer"
     ></app-layer-settings>
 
 </set-modal>
-
-
-<set-modal #modalLayerTable title="Gestion et représentation des attributs">
- 
-  <app-layer-table
-    [layer]="layer"
-  ></app-layer-table>
-
-</set-modal>
-

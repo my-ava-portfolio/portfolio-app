@@ -8,3 +8,11 @@ export type polygonType = 'Polygon'
 export type geomLayerTypes = pointType | lineStringType | polygonType;
 
 export type featuresLayerType = Partial<Record<geomLayerTypes, Feature[]>>
+
+
+// classification
+
+export type categoryClass = {
+    class: string;
+    color: string |null;
+}

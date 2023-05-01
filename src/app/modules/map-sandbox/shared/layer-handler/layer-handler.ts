@@ -5,7 +5,7 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { v4 as uuidv4 } from 'uuid';
 import { Feature } from "ol";
-import { featuresLayerType, geomLayerTypes, lineStringType, pointType, polygonType } from '../data-types';
+import { categoryClass, featuresLayerType, geomLayerTypes, lineStringType, pointType, polygonType } from '../data-types';
 import { getRandomDefaultColor, defaultStrokeColor, defaultStrokeWidth, hexColorReg } from "../style-helper";
 import { click, altKeyOnly } from 'ol/events/condition';
 import { LineString, Polygon, LinearRing, Geometry } from 'ol/geom';
@@ -287,26 +287,27 @@ export class baseLayer{
 
 
 export class layerHandler {
-    private _headerHidden = ['geometry', 'id', 'no', 'geom_type', 'created_at',
-      'updated_at', 'fill_color', 'stroke_width', 'stroke_color']
-    container!: baseLayer;
+  private _headerHidden = ['geometry', 'id', 'no', 'geom_type', 'created_at',
+    'updated_at', 'fill_color', 'stroke_width', 'stroke_color']
+  container!: baseLayer;
 
-    private _map: Map
-    // var for polygon holes
-    private holePolygonDrawingStatus = false;  // TODO add GUI option to play with it
-    private polygonIntersected!: Feature | undefined;
-    private coordsLength!: number;
-    private previousPolygonGeometry!: any;
-    private _propertyStyled!: string | null;
+  private _map: Map
+  // var for polygon holes
+  private holePolygonDrawingStatus = false;  // TODO add GUI option to play with it
+  private polygonIntersected!: Feature | undefined;
+  private coordsLength!: number;
+  private previousPolygonGeometry!: any;
+  private _propertyStyled!: string;
+  private _propertiesStyled: categoryClass[] = []
   
-    private _draw!: Draw;
-    private _snap!: Snap;
-    private _translate!: Translate;
-    private _modifier!: Modify;
-    select!: Select;
-    
-    _zoomPadding = [100, 100, 100, 200];  // TODO set as a global var (use by layer-manager)
-    _maxZoom = 14;
+  private _draw!: Draw;
+  private _snap!: Snap;
+  private _translate!: Translate;
+  private _modifier!: Modify;
+  select!: Select;
+  
+  _zoomPadding = [100, 100, 100, 200];  // TODO set as a global var (use by layer-manager)
+  _maxZoom = 14;
 
 
     constructor(
@@ -323,30 +324,45 @@ export class layerHandler {
         this._map.addLayer(this.container.layer);
     }
 
-  set propertyStyledByCategory(propertyName: string | null) {
-    if (propertyName !== null) {
-      let uniqueValues: any[] = []
-      this.container.features.forEach((feature: Feature) => {
-        const value = feature.get(propertyName)
-        if (!uniqueValues.includes(value)) {
-          uniqueValues.push(value)
-        }
-      })
-    
-      uniqueValues.forEach((value: any) => {
-        const randomColor = getRandomDefaultColor();
-        this.container.features.forEach((feature: Feature) => {
-          if (value === feature.get(propertyName)) {
-            feature.set('fill_color', randomColor)
-          }
-        })
-      })
-    }
+  set propertyStyledByCategory(propertyName: string) {
+    this._propertiesStyled = []
+    let uniqueValues: any[] = []
+    this.container.features.forEach((feature: Feature) => {
+      const value = feature.get(propertyName)
+      if (!uniqueValues.includes(value)) {
+        uniqueValues.push(value)
+      }
+    })
+  
+    uniqueValues.forEach((value: any) => {
+      const randomColor = getRandomDefaultColor();
+      this._propertiesStyled.push({ 'class': value, 'color': null}) 
+      this.setStyleforFeaturesValue(propertyName, value, randomColor)
+    })
     this._propertyStyled = propertyName
   }
 
-  get propertyStyledByCategory(): string | null {
+  get propertyStyledByCategory(): string {
     return this._propertyStyled
+  }
+
+  get propertiesStyled(): categoryClass[] {
+    return this._propertiesStyled
+  }
+
+  setStyleforFeaturesValue(propertyName: string, value: any, color: string): void {
+    this._propertiesStyled.forEach((classItem: categoryClass) => {
+      // change the category map and color features
+      if (classItem.class === value) {
+        classItem.color = color
+
+        this.container.features.forEach((feature: Feature) => {
+          if (value === feature.get(propertyName)) {
+            feature.set('fill_color', color)
+          }
+        })
+      }
+    })
   }
 
   removeLayer(): void {

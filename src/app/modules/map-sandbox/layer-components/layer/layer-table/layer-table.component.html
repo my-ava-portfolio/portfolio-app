@@ -49,6 +49,20 @@
             <button class="btn btn-warning" type="button" id="btn-field-value" (click)="applyCategoryColors(fieldClassifiedSelected.value)">Appliquer</button>
         </div>
 
+        <div>
+            <span class="fs-4" *ngIf="layer.propertiesStyled.length > 0">Classes :</span>
+            <div class="d-flex flex-row ms-2 my-1" *ngFor="let item of layer.propertiesStyled">
+                <span class="w-25">{{item.class}}</span>
+                <div class="d-flex flex-row align-items-center">
+                    <input #layerStrokeColor type="color" id="strokeColor" class="fillColor pointer border-0" [value]="item.color" (change)="layer.setStyleforFeaturesValue(fieldClassifiedSelected.value, item.class, layerStrokeColor.value)"/>
+                    <label for="strokeColor"></label>
+                    <input #textLayerStrokeColor type="text" id="textStrokeColor" class="fillColor p-0 border-1" [value]="item.color" (change)="layer.setStyleforFeaturesValue(fieldClassifiedSelected.value, item.class, layerStrokeColor.value)"/>
+                    <label for="textStrokeColor"></label>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
 </div>

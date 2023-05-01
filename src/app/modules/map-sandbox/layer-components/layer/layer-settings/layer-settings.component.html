@@ -11,10 +11,10 @@
     </li>
 
     <li ngbNavItem>
-      <a ngbNavLink class="fw-bold">Style de la couche</a>
+      <a ngbNavLink class="fw-bold">Attributs</a>
       <ng-template ngbNavContent>
         <div class="d-flex flex-column">
-          <ng-container *ngTemplateOutlet="ngNavLayerStyling; context:{layerObject: layer}"></ng-container>
+          <ng-container *ngTemplateOutlet="ngNavLayerAttributes; context:{layerObject: layer}"></ng-container>
         </div>
       </ng-template>
     </li>
@@ -35,83 +35,57 @@
 
 <ng-template #ngNavLayerGeneral let-layerObject='layer'>
     <span class="fs-4 my-2">Informations générales</span>
-  
-    <div class="d-flex flex-row align-items-center my-2">
-      <span class="fs-6 me-2">Nom de la couche :</span>
-      <input #layerName type="text" class="form-control w-50" [placeholder]="layer.container.layerName" aria-label="layerName" (change)="layer.container.layerName = layerName.value">
+
+    <div class="d-flex flex-column ms-3">
+
+      <div class="d-flex flex-row align-items-center my-2">
+        <span class="fs-5 me-2">Nom de la couche :</span>
+        <input #layerName type="text" class="form-control w-50" [placeholder]="layer.container.layerName" aria-label="layerName" (change)="layer.container.layerName = layerName.value">
+      </div>
+    
+      <div class="d-flex flex-row align-items-center my-2">
+        <span class="fs-5 me-2">Type de la géométrie :</span>
+        <span>{{layer.container.geomType}}</span>
+      </div>
+    
+      <div class="d-flex flex-column my-2">
+        <span class="fs-5">Bounding box  de la couche:</span>
+        <span class="ms-3">x min, x max: {{layer.exportBounds()[0]}}, {{layer.exportBounds()[2]}}</span>
+        <span class="ms-3">y min, y max: {{layer.exportBounds()[1]}}, {{layer.exportBounds()[3]}}</span>
+      </div>
     </div>
-  
-    <div class="d-flex flex-row align-items-center my-2">
-      <span class="fs-6 me-2">Type de la géométrie :</span>
-      <span>{{layer.container.geomType}}</span>
-    </div>
-  
-    <div class="d-flex flex-column my-2">
-      <span class="fs-6">Bounding box  de la couche:</span>
-      <span class="ms-3">x min, x max: {{layer.exportBounds()[0]}}, {{layer.exportBounds()[2]}}</span>
-      <span class="ms-3">y min, y max: {{layer.exportBounds()[1]}}, {{layer.exportBounds()[3]}}</span>
-    </div>
-  
-  </ng-template>
-  
-  
-  <ng-template #ngNavLayerStyling let-layerObject='layer'>
+
+
     <span class="fs-4 my-2">Style global de la couche</span>
-  
-    <div class="d-flex flex-column my-2">
-      <span class="fs-5 me-2">Opacité :</span>
-      <div class="d-flex flex-row align-items-center ms-2">
-        <input #opacityInput class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layer.container.opacity" (change)="layer.container.opacity = opacityInput.value"/>
-      </div>
-    </div>
-  
-    <ul class="nav nav-pills align-items-center justify-content-center" role="tablist">
-      <li class="nav-item border m-1" role="presentation">
-        <a class="nav-link fw-bold active" data-bs-toggle="tab" [attr.data-bs-target]="'#uniqueColor' + layer.container.uuid" type="button" role="tab">
-          Symbole unique
-        </a>
-      </li>
-      <li class="nav-item border m-1" role="presentation">
-        <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#categoryColor' + layer.container.uuid" type="button" role="tab">
-          Catégorisé
-        </a>
-      </li>
-  
-      <li class="nav-item border m-1" role="presentation">
-        <a class="nav-link fw-bold" data-bs-toggle="tab" [attr.data-bs-target]="'#quantitativeColor' + layer.container.uuid" type="button" role="tab">
-          Gradué
-        </a>
-      </li>
-  
-    </ul>
+    
+    <div class="d-flex flex-column ms-3">
 
-    <div class="d-flex flex-row mx-2 tab-content" id="'StylingTabContent' + layer.container.id">
-  
-      <div class="tab-pane fade w-100 show active" [id]="'uniqueColor' + layer.container.uuid" role="tabpanel">
-        <app-widget-color 
-          [fillColor]="layer.container.fillColor"
-          [strokeColor]="layer.container.strokeColor"
-          [strokeWidth]="layer.container.strokeWidth"
-          (fillColorEvent)="layer.container.fillColor = $event"
-          (strokeColorEvent)="layer.container.strokeColor = $event"  
-          (strokeWidthEvent)="layer.container.strokeWidth = $event"
-        ></app-widget-color>
+      <div class="d-flex flex-column my-2">
+        <span class="fs-5 me-2">Opacité :</span>
+        <div class="d-flex flex-row align-items-center ms-2">
+          <input #opacityInput class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layer.container.opacity" (change)="layer.container.opacity = opacityInput.value"/>
+        </div>
       </div>
-  
-      <div class="tab-pane fade w-100 show" [id]="'categoryColor' + layer.container.uuid" role="tabpanel">
-      </div>
-  
-      <div class="tab-pane fade w-100 show" [id]="'quantitativeColor' + layer.container.uuid" role="tabpanel">
-      </div>
-  
+    
+      <app-widget-color 
+        [fillColor]="layer.container.fillColor"
+        [strokeColor]="layer.container.strokeColor"
+        [strokeWidth]="layer.container.strokeWidth"
+        (fillColorEvent)="layer.container.fillColor = $event"
+        (strokeColorEvent)="layer.container.strokeColor = $event"  
+        (strokeWidthEvent)="layer.container.strokeWidth = $event"
+      ></app-widget-color>
     </div>
 
   </ng-template>
-
-
-
-
   
+  <ng-template #ngNavLayerAttributes let-layerObject='layer'>
+    <app-layer-table
+      [layer]="layer"
+    ></app-layer-table>
+  </ng-template>
+
+ 
   
   
   <ng-template #ngNavLayerExporting let-layerObject='layer'>
