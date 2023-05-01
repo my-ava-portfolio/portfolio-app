@@ -357,7 +357,8 @@ export class layerHandler {
         classItem.color = color
       }
     })
-    // refreh all the style by default to manage all the cases
+    // TOOD add refresh function
+    // refresh all the style by default to manage all the cases
     this.container.features.forEach((feature: Feature) => {
       this._propertiesStyled.forEach((classItem: categoryClass) => {
         if (feature.get(propertyName) === classItem.class)
