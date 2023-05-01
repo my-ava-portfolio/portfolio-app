@@ -5,10 +5,10 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { v4 as uuidv4 } from 'uuid';
 import { Feature } from "ol";
-import { categoryClass, featuresLayerType, geomLayerTypes, lineStringType, pointType, polygonType } from '../data-types';
+import { categoryClass, featuresLayerType, geomLayerTypes, polygonType } from '../data-types';
 import { getRandomDefaultColor, defaultStrokeColor, defaultStrokeWidth, hexColorReg } from "../style-helper";
 import { click, altKeyOnly } from 'ol/events/condition';
-import { LineString, Polygon, LinearRing, Geometry } from 'ol/geom';
+import { LineString, Polygon, LinearRing } from 'ol/geom';
 import { Draw, Snap, Translate, Modify, Select } from 'ol/interaction';
 import WKT from 'ol/format/WKT';
 import { Fill, Stroke, Style } from 'ol/style';
@@ -20,12 +20,14 @@ import { StyleLike } from 'ol/style/Style';
 export class baseLayer{  
   private _vectorLayer!: VectorLayer<any>;
   private _sourceFeatures!: VectorSource;
+  private _propertyStyled!: string | null;
 
   // common style
   private _fillColor: string = getRandomDefaultColor();
   private _strokeColor: string = defaultStrokeColor;
   private _strokeWidth: string = "" + defaultStrokeWidth;
-  
+  private _styleSettings!: categoryClass[];
+
   private _locked: boolean = false;
   private _featuresToggled: boolean = false;
   private _featuresCounter: number = 0
@@ -39,185 +41,199 @@ export class baseLayer{
     this._initLayer(layerName, geomType, zIndexValue);
   }
   
-    get layer(): VectorLayer<any> {
-        return this._vectorLayer
-    }
+  get layer(): VectorLayer<any> {
+      return this._vectorLayer
+  }
 
-    get layerName(): string {
-        return this._getLayerAttributes('name')
-    }
-    set layerName(name: string) {
-        this.layer.set('name', name)
-    }
+  get layerName(): string {
+      return this._getLayerAttributes('name')
+  }
+  set layerName(name: string) {
+      this.layer.set('name', name)
+  }
 
-    get geomType(): geomLayerTypes {
-        return this._getLayerAttributes('geom_type');
-    }
+  get geomType(): geomLayerTypes {
+      return this._getLayerAttributes('geom_type');
+  }
 
-    get sourceFeatures(): VectorSource {
-        return this._sourceFeatures
-    }
+  get sourceFeatures(): VectorSource {
+      return this._sourceFeatures
+  }
 
-    get zIndex(): number {
-        return this.layer.getZIndex()
-    }
-    set zIndex(value: number) {
-        this.layer.setZIndex(value)
-    }
+  get zIndex(): number {
+      return this.layer.getZIndex()
+  }
+  set zIndex(value: number) {
+      this.layer.setZIndex(value)
+  }
 
-    get uuid(): string {
-        return this._getLayerAttributes('uuid');
-    }
+  get uuid(): string {
+      return this._getLayerAttributes('uuid');
+  }
 
-    set visible(enabled: boolean) {
-        this.layer.setVisible(enabled)
-      }
-    
-    get visible(): boolean {
-          return this.layer.getVisible()
-      }
-    
-    set featuresToggled(enabled: boolean) {
-      this._featuresToggled = enabled
-    }
-    
-    get featuresToggled(): boolean {
-        return this._featuresToggled
+  set visible(enabled: boolean) {
+      this.layer.setVisible(enabled)
     }
   
-    set locked(enabled: boolean) {
-        this._locked = enabled
-      }
-    
-    get locked(): boolean {
-          return this._locked
+  get visible(): boolean {
+        return this.layer.getVisible()
     }
 
-    set opacity(event: any) {
-        this.layer.setOpacity(event.target.valueAsNumber)
+  set propertyStyled(property: string | null) {
+    this._propertyStyled = property
+  }
+    
+  get propertyStyled(): string | null {
+    return this._propertyStyled
+  }
+  
+  set styleSettings(style: categoryClass[]) {
+    this._styleSettings = style
+  }
+    
+  get styleSettings(): categoryClass[] {
+    return this._styleSettings
+  }
+      
+  set featuresToggled(enabled: boolean) {
+    this._featuresToggled = enabled
+  }
+  
+  get featuresToggled(): boolean {
+      return this._featuresToggled
+  }
+
+  set locked(enabled: boolean) {
+      this._locked = enabled
     }
   
-    get opacity(): number {
-        return this.layer.getOpacity()
-    }
+  get locked(): boolean {
+        return this._locked
+  }
 
-    public get fillColor(): string {
-        // main style
-        return this._fillColor;
-    }
+  set opacity(event: any) {
+      this.layer.setOpacity(event.target.valueAsNumber)
+  }
 
-    public set fillColor(color: string) {
-        if (hexColorReg.test(color)) {
-        this.features.forEach((feature: Feature) => {
-            feature.set("fill_color", color, false)
-        })
-        this._fillColor = color
-        };
-    }
+  get opacity(): number {
+      return this.layer.getOpacity()
+  }
 
-    public get strokeColor(): string {
-        // main style
-        return this._strokeColor;
-    }
+  public get fillColor(): string {
+    return this._fillColor;
+  }
 
-    public set strokeColor(color: string) {
-        if (hexColorReg.test(color)) {
-        this.features.forEach((feature: Feature) => {
-            feature.set("stroke_color", color, false)
-        })
-        this._strokeColor = color
-        };
-    }
+  public set fillColor(color: string) {
+    if (hexColorReg.test(color)) {
+    this.features.forEach((feature: Feature) => {
+        feature.set("fill_color", color, false)
+    })
+    this._fillColor = color
+    };
+  }
 
-    public get strokeWidth(): string {
-        // main style
-        return this._strokeWidth;
-    }
+  public get strokeColor(): string {
+    return this._strokeColor;
+  }
 
-    public set strokeWidth(width: string) {
-        this._strokeWidth = width
-        this.features.forEach((feature: Feature) => {
-        feature.set("stroke_width", parseFloat(width), false)
-        })
-    }
+  public set strokeColor(color: string) {
+    if (hexColorReg.test(color)) {
+    this.features.forEach((feature: Feature) => {
+        feature.set("stroke_color", color, false)
+    })
+    this._strokeColor = color
+    };
+  }
 
-    private _initLayer(layerName: string, geomType: geomLayerTypes, zIndexValue: number): void {
-        this._sourceFeatures = new VectorSource();
-    
-        this._vectorLayer = new VectorLayer({
-          source: this._sourceFeatures,
-          style: (feature: any, _: any): any => {
-            return refreshFeatureStyle(feature)
-          }
-        });
+  public get strokeWidth(): string {
+    // main style
+    return this._strokeWidth;
+  }
 
-        this.layerName = layerName
-        this.layer.set('uuid', uuidv4())
-        this.layer.set('geom_type', geomType)
-        this.zIndex = zIndexValue;
-    }
+  public set strokeWidth(width: string) {
+    this._strokeWidth = width
+    this.features.forEach((feature: Feature) => {
+    feature.set("stroke_width", parseFloat(width), false)
+    })
+  }
 
-    private _getLayerAttributes(attribute: string): any {
-        return this.layer.get(attribute)
-    }
+  private _initLayer(layerName: string, geomType: geomLayerTypes, zIndexValue: number): void {
+    this._sourceFeatures = new VectorSource();
 
-    get features(): Feature[] {
-        return  this._sourceFeatures.getFeatures().sort((feat1: Feature, feat2: Feature) => {
-            return feat1.get('no') - feat2.get('no');
-        });
-    }
-
-    featureById(featureId: string) : Feature[] {
-        const featureFound = this.sourceFeatures.getFeatureById(featureId)
-        if (featureFound !== null) {
-            return [featureFound]
-        }
-        return []
-    }
-
-    duplicateFeature(featureId: string): void {
-        const featureFound = this.featureById(featureId)
-        if (featureFound.length === 1) {
-          const newFeature = this.addProperties(featureFound[0].clone())
-          this.sourceFeatures.addFeature(newFeature)
-        }
+    this._vectorLayer = new VectorLayer({
+      source: this._sourceFeatures,
+      style: (feature: any, _: any): any => {
+        return refreshFeatureStyle(feature)
       }
-    
-    removeFeature(featureId: string): void {
-        const featureFound = this.featureById(featureId)
-        if (featureFound.length === 1) {
-          this.sourceFeatures.removeFeature(featureFound[0]);
-        }
-    }
+    });
 
-    addProperties(feature: Feature): any {
-        // TODO synchronize properties after the call of this func
-        ++this._featuresCounter;
-        const uuid = uuidv4()
-        feature.setId(uuid)
-    
-        let name!: string;
-        if (feature.get("name") !== undefined) {
-          name = feature.get("name") + " copy"
-        } else {
-          name = 'feature ' + this._featuresCounter
-        }
-        // TOOD add the layerName ? 
-        feature.setProperties({
-          'id': feature.getId(),
-          // 'layer_id': this.uuid,
-          'no': this._featuresCounter,
-          'name': name,
-          'geom_type': feature.getGeometry()?.getType(),
-          "status": "added",
-          'created_at': new Date().toISOString(),
-          'updated_at': new Date().toISOString(),
-          'fill_color': this.fillColor,
-          'stroke_width': this.strokeWidth,
-          'stroke_color':  this.strokeColor
-        }, true)
-        return feature
+    this.layerName = layerName
+    this.layer.set('uuid', uuidv4())
+    this.layer.set('geom_type', geomType)
+    this.zIndex = zIndexValue;
+  }
+
+  private _getLayerAttributes(attribute: string): any {
+      return this.layer.get(attribute)
+  }
+
+  get features(): Feature[] {
+      return  this._sourceFeatures.getFeatures().sort((feat1: Feature, feat2: Feature) => {
+          return feat1.get('no') - feat2.get('no');
+      });
+  }
+
+  featureById(featureId: string) : Feature[] {
+      const featureFound = this.sourceFeatures.getFeatureById(featureId)
+      if (featureFound !== null) {
+          return [featureFound]
+      }
+      return []
+  }
+
+  duplicateFeature(featureId: string): void {
+      const featureFound = this.featureById(featureId)
+      if (featureFound.length === 1) {
+        const newFeature = this.addProperties(featureFound[0].clone())
+        this.sourceFeatures.addFeature(newFeature)
+      }
     }
+  
+  removeFeature(featureId: string): void {
+      const featureFound = this.featureById(featureId)
+      if (featureFound.length === 1) {
+        this.sourceFeatures.removeFeature(featureFound[0]);
+      }
+  }
+
+  addProperties(feature: Feature): any {
+      // TODO synchronize properties after the call of this func
+      ++this._featuresCounter;
+      const uuid = uuidv4()
+      feature.setId(uuid)
+  
+      let name!: string;
+      if (feature.get("name") !== undefined) {
+        name = feature.get("name") + " copy"
+      } else {
+        name = 'feature ' + this._featuresCounter
+      }
+      // TOOD add the layerName ? 
+      feature.setProperties({
+        'id': feature.getId(),
+        // 'layer_id': this.uuid,
+        'no': this._featuresCounter,
+        'name': name,
+        'geom_type': feature.getGeometry()?.getType(),
+        "status": "added",
+        'created_at': new Date().toISOString(),
+        'updated_at': new Date().toISOString(),
+        'fill_color': this.fillColor,
+        'stroke_width': this.strokeWidth,
+        'stroke_color':  this.strokeColor
+      }, true)
+      return feature
+  }
 
     private _updateMetadataFeature(feature: Feature): void {
         feature.setProperties({
@@ -297,7 +313,7 @@ export class layerHandler {
   private polygonIntersected!: Feature | undefined;
   private coordsLength!: number;
   private previousPolygonGeometry!: any;
-  
+
   private _draw!: Draw;
   private _snap!: Snap;
   private _translate!: Translate;
@@ -308,20 +324,20 @@ export class layerHandler {
   _maxZoom = 14;
 
 
-    constructor(
-        map: Map,
-        container: baseLayer
+  constructor(
+      map: Map,
+      container: baseLayer
     ) {
-        this.container = container
-        this._map = map
+    this.container = container
+    this._map = map
 
-        this._initSelect();
-        this._initTranslate();
-        this._initSnap();
-        this._initModifier();
-        this._map.addLayer(this.container.layer);
-    }
-
+    this._initSelect();
+    this._initTranslate();
+    this._initSnap();
+    this._initModifier();
+    this._map.addLayer(this.container.layer);
+  }
+  
   removeLayer(): void {
       this._map.removeLayer(this.container.layer)
   }      

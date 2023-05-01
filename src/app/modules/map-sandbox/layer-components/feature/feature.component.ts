@@ -4,6 +4,7 @@ import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { layerHandler, getWkt } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import Feature from 'ol/Feature';
 import { Geometry } from 'ol/geom';
+import { categoryClass } from '@modules/map-sandbox/shared/data-types';
 
 
 @Component({
@@ -106,16 +107,6 @@ export class FeatureComponent implements OnInit {
     document.body.removeChild(selBox);
   }
 
-  updateFillColor(color: string): void {
-    this.feature.set("fill_color", color, true)
-  }
-  updateStrokeWidth(width: string): void {
-    this.feature.set("stroke_width", width, true)
-  }
-  updateStrokeColor(color: string): void {
-    this.feature.set("stroke_color", color, true)
-  }
-
   getWktFromFeature(): string {
     return getWkt(this.geometry)
   }
@@ -123,6 +114,17 @@ export class FeatureComponent implements OnInit {
   getBoundsFromFeature(): string {
     // xmin, ymin, xmax, ymax
     return this.geometry.getExtent().join(', ')
+  }
+
+  applyClassifiedStyle(): void {
+    const propertyName = this.layer.container.propertyStyled
+    if (propertyName !== null) {
+      this.layer.container.styleSettings.forEach((classItem: categoryClass) => {
+        if (this.feature.get(propertyName) === classItem.class)
+          this.feature.set('fill_color', classItem.color)
+      })
+    }
+
   }
 }
 

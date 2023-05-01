@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import Feature from 'ol/Feature';
 
 @Component({
@@ -11,4 +11,10 @@ export class WidgetTableComponent {
   @Input() attributesHeaders!: string[];
   @Input() features!: Feature[];
 
+  @Output() edited = new EventEmitter<boolean>();
+
+
+  sendEditedEvent(): void {
+    this.edited.emit(true)
+  }
 }

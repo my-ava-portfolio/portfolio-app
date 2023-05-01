@@ -1,31 +1,29 @@
 <div class="d-flex flex-row fs-6 title">
-    <span class="text-decoration-underline mb-2 fw-bold">{{this.layer.container.layerName}}</span>
+    <span class="text-decoration-underline mb-2 fw-bold">{{layer.container.layerName}}</span>
 </div>
 
 <ul class="list-unstyled m-0">
-    <li *ngFor="let feature of layer.container.features">
+    <li *ngFor="let style of layer.container.styleSettings">
         <div
         class="d-flex flex-row align-items-center px-2 mx-2 pointer"
-        [ngClass]="featureIdSelected == feature.getId() ? 'bg-secondary bg-opacity-25 rounded' : ''"
-        (click)="selectFeatureById(feature.getId())"
         >
 
             <div class="me-1">
-                <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'Point'">
-                    <circle cx="12" cy="12" r="8" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
+                <svg height="25" width="25" *ngIf="layer.container.geomType === 'Point'">
+                    <circle cx="12" cy="12" r="8" [attr.stroke]="layer.container.strokeColor" [attr.stroke-width]="1" [attr.fill]="style.color" />
                 </svg>
             
-                <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'LineString'">
-                    <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * 2"/>
-                    <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') *1.5"/>
+                <svg height="25" width="25" *ngIf="layer.container.geomType === 'LineString'">
+                    <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="layer.container.strokeColor" [attr.stroke-width]="2"/>
+                    <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="style.color" [attr.stroke-width]="1.5"/>
                 </svg>
             
-                <svg height="15" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
-                    <rect x="0" y="0" width="25" height="15" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')"/>
+                <svg height="15" width="25" *ngIf="layer.container.geomType === 'Polygon'">
+                    <rect x="0" y="0" width="25" height="15" [attr.stroke]="layer.container.strokeColor" [attr.stroke-width]="1.5" [attr.fill]="style.color"/>
                 </svg>
             </div>
 
-            <span class="small">{{feature.get('name')}}</span>
+            <span class="small">{{style.class}}</span>
             
         </div>
     </li>

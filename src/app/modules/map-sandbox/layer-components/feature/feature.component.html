@@ -82,23 +82,10 @@
           <span>Modifié à {{ feature.get('updated_at') | date: 'HH:mm:ss' }}</span>
         </div>
         
-        <div class="d-flex flex-column my-3">
-          <h6 class="">Style</h6>
-
-          <app-widget-color 
-            [fillColor]="feature.get('fill_color')"
-            [strokeColor]="feature.get('stroke_color')"
-            [strokeWidth]="feature.get('stroke_width')"
-            (fillColorEvent)="updateFillColor($event)"
-            (strokeColorEvent)="updateStrokeColor($event)"  
-            (strokeWidthEvent)="updateStrokeWidth($event)"
-          ></app-widget-color>
-
-        </div>
-
         <app-widget-table
           [attributesHeaders]="layer.getAttributesHeader()"
           [features]="[feature]"
+          (edited)="applyClassifiedStyle()"
         >
         </app-widget-table>
 

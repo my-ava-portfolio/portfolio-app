@@ -46,8 +46,7 @@
             <select #fieldClassifiedSelected class="form-select" aria-label="Champs">
                 <option *ngFor="let header of layer.getAttributesHeader()">{{header}}</option>
             </select>
-            <button class="btn btn-warning" type="button" id="btn-field-value" (click)="evaluateCategoriesStyling(fieldClassifiedSelected.value)">Evaluer</button>
-            <button class="btn btn-warning" type="button" id="btn-field-value" (click)="applyClassifiedStyle(fieldClassifiedSelected.value)">Appliquer</button>
+            <button class="btn btn-warning" type="button" id="btn-field-value" (click)="setCategoryClassesStyling(fieldClassifiedSelected.value)">Appliquer</button>
         </div>
 
         <div>
@@ -55,9 +54,9 @@
             <div class="d-flex flex-row ms-2 my-1" *ngFor="let item of propertiesStylingClassified">
                 <span class="w-25">{{item.class}}</span>
                 <div class="d-flex flex-row align-items-center">
-                    <input #layerStrokeColor type="color" id="strokeColor" class="fillColor pointer border-0" [value]="item.color" (change)="updateClassStyle(item.class, layerStrokeColor.value)"/>
+                    <input #layerStrokeColor type="color" id="strokeColor" class="fillColor pointer border-0" [value]="item.color" (change)="changeCategoryClassStyle(fieldClassifiedSelected.value, item.class, layerStrokeColor.value)"/>
                     <label for="strokeColor"></label>
-                    <input #textLayerStrokeColor type="text" id="textStrokeColor" class="fillColor p-0 border-1" [value]="item.color" (change)="updateClassStyle(item.class, layerStrokeColor.value)"/>
+                    <input #textLayerStrokeColor type="text" id="textStrokeColor" class="fillColor p-0 border-1" [value]="item.color" (change)="changeCategoryClassStyle(fieldClassifiedSelected.value, item.class, layerStrokeColor.value)"/>
                     <label for="textStrokeColor"></label>
                 </div>
 
@@ -71,6 +70,7 @@
 <app-widget-table
     [attributesHeaders]="layer.getAttributesHeader()"
     [features]="getFeatures()"
+    (edited)="applyClassifiedStyle(fieldClassifiedSelected.value)"
 >
 </app-widget-table>
 

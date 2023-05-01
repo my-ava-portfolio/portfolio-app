@@ -22,7 +22,6 @@ export class LayerTableComponent implements OnInit {
   propertiesStylingClassified: categoryClass[] = [] 
     
   ngOnInit(): void {
-    // this.getAttributesHeaders()
   }
 
   @Input()
@@ -62,7 +61,7 @@ export class LayerTableComponent implements OnInit {
     this.getFeatures()
   }
 
-  evaluateCategoriesStyling(propertyName: string): void {
+  setCategoryClassesStyling(propertyName: string): void {
       this.propertiesStylingClassified = []
       let uniqueValues: any[] = []
       this.layer.container.features.forEach((feature: Feature) => {
@@ -76,7 +75,16 @@ export class LayerTableComponent implements OnInit {
         const randomColor = getRandomDefaultColor();
         this.propertiesStylingClassified.push({'class': value, 'color': randomColor}) 
       })
-      this.propertyStyled = propertyName
+    this.applyClassifiedStyle(propertyName)
+  }
+
+  changeCategoryClassStyle(propertyName: string, value: any, color: string): void {
+    this.propertiesStylingClassified.forEach((classItem: categoryClass) => {
+      if (classItem.class === value) {
+        classItem.color = color
+      }
+    })
+    this.applyClassifiedStyle(propertyName)
   }
 
   applyClassifiedStyle(propertyName: string): void {
@@ -86,14 +94,7 @@ export class LayerTableComponent implements OnInit {
           feature.set('fill_color', classItem.color)
       })
     })
+    this.layer.container.propertyStyled = propertyName
+    this.layer.container.styleSettings = this.propertiesStylingClassified
   }
-
-  updateClassStyle(value: any, color: string): void {
-    this.propertiesStylingClassified.forEach((classItem: categoryClass) => {
-      if (classItem.class === value) {
-        classItem.color = color
-      }
-    })
-  }
-
 }

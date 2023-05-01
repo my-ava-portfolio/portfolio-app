@@ -71,7 +71,7 @@
         [fillColor]="layer.container.fillColor"
         [strokeColor]="layer.container.strokeColor"
         [strokeWidth]="layer.container.strokeWidth"
-        (fillColorEvent)="layer.container.fillColor = $event"
+        (fillColorEvent)="layer.container.fillColor = $event; updateStyle()"
         (strokeColorEvent)="layer.container.strokeColor = $event"  
         (strokeWidthEvent)="layer.container.strokeWidth = $event"
       ></app-widget-color>
