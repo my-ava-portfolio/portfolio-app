@@ -297,8 +297,6 @@ export class layerHandler {
   private polygonIntersected!: Feature | undefined;
   private coordsLength!: number;
   private previousPolygonGeometry!: any;
-  private _propertyStyled!: string;
-  private _propertiesStyled: categoryClass[] = []
   
   private _draw!: Draw;
   private _snap!: Snap;
@@ -323,49 +321,6 @@ export class layerHandler {
         this._initModifier();
         this._map.addLayer(this.container.layer);
     }
-
-  set propertyStyledByCategory(propertyName: string) {
-    this._propertiesStyled = []
-    let uniqueValues: any[] = []
-    this.container.features.forEach((feature: Feature) => {
-      const value = feature.get(propertyName)
-      if (!uniqueValues.includes(value)) {
-        uniqueValues.push(value)
-      }
-    })
-  
-    uniqueValues.forEach((value: any) => {
-      const randomColor = getRandomDefaultColor();
-      this._propertiesStyled.push({ 'class': value, 'color': null}) 
-      this.setStyleforFeaturesValue(propertyName, value, randomColor)
-    })
-    this._propertyStyled = propertyName
-  }
-
-  get propertyStyledByCategory(): string {
-    return this._propertyStyled
-  }
-
-  get propertiesStyled(): categoryClass[] {
-    return this._propertiesStyled
-  }
-
-  setStyleforFeaturesValue(propertyName: string, value: any, color: string): void {
-    // TODO check if the color has been initialized: if yes do not set a random color
-    this._propertiesStyled.forEach((classItem: categoryClass) => {
-      if (classItem.class === value) {
-        classItem.color = color
-      }
-    })
-    // TOOD add refresh function
-    // refresh all the style by default to manage all the cases
-    this.container.features.forEach((feature: Feature) => {
-      this._propertiesStyled.forEach((classItem: categoryClass) => {
-        if (feature.get(propertyName) === classItem.class)
-          feature.set('fill_color', classItem.color)
-      })
-    })
-  }
 
   removeLayer(): void {
       this._map.removeLayer(this.container.layer)

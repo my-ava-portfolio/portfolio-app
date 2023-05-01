@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { categoryClass } from '@modules/map-sandbox/shared/data-types';
 import { layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import { getRandomDefaultColor } from '@modules/map-sandbox/shared/style-helper';
 import Feature from 'ol/Feature';
@@ -17,6 +18,9 @@ export class LayerTableComponent implements OnInit {
   attributesHeader!: string[]
   attributesFeatures!: any[]
 
+  propertyStyled!: string
+  propertiesStylingClassified: categoryClass[] = [] 
+    
   ngOnInit(): void {
     // this.getAttributesHeaders()
   }
@@ -58,8 +62,38 @@ export class LayerTableComponent implements OnInit {
     this.getFeatures()
   }
 
-  applyCategoryColors(fieldName: string): void {
-    this.layer.propertyStyledByCategory = fieldName
+  evaluateCategoriesStyling(propertyName: string): void {
+      this.propertiesStylingClassified = []
+      let uniqueValues: any[] = []
+      this.layer.container.features.forEach((feature: Feature) => {
+        const value = feature.get(propertyName)
+        if (!uniqueValues.includes(value)) {
+          uniqueValues.push(value)
+        }
+      })
+    
+      uniqueValues.forEach((value: any) => {
+        const randomColor = getRandomDefaultColor();
+        this.propertiesStylingClassified.push({'class': value, 'color': randomColor}) 
+      })
+      this.propertyStyled = propertyName
+  }
+
+  applyClassifiedStyle(propertyName: string): void {
+    this.propertiesStylingClassified.forEach((classItem: categoryClass) => {
+      this.layer.container.features.forEach((feature: Feature) => {
+        if (feature.get(propertyName) === classItem.class)
+          feature.set('fill_color', classItem.color)
+      })
+    })
+  }
+
+  updateClassStyle(value: any, color: string): void {
+    this.propertiesStylingClassified.forEach((classItem: categoryClass) => {
+      if (classItem.class === value) {
+        classItem.color = color
+      }
+    })
   }
 
 }
