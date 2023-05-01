@@ -11,9 +11,6 @@ import Feature from 'ol/Feature';
 })
 export class LayerTableComponent implements OnInit {
   private _layer!: layerHandler;
-
-  headerHidden = ['geometry', 'id', 'no', 'geom_type', 'created_at',
-    'updated_at', 'fill_color', 'stroke_width', 'stroke_color']
   
   attributesHeader!: string[]
   attributesFeatures!: any[]
