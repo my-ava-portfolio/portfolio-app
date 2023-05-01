@@ -1,6 +1,6 @@
 <div class="m-2 table-responsive">
 
-    <table class="table table-striped">
+    <table class="table table-striped table-hover table-sm">
         <thead class="table-dark">
         <tr>
             <th scope="col">#</th>
@@ -10,9 +10,9 @@
         <tbody>
         <ng-container *ngFor="let feature of features ; index as i">
             <tr class="small">
-                <th scope="row">{{feature.get('no')}}</th>
+                <th class="p-1" scope="row">{{feature.get('no')}}</th>
                 <td *ngFor="let header of attributesHeaders">
-                    <input #rowInput type="text" [placeholder]="feature.get(header)" (change)="feature.set(header, rowInput.value, false); sendEditedEvent()">
+                    <input #rowInput class="p-1" type="text" [placeholder]="feature.get(header)" (change)="feature.set(header, rowInput.value, false); sendEditedEvent()">
                 </td>
             </tr>
         </ng-container>
