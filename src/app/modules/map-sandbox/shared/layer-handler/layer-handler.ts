@@ -351,17 +351,18 @@ export class layerHandler {
   }
 
   setStyleforFeaturesValue(propertyName: string, value: any, color: string): void {
+    // TODO check if the color has been initialized: if yes do not set a random color
     this._propertiesStyled.forEach((classItem: categoryClass) => {
-      // change the category map and color features
       if (classItem.class === value) {
         classItem.color = color
-
-        this.container.features.forEach((feature: Feature) => {
-          if (value === feature.get(propertyName)) {
-            feature.set('fill_color', color)
-          }
-        })
       }
+    })
+    // refreh all the style by default to manage all the cases
+    this.container.features.forEach((feature: Feature) => {
+      this._propertiesStyled.forEach((classItem: categoryClass) => {
+        if (feature.get(propertyName) === classItem.class)
+          feature.set('fill_color', classItem.color)
+      })
     })
   }
 
