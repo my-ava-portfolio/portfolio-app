@@ -4,6 +4,7 @@ import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { layerHandler, getWkt } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import Feature from 'ol/Feature';
 import { Geometry } from 'ol/geom';
+import { categoryClass } from '@modules/map-sandbox/shared/data-types';
 
 
 @Component({
@@ -16,6 +17,9 @@ export class FeatureComponent implements OnInit {
   private _selected!: boolean;
   private _id!: string;
   private _geometry!: Geometry
+
+  _strokeWidthCoeff = 1.8
+  _strokeWidthLineCoeff = 1.2;
 
   @Input() layer!: layerHandler;
 
@@ -35,13 +39,7 @@ export class FeatureComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {
-
-    this.currentFillColor = this.feature.get('fill_color')
-    this.currentStrokeColor = this.feature.get('stroke_color')
-    this.currentStrokeWidth = this.feature.get('stroke_width')
-
-  }
+  ngOnInit(): void { }
 
   ngOnDestroy(): void {
     this.elementRef.nativeElement.remove();
@@ -109,16 +107,6 @@ export class FeatureComponent implements OnInit {
     document.body.removeChild(selBox);
   }
 
-  updateFillColor(color: string): void {
-    this.feature.set("fill_color", color, true)
-  }
-  updateStrokeWidth(event: any): void {
-    this.feature.set("stroke_width", event.target.value, true)
-  }
-  updateStrokeColor(color: string): void {
-    this.feature.set("stroke_color", color, true)
-  }
-
   getWktFromFeature(): string {
     return getWkt(this.geometry)
   }
@@ -126,6 +114,17 @@ export class FeatureComponent implements OnInit {
   getBoundsFromFeature(): string {
     // xmin, ymin, xmax, ymax
     return this.geometry.getExtent().join(', ')
+  }
+
+  applyClassifiedStyle(): void {
+    const propertyName = this.layer.container.propertyStyled
+    if (propertyName !== null) {
+      this.layer.container.styleSettings.forEach((classItem: categoryClass) => {
+        if (this.feature.get(propertyName) === classItem.class)
+          this.feature.set('fill_color', classItem.color)
+      })
+    }
+
   }
 }
 

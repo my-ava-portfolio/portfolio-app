@@ -1,0 +1,27 @@
+<div class="d-flex flex-column my-2">
+    <span class="fs-5">Fond</span>
+    <div class="d-flex flex-row ms-2 my-1">
+        <span class="fs-6 ms-2">Couleur :</span>
+        <input #layerFillColor type="color" id="fillColor" class="fillColor pointer border-0" [value]="fillColor" (change)="setFillColor(layerFillColor.value)"/>
+        <label for="fillColor"></label>
+        <input #textLayerFillColor type="text" id="textFillColor" class="fillColor p-0 border-1" [value]="fillColor" (change)="setFillColor(textLayerFillColor.value)"/>
+        <label for="textFillColor"></label>
+    </div>
+</div>
+
+<div class="d-flex flex-column my-2">
+    <span class="fs-5">Contour</span>
+    <div class="d-flex flex-row ms-2 my-1">
+        <span class="fs-6 ms-2">Couleur :</span>
+        <input #layerStrokeColor type="color" id="strokeColor" class="fillColor pointer border-0" [value]="strokeColor" (change)="setStrokeColor(layerStrokeColor.value)"/>
+        <label for="strokeColor"></label>
+        <input #textLayerStrokeColor type="text" id="textStrokeColor" class="fillColor p-0 border-1" [value]="strokeColor" (change)="setStrokeColor(textLayerStrokeColor.value)"/>
+        <label for="textStrokeColor"></label>
+    </div>
+    <div class="d-flex flex-row ms-2 my-1">
+        <span class="fs-6 ms-2">Epaisseur du contour :</span>
+        <div class="d-flex flex-row align-items-center ms-2">
+            <input #layerStrokeWidth class="small strokeWidth" type="number" min="0" max="12" [value]="strokeWidth" (change)="setStrokeWidth(layerStrokeWidth.value)"/>
+        </div>
+    </div>
+</div>

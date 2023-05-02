@@ -93,6 +93,7 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._mapExamplesData()
+    this.zoomToLayers()
   }
 
   ngOnDestroy(): void {
@@ -246,7 +247,7 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   }
 
   // START layers controlers //
-  zoomLayers(): void {
+  zoomToLayers(): void {
     let emptyExtent = createEmpty();
     this.existingLayers.forEach((layer: layerHandler) => {
       extend(emptyExtent, layer.container.sourceFeatures.getExtent());

@@ -1,101 +1,88 @@
 
 
 <div
-  class="layer pointer d-flex flex-column small mt-1 mx-1 px-1 align-items-around"
+  class="layer d-flex flex-column m-1 p-1 align-items-around"
   >
 
-    <div class="header d-flex flex-row border rounded"
-    [ngClass]="selected ? 'border-dark border-2' :  ''"
+    <div class="header d-flex flex-row align-items-center rounded border p-2 pointer shadow"
+    [ngClass]="selected ? 'bg-warning border-1' :  'bg-warning bg-opacity-25'"
+    (click)="selected = true"
     >
 
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
+        
         <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.container.uuid" [checked]="visible" (change)="visible = btnVisible.checked">
-        <label class="p-1 bg-transparent border-0 pointer" [for]="'btnVisible' + layer.container.uuid" [ngClass]="visible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="visible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="visible ? visibleIcon : invisibleIcon" size="xs"></fa-icon>
+        <label class="p-1 pointer" [for]="'btnVisible' + layer.container.uuid" [ngClass]="visible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="visible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="visible ? visibleIcon : invisibleIcon"></fa-icon>
         </label>
 
         <input #btnLocked type="checkbox" class="btn-check" [id]="'btnLocked' + layer.container.uuid" [checked]="locked" (change)="locked = btnLocked.checked">
-        <label class="ms-auto p-1 bg-transparent border-0 pointer" [for]="'btnLocked' + layer.container.uuid" container="body" [ngbPopover]="locked ? 'Déverrouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="locked ? lockIcon : unLockIcon" size="xs"></fa-icon>
+        <label class="ms-auto p-1 pointer" [for]="'btnLocked' + layer.container.uuid" container="body" [ngbPopover]="locked ? 'Déverrouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="locked ? lockIcon : unLockIcon"></fa-icon>
         </label>
 
-        <div class="d-flex flex-column" [ngClass]="selected ? 'pe-auto' :  'pe-none'">
-          <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
-            <fa-icon class="" [icon]="upIcon" size="xs"></fa-icon>
-          </button>
+        <div class="d-flex flex-column justify-content-center align-items-center mx-1" [ngClass]="selected ? 'pe-auto' :  'pe-none'">
+            <div class="text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
+              <fa-icon class="" [icon]="upIcon"></fa-icon>
+            </div>
 
-          <button class="p-0 bg-transparent border-0 text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
-            <fa-icon class="" [icon]="downIcon" size="xs"></fa-icon>
-          </button>
-
+            <div class="text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
+              <fa-icon class="" [icon]="downIcon"></fa-icon>
+            </div>
         </div>
 
       </div>
 
       <div
-        class="d-flex flex-row pointer justify-content-start align-items-center flex-fill p-1"
-        [ngClass]="selected ? 'fw-bold' :  'text-black'"
-        (click)="selected = true"
+        class="d-flex flex-row pointer justify-content-center align-items-center w-50 flex-fill"
         >
-        <div class="">
-          <fa-icon *ngIf="layer.container.geomType === 'Point'" class="me-2" [icon]="pointIcon" size="xs"></fa-icon>
-          <fa-icon *ngIf="layer.container.geomType === 'LineString'" class="me-2" [icon]="lineStringIcon" size="xs"></fa-icon>
-          <fa-icon *ngIf="layer.container.geomType === 'Polygon'" class="me-2" [icon]="polygonIcon" size="xs"></fa-icon>
+        <div class="me-2">
+          <fa-icon *ngIf="layer.container.geomType === 'Point'" [icon]="pointIcon"></fa-icon>
+          <fa-icon *ngIf="layer.container.geomType === 'LineString'" [icon]="lineStringIcon"></fa-icon>
+          <fa-icon *ngIf="layer.container.geomType === 'Polygon'" [icon]="polygonIcon"></fa-icon>
         </div>
 
-        <div class="layer-name">
+        <div class="layer-name fw-bold">
           <span>{{ layer.container.layerName }}</span>
         </div>
       </div>
 
-      <button class="ms-auto p-1 bg-transparent border-0" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="toggled ? toggleIcon : unToggleIcon" size="xs"></fa-icon>
-      </button>
-
-      <div class="ms-auto d-flex flex-row" [ngClass]="selected ? 'd-block' : 'd-none'">
-
-
-        <button class="ms-auto p-1 bg-transparent border-0" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
-        </button>
-
-        <button [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="ms-auto p-1 bg-transparent border-0 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
-        </button>
-
-      </div>
-
-      <div class="ms-auto d-flex flex-row">
-
-        <button class="ms-auto p-1 bg-transparent border-0" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
-        </button>
-
-        <button class="p-1 bg-transparent border-0 text-black" (click)="displayLayerSettings()" data-bs-toggle="modal" [attr.data-bs-target]="'#modalLayerSettings-'+ layer.container.uuid" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
-        </button>
-
+      <div class="px-1 text-black" (click)="openSettings()" ngbPopover="Options de la couche" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="paramIcon" size="1x"></fa-icon>
       </div>
 
     </div>
 
-    <div class="feature-container d-flex flex-row small mb-1" *ngIf="layer.container.features.length > 0">
-      <ul [hidden]="toggled" id="featuresList" class="w-100 list-group list-unstyled list-group-flush mx-3 rounded" [id]="'featuresLayer-' + layer.container.uuid">
+    <div class="feature-container d-flex flex-column small" *ngIf="layer.container.features.length > 0">
 
-        <li 
-        class="feature border-bottom" 
-        [ngClass]="featuresIdSelected.length > 0 && selected ? 'bg-opacity-25' : ''" 
-        (click)="unSelectFeatures()"
-        >
-          <div class="feature d-flex flex-row pointer justify-content-center align-items-center flex-fill m-1">
-            <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>Désélectionner
-          </div>
+      <div class="d-flex flex-row justify-content-around align-items-center flex-fill pt-1 mx-2 px-3 pb-1 shadow border border-top-0 border-warning border-opacity-50 rounded-bottom bg-warning bg-opacity-25">
+        <div class="pointer px-1" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="centerIcon"></fa-icon>
+        </div>
+        
+        <div class="pointer px-1" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
+        </div>
 
-        </li>
+        <div class="pointer px-1" (click)="toggleFeatures()" ngbPopover="Masquer les objets" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="toggled ? toggleIcon : unToggleIcon"></fa-icon>
+        </div>
+
+        <div class="pointer ms-auto" ngbPopover="Désélectionner" triggers="mouseenter:mouseleave" (click)="unSelectFeatures()">
+          <fa-icon class="me-1" [icon]="clearIcon"></fa-icon>
+          <span>{{featuresIdSelected.length}} / {{layer.container.features.length}} sélectionné(s)</span>
+        </div>
+
+        <div [ngClass]="this.locked ? 'pe-none' : 'pe-auto'" class="pointer ms-auto px-1 text-danger" (click)="removeLayer()" ngbPopover="Supprimer" triggers="mouseenter:mouseleave">
+          <fa-icon class="" [icon]="removeIcon"></fa-icon>
+        </div>
+
+      </div>
+
+      <ul [hidden]="toggled" id="featuresList" class="list-unstyled my-1 h-25" [id]="'featuresLayer-' + layer.container.uuid">
 
         <ng-container *ngFor="let feature of layer.container.features">
           <app-feature
-          class="feature"
           [ngClass]="featuresIdSelected.includes(feature.get('id')) ? 'fw-bold bg-secondary bg-opacity-25' : ''"
           (click)="selectFeatureById(feature.get('id'))"
           [selected]="featuresIdSelected.includes(feature.get('id'))"
@@ -109,7 +96,6 @@
     </div>
 </div>
 
-
 <div moveDivToBody [isRemoved]="this.isLayerRemoved" *ngIf="!isLayerRemoved" class="position-fixed bottom-0 start-50 translate-middle-x">
 
   <app-edit-bar
@@ -119,154 +105,13 @@
     [enabled]="!locked && selected"
     [currentEpsg]="epsg"
   ></app-edit-bar>
-
 </div>
 
 
-<div moveDivToBody [isRemoved]="this.isLayerRemoved" 
-[id]="'modalLayerSettings-'+ layer.container.uuid" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">{{ layer.container.layerName}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="hideModalLayer()"></button>
-      </div>
-      <div class="modal-body">
+<set-modal #modalLayerSettings [title]="'Paramètres de la couche : ' + layer.container.layerName">
+ 
+    <app-layer-settings
+      [layer]="layer"
+    ></app-layer-settings>
 
-        
-        <ul ngbNav #nav="ngbNav" class="nav-tabs">
-
-          <li ngbNavItem>
-            <a ngbNavLink class="fw-bold">Général</a>
-              <ng-template ngbNavContent>
-                <div class="d-flex flex-column">
-                  <ng-container *ngTemplateOutlet="ngNavLayerGeneral; context:{layerObject: layer}"></ng-container>
-                </div>
-              </ng-template>
-          </li>
-
-          <li ngbNavItem>
-            <a ngbNavLink class="fw-bold">Style de la couche</a>
-            <ng-template ngbNavContent>
-              <div class="d-flex flex-column">
-                <ng-container *ngTemplateOutlet="ngNavLayerStyling; context:{layerObject: layer}"></ng-container>
-              </div>
-            </ng-template>
-          </li>
-
-          <li ngbNavItem>
-            <a ngbNavLink class="fw-bold">Exporter</a>
-            <ng-template ngbNavContent>
-              <div class="d-flex flex-column">
-                <ng-container *ngTemplateOutlet="ngNavLayerExporting; context:{layerObject: layer}"></ng-container>
-              </div>
-            </ng-template>
-
-        </ul>
-
-        <div [ngbNavOutlet]="nav" class="nav-content mx-2"></div>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-
-
-<ng-template #ngNavLayerGeneral let-layerObject='layer'>
-  <span class="fs-4 my-2">Informations générales</span>
-
-  <div class="d-flex flex-row align-items-center my-2">
-    <span class="fs-6 me-2">Nom de la couche :</span>
-    <input #layerName type="text" class="form-control w-50" [placeholder]="layer.container.layerName" aria-label="layerName" (change)="layer.container.layerName = layerName.value">
-  </div>
-
-  <div class="d-flex flex-row align-items-center my-2">
-    <span class="fs-6 me-2">Type de la géométrie :</span>
-    <span>{{layer.container.geomType}}</span>
-  </div>
-
-  <div class="d-flex flex-column my-2">
-    <span class="fs-6">Bounding box  de la couche:</span>
-    <span class="ms-3">x min, x max: {{layer.exportBounds()[0]}}, {{layer.exportBounds()[2]}}</span>
-    <span class="ms-3">y min, y max: {{layer.exportBounds()[1]}}, {{layer.exportBounds()[3]}}</span>
-  </div>
-
-</ng-template>
-
-
-<ng-template #ngNavLayerStyling let-layerObject='layer'>
-  <span class="fs-4 my-2">Modifier le style de tous les objets</span>
-
-  <div class="d-flex flex-row align-items-center my-2">
-    <span class="fs-6 me-2">Opacité :</span>
-    <input #opacityInput class="small opacity-setter" id="" type="range" min="0" max="1" step="0.1" [value]="layer.container.opacity" (change)="layer.container.opacity = opacityInput.value"/>
-  </div>
-
-  <div class="d-flex flex-row align-items-center my-2">
-    <span class="fs-6 me-2">Couleur de fond :</span>
-    <input #layerFillColor type="color" [id]="'fillColor-' + layer.container.uuid" class="fillColor pointer border-0" [value]="layer.container.fillColor" (change)="layer.container.fillColor = layerFillColor.value"/>
-    <label [attr.for]="'fillColor-' + layer.container.uuid"></label>
-    <input #textLayerFillColor type="text" [id]="'textFillColor-' + layer.container.uuid" class="fillColor p-0 border-1" [value]="layer.container.fillColor" (change)="layer.container.fillColor = textLayerFillColor.value"/>
-    <label [attr.for]="'textFillColor-' + layer.container.uuid"></label>
-  </div>
-
-  <div class="d-flex flex-row align-items-center my-2">
-    <span class="fs-6 me-2">Couleur du contour :</span>
-    <input #layerStrokeColor type="color" [id]="'strokeColor-' + layer.container.uuid" class="fillColor pointer border-0" [value]="layer.container.strokeColor" (change)="layer.container.strokeColor = layerStrokeColor.value"/>
-    <label [attr.for]="'strokeColor-' + layer.container.uuid"></label>
-    <input #textLayerStrokeColor type="text" [id]="'textStrokeColor-' + layer.container.uuid" class="fillColor p-0 border-1" [value]="layer.container.strokeColor" (change)="layer.container.strokeColor = textLayerStrokeColor.value"/>
-    <label [attr.for]="'textStrokeColor-' + layer.container.uuid"></label>
-  </div>
-
-  <div class="d-flex flex-row align-items-center my-2">
-    <span class="fs-6 me-2">Epaisseur du contour :</span>
-    <input #strokeWidth class="small strokeWidth" type="number" min="0" max="12" [value]="layer.container.strokeWidth" (change)="layer.container.strokeWidth = strokeWidth.value"/>
-  </div>
-</ng-template>
-
-
-<ng-template #ngNavLayerExporting let-layerObject='layer'>
-  <span class="fs-4 my-2">Exportation des données</span>
-
-  <ul class="nav nav-pills align-items-center justify-content-center" role="tablist">
-    <li class="nav-item border m-1" role="presentation">
-      <a class="nav-link fw-bold active" (click)="exportBuilder('geojson')" data-bs-toggle="tab" [attr.data-bs-target]="'#GeoJsonTab' + layer.container.uuid" type="button" role="tab">
-        GeoJSON
-      </a>
-    </li>
-    <li class="nav-item border m-1" role="presentation">
-      <a class="nav-link fw-bold" (click)="exportBuilder('wkt')" data-bs-toggle="tab" [attr.data-bs-target]="'#wktTab' + layer.container.uuid" type="button" role="tab">
-        WKT
-      </a>
-    </li>
-
-    <li class="nav-item border m-1" role="presentation">
-      <a class="nav-link fw-bold" (click)="exportBuilder('pytestFixture')" data-bs-toggle="tab" [attr.data-bs-target]="'#pytestFixture' + layer.container.uuid" type="button" role="tab">
-        Pytest Fixtures
-      </a>
-    </li>
-
-  </ul>
-
-  <div class="d-flex flex-row mx-2 tab-content" id="'tabContent' + layer.container.id">
-
-    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'geojson' ? 'active' : ''" [id]="'GeoJsonTab' + layer.container.uuid" role="tabpanel">
-      <textarea #exportGeoJsonStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportGeoJsonStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
-    </div>
-
-    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'wkt' ? 'active' : ''" [id]="'wktTab' + layer.container.uuid" role="tabpanel">
-      <textarea #exportWktStringGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportWktStringGeomDiv.select()" readonly>{{this.exportData}}</textarea>
-    </div>
-
-    <div class="tab-pane fade w-100 show" [ngClass]="exportDataMode === 'pytestFixture' ? 'active' : ''" [id]="'pytestFixture' + layer.container.uuid" role="tabpanel">
-      <textarea #exportPytestFixturesGeomDiv class="form-control vh-100" aria-label="With textarea" (click)="exportPytestFixturesGeomDiv.select()" readonly>{{this.exportData}}</textarea>
-    </div>
-
-  </div>
-</ng-template>
+</set-modal>

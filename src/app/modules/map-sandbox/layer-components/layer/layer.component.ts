@@ -1,10 +1,11 @@
 import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
-import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand } from '@fortawesome/free-solid-svg-icons';
-import { faClone, faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, OnDestroy, ViewChild } from '@angular/core';
+import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand, faBroom } from '@fortawesome/free-solid-svg-icons';
+import { faClone, faMinusSquare, faPlusSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
 import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
+import { ModalComponent } from '@shared/modules/items/modal/modal.component';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class LayerComponent implements OnInit, OnDestroy {
   addIcon = faCirclePlus;
   editIcon = faPencil;
   paramIcon = faGear;
-  disabledIcon = faXmark;
+  clearIcon = faBroom;
+  removeIcon = faTrashCan;
   EditIcon = faCircle;
   pointIcon = faCircle;
   lineStringIcon = faWaveSquare;
@@ -57,7 +59,6 @@ export class LayerComponent implements OnInit, OnDestroy {
   featuresIdSelected: string[] = [];
 
   removeLayerSubscription!: Subscription;
-  displayLayerModal = false;
   isLayerRemoved = false;
   exportData: string = '';
   exportDataMode = 'geojson'
@@ -91,6 +92,16 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   }
 
+  @ViewChild('modalLayerSettings') private modalLayerSettingComponent!: ModalComponent
+  async openSettings() {
+    return await this.modalLayerSettingComponent.open()
+  }
+
+  @ViewChild('modalLayerTable') private modalLayerTableComponent!: ModalComponent
+  async openTable() {
+    return await this.modalLayerTableComponent.open()
+  }
+
   ngOnInit(): void {
     
     // enable selecting 
@@ -104,6 +115,7 @@ export class LayerComponent implements OnInit, OnDestroy {
       // update step when change on feature occurs
       refreshFeatureStyle(event.feature)
     })
+    this.zoomToLayer()
 
   }
 
@@ -262,26 +274,6 @@ export class LayerComponent implements OnInit, OnDestroy {
     this.unSelectFeatures()
     const layerCloned: layerHandler = Object.create(this.layer) // create a clone
     this.layerCloned.emit(layerCloned)
-  }
-
-  hideModalLayer(): void {
-    this.displayLayerModal = false;
-  }
-
-  displayLayerSettings(): void {
-    this.displayLayerModal = true;
-    this.exportBuilder(this.exportDataMode)
-  }
-
-  exportBuilder(mode: string): void {
-    this.exportDataMode = mode
-    if (mode === 'wkt') {
-      this.exportData = this.layer.exportToWkt()
-    } else if (mode === 'geojson') {
-      this.exportData = this.layer.exportToGeoJSON()
-    } else if (mode === 'pytestFixture') {
-      this.exportData = this.layer.exportToPytestFixture()
-    }
   }
 
   // START FEATURE FUNCS //

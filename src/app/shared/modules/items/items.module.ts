@@ -14,6 +14,7 @@ import { CardContainerComponent } from './card-container/card-container.componen
 import { ArticleHeaderComponent } from './article-header/article-header.component';
 import { BadgeContentComponent } from './badge-content/badge-content.component';
 import { LegendContainerComponent } from './legend-container/legend-container.component';
+import { ModalComponent } from './modal/modal.component';
 
 
 const components = [
@@ -25,7 +26,8 @@ const components = [
   CardContainerComponent,
   ArticleHeaderComponent,
   BadgeContentComponent,
-  LegendContainerComponent
+  LegendContainerComponent,
+  ModalComponent
 ]
 
 @NgModule({

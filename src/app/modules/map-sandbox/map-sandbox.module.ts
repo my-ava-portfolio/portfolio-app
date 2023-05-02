@@ -22,6 +22,11 @@ import { ImportToolsComponent } from './import-tools/import-tools.component';
 import { FormsModule } from '@angular/forms';
 import { LegendComponent } from './legend/legend.component';
 import { PathToolsComponent } from './path-tools/path-tools.component';
+import { ItemsModule } from '@shared/modules/items/items.module';
+import { LayerSettingsComponent } from './layer-components/layer/layer-settings/layer-settings.component';
+import { LayerTableComponent } from './layer-components/layer/layer-table/layer-table.component';
+import { WidgetColorComponent } from './shared/components/widget-color/widget-color.component';
+import { WidgetTableComponent } from './shared/components/widget-table/widget-table.component';
 
 
 @NgModule({
@@ -35,7 +40,11 @@ import { PathToolsComponent } from './path-tools/path-tools.component';
     CreateToolsComponent,
     ImportToolsComponent,
     LegendComponent,
-    PathToolsComponent
+    PathToolsComponent,
+    LayerSettingsComponent,
+    LayerTableComponent,
+    WidgetColorComponent,
+    WidgetTableComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +52,8 @@ import { PathToolsComponent } from './path-tools/path-tools.component';
     FontAwesomeModule,
     NgbModule,
     FormsModule,
-    DirectivesModule    
+    DirectivesModule,
+    ItemsModule
   ],
 })
 export class MapSandboxModule { }

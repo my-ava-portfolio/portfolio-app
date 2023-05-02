@@ -42,7 +42,7 @@
 
 
 
-<div class="text-center fw-bold bg-primary bg-gradient text-white p-2">
+<div class="text-center fw-bold bg-warning bg-gradient p-2">
   Couches
 </div>
 
@@ -63,7 +63,7 @@
     <fa-icon class="" [icon]="allToggled ? toggleIcon : unToggleIcon" size="1x"></fa-icon>
   </label>
 
-  <button class="m-1 btn btn-sm btn-transparent border-0 pointer" (click)="zoomLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+  <button class="m-1 btn btn-sm btn-transparent border-0 pointer" (click)="zoomToLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
     <fa-icon class="" [icon]="centerIcon" size="1x"></fa-icon>
   </button>
 

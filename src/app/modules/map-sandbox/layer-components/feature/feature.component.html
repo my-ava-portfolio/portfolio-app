@@ -1,49 +1,46 @@
-<li class="feature-content py-0 d-flex align-items-center pointer border-bottom">
+<li class="pointer feature-item mx-4 py-1 d-flex flex-row align-items-around border-top">
 
-  <div class="d-flex flex-row pointer justify-content-start align-items-center flex-fill">
-
-    <div class="m-1">
-
-      <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'Point'">
-        <circle cx="12" cy="12" r="8" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
-      </svg>
-
-      <svg height="25" width="25" *ngIf="feature.get('geom_type') === 'LineString'">
-        <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * 2"/>
-        <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') *1.5"/>
-      </svg>
-
-      <svg height="15" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
-        <rect x="0" y="0" width="25" height="15" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')"/>
-      </svg>
+  <div class="me-2 d-flex flex-row">
+    <div class="px-1" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="centerIcon"></fa-icon>
     </div>
 
-    <div class="">
-      {{feature.get('name')}}
+    <div class="px-1" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
     </div>
-
-    <div class="ms-auto">
-
-      <button class="ms-auto btn p-1 bg-transparent border-0" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="centerIcon" size="xs"></fa-icon>
-      </button>
-
-
-      <button class="ms-auto btn p-1 bg-transparent border-0" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="duplicateIcon" size="xs"></fa-icon>
-      </button>
-
-      <button class="btn m-0 bg-transparent border-0 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="disabledIcon" size="xs"></fa-icon>
-      </button>
-
-      <button class="btn m-0 bg-transparent border-0 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="paramIcon" size="xs"></fa-icon>
-      </button>
-
-    </div>
-
   </div>
+
+    <div class="me-2 d-flex flex-row small">
+
+      <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'Point'">
+        <circle cx="10" cy="10" r="7" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
+      </svg>
+
+      <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'LineString'">
+        <line x1="0" y1="10" x2="20" y2="10" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * this._strokeWidthCoeff"/>
+        <line x1="0" y1="10" x2="20" y2="10" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') * this._strokeWidthLineCoeff"/>
+      </svg>
+
+      <svg height="16" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
+        <rect x="0" y="0" width="25" height="16" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * this._strokeWidthCoeff" [attr.fill]="feature.get('fill_color')"/>
+      </svg>
+    </div>
+
+    <span class="title small">{{feature.get('name')}}</span>
+
+    <div class="ms-auto d-flex flex-row align-items-center" *ngIf="selected">
+
+
+      <div class="px-2 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="disabledIcon"></fa-icon>
+      </div>
+
+      <div class="px-1 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
+        <fa-icon class="" [icon]="paramIcon" size="1x"></fa-icon>
+      </div>
+
+    </div>
+
 </li>
 
 
@@ -85,27 +82,12 @@
           <span>Modifié à {{ feature.get('updated_at') | date: 'HH:mm:ss' }}</span>
         </div>
         
-        <div class="d-flex flex-column my-3">
-          <h6 class="">Style</h6>
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Couleur de fond :</span>
-            <input #fillColor type="color" id="fillColor" [value]="feature.get('fill_color')" class="fillColor m-1 pointer" (change)="updateFillColor(fillColor.value)"/>
-            <label for="fillColor"></label>
-          </div>
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Couleur du contour :</span>
-            <input #strokeColor type="color" id="strokeColor" [value]="feature.get('stroke_color')" class="strokeColor m-1 pointer" (change)="updateStrokeColor(strokeColor.value)"/>
-            <label for="strokeColor"></label>
-          </div>
-
-          <div class="d-flex flex-row ms-2 my-1">
-            <span class="me-2">Epaisseur du contour :</span>
-            <input class="small strokeWidth" type="number" min="0" max="12" [value]="currentStrokeWidth" (change)="updateStrokeWidth($event)"/>
-          </div>
-
-        </div>
+        <app-widget-table
+          [attributesHeaders]="layer.getAttributesHeader()"
+          [features]="[feature]"
+          (edited)="applyClassifiedStyle()"
+        >
+        </app-widget-table>
 
       </div>
     </div>

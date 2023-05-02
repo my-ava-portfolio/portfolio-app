@@ -52,7 +52,7 @@
 </div>
 
 
-<div moveDivToBody *ngIf="!isPanelsDisplayed && currentLayers.length >0" class="position-fixed bottom-0 end-0 bg-white rounded shadow overflow-auto mb-3 me-3">
+<div moveDivToBody *ngIf="!isPanelsDisplayed" class="position-fixed bottom-0 end-0 bg-white rounded shadow overflow-auto mb-3 me-3">
   <div class="d-flex flex-row justify-content-start">
     <ng-container *ngFor="let layer of currentLayers">
       <div class="m-3">
