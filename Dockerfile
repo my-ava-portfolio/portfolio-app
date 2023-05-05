@@ -6,3 +6,5 @@ COPY ./ /usr/app
 RUN npm install
 
 RUN npm run-script deploy
+
+COPY /usr/app/dist /app-vol
