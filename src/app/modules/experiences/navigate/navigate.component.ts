@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 import { ResumeService } from '@services/resume.service';
 import { ungroupIconUnicode } from '@core/styles/icons';
-import { skillsMapping, activitiesMapping, skillsMappingStatus } from '@core/global-values/main';
+import { skillsMapping, activitiesMapping, skillsMappingStatus } from '@core/globals/resume-shared-data';
 import { currentYear } from '@core/misc';
 import { activities } from '@core/data-types';
 import { MainService } from '@services/main.service';
@@ -131,7 +131,7 @@ export class NavigateComponent implements OnInit, AfterViewInit, DoCheck, OnDest
     )
 
     this.activitiesIdSubscription = this.resumeService.activityId.subscribe(
-      (activityId) => {
+      (activityId: string) => {
         this.selectGraphNode(activityId)
         this.mainService.scrollToTopAction()
       }

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { assetsLogoPath } from '@core/global-values/main';
+import { assetsLogoPath } from '@core/globals/resume-shared-data';
 
 import { faUserGraduate, faMapMarkerAlt, faLanguage, faAddressBook, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { ResumeService } from '@services/resume.service';
@@ -15,13 +15,6 @@ export class TrainingsBarComponent implements OnInit, OnDestroy {
 
   assetsLogoPath = assetsLogoPath;
   trainingsData: any;
-
-  // icons
-  degreeIcon = faUserGraduate;
-  locationIcon = faMapMarkerAlt;
-  languageIcon = faLanguage;
-  presIcon = faAddressBook;
-  expandIcon = faExpand;
 
   trainingsDataSubscription!: Subscription;
 

@@ -5,12 +5,6 @@ import Fill from "ol/style/Fill";
 import Stroke from "ol/style/Stroke";
 
 
-export const backwardIcon = faStepBackward;
-export const forwardIcon = faStepForward;
-export const locationIcon = faMapMarkerAlt;
-export const centerIcon = faExpand;
-export const tagsIcon = faTags;
-
 export const currentDate = now();
 
 function now(): Date {

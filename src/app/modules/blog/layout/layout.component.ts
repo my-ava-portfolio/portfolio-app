@@ -41,7 +41,7 @@ export class LayoutComponent implements OnDestroy {
   ) {
 
     this.topicsDataSubscription = this.blogService.blogData.subscribe(
-      (data) => {
+      (data: any) => {
         data.forEach((feature: any) => {
           this.allBlogTopics.push(this.buildFeature(feature))
         })

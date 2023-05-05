@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { apiBaseUrl } from '@core/global-values/svr-url';
-import { Subject } from 'rxjs';
+import { apiBaseUrl } from '@core/globals/resume-shared-data';
 
 @Injectable({
   providedIn: 'root'

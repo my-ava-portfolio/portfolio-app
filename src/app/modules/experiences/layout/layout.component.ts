@@ -7,7 +7,7 @@ import { interval, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 import { fadeInOutAnimation } from '@core/animation_routes';
-import { assetsLogoPath } from '@core/global-values/main';
+import { assetsLogoPath } from '@core/globals/resume-shared-data';
 
 import { faGlobeEurope, faTags } from '@fortawesome/free-solid-svg-icons';
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { activitiesMapping } from '@core/global-values/main';
-import { activitiesCountOutputTypes } from '@core/global-values/route-output-types';
+import { activitiesMapping } from '@core/globals/resume-shared-data';
+import { activitiesCountOutputTypes } from '@core/globals/route-output-types';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 
@@ -36,7 +36,7 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
   ) {
 
     this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
-      (data) => {
+      (data: any) => {
         this.userInfoData = data;
       }
     );

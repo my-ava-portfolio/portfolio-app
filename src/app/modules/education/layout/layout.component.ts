@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { fadeInOutAnimation } from '@core/animation_routes';
-import { assetsLogoPath } from '@core/global-values/main';
+import { assetsLogoPath } from '@core/globals/resume-shared-data';
 
 @Component({
   selector: 'app-app-layout',

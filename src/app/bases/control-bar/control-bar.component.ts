@@ -3,8 +3,8 @@ import { Subscription } from 'rxjs';
 
 import { ControlerService } from '@services/controler.service';
 import { Router } from '@angular/router';
-import { faAlignLeft, faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import { activityFeature } from '@core/data-types';
+import { navBarIcon, subMenuIcon } from '@core/globals/icons';
 
 
 @Component({
@@ -17,8 +17,8 @@ export class ControlBarComponent implements OnInit, OnDestroy {
   @Input() sideBarCollapsed!: boolean;
   @Input() subMenuBarEnabled!: boolean;
 
-  navBarIcon = faAlignLeft;
-  subMenuIcon = faAlignJustify;
+  navBarIcon = navBarIcon;
+  subMenuIcon = subMenuIcon;
 
   pageTitle!: string;
   topicPages!: any;

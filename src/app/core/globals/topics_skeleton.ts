@@ -1,13 +1,13 @@
 import { activitiesPagesType, mapPagesType } from "@core/data-types";
-import { faHome, faUserGraduate, faGlobeEurope, faAddressCard, faBuilding, faStar, faMap, faImages, faFileAlt } from "@fortawesome/free-solid-svg-icons";
-import { assetsImagesPath } from "./main";
+import { assetsImagesPath } from "./resume-shared-data";
+import { blogIcon, companyIcon, galleryIcon, graduateIcon, homeIcon, mapIcon, navigationIcon, resumeIcon, skillIcon } from "./icons";
 
 
 export const homePages: activitiesPagesType = {
   id: 'home',
   route: '/home/about_me',
   title: 'A propos...',
-  icon: faHome,
+  icon: homeIcon,
   sub_menus: []
 };
 
@@ -17,25 +17,25 @@ export const educationPages: activitiesPagesType = {
   title: 'Formation',
   colorType: 'education',
   verbose_title: 'Accès à mes formations',
-  icon: faUserGraduate,
+  icon: graduateIcon,
   sub_menus: [
     {
       id: "degrees",
       title: "Parcours universitaire",
       fragment: "education__degrees",
-      icon: faUserGraduate
+      icon: graduateIcon
     },
     {
       id: "degrees",
       title: "Travaux/publications",
       fragment: "education__publish",
-      icon: faUserGraduate  // TODO find a better icon
+      icon: graduateIcon  // TODO find a better icon
     },
     {
       id: "trainings",
       title: "Formations",
       fragment: "education__trainings",
-      icon: faGlobeEurope
+      icon: graduateIcon
     }
   ]
 };
@@ -45,7 +45,7 @@ export const legacyResumePage: activitiesPagesType = {
   route: '/resume',
   title: 'CV',
   verbose_title: 'Télécharger mon CV',
-  icon: faAddressCard,
+  icon: resumeIcon,
   sub_menus: []
 };
 
@@ -55,25 +55,25 @@ export const experiencesPages: activitiesPagesType = {
   title: 'Expériences',
   colorType: 'job',
   verbose_title: 'Accès au CV',
-  icon: faAddressCard,
+  icon: resumeIcon,
   sub_menus: [
     {
       id: "navigation",
       title: "Navigation",
       fragment: "experiences__navigate",
-      icon: faGlobeEurope
+      icon: navigationIcon
     },
     {
       id: "activities",
       title: "Activités",
       fragment: "experiences__content__activities",
-      icon: faBuilding
+      icon: companyIcon
     },
     {
       id: "skills",
       title: "Compétences",
       fragment: "experiences__content__skills",
-      icon: faStar
+      icon: skillIcon
     }
   ]
 };
@@ -89,7 +89,7 @@ export const mapActivitiesPages: mapPagesType = {
   title: 'Cartes',
   verbose_title: 'Accès aux carte',
   colorType: 'personal-project',
-  icon: faMap,
+  icon: mapIcon,
   sub_menus: [
     {
       id: "activities",
@@ -182,7 +182,7 @@ export const galleryPages: activitiesPagesType = {
   title: 'Galerie',
   verbose_title: 'Accès à la galerie',
   colorType: 'gallery',
-  icon: faImages,
+  icon: galleryIcon,
   sub_menus: []
 };
 
@@ -194,7 +194,7 @@ export const projectPages: activitiesPagesType[] = [
     title: 'Blog',
     verbose_title: 'Accès au blog',
     colorType: 'secondary',
-    icon: faFileAlt,
+    icon: blogIcon,
     sub_menus: []
   }
 ];

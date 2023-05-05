@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { projectPages, resumeTopicsPages } from '@core/global-values/topics';
+import { projectPages, resumeTopicsPages } from '@core/globals/topics_skeleton';
 
 
 @Component({

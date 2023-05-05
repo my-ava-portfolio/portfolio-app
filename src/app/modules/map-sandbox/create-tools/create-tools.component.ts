@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 
-import { faCircle, faWaveSquare, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
 import { geomLayerTypes, pointType, lineStringType, polygonType } from '@modules/map-sandbox/shared/data-types';
+import { lineStringIcon, pointIcon, polygonIcon } from '../shared/icons';
 
 
 @Component({
@@ -19,9 +19,9 @@ export class CreateToolsComponent implements OnInit {
 
   layerTypesModes!: any[];
   // TODO icons must be linked to others components:
-  private _pointIcon = faCircle;
-  private _lineStringIcon = faWaveSquare;
-  private _polygonIcon = faDrawPolygon;
+  private _pointIcon = pointIcon;
+  private _lineStringIcon = lineStringIcon;
+  private _polygonIcon = polygonIcon;
   
   private _layerTypes = [
     {

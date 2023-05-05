@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { fadeInOutAnimation } from '@core/animation_routes';
-import { skillsMapping } from '@core/global-values/main';
+import { skillIcon } from '@core/globals/icons';
+import { skillsMapping } from '@core/globals/resume-shared-data';
 
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { ResumeService } from '@services/resume.service';
@@ -22,7 +23,7 @@ export class SkillsComponent implements OnInit, OnDestroy {
 
   skillsCategories = skillsMapping;
 
-  skillIcon = faStar;
+  skillIcon = skillIcon;
 
   skillsSubscription!: Subscription;
   activityEnablingSubscription!: Subscription;

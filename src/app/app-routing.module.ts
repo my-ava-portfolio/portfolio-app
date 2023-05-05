@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from '@bases/layout/layout.component';
-import { educationPages, experiencesPages } from '@core/global-values/topics';
+import { educationPages, experiencesPages } from '@core/globals/topics_skeleton';
 
 import { Observable, of } from 'rxjs';
 

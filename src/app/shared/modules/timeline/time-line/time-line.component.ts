@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 
 import * as d3 from 'd3';
 
-import { backwardIcon, forwardIcon, tagsIcon } from '@modules/map-gtfs-viewer/shared/core';
+import { faStepBackward, faStepForward, faTags } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -27,9 +27,9 @@ export class TimeLineComponent implements OnInit, OnChanges {
   @Output() currentDateEvent = new EventEmitter<Date>();
 
   // icons
-  backwardIcon = backwardIcon;
-  forwardIcon = forwardIcon;
-  tagIcon = tagsIcon;
+  backwardIcon = faStepBackward;
+  forwardIcon = faStepForward;
+  tagIcon = faTags;
 
   // speed
   minStepValue = 50;

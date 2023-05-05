@@ -22,10 +22,10 @@ import { DataService } from '@modules/map-activities/shared/services/data.servic
 import { ControlerService } from 'src/app/services/controler.service';
 import { MapService } from '@services/map.service';
 import { activitiesStyle, activityLayerName, activitySelectedStyle, getFeatureFromLayer, legendActivitiesId, travelLayerName, travelNodespeed, travelStyles } from '../shared/core';
-import { assetsLogoPath, imageProfile } from '@core/global-values/main';
-import { faMapMarkerAlt, faTags, faExpand, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { assetsLogoPath, imageProfile } from '@core/globals/resume-shared-data';
 
-import { experiencesPages, educationPages } from '@core/global-values/topics';
+import { experiencesPages, educationPages } from '@core/globals/topics_skeleton';
+import { centerIcon, locationIcon } from '@modules/map-activities/shared/icons';
 
 
 @Component({
@@ -66,10 +66,8 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   apiImgUrl = assetsLogoPath;
 
-  locationIcon = faMapMarkerAlt;
-  tagIcon = faTags;
-  centerIcon = faExpand;
-  helpIcon = faQuestionCircle;
+  locationIcon = locationIcon;
+  centerIcon = centerIcon;
 
   helpPopup = 'Voici une cartographie spatio-temporelles de mes expériences';
 

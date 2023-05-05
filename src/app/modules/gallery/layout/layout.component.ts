@@ -9,13 +9,12 @@ import { ActivatedRoute } from '@angular/router';
 
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { galleryFeature } from '@core/data-types';
-import { activitiesMapping, assetsImagesPath } from '@core/global-values/main';
+import { activitiesMapping, assetsImagesPath } from '@core/globals/resume-shared-data';
 
 import { minWidthLandscape } from '@core/styles/screen';
 
-import { faYoutube, faAppStore, faPython } from '@fortawesome/free-brands-svg-icons';
-import { faTags, faTag, faChartBar, faMap, faTools, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
-import { experiencesPages } from '@core/global-values/topics';
+import { experiencesPages } from '@core/globals/topics_skeleton';
+import { SpecificationIcon, appIcon, chartIcon, libraryIcon, mapItemIcon, tagIcon, toolIcon, videoIcon } from '@core/globals/icons';
 
 
 @Component({
@@ -35,8 +34,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   currentCategory: string = 'null';
 
   isLegendDisplayed = true;
-  tagsIcon = faTags;
-  tagIcon = faTag;
+  tagIcon = tagIcon;
 
   category!: string | null;
   activities!: any[];
@@ -50,13 +48,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
   activitiesMapping = activitiesMapping
 
   typeStyleMapping: any = {
-    chart: { icon: faChartBar, title: 'Graphiques & tableaux' },
-    video: { icon: faYoutube, title: 'Vidéos' },
-    map: { icon: faMap, title: 'Cartes' },
-    app: { icon: faAppStore, title: 'Applications' },
-    tool: { icon: faTools, title: 'Outils' },
-    library: { icon: faPython, title: 'Libraries' },
-    methodo: { icon: faProjectDiagram, title: 'Méthodologies'}
+    chart: { icon: chartIcon, title: 'Graphiques & tableaux' },
+    video: { icon: videoIcon, title: 'Vidéos' },
+    map: { icon: mapItemIcon, title: 'Cartes' },
+    app: { icon: appIcon, title: 'Applications' },
+    tool: { icon: toolIcon, title: 'Outils' },
+    library: { icon: libraryIcon, title: 'Libraries' },
+    methodo: { icon: SpecificationIcon, title: 'Méthodologies'}
   };
 
   featureTypes: any = {
@@ -88,7 +86,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     );
 
     this.activitiesGallerySubscription = this.galleryService.activitiesGalleryData.subscribe(
-      (data) => {
+      (data: any[]) => {
         this.galleryItems = []
         data.forEach((feature: any) => {
           this.galleryItems.push(this.buildFeature(feature))

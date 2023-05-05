@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
+import { loadIcon } from '../shared/icons';
 
 @Component({
   selector: 'app-import-tools',
@@ -18,7 +18,7 @@ export class ImportToolsComponent implements OnInit, OnDestroy {
   @Output() featuresToNewLayerEvent = new EventEmitter<any>();
   @Output() featuresToAppendEvent = new EventEmitter<{layerId: any, features: any}>();
 
-  loadIcon = faUpload;
+  loadIcon = loadIcon;
 
   importModes = [
     {

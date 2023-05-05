@@ -6,6 +6,7 @@ import { InteractionsService } from '@modules/map-sandbox/shared/service/interac
 import { Subscription } from 'rxjs';
 import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
 import { ModalComponent } from '@shared/modules/items/modal/modal.component';
+import { addIcon, centerIcon, clearIcon, downIcon, duplicateIcon, editIcon, groupIcon, helpIcon, invisibleIcon, lineStringIcon, lockIcon, paramIcon, pointIcon, polygonIcon, removeIcon, toggleIcon, unLockIcon, unToggleIcon, upIcon, visibleIcon } from '@modules/map-sandbox/shared/icons';
 
 
 @Component({
@@ -25,27 +26,26 @@ export class LayerComponent implements OnInit, OnDestroy {
   @Output() layerCloned = new EventEmitter<layerHandler>();
   @Output() removeLayerId = new EventEmitter<string>();
 
-  groupIcon = faLayerGroup;
-  helpIcon = faCircleQuestion;
-  addIcon = faCirclePlus;
-  editIcon = faPencil;
-  paramIcon = faGear;
-  clearIcon = faBroom;
-  removeIcon = faTrashCan;
-  EditIcon = faCircle;
-  pointIcon = faCircle;
-  lineStringIcon = faWaveSquare;
-  polygonIcon = faDrawPolygon;
-  visibleIcon = faEye;
-  invisibleIcon = faEyeSlash;
-  upIcon = faCaretUp;
-  downIcon = faCaretDown;
-  duplicateIcon = faClone;
-  centerIcon = faExpand;
-  lockIcon = faLock;
-  unLockIcon = faLockOpen;
-  unToggleIcon = faMinusSquare
-  toggleIcon = faPlusSquare
+  groupIcon = groupIcon;
+  helpIcon = helpIcon;
+  addIcon = addIcon;
+  editIcon = editIcon;
+  paramIcon = paramIcon;
+  clearIcon = clearIcon;
+  removeIcon = removeIcon;
+  pointIcon = pointIcon;
+  lineStringIcon = lineStringIcon;
+  polygonIcon = polygonIcon;
+  visibleIcon = visibleIcon;
+  invisibleIcon = invisibleIcon;
+  upIcon = upIcon;
+  downIcon = downIcon;
+  duplicateIcon = duplicateIcon;
+  centerIcon = centerIcon;
+  lockIcon = lockIcon;
+  unLockIcon = unLockIcon;
+  unToggleIcon = unToggleIcon
+  toggleIcon = toggleIcon
 
   private _epsg!: string
   private _selected: boolean = false

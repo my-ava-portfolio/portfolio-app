@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { imageProfile } from '@core/global-values/main';
+import { imageProfile } from '@core/globals/resume-shared-data';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
 
@@ -23,7 +23,7 @@ export class GeneralInfoComponent implements OnInit {
   ) {
 
     this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
-      (data) => {
+      (data: any) => {
         this.userInfoData = data;
       }
     );

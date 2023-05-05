@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { assetsLogoPath } from '@core/global-values/main';
-import { mapActivitiesPages } from '@core/global-values/topics';
+import { locationIcon, degreeIcon, languageIcon } from '@core/globals/icons';
+import { assetsLogoPath } from '@core/globals/resume-shared-data';
+import { mapActivitiesPages } from '@core/globals/topics_skeleton';
 
-import { faUserGraduate, faLanguage, faAddressBook, faExpand, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
 
@@ -22,11 +22,9 @@ export class DegreesBarComponent implements OnInit, OnDestroy {
   activityData: any;
 
   // icons
-  locationIcon = faMapMarkerAlt;
-  degreeIcon = faUserGraduate;
-  languageIcon = faLanguage;
-  presIcon = faAddressBook;
-  expandIcon = faExpand;
+  locationIcon = locationIcon;
+  degreeIcon = degreeIcon;
+  languageIcon = languageIcon;
 
   activitiesDataSubscription!: Subscription
 

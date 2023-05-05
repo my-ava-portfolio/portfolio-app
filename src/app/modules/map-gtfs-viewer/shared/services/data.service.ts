@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
-import { apiBaseUrl } from '@core/global-values/svr-url';
-import { formatDate } from '@angular/common';
+import { apiBaseUrl } from '@core/globals/resume-shared-data';
+
 
 
 @Injectable({
@@ -32,7 +32,7 @@ export class DataService {
 
   pullGeoData(area: string, current_date: Date, bounds: number[]): void {
     const currentDate = Math.floor(current_date.getTime() / 1000)
-    
+
     this.http.get<any>(this.apiUrl + area.toLowerCase() + '/moving_nodes?date=' + currentDate + "&bounds=" + bounds).subscribe({
       complete: () => {
       },
