@@ -3,11 +3,12 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { ResumeService } from '@services/resume.service';
 
-import { assetsLogoPath, assetsImagesPath, activitiesMapping } from '@core/global-values/main';
+import { assetsLogoPath, assetsImagesPath, activitiesMapping } from '@core/globals/resume-shared-data';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faMapMarkerAlt, faImages, faFilter, faTrophy, faAngleDoubleDown, faPaintBrush, faFileAlt, faGlobe } from '@fortawesome/free-solid-svg-icons';
-import { mapActivitiesPages, galleryPages } from '@core/global-values/topics';
+import { mapActivitiesPages, galleryPages } from '@core/globals/topics_skeleton';
 import { fadeInOutAnimation } from '@core/animation_routes';
+import { locationIcon, galleryIcon, filterIcon, trophyIcon, arrowsDownIcon, projectIcon, githubIcon, blogIcon, webSiteIcon } from '@core/globals/icons';
 
 
 @Component({
@@ -31,15 +32,15 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   galleryPagesRoute: string = galleryPages.route;
 
   // icons
-  locationIcon = faMapMarkerAlt;
-  galleryIcon = faImages;
-  filterIcon = faFilter;
-  trophyIcon = faTrophy;
-  arrowsDownIcon = faAngleDoubleDown;
-  projectIcon = faPaintBrush;
-  githubIcon = faGithub;
-  notesIcon = faFileAlt;
-  websiteIcon = faGlobe;
+  locationIcon = locationIcon;
+  galleryIcon = galleryIcon;
+  filterIcon = filterIcon;
+  trophyIcon = trophyIcon;
+  arrowsDownIcon = arrowsDownIcon;
+  projectIcon = projectIcon;
+  githubIcon = githubIcon;
+  notesIcon = blogIcon;
+  websiteIcon = webSiteIcon;
 
   themesTitle = "Thèmes";
   contextTitle = "Contexte";

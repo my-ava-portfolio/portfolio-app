@@ -1,10 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { faArrowsUpDownLeftRight, faRoad, faCirclePlus, faDrawPolygon, faGear, faLock, faLockOpen, faPencil, faExpand, faCar, faPersonWalking, faMagnet } from '@fortawesome/free-solid-svg-icons';
-
 import { layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 
 import { EditComputingService } from '../shared/service/edit-computing.service';
+import { addIcon, centerIcon, editIcon, lockIcon, motorIcon, moveIcon, pathIcon, pedestrianIcon, polygonIcon, snapIcon, unLockIcon } from '../shared/icons';
 
 
 @Component({
@@ -18,18 +17,12 @@ export class EditBarComponent implements OnInit, OnDestroy {
 
   private _enabled!: boolean
 
-  addIcon = faCirclePlus;
-  editIcon = faPencil;
-  paramIcon = faGear;
-  lockIcon = faLock;
-  unLockIcon = faLockOpen;
-  polygonIcon = faDrawPolygon;
-  moveIcon = faArrowsUpDownLeftRight;
-  pathIcon = faRoad;
-  motorIcon = faCar;
-  pedestrianIcon = faPersonWalking;
-  centerIcon = faExpand;
-  snapIcon = faMagnet;
+  addIcon = addIcon;
+  editIcon = editIcon;
+  polygonIcon = polygonIcon;
+  moveIcon = moveIcon;
+  centerIcon = centerIcon;
+  snapIcon = snapIcon;
 
   // add
   isDrawn: boolean = false;

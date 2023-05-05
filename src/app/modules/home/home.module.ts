@@ -3,15 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { FormsModule } from '@angular/forms';
-
 import { HomeRoutingModule } from '@modules/home/home-routing.module';
 
 import { LayoutComponent } from '@modules/home/layout/layout.component';
 import { SummaryComponent } from './summary/summary.component';
 import { GeneralInfoComponent } from './general-info/general-info.component';
-
-// import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { ItemsModule } from '@shared/modules/items/items.module';
 
@@ -23,13 +19,10 @@ import { ItemsModule } from '@shared/modules/items/items.module';
   ],
   imports: [
     CommonModule,
-    FormsModule,
     HomeRoutingModule,
-    // PipesModule,
     NgbModule,
     ItemsModule
   ],
-  providers: [
-  ]
+  providers: []
 })
 export class HomeModule { }

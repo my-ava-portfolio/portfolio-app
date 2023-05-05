@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { apiUrl } from '@core/global-values/main';
+import { apiUrl } from '@core/globals/resume-shared-data';
 import { Subject } from 'rxjs';
 
 @Injectable({

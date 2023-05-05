@@ -1,8 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { assetsLogoPath, skillsMapping } from '@core/global-values/main';
-
-import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope, faPhone, faGlobe, faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import { githubIcon, linkedinIcon, emailIcon, phoneIcon, websiteIcon, pdfFileIcon } from '@core/globals/icons';
+import { assetsLogoPath, skillsMapping } from '@core/globals/resume-shared-data';
 
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
@@ -20,12 +18,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
   skillsCategories = skillsMapping;
 
   // icons
-  githubIcon = faGithub;
-  linkedinIcon = faLinkedinIn;
-  emailIcon = faEnvelope;
-  phoneIcon = faPhone;
-  websiteIcon = faGlobe;
-  pdfFileIcon = faFilePdf;
+  githubIcon = githubIcon;
+  linkedinIcon = linkedinIcon;
+  emailIcon = emailIcon;
+  phoneIcon = phoneIcon;
+  websiteIcon = websiteIcon;
+  pdfFileIcon = pdfFileIcon;
 
   apiImgUrl = assetsLogoPath;
 
@@ -64,7 +62,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   ) {
 
     this.userInfoDataSubscription = this.resumeService.userInfoDataSubject.subscribe(
-      (data) => {
+      (data: any) => {
         this.profilData = data;
       }
     );
@@ -102,7 +100,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     );
 
     this.languagesDataSubscription = this.resumeService.languagesDataSubject.subscribe(
-      (data) => {
+      (data: any) => {
         this.languagesData = data;
       }
     );

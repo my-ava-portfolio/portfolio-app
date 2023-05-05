@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { apiUrl } from '@core/global-values/main';
+import { apiUrl } from '@core/globals/resume-shared-data';
 
 
 @Injectable({

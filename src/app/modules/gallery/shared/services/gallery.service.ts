@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { apiUrl } from '@core/global-values/main';
+import { apiUrl } from '@core/globals/resume-shared-data';
 
-import { GalleryModule } from '@modules/gallery/gallery.module';
 
 @Injectable()
 export class GalleryService {

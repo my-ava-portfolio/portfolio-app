@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { pdfFileIcon, publicationIcon } from '@core/globals/icons';
 
-import { faBook, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { ResumeService } from '@services/resume.service';
 import { Subscription } from 'rxjs';
 
@@ -12,8 +12,8 @@ import { Subscription } from 'rxjs';
 export class PublicationBarComponent implements OnInit, OnDestroy {
   @Input() activityType: any;
 
-  publishIcon = faBook;
-  pdfFileIcon = faFilePdf;
+  publishIcon = publicationIcon;
+  pdfFileIcon = pdfFileIcon;
 
   publicationsData!: any;
   

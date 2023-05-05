@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { minWidthLandscape, minHeightLandscape } from '@core/styles/screen';
-import { faMobileAlt, faSpinner, faBug, faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { mobileIcon, arrowUpIcon } from '@core/globals/icons';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +12,8 @@ import { faMobileAlt, faSpinner, faBug, faArrowAltCircleUp } from '@fortawesome/
 })
 export class AppComponent implements OnInit {
 
-  mobileIcon = faMobileAlt;
-  loadingIcon = faSpinner;
-  bugIcon = faBug;
-  arrowUpIcon = faArrowAltCircleUp;
+  mobileIcon = mobileIcon;
+  arrowUpIcon = arrowUpIcon;
 
   scrolltoTopDisabledForced: boolean = false;
   scrolltoTopActivated: boolean = false

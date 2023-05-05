@@ -1,10 +1,10 @@
 import { Component, ElementRef, Input, OnInit, SimpleChanges } from '@angular/core';
-import { faExpand, faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { layerHandler, getWkt } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import Feature from 'ol/Feature';
 import { Geometry } from 'ol/geom';
 import { categoryClass } from '@modules/map-sandbox/shared/data-types';
+import { centerIcon } from '@modules/map-activities/shared/icons';
+import { disabledIcon, duplicateIcon, paramIcon } from '@modules/map-sandbox/shared/icons';
 
 
 @Component({
@@ -23,10 +23,10 @@ export class FeatureComponent implements OnInit {
 
   @Input() layer!: layerHandler;
 
-  disabledIcon = faXmark;
-  duplicateIcon = faClone;
-  centerIcon = faExpand;
-  paramIcon = faGear;
+  disabledIcon = disabledIcon;
+  duplicateIcon = duplicateIcon;
+  centerIcon = centerIcon;
+  paramIcon = paramIcon;
 
   currentFillColor!: string;
   currentStrokeColor!: string;

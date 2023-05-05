@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { layerHandler } from '../shared/layer-handler/layer-handler';
-import { lineStringIcon, pointIcon, polygonIcon } from '../shared/style-helper';
 import { InteractionsService } from '../shared/service/interactions.service';
+import { lineStringIcon, pointIcon, polygonIcon } from '../shared/icons';
 
 @Component({
   selector: 'app-legend',

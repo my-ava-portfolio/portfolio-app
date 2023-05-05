@@ -1,11 +1,14 @@
-import { apiBaseUrl } from "@core/global-values/svr-url";
+import { environment } from 'src/environments/environment';
 
+export const apiBaseUrl = environment.apiBaseUrl
 export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
 export const assetsLogoPath = `./assets/logo/`;
 export const assetsImagesPath = `./assets/images/`;
 
 export const personalBlogUrl = 'https://blog.amaury-valorge.com';
 export const githubPortfolioUrl = 'https://github.com/my-ava-portfolio/';
+export const githubPortfolioAppRepoName = 'portfolio-app';
+
 export const imageProfile = 'https://avatars.githubusercontent.com/u/36413727?v=4';
 
 

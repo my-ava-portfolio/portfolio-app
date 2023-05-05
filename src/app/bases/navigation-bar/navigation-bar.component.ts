@@ -11,12 +11,13 @@ import { currentYear } from '@core/misc';
 import { ResumeService } from 'src/app/services/resume.service';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { backEndInfo, dataProcessingInfo, frontEndInfo } from '@core/global-values/tech-infos';
-import { imageProfile } from '@core/global-values/main';
-import { githubBugIssueUrl, githubQuestionUrl, githubEnhancementUrl } from '@core/global-values/navigation-links';
-import { faPython, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
-import { faBug, faQuestionCircle, faExclamationCircle, faCogs, faBars, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { homePages, legacyResumePage, mainTopicsPages } from '@core/global-values/topics';
+import { backEndInfo, dataProcessingInfo, frontEndInfo } from '@core/globals/tech-infos';
+import { imageProfile } from '@core/globals/resume-shared-data';
+import { githubBugIssueUrl, githubQuestionUrl, githubEnhancementUrl, issueSufixTitle } from '@core/globals/navigation-links';
+import { homePages, legacyResumePage, mainTopicsPages } from '@core/globals/topics_skeleton';
+
+import { githubIcon, linkedinIcon, emailIcon, infoIcon, menuIcon, bugIcon, exclamationIcon, helpIcon } from '@core/globals/icons';
+
 
 @Component({
   selector: 'app-navigation-bar',
@@ -32,9 +33,6 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   homePages = homePages;
   legacyResumePage: any = legacyResumePage;
 
-  bugIcon = faBug;
-  helpIcon = faQuestionCircle;
-  exclamationIcon = faExclamationCircle;
   GithubBugIssueLink = githubBugIssueUrl;
   GithubQuestionIssueLink = githubQuestionUrl;
   GithubEnhancementIssueLink = githubEnhancementUrl;
@@ -44,15 +42,17 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   contactHelpMessage = "Besoin d'aide ?"
   contactFeatureMessage = 'Des améliorations ?';
 
-  issueSufixTitle = ' page:';
+  issueSufixTitle = issueSufixTitle;
 
   // icons
-  infoIcon = faCogs;
-  pythonIcon = faPython;
-  githubIcon = faGithub;
-  menuIcon = faBars;
-  linkedinIcon = faLinkedinIn;
-  emailIcon = faEnvelope;
+  infoIcon = infoIcon;
+  githubIcon = githubIcon;
+  menuIcon = menuIcon;
+  linkedinIcon = linkedinIcon;
+  emailIcon = emailIcon;
+  bugIcon = bugIcon;
+  helpIcon = helpIcon;
+  exclamationIcon = exclamationIcon
 
   authorRepoUrl = 'https://github.com/amauryval/portfolio';
 

@@ -8,13 +8,14 @@ import { ActivatedRoute } from '@angular/router';
 
 import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.service';
 
-import { locationIcon, tagsIcon, centerIcon, gtfsLayerName, gtfsStyle, circleRadius, metroColor, strokeWidth, trainColor, tramColor, strokeColor } from '@modules/map-gtfs-viewer/shared/core';
+import { gtfsLayerName, gtfsStyle, circleRadius, metroColor, strokeWidth, trainColor, tramColor, strokeColor } from '@modules/map-gtfs-viewer/shared/core';
 import { MapService } from '@services/map.service';
 import { ControlerService } from '@services/controler.service';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
+import { centerIcon } from '@modules/map-activities/shared/icons';
 
 
 @Component({
@@ -24,8 +25,7 @@ import VectorSource from 'ol/source/Vector';
 })
 export class MapViewComponent implements OnInit, OnDestroy {
   dataCached = {}  
-  locationIcon = locationIcon;
-  tagIcon = tagsIcon;
+
   centerIcon = centerIcon;
 
   // TODO improve API to return the areas list
@@ -135,7 +135,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
     );
 
     this.pullBoundingBoxDataSubscription = this.dataService.rangeDateData.subscribe(
-      (element) => {
+      (element: any) => {
         this.dataBoundingBox = element.DataBounds;
         this.startDate = this.secsToDate(element.StartDate);
         this.endDate = this.secsToDate(element.EndDate);
@@ -156,13 +156,13 @@ export class MapViewComponent implements OnInit, OnDestroy {
     );
 
     this.pullGeoDataSubscription = this.dataService.GeoData.subscribe(
-      (geoData) => {
+      (geoData: any) => {
         this.dataService.pullGeoDataToMap(geoData);
       },
     );
 
     this.pullAvailableAreasSubscription = this.dataService.availableAreas.subscribe(
-      (element) => {
+      (element: any) => {
         this.availableArea = element;
       }
     );

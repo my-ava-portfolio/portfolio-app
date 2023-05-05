@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInOutAnimation } from '@core/animation_routes';
-import { homePages } from '@core/global-values/topics';
+import { homePages } from '@core/globals/topics_skeleton';
 
 
 @Component({
