@@ -5,4 +5,4 @@ COPY ./ /usr/app
 
 RUN npm install
 
-RUN ng build --configuration production
+RUN npm run-script deploy_nginx
