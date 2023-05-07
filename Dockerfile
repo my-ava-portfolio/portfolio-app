@@ -5,7 +5,7 @@ COPY ./ /usr/app
 
 RUN npm install
 
-RUN npm run-script deploy_nginx
+RUN npm run-script deploy_preprod
 
 ####
 FROM nginx:1.17.1-alpine
