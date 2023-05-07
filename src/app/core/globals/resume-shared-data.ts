@@ -1,7 +1,3 @@
-import { environment } from 'src/environments/environment';
-
-export const apiBaseUrl = environment.apiBaseUrl
-export const apiUrl = apiBaseUrl + 'api/v1/portfolio/';
 export const assetsLogoPath = `./assets/logo/`;
 export const assetsImagesPath = `./assets/images/`;
 

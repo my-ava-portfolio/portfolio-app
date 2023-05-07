@@ -1,4 +1,12 @@
+const protocol = 'https'
+const domain = ".amaury-valorge.com"
+const resumeApiSubdomain = "resume";
+const gtfsVierwerApiSubdomain = "gtfs-viewer";
+const networkApiSubdomain = "network";
+
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://api.amaury-valorge.com/'
+  resumeApiUrl: protocol + '://' + resumeApiSubdomain + domain + 'api/v1/',
+  gtfsViewerApiUrl: protocol + '://' + gtfsVierwerApiSubdomain + domain + 'api/v2/',
+  networkApiUrl: protocol + '://' + networkApiSubdomain + domain + 'api/v1/'
 };

@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { apiUrl } from '@core/globals/resume-shared-data';
-
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class GalleryService {
-
-  private apiUrlActivitiesGallery = apiUrl + 'gallery/';
+  private galleryApiUrl = environment.resumeApiUrl + 'gallery/'
   ErrorActivitiesGalleryApiFound: Subject<string> = new Subject<string>();
   activitiesGalleryData: Subject<any> = new Subject<any>();
 
@@ -18,7 +16,7 @@ export class GalleryService {
 
   queryGalleryFeatures(parameters: any): void {
 
-    this.http.get<any>(`${this.apiUrlActivitiesGallery}`, {params: parameters}).subscribe({
+    this.http.get<any>(`${this.galleryApiUrl}`, {params: parameters}).subscribe({
       complete: () => {
       },
       error: error => {

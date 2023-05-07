@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
-import { apiBaseUrl } from '@core/globals/resume-shared-data';
+
+import { environment } from '@root/environments/environment';
 
 
 
@@ -12,8 +13,7 @@ import { apiBaseUrl } from '@core/globals/resume-shared-data';
 })
 export class DataService {
   cache = Observable<any>
-
-  private apiUrl = apiBaseUrl + 'api/v2/gtfs_viewer/';
+  private gtfsViewerApiUrl = environment.gtfsViewerApiUrl;
 
   mapContainer: Subject<any> = new Subject<any>();
   screenMapBound: Subject<number[]> = new Subject<number[]>();
@@ -33,7 +33,7 @@ export class DataService {
   pullGeoData(area: string, current_date: Date, bounds: number[]): void {
     const currentDate = Math.floor(current_date.getTime() / 1000)
 
-    this.http.get<any>(this.apiUrl + area.toLowerCase() + '/moving_nodes?date=' + currentDate + "&bounds=" + bounds).subscribe({
+    this.http.get<any>(this.gtfsViewerApiUrl + area.toLowerCase() + '/moving_nodes?date=' + currentDate + "&bounds=" + bounds).subscribe({
       complete: () => {
       },
       error: error => {
@@ -47,7 +47,7 @@ export class DataService {
   }
 
   pullRangeDateData(currentData: string): void {
-    this.http.get<any>(this.apiUrl + currentData.toLowerCase() + '/range_dates').subscribe({
+    this.http.get<any>(this.gtfsViewerApiUrl + currentData.toLowerCase() + '/range_dates').subscribe({
       complete: () => {
       },
       error: error => {
@@ -61,7 +61,7 @@ export class DataService {
   }
 
   pullAvailableAreas(): void {
-    this.http.get<any>(this.apiUrl + 'existing_study_areas').subscribe({
+    this.http.get<any>(this.gtfsViewerApiUrl + 'existing_study_areas').subscribe({
       complete: () => {
       },
       error: error => {
@@ -76,7 +76,7 @@ export class DataService {
 
   pullAvailableRouteTypes(currentData: string): void {
     // HERE ADD CURRENT DATE ARG LINKED TO THE timeline !!!!
-    this.http.get<any>(this.apiUrl + currentData.toLowerCase() + '/route_types').subscribe({
+    this.http.get<any>(this.gtfsViewerApiUrl + currentData.toLowerCase() + '/route_types').subscribe({
       complete: () => {
       },
       error: error => {

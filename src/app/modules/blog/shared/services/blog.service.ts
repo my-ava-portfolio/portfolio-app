@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { apiUrl } from '@core/globals/resume-shared-data';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -10,8 +10,7 @@ import { apiUrl } from '@core/globals/resume-shared-data';
   providedIn: 'root'
 })
 export class BlogService {
-
-  private apiUrlNotesData = apiUrl;
+  private resumeApiUrl = environment.resumeApiUrl
   ErrorTopicsDataApiFound: Subject<string> = new Subject<string>();
   blogData: Subject<any[]> = new Subject<any[]>();
 
@@ -21,7 +20,7 @@ export class BlogService {
 
   queryBlogTopics(): void {
 
-    this.http.get<any>(`${this.apiUrlNotesData}blog/`).subscribe({
+    this.http.get<any>(`${this.resumeApiUrl}blog/`).subscribe({
       complete: () => {
       },
       error: error => {

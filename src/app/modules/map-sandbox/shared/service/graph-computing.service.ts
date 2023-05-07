@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { apiBaseUrl } from '@core/globals/resume-shared-data';
+
+import { environment } from '@root/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GraphComputingService {
 
-  apiUrl = apiBaseUrl + 'api/v1/network-api/';
+  private networkApiUrl = environment.networkApiUrl;
 
-  private shortestPathRoute = this.apiUrl + 'path/shortest';
+  private shortestPathRoute = this.networkApiUrl + 'path/shortest';
 
   constructor(
     private http: HttpClient,

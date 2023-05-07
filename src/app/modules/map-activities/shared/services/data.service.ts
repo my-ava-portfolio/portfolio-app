@@ -1,18 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { apiUrl } from '@core/globals/resume-shared-data';
+
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+  private portfolioApiUrl = environment.resumeApiUrl
 
-  private apiUrlActivitiesGeoData = apiUrl + 'geodata/activities';
+  private apiUrlActivitiesGeoData = this.portfolioApiUrl + 'geodata/activities';
   errorapiUrlApiFound: Subject<string> = new Subject<string>();
   activitiesGeoData: Subject<any> = new Subject<any>();
 
-  private apiUrlTripsGeoData = apiUrl + '/geodata/trips';
+  private apiUrlTripsGeoData = this.portfolioApiUrl + '/geodata/trips';
   tripsGeoData: Subject<any> = new Subject<any>();
 
   dateNotified: Subject<string> = new Subject<string>();

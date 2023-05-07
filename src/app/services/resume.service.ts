@@ -2,43 +2,44 @@ import { Injectable } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { apiUrl } from '@core/globals/resume-shared-data';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResumeService {
+  private portfolioApiUrl = environment.resumeApiUrl
 
   ErrorResumeDataApiFound: Subject<string> = new Subject<string>();
 
-  private userInfoRoute = apiUrl + 'user/info';
+  private userInfoRoute = this.portfolioApiUrl + 'user/info';
   userInfoDataSubject: Subject<any> = new Subject<any>();
 
-  private userContactRoute = apiUrl + 'user/contact';
+  private userContactRoute = this.portfolioApiUrl + 'user/contact';
   userContactDataSubject: Subject<any> = new Subject<any>();
 
-  private languagesRoute = apiUrl + 'languages';
+  private languagesRoute = this.portfolioApiUrl + 'languages';
   languagesDataSubject: Subject<any> = new Subject<any>();
 
-  private acitvitiesRoute = apiUrl + 'activities';
+  private acitvitiesRoute = this.portfolioApiUrl + 'activities';
   activitiesDataSubject: Subject<any> = new Subject<any>();
-  private activitiesJobDurationRoute = apiUrl + 'activities/job/duration';
+  private activitiesJobDurationRoute = this.portfolioApiUrl + 'activities/job/duration';
   activitiesJobDurationDataSubject: Subject<any> = new Subject<any>();
   profesionalActivitiesDataSubject: Subject<any> = new Subject<any>();
-  
-  private skillsRoute = apiUrl + 'skills';
+
+  private skillsRoute = this.portfolioApiUrl + 'skills';
   skillsDataSubject: Subject<any> = new Subject<any>();
 
-  private publicationsRoute = apiUrl + 'publications';
+  private publicationsRoute = this.portfolioApiUrl + 'publications';
   publicationsDataSubject: Subject<any> = new Subject<any>();
 
-  private trainingsRoute = apiUrl + 'trainings/';
+  private trainingsRoute = this.portfolioApiUrl + 'trainings/';
   trainingsDataSubject: Subject<any> = new Subject<any>();
 
-  private graphRoute = apiUrl + 'graph/'
+  private graphRoute = this.portfolioApiUrl + 'graph/'
   graphDataSubject: Subject<any> = new Subject<any>();
-  private validityRangeActivitisJobRoute = apiUrl + 'activities/job/validity_range'
+  private validityRangeActivitisJobRoute = this.portfolioApiUrl + 'activities/job/validity_range'
   validityRangeActivitisJobDataSubject: Subject<any> = new Subject<any>();
 
   activityId: Subject<string> = new Subject<string>();
@@ -186,7 +187,7 @@ export class ResumeService {
       },
     });
   }
-  
+
   queryTrainingsFromApi(): void {
     this.http.get<any>(this.trainingsRoute).subscribe({
       complete: () => {
