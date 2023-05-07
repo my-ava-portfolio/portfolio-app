@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build-env
+FROM node:18-alpine AS build
 
 WORKDIR /usr/app
 COPY ./ /usr/app
