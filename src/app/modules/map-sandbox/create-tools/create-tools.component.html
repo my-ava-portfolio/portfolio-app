@@ -1,11 +1,11 @@
-<div class="text-center fw-bold bg-dark bg-gradient text-white p-2">
+<div class="text-center fw-bold bg-primary bg-gradient text-white p-2">
     Créer
   </div>
 
 <div id="creationTools" class="text-center m-3">
 
     <ng-container *ngFor="let layer of layerTypesModes">
-        <button class="btn btn-sm btn-dark border-0 me-1 text-warning" (click)="addLayer(layer.mode)" [ngbPopover]="layer.label" placement="bottom"triggers="mouseenter:mouseleave">
+        <button class="btn btn-sm btn-primary border-0 me-1 text-white" (click)="addLayer(layer.mode)" [ngbPopover]="layer.label" placement="bottom"triggers="mouseenter:mouseleave">
         <fa-icon class="" [icon]="layer.icon"></fa-icon>
         </button>
     </ng-container>

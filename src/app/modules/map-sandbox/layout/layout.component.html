@@ -17,14 +17,14 @@
     <div id="legendLabels" class="d-flex flex-column">
 
       <span
-        class="tool btn btn-warning text-black my-3 shadow rounded-end"
+        class="tool btn btn-warning text-black my-3 rounded-end"
         [ngClass]="isPanelsDisplayed ? 'selected' : ''"
         (click)="showHideLegend()">
         <fa-icon [icon]="isPanelsDisplayed ? leftSideIcon : rightSideIcon"></fa-icon>
       </span>
 
       <span
-        class="tool btn btn-success text-white mb-1 shadow rounded-end"
+        class="tool btn btn-success text-white mb-1 rounded-end"
         [ngClass]="toolsMode === 'geoTools' ? 'selected' : ''"
         (click)="toolsMode = 'geoTools'"
         >
@@ -32,7 +32,7 @@
       </span>
 
       <span
-        class="tool btn btn-dark text-white mb-1 shadow rounded-end" type="button"
+        class="tool btn btn-secondary text-white mb-1 rounded-end" type="button"
         [ngClass]="toolsMode === 'createTools' ? 'selected' : ''"
         (click)="toolsMode = 'createTools'"
         >
@@ -40,7 +40,7 @@
       </span>
 
       <span
-        class="tool btn btn-danger text-white mb-1 shadow rounded-end" type="button"
+        class="tool btn btn-danger text-white mb-1 rounded-end" type="button"
         [ngClass]="toolsMode === 'pathTools' ? 'selected' : ''"
         (click)="toolsMode = 'pathTools'"
         >

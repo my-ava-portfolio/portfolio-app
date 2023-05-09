@@ -4,13 +4,13 @@
   class="layer d-flex flex-column m-1 p-1 align-items-around"
   >
 
-    <div class="header d-flex flex-row align-items-center rounded border p-2 pointer shadow"
-    [ngClass]="selected ? 'bg-warning border-1' :  'bg-warning bg-opacity-25'"
+    <div class="header d-flex flex-row align-items-center rounded border px-1 pointer shadow"
+    [ngClass]="selected ? 'bg-secondary bg-opacity-50 border-1' :  'bg-secondary bg-opacity-10'"
     (click)="selected = true"
     >
 
       <div class="d-flex flex-row justify-content-start align-items-center me-1">
-        
+
         <input #btnVisible type="checkbox" class="btn-check" [id]="'btnVisible' + layer.container.uuid" [checked]="visible" (change)="visible = btnVisible.checked">
         <label class="p-1 pointer" [for]="'btnVisible' + layer.container.uuid" [ngClass]="visible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="visible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="visible ? visibleIcon : invisibleIcon"></fa-icon>
@@ -18,15 +18,15 @@
 
         <input #btnLocked type="checkbox" class="btn-check" [id]="'btnLocked' + layer.container.uuid" [checked]="locked" (change)="locked = btnLocked.checked">
         <label class="ms-auto p-1 pointer" [for]="'btnLocked' + layer.container.uuid" container="body" [ngbPopover]="locked ? 'Déverrouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
-          <fa-icon class="" [icon]="locked ? lockIcon : unLockIcon"></fa-icon>
+          <fa-icon class="" [icon]="locked ? lockIcon : unLockIcon" ></fa-icon>
         </label>
 
         <div class="d-flex flex-column justify-content-center align-items-center mx-1" [ngClass]="selected ? 'pe-auto' :  'pe-none'">
-            <div class="text-danger" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
+            <div class="text-danger m-0" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
               <fa-icon class="" [icon]="upIcon"></fa-icon>
             </div>
 
-            <div class="text-danger" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
+            <div class="text-danger m-0" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
               <fa-icon class="" [icon]="downIcon"></fa-icon>
             </div>
         </div>
@@ -55,11 +55,11 @@
 
     <div class="feature-container d-flex flex-column small" *ngIf="layer.container.features.length > 0">
 
-      <div class="d-flex flex-row justify-content-around align-items-center flex-fill pt-1 mx-2 px-3 pb-1 shadow border border-top-0 border-warning border-opacity-50 rounded-bottom bg-warning bg-opacity-25">
+      <div class="d-flex flex-row justify-content-around align-items-center flex-fill pt-1 mx-2 px-3 pb-1 border-secondary border-opacity-10 rounded-bottom bg-secondary bg-opacity-10">
         <div class="pointer px-1" (click)="zoomToLayer()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="centerIcon"></fa-icon>
         </div>
-        
+
         <div class="pointer px-1" (click)="duplicateLayer()" ngbPopover="Dupliquer" triggers="mouseenter:mouseleave">
           <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
         </div>
@@ -109,7 +109,7 @@
 
 
 <set-modal #modalLayerSettings [title]="'Paramètres de la couche : ' + layer.container.layerName">
- 
+
     <app-layer-settings
       [layer]="layer"
     ></app-layer-settings>
