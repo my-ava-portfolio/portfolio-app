@@ -44,15 +44,15 @@
 
       <h5 *ngIf="sideBarCollapsed" class="text-white">Contact</h5>
       <div class="" id="leftSideBar__container__header__contact" *ngIf="userContactData">
-        <a class="btn btn-sm text-bg-light m-1" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(userContactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+        <a class="btn btn-sm btn-light m-1" [href]="'mailto:' + linkBuilt" (mouseover)="reverse(userContactData.mail)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="text-black" [icon]="emailIcon" size="xl"></fa-icon>
         </a>
 
-        <a class="btn btn-sm text-bg-light m-1" [href]="linkBuilt" (mouseover)="reverse(userContactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+        <a class="btn btn-sm btn-light m-1" [href]="linkBuilt" (mouseover)="reverse(userContactData.linkedin)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="text-black" [icon]="linkedinIcon" size="xl"></fa-icon>
         </a>
 
-        <a class="btn btn-sm text-bg-light m-1" [href]="linkBuilt" (mouseover)="reverse(userContactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
+        <a class="btn btn-sm btn-light m-1" [href]="linkBuilt" (mouseover)="reverse(userContactData.github)" (mouseout)="linkBuilt=''" target="_blank" rel="noopener noreferrer">
           <fa-icon class="text-black" [icon]="githubIcon" size="xl"></fa-icon>
         </a>
 
@@ -71,10 +71,8 @@
       <ul class="list-unstyled list-group justify-content-center mb-2" [ngClass]="sideBarCollapsed ? 'list-group-horizontal' : ''">
 
         <li>
-          <a role="button" class="text-white mx-1"
-          [routerLink]="techStackPage.route"
-          [ngbPopover]="techStackPage.title" triggers="mouseenter:mouseleave"
-          >
+          <a class="text-white mx-1" container="body" [routerLink]="techStackPage.route"
+          [ngbPopover]="techStackPage.title" triggers="mouseenter:mouseleave">
             <fa-icon [icon]="techStackPage.icon" size="1x"></fa-icon>
           </a>
         </li>
