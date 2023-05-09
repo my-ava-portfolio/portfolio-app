@@ -52,7 +52,7 @@ export const companyIcon = faBuilding;
 export const mapIcon = faMap;
 
 // left navigation
-export const infoIcon = faCogs;
+export const stackIcon = faCogs;
 export const menuIcon = faBars;
 export const bugIcon = faBug;
 export const helpIcon = faQuestionCircle;

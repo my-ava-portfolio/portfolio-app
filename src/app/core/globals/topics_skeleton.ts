@@ -1,6 +1,6 @@
 import { activitiesPagesType, mapPagesType } from "@core/data-types";
 import { assetsImagesPath } from "./resume-shared-data";
-import { blogIcon, companyIcon, galleryIcon, graduateIcon, homeIcon, mapIcon, navigationIcon, resumeIcon, skillIcon } from "./icons";
+import { blogIcon, companyIcon, galleryIcon, graduateIcon, homeIcon, mapIcon, navigationIcon, resumeIcon, skillIcon, stackIcon } from "./icons";
 
 
 export const homePages: activitiesPagesType = {
@@ -112,8 +112,8 @@ export const mapActivitiesPages: mapPagesType = {
       ],
       status: 'Done',
       image_url: `${assetsImagesPath}/md-portfolio_activities.avif`,
-      description: `Cartographie de mon parcours universitaire et professionnel. Le front utilise Angular avec notamment 
-          les libraries OpenLayers pour la gestion des objets géographiques et D3js pour la légende temporelles. Les données 
+      description: `Cartographie de mon parcours universitaire et professionnel. Le front utilise Angular avec notamment
+          les libraries OpenLayers pour la gestion des objets géographiques et D3js pour la légende temporelles. Les données
           sont gérées par le backend en Python au travers d'une API Flask.`
     },
     {
@@ -137,7 +137,7 @@ export const mapActivitiesPages: mapPagesType = {
       ],
       status: 'Dev',
       image_url: `${assetsImagesPath}/md-sandbox.avif`,
-      description: `Un bac à sable pour saisir et exporter des données géographiques: Points, LineString, Polygons (et à trous). 
+      description: `Un bac à sable pour saisir et exporter des données géographiques: Points, LineString, Polygons (et à trous).
         L'ensemble est totalement géré par le front avec OpenLayers principalement. Il est possible de générer des plus courts
         chemin en saisissant des noeuds ; calculs gérés par la librairie python OsmRx`
     },
@@ -167,10 +167,10 @@ export const mapActivitiesPages: mapPagesType = {
       ],
       status: 'Dev',
       image_url: `${assetsImagesPath}/md-gtfs_viewer.avif`,
-      description: `Application pour visualiser la circulation sur une journée des transports en commun à partir d'un GTFS. 
-        On propose ainsi une cartographie spatio-temporelle des TER de la SNCF sur l'ensemble du territoire et les lignes de trams 
-        et métros pour Toulouse et Lyon. OpenLayers et D3js sont mobilisés pour le front. Une phase de pré-traitement des données, 
-        issus des GTFS est réalisée en Python pour obtenir des données exploitables. Ces dernières sont diffusées par un backend 
+      description: `Application pour visualiser la circulation sur une journée des transports en commun à partir d'un GTFS.
+        On propose ainsi une cartographie spatio-temporelle des TER de la SNCF sur l'ensemble du territoire et les lignes de trams
+        et métros pour Toulouse et Lyon. OpenLayers et D3js sont mobilisés pour le front. Une phase de pré-traitement des données,
+        issus des GTFS est réalisée en Python pour obtenir des données exploitables. Ces dernières sont diffusées par un backend
         codé en Golang à l'aide d'une API REST (Gin Gonic)`
     },
   ]
@@ -187,7 +187,7 @@ export const galleryPages: activitiesPagesType = {
 };
 
 
-export const projectPages: activitiesPagesType[] = [
+export const blogPages: activitiesPagesType[] = [
   {
     id: 'blog',
     route: '/blog',
@@ -199,6 +199,18 @@ export const projectPages: activitiesPagesType[] = [
   }
 ];
 
+export const techStackPages: activitiesPagesType[] = [
+  {
+    id: 'stack',
+    route: '/stack',
+    title: 'Stack technique',
+    verbose_title: 'Accès à la stack technique',
+    colorType: 'secondary',
+    icon: stackIcon,
+    sub_menus: []
+  }
+];
+
 export const resumeTopicsPages = [...[educationPages], ...[experiencesPages], ...[mapActivitiesPages], ...[galleryPages]]
-export const mainTopicsPages = [...[homePages], ...resumeTopicsPages, ...projectPages]
+export const mainTopicsPages = [...[homePages], ...resumeTopicsPages, ...blogPages]
 export const pagesObject: any = mainTopicsPages.reduce((a: any, x: any) => ({...a, [x.id]: x}), {});

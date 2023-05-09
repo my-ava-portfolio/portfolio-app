@@ -14,9 +14,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { backEndInfo, dataProcessingInfo, frontEndInfo } from '@core/globals/tech-infos';
 import { imageProfile } from '@core/globals/resume-shared-data';
 import { githubBugIssueUrl, githubQuestionUrl, githubEnhancementUrl, issueSufixTitle } from '@core/globals/navigation-links';
-import { homePages, legacyResumePage, mainTopicsPages } from '@core/globals/topics_skeleton';
+import { homePages, legacyResumePage, mainTopicsPages, techStackPages } from '@core/globals/topics_skeleton';
 
-import { githubIcon, linkedinIcon, emailIcon, infoIcon, menuIcon, bugIcon, exclamationIcon, helpIcon } from '@core/globals/icons';
+import { githubIcon, linkedinIcon, emailIcon, menuIcon, bugIcon, exclamationIcon, helpIcon } from '@core/globals/icons';
 
 
 @Component({
@@ -32,6 +32,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   topicPages: any = mainTopicsPages;
   homePages = homePages;
   legacyResumePage: any = legacyResumePage;
+  techStackPage: any = techStackPages[0];
 
   GithubBugIssueLink = githubBugIssueUrl;
   GithubQuestionIssueLink = githubQuestionUrl;
@@ -45,7 +46,6 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   issueSufixTitle = issueSufixTitle;
 
   // icons
-  infoIcon = infoIcon;
   githubIcon = githubIcon;
   menuIcon = menuIcon;
   linkedinIcon = linkedinIcon;

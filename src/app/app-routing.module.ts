@@ -25,12 +25,12 @@ const appRoutes: Routes = [
       {
         path: 'experiences',
         loadChildren: () => import('@modules/experiences/experiences.module').then(m => m.ExperiencesModule),
-        data: { preload: true, title: 'Expériences', page: 'experiences', anchors: experiencesPages.sub_menus } 
+        data: { preload: true, title: 'Expériences', page: 'experiences', anchors: experiencesPages.sub_menus }
       },
       {
         path: 'resume',
         loadChildren: () => import('@modules/resume-legacy/resume-legacy.module').then(m => m.ResumeLegacyModule),
-        data: { preload: false, title: 'CV', page: 'resume', anchors: [] } 
+        data: { preload: false, title: 'CV', page: 'resume', anchors: [] }
       },
       {
         path: 'education',
@@ -51,6 +51,11 @@ const appRoutes: Routes = [
         path: 'blog',
         loadChildren: () => import('@modules/blog/blog.module').then(m => m.BlogModule),
         data: { title: 'Blog', page: 'blog', anchors: [] }
+      },
+      {
+        path: 'stack',
+        loadChildren: () => import('@modules/stack/stack.module').then(m => m.StackModule),
+        data: { title: 'Stack technique', page: 'stack', anchors: [] }
       },
       { path: '**', redirectTo: '/home', pathMatch : 'full' }, // in order to redirect to the home page if the main url is called
     ]

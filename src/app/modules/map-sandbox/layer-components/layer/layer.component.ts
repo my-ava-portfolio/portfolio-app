@@ -1,7 +1,5 @@
 import { layerHandler, refreshFeatureStyle } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, OnDestroy, ViewChild } from '@angular/core';
-import { faLock, faLockOpen, faEyeSlash, faEye, faCircle, faCirclePlus, faCircleQuestion, faDrawPolygon, faGear, faLayerGroup, faPencil, faWaveSquare, faXmark, faCaretDown, faCaretUp, faExpand, faBroom } from '@fortawesome/free-solid-svg-icons';
-import { faClone, faMinusSquare, faPlusSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
 import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
@@ -103,8 +101,8 @@ export class LayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    
-    // enable selecting 
+
+    // enable selecting
     // TODO useless ?
     // this.layer.enableSnapping()
     this.layer.enableSelecting()
@@ -122,12 +120,12 @@ export class LayerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
 
     this.isLayerRemoved = true;
-    
+
     let modalWktDiv = document.getElementById('modalWktLayer-' + this.layer.container.uuid)
     if (modalWktDiv !== null) {
       modalWktDiv.remove()
     }
-    
+
     this.removeLayerSubscription.unsubscribe();
     this.featureIdEditedSubscription.unsubscribe();
 
@@ -189,10 +187,10 @@ export class LayerComponent implements OnInit, OnDestroy {
   get toggled(): boolean {
     return this.layer.container.featuresToggled;
   }
-  
+
   @Input()
   set selected(status: boolean) {
-    
+
     if (!status) {
       // unselect all the features
       this.unSelectFeatures()
@@ -239,7 +237,7 @@ export class LayerComponent implements OnInit, OnDestroy {
             this.layer.select.getFeatures().push(feature)
           })
         }
-           
+
       }
 
     })

@@ -1,0 +1,19 @@
+<set-article-container [@fadeInOut]
+  class="d-flex flex-row justify-content-center m-2 rounded"
+>
+
+
+    <set-card-container
+      class="d-flex flex-row"
+      cardClass="text-center"
+      title="Architecture du portfolio"
+      headerClass="text-bg-dark"
+    >
+
+      <ng-template #cardBodyTemplate>
+          <img class="m-1 p-3 border rounded" [src]="portfolioV2ImgPath">
+      </ng-template>
+
+    </set-card-container>
+
+</set-article-container>

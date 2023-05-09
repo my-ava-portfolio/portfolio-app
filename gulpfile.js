@@ -37,6 +37,8 @@ const compress = () =>
     )
     .pipe(gulp.dest("src/assets/logo"));
 
+    gulp.src("assets/images/*.svg")
+    .pipe(gulp.dest("src/assets/images/"));
 
 module.exports = {
   compress
