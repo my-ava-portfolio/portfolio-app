@@ -61,7 +61,7 @@
 
     <div id="leftSideBar__container__body" class="mt-3">
 
-      <ul class="list-unstyled align-items-center" id="pages" [ngClass]="sideBarCollapsed ? 'mx-3' : 'd-flex flex-column'">
+      <ul class="list-unstyled align-items-center list-group-flush" id="pages" [ngClass]="sideBarCollapsed ? 'mx-3' : 'd-flex flex-column'">
         <ng-container *ngTemplateOutlet="topicPagesBuilder; context:{topicPages: topicPages}"></ng-container>
       </ul>
     </div>
@@ -120,15 +120,13 @@
       <li class="page
         border-bottom
       ">
-        <ng-container *ngIf="page.route">
-          <a class="
+          <a *ngIf="page.route" class="
             text-warning text-decoration-none
             d-flex flex-row p-2
-            text-start
-          " [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']">
-            <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
+            text-start"
+            [title]="page.title" [routerLink]="page.route" [routerLinkActive]="['active']">
+              <ng-container *ngTemplateOutlet="linkTopicStyle; context:{page: page}"></ng-container>
           </a>
-        </ng-container>
       </li>
 
   </ng-container>
