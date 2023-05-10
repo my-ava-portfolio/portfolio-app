@@ -49,11 +49,6 @@ export class LayerComponent implements OnInit, OnDestroy {
   private _selected: boolean = false
   displayTool: boolean = false;
 
-  isDrawn: boolean = false;
-  isEdited: boolean = false;
-  isShown: boolean = false;
-  isHole: boolean = false;
-
   featuresIdSelected: string[] = [];
 
   removeLayerSubscription!: Subscription;

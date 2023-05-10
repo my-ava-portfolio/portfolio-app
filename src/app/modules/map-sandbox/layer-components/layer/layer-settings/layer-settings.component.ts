@@ -11,7 +11,7 @@ export class LayerSettingsComponent implements OnInit {
   private _layer!: layerHandler;
 
   ngOnInit(): void {
-    this.updateStyle()
+    this.setDefaultStyle()
   }
 
   @Input()
@@ -23,8 +23,8 @@ export class LayerSettingsComponent implements OnInit {
     return this._layer
   }
 
-  updateStyle(): void {
+  setDefaultStyle(): void {
     this.layer.container.propertyStyled = null
-    this.layer.container.styleSettings = [{class: "*", color: this.layer.container.fillColor }]
+    this.layer.container.styleSettings = [{class: "default", color: this.layer.container.fillColor }]
   }
 }
