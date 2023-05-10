@@ -11,13 +11,13 @@ import Feature from 'ol/Feature';
 })
 export class LayerTableComponent implements OnInit {
   private _layer!: layerHandler;
-  
+
   attributesHeader!: string[]
   attributesFeatures!: any[]
 
   propertyStyled!: string
-  propertiesStylingClassified: categoryClass[] = [] 
-    
+  propertiesStylingClassified: categoryClass[] = []
+
   ngOnInit(): void {
   }
 
@@ -40,13 +40,11 @@ export class LayerTableComponent implements OnInit {
   }
 
   updateField(fieldName: string, value: any) {
-
+    // we suppose that the column exists
     if (typeof value === 'number') {
       value = +value
     }
-    this.layer.removeAttribute(fieldName)
     this.layer.setAttribute(fieldName, value)
-    // this.refreshTable()
   }
 
   removeField(fieldName: string): void {
@@ -67,10 +65,10 @@ export class LayerTableComponent implements OnInit {
           uniqueValues.push(value)
         }
       })
-    
+
       uniqueValues.forEach((value: any) => {
         const randomColor = getRandomDefaultColor();
-        this.propertiesStylingClassified.push({'class': value, 'color': randomColor}) 
+        this.propertiesStylingClassified.push({'class': value, 'color': randomColor})
       })
     this.applyClassifiedStyle(propertyName)
   }

@@ -17,7 +17,7 @@ import { StyleLike } from 'ol/style/Style';
 
 
 
-export class baseLayer{  
+export class baseLayer{
   private _vectorLayer!: VectorLayer<any>;
   private _sourceFeatures!: VectorSource;
   private _propertyStyled!: string | null;
@@ -37,10 +37,10 @@ export class baseLayer{
     geomType: geomLayerTypes,
     zIndexValue: number,
     groupId: string | null = null
-  ) { 
+  ) {
     this._initLayer(layerName, geomType, zIndexValue);
   }
-  
+
   get layer(): VectorLayer<any> {
       return this._vectorLayer
   }
@@ -74,7 +74,7 @@ export class baseLayer{
   set visible(enabled: boolean) {
       this.layer.setVisible(enabled)
     }
-  
+
   get visible(): boolean {
         return this.layer.getVisible()
     }
@@ -82,23 +82,23 @@ export class baseLayer{
   set propertyStyled(property: string | null) {
     this._propertyStyled = property
   }
-    
+
   get propertyStyled(): string | null {
     return this._propertyStyled
   }
-  
+
   set styleSettings(style: categoryClass[]) {
     this._styleSettings = style
   }
-    
+
   get styleSettings(): categoryClass[] {
     return this._styleSettings
   }
-      
+
   set featuresToggled(enabled: boolean) {
     this._featuresToggled = enabled
   }
-  
+
   get featuresToggled(): boolean {
       return this._featuresToggled
   }
@@ -106,7 +106,7 @@ export class baseLayer{
   set locked(enabled: boolean) {
       this._locked = enabled
     }
-  
+
   get locked(): boolean {
         return this._locked
   }
@@ -198,7 +198,7 @@ export class baseLayer{
         this.sourceFeatures.addFeature(newFeature)
       }
     }
-  
+
   removeFeature(featureId: string): void {
       const featureFound = this.featureById(featureId)
       if (featureFound.length === 1) {
@@ -211,14 +211,14 @@ export class baseLayer{
       ++this._featuresCounter;
       const uuid = uuidv4()
       feature.setId(uuid)
-  
+
       let name!: string;
       if (feature.get("name") !== undefined) {
         name = feature.get("name") + " copy"
       } else {
         name = 'feature ' + this._featuresCounter
       }
-      // TOOD add the layerName ? 
+      // TOOD add the layerName ?
       feature.setProperties({
         'id': feature.getId(),
         // 'layer_id': this.uuid,
@@ -261,7 +261,7 @@ export class baseLayer{
 //      ) {
 //         super(layerName, "Point" as pointType, zIndexValue)
 //   }
-  
+
 //   setAttributes(): void {
 //   }
 // }
@@ -274,7 +274,7 @@ export class baseLayer{
 //     ) {
 //         super(layerName, "LineString" as lineStringType, zIndexValue)
 //   }
-  
+
 //   setAttributes(): void {
 //     const currentEpsg = this.layer.getSource().getProjection().getCode()
 //     this.features.forEach((feature: Feature) => {
@@ -290,7 +290,7 @@ export class baseLayer{
 
 
 // export class PolygonsLayer extends baseLayer{
- 
+
 //     constructor(
 //         layerName: string,
 //         zIndexValue: number,
@@ -319,7 +319,7 @@ export class layerHandler {
   private _translate!: Translate;
   private _modifier!: Modify;
   select!: Select;
-  
+
   _zoomPadding = [100, 100, 100, 200];  // TODO set as a global var (use by layer-manager)
   _maxZoom = 14;
 
@@ -337,10 +337,10 @@ export class layerHandler {
     this._initModifier();
     this._map.addLayer(this.container.layer);
   }
-  
+
   removeLayer(): void {
       this._map.removeLayer(this.container.layer)
-  }      
+  }
 
   enableTranslating(): void {
     this._map.addInteraction(this._translate)
@@ -374,19 +374,19 @@ export class layerHandler {
       layers: [this.container.layer],
     })
   }
-    
+
   private _initSnap(): void {
     this._snap = new Snap({
       source: this.container.layer.getSource()
     });
   }
-  
+
   private _initTranslate(): void {
     this._translate = new Translate({
       features: this.select.getFeatures(),
     });
   }
-    
+
   private _initModifier(): void {
     this._modifier = new Modify({
         features: this.select.getFeatures(),
@@ -449,29 +449,29 @@ export class layerHandler {
 
   enableEditing(): void {
     this.disableEditing()
-    this._map.addInteraction(this._modifier);  
+    this._map.addInteraction(this._modifier);
   }
-  
+
   disableEditing(): void {
     this._map.removeInteraction(this._modifier);
   }
-  
+
   cleanEvents(): void {
       this.disableDrawing();
       this.disableEditing();
       // this.disableSelecting();
   }
-    
+
   enableDrawing(holeStatus = false): void {
     this.holePolygonDrawingStatus = holeStatus;
-  
+
     this._draw = new Draw({
       type: this.container.geomType,
       stopClick: true,
       source: this.container.sourceFeatures,
       condition: (e: any) => e.originalEvent.buttons === 1,  // draw only with left click
     });
-  
+
     this._map.addInteraction(this._draw);
     if (!holeStatus) {
       // select is disabled when drawing a new feature
@@ -482,7 +482,7 @@ export class layerHandler {
     this._draw.on('drawend', this._onDrawEnd.bind(this));
     this._draw.on('drawabort', this._onDrawAborting.bind(this));
   }
-    
+
   disableDrawing(): void {
     this._map.removeInteraction(this._draw);
     // this.enableSelecting()
@@ -495,7 +495,7 @@ export class layerHandler {
         "status": "modified",
       }, true)
   }
-    
+
   private _onDrawStart(e: any): void {
 
     //to build hole on polygon
@@ -520,7 +520,7 @@ export class layerHandler {
       }
     }
   }
-    
+
   private _onDrawEnd(e: any): void {
     // let's go to finalize
     if (this.holePolygonDrawingStatus) {
@@ -543,7 +543,7 @@ export class layerHandler {
 
     this.container.addProperties(e.feature)
   }
-    
+
   private _onDrawAborting(e: any): void {
       // to cancel a drawing hole (shift + left click OR shift + right click for hole )
       if (this.holePolygonDrawingStatus) {
@@ -560,10 +560,10 @@ export class layerHandler {
       this.container.sourceFeatures.forEachFeatureIntersectingExtent(feature.getGeometry().getExtent(), (feature: Feature | undefined) => {
         featureFound = feature;
       });
-  
+
       return featureFound
   }
-    
+
   private _onGeomChangeBuildHole(e: any): void {
     //Get hole coordinates for polygon
     if (this.polygonIntersected !== undefined) {
@@ -579,7 +579,7 @@ export class layerHandler {
 
     }
   }
-    
+
   // att
   zoomToLayer(): void {
     if (this.container.features.length > 0) {
@@ -589,7 +589,7 @@ export class layerHandler {
       );
     }
   }
-    
+
   zoomToFeature(featureId: string): void {
     this.container.features.filter((feature: any) => {
       if (feature.getId() === featureId) {
@@ -599,8 +599,8 @@ export class layerHandler {
       }
     })
   }
-  
-   
+
+
   getFeatureAttribute(featureId: string, attribute: string): void {
     // TODO not used
     const featureFound = this.container.featureById(featureId)
@@ -608,18 +608,18 @@ export class layerHandler {
       return featureFound[0].get(attribute)
     }
   }
-  
+
   getAttributesHeader(): string[] {
     const headers = this.container.features[0].getKeys()
     const headersFound = headers.filter(
       (header: string) => !this._headerHidden.includes(header)
-    ) 
+    )
     return headersFound
   }
 
   setAttribute(attributeName: string, value: any | null): void {
     const defaultEmptyValue = ''
-    if (!this.getAttributesHeader().includes(attributeName)) {
+    if (this.getAttributesHeader().includes(attributeName)) {
       this.container.features.forEach((feature: Feature) => {
         if (value === null) {
           value = defaultEmptyValue
@@ -636,12 +636,12 @@ export class layerHandler {
       })
     }
   }
-    
+
   exportBounds(): number[] {
     // TODO return the list for copy to clipboard
     return this.container.sourceFeatures.getExtent().join(',').split(',').map(Number) ;
   }
-    
+
   exportBoundsPolygon(): featuresLayerType {
     const bounds = this.exportBounds()
     const coordinates = [
@@ -673,7 +673,7 @@ export class layerHandler {
     })
     return wktFeatures.join('\n')
   }
-    
+
   exportToPytestFixture(): string {
     const fixtureHeader = "\n@pytest.fixture\ndef "
     let fixtureFeatures: string[] = []
@@ -695,25 +695,25 @@ export function layerHandlerPositionning(layersArray: layerHandler[], layerId: s
     if (toIndex >= 0 && toIndex < layersArray.length) {
       layersArray[layerIndexToGet].container.zIndex = toIndex
       layersArray = layersArray.sort((a, b) => (a.container.zIndex < b.container.zIndex ? -1 : 1));
-  
+
       // rebuild ZIndex
       layersArray.forEach((layer: layerHandler, idx: number) => {
         layer.container.zIndex = idx;
       })
       return layersArray
     }
-  
+
     return layersArray
   }
-  
-  
+
+
   export function getWkt(geometry: any): string {
     const wktFormat = new WKT()
     return wktFormat.writeGeometry(geometry);
   }
-  
-  
-  
+
+
+
   export function PointStyle(color: string, strokeWidth: number, strokeColor: string): Style {
     return new Style({
       image: new CircleStyle({
@@ -728,8 +728,8 @@ export function layerHandlerPositionning(layersArray: layerHandler[], layerId: s
       })
     })
   }
-  
-  
+
+
   export function LineStringStyle(color: string, strokeWidth: number, strokeColor: string): Style[] {
     return [
       new Style({
@@ -752,8 +752,8 @@ export function layerHandlerPositionning(layersArray: layerHandler[], layerId: s
       })
     ]
   }
-  
-  
+
+
   export function PolygonStyle(color: string, strokeWidth: number, strokeColor: string): Style {
     return new Style({
       fill: new Fill({
@@ -765,7 +765,7 @@ export function layerHandlerPositionning(layersArray: layerHandler[], layerId: s
       })
     })
   }
-  
+
   export function refreshFeatureStyle(feature: Feature): StyleLike {
     // style feature is based on feature properties !
     let defaultStyle!:StyleLike
@@ -774,32 +774,32 @@ export function layerHandlerPositionning(layersArray: layerHandler[], layerId: s
       const fillColor = feature.get('fill_color')
       const strokeWidth = feature.get('stroke_width')
       const strokeColor = feature.get('stroke_color')
-  
+
       if (geom.getType() === "Point") {
         defaultStyle = PointStyle(fillColor, strokeWidth, strokeColor)
-  
+
       } else if (geom.getType() === "LineString") {
         defaultStyle = LineStringStyle(fillColor, strokeWidth, strokeColor)
-  
+
       } else if (geom.getType() === "Polygon") {
         defaultStyle = PolygonStyle(fillColor, strokeWidth, strokeColor)
       }
       return defaultStyle
-  
+
     }
     return new Style()
-  
-  
+
+
   }
-  
-  
-  
+
+
+
   export function findBy(layer: any, property: string, value: string | number | null): any {
-  
+
     if (layer.get(property) === value) {
       return layer;
     }
-  
+
     // Find recursively if it is a group
     if (layer.getLayers) {
       var layers = layer.getLayers().getArray()
@@ -812,16 +812,16 @@ export function layerHandlerPositionning(layersArray: layerHandler[], layerId: s
         }
       }
     }
-  
+
     return null;
   }
-  
+
   export function findElementBy(layer: any, attribute: string, value: string | number | null): any {
     if (attribute in layer) {
       if (layer[attribute as keyof typeof layer] === value)
       return layer;
     }
-  
+
     if (layer) {
       var layers = layer
       var len = layers.length
@@ -833,6 +833,6 @@ export function layerHandlerPositionning(layersArray: layerHandler[], layerId: s
         }
       }
     }
-  
+
     return null;
   }

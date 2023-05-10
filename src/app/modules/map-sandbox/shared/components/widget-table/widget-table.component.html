@@ -12,7 +12,7 @@
             <tr class="small">
                 <th class="p-1" scope="row">{{feature.get('no')}}</th>
                 <td *ngFor="let header of attributesHeaders">
-                    <input #rowInput class="p-1" type="text" [placeholder]="feature.get(header)" (change)="feature.set(header, rowInput.value, false); sendEditedEvent()">
+                    <input #rowInput class="p-1" type="text" [value]="feature.get(header)" (change)="feature.set(header, rowInput.value, false); sendEditedEvent()">
                 </td>
             </tr>
         </ng-container>
