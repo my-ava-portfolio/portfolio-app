@@ -11,7 +11,6 @@ import { currentYear } from '@core/misc';
 import { ResumeService } from 'src/app/services/resume.service';
 import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { backEndInfo, dataProcessingInfo, frontEndInfo } from '@core/globals/tech-infos';
 import { imageProfile } from '@core/globals/resume-shared-data';
 import { githubBugIssueUrl, githubQuestionUrl, githubEnhancementUrl, issueSufixTitle } from '@core/globals/navigation-links';
 import { homePages, legacyResumePage, mainTopicsPages, techStackPages } from '@core/globals/topics_skeleton';
@@ -57,11 +56,6 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
   authorRepoUrl = 'https://github.com/amauryval/portfolio';
 
   currentYear = currentYear;
-
-
-  dataProcessing = dataProcessingInfo;
-  backEnd = backEndInfo;
-  frontEnd = frontEndInfo;
 
   // https://stackoverflow.com/questions/63468292/how-to-add-active-class-to-link-which-has-fragmment-in-angular
   activeFragment = this.route.fragment.pipe(share());

@@ -1,5 +1,6 @@
 export const assetsLogoPath = `./assets/logo/`;
 export const assetsImagesPath = `./assets/images/`;
+export const assetsTechPath = `./assets/tech/`;
 
 export const personalBlogUrl = 'https://blog.amaury-valorge.com';
 export const githubPortfolioUrl = 'https://github.com/my-ava-portfolio/';

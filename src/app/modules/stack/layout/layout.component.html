@@ -1,19 +1,55 @@
-<set-article-container [@fadeInOut]
-  class="d-flex flex-row justify-content-center m-2 rounded"
->
-
+<div class="d-flex flex-lg-row flex-column justify-content-center">
+  <!-- <set-article-container [@fadeInOut]
+    class="d-flex flex-row justify-content-center m-2 rounded"
+  > -->
+  <div class="d-flex flex-lg-column flex-row w-auto">
+    <ng-container *ngTemplateOutlet="techCard; context:{content: pythonBackEndInfo}"></ng-container>
+    <ng-container *ngTemplateOutlet="techCard; context:{content: goBackEndInfo}"></ng-container>
+  </div>
 
     <set-card-container
-      class="d-flex flex-row"
-      cardClass="text-center"
-      title="Architecture du portfolio"
-      headerClass="text-bg-dark"
-    >
+    cardClass="m-3"
+        title="Architecture du portfolio"
+        headerClass="text-bg-dark"
+      >
 
       <ng-template #cardBodyTemplate>
-          <img class="m-1 p-3 border rounded" [src]="portfolioV2ImgPath">
+          <img class="m-1 p-3 border rounded img-fluid" [src]="portfolioV2ImgPath">
       </ng-template>
 
     </set-card-container>
 
-</set-article-container>
+    <div class="d-flex flex-lg-column flex-row w-auto">
+      <ng-container *ngTemplateOutlet="techCard; context:{content: frontEnd}"></ng-container>
+    </div>
+
+  <!-- </set-article-container> -->
+</div>
+
+<ng-template #techCard let-content='content'>
+  <set-card-container
+    cardClass="m-3 shadow-none"
+    [title]="content.title"
+    [headerClass]="'text-bg-' + content.color"
+  >
+
+    <ng-template #cardBodyTemplate>
+      <div class="d-flex flex-column justify-content-start align-items-center">
+
+        <div class="mx-3 d-flex flex-column justify-content-around align-items-center">
+            <img class="img-tech" [src]="content.image" [title]="content.language">
+            <span class="fw-bold">{{content.language}}</span>
+        </div>
+
+        <ul class="list-unstyled mt-2">
+          <li *ngFor="let lib of content.libraries">
+            <a [href]="lib.url" [title]="lib.language">
+              <img class="img-tech-lib" [src]="lib.icon" [title]="lib.name">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+  </set-card-container>
+
+</ng-template>

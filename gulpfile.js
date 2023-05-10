@@ -40,6 +40,17 @@ const compress = () =>
     gulp.src("assets/images/*.svg")
     .pipe(gulp.dest("src/assets/images/"));
 
+    gulp.src("assets/tech/*.{png,jpg}")
+    .pipe(
+      sharpResponsive({
+        formats: [
+          // avif
+          { width: 512, format: "avif" },
+        ],
+      })
+    )
+    .pipe(gulp.dest("src/assets/tech"));
+
 module.exports = {
   compress
 };

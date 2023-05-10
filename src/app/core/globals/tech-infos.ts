@@ -1,3 +1,5 @@
+import { assetsTechPath } from "./resume-shared-data"
+
 const dbLibs = [
   {
     "name": "SQLAlchemy",
@@ -12,68 +14,65 @@ const dbLibs = [
 ]
 
 
-
-export const dataProcessingInfo = {
-  "title": "Pre-processing",
-  "color": "dark",
-  "language": "Python 3.11",
-  "language_icon": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
-  "framework": null,
-  "libs": [
-    ...dbLibs,
+export const pythonBackEndInfo = {
+  "title": "Back-end",
+  "color": "warning",
+  "language": "Python",
+  "image": assetsTechPath + "python.avif",
+  "libraries": [
+    {
+      "name": "Starlite",
+      "url": "https://github.com/starlite-api/starlite",
+      "icon": "https://raw.githubusercontent.com/starlite-api/starlite/000800b1ff2f1fddbd5e2d23f29f1c9709ea5de3/docs/images/SVG/starlite-banner.svg"
+    },
+    {
+      "name": "SQLAlchemy",
+      "url": "https://www.sqlalchemy.org/",
+      "icon": "https://www.sqlalchemy.org/img/sqla_logo.png"
+    },
+    {
+      "name": "GeoAlchemy",
+      "url": "https://geoalchemy-2.readthedocs.io/en/0.3/orm_tutorial.html",
+      "icon": "https://geoalchemy-2.readthedocs.io/en/latest/_static/geoalchemy.png"
+    },
     {
       "name": "Pandas",
       "url": "https://pandas.pydata.org/docs/getting_started/overview.html",
-      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Pandas_logo.svg/300px-Pandas_logo.svg.png"
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Pandas_mark.svg/langfr-800px-Pandas_mark.svg.png"
     },
     {
       "name": "GeoPandas",
       "url": "https://geopandas.org/en/stable/",
-      "icon": "https://geopandas.org/en/stable/_static/geopandas_logo_web.svg"
+      "icon": "https://geopandas.org/en/stable/_images/geopandas_icon.png"
     },
-    {
-      "name": "psycopg2",
-      "url": "https://www.psycopg.org/",
-      "img": "https://www.psycopg.org/img/logo/psycopg-100.png"
-    }
-  ]
+  ],
 }
 
-export const backEndInfo = {
+export const goBackEndInfo = {
   "title": "Back-end",
-  "color": "danger",
-  "language": "Python 3.11",
-  "language_icon": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
-  "framework": [
+  "color": "warning",
+  "language": "Golang",
+  "image": assetsTechPath + "go.avif",
+  "libraries": [
     {
-    "name": "Starlite",
-    "url": "https://github.com/starlite-api/starlite",
-    "icon": "https://raw.githubusercontent.com/starlite-api/starlite/000800b1ff2f1fddbd5e2d23f29f1c9709ea5de3/docs/images/SVG/starlite-banner.svg"
+    "name": "Gin gonic",
+    "url": "https://github.com/gin-gonic/gin",
+    "icon": "https://raw.githubusercontent.com/gin-gonic/logo/master/color.png"
     }
   ],
-  "libs": [
-    ...dbLibs,
-    {
-      "name": "BeautifulSoup4",
-      "url": "https://www.crummy.com/software/BeautifulSoup/bs4/doc/#",
-      "icon": null
-    }
-  ]
 }
 
 export const frontEndInfo = {
   "title": "Front-end",
   "color": "success",
   "language": "TypeScript",
-  "language_icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/220px-Typescript_logo_2020.svg.png",
-  "framework": [
+  "image": assetsTechPath + "ts.avif",
+  "libraries": [
     {
-    "name": "Angular",
-    "url": "https://angular.io/",
-    "img": "https://angular.io/assets/images/logos/angular/angular.svg"
-    }
-  ],
-  "libs": [
+      "name": "Angular",
+      "url": "https://angular.io/",
+      "icon": "https://angular.io/assets/images/logos/angular/angular.svg"
+    },
     {
       "name": "Bootstrap",
       "url": "https://getbootstrap.com/",
@@ -89,5 +88,5 @@ export const frontEndInfo = {
       "url": "https://openlayers.org/",
       "icon": "https://openlayers.org/theme/img/logo-dark.svg"
     }
-  ]
+  ],
 }
