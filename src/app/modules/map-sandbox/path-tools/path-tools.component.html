@@ -2,11 +2,11 @@
     Plus court chemin
 </div>
 
-<div [ngClass]="buttonEnabled ? 'pe-auto' : 'pe-none'" class="d-flex flex-row justify-content-center m-1">
-    <button class="btn btn-sm btn-outline-danger border-0" (click)="computeShortestPath('pedestrian')" ngbPopover="Piéton">
+<div [ngClass]="buttonEnabled ? 'pe-auto' : 'pe-none'" class="d-flex flex-row justify-content-around m-1">
+    <button class="btn btn-sm btn-outline-danger" (click)="computeShortestPath('pedestrian')" ngbPopover="Piéton">
         <fa-icon [icon]="pedestrianIcon"></fa-icon>
     </button>
-    <button class="btn btn-sm btn-outline-danger border-0" (click)="computeShortestPath('vehicle')" ngbPopover="Motorisé">
+    <button class="btn btn-sm btn-outline-danger" (click)="computeShortestPath('vehicle')" ngbPopover="Motorisé">
         <fa-icon [icon]="motorIcon"></fa-icon>
     </button>
 </div>
