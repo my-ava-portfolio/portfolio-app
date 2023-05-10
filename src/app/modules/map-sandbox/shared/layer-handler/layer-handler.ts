@@ -14,6 +14,7 @@ import WKT from 'ol/format/WKT';
 import { Fill, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { StyleLike } from 'ol/style/Style';
+import { zoomMax, zoomPadding } from '../globals';
 
 
 
@@ -320,8 +321,8 @@ export class layerHandler {
   private _modifier!: Modify;
   select!: Select;
 
-  _zoomPadding = [100, 100, 100, 200];  // TODO set as a global var (use by layer-manager)
-  _maxZoom = 14;
+  _zoomMax = zoomMax;
+  private _zoomPadding = zoomPadding;
 
 
   constructor(
@@ -585,7 +586,7 @@ export class layerHandler {
     if (this.container.features.length > 0) {
       this._map.getView().fit(
           this.container.layer.getSource().getExtent(),
-          { size: this._map.getSize(), padding: this._zoomPadding, maxZoom: 20 }
+          { size: this._map.getSize(), padding: this._zoomPadding, maxZoom: this._zoomMax }
       );
     }
   }
@@ -595,7 +596,7 @@ export class layerHandler {
       if (feature.getId() === featureId) {
         this._map.getView().fit(
           feature.getGeometry(),
-          { size: this._map.getSize(), padding: this._zoomPadding, maxZoom: 20 })
+          { size: this._map.getSize(), padding: this._zoomPadding, maxZoom: this._zoomMax })
       }
     })
   }
