@@ -12,19 +12,19 @@
                 <svg height="25" width="25" *ngIf="layer.container.geomType === 'Point'">
                     <circle cx="12" cy="12" r="8" [attr.stroke]="layer.container.strokeColor" [attr.stroke-width]="1" [attr.fill]="style.color" />
                 </svg>
-            
+
                 <svg height="25" width="25" *ngIf="layer.container.geomType === 'LineString'">
                     <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="layer.container.strokeColor" [attr.stroke-width]="2"/>
                     <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="style.color" [attr.stroke-width]="1.5"/>
                 </svg>
-            
+
                 <svg height="15" width="25" *ngIf="layer.container.geomType === 'Polygon'">
                     <rect x="0" y="0" width="25" height="15" [attr.stroke]="layer.container.strokeColor" [attr.stroke-width]="1.5" [attr.fill]="style.color"/>
                 </svg>
             </div>
 
             <span class="small">{{style.class}}</span>
-            
+
         </div>
     </li>
 </ul>

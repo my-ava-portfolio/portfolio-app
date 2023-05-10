@@ -52,15 +52,15 @@
 </div>
 
 
-<div moveDivToBody *ngIf="!isPanelsDisplayed" class="position-fixed bottom-0 end-0 bg-white rounded shadow overflow-auto mb-3 me-3">
-  <div class="d-flex flex-row justify-content-start">
+<div moveDivToBody *ngIf="!isPanelsDisplayed" class="legend position-fixed bottom-0 end-0 bg-white rounded shadow overflow-auto m-2 p-3">
+  <div class="d-flex flex-column">
     <ng-container *ngFor="let layer of currentLayers">
-      <div class="m-3">
+      <div class="d-flex flex-row justify-content-start my-2" *ngIf="layer.container.visible">
         <app-legend
           [layer]="layer"
-          [selected]="layerIdSelected == layer.container.uuid"
         ></app-legend>
       </div>
     </ng-container>
+
   </div>
 </div>
