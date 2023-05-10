@@ -103,9 +103,9 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
-    this.existingLayers.forEach((layer: layerHandler) => {
-      this.map.removeLayer(layer.container.layer)
-      layer.cleanEvents()
+    this.existingLayers.forEach((layerItem: layerHandler) => {
+      this.map.removeLayer(layerItem.container.layer)
+      layerItem.cleanEvents()
     })
 
     this.mapSubscription.unsubscribe();
