@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { layerHandler } from '../shared/layer-handler/layer-handler';
 import { lineStringIcon, pointIcon, polygonIcon } from '../shared/icons';
+import { strokeWidthCoeff, strokeWidthLineCoeff } from '../shared/globals';
 
 @Component({
   selector: 'app-legend',
@@ -15,6 +16,9 @@ export class LegendComponent implements OnInit, OnDestroy {
   pointIcon = pointIcon
   lineStringIcon = lineStringIcon
   polygonIcon = polygonIcon
+  
+  _strokeWidthCoeff = strokeWidthCoeff;
+  _strokeWidthLineCoeff = strokeWidthLineCoeff;
 
   constructor( ) {
   }

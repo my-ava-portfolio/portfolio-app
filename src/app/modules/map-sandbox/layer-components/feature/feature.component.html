@@ -1,61 +1,60 @@
-<li class="pointer feature-item mx-4 py-1 d-flex flex-row align-items-around border-top">
+<li class="feature-item mx-4 py-1 d-flex flex-row align-items-around border-top">
 
   <div class="me-2 d-flex flex-row">
-    <div class="px-1" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
+    <div class="pointer px-1" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
       <fa-icon class="" [icon]="centerIcon"></fa-icon>
     </div>
 
-    <div class="px-1" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
+    <div class="pointer px-1" (click)="duplicateFeature()" ngbPopover="Dupliquer l'object" triggers="mouseenter:mouseleave">
       <fa-icon class="" [icon]="duplicateIcon"></fa-icon>
     </div>
   </div>
 
-    <div class="me-2 d-flex flex-row small">
+  <div class="pointer d-flex flex-row small w-100">
 
-      <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'Point'">
-        <circle cx="10" cy="10" r="7" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
-      </svg>
+    <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'Point'">
+      <circle cx="10" cy="10" r="7" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
+    </svg>
 
-      <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'LineString'">
-        <line x1="0" y1="10" x2="20" y2="10" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * this._strokeWidthCoeff"/>
-        <line x1="0" y1="10" x2="20" y2="10" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') * this._strokeWidthLineCoeff"/>
-      </svg>
+    <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'LineString'">
+      <line x1="0" y1="10" x2="20" y2="10" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * _strokeWidthCoeff"/>
+      <line x1="0" y1="10" x2="20" y2="10" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') * _strokeWidthLineCoeff"/>
+    </svg>
 
-      <svg height="16" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
-        <rect x="0" y="0" width="25" height="16" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * this._strokeWidthCoeff" [attr.fill]="feature.get('fill_color')"/>
-      </svg>
+    <svg height="16" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
+      <rect x="0" y="0" width="25" height="16" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * _strokeWidthCoeff" [attr.fill]="feature.get('fill_color')"/>
+    </svg>
+
+    <span class="ms-1 small">{{feature.get('name')}}</span>
+
+  </div>
+
+  <div class="ms-auto d-flex flex-row align-items-center" *ngIf="selected">
+
+    <div class="px-2 text-danger pointer" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="disabledIcon"></fa-icon>
     </div>
 
-    <span class="title small">{{feature.get('name')}}</span>
-
-    <div class="ms-auto d-flex flex-row align-items-center" *ngIf="selected">
-
-
-      <div class="px-2 text-danger" (click)="removeFeature()"  ngbPopover="Supprimer l'object" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="disabledIcon"></fa-icon>
-      </div>
-
-      <div class="px-1 text-black" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
-        <fa-icon class="" [icon]="paramIcon" size="1x"></fa-icon>
-      </div>
-
+    <div class="px-1 text-black pointer" (click)="showPopup()" ngbPopover="Options de l'objet" triggers="mouseenter:mouseleave">
+      <fa-icon class="" [icon]="paramIcon" size="1x"></fa-icon>
     </div>
+
+  </div>
 
 </li>
-
 
 
 <div
   [id]="'featurePopup' + feature.getId()"
   *ngIf="displayPopup"
-  class="featureToast position-fixed bottom-0 end-0 p-3 d-flex flex-row overflow-auto fw-normal pointer-none" style="z-index: 11"
+  class="featureToast position-fixed bottom-0 end-0 p-3 d-flex flex-row overflow-auto fw-normal pointer-none"
   >
 
     <div class="toast toastFeature faded" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header justify-content-between">
 
         <strong>{{ feature.get('name') }}</strong>
-        <em class="ms-2 me-auto me-auto">({{ feature.get('geom_type') }})</em>
+        <em class="ms-1">({{ feature.get('geom_type') }})</em>
         <em class="ms-auto">Couche: {{ layer.container.layerName }}</em>
         <button type="button" class="btn-close" aria-label="Close" (click)="showPopup()"></button>
 
@@ -81,7 +80,7 @@
           <span>Créé à {{ feature.get('created_at') | date: 'HH:mm:ss' }}</span>
           <span>Modifié à {{ feature.get('updated_at') | date: 'HH:mm:ss' }}</span>
         </div>
-        
+
         <app-widget-table
           [attributesHeaders]="layer.getAttributesHeader()"
           [features]="[feature]"

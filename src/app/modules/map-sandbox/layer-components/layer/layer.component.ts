@@ -15,10 +15,6 @@ import { addIcon, centerIcon, clearIcon, downIcon, duplicateIcon, editIcon, grou
 export class LayerComponent implements OnInit, OnDestroy {
   private _layer!: layerHandler;
 
-  @Input() layersVisibleStatus!: boolean;
-
-  @Output() layerIdCurrentlySelected = new EventEmitter<string>();
-
   @Output() layerMoveUp = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerMoveDown = new EventEmitter<string>(); // go to update the layer which need a zindex changes regarding the action
   @Output() layerCloned = new EventEmitter<layerHandler>();
@@ -47,7 +43,6 @@ export class LayerComponent implements OnInit, OnDestroy {
 
   private _epsg!: string
   private _selected: boolean = false
-  displayTool: boolean = false;
 
   featuresIdSelected: string[] = [];
 

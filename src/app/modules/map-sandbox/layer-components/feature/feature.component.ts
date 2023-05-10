@@ -1,10 +1,11 @@
-import { Component, ElementRef, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { layerHandler, getWkt } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 import Feature from 'ol/Feature';
 import { Geometry } from 'ol/geom';
 import { categoryClass } from '@modules/map-sandbox/shared/data-types';
 import { centerIcon } from '@modules/map-activities/shared/icons';
 import { disabledIcon, duplicateIcon, paramIcon } from '@modules/map-sandbox/shared/icons';
+import { strokeWidthCoeff, strokeWidthLineCoeff } from '@modules/map-sandbox/shared/globals';
 
 
 @Component({
@@ -18,8 +19,8 @@ export class FeatureComponent implements OnInit {
   private _id!: string;
   private _geometry!: Geometry
 
-  _strokeWidthCoeff = 1.8
-  _strokeWidthLineCoeff = 1.2;
+  _strokeWidthCoeff = strokeWidthCoeff;
+  _strokeWidthLineCoeff = strokeWidthLineCoeff;
 
   @Input() layer!: layerHandler;
 
