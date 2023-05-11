@@ -11,8 +11,6 @@
 
   &.hidden{
     transition: all 0.3s;
-    // visibility: hidden !important
-
   }
   &.hidden * {
       opacity: 0;
@@ -25,7 +23,7 @@
       width: 3vw;
     }
     &.displayed {
-      width: 40vw;
+      width: 90%;
     }
   }
 
@@ -34,7 +32,7 @@
       width: 1vw;
     }
     &.displayed {
-      width: 18vw;
+      width: 20vw;
     }
   }
 

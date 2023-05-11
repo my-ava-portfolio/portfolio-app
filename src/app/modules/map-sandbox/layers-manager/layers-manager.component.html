@@ -1,4 +1,10 @@
 <ng-container *ngIf="toolsMode == 'geoTools'">
+
+  <app-create-tools
+    [layerTypeModes]="['Point', 'LineString', 'Polygon']"
+    (newLayerEvent)="addLayer($event)">
+  </app-create-tools>
+
   <app-geo-tools
     id="geoTools"
     class="overflow-auto"
@@ -72,7 +78,7 @@
 </div>
 
 
-<div  id="layersList" class="d-flex flex-column justify-content-start mb-2">
+<div id="layersList" class="d-flex flex-column justify-content-start mb-2">
 
   <div
     class="d-flex flex-row small m-1 p-2 justify-content-center pointer"

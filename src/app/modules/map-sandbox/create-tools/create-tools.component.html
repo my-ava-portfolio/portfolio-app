@@ -2,11 +2,11 @@
   Créer
 </div>
 
-<div id="creationTools" class="text-center m-3">
+<div class="text-center m-3">
 
   <ng-container *ngFor="let layer of layerTypesModes">
     <button class="btn btn-sm btn-primary border-0 me-1 text-white" (click)="addLayer(layer.mode)" [ngbPopover]="layer.label" placement="bottom"triggers="mouseenter:mouseleave">
-      <fa-icon class="" [icon]="layer.icon"></fa-icon>
+      <fa-icon [icon]="layer.icon"></fa-icon>
     </button>
   </ng-container>
 
