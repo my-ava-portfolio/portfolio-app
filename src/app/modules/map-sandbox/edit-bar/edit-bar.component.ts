@@ -15,7 +15,7 @@ export class EditBarComponent implements OnInit, OnDestroy {
   private _layer!: layerHandler;
   @Input() currentEpsg!: string;
 
-  private _enabled!: boolean
+  private _edited!: boolean
 
   addIcon = addIcon;
   editIcon = editIcon;
@@ -66,15 +66,15 @@ export class EditBarComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  set enabled(status: boolean) {
+  set edited(status: boolean) {
     if (!status) {
       this.disableEditing()
     }
-    this._enabled = status
+    this._edited = status
   }
 
-  get enabled(): boolean {
-    return this._enabled
+  get edited(): boolean {
+    return this._edited
   }
 
   enableSnapModeOnAllOthersLayers(): void {
