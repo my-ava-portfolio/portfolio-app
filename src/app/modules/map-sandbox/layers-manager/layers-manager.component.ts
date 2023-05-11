@@ -1,5 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { faXmark, faUpload, faExpand, faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { baseLayer, layerHandler, layerHandlerPositionning } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 
 import Map from 'ol/Map';
@@ -9,7 +8,6 @@ import {extend} from 'ol/extent';
 import { MapService } from '@services/map.service';
 import { Subscription } from 'rxjs';
 
-import { faEye, faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 
 import { epsg3857, featuresLayerType, geomLayerTypes, toolsTypes } from '@modules/map-sandbox/shared/data-types';
@@ -18,6 +16,7 @@ import { linestringsExample, pointsExample, polygonsExample } from '../data-exam
 import { readStringWktAndGroupedByGeomType } from '../import-tools/import-tools.component';
 import Feature from 'ol/Feature';
 import { zoomPadding } from '../shared/globals';
+import { disabledIcon, loadIcon, visibleIcon, invisibleIcon, centerIcon, lockIcon, unLockIcon, unToggleIcon, toggleIcon } from '../shared/icons';
 
 
 @Component({
@@ -35,15 +34,15 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
 
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
 
-  disabledIcon = faXmark;
-  loadIcon = faUpload;
-  visibleIcon = faEye;
-  invisibleIcon = faEyeSlash;
-  centerIcon = faExpand;
-  lockIcon = faLock;
-  unLockIcon = faLockOpen;
-  unToggleIcon = faMinusSquare;
-  toggleIcon = faPlusSquare;
+  disabledIcon = disabledIcon;
+  loadIcon = loadIcon;
+  visibleIcon = visibleIcon;
+  invisibleIcon = invisibleIcon;
+  centerIcon = centerIcon;
+  lockIcon = lockIcon;
+  unLockIcon = unLockIcon;
+  unToggleIcon = unToggleIcon;
+  toggleIcon = toggleIcon;
 
   allToggled: boolean = false;
   allVisible: boolean = true;

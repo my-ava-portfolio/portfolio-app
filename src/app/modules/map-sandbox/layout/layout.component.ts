@@ -5,12 +5,11 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import { faGlobe, faLayerGroup, faAnglesLeft, faAnglesRight, faRoad } from '@fortawesome/free-solid-svg-icons';
-
 import { Subscription } from 'rxjs/internal/Subscription';
 import { InteractionsService } from '../shared/service/interactions.service';
 import { layerHandler } from '../shared/layer-handler/layer-handler';
 import { epsg3857, epsg4326, toolsTypes } from '../shared/data-types';
+import { geoIcon, layersIcon, leftSideIcon, pathIcon, rightSideIcon } from '../shared/icons';
 
 @Component({
   selector: 'app-app-layout',
@@ -26,12 +25,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
   epsgAvailable = [epsg4326, epsg3857];
 
   // icons
-  geoIcon = faGlobe;
-  pathIcon = faRoad;
+  geoIcon = geoIcon;
+  pathIcon = pathIcon;
 
-  leftSideIcon = faAnglesLeft;
-  rightSideIcon = faAnglesRight;
-  layersIcon = faLayerGroup;
+  leftSideIcon = leftSideIcon;
+  rightSideIcon = rightSideIcon;
+  layersIcon = layersIcon;
 
   isPanelsDisplayed = true;
 

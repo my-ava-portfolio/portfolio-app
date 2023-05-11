@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { faCar, faPersonWalking, faRoad } from '@fortawesome/free-solid-svg-icons';
 import { Feature } from 'ol';
 import { readStringWktAndGroupedByGeomType } from '../import-tools/import-tools.component';
 import { getWkt, layerHandler } from '../shared/layer-handler/layer-handler';
 import { GraphComputingService } from '../shared/service/graph-computing.service';
 import { EditComputingService } from '../shared/service/edit-computing.service';
+import { motorIcon, pedestrianIcon } from '../shared/icons';
 
 @Component({
   selector: 'app-path-tools',
@@ -14,9 +14,8 @@ import { EditComputingService } from '../shared/service/edit-computing.service';
 export class PathToolsComponent implements OnInit, OnDestroy {
   @Input() currentEpsg!: string;
 
-  pathIcon = faRoad;
-  motorIcon = faCar;
-  pedestrianIcon = faPersonWalking;
+  motorIcon = motorIcon;
+  pedestrianIcon = pedestrianIcon;
 
   buttonEnabled!: boolean;
 
