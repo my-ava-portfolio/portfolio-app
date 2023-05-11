@@ -1,4 +1,4 @@
-<div class="d-flex flex-lg-row flex-column justify-content-center">
+<div class="d-flex flex-lg-row flex-column justify-content-center align-items-center align-self-center">
   <!-- <set-article-container [@fadeInOut]
     class="d-flex flex-row justify-content-center m-2 rounded"
   > -->
@@ -41,13 +41,13 @@
             <span class="fw-bold">{{content.language}}</span>
         </div>
 
-        <ul class="list-unstyled mt-2">
-          <li *ngFor="let lib of content.libraries">
+        <div class="d-flex flex-lg-column flex-row mt-2">
+          <ng-container *ngFor="let lib of content.libraries">
             <a [href]="lib.url" [title]="lib.language">
               <img class="img-tech-lib" [src]="lib.icon" [title]="lib.name">
             </a>
-          </li>
-        </ul>
+          </ng-container>
+        </div>
       </div>
     </ng-template>
   </set-card-container>
