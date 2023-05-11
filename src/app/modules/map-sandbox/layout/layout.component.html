@@ -3,7 +3,7 @@
     <div id="panelsContainer" class="bg-light" [ngClass]="!isPanelsDisplayed ? 'hidden' : 'displayed overflow-auto'">
 
       <app-layers-manager
-        class="overflow-auto"
+        class="d-flex flex-column overflow-auto"
         [toolsMode]="toolsMode"
         [currentEpsg]="currentEpsg"
         [epsgAvailable]="epsgAvailable"
