@@ -1,5 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { faXmark, faUpload, faExpand, faEyeSlash, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { baseLayer, layerHandler, layerHandlerPositionning } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
 
 import Map from 'ol/Map';
@@ -9,13 +8,15 @@ import {extend} from 'ol/extent';
 import { MapService } from '@services/map.service';
 import { Subscription } from 'rxjs';
 
-import { faEye, faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 
-import { featuresLayerType, geomLayerTypes, toolsTypes } from '@modules/map-sandbox/shared/data-types';
+import { epsg3857, featuresLayerType, geomLayerTypes, toolsTypes } from '@modules/map-sandbox/shared/data-types';
 import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
 import { linestringsExample, pointsExample, polygonsExample } from '../data-example';
 import { readStringWktAndGroupedByGeomType } from '../import-tools/import-tools.component';
+import Feature from 'ol/Feature';
+import { zoomPadding } from '../shared/globals';
+import { disabledIcon, loadIcon, visibleIcon, invisibleIcon, centerIcon, lockIcon, unLockIcon, unToggleIcon, toggleIcon } from '../shared/icons';
 
 
 @Component({
@@ -24,7 +25,7 @@ import { readStringWktAndGroupedByGeomType } from '../import-tools/import-tools.
   styleUrls: ['./layers-manager.component.scss']
 })
 export class LayersManagerComponent implements OnInit, OnDestroy {
-  @Input() map!: Map;
+  map!: Map;
 
   private _currentEpsg!: string;
   private _toolsMode!: toolsTypes;
@@ -33,17 +34,15 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
 
   @ViewChild('exportStringGeomDiv') exportStringGeomDiv!: ElementRef;
 
-  disabledIcon = faXmark;
-
-  loadIcon = faUpload;
-
-  visibleIcon = faEye;
-  invisibleIcon = faEyeSlash;
-  centerIcon = faExpand;
-  lockIcon = faLock;
-  unLockIcon = faLockOpen;
-  unToggleIcon = faMinusSquare;
-  toggleIcon = faPlusSquare;
+  disabledIcon = disabledIcon;
+  loadIcon = loadIcon;
+  visibleIcon = visibleIcon;
+  invisibleIcon = invisibleIcon;
+  centerIcon = centerIcon;
+  lockIcon = lockIcon;
+  unLockIcon = unLockIcon;
+  unToggleIcon = unToggleIcon;
+  toggleIcon = toggleIcon;
 
   allToggled: boolean = false;
   allVisible: boolean = true;
@@ -52,21 +51,28 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   existingLayers: layerHandler[] = [];
   layersToDisplay: layerHandler[] = [];
 
-  layerIdSelected: string  | null = null;
+  layerIdSelected: string | null = null;
 
   layerNamedIncrement: number = -1;
 
+  mapSubscription!: Subscription;
   epsgChangesSubscription!: Subscription;
   layerIdSelectedSubscription!: Subscription;
   newFeaturesSubscription!: Subscription;
 
-  zoomPadding = [100, 100, 100, 100];  // TODO refactor
+  private zoomPadding = zoomPadding;
 
   constructor(
     private mapService: MapService,
     private interactionsService: InteractionsService,
     private editComputingService: EditComputingService,
   ) {
+
+    this.mapSubscription = this.mapService.map.subscribe(
+      (map: Map) => {
+        this.map = map;
+      }
+    );
 
     this.epsgChangesSubscription = this.mapService.setMapProjectionFromEpsg.subscribe(
       (epsg: string) => {
@@ -77,9 +83,6 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
     this.layerIdSelectedSubscription = this.interactionsService.layerIdSelected.subscribe(
       (layerIdSelected: string | null) => {
         this.layerIdSelected = layerIdSelected
-        // if (layerIdSelected == null) {
-        //   this.unSelectLayer()
-        // }
       }
     )
 
@@ -92,17 +95,19 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.mapService.getMap()
     this._mapExamplesData()
     this.zoomToLayers()
   }
 
   ngOnDestroy(): void {
 
-    this.existingLayers.forEach((layer: layerHandler) => {
-      this.map.removeLayer(layer.container.layer)
-      layer.cleanEvents()
+    this.existingLayers.forEach((layerItem: layerHandler) => {
+      this.map.removeLayer(layerItem.container.layer)
+      layerItem.cleanEvents()
     })
 
+    this.mapSubscription.unsubscribe();
     this.epsgChangesSubscription.unsubscribe();
     this.layerIdSelectedSubscription.unsubscribe();
     this.newFeaturesSubscription.unsubscribe();
@@ -111,7 +116,7 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   private _mapExamplesData(): void {
     const featureParams = {
       dataProjection: this.currentEpsg,
-      featureProjection: 'EPSG:3857'
+      featureProjection: epsg3857
     }
     const exampleData = [...pointsExample, ...linestringsExample, ...polygonsExample]
     const dataformated = readStringWktAndGroupedByGeomType(exampleData, featureParams)
@@ -164,7 +169,7 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
     this.refreshLayers()
   }
 
-  addLayerFromFeatures(geomType: 'Point' | 'LineString' | 'Polygon', features: any[]): void {
+  addLayerFromFeatures(geomType: geomLayerTypes, features: Feature[]): void {
     let newLayer = this.setNewLayer(geomType)
     newLayer.container.addFeaturesAndUpdateIds(features)
     this.existingLayers.push(newLayer)
@@ -190,7 +195,7 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   }
 
   getLayerFromId(layerId: string | null): layerHandler | null {
-    if (layerId !== null) {
+    if (layerId) {
       let currentLayer = this.existingLayers.filter((layer: layerHandler) => {
         return layer.container.uuid === layerId
       })
@@ -201,7 +206,6 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
 
   refreshLayers(): void {
     this.layersToDisplay = this.existingLayers.sort((a, b) => (a.container.zIndex > b.container.zIndex ? -1 : 1))
-    
     // for layout map legend
     this.interactionsService.sendAllLayers(this.layersToDisplay)
   }
@@ -223,7 +227,7 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   createNewLayersFromFeatures(featuresToAdd: any): void {
     // TODO improve! use featuresLayerType as type
     Object.keys(featuresToAdd).forEach((geomType) => {
-      let features = featuresToAdd[geomType]
+      let features: Feature[] = featuresToAdd[geomType]
       this.addLayerFromFeatures(geomType as geomLayerTypes, features)
     })
   }
@@ -237,9 +241,9 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
       const geomTypeLayer = layerTarget.container.geomType
       let layerObject = layerTarget.container
       Object.keys(featuresToAdd).forEach((geomType: string) => {
-        let features = featuresToAdd[geomType]
         if (geomType === geomTypeLayer) {
-          layerObject.addFeaturesAndUpdateIds(features)  // TODO synchronize properties      
+          let features = featuresToAdd[geomType]
+          layerObject.addFeaturesAndUpdateIds(features)  // TODO synchronize properties
           this.refreshLayers()
         }
       })
@@ -249,28 +253,20 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   // START layers controlers //
   zoomToLayers(): void {
     let emptyExtent = createEmpty();
-    this.existingLayers.forEach((layer: layerHandler) => {
-      extend(emptyExtent, layer.container.sourceFeatures.getExtent());
-    })
-    if (emptyExtent[0] !== Infinity
-      && emptyExtent[1] !== Infinity
-      && emptyExtent[2] !== Infinity
-      && emptyExtent[3] !== Infinity
-    ) {
+    if (this.existingLayers.length > 0) {
+      this.existingLayers.forEach((layer: layerHandler) => {
+        extend(emptyExtent, layer.container.sourceFeatures.getExtent());
+      })
       this.map.getView().fit(
         emptyExtent,
         { size: this.map.getSize(), padding: this.zoomPadding }
       );
     }
-
   }
 
   removeLayers(): void {
     this.interactionsService.removeAllLayers()
   }
-
-
-
   // END layers controlers //
 
 }

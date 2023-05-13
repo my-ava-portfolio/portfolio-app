@@ -1,11 +1,9 @@
 <div fluidHeight id="sandbox" class="d-flex flex-row position-fixed">
 
-    <div id="panelsContainer" class="d-flex flex-column bg-light " [ngClass]="!isPanelsDisplayed ? 'hidden' : 'displayed'">
+    <div id="panelsContainer" class="bg-light" [ngClass]="!isPanelsDisplayed ? 'hidden' : 'displayed overflow-auto'">
 
       <app-layers-manager
-        id="createTools"
-        class="overflow-auto"
-        [map]="map"
+        class="d-flex flex-column overflow-auto"
         [toolsMode]="toolsMode"
         [currentEpsg]="currentEpsg"
         [epsgAvailable]="epsgAvailable"
@@ -52,14 +50,13 @@
 </div>
 
 
-<div moveDivToBody *ngIf="!isPanelsDisplayed" class="legend position-fixed bottom-0 end-0 bg-white rounded shadow overflow-auto m-2 p-3">
-  <div class="d-flex flex-column">
+<div moveDivToBody *ngIf="!isPanelsDisplayed" class="legend position-fixed bottom-0 end-0">
+  <div class="d-flex flex-column rounded bg-white shadow overflow-auto m-2 p-3">
+
     <ng-container *ngFor="let layer of currentLayers">
-      <div class="d-flex flex-row justify-content-start my-2" *ngIf="layer.container.visible">
         <app-legend
           [layer]="layer"
         ></app-legend>
-      </div>
     </ng-container>
 
   </div>

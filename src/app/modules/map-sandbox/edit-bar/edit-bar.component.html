@@ -7,11 +7,11 @@
       <span class="fst-italic">({{layer.container.geomType}})</span>
     </div>
 
-    <div *ngIf="enabled" class="d-flex flex-row m-1">
+    <div *ngIf="edited" class="d-flex flex-row">
 
       <div class="d-flex flex-row m-1 align-items-center shadow border rounded bg-light">
 
-        <span class="text-dark m-2 fw-bold small">Ajouter</span>
+        <!-- <span class="text-dark m-2 fw-bold small">Ajouter</span> -->
 
           <input #btnDraw type="checkbox" class="btn-check" [id]="'btnDraw' + layer.container.uuid" [checked]="isDrawn" (click)="drawHandler(btnDraw.checked)">
           <label [for]="'btnDraw' + layer.container.uuid" [ngbPopover]="'Ajouter un objet de type \'' + layer.container.geomType + '\''" triggers="mouseenter:mouseleave">
@@ -24,7 +24,7 @@
 
       <div class="d-flex flex-row m-1 align-items-center shadow border rounded bg-light">
 
-        <span class="text-dark m-2 fw-bold small">Editer</span>
+        <!-- <span class="text-dark m-2 fw-bold small">Editer</span> -->
 
         <ng-container *ngIf="['Polygon', 'LineString'].includes(layer.container.geomType)">
           <input #btnMove type="checkbox" class="btn-check" [id]="'btnMove' + layer.container.uuid" [checked]="isMoved" (click)="translateHandler(btnMove.checked)">
@@ -55,7 +55,7 @@
 
       <div class="d-flex flex-row m-1 align-items-center shadow border rounded bg-light">
 
-        <span class="text-dark m-2 fw-bold small">Calculer</span>
+        <!-- <span class="text-dark m-2 fw-bold small">Calculer</span> -->
 
         <ng-container>
           <button class="btn btn-outline-success m-1" (click)="computeBoundingBox()" ngbPopover="La bounding box" triggers="mouseenter:mouseleave">
@@ -63,18 +63,15 @@
           </button>
         </ng-container>
 
-        <div class="d-flex flex-row m-1 align-items-center shadow border rounded bg-light">
 
-          <span class="text-dark m-2 fw-bold small">Misc</span>
+          <!-- <span class="text-dark m-2 fw-bold small">Misc</span> -->
 
-            <input [disabled]="editing" #btnSnap type="checkbox" class="btn-check" id="btnSnap" [checked]="isSnapped" (click)="snappingHandler(btnSnap.checked)">
-            <label for="btnSnap" container="body" ngbPopover="Activer le snapping" triggers="mouseenter:mouseleave">
-              <div  [class.disabled]="editing" class="btn m-1" [ngClass]="isSnapped ? 'btn-danger' : 'btn-outline-dark'">
-                <fa-icon [icon]="snapIcon" size="xs"></fa-icon>
-              </div>
-            </label>
-
-        </div>
+          <input [disabled]="editing" #btnSnap type="checkbox" class="btn-check" id="btnSnap" [checked]="isSnapped" (click)="snappingHandler(btnSnap.checked)">
+          <label for="btnSnap" container="body" ngbPopover="Activer le snapping" triggers="mouseenter:mouseleave">
+            <div  [class.disabled]="editing" class="btn m-1" [ngClass]="isSnapped ? 'btn-outline-danger' : 'btn-outline-dark'">
+              <fa-icon [icon]="snapIcon" size="xs"></fa-icon>
+            </div>
+          </label>
 
       </div>
 

@@ -5,13 +5,11 @@ import { MapService } from '@services/map.service';
 
 import Map from 'ol/Map';
 
-import { faGlobe, faLayerGroup, faAnglesLeft, faAnglesRight, faRoad } from '@fortawesome/free-solid-svg-icons';
-
 import { Subscription } from 'rxjs/internal/Subscription';
-import View from 'ol/View';
 import { InteractionsService } from '../shared/service/interactions.service';
 import { layerHandler } from '../shared/layer-handler/layer-handler';
-import { toolsTypes } from '../shared/data-types';
+import { epsg3857, epsg4326, toolsTypes } from '../shared/data-types';
+import { geoIcon, layersIcon, leftSideIcon, pathIcon, rightSideIcon } from '../shared/icons';
 
 @Component({
   selector: 'app-app-layout',
@@ -22,21 +20,17 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   currentEpsg!: string;
   currentLayers!: layerHandler[];
-  
+
   // used by menus
-  epsgAvailable = ["EPSG:4326", "EPSG:3857"];
+  epsgAvailable = [epsg4326, epsg3857];
 
   // icons
-  geoIcon = faGlobe;
-  pathIcon = faRoad;
+  geoIcon = geoIcon;
+  pathIcon = pathIcon;
 
-  leftSideIcon = faAnglesLeft;
-  rightSideIcon = faAnglesRight;
-  layersIcon = faLayerGroup;
-
-  map!: Map;
-
-  defaultMapView!: View;
+  leftSideIcon = leftSideIcon;
+  rightSideIcon = rightSideIcon;
+  layersIcon = layersIcon;
 
   isPanelsDisplayed = true;
 
@@ -58,12 +52,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
     // Get the map container, view and epsg
     this.mapSubscription = this.mapService.map.subscribe(
       (map: Map) => {
-        this.map = map;
-        this.currentEpsg = this.map.getView().getProjection().getCode();
-        this.defaultMapView = this.map.getView()
+        this.currentEpsg = map.getView().getProjection().getCode();
       }
     );
-    
+
     this.allLayersSubscription = this.interactionsService.allLayers.subscribe(
       (allLayers: layerHandler[]) => {
         this.currentLayers = allLayers
@@ -86,12 +78,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.map.setView(this.defaultMapView)
 
     this.mapSubscription.unsubscribe();
     this.allLayersSubscription.unsubscribe();
     this.layerIdSelectedSubscription.unsubscribe();
-    
+
     this.mapService.changeMapInteractionStatus(false)
     this.mapService.resetMapView()
   }

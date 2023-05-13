@@ -1,4 +1,10 @@
 <ng-container *ngIf="toolsMode == 'geoTools'">
+
+  <app-create-tools
+    [layerTypeModes]="['Point', 'LineString', 'Polygon']"
+    (newLayerEvent)="addLayer($event)">
+  </app-create-tools>
+
   <app-geo-tools
     id="geoTools"
     class="overflow-auto"
@@ -40,8 +46,6 @@
 </ng-container>
 
 
-
-
 <div class="text-center fw-bold bg-dark text-white bg-gradient p-2">
   Couches
 </div>
@@ -49,47 +53,42 @@
 <div id="layersTools" class="d-flex flex-row justify-content-evenly align-items-center mx-2">
 
   <input #btnVisible type="checkbox" class="btn-check" id="btnVisibleLayers" [checked]="allVisible" (change)="allVisible = btnVisible.checked">
-  <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnVisibleLayers" [ngClass]="allVisible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="allVisible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
-    <fa-icon class="" [icon]="allVisible ? visibleIcon : invisibleIcon" size="1x"></fa-icon>
+  <label class="btn btn-sm btn-transparent border-0" for="btnVisibleLayers" [ngClass]="allVisible ? 'text-success' : 'text-danger'" container="body" [ngbPopover]="allVisible ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+    <fa-icon [icon]="allVisible ? visibleIcon : invisibleIcon" size="1x"></fa-icon>
   </label>
 
   <input #btnLock type="checkbox" class="btn-check" id="btnLockLayers" [checked]="false" (change)="allLocked = btnLock.checked">
-  <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnLockLayers" container="body" [ngbPopover]="allLocked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
-    <fa-icon class="" [icon]="allLocked ? lockIcon : unLockIcon" size="1x"></fa-icon>
+  <label class="btn btn-sm btn-transparent border-0" for="btnLockLayers" container="body" [ngbPopover]="allLocked ? 'Dévérouiller' : 'Verrouiller'" triggers="mouseenter:mouseleave">
+    <fa-icon [icon]="allLocked ? lockIcon : unLockIcon" size="1x"></fa-icon>
   </label>
 
   <input #btnToggle type="checkbox" class="btn-check" id="btnToggleFeatures" [checked]="!allVisible" (change)="allToggled = btnToggle.checked">
-  <label class="m-1 btn btn-sm btn-transparent border-0 pointer" for="btnToggleFeatures" container="body" [ngbPopover]="allToggled ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
-    <fa-icon class="" [icon]="allToggled ? toggleIcon : unToggleIcon" size="1x"></fa-icon>
+  <label class="btn btn-sm btn-transparent border-0" for="btnToggleFeatures" container="body" [ngbPopover]="allToggled ? 'Masquer' : 'Afficher'" triggers="mouseenter:mouseleave">
+    <fa-icon [icon]="allToggled ? toggleIcon : unToggleIcon" size="1x"></fa-icon>
   </label>
 
-  <button class="m-1 btn btn-sm btn-transparent border-0 pointer" (click)="zoomToLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
-    <fa-icon class="" [icon]="centerIcon" size="1x"></fa-icon>
+  <button class="btn btn-sm btn-transparent border-0" (click)="zoomToLayers()" ngbPopover="Centrer" triggers="mouseenter:mouseleave">
+    <fa-icon [icon]="centerIcon" size="1x"></fa-icon>
   </button>
 
-  <button class="m-1 btn btn-sm btn-transparent border-0 pointer text-danger" (click)="removeLayers()" ngbPopover="Supprimer toutes les couches" triggers="mouseenter:mouseleave">
-    <fa-icon class="" [icon]="disabledIcon" size="1x"></fa-icon>
+  <button class="btn btn-sm btn-transparent border-0 text-danger" (click)="removeLayers()" ngbPopover="Supprimer toutes les couches" triggers="mouseenter:mouseleave">
+    <fa-icon [icon]="disabledIcon" size="1x"></fa-icon>
   </button>
 
 </div>
 
 
-<div #layersList id="layersList" class="d-flex flex-column justify-content-start mb-2">
+<div id="layersList" class="d-flex flex-column justify-content-start mb-2">
 
   <div
-    class="layer pointer d-flex flex-column small mt-1 mx-1 px-1 align-items-around"
+    class="d-flex flex-row small m-1 p-2 justify-content-center pointer"
+    [ngClass]="layerIdSelected === null ? 'bg-secondary  bg-gradient bg-opacity-10 fw-bold' : ''"
     (click)="unSelectLayer()"
     >
-
-    <div class="pointer p-2 d-flex flex-row pointer justify-content-center align-items-center border-bottom"
-    [ngClass]="layerIdSelected === null ? 'bg-secondary  bg-gradient bg-opacity-10 fw-bold text-black' :  'text-black'"
-    >
-        <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>Désélectionner
-    </div>
-
+      <fa-icon class="me-1" [icon]="disabledIcon" ></fa-icon>Désélectionner
   </div>
 
-  <ng-container *ngFor="let layer of layersToDisplay">
+  <ng-container #layersList *ngFor="let layer of layersToDisplay">
 
     <app-layer
       [layer]="layer"

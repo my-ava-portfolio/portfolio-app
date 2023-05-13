@@ -21,7 +21,6 @@ export class AppComponent implements OnInit {
   orientationPortraitRoutes: string[] = [
     '/maps/app/activities',
     '/maps/app/gtfs-viewer',
-    '/maps/app/sandbox',
     '/blog'
   ];
 

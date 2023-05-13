@@ -2,12 +2,12 @@
   Projection
 </div>
 
-<div id="epsgList" class="text-center m-3">
+<div id="epsgList" class="text-center m-2">
 
   <div class="btn-group m-2 bg-white rounded-3 border">
     <ng-container *ngFor="let epsg of epsgAvailable; let idx = index">
       <input type="radio" class="border btn-check" name="btnRadio" [id]="'btnradio-selector-' + idx" [checked]="currentEpsg === epsg" autocomplete="off">
-      <label [ngClass]="currentEpsg === epsg ? 'bg-success text-white ' :  ''" class="pointer p-2"  [for]="'btnradio-selector-' + idx" (click)="setProjection(epsg)">
+      <label [ngClass]="currentEpsg === epsg ? 'bg-success text-white ' :  ''" class="pointer p-1"  [for]="'btnradio-selector-' + idx" (click)="setProjection(epsg)">
         <div class="dropdown-item small d-flex flex-row">
           <span>{{ epsg }}</span>
         </div>
@@ -17,13 +17,11 @@
 
 </div>
 
-<div id="ccordinates" class="d-flex flex-column justify-content-center align-items-center m-3">
+<div id="ccordinates" class="d-flex flex-column justify-content-center align-items-center m-2">
 
-  <div class="d-flex flex-column">
-    <span id="mouseCoordinates"></span>
-  </div>
+  <span id="mouseCoordinates"></span>
 
-  <div class="d-flex flex-row my-2">
+  <div class="d-flex flex-row my-1">
     <span class="fw-bold me-3">Précision</span>
     <input class="small text-center" id="precision" type="number" min="0" max="12" value="4" (change)="updatePrecision($event)"/>
   </div>

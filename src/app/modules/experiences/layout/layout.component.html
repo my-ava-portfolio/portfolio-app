@@ -23,24 +23,25 @@
     ></app-navigate>
   </set-section-container>
 
-  <div *ngIf="dataAvailable" id="experiences__content" class="
-    d-flex flex-xl-row flex-column
-    bg-white
-  ">
+  <set-section-container>
 
-    <set-section-container id="experiences__content__activities" class="col-12 col-xl-7">
-      <app-activities
-        [fragment]="fragment"
-        [tabView]="tabView"
-      ></app-activities>
-    </set-section-container>
+    <div id="experiences__content" class="d-flex flex-xl-row flex-column">
 
-    <set-section-container id="experiences__content__skills" class="col-12 col-xl-5">
-      <app-skills
-        [tabView]="tabView"
-      ></app-skills>
-    </set-section-container>
+      <div id="experiences__content__activities" class="col-12 col-xl-7">
+        <app-activities
+          [fragment]="fragment"
+          [tabView]="tabView"
+        ></app-activities>
+      </div>
 
-  </div> 
+      <div id="experiences__content__skills" class="col-12 col-xl-5">
+        <app-skills
+          [tabView]="tabView"
+        ></app-skills>
+      </div>
+
+    </div>
+  </set-section-container>
+ 
 
 </set-article-container>
