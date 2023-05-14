@@ -44,7 +44,7 @@ export class PathToolsComponent implements OnInit, OnDestroy {
   set layerSelected(layer: layerHandler | null) {
     this.buttonEnabled = false;
 
-    if (layer !== null) {
+    if (layer) {
       if (layer.container.geomType === 'Point') {
         this.buttonEnabled = true
       }
