@@ -187,10 +187,16 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
   }
 
   removeLayer(layerId: string): void {
-    this.existingLayers = this.existingLayers.filter((layer: layerHandler) => {
+    const existingLayersOrdered = this.existingLayers.sort((a, b) => (a.container.zIndex < b.container.zIndex ? -1 : 1))
+
+    let existingLayersOrderedFiltered = existingLayersOrdered.filter((layer: layerHandler) => {
       return layer.container.uuid !== layerId
     })
-    this.buildLayersIndexes()
+    // index rebuilding is needed
+    existingLayersOrderedFiltered.forEach((layer: layerHandler, idx: number) => {
+      layer.container.zIndex = idx;
+    })
+    this.existingLayers = existingLayersOrderedFiltered
     this.refreshLayers()
   }
 
@@ -212,16 +218,6 @@ export class LayersManagerComponent implements OnInit, OnDestroy {
 
   unSelectLayer(): void {
     this.layerIdSelected = null
-  }
-
-  buildLayersIndexes(): void {
-    let existingLayers = this.existingLayers
-
-    this.existingLayers = []
-    existingLayers.forEach((layer: layerHandler, idx: number) => {
-      layer.container.zIndex = idx;
-      this.existingLayers.push(layer)
-    })
   }
 
   createNewLayersFromFeatures(featuresToAdd: any): void {
