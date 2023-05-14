@@ -83,7 +83,6 @@
 
         <ng-container *ngFor="let feature of layer.container.features">
           <app-feature
-          [ngClass]="featuresIdSelected.includes(feature.get('id')) ? 'fw-bold bg-secondary bg-opacity-25' : ''"
           (click)="selectFeatureById(feature.get('id'))"
           [selected]="featuresIdSelected.includes(feature.get('id'))"
           [feature]="feature"

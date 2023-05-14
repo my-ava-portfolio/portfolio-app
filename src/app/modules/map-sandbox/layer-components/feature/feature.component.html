@@ -1,4 +1,6 @@
-<li class="feature-item mx-4 py-1 d-flex flex-row align-items-around border-top">
+<li class="feature-item mx-4 py-1 d-flex flex-row align-items-center align-items-around border-top"
+  [ngClass]="selected ? 'fw-bold bg-secondary bg-opacity-25' : ''"
+>
 
   <div class="me-2 d-flex flex-row">
     <div class="pointer px-1" (click)="zoomToFeature()" ngbPopover="Center sur l'object" triggers="mouseenter:mouseleave">
@@ -10,7 +12,7 @@
     </div>
   </div>
 
-  <div class="pointer d-flex flex-row small w-100">
+  <div class="pointer w-100">
 
     <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'Point'">
       <circle cx="10" cy="10" r="7" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />

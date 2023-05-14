@@ -94,7 +94,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   showHideLegend(): void {
     this.isPanelsDisplayed = !this.isPanelsDisplayed;
-    this.unSelectLayer()
+    // this.unSelectLayer()
   }
 
   unSelectLayer(): void {
