@@ -24,6 +24,9 @@ import {
   get as getProjection,
   transform,
 } from 'ol/proj';
+import { backgroundMapNames } from '@core/data-types';
+
+
 
 
 @Component({
@@ -43,9 +46,21 @@ export class BackgroundComponent implements OnInit {
   private defaultZoomValue = 7;
   private mainView!: View;
 
-  private basemap = new Stamen({
-    layer: 'terrain'
+  private stamenBaseLayer = new TileLayer({
+    source: new Stamen({
+      layer: 'terrain'
+    })
   })
+  private overviewBaseLayer = new TileLayer({
+    source: new Stamen({
+      layer: 'terrain'
+    })
+  })
+  private osmBaseLayer = new TileLayer({
+    source: new OSM({}),
+  })
+  currentBackgroundMap: backgroundMapNames = 'stamen';
+  backgroundMapSiwtcherDisplayed = false;
 
   map!: Map;
 
@@ -61,6 +76,8 @@ export class BackgroundComponent implements OnInit {
   layerRemovingSubscription!: Subscription;
   extentToZoomSubscription!: Subscription;
   changeMapVieWfromEpsgSubscription!: Subscription;
+  changeBackgroundMapSubscription!: Subscription;
+  displayBackgroundMapSwitcherSubscription!: Subscription;
 
   setControlOnMapSubscription!: Subscription;
   unsetControlOnMapSubscription!: Subscription;
@@ -155,6 +172,26 @@ export class BackgroundComponent implements OnInit {
         }
       )
 
+    this.displayBackgroundMapSwitcherSubscription = this.mapService.backgroundMapSwitcherStatus.subscribe(
+      (enabled: boolean) => {
+        const divOverview: any = window.document.getElementById('backgroundMapSwitcher');
+
+        if (enabled) {
+          // we move the map controler div when the item is called, on the map tools div.
+          window.document.getElementsByClassName("map-sources")[0].appendChild(divOverview)
+        } else {
+          // when disabled, we move it in the div background map controller div container
+          window.document.getElementById("backgroundMapControlers")?.appendChild(divOverview)
+        }
+
+      }
+    )
+
+    this.changeBackgroundMapSubscription = this.mapService.backgroundMapName.subscribe(
+      (backgroundMapName: backgroundMapNames) => {
+        this.setBackgroundMap(backgroundMapName)
+        }
+      )
   }
 
   ngOnInit(): void {
@@ -188,16 +225,16 @@ export class BackgroundComponent implements OnInit {
     this.setControlOnMapSubscription.unsubscribe();
     this.unsetControlOnMapSubscription.unsubscribe();
     this.changeMapVieWfromEpsgSubscription.unsubscribe();
+    this.changeBackgroundMapSubscription.unsubscribe();
+    this.displayBackgroundMapSwitcherSubscription.unsubscribe();
   }
 
 
   initMap(): void {
-
     this.map = new Map({
       layers: [
-        new TileLayer({
-          source: this.basemap,
-        }),
+        this.osmBaseLayer,
+        this.stamenBaseLayer,
       ],
       target: 'backgroundMap__map',
       view: this.mainView,
@@ -212,6 +249,8 @@ export class BackgroundComponent implements OnInit {
       }),
     });
     this.interationsSetter(false)
+    this.setBackgroundMap(this.currentBackgroundMap)
+
   }
 
   controlerScale(): ScaleLine {
@@ -229,12 +268,21 @@ export class BackgroundComponent implements OnInit {
       // see in overviewmap-custom.html to see the custom CSS used
       className: 'ol-overviewmap ol-custom-overviewmap',
       layers: [
-        new TileLayer({
-          source: this.basemap
-        }),
+        this.overviewBaseLayer
       ],
       collapsible: false,
     });
+  }
+
+  setBackgroundMap(mapName: 'OSM' | 'stamen'): void {
+    this.currentBackgroundMap = mapName
+    if (this.currentBackgroundMap === 'OSM') {
+      this.osmBaseLayer.setVisible(true)
+      this.stamenBaseLayer.setVisible(false)
+    } else if (this.currentBackgroundMap === 'stamen') {
+      this.osmBaseLayer.setVisible(false)
+      this.stamenBaseLayer.setVisible(true)
+    }
   }
 
   interactionsRotation(): DragRotateAndZoom {

@@ -24,7 +24,7 @@ import { centerIcon } from '@modules/map-activities/shared/icons';
   styleUrls: ['./map-view.component.scss']
 })
 export class MapViewComponent implements OnInit, OnDestroy {
-  dataCached = {}  
+  dataCached = {}
 
   centerIcon = centerIcon;
 
@@ -265,7 +265,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       })
       featuresToAdd.push(iconFeature)
     })
-    
+
     vectorSource.addFeatures(featuresToAdd)
     this.gtfsLayer.setSource(vectorSource)
   }

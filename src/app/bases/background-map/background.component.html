@@ -2,3 +2,14 @@
     <div id="backgroundMap__map"></div>
 </div>
 
+
+<div id="backgroundMapControlers" [hidden]="!backgroundMapSiwtcherDisplayed">
+  <div id="backgroundMapSwitcher" class="ms-auto text-center m-1 shadow bg-white rounded-3 p-1">
+    <div class="small fw-bold">
+      <span>Fonds de plan</span>
+    </div>
+    <button type="button" class="pe-auto btn btn-sm border mx-1" [ngClass]="currentBackgroundMap === 'OSM' ? 'btn-secondary' : 'btn-light'" (click)="setBackgroundMap('OSM')">OSM</button>
+    <button type="button" class="pe-auto btn btn-sm border mx-1" [ngClass]="currentBackgroundMap === 'stamen' ? 'btn-secondary' : 'btn-light'" (click)="setBackgroundMap('stamen')">Stamen</button>
+  </div>
+</div>
+

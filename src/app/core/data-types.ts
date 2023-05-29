@@ -1,5 +1,8 @@
-export type activities = 'job'|'personal-project'|'volunteer';
+// background map
+export type backgroundMapNames = 'stamen' | 'OSM';
 
+
+export type activities = 'job' | 'personal-project' | 'volunteer';
 // GALLERY TYPES //
 export interface badge {
     name: string,
