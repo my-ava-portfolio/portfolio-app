@@ -49,7 +49,8 @@
     <div class="d-flex flex-row justify-content-around">
 
       <div *ngIf="feature.img_activity !== 'null'" class="w-25 justify-content-around text-center">
-        <img class="img-fluid rounded mx-auto shadow mini-img-thumbnail" [src]="apiImgUrl + feature.img_activity"/>
+        <img class="img-fluid rounded mx-auto shadow mini-img-thumbnail" [src]="apiImgUrl + feature.img_activity" [alt]="feature.id"
+        />
       </div>
 
       <div class="my-auto">

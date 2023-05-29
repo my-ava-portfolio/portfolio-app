@@ -14,7 +14,7 @@
       >
 
       <ng-template #cardBodyTemplate>
-          <img class="m-1 p-3 border rounded img-fluid" [src]="portfolioV2ImgPath">
+          <img class="m-1 p-3 border rounded img-fluid" [src]="portfolioV2ImgPath"  alt="Architecture du portfolio">
       </ng-template>
 
     </set-card-container>
@@ -37,14 +37,14 @@
       <div class="d-flex flex-column justify-content-start align-items-center">
 
         <div class="mx-3 d-flex flex-column justify-content-around align-items-center">
-            <img class="img-tech" [src]="content.image" [title]="content.language">
+            <img class="img-tech" [src]="content.image" [title]="content.language" [alt]="content.language">
             <span class="fw-bold">{{content.language}}</span>
         </div>
 
         <div class="d-flex flex-lg-column flex-row mt-2">
           <ng-container *ngFor="let lib of content.libraries">
             <a [href]="lib.url" [title]="lib.language">
-              <img class="img-tech-lib" [src]="lib.icon" [title]="lib.name">
+              <img class="img-tech-lib" [src]="lib.icon" [title]="lib.name"  [alt]="lib.name">
             </a>
           </ng-container>
         </div>
