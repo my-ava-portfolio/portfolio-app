@@ -12,7 +12,7 @@
 
       <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3">
         <div>
-          <img src="https://avatars.githubusercontent.com/u/36413727?v=4">
+          <img src="https://avatars.githubusercontent.com/u/36413727?v=4" [alt]="profilData.first_name[0] + profilData.last_name[0]">
         </div>
         <div *ngIf="profilData">
           <h4 class="fw-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h4>
@@ -113,7 +113,7 @@
             <div class="fw-bold small w-75">{{job.title}} @ {{job.company}}</div>
             <div class="small">{{job.location}}</div>
           </div>
-          
+
           <div class="d-flex flex-row small">
             <ng-container *ngIf="job.status !== 'InProgress'">
               <div class="me-1">Du {{ job.start_date | date: 'MM-yyyy' }} au {{ job.end_date | date: 'MM-yyyy' }}</div>
@@ -140,7 +140,7 @@
           <div class="d-flex flex-row align-items-center mx-1">
 
             <div class="col-2 text-center">
-              <img class="img-fluid " [src]="apiImgUrl + job.img_activity"/>
+              <img class="img-fluid " [src]="apiImgUrl + job.img_activity" [alt]="job.id"/>
             </div>
             <div class="col-10">
               <set-paragraph-content class="small">{{ job.presentation }}</set-paragraph-content>

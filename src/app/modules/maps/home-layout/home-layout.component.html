@@ -13,15 +13,15 @@
 
               <ng-container *ngIf="feat.type === 'Pre-Proc'">
                 <ng-container *ngTemplateOutlet="stackTemplate; context:{stack:feat}"></ng-container>
-              </ng-container>  
+              </ng-container>
 
               <ng-container *ngIf="feat.type === 'Back-end'">
                 <ng-container *ngTemplateOutlet="stackTemplate; context:{stack:feat}"></ng-container>
-              </ng-container> 
+              </ng-container>
 
               <ng-container *ngIf="feat.type === 'Front-end'">
                 <ng-container *ngTemplateOutlet="stackTemplate; context:{stack:feat}"></ng-container>
-              </ng-container> 
+              </ng-container>
 
           </ng-container>
         </div>
@@ -29,8 +29,8 @@
 
 
       </ng-template>
-    
-  
+
+
     </app-grid-container>
 
   </div>
@@ -39,6 +39,6 @@
   <ng-template #stackTemplate let-stack='stack'>
       <div class="d-flex flex-column justify-content-center align-items-center border rounded m-2">
         <span class="small">{{stack.type}}</span>
-        <img [src]="stack.img" class="stack-img m-2" [attr.title]="stack.language">
+        <img [src]="stack.img" class="stack-img m-2" [attr.title]="stack.language" [alt]="stack.language">
       </div>
   </ng-template>

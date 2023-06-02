@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { backgroundMapNames } from '@core/data-types';
 import { Extent } from 'ol/extent';
 import Map from 'ol/Map';
 
@@ -45,6 +46,9 @@ export class MapService {
   zoomEvent: Subject<boolean> = new Subject<boolean>();
 
   mapInteractionStatus: Subject<boolean> = new Subject<boolean>();
+
+  backgroundMapSwitcherStatus: Subject<boolean> = new Subject<boolean>();
+  backgroundMapName: Subject<backgroundMapNames> = new Subject<backgroundMapNames>()
 
   constructor(
   ) { }
@@ -141,6 +145,14 @@ export class MapService {
 
   setProjectionOnMap(epsg: string): void {
     this.setMapProjectionFromEpsg.next(epsg);
+  }
+
+  enableBackgroundLayer(enabled: boolean): void {
+    this.backgroundMapSwitcherStatus.next(enabled)
+  }
+
+  changeBackgroundLayer(mapName: backgroundMapNames): void {
+    this.backgroundMapName.next(mapName)
   }
 
 }

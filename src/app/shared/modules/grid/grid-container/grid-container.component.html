@@ -22,7 +22,7 @@
                     </div>
                 </ng-container>
                 <ng-container *ngIf="feature.type !== 'video'">
-                    <img class="img-fluid" [src]="feature.image_url | safeUrl">
+                    <img class="img-fluid" [src]="feature.image_url | safeUrl" [alt]="feature.id">
                 </ng-container>
             </div>
 
@@ -39,9 +39,9 @@
                     <ng-container *ngTemplateOutlet="imgModal; context: {pictureUrl: feature.content_url, activityId: feature.id, pictureId: idx}"></ng-container>
                     <a data-bs-toggle="modal" [href]="'#modal-' + feature.id + idx" role="button" class="btn btn-sm bg-warning">Afficher</a>
                 </ng-container>
-        
+
             </div>
-                
+
          </ng-template>
 
         </set-card-container>
@@ -58,13 +58,13 @@
 
     <div class="modal" tabindex="-1" [id]="'modal-' + activityId + pictureId" _data-bs-dismiss="modal" _data-bs-backdrop="true">
       <div class="modal-dialog modal-xl modal-dialog-centered text-center">
-  
+
         <div class="modal-body">
-          <img [src]="pictureUrl | safeUrl" class="pointer img-size-modal m-auto">
+          <img [src]="pictureUrl | safeUrl" class="pointer img-size-modal m-auto" [alt]="activityId">
         </div>
-  
+
       </div>
     </div>
-    
+
 </ng-template>
 

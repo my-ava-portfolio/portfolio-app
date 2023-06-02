@@ -18,7 +18,7 @@
         text-center mt-2 mb-5
       ">
 
-          <ng-container *ngFor="let page of resumePages">
+          <ng-container *ngFor="let page of portfolioPages">
             <set-button-content
               [classes]="'text-white btn-' + page.colorType"
               [title]="page.title"
@@ -28,18 +28,7 @@
             </set-button-content>
           </ng-container>
 
-          <ng-container *ngFor="let page of blogPages">
 
-            <ng-container *ngIf="page.route">
-              <set-button-content
-                [classes]="'btn-' + page.colorType"
-                [icon]="page.icon"
-                [route]="page.route"
-              >{{ page.title }}
-              </set-button-content>
-            </ng-container>
-
-          </ng-container>
       </div>
 
   </div>

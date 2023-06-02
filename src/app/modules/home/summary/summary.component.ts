@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { blogPages, resumeTopicsPages } from '@core/globals/topics_skeleton';
+import { blogPages, resumeTopicsPages, techStackPages } from '@core/globals/topics_skeleton';
+import { blogIcon } from '../../../core/globals/icons';
 
 
 @Component({
@@ -9,8 +10,7 @@ import { blogPages, resumeTopicsPages } from '@core/globals/topics_skeleton';
 })
 export class SummaryComponent {
 
-  resumePages: any[] = resumeTopicsPages;
-  blogPages: any[] = blogPages;
+  portfolioPages: any[] = [...resumeTopicsPages, ...blogPages, ...techStackPages];
 
   constructor( ) { }
 

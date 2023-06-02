@@ -74,6 +74,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.sendResumeSubMenus();
     this.mapService.changeMapInteractionStatus(true)
     this.mapService.getMap();
+    this.mapService.enableBackgroundLayer(true)
 
   }
 
@@ -85,6 +86,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     this.mapService.changeMapInteractionStatus(false)
     this.mapService.resetMapView()
+    this.mapService.changeBackgroundLayer('stamen')
+    this.mapService.enableBackgroundLayer(false)
+
   }
 
   private sendResumeSubMenus(): void {
