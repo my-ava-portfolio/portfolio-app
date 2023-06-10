@@ -71,13 +71,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
-
     this.sendResumeSubMenus();
-    this.mapService.changeMapInteractionStatus(true)
+    this.mapService.changeMapInteractionStatus(true);
     this.mapService.getMap();
-    this.mapService.enableBackgroundLayer(true)
-    this.editMode = true
-
+    this.editMode = true;
   }
 
   ngOnDestroy(): void {
@@ -86,10 +83,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.allLayersSubscription.unsubscribe();
     this.layerIdSelectedSubscription.unsubscribe();
 
-    this.mapService.changeMapInteractionStatus(false)
-    this.mapService.resetMapView()
-    this.mapService.changeBackgroundLayer('stamen')
-    this.mapService.enableBackgroundLayer(false)
+    this.mapService.changeMapInteractionStatus(false);
+    this.mapService.resetMapView();
+
+    this.mapService.changeBackgroundLayer('stamen');
+    this.hideBackgroundMapSwitcher();
 
   }
 
@@ -97,8 +95,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this._isEditMode = status
     if (this._isEditMode) {
       this._sandBoxMode = 'Mode édition'
+      this.displayBackgroundMapSwitcher();
     } else {
       this._sandBoxMode = 'Mode carte'
+      this.hideBackgroundMapSwitcher();
     }
   }
 
@@ -108,6 +108,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   get mode(): string {
     return this._sandBoxMode
+  }
+
+  displayBackgroundMapSwitcher(): void {
+    this.mapService.enableBackgroundLayer(true)
+  }
+
+  hideBackgroundMapSwitcher(): void {
+    this.mapService.enableBackgroundLayer(false)
   }
 
   private sendResumeSubMenus(): void {

@@ -55,8 +55,8 @@
 </div>
 
 
-<div moveDivToBody *ngIf="!editMode" class="legend position-fixed bottom-0 end-0">
-  <div class="d-flex flex-column rounded bg-white shadow overflow-auto m-2 p-3">
+<div moveDivToBody *ngIf="!editMode" id="legend" class="position-fixed bottom-0 end-0 overflow-auto bg-white shadow rounded m-2 px-3">
+  <div class="d-flex flex-column">
 
     <ng-container *ngFor="let layer of currentLayers">
         <app-legend
