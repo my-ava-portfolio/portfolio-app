@@ -12,19 +12,19 @@ import { InteractionsService } from '@modules/map-sandbox/shared/service/interac
 
 import { epsg3857, featuresLayerType, geomLayerTypes, toolsTypes } from '@modules/map-sandbox/shared/data-types';
 import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
-import { linestringsExample, pointsExample, polygonsExample } from '../data-example';
-import { readStringWktAndGroupedByGeomType } from '../import-tools/import-tools.component';
+import { linestringsExample, pointsExample, polygonsExample } from '@modules/map-sandbox/data-example';
+import { readStringWktAndGroupedByGeomType } from '@modules/map-sandbox/import-tools/import-tools.component';
 import Feature from 'ol/Feature';
-import { zoomPadding } from '../shared/globals';
-import { disabledIcon, loadIcon, visibleIcon, invisibleIcon, centerIcon, lockIcon, unLockIcon, unToggleIcon, toggleIcon } from '../shared/icons';
+import { zoomPadding } from '@modules/map-sandbox/shared/globals';
+import { disabledIcon, loadIcon, visibleIcon, invisibleIcon, centerIcon, lockIcon, unLockIcon, unToggleIcon, toggleIcon } from '@modules/map-sandbox/shared/icons';
 
 
 @Component({
-  selector: 'app-layers-manager',
-  templateUrl: './layers-manager.component.html',
-  styleUrls: ['./layers-manager.component.scss']
+  selector: 'app-toolbar',
+  templateUrl: './toolbar.component.html',
+  styleUrls: ['./toolbar.component.scss']
 })
-export class LayersManagerComponent implements OnInit, OnDestroy {
+export class ToolbarComponent implements OnInit, OnDestroy {
   map!: Map;
 
   private _currentEpsg!: string;

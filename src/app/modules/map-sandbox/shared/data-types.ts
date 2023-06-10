@@ -1,7 +1,7 @@
 import Feature from "ol/Feature";
 import { Geometry } from "ol/geom";
 
-export type toolsTypes = 'geoTools' | 'createTools' | 'pathTools'
+export type toolsTypes = 'geoTools' | 'importTools' | 'pathTools'
 
 export type pointType = 'Point'
 export type lineStringType = 'LineString'

@@ -15,7 +15,7 @@
   </app-geo-tools>
 </ng-container>
 
-<ng-container *ngIf="toolsMode == 'createTools'">
+<ng-container *ngIf="toolsMode == 'importTools'">
   <app-create-tools
     [layerTypeModes]="['Point', 'LineString', 'Polygon']"
     (newLayerEvent)="addLayer($event)">

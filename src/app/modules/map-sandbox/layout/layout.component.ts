@@ -32,9 +32,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
   rightSideIcon = rightSideIcon;
   layersIcon = layersIcon;
 
-  isPanelsDisplayed = true;
+  private _isEditMode!: boolean;
+  private _sandBoxMode!: string;
 
-  toolsMode: toolsTypes = 'createTools';
+  toolsMode: toolsTypes = 'importTools';
 
   layerIdSelected: string | null = null;
 
@@ -75,6 +76,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.mapService.changeMapInteractionStatus(true)
     this.mapService.getMap();
     this.mapService.enableBackgroundLayer(true)
+    this.editMode = true
 
   }
 
@@ -91,13 +93,30 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   }
 
+  set editMode(status: boolean) {
+    this._isEditMode = status
+    if (this._isEditMode) {
+      this._sandBoxMode = 'Mode édition'
+    } else {
+      this._sandBoxMode = 'Mode carte'
+    }
+  }
+
+  get editMode(): boolean {
+    return this._isEditMode
+  }
+
+  get mode(): string {
+    return this._sandBoxMode
+  }
+
   private sendResumeSubMenus(): void {
     this.controlerService.pullSubMenus([]);
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
   }
 
-  showHideLegend(): void {
-    this.isPanelsDisplayed = !this.isPanelsDisplayed;
+  showHideEditMode(): void {
+    this.editMode = !this.editMode;
     // this.unSelectLayer()
   }
 
