@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { InteractionsService } from '../shared/service/interactions.service';
 import { layerHandler } from '../shared/layer-handler/layer-handler';
 import { epsg3857, epsg4326, toolsTypes } from '../shared/data-types';
-import { geoIcon, layersIcon, leftSideIcon, pathIcon, rightSideIcon } from '../shared/icons';
+import { geoIcon, horizontalOrientation, layersIcon, leftSideIcon, pathIcon, rightSideIcon, verticalOrientation } from '../shared/icons';
 
 @Component({
   selector: 'app-app-layout',
@@ -31,9 +31,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
   leftSideIcon = leftSideIcon;
   rightSideIcon = rightSideIcon;
   layersIcon = layersIcon;
+  horizontalOrientation = horizontalOrientation;
+  verticalOrientation = verticalOrientation;
 
   private _isEditMode!: boolean;
   private _sandBoxMode!: string;
+  isLegendRow: boolean = true;
 
   toolsMode: toolsTypes = 'importTools';
 
@@ -108,6 +111,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   get mode(): string {
     return this._sandBoxMode
+  }
+
+  changeLegendShape(): void {
+    this.isLegendRow = !this.isLegendRow
   }
 
   displayBackgroundMapSwitcher(): void {

@@ -54,6 +54,10 @@
 }
 
 
-#legend {
-  max-height: 50%;
+.legend-row {
+  max-width: 50vw;
+}
+
+.legend-column {
+  max-height: 50vh;
 }
