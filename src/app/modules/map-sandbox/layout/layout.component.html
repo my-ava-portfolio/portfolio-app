@@ -1,14 +1,14 @@
 <div fluidHeight id="sandbox" class="d-flex flex-row position-fixed">
 
-    <div id="panelsContainer" class="bg-light" [ngClass]="!isPanelsDisplayed ? 'hidden' : 'displayed overflow-auto'">
+    <div id="panelsContainer" class="bg-light" [ngClass]="!editMode ? 'hidden' : 'displayed overflow-auto'">
 
-      <app-layers-manager
+      <app-toolbar
         class="d-flex flex-column overflow-auto"
         [toolsMode]="toolsMode"
         [currentEpsg]="currentEpsg"
         [epsgAvailable]="epsgAvailable"
       >
-      </app-layers-manager>
+      </app-toolbar>
 
     </div>
 
@@ -16,24 +16,28 @@
 
       <span
         class="tool btn btn-warning text-black my-3 rounded-end"
-        [ngClass]="isPanelsDisplayed ? 'selected' : ''"
-        (click)="showHideLegend()">
-        <fa-icon [icon]="isPanelsDisplayed ? leftSideIcon : rightSideIcon"></fa-icon>
+        [ngClass]="editMode ? 'selected' : ''"
+        (click)="showHideEditMode()"
+        [ngbPopover]="mode" triggers="mouseenter:mouseleave"
+        placement="right">
+        <fa-icon [icon]="editMode ? leftSideIcon : rightSideIcon"></fa-icon>
       </span>
 
       <span
         class="tool btn btn-success text-white mb-1 rounded-end"
         [ngClass]="toolsMode === 'geoTools' ? 'selected' : ''"
         (click)="toolsMode = 'geoTools'"
-        >
+        ngbPopover="Projections" triggers="mouseenter:mouseleave"
+        placement="right">
         <fa-icon [icon]="geoIcon"></fa-icon>
       </span>
 
       <span
         class="tool btn btn-secondary text-white mb-1 rounded-end" type="button"
-        [ngClass]="toolsMode === 'createTools' ? 'selected' : ''"
-        (click)="toolsMode = 'createTools'"
-        >
+        [ngClass]="toolsMode === 'importTools' ? 'selected' : ''"
+        (click)="toolsMode = 'importTools'"
+        ngbPopover="Importations" triggers="mouseenter:mouseleave"
+        placement="right">
         <fa-icon [icon]="layersIcon"></fa-icon>
       </span>
 
@@ -41,7 +45,8 @@
         class="tool btn btn-danger text-white mb-1 rounded-end" type="button"
         [ngClass]="toolsMode === 'pathTools' ? 'selected' : ''"
         (click)="toolsMode = 'pathTools'"
-        >
+        ngbPopover="Réseaux" triggers="mouseenter:mouseleave"
+        placement="right">
         <fa-icon [icon]="pathIcon"></fa-icon>
       </span>
 
@@ -50,9 +55,15 @@
 </div>
 
 
-<div moveDivToBody *ngIf="!isPanelsDisplayed" class="legend position-fixed bottom-0 end-0">
-  <div class="d-flex flex-column rounded bg-white shadow overflow-auto m-2 p-3">
+<div moveDivToBody *ngIf="!editMode" id="legend" class="position-fixed bottom-0 end-0 bg-white shadow rounded m-2">
 
+  <div class="d-flex flex-row justify-content-end">
+    <span class="badge bg-secondary m-2" type="button" (click)="changeLegendShape()">
+      <fa-icon [icon]="isLegendRow ? verticalOrientation : horizontalOrientation"></fa-icon>
+    </span>
+  </div>
+
+  <div class="d-flex overflow-auto" [ngClass]="isLegendRow ? 'flex-row legend-row ' : 'flex-column legend-column '">
     <ng-container *ngFor="let layer of currentLayers">
         <app-legend
           [layer]="layer"

@@ -11,7 +11,7 @@ import { LayoutComponent } from './layout/layout.component';
 
 import { GeoToolsComponent } from './geo-tools/geo-tools.component';
 
-import { LayersManagerComponent } from './layers-manager/layers-manager.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 import { LayerComponent } from '@modules/map-sandbox/layer-components/layer/layer.component';
 import { FeatureComponent } from '@modules/map-sandbox/layer-components/feature/feature.component';
 import { EditBarComponent } from '@modules/map-sandbox/edit-bar/edit-bar.component';
@@ -35,7 +35,7 @@ import { WidgetTableComponent } from './shared/components/widget-table/widget-ta
     LayerComponent,
     FeatureComponent,
     GeoToolsComponent,
-    LayersManagerComponent,
+    ToolbarComponent,
     EditBarComponent,
     CreateToolsComponent,
     ImportToolsComponent,

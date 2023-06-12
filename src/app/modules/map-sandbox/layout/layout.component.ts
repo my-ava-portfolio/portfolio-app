@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { InteractionsService } from '../shared/service/interactions.service';
 import { layerHandler } from '../shared/layer-handler/layer-handler';
 import { epsg3857, epsg4326, toolsTypes } from '../shared/data-types';
-import { geoIcon, layersIcon, leftSideIcon, pathIcon, rightSideIcon } from '../shared/icons';
+import { geoIcon, horizontalOrientation, layersIcon, leftSideIcon, pathIcon, rightSideIcon, verticalOrientation } from '../shared/icons';
 
 @Component({
   selector: 'app-app-layout',
@@ -31,10 +31,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
   leftSideIcon = leftSideIcon;
   rightSideIcon = rightSideIcon;
   layersIcon = layersIcon;
+  horizontalOrientation = horizontalOrientation;
+  verticalOrientation = verticalOrientation;
 
-  isPanelsDisplayed = true;
+  private _isEditMode!: boolean;
+  private _sandBoxMode!: string;
+  isLegendRow: boolean = true;
 
-  toolsMode: toolsTypes = 'createTools';
+  toolsMode: toolsTypes = 'importTools';
 
   layerIdSelected: string | null = null;
 
@@ -70,12 +74,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
-
     this.sendResumeSubMenus();
-    this.mapService.changeMapInteractionStatus(true)
+    this.mapService.changeMapInteractionStatus(true);
     this.mapService.getMap();
-    this.mapService.enableBackgroundLayer(true)
-
+    this.editMode = true;
   }
 
   ngOnDestroy(): void {
@@ -84,11 +86,43 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.allLayersSubscription.unsubscribe();
     this.layerIdSelectedSubscription.unsubscribe();
 
-    this.mapService.changeMapInteractionStatus(false)
-    this.mapService.resetMapView()
-    this.mapService.changeBackgroundLayer('stamen')
-    this.mapService.enableBackgroundLayer(false)
+    this.mapService.changeMapInteractionStatus(false);
+    this.mapService.resetMapView();
 
+    this.mapService.changeBackgroundLayer('stamen');
+    this.hideBackgroundMapSwitcher();
+
+  }
+
+  set editMode(status: boolean) {
+    this._isEditMode = status
+    if (this._isEditMode) {
+      this._sandBoxMode = 'Mode édition'
+      this.displayBackgroundMapSwitcher();
+    } else {
+      this._sandBoxMode = 'Mode carte'
+      this.hideBackgroundMapSwitcher();
+    }
+  }
+
+  get editMode(): boolean {
+    return this._isEditMode
+  }
+
+  get mode(): string {
+    return this._sandBoxMode
+  }
+
+  changeLegendShape(): void {
+    this.isLegendRow = !this.isLegendRow
+  }
+
+  displayBackgroundMapSwitcher(): void {
+    this.mapService.enableBackgroundLayer(true)
+  }
+
+  hideBackgroundMapSwitcher(): void {
+    this.mapService.enableBackgroundLayer(false)
   }
 
   private sendResumeSubMenus(): void {
@@ -96,8 +130,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.controlerService.pullTitlePage(this.activatedRoute.snapshot.data.title);
   }
 
-  showHideLegend(): void {
-    this.isPanelsDisplayed = !this.isPanelsDisplayed;
+  showHideEditMode(): void {
+    this.editMode = !this.editMode;
     // this.unSelectLayer()
   }
 

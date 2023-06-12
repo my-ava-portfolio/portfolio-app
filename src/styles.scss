@@ -175,3 +175,11 @@ body::-webkit-scrollbar {
   background: black;
   border-radius: 25px;
 }
+
+::-webkit-scrollbar:horizontal {
+  height: 5px;
+}
+::-webkit-scrollbar-thumb:horizontal{
+  background: black;
+  border-radius: 25px;
+}
