@@ -55,20 +55,27 @@
 </div>
 
 
-<div moveDivToBody *ngIf="!editMode" id="legend" class="position-fixed bottom-0 end-0 bg-white shadow rounded m-2">
+<div moveDivToBody *ngIf="!editMode" id="legend" class="d-flex flex-column position-fixed bottom-0 end-0 bg-white shadow rounded m-2"
+[ngClass]="isLegendRow ? 'legend-row ' : 'legend-column '"
+>
 
-  <div class="d-flex flex-row justify-content-end">
-    <span class="badge bg-secondary m-2" type="button" (click)="changeLegendShape()">
-      <fa-icon [icon]="isLegendRow ? verticalOrientation : horizontalOrientation"></fa-icon>
-    </span>
+<div class="d-flex flex-row justify-content-end">
+  <span class="badge bg-secondary m-2" type="button" (click)="changeLegendShape()">
+    <fa-icon [icon]="isLegendRow ? verticalOrientation : horizontalOrientation"></fa-icon>
+  </span>
+</div>
+
+<div class="container overflow-auto">
+
+      <div class="d-flex" [ngClass]="isLegendRow ? 'flex-row' : 'flex-column'">
+        <ng-container *ngFor="let layer of currentLayers">
+            <app-layer-legend
+              [layer]="layer"
+            ></app-layer-legend>
+        </ng-container>
+
+      </div>
+
   </div>
 
-  <div class="d-flex overflow-auto" [ngClass]="isLegendRow ? 'flex-row legend-row ' : 'flex-column legend-column '">
-    <ng-container *ngFor="let layer of currentLayers">
-        <app-legend
-          [layer]="layer"
-        ></app-legend>
-    </ng-container>
-
-  </div>
 </div>

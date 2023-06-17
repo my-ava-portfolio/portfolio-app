@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LegendComponent } from './legend.component';
+import { LayerLegendComponent } from './layer-legend.component';
 
-describe('LegendComponent', () => {
-  let component: LegendComponent;
-  let fixture: ComponentFixture<LegendComponent>;
+describe('LayerLegendComponent', () => {
+  let component: LayerLegendComponent;
+  let fixture: ComponentFixture<LayerLegendComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LegendComponent ]
+      declarations: [ LayerLegendComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LegendComponent);
+    fixture = TestBed.createComponent(LayerLegendComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,14 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { layerHandler } from '../shared/layer-handler/layer-handler';
-import { lineStringIcon, pointIcon, polygonIcon } from '../shared/icons';
-import { strokeWidthCoeff, strokeWidthLineCoeff } from '../shared/globals';
+import { layerHandler } from '@modules/map-sandbox/shared/layer-handler/layer-handler';
+import { lineStringIcon, pointIcon, polygonIcon } from '@modules/map-sandbox/shared/icons';
+import { strokeWidthCoeff, strokeWidthLineCoeff } from '@modules/map-sandbox/shared/globals';
 
 @Component({
-  selector: 'app-legend',
-  templateUrl: './legend.component.html',
-  styleUrls: ['./legend.component.scss']
+  selector: 'app-layer-legend',
+  templateUrl: './layer-legend.component.html',
+  styleUrls: ['./layer-legend.component.scss']
 })
-export class LegendComponent implements OnInit, OnDestroy {
+export class LayerLegendComponent implements OnInit, OnDestroy {
   private _layer!: layerHandler;
 
   featureIdSelected!: string;
