@@ -13,6 +13,7 @@
       <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3">
         <div>
           <img src="https://avatars.githubusercontent.com/u/36413727?v=4" [alt]="profilData.first_name[0] + profilData.last_name[0]">
+          <!-- <img class="" [src]="apiImgUrl + 'me.png'" alt="AV"/> -->
         </div>
         <div *ngIf="profilData">
           <h4 class="fw-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h4>
