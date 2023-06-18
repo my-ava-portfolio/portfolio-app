@@ -34,8 +34,7 @@
       <div class="skills-container">
 
         <div class="skill" *ngFor="let skill of skills; let idx = index; trackBy: trackByMethod">
-          <h6 class="pointer" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + category + idx" [attr.aria-expanded]="false" [attr.aria-controls]="'#collapse-' + category + idx">
-            <span>{{ skill.name }}</span></h6>
+          <h6>{{ skill.name }}</h6>
 
           <div [class]="category + '-multi-collapse show'" [id]="'collapse-' + category + idx">
             <ul>
@@ -48,7 +47,7 @@
         </div>
       </div>
     </ng-template>
-    
+
   </set-card-container>
 
 </ng-template>
