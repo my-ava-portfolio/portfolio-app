@@ -10,13 +10,14 @@
 
     <div class="page d-flex flex-column" [ngClass]="isPrinting ? 'p-0' : 'p-4 mb-2'" size="A4" layout="">
 
-      <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3">
+      <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3" *ngIf="profilData">
         <div>
           <img src="https://avatars.githubusercontent.com/u/36413727?v=4" [alt]="profilData.first_name[0] + profilData.last_name[0]">
           <!-- <img class="" [src]="apiImgUrl + 'me.png'" alt="AV"/> -->
         </div>
         <div *ngIf="profilData">
           <h4 class="fw-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h4>
+
           <h5 class="">{{ profilData.job }}</h5>
           <h6 *ngIf="jobDuration">{{ jobDuration.years }} années et {{ jobDuration.months }} mois d'expérience professionnelle</h6>
         </div>
@@ -221,7 +222,7 @@
 
 <ng-template #contactListElement let-icon=icon let-data=data>
   <li class="d-flex justify-content-end">
-    <a class="small" [href]="data" target="_blank" rel="noopener noreferrer" [innerHTML]="reverse(data)"></a>
+    <a class="small" [href]="reverse(data)" target="_blank" rel="noopener noreferrer" [innerHTML]="reverse(data)"></a>
     <fa-icon class="ms-2" [icon]="icon"></fa-icon>
   </li>
 </ng-template>
