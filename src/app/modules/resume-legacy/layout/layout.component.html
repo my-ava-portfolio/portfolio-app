@@ -10,26 +10,28 @@
 
     <div class="page d-flex flex-column" [ngClass]="isPrinting ? 'p-0' : 'p-4 mb-2'" size="A4" layout="">
 
-      <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3" *ngIf="profilData">
+      <div id="header" class="d-flex flex-row align-items-center justify-content-between mx-3" *ngIf="profilData && contactData">
         <div>
           <img src="https://avatars.githubusercontent.com/u/36413727?v=4" [alt]="profilData.first_name[0] + profilData.last_name[0]">
           <!-- <img class="" [src]="apiImgUrl + 'me.png'" alt="AV"/> -->
         </div>
-        <div *ngIf="profilData">
-          <h4 class="fw-bold">{{ profilData.first_name }} {{ profilData.last_name }}</h4>
-
+        <div>
+          <div class="d-flex align-items-center">
+            <h4 class="fs-4">{{ profilData.first_name }} {{ profilData.last_name }}</h4>
+            <h6 class="ms-4 small">({{ profilData.birth_date }})</h6>
+          </div>
           <h5 class="">{{ profilData.job }}</h5>
           <h6 *ngIf="jobDuration">{{ jobDuration.years }} années et {{ jobDuration.months }} mois d'expérience professionnelle</h6>
         </div>
 
         <div class="my-auto">
-          <ul class="list-unstyled" *ngIf="contactData">
+          <ul class="list-unstyled">
             <ng-container *ngIf="contactData.mail && isPrinting">
               <ng-container *ngTemplateOutlet="contactListElement; context: {icon: emailIcon, data: contactData.mail}"></ng-container>
             </ng-container>
 
-            <ng-container *ngIf="contactData.phone && isPrinting">
-              <ng-container *ngTemplateOutlet="contactListElement; context: {icon: phoneIcon, data: contactData.phone}"></ng-container>
+            <ng-container *ngIf="profilData.phone && isPrinting">
+              <ng-container *ngTemplateOutlet="contactListElement; context: {icon: phoneIcon, data: profilData.phone}"></ng-container>
             </ng-container>
 
             <ng-container *ngIf="contactData.website">
