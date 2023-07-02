@@ -112,9 +112,9 @@ export const mapActivitiesPages: mapPagesType = {
       ],
       status: 'Done',
       image_url: `${assetsImagesPath}/md-portfolio_activities.avif`,
-      description: `Cartographie de mon parcours universitaire et professionnel. Le front utilise Angular avec notamment
-          les libraries OpenLayers pour la gestion des objets géographiques et D3js pour la légende temporelles. Les données
-          sont gérées par le backend en Python au travers d'une API Flask.`
+      description: `La cartographie de mon parcours universitaire et professionnel. La librarie OpenLayers est utilisée pour
+      la gestion du fond de plan et la génération des objets géographiques issus d'une base de données Postgres/GIS. Les données sont gérées par le backend en Python
+      et diffusées avec une API REST (starlite). Enfin la légende temporelle, avec son interactivité, est gérée avec à D3js.`
     },
     {
       id: "sandbox",
@@ -138,8 +138,9 @@ export const mapActivitiesPages: mapPagesType = {
       status: 'Dev',
       image_url: `${assetsImagesPath}/md-sandbox.avif`,
       description: `Un bac à sable pour saisir et exporter des données géographiques: Points, LineString, Polygons (et à trous).
-        L'ensemble est totalement géré par le front avec OpenLayers principalement. Il est possible de générer des plus courts
-        chemin en saisissant des noeuds ; calculs gérés par la librairie python OsmRx`
+        L'ensemble est géré par le front avec OpenLayers. Egalement, il est possible de calculer des plus courts
+        chemins en saisissant des noeuds ; calculs gérés par la librairie python OsmRx (en remplacement de OsmGt) au travers
+        d'une API Rest (starlite)`
     },
     {
       id: "gtfs-viewer",
@@ -168,10 +169,10 @@ export const mapActivitiesPages: mapPagesType = {
       status: 'Dev',
       image_url: `${assetsImagesPath}/md-gtfs_viewer.avif`,
       description: `Application pour visualiser la circulation sur une journée des transports en commun à partir d'un GTFS.
-        On propose ainsi une cartographie spatio-temporelle des TER de la SNCF sur l'ensemble du territoire et les lignes de trams
-        et métros pour Toulouse et Lyon. OpenLayers et D3js sont mobilisés pour le front. Une phase de pré-traitement des données,
-        issus des GTFS est réalisée en Python pour obtenir des données exploitables. Ces dernières sont diffusées par un backend
-        codé en Golang à l'aide d'une API REST (Gin Gonic)`
+        On propose ainsi une cartographie spatio-temporelle des TER de la SNCF sur l'ensemble du territoire, ainsi que les lignes de trams
+        et métros pour Toulouse et Lyon. OpenLayers (fond de plans et données) et D3js (légende temporelle) sont mobilisés pour le front.
+        Une phase de pré-traitement des données, à partir des GTFS, est réalisée en Python pour obtenir des données facilement exploitables.
+        Ces dernières, au format JSON, sont chargées et diffusées par un backend développé en Golang à l'aide d'une API REST (Gin Gonic)`
     },
   ]
 };
