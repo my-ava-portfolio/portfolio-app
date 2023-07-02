@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 
-import { assetsImagesPath } from '@core/globals/resume-shared-data';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { goBackEndInfo, pythonBackEndInfo, frontEndInfo } from '@core/globals/tech-infos';
+import { portfolioArchitectureImgPath, resumeApiMcdImgPath } from '../core';
 
 @Component({
   selector: 'app-layout',
@@ -12,7 +11,8 @@ import { goBackEndInfo, pythonBackEndInfo, frontEndInfo } from '@core/globals/te
   animations: [fadeInOutAnimation]
 })
 export class LayoutComponent {
-  portfolioV2ImgPath = assetsImagesPath + 'portfolio_v2.avif';
+  portfolioArchitectureImgPath = portfolioArchitectureImgPath;
+  resumeApiMcdImgPath = resumeApiMcdImgPath;
 
   goBackEndInfo = goBackEndInfo
   pythonBackEndInfo = pythonBackEndInfo;
