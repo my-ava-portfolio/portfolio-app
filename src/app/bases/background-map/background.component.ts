@@ -322,12 +322,7 @@ export class BackgroundComponent implements OnInit {
 
   resetView(): void {
     const startLocation = new Point(this.InitialViewCoords)
-
     this.zoomToExtent(startLocation.getExtent(), this.defaultZoomValue)
-
-
-    // TODO remove legend ?
-
   }
 
   getMapScreenBounds(): void {
@@ -408,4 +403,3 @@ export class BackgroundComponent implements OnInit {
   }
 
 }
-
