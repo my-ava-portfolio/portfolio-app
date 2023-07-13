@@ -26,7 +26,7 @@ export class baseLayer{
   // common style
   private _fillColor: string = getRandomDefaultColor();
   private _strokeColor: string = defaultStrokeColor;
-  private _strokeWidth: string = "" + defaultStrokeWidth;
+  private _strokeWidth: number = defaultStrokeWidth;
   private _styleSettings!: categoryClass[];
 
   private _locked: boolean = false;
@@ -146,15 +146,15 @@ export class baseLayer{
     };
   }
 
-  public get strokeWidth(): string {
+  public get strokeWidth(): number {
     // main style
     return this._strokeWidth;
   }
 
-  public set strokeWidth(width: string) {
-    this._strokeWidth = width
+  public set strokeWidth(width: number) {
+    this._strokeWidth = width;
     this.features.forEach((feature: Feature) => {
-    feature.set("stroke_width", parseFloat(width), false)
+      feature.set("stroke_width", this._strokeWidth, false)
     })
   }
 

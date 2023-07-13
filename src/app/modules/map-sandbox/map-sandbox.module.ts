@@ -27,6 +27,7 @@ import { LayerSettingsComponent } from './layer-components/layer/layer-settings/
 import { LayerTableComponent } from './layer-components/layer/layer-table/layer-table.component';
 import { WidgetColorComponent } from './shared/components/widget-color/widget-color.component';
 import { WidgetTableComponent } from './shared/components/widget-table/widget-table.component';
+import { GeomIconsComponent } from './shared/components/geom-icons/geom-icons.component';
 
 
 @NgModule({
@@ -43,8 +44,6 @@ import { WidgetTableComponent } from './shared/components/widget-table/widget-ta
     PathToolsComponent,
     LayerSettingsComponent,
     LayerTableComponent,
-    WidgetColorComponent,
-    WidgetTableComponent,
   ],
   imports: [
     CommonModule,
@@ -53,7 +52,10 @@ import { WidgetTableComponent } from './shared/components/widget-table/widget-ta
     NgbModule,
     FormsModule,
     DirectivesModule,
-    ItemsModule
+    ItemsModule,
+    GeomIconsComponent,
+    WidgetColorComponent,
+    WidgetTableComponent,
   ],
 })
 export class MapSandboxModule { }

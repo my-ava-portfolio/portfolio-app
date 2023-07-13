@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import Feature from 'ol/Feature';
 
 @Component({
   selector: 'app-widget-table',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './widget-table.component.html',
   styleUrls: ['./widget-table.component.scss']
 })

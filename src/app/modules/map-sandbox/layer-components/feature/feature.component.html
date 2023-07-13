@@ -1,4 +1,4 @@
-<li class="feature-item mx-4 py-1 d-flex flex-row align-items-center align-items-around border-top"
+<li class="feature-item mx-4 py-1 d-flex flex-row align-items-center align-items-around"
   [ngClass]="selected ? 'fw-bold bg-secondary bg-opacity-25' : ''"
 >
 
@@ -13,21 +13,14 @@
   </div>
 
   <div class="pointer w-100">
-
-    <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'Point'">
-      <circle cx="10" cy="10" r="7" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width')" [attr.fill]="feature.get('fill_color')" />
-    </svg>
-
-    <svg height="20" width="20" *ngIf="feature.get('geom_type') === 'LineString'">
-      <line x1="0" y1="10" x2="20" y2="10" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * _strokeWidthCoeff"/>
-      <line x1="0" y1="10" x2="20" y2="10" [attr.stroke]="feature.get('fill_color')" [attr.stroke-width]="feature.get('stroke_width') * _strokeWidthLineCoeff"/>
-    </svg>
-
-    <svg height="16" width="25" *ngIf="feature.get('geom_type') === 'Polygon'">
-      <rect x="0" y="0" width="25" height="16" [attr.stroke]="feature.get('stroke_color')" [attr.stroke-width]="feature.get('stroke_width') * _strokeWidthCoeff" [attr.fill]="feature.get('fill_color')"/>
-    </svg>
-
-    <span class="ms-1 small">{{feature.get('name')}}</span>
+    <app-geom-icons
+      [geomType]="feature.get('geom_type')"
+      [strokeColor]="feature.get('stroke_color')"
+      [strokeWidth]="feature.get('stroke_width')"
+      [fillColor]="feature.get('fill_color')"
+      [title]="feature.get('name')"
+    >
+    </app-geom-icons>
 
   </div>
 

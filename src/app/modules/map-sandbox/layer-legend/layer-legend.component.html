@@ -4,24 +4,17 @@
 
   <ul class="list-unstyled m-0">
       <li *ngFor="let style of layer.container.styleSettings">
-          <div class="d-flex flex-row align-items-center px-2 mx-2">
+          <div class="d-flex flex-row align-items-cente x-2">
 
-              <div class="me-1">
-                  <svg height="25" width="25" *ngIf="layer.container.geomType === 'Point'">
-                      <circle cx="12" cy="12" r="8" [attr.stroke]="layer.container.strokeColor" [attr.stroke-width]="1" [attr.fill]="style.color" />
-                  </svg>
+            <app-geom-icons
+              [geomType]="layer.container.geomType"
+              [strokeColor]="layer.container.strokeColor"
+              [fillColor]="style.color"
+              [strokeWidth]="layer.container.strokeWidth"
+              [title]="style.class"
+            >
+            </app-geom-icons>
 
-                  <svg height="25" width="25" *ngIf="layer.container.geomType === 'LineString'">
-                      <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="layer.container.strokeColor" [attr.stroke-width]="_strokeWidthCoeff"/>
-                      <line x1="0" y1="12.5" x2="25" y2="12.5" [attr.stroke]="style.color" [attr.stroke-width]="_strokeWidthLineCoeff"/>
-                  </svg>
-
-                  <svg height="15" width="25" *ngIf="layer.container.geomType === 'Polygon'">
-                      <rect x="0" y="0" width="25" height="15" [attr.stroke]="layer.container.strokeColor" [attr.stroke-width]="_strokeWidthCoeff" [attr.fill]="style.color"/>
-                  </svg>
-              </div>
-
-              <span class="small">{{style.class}}</span>
 
           </div>
       </li>

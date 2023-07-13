@@ -1,20 +1,21 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { layerHandler } from '../../layer-handler/layer-handler';
-import { Fill } from 'ol/style';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-widget-color',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './widget-color.component.html',
   styleUrls: ['./widget-color.component.scss']
 })
 export class WidgetColorComponent {
   @Input() fillColor!: string;
   @Input() strokeColor!: string;
-  @Input() strokeWidth!: string;
+  @Input() strokeWidth!: number;
 
   @Output() fillColorEvent = new EventEmitter<string>();
   @Output() strokeColorEvent = new EventEmitter<string>();
-  @Output() strokeWidthEvent = new EventEmitter<string>();
+  @Output() strokeWidthEvent = new EventEmitter<number>();
 
   setFillColor(color: string): void {
     this.fillColor = color;
@@ -27,7 +28,7 @@ export class WidgetColorComponent {
   }
 
   setStrokeWidth(width: string): void {
-    this.strokeWidth = width;
-    this.strokeWidthEvent.emit(width)
+    this.strokeWidth = parseFloat(width);
+    this.strokeWidthEvent.emit(this.strokeWidth)
   }
 }
