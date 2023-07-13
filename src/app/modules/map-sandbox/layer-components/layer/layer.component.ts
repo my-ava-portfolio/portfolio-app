@@ -3,7 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, OnDestroy, 
 import { InteractionsService } from '@modules/map-sandbox/shared/service/interactions.service';
 import { Subscription } from 'rxjs';
 import { EditComputingService } from '@modules/map-sandbox/shared/service/edit-computing.service';
-import { ModalComponent } from '@shared/modules/items/modal/modal.component';
+import { ModalComponent } from '@shared/modules/modal/modal.component';
 import { addIcon, centerIcon, clearIcon, downIcon, duplicateIcon, editIcon, groupIcon, helpIcon, invisibleIcon, lineStringIcon, lockIcon, paramIcon, pointIcon, polygonIcon, removeIcon, toggleIcon, unLockIcon, unToggleIcon, upIcon, visibleIcon } from '@modules/map-sandbox/shared/icons';
 
 

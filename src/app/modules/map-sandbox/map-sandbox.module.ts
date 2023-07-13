@@ -22,12 +22,12 @@ import { ImportToolsComponent } from './import-tools/import-tools.component';
 import { FormsModule } from '@angular/forms';
 import { LayerLegendComponent } from './layer-legend/layer-legend.component';
 import { PathToolsComponent } from './path-tools/path-tools.component';
-import { ItemsModule } from '@shared/modules/items/items.module';
 import { LayerSettingsComponent } from './layer-components/layer/layer-settings/layer-settings.component';
 import { LayerTableComponent } from './layer-components/layer/layer-table/layer-table.component';
 import { WidgetColorComponent } from './shared/components/widget-color/widget-color.component';
 import { WidgetTableComponent } from './shared/components/widget-table/widget-table.component';
 import { GeomIconsComponent } from './shared/components/geom-icons/geom-icons.component';
+import { ModalComponent } from '@shared/modules/modal/modal.component';
 
 
 @NgModule({
@@ -52,10 +52,10 @@ import { GeomIconsComponent } from './shared/components/geom-icons/geom-icons.co
     NgbModule,
     FormsModule,
     DirectivesModule,
-    ItemsModule,
     GeomIconsComponent,
     WidgetColorComponent,
     WidgetTableComponent,
+    ModalComponent,
   ],
 })
 export class MapSandboxModule { }

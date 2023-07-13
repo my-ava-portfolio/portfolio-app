@@ -6,7 +6,8 @@ import { GridContainerComponent } from './grid-container/grid-container.componen
 
 import { PipesModule } from '@shared/pipes/pipes.module';
 import {RouterModule} from '@angular/router';
-import { ItemsModule } from '../items/items.module';
+import { ArticleHeaderComponent } from '../article-header/article-header.component';
+import { CardContainerComponent } from '../card-container/card-container.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ItemsModule } from '../items/items.module';
     PipesModule,
     RouterModule,
     FontAwesomeModule,
-    ItemsModule
+    ArticleHeaderComponent,
+    CardContainerComponent
   ],
   exports: [
     GridContainerComponent

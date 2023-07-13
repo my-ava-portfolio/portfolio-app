@@ -11,6 +11,8 @@ import { TimeLegendComponent } from '@modules/map-activities/time-legend/time-le
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ItemsModule } from '@shared/modules/items/items.module';
+import { LegendContainerComponent } from '@shared/modules/legend-container/legend-container.component';
+import { SectionContainerComponent } from '@shared/modules/section-container/section-container.component';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { ItemsModule } from '@shared/modules/items/items.module';
     MapActivitiesRoutingModule,
     FontAwesomeModule,
     ItemsModule,
-    TimelineModule
+    TimelineModule,
+    LegendContainerComponent,
+    SectionContainerComponent,
   ],
   providers: [
     DataService

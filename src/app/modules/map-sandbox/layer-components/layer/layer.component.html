@@ -21,12 +21,12 @@
           <fa-icon class="" [icon]="locked ? lockIcon : unLockIcon" ></fa-icon>
         </label>
 
-        <div class="d-flex flex-column justify-content-center align-items-center mx-1" [ngClass]="selected ? 'pe-auto' :  'pe-none'">
-            <div class="text-danger m-0" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
+        <div class="d-flex flex-row justify-content-center align-items-center" [ngClass]="selected ? 'pe-auto' :  'pe-none'">
+            <div class="text-danger m-1" (click)="layerGoUp()" container="body" ngbPopover="Remonter" triggers="mouseenter:mouseleave">
               <fa-icon class="" [icon]="upIcon"></fa-icon>
             </div>
 
-            <div class="text-danger m-0" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
+            <div class="text-danger m-1" (click)="layerGoDown()" container="body" ngbPopover="Descendre" triggers="mouseenter:mouseleave">
               <fa-icon class="" [icon]="downIcon"></fa-icon>
             </div>
         </div>

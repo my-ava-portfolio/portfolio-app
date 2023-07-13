@@ -1,17 +1,20 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core'
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
 
 
 @Component({
   selector: 'set-modal',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent {
-  
+
   @Input() title!: string
   @Input() size: 'sm' | 'lg' | 'xl' = 'lg';
-  
+
   @ViewChild('modal') private modalContent!: TemplateRef<ModalComponent>
 
   private _modalRef!: NgbModalRef

@@ -18,8 +18,7 @@ export class LayerTableComponent implements OnInit {
   propertyStyled!: string
   propertiesStylingClassified: categoryClass[] = []
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   @Input()
   set layer(layerObject: layerHandler) {

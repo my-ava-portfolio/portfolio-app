@@ -8,6 +8,8 @@ import { ResumeLegacyRoutingModule } from '@modules/resume-legacy/resume-legacy-
 
 import { LayoutComponent } from '@modules/resume-legacy/layout/layout.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ParagraphContentComponent } from '@shared/modules/paragraph-content/paragraph-content.component';
+import { SectionContainerComponent } from '@shared/modules/section-container/section-container.component';
 
 
 
@@ -20,7 +22,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FontAwesomeModule,
     ResumeLegacyRoutingModule,
     PipesModule,
-    ItemsModule
+    ItemsModule,
+    ParagraphContentComponent,
+    SectionContainerComponent,
   ]
 })
 export class ResumeLegacyModule { }

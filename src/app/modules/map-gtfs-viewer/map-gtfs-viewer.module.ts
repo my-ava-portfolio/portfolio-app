@@ -12,6 +12,8 @@ import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.servi
 import { TimelineModule } from '@shared/modules/timeline/timeline.module';
 import { ItemsModule } from '@shared/modules/items/items.module';
 import { TimeLegendComponent } from './time-legend/time-legend.component';
+import { LegendContainerComponent } from '@shared/modules/legend-container/legend-container.component';
+import { SectionContainerComponent } from '@shared/modules/section-container/section-container.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { TimeLegendComponent } from './time-legend/time-legend.component';
     MapGtfsViewerRoutingModule,
     FontAwesomeModule,
     TimelineModule,
-    ItemsModule
+    ItemsModule,
+    LegendContainerComponent,
+    SectionContainerComponent,
   ],
   providers: [
     DataService

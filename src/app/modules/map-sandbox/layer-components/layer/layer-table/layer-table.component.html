@@ -16,19 +16,19 @@
 <div class="d-flex flex-row mx-2 tab-content" id="'StylingTabContent' + layer.container.id">
 
     <div class="tab-pane fade w-100  show active" [id]="'attributesChanges' + layer.container.uuid" role="tabpanel">
-        
+
         <div class="d-flex flex-row">
             <div class="input-group m-2">
                 <input #fieldToAdd type="text" class="form-control" placeholder="Ajouter un champs" aria-label="Ajouter un champs" aria-describedby="btn-add-field">
                 <button class="btn btn-success" type="button" id="btn-add-field" (click)="addField(fieldToAdd.value)">Ajouter</button>
             </div>
-            
+
             <div class="input-group m-2">
                 <input #fieldToRm type="text" class="form-control" placeholder="Supprimer un champs" aria-label="Supprimer un champs" aria-describedby="btn-rm-field">
                 <button class="btn btn-danger" type="button" id="btn-rm-field" (click)="removeField(fieldToRm.value)">Supprimer</button>
             </div>
         </div>
-        
+
         <div class="input-group m-2">
             <span class="input-group-text">Sélection du champ</span>
             <select #fieldSelected class="form-select" aria-label="Champs">
@@ -51,7 +51,7 @@
 
         <div>
             <span class="fs-4" *ngIf="propertiesStylingClassified.length > 0">Classes :</span>
-            <div class="d-flex flex-row ms-2 my-1" *ngFor="let item of propertiesStylingClassified">
+            <div class="d-flex flex-row ms-2" *ngFor="let item of propertiesStylingClassified">
                 <span class="w-25">{{item.class}}</span>
                 <div class="d-flex flex-row align-items-center">
                     <input #layerStrokeColor type="color" id="strokeColor" class="fillColor pointer border-0" [value]="item.color" (change)="changeCategoryClassStyle(fieldClassifiedSelected.value, item.class, layerStrokeColor.value)"/>

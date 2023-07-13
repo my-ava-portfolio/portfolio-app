@@ -13,6 +13,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ItemsModule } from '@shared/modules/items/items.module';
 import { PublicationBarComponent } from './publication-bar/publication-bar.component';
+import { ArticleContainerComponent } from '@shared/modules/article-container/article-container.component';
+import { ArticleHeaderComponent } from '@shared/modules/article-header/article-header.component';
+import { CardContainerComponent } from '@shared/modules/card-container/card-container.component';
+import { ParagraphContentComponent } from '@shared/modules/paragraph-content/paragraph-content.component';
+import { SectionContainerComponent } from '@shared/modules/section-container/section-container.component';
 
 
 @NgModule({
@@ -28,7 +33,12 @@ import { PublicationBarComponent } from './publication-bar/publication-bar.compo
     EducationRoutingModule,
     FontAwesomeModule,
     NgbModule,
-    ItemsModule
+    ItemsModule,
+    ArticleContainerComponent,
+    ArticleHeaderComponent,
+    CardContainerComponent,
+    ParagraphContentComponent,
+    SectionContainerComponent,
   ]
 })
 export class EducationModule { }

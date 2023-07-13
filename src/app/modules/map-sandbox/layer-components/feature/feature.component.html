@@ -83,6 +83,17 @@
         >
         </app-widget-table>
 
+
+        <app-widget-color
+          [fillColor]="feature.get('fill_color')"
+          [strokeColor]="feature.get('stroke_color')"
+          [strokeWidth]="feature.get('stroke_width')"
+          (fillColorEvent)="feature.set('fill_color', $event)"
+          (strokeColorEvent)="feature.set('stroke_color', $event)"
+          (strokeWidthEvent)="feature.set('stroke_width', $event)"
+        >
+        </app-widget-color>
+
       </div>
     </div>
 

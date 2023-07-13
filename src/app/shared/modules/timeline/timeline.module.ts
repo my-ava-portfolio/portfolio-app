@@ -7,6 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import {RouterModule} from '@angular/router';
 import { ItemsModule } from '../items/items.module';
+import { SectionContainerComponent } from '../section-container/section-container.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ItemsModule } from '../items/items.module';
     FontAwesomeModule,
     PipesModule,
     RouterModule,
-    ItemsModule
+    ItemsModule,
+    SectionContainerComponent,
   ],
   exports: [
     TimeLineComponent,

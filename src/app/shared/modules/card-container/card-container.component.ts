@@ -1,7 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'set-card-container',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './card-container.component.html',
   styleUrls: ['./card-container.component.scss']
 })

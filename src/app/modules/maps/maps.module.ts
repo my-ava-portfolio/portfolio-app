@@ -11,6 +11,8 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { GridContainerModule } from '@shared/modules/grid/gallery.module';
 import { ItemsModule } from '@shared/modules/items/items.module';
+import { ParagraphContentComponent } from '@shared/modules/paragraph-content/paragraph-content.component';
+import { SectionContainerComponent } from '@shared/modules/section-container/section-container.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { ItemsModule } from '@shared/modules/items/items.module';
     FontAwesomeModule,
     PipesModule,
     GridContainerModule,
-    ItemsModule
+    ItemsModule,
+    ParagraphContentComponent,
+    SectionContainerComponent,
   ]
 })
 export class MapsModule { }

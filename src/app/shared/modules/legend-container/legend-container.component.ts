@@ -1,9 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
-import { faExpand, faTag } from '@fortawesome/free-solid-svg-icons';
 import { MapService } from '@services/map.service';
 
 @Component({
   selector: 'set-legend-container',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './legend-container.component.html',
   styleUrls: ['./legend-container.component.scss'],
 })
@@ -13,8 +15,8 @@ export class LegendContainerComponent implements OnInit {
   @ContentChild('buttonsTemplate') buttonsTmplt!: TemplateRef<any>;
   @ContentChild('controlersTemplate') controlersTmplt!: TemplateRef<any>;
 
-  tagIcon = faTag;
-  centerIcon = faExpand;
+  // bootstrap icon
+  tagIcon = "bi bi-bookmarks-fill";
 
   isLegendDisplayed: boolean = true;
 

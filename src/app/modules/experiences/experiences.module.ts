@@ -17,6 +17,11 @@ import { ClickClassDirective } from '@shared/directives/click-class.directive';
 import { GeneralInfoComponent } from './general-info/general-info.component';
 
 import { ItemsModule } from '@shared/modules/items/items.module';
+import { ArticleContainerComponent } from '@shared/modules/article-container/article-container.component';
+import { ArticleHeaderComponent } from '@shared/modules/article-header/article-header.component';
+import { CardContainerComponent } from '@shared/modules/card-container/card-container.component';
+import { ParagraphContentComponent } from '@shared/modules/paragraph-content/paragraph-content.component';
+import { SectionContainerComponent } from '@shared/modules/section-container/section-container.component';
 
 
 @NgModule({
@@ -35,7 +40,12 @@ import { ItemsModule } from '@shared/modules/items/items.module';
     FontAwesomeModule,
     PipesModule,
     ExperiencesRoutingModule,
-    ItemsModule
+    ItemsModule,
+    ArticleContainerComponent,
+    ArticleHeaderComponent,
+    CardContainerComponent,
+    ParagraphContentComponent,
+    SectionContainerComponent,
   ]
 })
 export class ExperiencesModule { }
