@@ -19,7 +19,6 @@ import { SectionContainerComponent } from '../section-container/section-containe
     FontAwesomeModule,
     PipesModule,
     RouterModule,
-    ItemsModule,
     SectionContainerComponent,
   ],
   exports: [

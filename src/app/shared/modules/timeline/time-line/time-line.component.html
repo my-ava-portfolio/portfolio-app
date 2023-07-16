@@ -3,7 +3,7 @@
   <set-section-container>
     <h6>Barre Temporelle</h6>
 
-    <set-badge-content classes="text-bg-secondary">{{ currentDate | date:currentDateFormat }}</set-badge-content>
+    <div class="badge text-bg-secondary">{{ currentDate | date:currentDateFormat }}</div>
 
     <div class="d-flex flex-row justify-content-center">
       <svg [attr.viewBox]="'0 10 ' + width + ' ' + height" [id]="timeLineId">
@@ -31,6 +31,6 @@
         <div class="fw-bold">+</div>
       </div>
     </ng-container>
-    
+
   </div>
 </div>
