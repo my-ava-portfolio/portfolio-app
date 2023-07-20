@@ -21,7 +21,8 @@
             <h6 class="ms-4 small">({{ profilData.birth_date }})</h6>
           </div>
           <h5 class="">{{ profilData.job }}</h5>
-          <h6 *ngIf="jobDuration">{{ jobDuration.years }} années et {{ jobDuration.months }} mois d'expérience professionnelle</h6>
+          <h6 *ngIf="jobDuration.months === 0">{{ jobDuration.years }} années d'expérience professionnelle</h6>
+          <h6 *ngIf="jobDuration.months > 0">{{ jobDuration.years }} années et {{ jobDuration.months }} mois d'expérience professionnelle</h6>
         </div>
 
         <div class="my-auto">

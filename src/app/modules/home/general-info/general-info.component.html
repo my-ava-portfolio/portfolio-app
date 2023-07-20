@@ -10,7 +10,8 @@
 
       <div class="my-2 d-flex flex-column flex-md-row justify-content-center mx-auto">
         <div class="badge-title-light">{{ userInfoData.job }}</div>
-        <div class="badge-title-warning">{{ jobDuration.years }} années et {{ jobDuration.months }} mois d'expérience professionnelle</div>
+        <div *ngIf="jobDuration.months === 0" class="badge-title-warning">{{ jobDuration.years }} années d'expérience professionnelle</div>
+        <div *ngIf="jobDuration.months > 0" class="badge-title-warning">{{ jobDuration.years }} années et {{ jobDuration.months }} mois d'expérience professionnelle</div>
       </div>
 
       <set-paragraph-content class="text-white">
