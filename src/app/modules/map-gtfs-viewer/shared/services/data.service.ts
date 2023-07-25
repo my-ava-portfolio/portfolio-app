@@ -19,6 +19,7 @@ export class DataService {
   screenMapBound: Subject<number[]> = new Subject<number[]>();
   availableAreas: Subject<string[]> = new Subject<string[]>();
   availableRouteTypes: Subject<string[]> = new Subject<string[]>();
+  routeLongName: Subject<string> = new Subject<string>();
 
   ErrorapiUrlDataApiFound: Subject<string> = new Subject<string>();
   GeoData: Subject<any> = new Subject<any>();
@@ -85,6 +86,20 @@ export class DataService {
       },
       next: response => {
         this.availableRouteTypes.next(response);
+      },
+    });
+  }
+
+  pullRouteLongName(currentData: string, routeId: string): void {
+    this.http.get<any>(this.gtfsViewerApiUrl + currentData.toLowerCase() + '/route_long_name?id=' + routeId).subscribe({
+      complete: () => {
+      },
+      error: error => {
+      // TODO improve error message, but API need improvments
+      this.ErrorapiUrlDataApiFound.next(error.error.message);
+      },
+      next: response => {
+        this.routeLongName.next(response);
       },
     });
   }

@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { DataService } from '@modules/map-gtfs-viewer/shared/services/data.service';
 
-import { gtfsLayerName, gtfsStyle, circleRadius, metroColor, strokeWidth, trainColor, tramColor, strokeColor } from '@modules/map-gtfs-viewer/shared/core';
+import { gtfsLayerName, gtfsStyle, circleRadius, metroColor, strokeWidth, trainColor, tramColor, strokeColor, transportModeTranslator, transportModeColor } from '@modules/map-gtfs-viewer/shared/core';
 import { MapService } from '@services/map.service';
 import { ControlerService } from '@services/controler.service';
 import Feature from 'ol/Feature';
@@ -16,6 +16,9 @@ import Point from 'ol/geom/Point';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import VectorSource from 'ol/source/Vector';
 import { centerIcon } from '@modules/map-activities/shared/icons';
+import * as d3 from 'd3';
+import { pointerMove } from 'ol/events/condition';
+import { Select } from 'ol/interaction';
 
 
 @Component({
@@ -54,6 +57,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
       { dataValue: 2, cy: 66, label: 'Train', color: trainColor },
     ]
   };
+  private stopPopupDiv = '.stopPopup'
 
   previousArea: string | null = null;
   currentArea = this.input_data[1].area;
@@ -74,6 +78,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
   // check css code related to popup
   popupWidth = 100;
   popupHeight = 100;
+
+  innerWidth!: any;
+  innerHeight!: any;
 
   mapSubscription!: Subscription;
   pullGeoDataToMapSubscription!: Subscription;
@@ -167,6 +174,12 @@ export class MapViewComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.dataService.routeLongName.subscribe(
+      (element: string) => {
+        d3.select(this.stopPopupDiv + ' .card-header').html('Ligne : ' + element)
+      }
+    )
+
   }
 
   ngOnInit(): void {
@@ -179,6 +192,9 @@ export class MapViewComponent implements OnInit, OnDestroy {
     this.mapService.getMap();
     this.buildGtfsLayer(gtfsLayerName)
     this.updateData(this.currentArea)
+
+    this.innerWidth = window.innerWidth;
+    this.innerHeight = window.innerHeight;
   }
 
   secsToDate(secs: number): Date {
@@ -246,6 +262,57 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
     this.gtfsLayer.set("name", layerName)
     this.map.addLayer(this.gtfsLayer)
+
+    // add mouse interaction
+    let stopsLayerSelector = new Select({
+      condition: pointerMove,
+      multi: false,
+      layers: [this.gtfsLayer],
+    });
+    const popupDiv = d3.select(this.stopPopupDiv)
+
+    stopsLayerSelector.on('select', (evt: any) => {
+      const selected = evt.selected
+      const deSelected = evt.deselected
+      if (deSelected.length === 1) {
+        let deSelectedFeature = deSelected[0]
+        this.mapService.unsetMapEvent("mapCoords")
+        popupDiv
+          .classed('d-none', !popupDiv.classed('d-none'))
+
+        // TODO add highlight
+      }
+      if (selected.length === 1) {
+        let selectedFeature = selected[0]
+        // this.currentFeatureSelectedId = selectedFeature.get("id")
+        this.mapService.setMapEvent("mapCoords")
+
+        popupDiv
+          .style('z-index', '1')
+          .classed('d-none', !popupDiv.classed('d-none'))
+
+        popupDiv
+          .select('.card-header')
+          .style('background-color', transportModeColor(selectedFeature))
+
+        popupDiv.select(".mode .value")
+          .html(transportModeTranslator(selectedFeature));
+        const coordinates = selectedFeature.getGeometry().getCoordinates()
+        popupDiv.select(".position-x .value")
+          .html(coordinates[0]);
+        popupDiv.select(".position-y .value")
+          .html(coordinates[1]);
+        this.dataService.pullRouteLongName(this.currentArea, selectedFeature.get('route_id'))
+
+        this.popupMoving(evt.mapBrowserEvent.pixel)
+
+        // TODO add highlight
+      }
+
+    });
+
+    this.map.addInteraction(stopsLayerSelector);
+
   };
 
 
@@ -259,15 +326,37 @@ export class MapViewComponent implements OnInit, OnDestroy {
     let featuresToAdd: any[] = []
     features.forEach((feature: any, _: number) => {
       let iconFeature = new Feature({
-        geometry: new Point([feature.x, feature.y]).transform('EPSG:4326', 'EPSG:3857'),
-        route_type: String(feature.route_type),
-        route_long_name: feature.route_long_name,
+        geometry: new Point([feature.X, feature.Y]).transform('EPSG:4326', 'EPSG:3857'),
+        route_type: String(feature.RouteType),
+        route_id: feature.RouteId,
       })
       featuresToAdd.push(iconFeature)
     })
 
     vectorSource.addFeatures(featuresToAdd)
     this.gtfsLayer.setSource(vectorSource)
+  }
+
+  popupMoving(pixelCoords: number[]): void {
+    const popupPixelPadding = 20;
+    const positionPixelPadding = 15;
+    d3.select('.stopPopup')
+    .style('left', () => {
+      if (pixelCoords[0] + this.popupWidth + popupPixelPadding > this.innerWidth) {
+        return pixelCoords[0] - this.popupWidth - positionPixelPadding + 'px';
+      } else {
+        return pixelCoords[0] + positionPixelPadding + 'px';
+      }
+    })
+    .style('top', () => {
+
+      if (pixelCoords[1] + this.popupHeight + popupPixelPadding > this.innerHeight) {
+        return pixelCoords[1] - this.popupHeight - positionPixelPadding + 'px';
+      } else {
+        return pixelCoords[1] + positionPixelPadding + 'px';
+      }
+    })
+    .style('display', 'block');
   }
 
 }

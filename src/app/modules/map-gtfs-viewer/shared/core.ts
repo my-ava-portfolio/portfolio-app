@@ -75,7 +75,30 @@ const defaultStyle = new Style({
   })
 })
 
+// TODO refactor these functions
+export function transportModeColor(feature: any): string {
+  if (feature.get('route_type') === "0") {
+    return tramColor
+  } else if (feature.get('route_type') === "1") {
+    return metroColor
+  } else if (feature.get('route_type') === "2") {
+    return trainColor
+  } else {
+    return 'grey'
+  }
+};
 
+export function transportModeTranslator(feature: any): string {
+  if (feature.get('route_type') === "0") {
+    return 'Tramway'
+  } else if (feature.get('route_type') === "1") {
+    return 'Métro'
+  } else if (feature.get('route_type') === "2") {
+    return 'Train'
+  } else {
+    return 'Inconnu'
+  }
+};
 
 export function gtfsStyle(feature: any): Style {
   if (feature.get('route_type') === "0") {
