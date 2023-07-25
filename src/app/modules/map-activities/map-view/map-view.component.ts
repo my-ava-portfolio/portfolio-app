@@ -16,7 +16,6 @@ import { Style } from 'ol/style';
 import * as d3 from 'd3';
 
 import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 
 import { DataService } from '@modules/map-activities/shared/services/data.service';
 import { ControlerService } from 'src/app/services/controler.service';
@@ -69,8 +68,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
   locationIcon = locationIcon;
   centerIcon = centerIcon;
 
-  helpPopup = 'Voici une cartographie spatio-temporelles de mes expériences';
-
   // check css code related to popup
   popupWidth = 330;
   popupHeight = 190;
@@ -89,7 +86,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
     private mapService: MapService,
     private dataService: DataService,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title,
     private controlerService: ControlerService,
   ) {
 
@@ -136,8 +132,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
           this.mapService.zoomToLayerName(activityLayerName, this.defaultActivitieLayerZoom)
         }
       });
-    
-    
+
     this.getTripsGeoDataToMapSubscription = this.dataService.tripsGeoData.subscribe(
       (geoData: any) => {
         this.geoTripsData = geoData
@@ -280,7 +275,6 @@ export class MapViewComponent implements OnInit, OnDestroy  {
       // WARNING not refactoring needed ! because we can have both selected and deselected
       if (deSelected.length === 1) {
         let deSelectedFeature = deSelected[0]
-        this.currentFeatureSelectedId = null
         this.mapService.unsetMapEvent("mapCoords")
         d3.select('#popup-feature-' + deSelectedFeature.get("id"))
           .style('display', 'none')
@@ -326,7 +320,7 @@ export class MapViewComponent implements OnInit, OnDestroy  {
 
   _handleActivityCircleOnLegend(feature: Feature): void {
     const properties = feature.getProperties();
-    
+
     const legendElement: any = d3.select("#" + legendActivitiesId + " circle." + properties["type"]);
     legendElement.classed('selected', !legendElement.classed('selected')); // toggle class
 
