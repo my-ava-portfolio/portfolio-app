@@ -9,10 +9,10 @@ import { MapAppLayoutComponent } from './map-app-layout/map-app-layout.component
 import { HomeLayoutComponent } from './home-layout/home-layout.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
-import { GridContainerModule } from '@shared/modules/grid/gallery.module';
 import { ItemsModule } from '@shared/modules/items/items.module';
 import { ParagraphContentComponent } from '@shared/modules/paragraph-content/paragraph-content.component';
 import { SectionContainerComponent } from '@shared/modules/section-container/section-container.component';
+import { GridContainerComponent } from '@shared/modules/grid-container/grid-container.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import { SectionContainerComponent } from '@shared/modules/section-container/sec
     MapRoutingModule,
     FontAwesomeModule,
     PipesModule,
-    GridContainerModule,
+    GridContainerComponent,
     ItemsModule,
     ParagraphContentComponent,
     SectionContainerComponent,
