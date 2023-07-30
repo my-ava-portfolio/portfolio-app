@@ -275,7 +275,6 @@ export class MapViewComponent implements OnInit, OnDestroy {
       const selected = evt.selected
       const deSelected = evt.deselected
       if (deSelected.length === 1) {
-        let deSelectedFeature = deSelected[0]
         this.mapService.unsetMapEvent("mapCoords")
         popupDiv
           .classed('d-none', !popupDiv.classed('d-none'))
@@ -340,7 +339,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   popupMoving(pixelCoords: number[]): void {
     const popupPixelPadding = 20;
     const positionPixelPadding = 15;
-    d3.select('.stopPopup')
+    d3.select(this.stopPopupDiv)
     .style('left', () => {
       if (pixelCoords[0] + this.popupWidth + popupPixelPadding > this.innerWidth) {
         return pixelCoords[0] - this.popupWidth - positionPixelPadding + 'px';

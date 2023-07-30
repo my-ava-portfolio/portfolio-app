@@ -9,8 +9,6 @@ import { ActivatedRoute } from '@angular/router';
 import { fadeInOutAnimation } from '@core/animation_routes';
 import { assetsLogoPath } from '@core/globals/resume-shared-data';
 
-import { faGlobeEurope, faTags } from '@fortawesome/free-solid-svg-icons';
-
 
 @Component({
   selector: 'app-app-layout',
@@ -23,27 +21,6 @@ export class LayoutComponent implements OnInit, OnDestroy  {
 
   fragment: string = '';
   tabView!: string;
-
-  apiImgUrl = assetsLogoPath;
-  activityIdFromActivityComponents!: string;
-
-  navIcon = faGlobeEurope;
-  tagsIcon = faTags;
-
-  // resume center bar
-  generalData: any;
-  profilData!: any;
-
-  jobsData!: any;
-  personalProjectsData!: any;
-  volunteersData!: any;
-
-  activityTypesMetadata!: any[];
-
-  skillsData!: any;
-
-  isAnchorExistsChecker = interval(1000); // observable which run all the time
-  isAnchorExistsCheckerSubscription!: Subscription;
 
   routeSubscription!: Subscription;
 

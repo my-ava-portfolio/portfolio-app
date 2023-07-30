@@ -98,17 +98,23 @@
 
       </ul>
 
-      <div class="copyright
-        text-white
-      " *ngIf="sideBarCollapsed">
-        © {{currentYear}} {{ userInfoData.first_name }} {{ userInfoData.last_name }}
+      <div class="copyright text-white d-flex justify-content-center
+      " [ngClass]="!sideBarCollapsed ? 'flex-column' : 'flex-row'">
+
+        <span class="mx-1">
+          © {{currentYear}}
+        </span>
+
+        <span *ngIf="sideBarCollapsed">
+          {{ userInfoData.first_name }} {{ userInfoData.last_name }}
+        </span>
+
+        <span *ngIf="!sideBarCollapsed">
+          {{ userInfoData.first_name[0] }}{{ userInfoData.last_name[0] }}
+        </span>
+
       </div>
 
-      <div class="copyright
-        text-white
-      " *ngIf="!sideBarCollapsed">
-        © {{currentYear}} {{ userInfoData.first_name[0] }}{{ userInfoData.last_name[0] }}
-      </div>
 
     </div>
   </div>

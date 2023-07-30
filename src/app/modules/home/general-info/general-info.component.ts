@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./general-info.component.scss']
 })
 export class GeneralInfoComponent implements OnInit {
-  
+
   userInfoData!: any;
   jobDuration!: any;
 

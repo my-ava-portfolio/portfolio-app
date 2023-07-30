@@ -10,8 +10,6 @@ import { assetsLogoPath } from '@core/globals/resume-shared-data';
   animations: [fadeInOutAnimation],
 })
 export class LayoutComponent implements OnInit {
-  fragment!: string | null;
-  apiImgUrl = assetsLogoPath;
 
   activityType = "education"
 
