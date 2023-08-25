@@ -46,11 +46,11 @@
             <select #fieldClassifiedSelected class="form-select" aria-label="Champs">
                 <option *ngFor="let header of layer.getAttributesHeader()">{{header}}</option>
             </select>
-            <button class="btn btn-warning" type="button" id="btn-field-value" (click)="setCategoryClassesStyling(fieldClassifiedSelected.value)">Appliquer</button>
+            <button class="btn btn-warning" type="button" id="btn-field-value" (click)="setCategoryClassesStyleRandomly(fieldClassifiedSelected.value)">Appliquer</button>
         </div>
 
         <div>
-            <span class="fs-4" *ngIf="propertiesStylingClassified.length > 0">Classes :</span>
+            <span class="fs-4" *ngIf="propertiesStylingClassified.length >= 0">Classes :</span>
             <div class="d-flex flex-row ms-2" *ngFor="let item of propertiesStylingClassified">
                 <span class="w-25">{{item.class}}</span>
                 <div class="d-flex flex-row align-items-center">

@@ -18,7 +18,10 @@ export class LayerTableComponent implements OnInit {
   propertyStyled!: string
   propertiesStylingClassified: categoryClass[] = []
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // 'name' is the default column use to set the default color list on attributes settings
+    this.readCategoryClassesStyle('name')
+  }
 
   @Input()
   set layer(layerObject: layerHandler) {
@@ -55,7 +58,16 @@ export class LayerTableComponent implements OnInit {
     this.getFeatures()
   }
 
-  setCategoryClassesStyling(propertyName: string): void {
+  readCategoryClassesStyle(propertyName: string): void {
+    // property name must the default column: name
+    this.propertiesStylingClassified = []
+    this.layer.container.features.forEach((feature: Feature) => {
+      const value = feature.get(propertyName)
+      this.propertiesStylingClassified.push({'class': value, 'color': feature.get("fill_color")})
+    })
+}
+
+  setCategoryClassesStyleRandomly(propertyName: string): void {
       this.propertiesStylingClassified = []
       let uniqueValues: any[] = []
       this.layer.container.features.forEach((feature: Feature) => {
@@ -91,4 +103,5 @@ export class LayerTableComponent implements OnInit {
     this.layer.container.propertyStyled = propertyName
     this.layer.container.styleSettings = this.propertiesStylingClassified
   }
+
 }
