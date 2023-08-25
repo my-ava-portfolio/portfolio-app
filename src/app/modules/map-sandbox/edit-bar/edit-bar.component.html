@@ -48,7 +48,7 @@
         </ng-container>
 
         <input [disabled]="editing" #btnSnap type="checkbox" class="btn-check" id="btnSnap" [checked]="isSnapped" (click)="snappingHandler(btnSnap.checked)">
-        <label for="btnSnap" container="body" ngbPopover="Activer le snapping" triggers="mouseenter:mouseleave">
+        <label for="btnSnap" container="body" [ngbPopover]="isSnapped ? 'Desactiver le snapping' : 'Activer le snapping'" triggers="mouseenter:mouseleave">
           <div  [class.disabled]="editing" class="btn m-1" [ngClass]="isSnapped ? 'btn-outline-danger' : 'btn-outline-dark'">
             <fa-icon [icon]="snapIcon" size="xs"></fa-icon>
           </div>
