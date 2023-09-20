@@ -90,7 +90,7 @@
             </ng-container>
 
             <ng-container *ngIf="activity.status === 'InProgress'">
-                <div class="me-1">Du {{ activity.start_date | date: 'MM-yyyy' }} à aujourd'hui</div>
+                <div class="me-1">Depuis le {{ activity.start_date | date: 'MM-yyyy' }}...</div>
             </ng-container>
 
             <div *ngIf="activity.years == 0 && activity.months > 0">
@@ -98,6 +98,9 @@
             </div>
             <div *ngIf="activity.years == 1 && activity.months == 0">
               <div>({{activity.years}} an)</div>
+            </div>
+            <div *ngIf="activity.years > 1 && activity.months == 0">
+              <div>({{activity.years}} ans)</div>
             </div>
             <div *ngIf="activity.years == 1 && activity.months > 0">
               <div>({{activity.years}} an et {{activity.months}} mois)</div>
