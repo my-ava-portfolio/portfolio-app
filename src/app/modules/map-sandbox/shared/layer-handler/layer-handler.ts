@@ -62,7 +62,11 @@ export class baseLayer{
   }
 
   get zIndex(): number {
-      return this.layer.getZIndex()
+    const zIndex = this.layer.getZIndex()
+    if (zIndex) {
+      return zIndex
+    }
+    return 0
   }
   set zIndex(value: number) {
       this.layer.setZIndex(value)

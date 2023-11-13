@@ -8,7 +8,7 @@ import {Extent, getCenter} from 'ol/extent';
 
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
-import Stamen from 'ol/source/Stamen';
+import StadiaMaps from 'ol/source/StadiaMaps.js';
 
 import { MapService } from '@services/map.service';
 import { unByKey } from 'ol/Observable';
@@ -47,13 +47,17 @@ export class BackgroundComponent implements OnInit {
   private mainView!: View;
 
   private stamenBaseLayer = new TileLayer({
-    source: new Stamen({
-      layer: 'terrain'
+    source: new StadiaMaps({
+      layer: 'stamen_terrain',
+      apiKey: "",
+      retina: true
     })
   })
   private overviewBaseLayer = new TileLayer({
-    source: new Stamen({
-      layer: 'terrain'
+    source: new StadiaMaps({
+      layer: 'stamen_terrain',
+      apiKey: "",
+      retina: true
     })
   })
   private osmBaseLayer = new TileLayer({
