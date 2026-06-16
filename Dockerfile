@@ -1,4 +1,4 @@
-FROM --platform=linux/arm64 node:18-alpine AS build
+FROM --platform=linux/arm64 node:lts-alpine3.24 AS build
 
 WORKDIR /usr/app
 COPY ./ /usr/app
