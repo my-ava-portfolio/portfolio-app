@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build
+FROM --platform=linux/arm64 node:18-alpine AS build
 
 WORKDIR /usr/app
 COPY ./ /usr/app
@@ -8,7 +8,7 @@ RUN npm install
 RUN npm run-script deploy_preprod
 
 ####
-FROM nginx:stable
+FROM --platform=linux/arm64 nginx:stable
 
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 
