@@ -1,4 +1,4 @@
-FROM node:18-alpine AS build
+FROM node:20-bullseye AS build
 
 WORKDIR /usr/app
 COPY ./ /usr/app
