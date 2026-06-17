@@ -8,7 +8,7 @@ import { environment } from '@root/environments/environment';
 })
 export class GraphComputingService {
 
-  private networkApiUrl = environment.networkApiUrl;
+  private networkApiUrl = environment.networkApiUrl + '/'
 
   private shortestPathRoute = this.networkApiUrl + 'path/shortest';
 

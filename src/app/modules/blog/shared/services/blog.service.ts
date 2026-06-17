@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class BlogService {
-  private resumeApiUrl = environment.resumeApiUrl
+  private resumeApiUrl = environment.resumeApiUrl + '/'
   ErrorTopicsDataApiFound: Subject<string> = new Subject<string>();
   blogData: Subject<any[]> = new Subject<any[]>();
 

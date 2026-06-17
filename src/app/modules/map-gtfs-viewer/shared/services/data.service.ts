@@ -13,7 +13,7 @@ import { environment } from '@root/environments/environment';
 })
 export class DataService {
   cache = Observable<any>
-  private gtfsViewerApiUrl = environment.gtfsViewerApiUrl;
+  private gtfsViewerApiUrl = environment.gtfsViewerApiUrl + "/"
 
   mapContainer: Subject<any> = new Subject<any>();
   screenMapBound: Subject<number[]> = new Subject<number[]>();
