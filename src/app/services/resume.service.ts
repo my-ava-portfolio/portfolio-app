@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ResumeService {
-  private portfolioApiUrl = environment.resumeApiUrl
+  private portfolioApiUrl = environment.resumeApiUrl + '/'
 
   ErrorResumeDataApiFound: Subject<string> = new Subject<string>();
 

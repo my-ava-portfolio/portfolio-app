@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 export class DataService {
   private portfolioApiUrl = environment.resumeApiUrl
 
-  private apiUrlActivitiesGeoData = this.portfolioApiUrl + 'geodata/activities';
+  private apiUrlActivitiesGeoData = this.portfolioApiUrl + '/geodata/activities';
   errorapiUrlApiFound: Subject<string> = new Subject<string>();
   activitiesGeoData: Subject<any> = new Subject<any>();
 

@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class GalleryService {
-  private galleryApiUrl = environment.resumeApiUrl + 'gallery/'
+  private galleryApiUrl = environment.resumeApiUrl + '/gallery/'
   ErrorActivitiesGalleryApiFound: Subject<string> = new Subject<string>();
   activitiesGalleryData: Subject<any> = new Subject<any>();
 
